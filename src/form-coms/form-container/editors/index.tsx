@@ -1316,14 +1316,14 @@ export default {
 
                 return item?.permission;
               },
-              set(params: EditorResult<Data>, val) {
+              set(params: EditorResult<Data>, val: ConfigPermission) {
                 const { data, focusArea, output } = params;
 
                 const item = getAcitonsItem(focusArea, data.actions.items);
 
                 if (item) {
-                  item['permission'] = { id: val.id };
-                  val.register(val.id);
+                  item['permission'] = val;
+                  val.register?.();
                 }
               }
             }

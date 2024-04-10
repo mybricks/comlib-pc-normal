@@ -7,6 +7,7 @@ import { deepCopy, unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
 import css from '../styles.less';
+import { getWhatToDoWithoutPermission } from '../../../utils/permission';
 
 export interface FormListActionsProps {
   operation?: FormListOperation;
@@ -142,13 +143,13 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
       {data.actions.items.map((item) => {
         const { iconConfig, ...res } = item;
         const icon = getBtnIcon(item);
-        const permission = getBtnPermission(env, item.permission?.id);
+        const permission = getWhatToDoWithoutPermission(item.permission, env);
 
         if (item.visible === false) {
           return null;
         }
         if (!env.edit) {
-          if (permission === 'hide') {
+          if (permission.type !== 'none') {
             return null;
           }
           const dynamicDisplay = getDynamicDisplay(

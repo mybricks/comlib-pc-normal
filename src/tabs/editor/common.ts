@@ -16,11 +16,12 @@ export const addEventIO = (output, item: TabItem) => {
   output.add(`${id}_leave`, `${name}隐藏`, { type: 'any' });
 };
 
-export const updateIO = ({ input, output, item }: { input?: any; output?: any; item: TabItem }) => {
+export const updateIO = ({ input, output, item, slots }: { input?: any; output?: any; item: TabItem, slots }) => {
   const { id, key, name } = item;
   input.setTitle(key, `${name}的通知数`);
   output.setTitle(`${id}_into`, `${name}显示`);
   output.setTitle(`${id}_leave`, `${name}隐藏`);
+  slots.get(item.key)!.setTitle(`${name}`);
 };
 
 export const removeIOAndSlot = (props: EditorResult<Data>, item: TabItem) => {

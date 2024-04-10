@@ -1,7 +1,7 @@
 {
   "title": "文本排版",
   "namespace": "mybricks.normal-pc.typography",
-  "version": "1.0.12",
+  "version": "1.0.15",
   "description": "展示文本基本格式",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -31,7 +31,7 @@
               "title": "链接",
               "type": "string"
             },
-            "style":{
+            "style": {
               "type": "object",
               "properties": {
                 "color": {
@@ -40,11 +40,11 @@
                 "fontSize": {
                   "type": "string"
                 },
-                "fontWeight":{
+                "fontWeight": {
                   "type": "number"
                 },
-                "stylePadding":{
-                  "type":"array",
+                "stylePadding": {
+                  "type": "array",
                   "items": {
                     "type": "number"
                   }
@@ -66,7 +66,7 @@
       "schema": {
         "type": "object",
         "properties": {
-          "values":{
+          "values": {
             "type": "object",
             "properties": {
               "content": {
@@ -87,7 +87,7 @@
               }
             }
           },
-          "index":{
+          "index": {
             "type": "number"
           }
         }
@@ -113,7 +113,7 @@
               "title": "链接",
               "type": "string"
             },
-            "style":{
+            "style": {
               "type": "object",
               "properties": {
                 "color": {
@@ -122,11 +122,11 @@
                 "fontSize": {
                   "type": "string"
                 },
-                "fontWeight":{
+                "fontWeight": {
                   "type": "number"
                 },
-                "stylePadding":{
-                  "type":"array",
+                "stylePadding": {
+                  "type": "array",
                   "items": {
                     "type": "number"
                   }

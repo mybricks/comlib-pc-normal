@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.51",
+  "version": "1.0.59",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -543,7 +543,7 @@
       }
     },
     {
-      "id":  "setSelectedKeysDone",
+      "id": "setSelectedKeysDone",
       "title": "设置选中节点完成",
       "schema": {
         "type": "array",

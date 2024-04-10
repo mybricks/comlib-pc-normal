@@ -112,13 +112,19 @@ export default function ImgModal({
             <div
               className={`${css['editor-rich-text__modalbtn']} ${css['editor-rich-text__footBtn-determine']}`}
               style={uploadModel.url?.length ? {} : disabledStyle}
-              onClick={onOk}
+              onClick={(...args) => {
+                if (inputRef.current) inputRef.current.value = '';
+                return onOk();
+              }}
             >
               确定
             </div>
           </div>
         ]}
-        onCancel={onClose}
+        onCancel={(...args) => {
+          if (inputRef.current) inputRef.current.value = '';
+          return onClose(...args);
+        }}
         getContainer={() => env?.canvasElement || document.body}
         zIndex={1002}
       >

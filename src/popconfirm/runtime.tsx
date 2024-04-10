@@ -8,14 +8,14 @@ import ConfigProvider from '../components/ConfigProvider';
 export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) => {
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const { title, icon, ...rest } = data;
+  const { title, icon, okText, cancelText, ...rest } = data;
   inputs.title((val: string, relOutputs) => {
     if (isString(val)) {
       data.title = val;
     } else {
       data.title = JSON.stringify(val);
     }
-    relOutputs['setTitleComplete']()
+    relOutputs['setTitleComplete']();
   });
 
   const visible = useMemo(() => {
@@ -26,7 +26,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     return title ? (
       <div
         style={{ whiteSpace: 'pre-wrap' }}
-        dangerouslySetInnerHTML={{ __html: title.replace('\\n', '<br/>') }}
+        dangerouslySetInnerHTML={{ __html: env.i18n(title).replace('\\n', '<br/>') }}
       />
     ) : null;
   };
@@ -53,6 +53,8 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
         }}
         getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
         destroyTooltipOnHide
+        okText={env.i18n(okText)}
+        cancelText={env.i18n(cancelText)}
         {...rest}
         onConfirm={onConfirm}
         onCancel={onCancel}

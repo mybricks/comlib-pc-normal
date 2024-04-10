@@ -1,14 +1,15 @@
 import { OutputIds, SizeEnum, SizeOptions } from '../types';
 import { createrCatelogEditor } from '../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Data } from './runtime'
+import { Data } from './runtime';
+import { refreshSchema } from './constants';
 
 export default {
   '@resize': {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
   ':root': {
     style: [
@@ -75,19 +76,15 @@ export default {
               },
               {
                 title: '标签-关闭图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: ['.ant-select-multiple .ant-select-selection-item-remove']
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-cascader-menu`
+                  return `.{id} .ant-cascader-menu`;
                 }
               },
               {
@@ -98,17 +95,20 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-cascader-menu-item`
+                  return `.{id} .ant-cascader-menu-item`;
                 }
               },
               {
                 title: '多选节点',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-cascader-checkbox-inner`
+                  return `.{id} .ant-cascader-checkbox-inner`;
                 }
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -118,7 +118,8 @@ export default {
                 catelog: 'Hover',
                 title: '边框',
                 options: ['border'],
-                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+                target:
+                  'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
                 domTarget: 'div.ant-select-selector'
               },
               {
@@ -137,23 +138,24 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-cascader-menu-item:hover`
+                  return `.{id} .ant-cascader-menu-item:hover`;
                 }
               },
               {
                 catelog: 'Hover',
                 title: '多选节点',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
-                },
+                }
               },
               {
                 title: '标签-关闭图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
               }
             ]
@@ -164,7 +166,8 @@ export default {
               {
                 title: '边框',
                 options: ['border', 'BoxShadow'],
-                target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+                target:
+                  'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
                 domTarget: 'div.ant-select-selector'
               },
               {
@@ -175,17 +178,22 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return [`.{id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
+                  return [
+                    `.{id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`
+                  ];
                 }
               },
               {
                 title: '多选节点',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
-                },
-              },
+                }
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -194,17 +202,20 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: [
                   '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'
                 ]
-              },
+              }
             ]
           })
-        ],
-      },
+        ]
+      }
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data }: EditorResult<Data>, ...catalog) => {
       catalog[0].title = '常规';
 
       catalog[0].items = [
@@ -238,6 +249,60 @@ export default {
           }
         },
         {
+          title: '字段配置',
+          items: [
+            {
+              title: '名称字段 label',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 label'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.fieldNames?.label;
+                },
+                set(props: EditorResult<Data>, label: string) {
+                  data.fieldNames.label = label;
+                  refreshSchema(props);
+                }
+              }
+            },
+            {
+              title: '值字段 value',
+              type: 'Text',
+              description: '所有项数据的值字段在整个数据源范围内不能重复',
+              options: {
+                placeholder: '数据的唯一标识字段，默认值为 value'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.fieldNames?.value;
+                },
+                set(props: EditorResult<Data>, value: string) {
+                  data.fieldNames.value = value;
+                  refreshSchema(props);
+                }
+              }
+            },
+            {
+              title: '子项字段 children',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 children'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.fieldNames?.children;
+                },
+                set(props: EditorResult<Data>, value: string) {
+                  data.fieldNames.children = value;
+                  refreshSchema(props);
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',
@@ -266,32 +331,32 @@ export default {
         //选择自适应还是自选择点数
         {
           title: '节点数配置',
-          type: "Select",
+          type: 'Select',
           description: '多选结点是自适应还是自定义',
           ifVisible({ data }) {
             return data.isMultiple;
           },
           options: [
             {
-              label: "自适应",
-              value: "isResponsive"
+              label: '自适应',
+              value: 'isResponsive'
             },
             {
-              label: "自定义",
-              value: "isCustom"
+              label: '自定义',
+              value: 'isCustom'
             }
           ],
           value: {
             get({ data }) {
               if (!data.maxTagCountType) {
-                data.maxTagCountType = "isResponsive"
+                data.maxTagCountType = 'isResponsive';
               }
-              return data.maxTagCountType
+              return data.maxTagCountType;
             },
             set({ data }, value: string) {
-              data.maxTagCountType = value
-              if (data.maxTagCountType == "isResponsive") {
-                data.config.maxTagCount = 'responsive'
+              data.maxTagCountType = value;
+              if (data.maxTagCountType == 'isResponsive') {
+                data.config.maxTagCount = 'responsive';
               }
             }
           }
@@ -300,20 +365,20 @@ export default {
         {
           title: '多选节点数',
           type: 'Slider',
-          description: "输入框中显示的节点数",
+          description: '输入框中显示的节点数',
           ifVisible({ data }) {
-            return data.isMultiple && data.maxTagCountType === "isCustom";
+            return data.isMultiple && data.maxTagCountType === 'isCustom';
           },
           options: {
             max: 10,
             min: 1,
             steps: 1,
-            formatter: "/10"
+            formatter: '/10'
           },
           value: {
             get({ data }) {
               if (!data.config.maxTagCount) {
-                data.config.maxTagCount = 1
+                data.config.maxTagCount = 1;
               }
               return data.config.maxTagCount;
             },
@@ -433,12 +498,11 @@ export default {
               }
             }
           ]
-        },
-      ]
+        }
+      ];
     }
   }
-
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

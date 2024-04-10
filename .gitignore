@@ -6,6 +6,7 @@ package-lock.json
 .vscode
 .DS_Store
 .history
+.VSCodeCounter
 
 yarn.lock
 .idea/
@@ -13,3 +14,4 @@ yarn.lock
 cypress/screenshots
 cypress-visual-report
 cypress-visual-screenshots
+dist/

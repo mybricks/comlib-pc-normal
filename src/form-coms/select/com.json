@@ -1,7 +1,7 @@
 {
   "title": "下拉框",
   "namespace": "mybricks.normal-pc.select",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -34,7 +34,7 @@
       "schema": {
         "type": "string"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -67,7 +67,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
@@ -99,7 +99,7 @@
           }
         }
       },
-      "rels":[
+      "rels": [
         "setOptionsDone"
       ]
     },

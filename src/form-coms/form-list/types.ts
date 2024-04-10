@@ -1,5 +1,6 @@
 import { FormItemProps, FormListFieldData, FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
+import { FormLayout } from 'antd/es/form/Form'
 import { ValidateInfo, SizeEnum } from '../types'
 
 export type IconSrcType = false | 'custom' | 'inner';
@@ -185,6 +186,10 @@ export interface Data {
    * @description 表单项尺寸
    */
   size: 'small' | 'middle' | 'large'
+  /**
+   * @description 表单布局类型
+   */
+  layoutType?: FormLayout
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'

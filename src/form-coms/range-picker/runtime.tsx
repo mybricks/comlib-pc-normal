@@ -382,7 +382,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const transValue = Array.isArray(value)
     ? value.map((item, index) => {
-        return transCalculation(item, decodeURIComponent(data.formatMap[typeMap[type]]), props, index);
+        return transCalculation(
+          item,
+          decodeURIComponent(data.formatMap[typeMap[type]]),
+          props,
+          index
+        );
       })
     : [];
 

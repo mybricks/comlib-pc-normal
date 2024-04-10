@@ -1,13 +1,10 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { List, Spin } from 'antd';
-import classnames from 'classnames';
 import { Data, InputIds, OutputIds } from './constants';
 import { checkIfMobile, uuid } from '../utils';
-import css from './style.less';
-import { SortableList, SortableItem } from './sort';
-import { AutoRender, NoAutoRender, NoAutoScrollRender } from './render';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { addItem, removeItem, changeItem, upMove, downMove } from './utils';
+import { ListRender } from './render/ListRender';
+import { sortUsePoint, columnHandel } from './utils'
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -27,24 +24,6 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
   const [columns, setColumns] = useState(1);
 
   grid = isMobile ? { ...grid, column: grid.mobileColumn } : { ...grid };
-
-  function sortUsePoint(a, b) {
-    return b.point - a.point;
-  }
-
-  function columnHandel(opt, width) {
-    let newColumns;
-    for (let i = 0; i < opt.length; i++) {
-      if (width >= opt[i].point && opt[i].relation === '≥') {
-        newColumns = opt[i].columns;
-        break;
-      } else if (width < opt[i].point && opt[i].relation === '<') {
-        newColumns = opt[i].columns;
-        break;
-      }
-    }
-    return newColumns;
-  }
 
   useLayoutEffect(() => {
     if (env.runtime.debug?.prototype) {
@@ -195,24 +174,6 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     }
   }, []);
 
-  //换行，列数自定义
-  const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
-    console.log(item);
-    return (
-      <List.Item key={key}>
-        {/* 当前项数据和索引 */}
-        {slots['item'].render({
-          inputValues: {
-            itemData: item,
-            index: index
-          },
-          key: key,
-          style: data.slotStyle
-        })}
-      </List.Item>
-    );
-  };
-
   useEffect(() => {
     let orderedOptions = (data.customOptions || []).sort(sortUsePoint);
     const debounceFn = debounce(() => {
@@ -234,155 +195,12 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     setColumns(newColumns || 1);
   }, []);
 
-  const IsCustomPointsRender = useMemo(() => {
-    return (
-      <List
-        loading={loading}
-        grid={{
-          gutter,
-          column: columns
-        }}
-        dataSource={dataSource}
-        renderItem={ListItemRender}
-        rowKey={rowKey}
-        className={classnames(
-          css.listWrap,
-          dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
-        )}
-      />
-    );
-  }, [columns]);
-
-  //0、 无内容
-  if (slots['item'].size === 0) {
-    return slots['item'].render();
-  }
-  //5、响应式布局
-  if (data.isResponsive) {
-    return env.edit ? (
-      <List
-        loading={loading}
-        grid={{
-          gutter: data.grid.gutter
-        }}
-        dataSource={dataSource}
-        renderItem={ListItemRender}
-        rowKey={rowKey}
-        className={classnames(css.listWrap)}
-      />
-    ) : data.isCustomPoints ? (
-      IsCustomPointsRender
-    ) : (
-      <List
-        loading={loading}
-        grid={{
-          gutter: data.grid.gutter,
-          xs: data.bootstrap[0],
-          sm: data.bootstrap[1],
-          md: data.bootstrap[2],
-          lg: data.bootstrap[3],
-          xl: data.bootstrap[4],
-          xxl: data.bootstrap[5]
-        }}
-        dataSource={dataSource}
-        renderItem={ListItemRender}
-        rowKey={rowKey}
-        className={classnames(
-          css.listWrap,
-          dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
-        )}
-      />
-    );
-  }
-  //1、 自动换行
-  if (data.isAuto === true && data.isCustom === false) {
-    return loading ? (
-      <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-        {AutoRender(dataSource, data, slots, env.edit)}
-      </Spin>
-    ) : (
-      AutoRender(dataSource, data, slots, env.edit)
-    );
-  }
-  //2、 换行，列数自定义
-  else if (data.isAuto === true && data.isCustom === true && data.grid.column !== undefined) {
-    //2.1、可拖拽（换行、列数自定义、列数为1时，可拖拽排序）
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setDataSource(arrayMove(dataSource, oldIndex, newIndex));
     if (data.canSort) {
-      return env.edit ? (
-        <List
-          loading={loading}
-          grid={{
-            ...grid,
-            gutter
-          }}
-          dataSource={dataSource}
-          renderItem={ListItemRender}
-          rowKey={rowKey}
-          className={classnames(
-            css.listWrap,
-            dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
-          )}
-        />
-      ) : (
-        <SortableList
-          list={dataSource}
-          data={data}
-          lockAxis="y"
-          distance={2}
-          helperContainer={env?.canvasElement || document.body}
-          helperClass={css['sort-helper']}
-          renderItem={({ key, item, index }) => (
-            <SortableItem key={key} index={index}>
-              {slots['item'].render({
-                inputValues: {
-                  itemData: item,
-                  index
-                },
-                key,
-                style: data.slotStyle
-              })}
-            </SortableItem>
-          )}
-          onSortEnd={({ oldIndex, newIndex }) => {
-            setDataSource(arrayMove(dataSource, oldIndex, newIndex));
-            if (data.canSort) {
-              outputs[OutputIds.SortComplete](arrayMove(dataSource, oldIndex, newIndex));
-            }
-          }}
-        />
-      );
-    } else {
-      //2.2、普通情况
-      return (
-        <List
-          loading={loading}
-          grid={{
-            ...grid,
-            gutter
-          }}
-          dataSource={dataSource}
-          renderItem={ListItemRender}
-          rowKey={rowKey}
-          className={classnames(
-            css.listWrap,
-            dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
-          )}
-        />
-      );
+      outputs[OutputIds.SortComplete](arrayMove(dataSource, oldIndex, newIndex));
     }
   }
-  //3、不自动换行，不滚动
-  //4、不自动换行，滚动
-  else if (data.isAuto === false) {
-    return loading ? (
-      <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-        {data.isScroll} ? {NoAutoScrollRender(dataSource, data, slots, env.edit)} :{' '}
-        {NoAutoRender(dataSource, data, slots, env.edit)}
-      </Spin>
-    ) : data.isScroll ? (
-      NoAutoScrollRender(dataSource, data, slots, env.edit)
-    ) : (
-      NoAutoRender(dataSource, data, slots, env.edit)
-    );
-  }
+  
+  return ListRender( env, slots, data, dataSource, loading, gutter, onSortEnd, columns )
 };

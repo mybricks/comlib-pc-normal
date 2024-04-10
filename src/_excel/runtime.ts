@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
 import { getWindowVal } from '../utils/getWindowVal';
 import { loadPkg } from '../utils/loadPkg';
 import { Data, Sheet } from './types';

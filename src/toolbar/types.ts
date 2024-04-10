@@ -73,17 +73,7 @@ export interface BtnItem {
   // [已废弃]权限key
   permissionKey?: string;
   // 权限信息
-  permission?: {
-    id: string;
-    type: string;
-    noPrivilegeType: 'hide' | 'hintLink';
-    hintLink?: string;
-    registerData?: {
-      noPrivilege: 'hide' | 'hintLink';
-      code: string;
-      title: string;
-    };
-  };
+  permission?: ConfigPermission;
 
   // 动态启用/禁用
   useDynamicDisabled?: boolean;

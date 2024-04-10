@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useMemo } from 'react';
-import { Col, FormListFieldData, Row } from 'antd';
+import { Col, Form, FormListFieldData, Row } from 'antd';
 import { deepCopy } from '../../utils';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
@@ -17,10 +17,22 @@ const SlotContent = (
     childrenStore: ChildrenStore;
     actions: ReactElement;
     field: FormListFieldData;
+    callbacks?: any;
   }
 ) => {
-  const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
-    props;
+  const {
+    slots,
+    data,
+    env,
+    actions,
+    field,
+    childrenStore,
+    outputs,
+    id,
+    parentSlot,
+    logger,
+    callbacks
+  } = props;
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
@@ -97,6 +109,12 @@ const SlotContent = (
                 data.userAction.index = -1;
                 data.userAction.key = -1;
                 data.userAction.value = undefined;
+                Object.entries(callbacks).forEach(([key, cb]) => {
+                  if (typeof cb === 'function') {
+                    cb();
+                    callbacks[key] = null;
+                  }
+                });
               };
               if (temp) {
                 setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
@@ -126,10 +144,12 @@ const SlotContent = (
    */
 
   return (
-    <Row key={field.key} className="form-list-item">
-      {content}
-      {!env.edit && actions}
-    </Row>
+    <Form layout={data?.layoutType || 'horizontal'}>
+      <Row key={field.key} className="form-list-item">
+        {content}
+        {!env.edit && actions}
+      </Row>
+    </Form>
   );
 };
 

@@ -19,9 +19,9 @@ export default {
             get({ }: EditorResult<Data>) {
               return item?.name;
             },
-            set({ input, output }: EditorResult<Data>, title: string) {
+            set({ input, output, slots }: EditorResult<Data>, title: string) {
               item.name = title;
-              updateIO({ input, output, item });
+              updateIO({ input, output, item, slots });
             }
           }
         },
@@ -314,9 +314,9 @@ export default {
                 get({ }: EditorResult<Data>) {
                   return item.permission;
                 },
-                set({ }: EditorResult<Data>, value: { id: string, register: () => void }) {
-                  item.permission = { id: value.id };
-                  value.register();
+                set({ }: EditorResult<Data>, value: ConfigPermission) {
+                  item.permission = value
+                  value.register?.()
                 }
               }
             }

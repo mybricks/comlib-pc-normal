@@ -12,7 +12,8 @@ export const InputIds = {
   SetOpenDepth: 'setOpenDepth',
   SetAddTips: 'addTips',
   GetCheckedKeys: 'submit',
-  GetTreeData: 'getTreeData'
+  GetTreeData: 'getTreeData',
+  SetLoadData: 'setLoadData',
 }
 
 export const OutputIds = {
@@ -21,10 +22,20 @@ export const OutputIds = {
   AddNodeDone: 'addNodeDone',
   OnNodeClick: 'click',
   OnCheck: 'check',
-  ReturnTreeData: 'returnTreeData'
+  ReturnTreeData: 'returnTreeData',
+  LoadData: 'loadData',
+  SetLoadDataDone: 'setLoadDataDone',
 }
 
 export const DragConfigKeys = ['draggable', 'draggableScript', 'allowDrop', 'allowDropScript', 'useDropScope', 'dropScopeMessage'];
+
+export const DefaultStaticData = '%5B%0A%20%20%7B%0A%20%20%20%20%22key%22%3A%20%22%E7%AC%AC%E4%B8%80%E7%BA%A7%201%22%2C%0A%20%20%20%20%22title%22%3A%20%22%E7%AC%AC%E4%B8%80%E7%BA%A7%201%22%2C%0A%20%20%20%20%22children%22%3A%20%5B%0A%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%22key%22%3A%20%22%E7%AC%AC%E4%BA%8C%E7%BA%A7%201-1%22%2C%0A%20%20%20%20%20%20%20%20%22title%22%3A%20%22%E7%AC%AC%E4%BA%8C%E7%BA%A7%201-1%22%2C%0A%20%20%20%20%20%20%20%20%22children%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22key%22%3A%20%22%E5%8F%B6%E5%AD%90%201-1-1%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22title%22%3A%20%22%E5%8F%B6%E5%AD%90%201-1-1%22%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22key%22%3A%20%22%E5%8F%B6%E5%AD%90%201-1-2%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22title%22%3A%20%22%E5%8F%B6%E5%AD%90%201-1-2%22%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%22key%22%3A%20%22%E7%AC%AC%E4%BA%8C%E7%BA%A7%201-2%22%2C%0A%20%20%20%20%20%20%20%20%22title%22%3A%20%22%E7%AC%AC%E4%BA%8C%E7%BA%A7%201-2%22%2C%0A%20%20%20%20%20%20%20%20%22children%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22key%22%3A%20%22%E5%8F%B6%E5%AD%90%201-2-1%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22title%22%3A%20%22%E5%8F%B6%E5%AD%90%201-2-1%22%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%5D%0A%20%20%7D%0A%5D';
+
+export const DefaultFieldName = {
+  Title: 'title',
+  Key: 'key',
+  Children: 'children',
+}
 
 export const placeholderTreeData = [
   {

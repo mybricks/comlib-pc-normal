@@ -12,6 +12,9 @@ export default {
       {
         title: '标题',
         type: 'text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.title;
@@ -24,6 +27,9 @@ export default {
       {
         title: '确认按钮文字',
         type: 'text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.okText;
@@ -36,6 +42,9 @@ export default {
       {
         title: '取消按钮文字',
         type: 'text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.cancelText;

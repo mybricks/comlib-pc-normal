@@ -1,7 +1,9 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema, getSubmitSchema } from './schema'
-import { uniqBy, pick, uniq } from 'lodash';
+import uniqBy from 'lodash/uniqBy'
+import pick from 'lodash/pick'
+import uniq from 'lodash/uniq'
 import { isEmptyObject, unitConversion } from '../../utils';
 
 export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -145,19 +147,24 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       setDeclaredStyle(labelFontSelector, defaultLabelStyle);
     }
 
-    /** 标题对齐样式处理 */
+    /** 标题对齐样式处理
+     * v1.4.47 历史组件只处理水平布局, 忽略其他布局方式的对齐配置
+     */
     // 表单的公共标题对齐方式选择器
-    const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
-    const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
-    const isAllSetLabelAutoWrap = !isAllDefalutLabelAlign && uniq(data.items.map(item => item?.labelAlign)).length === 1;
-    labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
-    const defaultTextAlign = isVerticalModel ? 'left'
-      : (data.config.labelAlign || 'right');
-    const setTextAlign = data.items[0]?.labelAlign;
-    setDeclaredStyle(labelAlignSelector, {
-      textAlign:
-        (isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign)
-    });
+    if (isHorizontalModel) {
+      const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
+      const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
+      const isAllSetLabelAutoWrap = !isAllDefalutLabelAlign && uniq(data.items.map(item => item?.labelAlign)).length === 1;
+      labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
+      const defaultTextAlign = (data.config.labelAlign || 'right');
+      const setTextAlign = data.items[0]?.labelAlign;
+      setDeclaredStyle(labelAlignSelector, {
+        textAlign:
+          (isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign)
+      });
+    } else {
+      labelAlignAllSame = true;
+    }
 
     /** 提示语样式处理 */
     // 表单的公共提示语样式选择器
@@ -641,6 +648,14 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   data.config.labelAlign = undefined;
   data.config.labelWrap = undefined;
   //=========== v1.4.39 part3 end ===============
+
+  /**
+   * @description v1.4.48去除操作项“点击”
+  */
+  data.actions.items.forEach((item)=>{
+    output.setTitle(item.outputId, item.title);
+  })
+  //=========== v1.4.49===============
 
   return true;
 }

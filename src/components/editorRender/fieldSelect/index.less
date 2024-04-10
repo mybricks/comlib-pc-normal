@@ -1,8 +1,12 @@
 .wrap {
   display: flex;
+  font-size: 12px;
+
   .input {
-    height: 26px;
+    height: 24px;
+    font-size: 12px;
   }
+
   .btn {
     height: 26px;
     box-sizing: border-box;
@@ -16,6 +20,12 @@
       .ant-select-selection-item {
         line-height: 25px !important;
       }
+    }
+  }
+
+  :global {
+    .ant-select-selection-item {
+      font-size: 12px;
     }
   }
 }

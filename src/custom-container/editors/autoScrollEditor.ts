@@ -2,7 +2,7 @@ import { Data, OutputIds } from '../constants';
 
 export const AutoScrollEditor = [
   {
-    title: '自动滚动设置',
+    title: '自动滚动',
     items: [
       {
         title: '自动滚动',

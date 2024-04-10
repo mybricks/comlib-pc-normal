@@ -1,6 +1,7 @@
 import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
-import { InputIds, OutputIds, } from "./constants";
+import { DefaultFieldName, DefaultStaticData, InputIds, OutputIds, } from "./constants";
+import { ExpressionSandbox } from '../../package/com-utils';
 
 /**
  * @description 将key格式化为字符串
@@ -8,6 +9,7 @@ import { InputIds, OutputIds, } from "./constants";
  * @returns string
  */
 export const keyToString = (key) => {
+  if (typeof key === 'string') return key;
   return JSON.stringify(key);
 };
 
@@ -29,6 +31,27 @@ export const setCheckboxStatus = ({
 };
 
 /**
+ * @description 获取字段映射信息
+ * @param param0
+ * @returns
+ */
+export const getFieldNames = ({
+  data,
+  env
+}: {
+  data: Data;
+  env: Env;
+}) => {
+  const keyFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
+  const titleFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Title : data.titleFieldName || DefaultFieldName.Title;
+  const childrenFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Children : data.childrenFieldName || DefaultFieldName.Children;
+  return {
+    keyFieldName,
+    titleFieldName,
+    childrenFieldName
+  }
+};
+/**
  * @description 预处理树组件数据
  * @param param0
  * @returns
@@ -37,14 +60,15 @@ export const pretreatTreeData = ({
   treeData,
   data,
   defaultExpandAll,
-  parentKey = '0'
+  parentKey = '0',
+  keyFieldName = DefaultFieldName.Key
 }: {
   treeData: TreeData[];
   data: Data;
   defaultExpandAll?: boolean;
   parentKey?: string;
+  keyFieldName: string;
 }) => {
-  const keyFieldName = data.keyFieldName || 'key';
   treeData.forEach((item, inx) => {
     if (item[keyFieldName] == null) {
       const id = parentKey + '-' + inx;
@@ -54,7 +78,7 @@ export const pretreatTreeData = ({
       data.expandedKeys = [...data.expandedKeys, item[keyFieldName]];
     }
     if (item.children) {
-      pretreatTreeData({ treeData: item.children, data, defaultExpandAll, parentKey: item[keyFieldName] });
+      pretreatTreeData({ treeData: item.children, data, defaultExpandAll, parentKey: item[keyFieldName], keyFieldName });
     }
   });
   return treeData;
@@ -75,7 +99,7 @@ export const traverseTree = ({
   isEdit?: boolean;
 }): { parent: TreeData, index: number, node: TreeData } | null => {
   const { treeData, } = data;
-  const keyFieldName = isEdit ? 'key' : data.keyFieldName || 'key';
+  const keyFieldName = isEdit ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
 
   if (!treeData || treeData.length === 0) return null;
   const searchTree = (treeNode: TreeData, index: number, parent: TreeData) => {
@@ -135,7 +159,7 @@ const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
  * @returns
  */
 export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
-  const { treeData, keyFieldName = 'key' } = data;
+  const { treeData, keyFieldName = DefaultFieldName.Key } = data;
   const result: any = [],
     leafNodeKeys = getLeafNodes(treeData, keyFieldName).map(keyToString);
 
@@ -177,16 +201,18 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFie
  * @param newNodeData 节点数据
  * @returns
  */
-export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldName: string) => {
-  treeData = treeData.map((item) => {
+export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData,
+  { keyFieldName, childrenFieldName }: { keyFieldName: string, childrenFieldName: string }) => {
+  treeData = treeData.map((item, index) => {
     if (item[keyFieldName] === newNodeData[keyFieldName]) {
       item = {
         ...item,
         ...newNodeData
       };
-    } else if (item.children) {
-      item.children = updateNodeData(item.children, newNodeData, keyFieldName);
+    } else if (item[childrenFieldName]) {
+      item[childrenFieldName] = updateNodeData(item[childrenFieldName], newNodeData, { keyFieldName, childrenFieldName });
     }
+    treeData[index] = item;
     return item;
   });
   return treeData;
@@ -239,7 +265,7 @@ export const getParentKey = (key, tree, keyFieldName: string) => {
  * @param keyFieldName 标识字段
  * @param titleFieldName 标题字段
  */
-export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }, parentKey = '0', depth = 0) => {
+export const generateList = (treeData, dataList, { keyFieldName, titleFieldName, childrenFieldName }, parentKey = '0', depth = 0) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
     if (node[keyFieldName] == null) {
@@ -248,8 +274,8 @@ export const generateList = (treeData, dataList, { keyFieldName, titleFieldName 
     }
     const { [keyFieldName]: key, [titleFieldName]: title } = node;
     dataList.push({ ...node, key, title, depth });
-    if (node.children) {
-      generateList(node.children, dataList, { keyFieldName, titleFieldName }, key, depth + 1);
+    if (node[childrenFieldName]) {
+      generateList(node[childrenFieldName], dataList, { keyFieldName, titleFieldName, childrenFieldName }, key, depth + 1);
     }
   }
 };
@@ -311,32 +337,140 @@ export const getNodeSuggestions = (data: Data) => [
         detail: `当前节点的checkable值`
       },
       {
-        label: data.keyFieldName || 'key',
-        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
+        label: data.keyFieldName || DefaultFieldName.Key,
+        insertText: `{${data.keyFieldName || DefaultFieldName.Key}}` + ' === ',
         detail: `当前节点标识字段值`
       },
       {
-        label: data.titleFieldName || 'title',
-        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
+        label: data.titleFieldName || DefaultFieldName.Title,
+        insertText: `{${data.titleFieldName || DefaultFieldName.Title}}` + ' === ',
         detail: `当前节点标题字段值`
       },
       {
-        label: data.childrenFieldName || 'children',
-        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+        label: data.childrenFieldName || DefaultFieldName.Children,
+        insertText: `{${data.childrenFieldName || DefaultFieldName.Children}}` + ' === ',
         detail: `当前节点子节点字段值`
       },
     ]
   }
 ];
 
+/**
+ * @description 对树默认的静态数据源进行字符替换
+ * @param fieldMap 字段映射
+ * @returns 编码后的替换完成的树数据源
+ */
+export const replaceTreeFieldAfterEncoding = (data: Data, fieldMap: {
+  title?: string,
+  key?: string,
+  children?: string
+}) => {
+  if (!fieldMap.title) {
+    fieldMap.title = data.titleFieldName || DefaultFieldName.Title;
+  }
+  if (!fieldMap.key) {
+    fieldMap.key = data.keyFieldName || DefaultFieldName.Key;
+  }
+  if (!fieldMap.children) {
+    fieldMap.children = data.childrenFieldName || DefaultFieldName.Children;
+  }
+
+  const regKey = new RegExp(DefaultFieldName.Key, 'g');
+  const regTitle = new RegExp(DefaultFieldName.Title, 'g');
+  const regChildren = new RegExp(DefaultFieldName.Children, 'g');
+  return encodeURIComponent(
+    decodeURIComponent(DefaultStaticData)
+      .replace(regKey, fieldMap.key)
+      .replace(regTitle, fieldMap.title)
+      .replace(regChildren, fieldMap.children)
+  );
+}
+
+/**
+* 树节点动态属性计算
+* @param context 节点数据
+* @param sandbox 表达式执行沙箱
+* @param data 组件Data
+* @param fieldMap 字段映射
+*/
+export const getDynamicProps = (
+  {
+    context,
+    props,
+    fieldNames
+  }
+    : {
+      context: TreeData,
+      props: RuntimeParams<Data>,
+      fieldNames: { keyFieldName: string, titleFieldName: string, childrenFieldName: string }
+    },
+): {
+  disabledFlag: boolean,
+  checkableFlag: boolean,
+  draggableFlag: boolean,
+  allowDropFlag: boolean
+} => {
+  const { data, onError } = props;
+  const { titleFieldName } = fieldNames;
+  let sandbox: ExpressionSandbox | undefined
+
+  /**树节点动态禁用表达式 */
+  let disabledFlag = context.disabled;
+  if (data.disabledScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      disabledFlag = sandbox.executeWithTemplate(data.disabledScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点禁用计算错误: ${error}`);
+    }
+  }
+
+  /**树节点勾选框动态显示表达式 */
+  let checkableFlag = true;
+  if (data.checkable === 'custom' && data.checkableScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      checkableFlag = !!sandbox.executeWithTemplate(data.checkableScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可勾选: ${error}`);
+    }
+  }
+
+  /**树节点动态可拖拽表达式 */
+  let draggableFlag = true;
+  if (data.draggable === 'custom' && data.draggableScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      draggableFlag = !!sandbox.executeWithTemplate(data.draggableScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可拖拽: ${error}`);
+    }
+  }
+
+  /**树节点动态可放置表达式 */
+  let allowDropFlag = true;
+  if (!!data.draggable && data.allowDrop === 'custom' && data.allowDropScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      allowDropFlag = !!sandbox.executeWithTemplate(data.allowDropScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可放置: ${error}`);
+    }
+  }
+
+  return {
+    disabledFlag,
+    checkableFlag,
+    draggableFlag,
+    allowDropFlag
+  };
+};
 /** 
  * 更新schema
  */
 export const refreshSchema = (props: EditorResult<Data>) => {
-  const { data, input, output } = props;
-  const keyFieldName = data.keyFieldName || 'key';
-  const titleFieldName = data.titleFieldName || 'title';
-  const childrenFieldName = data.childrenFieldName || 'children';
+  const { data, input, output, env } = props;
+  const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
   const stringArraySchema = {
     type: 'array',
@@ -383,6 +517,9 @@ export const refreshSchema = (props: EditorResult<Data>) => {
       }
     }
   };
+
+  input.get(InputIds.SetLoadData)?.setSchema(treeNodeSchema);
+  output.get(OutputIds.LoadData)?.setSchema(treeNodeSchema);
 
   input.get(InputIds.SetTreeData).setSchema(treeDataSchema);
   output.get(OutputIds.OnDropDone)?.setSchema({

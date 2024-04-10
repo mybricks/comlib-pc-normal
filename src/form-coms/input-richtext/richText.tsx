@@ -176,6 +176,8 @@ export default function ({
       } catch (error: any) {
         failureCallback(error.message);
       }
+
+      syncValue(false);
     },
     []
   );
@@ -297,8 +299,8 @@ export default function ({
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
   };
-  //失去焦点
-  const update = useCallback((bool) => {
+
+  const syncValue = (bool) => {
     const tinyMCE = getWindowVal('myTinyMce');
     if (!tinyMCE) return;
 
@@ -310,6 +312,13 @@ export default function ({
     changeValue(content.trim() || '');
 
     onValidateTrigger();
+  };
+
+  //失去焦点
+  const update = useCallback((bool) => {
+    const tinyMCE = getWindowVal('myTinyMce');
+    if (!tinyMCE) return;
+    syncValue(bool);
     outputs['onBlur'](valueRef.current);
   }, []);
 
@@ -368,13 +377,14 @@ export default function ({
     if (!iframeEl) return;
     const body = iframeEl.contentDocument?.querySelector('body');
     if (!body) return;
-
     if (data.disabled) {
-      body.contentEditable = 'false';
+      if (!loading) {
+        body.contentEditable = 'false';
+      }
     } else {
       body.contentEditable = 'true';
     }
-  }, [data.disabled]);
+  }, [data.disabled, loading]);
 
   const createSvgString = useCallback((Icons: Array<iconType> = []) => {
     const Svg = {};

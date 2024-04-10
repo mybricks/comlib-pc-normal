@@ -288,5 +288,9 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
   }
   //=========== v1.2.7 end ===============
 
+  if (data?.layoutType === undefined) {
+    data.layoutType = 'horizontal';
+  }
+
   return true;
 }

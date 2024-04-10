@@ -26,6 +26,7 @@ export interface Data {
     allowClear: boolean;
     disabled: boolean;
   };
+  filterRule: 'value' | 'label' | 'all';
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -160,6 +161,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
+  // 筛选规则
+  const filterOption = useCallback(
+    (inputValue: string, option?: Option) => {
+      // 判断是否同时匹配 value 和 label，或者只匹配其中一个
+      const valueMatch = option?.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
+      const labelMatch = option?.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
+      if (data.filterRule === 'value') {
+        return valueMatch;
+      } else if (data.filterRule === 'label') {
+        return labelMatch;
+      }
+
+      return valueMatch || labelMatch;
+    },
+    [data.isFilter, data.filterRule]
+  );
+
   return (
     <div className={css.autoComplete}>
       <AutoComplete
@@ -167,7 +185,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         placeholder={env.i18n(data.config.placeholder)}
         value={value}
         onChange={onChange}
-        filterOption={data.isFilter}
+        filterOption={data.isFilter && filterOption}
         children={<Input ref={inputRef} />}
         onBlur={onBlur}
         onSelect={onSelect}

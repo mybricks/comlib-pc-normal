@@ -229,6 +229,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.1.3 end ===============
 
   data.rules = mergeRules(LengthRules, data.rules);
+
+
+  if (data?.filterRule === undefined) {
+    data.filterRule = 'value';
+  }
   
   return true;
 }

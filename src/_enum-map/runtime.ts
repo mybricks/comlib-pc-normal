@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { Data } from './types';
 export default function ({ data, env, inputs, outputs }: RuntimeParams<Data>) {
   const { enumMap, valueToKey, dynamicMap } = data;

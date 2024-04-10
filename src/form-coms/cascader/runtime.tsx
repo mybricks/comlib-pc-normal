@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Cascader, CascaderProps } from 'antd';
+import { Cascader, CascaderProps, message } from 'antd';
+import type { FieldNames } from 'rc-cascader';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -17,42 +18,50 @@ export interface Data {
   rules: any[];
   config: CascaderProps<any[]>;
   isEditable: boolean;
+  fieldNames: FieldNames;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, id } = props;
+  const { data, inputs, outputs, title, logger, env, parentSlot, id } = props;
   const [options, setOptions] = useState(env.design ? mockData : []);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<Array<any>>();
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
-      setOptions([{
-        label: "aaa",
-        value: "aaa",
-        children: []
-      }, {
-        label: "bbb",
-        value: "bbb",
-        children: [{
-          label: "ddd",
-          value: "ddd",
+      setOptions([
+        {
+          label: 'aaa',
+          value: 'aaa',
           children: []
-        }, {
-          label: "eee",
-          value: "eee",
+        },
+        {
+          label: 'bbb',
+          value: 'bbb',
+          children: [
+            {
+              label: 'ddd',
+              value: 'ddd',
+              children: []
+            },
+            {
+              label: 'eee',
+              value: 'eee',
+              children: []
+            }
+          ]
+        },
+        {
+          label: 'ccc',
+          value: 'ccc',
           children: []
-        }]
-      }, {
-        label: "ccc",
-        value: "ccc",
-        children: []
-      }])
+        }
+      ]);
     }
-  }, [env.runtime.debug?.prototype])
+  }, [env.runtime.debug?.prototype]);
 
   useFormItemInputs(
     {
@@ -135,6 +144,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const changeValue = (val) => {
+    if (Array.isArray(val) && ['object', 'function'].includes(typeof val[0])) {
+      logger.warn(`${title}组件:【设置值】参数类型错误！`);
+      if (env.runtime?.debug) {
+        message.warn(`${title}组件:【设置值】参数类型错误！`);
+      }
+      return;
+    }
     setValue(val);
     valueRef.current = val;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
@@ -152,6 +168,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         <Cascader
           value={value}
           options={options}
+          fieldNames={data.fieldNames}
           {...data.config}
           placeholder={env.i18n(data.config.placeholder)}
           multiple={data.isMultiple}

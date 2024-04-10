@@ -266,7 +266,8 @@ export default function ({
         .then((res) => {
           onUploadComplete(res);
         })
-        .catch(() => {
+        .catch((e) => {
+          message.error(String(e));
           changeFileList([]);
         });
     } else {

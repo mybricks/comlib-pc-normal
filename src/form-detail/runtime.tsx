@@ -3,7 +3,7 @@ import { Descriptions, Tooltip, Typography } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Data, InputIds, ScopeSlotIds, TypeEnum } from './constants';
 import css from './runtime.less';
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
 import { checkIfMobile } from '../utils';
 
 const { Text } = Typography;
@@ -56,15 +56,15 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
         const SlotItem =
           type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
             ? slots[slotId]?.render({
-                inputValues: {
-                  [InputIds.CurDs]: value,
-                  [InputIds.DataSource]: data.items.reduce(
-                    (pre, cur) => ({ ...pre, [cur.key]: cur.value }),
-                    {}
-                  )
-                },
-                key: slotId
-              })
+              inputValues: {
+                [InputIds.CurDs]: value,
+                [InputIds.DataSource]: data.items.reduce(
+                  (pre, cur) => ({ ...pre, [cur.key]: cur.value }),
+                  {}
+                )
+              },
+              key: slotId
+            })
             : null;
         if (type === TypeEnum.AllSlot) {
           return (

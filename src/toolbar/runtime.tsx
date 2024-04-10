@@ -6,6 +6,7 @@ import { InputIds, OutputIds } from './constants';
 import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
 import { checkIfMobile } from '../utils';
+import { getWhatToDoWithoutPermission } from '../utils/permission';
 
 export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -68,27 +69,6 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
       });
     }
   }, []);
-
-  /**
-   * 获取没有权限时组件要做的操作
-   * 返回值如下：
-   *  1. hide: 隐藏
-   *  2. disable: 禁用
-   *  3. none: 什么都不用做
-   * @param id 权限ID
-   * @returns 没有权限时需要做的事情吗，如果有权限返回 none
-   */
-  const getWhatToDoWithoutPermission = (
-    permission: BtnItem['permission']
-  ): 'none' | 'hide' | 'hintLink' => {
-    const hasPermission = !(env.runtime && permission?.id && !env?.hasPermission(permission?.id));
-    if (hasPermission) return 'none';
-
-    if (permission.registerData?.noPrivilege) {
-      return permission.registerData.noPrivilege;
-    }
-    return 'hide';
-  };
 
   //如果data.dataType是'external'的
   useEffect(() => {
@@ -176,17 +156,14 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     const menu = (
       <Menu>
         {btnList.map((item) => {
-          const todo = getWhatToDoWithoutPermission(item.permission);
-          if (todo === 'hintLink')
+          const todo = item.permission && getWhatToDoWithoutPermission(item.permission, env);
+          if (todo && todo.type === 'hintLink') {
             return (
-              <a
-                href={item.permission?.hintLink}
-                target="_blank"
-                style={{ textDecoration: 'underline' }}
-              >
-                {item.permission?.registerData?.title || '无权限'}
+              <a href={todo.hintLinkUrl} target="_blank" style={{ textDecoration: 'underline' }}>
+                {todo.hintLinkTitle || '无权限'}
               </a>
             );
+          }
           return (
             <Menu.Item key={item.key} disabled={item.disabled} onClick={() => onClick(item)}>
               {!item.isSlot
@@ -211,19 +188,15 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     }
     const { allShape, allSize, allType, allDanger } = data;
     return btnList.map((item) => {
-      const todo = getWhatToDoWithoutPermission(item.permission);
-      if (todo === 'hide') return;
+      const todo = item.permission && getWhatToDoWithoutPermission(item.permission, env);
+      if (todo?.type === 'hide') return;
 
       const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key, style } = item;
 
-      if (todo === 'hintLink')
+      if (todo?.type === 'hintLink')
         return (
-          <a
-            href={item.permission?.hintLink}
-            target="_blank"
-            style={{ textDecoration: 'underline' }}
-          >
-            {item.permission?.registerData?.title || '无权限'}
+          <a href={todo.hintLinkUrl} target="_blank" style={{ textDecoration: 'underline' }}>
+            {todo.hintLinkTitle || '无权限'}
           </a>
         );
 
@@ -254,7 +227,11 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
 
   // 动态隐藏按钮通过 style.display = 'none' 实现，所以需要将动态隐藏的按钮（即 item.hidden === true）的按钮不用 filter 掉
   const normalBtnList = (data.btnList || [])
-    .filter((item) => !(getWhatToDoWithoutPermission(item.permission) === 'hide'))
+    .filter((item) => {
+      return !(
+        item.permission && getWhatToDoWithoutPermission(item.permission, env).type === 'hide'
+      );
+    })
     .reduce(
       (pre, item) => {
         // 非运行时或者没有设置最大显示数量时，全量展示
@@ -280,7 +257,10 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const ellipsisBtnList = (data.btnList || [])
     .filter(
       (item) =>
-        !(getWhatToDoWithoutPermission(item.permission) === 'hide' || (item?.hidden && env.runtime))
+        !(
+          (item.permission && getWhatToDoWithoutPermission(item.permission, env).type === 'hide') ||
+          (item?.hidden && env.runtime)
+        )
     )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx >= data.maxShowNumber : false

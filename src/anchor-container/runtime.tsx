@@ -102,7 +102,11 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
                   <Link key={i[rowKey]} href={location.href} title={i.item.title} />
                 ))
               : dataSource.map((i) => (
-                  <Link key={i[rowKey]} href={`#mybricks-anchor-${i[rowKey]}`} title={i.item.title} />
+                  <Link
+                    key={i[rowKey]}
+                    href={`#mybricks-anchor-${i[rowKey]}`}
+                    title={i.item.title}
+                  />
                 ))
             : data.staticData.map((i) => (
                 <Link key={i.id} href={`#mybricks-anchor-${i.id}`} title={i.title} />

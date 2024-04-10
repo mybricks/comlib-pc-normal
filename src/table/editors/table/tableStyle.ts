@@ -1,7 +1,6 @@
 import { InputIds, OutputIds } from '../../constants';
 import { Schemas } from '../../schema';
 import { unitConversion } from '../../../utils';
-import { isEqual } from 'lodash';
 import { Data, SizeEnum } from '../../types';
 import { getFilterSelector } from '../../../utils/cssSelector';
 import { createStyleForTableContent } from '../../utils';

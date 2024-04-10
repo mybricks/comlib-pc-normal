@@ -38,7 +38,8 @@
         "./src/popover/com.json",
         "./src/dialog/com.json",
         "./src/drawer/com.json",
-        "./src/popconfirm/com.json"
+        "./src/popconfirm/com.json",
+        "./src/divider/com.json"
       ]
     },
     {
@@ -94,7 +95,8 @@
         "./src/tree/com.json",
         "./src/timeline/com.json",
         "./src/calendar/com.json",
-        "./src/progress/com.json"
+        "./src/progress/com.json",
+        "./src/anchor-container/com.json"
       ]
     },
     {

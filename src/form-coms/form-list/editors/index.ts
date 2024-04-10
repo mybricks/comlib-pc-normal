@@ -6,6 +6,7 @@ import { SlotIds } from '../constants';
 import { refreshSchema } from '../schema';
 import { RuleKeys } from '../../../form-coms/utils/validator';
 import { outputIds } from '../../form-container/constants';
+import { FormLayout } from 'antd/es/form/Form';
 import {
   fieldNameCheck,
   getFormItem,
@@ -226,6 +227,23 @@ export default {
             //     }
             //   }
             // },
+            {
+              title: '类型',
+              type: 'Select',
+              options: [
+                { label: '水平', value: 'horizontal' },
+                { label: '垂直', value: 'vertical' },
+                // { label: '内联', value: 'inline' }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.layoutType || 'horizontal';
+                },
+                set({ data, inputs }: EditorResult<Data>, value: FormLayout) {
+                  data.layoutType = value;
+                }
+              }
+            },
             {
               title: '每行列数',
               type: 'Slider',
@@ -1245,9 +1263,9 @@ export default {
             get({ data, focusArea }: EditorResult<Data>) {
               return btn.permission;
             },
-            set({ data, focusArea }: EditorResult<Data>, value: { id: string, register: () => void }) {
-              btn.permission = { id: value.id };
-              value.register();
+            set({ data, focusArea }: EditorResult<Data>, value: ConfigPermission) {
+              btn.permission = value;
+              value.register?.();
             }
           }
         },

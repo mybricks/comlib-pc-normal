@@ -56,6 +56,11 @@ export default {
         options: ['border'],
         target: ({ id }: EditorResult<Data>) => `.card > .ant-card${getFilterSelector(id)}`
       },
+      {
+        title: '卡片背景',
+        options: ['background'],
+        target: ({ id }: EditorResult<Data>) => `.card > .ant-card${getFilterSelector(id)}`
+      },
       Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
       Editor<Data>('尺寸', EditorType.Select, 'size', {
         options: SizeOptions

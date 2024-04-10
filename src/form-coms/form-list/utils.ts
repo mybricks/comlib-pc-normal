@@ -3,7 +3,7 @@ import { labelWidthTypes } from './constants'
 import { InputIds, OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { addField } from './components/FormActions';
 import { deepCopy } from '../../utils';
 import { FormListFieldData } from 'antd';

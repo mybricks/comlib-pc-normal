@@ -99,9 +99,9 @@ export default {
           },
           set({ data, focusArea, env }: EditorResult<Data>, options: Option[]) {
             data.staticData = options;
-            options.forEach((item)=> {
+            options.forEach((item) => {
               slots.get(item.id).setTitle(`${item.title}目标`);
-            })
+            });
           }
         }
       },

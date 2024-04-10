@@ -87,3 +87,28 @@ export const downMove = (array, index) => {
   });
   return newArr;
 };
+
+export const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
+  const _array = array.slice();
+  const moveItem = _array.splice(form, 1)[0];
+  _array.splice(to, 0, moveItem);
+  return _array;
+};
+
+export const sortUsePoint = (a, b) => {
+  return b.point - a.point;
+}
+
+export const columnHandel = (opt, width) => {
+  let newColumns;
+  for (let i = 0; i < opt.length; i++) {
+    if (width >= opt[i].point && opt[i].relation === '≥') {
+      newColumns = opt[i].columns;
+      break;
+    } else if (width < opt[i].point && opt[i].relation === '<') {
+      newColumns = opt[i].columns;
+      break;
+    }
+  }
+  return newColumns;
+}

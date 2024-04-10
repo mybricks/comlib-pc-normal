@@ -1,7 +1,7 @@
 {
   "title": "富文本输入框",
   "namespace": "mybricks.normal-pc.input-richtext",
-  "version": "1.1.23",
+  "version": "1.1.27",
   "description": "富文本输入框",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -30,7 +30,7 @@
       "schema": {
         "type": "string"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -41,7 +41,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValidate"]
+      "rels": [
+        "returnValidate"
+      ]
     },
     {
       "id": "getValue",
@@ -50,7 +52,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValue"]
+      "rels": [
+        "returnValue"
+      ]
     },
     {
       "id": "resetValue",
@@ -59,7 +63,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
@@ -245,5 +249,8 @@
       }
     }
   ],
-  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
 }

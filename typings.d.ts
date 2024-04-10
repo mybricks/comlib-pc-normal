@@ -8,6 +8,27 @@ declare module '*.svg' {
   export = resource;
 }
 
+/**
+ * hasPermission 返回的权限数据格式
+ */
+type DynamicPermission = { permission: boolean, type: "hide" | "hintLink", hintLinkUrl?: string, hintLinkTitle?: string }
+
+/**
+ * _permission 设置器返回的数据格式
+ */
+type ConfigPermission = {
+  id: string;
+  type?: string;
+  remark?: string
+  hintLink?: string;
+  registerData?: {
+    noPrivilege?: 'hide' | 'hintLink';
+    code?: string;
+    title?: string;
+  };
+  register?: () => void;
+};
+
 interface Env {
   ajax: (url: string, opt: Record<string, any>) => Promise<any>;
   events: any[];
@@ -19,7 +40,7 @@ interface Env {
     getRouter: () => Record<string, Function>;
     locale: string | number | symbol | undefined;
   };
-  hasPermission: (id: string) => boolean;
+  hasPermission: (id: string) => (boolean | DynamicPermission);
   [x: string]: any;
 }
 interface RuntimeParams<T> {

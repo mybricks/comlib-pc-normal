@@ -3,6 +3,7 @@ import { deepCopy } from '../../../utils';
 import { Data } from '../../types';
 import { Input } from 'antd';
 import { InputIds, OutputIds } from '../../constants';
+import { getFieldNames } from '../../utils';
 
 /**
  * 添加节点渲染
@@ -17,8 +18,7 @@ export const renderAddTitle = (
   isRoot?: boolean
 ) => {
   const { env, data, outputs } = props;
-  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
-  const childrenFieldName = env.edit ? 'children' : data.childrenFieldName || 'children';
+  const { keyFieldName, childrenFieldName } = getFieldNames({ data, env });
 
   item.title = env.i18n(item.title);
   item.placeholder = env.i18n(item.placeholder);
