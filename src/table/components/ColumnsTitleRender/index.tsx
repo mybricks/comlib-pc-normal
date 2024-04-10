@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import moment from 'moment';
-import { Table, Tooltip } from 'antd';
+import { Row, Table, Tooltip } from 'antd';
 import { FilterFilled, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { CompareFn } from 'antd/es/table/interface';
@@ -21,6 +21,39 @@ import Resizable from '../../../components/Resizable';
 import { findColumnItemByKey } from '../../utils';
 
 const { Column, ColumnGroup } = Table;
+
+const getCurCol = (data, cItem) => {
+  let col = {};
+  for (let c of data.columns) {
+    if (c.key === cItem.key) {
+      col = c;
+      break;
+    } else if (c.children) {
+      for (let cc of c.children) {
+        if (cc.key === cItem.key) {
+          col = cc;
+          break;
+        }
+      }
+    }
+  }
+  return col
+}
+
+const checkIsDragging = (data) => {
+  for (let c of data.columns) {
+    if (c.isDragging) {
+      return true
+    } else if (c.children) {
+      for (let cc of c.children) {
+        if (cc.isDragging) {
+          return true
+        }
+      }
+    }
+  }
+  return false
+}
 
 interface Props {
   env: Env;
@@ -47,11 +80,12 @@ export default ({
   focusCellinfo,
   filterIconDefault
 }: Props) => {
+  const isDragging = checkIsDragging(data)
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
-    const jsx = cItem.hasTip ? (
-      <div>
+    const content = cItem.hasTip ? (
+      <div >
         <span style={{ marginRight: '6px' }}>{title}</span>
         <Tooltip
           placement="topLeft"
@@ -66,34 +100,50 @@ export default ({
       <>{title}</>
     );
 
+    const wrappedContent = <div style={{
+      // opacity: isDragging ? 0 : 1
+    }}>
+      {content}
+      {isDragging && (
+        <div
+          className={
+            cItem.isDragging
+              ? css.draggingTipW
+              : `${css.draggingTipW} ${css.dashed}`
+          }
+        >
+          {cItem.width}
+        </div>
+      )}
+    </div>
+
     return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable ? (
       <Resizable
         axis="x"
-        className={css.resizer}
+        className={`${css.resizer}`}
         key={cItem.key}
+        onResizeStart={() => {
+          let col = getCurCol(data, cItem)
+          if (col.isDragging) return
+          col.isDragging = true
+          data.columns = [...data.columns];
+        }}
+        onResizeStop={() => {
+          let col = getCurCol(data, cItem)
+          if (!col.isDragging) return
+          col.isDragging = false
+          data.columns = [...data.columns];
+        }}
         onResize={({ width }) => {
-          let col = {};
-          for (let c of data.columns) {
-            if (c.key === cItem.key) {
-              col = c;
-              break;
-            } else if (c.children) {
-              for (let cc of c.children) {
-                if (cc.key === cItem.key) {
-                  col = cc;
-                  break;
-                }
-              }
-            }
-          }
+          let col = getCurCol(data, cItem)
           col.width = Number(width);
           data.columns = [...data.columns];
         }}
       >
-        {jsx}
+        {wrappedContent}
       </Resizable>
     ) : (
-      jsx
+      content
     );
   };
 
@@ -308,56 +358,4 @@ export default ({
   };
 
   return getColumns().map((item) => renderColumn(item));
-};
-
-const Col = ({
-  row,
-  col,
-  slots,
-  data,
-  outputs,
-  onResize
-}: { row: Row; col: Col; onResize?: (row: Row, col: Col) => void } & RuntimeParams<Data>) => {
-  const { key, slotStyle } = col;
-
-  const dragWidth = useCallback((e) => {
-    let currentWidth;
-    dragable(e, ({ dpo }, state) => {
-      if (state === 'start') {
-        const colEle = e.target.parentNode;
-        currentWidth = colEle.offsetWidth;
-        col.isDragging = true;
-      }
-      if (state === 'ing') {
-        col.width = currentWidth += dpo.dx;
-        // col.widthMode = WidthUnitEnum.Px;
-        typeof onResize === 'function' && onResize(row, { ...col });
-      }
-      if (state === 'finish') {
-        col.isDragging = false;
-      }
-    });
-    e.stopPropagation();
-  }, []);
-
-  const [resizer, resizableClass] = useMemo(() => {
-    const jsx = <div className={css.resizer} onMouseDown={(e) => dragWidth(e)} />;
-    const className = css.resizable;
-    return [jsx, className];
-  }, []);
-
-  const handlerClick = (e) => {
-    !!key && outputs[key]();
-    e.stopPropagation();
-  };
-
-  return (
-    <div
-      className={`${css.col} mybricks-col ${resizableClass}`}
-      data-layout-col-key={`${row.key},${key}`}
-      onClick={handlerClick}
-    >
-      {resizer}
-    </div>
-  );
 };

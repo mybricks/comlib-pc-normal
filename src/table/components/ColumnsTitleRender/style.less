@@ -1,7 +1,7 @@
-.resizer {
-  opacity: 0;
+.resizer.resizer {
   width: 2px;
-  right: -1px;
+  opacity: 0;
+  right: -10px;
   background-color: rgba(221, 221, 221, 0.6);
   z-index: 10;
   transition: all 0.2s;
@@ -12,6 +12,58 @@
     // background-color: rgba(221, 221, 221, 0.8);
     background-color: rgba(250, 100, 0, 0.8);
     width: 4px;
-    right: -2px;
+    right: -10px;
   }
+}
+
+.draggingTip() {
+  position: absolute;
+  z-index: 1000;
+  color: #FA6400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-style: oblique;
+  mix-blend-mode: difference;
+
+  &.dashed {
+    &&::after {
+      border-style: dashed;
+    }
+
+    &&::before {
+      border-style: dashed;
+    }
+  }
+}
+
+.draggingTipW {
+  .draggingTip();
+  height: 18px;
+  width: 100%;
+  inset: 0;
+  top: 50%;
+  border-bottom-width: 1px;
+  margin-top: -9px;
+
+  &&::after {
+    content: "";
+    flex: 1;
+    border: 0px solid #FA6400;
+    border-bottom-width: 1px;
+  }
+
+  &&::before {
+    content: "";
+    flex: 1;
+    border: 0px solid #FA6400;
+    border-bottom-width: 1px;
+  }
+}
+
+
+.dashed {
+  outline: 1px dashed rgba(0, 0, 0, 0.1);
+  outline-offset: -1px;
 }

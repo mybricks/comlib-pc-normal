@@ -234,7 +234,7 @@ export interface Data {
   enableDynamicChangeCols: boolean; // 动态修改列属性
 
   /** 表格数据懒加载 */
-  lazyLoad: boolean; 
+  lazyLoad: boolean;
   /** 表格筛选默认图标 */
   filterIconDefault?: FilterIconEnum
 }
