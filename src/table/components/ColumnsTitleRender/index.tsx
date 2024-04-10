@@ -100,10 +100,12 @@ export default ({
       <>{title}</>
     );
 
-    const wrappedContent = <div style={{
-      // opacity: isDragging ? 0 : 1
-    }}>
-      {content}
+    const wrappedContent = <>
+      {
+        <div style={{
+          opacity: isDragging ? 0 : 1
+        }}>{content}</div>
+      }
       {isDragging && (
         <div
           className={
@@ -115,7 +117,7 @@ export default ({
           {cItem.width}
         </div>
       )}
-    </div>
+    </>
 
     return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable ? (
       <Resizable
