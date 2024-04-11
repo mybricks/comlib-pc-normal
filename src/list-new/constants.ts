@@ -16,6 +16,12 @@ export enum OutputIds {
   SortComplete = 'sortComplete'
 }
 
+export enum LayoutType {
+  Horizontal = 'horizontal',
+  Vertical = 'vertical',
+  Grid = 'grid'
+}
+
 export const Schemas = {
   Array: {
     type: 'array',
@@ -73,5 +79,7 @@ export interface Data {
   //断点配置
   customOptions: Option[];
   slotStyle?: CSSProperties;
+  layoutType: LayoutType;
+  isAutoWrap: boolean;
 }
 

@@ -4,6 +4,7 @@
 
 .listWrap {
   height: 100%;
+  overflow: scroll;
   :global {
     .ant-list-item {
       height: 100%;
@@ -35,18 +36,18 @@
 
 //1.自动换行
 .flexContainer {
-  height: 100%;
+  overflow: scroll;
   display: flex;
   flex-wrap: wrap;
 }
 
 //3.不换行，且不滚动
-.noflexContainer {
-  height: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
+// .noflexContainer {
+//   height: 100%;
+//   display: flex;
+//   flex-wrap: nowrap;
+//   overflow: hidden;
+// }
 
 //4.不换行，滚动
 .scrollContainer {
@@ -57,7 +58,6 @@
 }
 
 .scrollBox {
-  height: 100%;
   display: inline-block;
 }
 

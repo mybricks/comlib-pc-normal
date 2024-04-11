@@ -66,5 +66,7 @@
     "paddingRight": 0,
     "paddingBottom": 0,
     "paddingLeft": 0
-  }
+  },
+  "layoutType": "vertical",
+  "isAutoWrap": "true"
 }
