@@ -7,10 +7,10 @@ import { NoAutoScrollRender, AutoRender  } from './render';
 const NoAutoWarpRender  = (loading:boolean, data:Data, dataSource:any, slots) => {
   return loading ? (
     <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-      {!data.isAutoWrap} ? {NoAutoScrollRender(dataSource, data, slots)} :{' '}
+      {!data.isAuto} ? {NoAutoScrollRender(dataSource, data, slots)} :{' '}
       {AutoRender(dataSource, data, slots)}
     </Spin>
-  ) : !data.isAutoWrap ? (
+  ) : !data.isAuto ? (
     NoAutoScrollRender(dataSource, data, slots)
   ) : (
     AutoRender(dataSource, data, slots)

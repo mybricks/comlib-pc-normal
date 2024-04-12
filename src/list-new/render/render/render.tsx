@@ -1,4 +1,4 @@
-import { Data, LayoutType } from '../../constants';
+import { Data, Layout } from '../../constants';
 import css from '../../style.less';
 import React from 'react';
 
@@ -8,30 +8,27 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
-    <div style={{ height: '100%', overflow: 'scroll' }}>
-      <div className={css.flexContainer} style={{display: data.layoutType == LayoutType.Vertical ? 'block' : 'flex'}}>
-        {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
-          <div
-            key={key}
-            style={{
-              // width: data.layoutType == LayoutType.Vertical ? '100%' : void 0,
-              // height: 'fit-content',
-              margin:
-                number !== dataSource.length - 1
-                  ? `0 ${gutter[0]}px ${gutter[1]}px 0`
-                  : `0 ${gutter[0]}px 0 0`
-            }}
-          >
-            {slots['item'].render({
-              inputValues: {
-                itemData: item,
-                index: index
-              },
-              key: key
-            })}
-          </div>
-        ))}
-      </div>
+    <div className={css.flexContainer} style={{display: data.layout === Layout.Vertical ?  'block' : void 0}}>
+      {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
+        <div
+          key={key}
+          className="list-new__item"
+          style={{
+            margin:
+              number !== dataSource.length - 1
+                ? `0 ${gutter[0]}px ${gutter[1]}px 0`
+                : `0 ${gutter[0]}px 0 0`
+          }}
+        >
+          {slots['item'].render({
+            inputValues: {
+              itemData: item,
+              index: index
+            },
+            key: key
+          })}
+        </div>
+      ))}
     </div>
   );
 };
@@ -64,7 +61,11 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
   return (
     <div className={css.scrollContainer}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
-        <div key={key} className={css.scrollBox} style={{ margin: `0 ${gutter[0]}px 0 0` }}>
+        <div
+          key={key}
+          className={`${css.scrollBox} list-new__item`}
+          style={{ width: data.itemWidth, margin: `0 ${gutter[0]}px 0 0` }}
+        >
           {slots['item'].render({
             inputValues: {
               itemData: item,

@@ -26,7 +26,7 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } },
           'BoxShadow'
         ],
-        target: 'ul li:not(.ant-menu-item-selected)'
+        target: '> .list-new__root'
       },
       {
         title: '列表项',
@@ -37,7 +37,7 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } },
           'BoxShadow'
         ],
-        target: 'ul li:not(.ant-menu-item-selected)'
+        target: '.list-new__item'
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {

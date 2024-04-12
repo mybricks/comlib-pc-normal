@@ -1,4 +1,4 @@
-import { LayoutType } from './../constants';
+import { Layout } from './../constants';
 import { Data, OutputIds, Schemas, Option } from '../constants';
 import { unitConversion } from '../../utils';
 
@@ -25,59 +25,48 @@ export const LayoutEditor = [
         title: '布局类型',
         type: 'select',
         options: [
-          { label: '横向布局', value: LayoutType.Horizontal },
-          { label: '纵向布局', value: LayoutType.Vertical },
-          { label: '栅格布局', value: LayoutType.Grid }
+          { label: '横向布局', value: Layout.Horizontal },
+          { label: '纵向布局', value: Layout.Vertical },
+          { label: '栅格布局', value: Layout.Grid }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.layoutType;
-            // if (data.isAuto === true && data.isCustom === true) {
-            //   return 'grid';
-            // } else if (data.isAuto === true && data.layout === 'vertical') {
-            //   return 'vertical';
-            // } else if (data.layout === 'horizontal') {
-            //   return 'horizontal';
-            // }
+            return data.layout;
           },
-          set({ data }: EditorResult<Data>, val: LayoutType) {
-            data.layoutType = val;
-            // switch (val) {
-            //   case 'grid': {
-            //     data.isAuto = true;
-            //     data.isCustom = true;
-            //     data.layout = '';
-            //     break;
-            //   }
-            //   case 'vertical': {
-            //     data.isAuto = true;
-            //     data.layout = 'vertical';
-            //     data.isCustom = false;
-            //     data.isResponsive = false;
-            //     break;
-            //   }
-            //   case 'horizontal': {
-            //     data.layout = 'horizontal';
-            //     data.isCustom = false;
-            //     data.isResponsive = false;
-            //     break;
-            //   }
-            // }
+          set({ data }: EditorResult<Data>, val: Layout) {
+            data.layout = val;
           }
         }
       },
       {
         title: '换行',
         type: 'switch',
+        description: '容器宽度不足时列表项是否自动换行，不换行默认横向滚动',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Horizontal;
+          return data.layout === Layout.Horizontal;
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.isAutoWrap;
+            return data.isAuto;
           },
           set({ data }: EditorResult<Data>, val: boolean) {
-            data.isAutoWrap = val;
+            data.isAuto = val;
+          }
+        }
+      },
+      {
+        title: '列表项宽度',
+        type: 'text',
+        description: '横向布局且不换行时列表项的宽度，支持px, %及计算值',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layout === Layout.Horizontal && !data.isAuto;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.itemWidth;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.itemWidth = unitConversion(value)
           }
         }
       },
@@ -85,7 +74,7 @@ export const LayoutEditor = [
         title: '列数',
         type: 'InputNumber',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Grid && !data.isResponsive;
+          return data.layout === Layout.Grid && !data.isResponsive;
         },
         options: [{ min: 1, max: 1000, width: 100 }],
         value: {
@@ -94,7 +83,7 @@ export const LayoutEditor = [
           },
           set({ data, output }: EditorResult<Data>, val) {
             data.grid.column = val[0];
-            const canSort = !!(data.layoutType === LayoutType.Grid && data.grid.column === 1);
+            const canSort = !!(data.layout === Layout.Grid && data.grid.column === 1);
             if (!canSort) {
               output.remove(OutputIds.SortComplete);
             }
@@ -105,7 +94,7 @@ export const LayoutEditor = [
         title: '移动端列数',
         type: 'InputNumber',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Grid && !data.isResponsive;
+          return data.layout === Layout.Grid && !data.isResponsive;
         },
         options: [{ min: 1, max: 1000, width: 100 }],
         value: {
@@ -122,7 +111,7 @@ export const LayoutEditor = [
         type: 'switch',
         ifVisible({ data }: EditorResult<Data>) {
           const canSort = !!(
-            data.layoutType === LayoutType.Grid &&
+            data.layout === Layout.Grid &&
             data.grid.column === 1 &&
             !data.isResponsive
           );
@@ -149,7 +138,7 @@ export const LayoutEditor = [
         title: '响应式',
         type: 'switch',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Grid;
+          return data.layout === Layout.Grid;
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -165,7 +154,7 @@ export const LayoutEditor = [
         type: 'switch',
         description: '开启后可以自定义配置断点位置, 及列表列数',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Grid && !!data.isResponsive;
+          return data.layout === Layout.Grid && !!data.isResponsive;
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -190,7 +179,7 @@ export const LayoutEditor = [
           { min: 0, max: 100, width: 100, title: '超大型(xxl)' }
         ],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Grid && !!data.isResponsive && !data.isCustomPoints;
+          return data.layout === Layout.Grid && !!data.isResponsive && !data.isCustomPoints;
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -208,7 +197,7 @@ export const LayoutEditor = [
         type: 'Array',
         description: '自定义配置项, 配置断点位置及列数, 如果对应断点区间没有配置列数, 默认为1',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layoutType === LayoutType.Grid && !!data.isResponsive && !!data.isCustomPoints;
+          return data.layout === Layout.Grid && !!data.isResponsive && !!data.isCustomPoints;
         },
         options: {
           getTitle: ({ point, relation, columns }) => {
@@ -285,33 +274,5 @@ export const LayoutEditor = [
         }
       }
     ]
-  },
-  // {
-  //   title: '列表项布局',
-  //   items: [
-  //     {
-  //       type: 'layout',
-  //       options: [],
-  //       value: {
-  //         get({ data, slots }: EditorResult<Data>) {
-  //           const { slotStyle = {} } = data;
-  //           // const slotInstance = slots.get('item');
-  //           // setSlotLayout(slotInstance, slotStyle);
-  //           return slotStyle;
-  //         },
-  //         set({ data, slots }: EditorResult<Data>, val: any) {
-  //           if (!data.slotStyle) {
-  //             data.slotStyle = {};
-  //           }
-  //           data.slotStyle = {
-  //             ...data.slotStyle,
-  //             ...val
-  //           };
-  //           const slotInstance = slots.get('item');
-  //           setSlotLayout(slotInstance, val);
-  //         }
-  //       }
-  //     }
-  //   ]
-  // }
+  }
 ];

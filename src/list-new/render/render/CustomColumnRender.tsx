@@ -10,7 +10,7 @@ const CustomColumnRender  = (loading:boolean, data:Data, dataSource:any,gutter, 
   const rowKey = '_itemKey';
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
-      <List.Item key={key}>
+      <List.Item key={key} className='list-new__item'>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
@@ -48,7 +48,7 @@ const CustomColumnRender  = (loading:boolean, data:Data, dataSource:any,gutter, 
         helperContainer={env?.canvasElement || document.body}
         helperClass={css['sort-helper']}
         renderItem={({ key, item, index }) => (
-          <SortableItem key={key} index={index}>
+          <SortableItem key={key} index={index} className='list-new__item'>
             {slots['item'].render({
               inputValues: {
                 itemData: item,

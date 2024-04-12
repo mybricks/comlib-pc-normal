@@ -16,7 +16,7 @@ export enum OutputIds {
   SortComplete = 'sortComplete'
 }
 
-export enum LayoutType {
+export enum Layout {
   Horizontal = 'horizontal',
   Vertical = 'vertical',
   Grid = 'grid'
@@ -65,8 +65,8 @@ export interface Data {
   //自定义rowKey
   rowKey: string;
 
-  //自动换行时，方向
-  layout: 'horizontal'|'vertical'
+  /** 布局类型 */
+  layout: Layout;
 
   //响应式布局
   isResponsive: boolean;
@@ -78,8 +78,5 @@ export interface Data {
   isCustomPoints: boolean;
   //断点配置
   customOptions: Option[];
-  slotStyle?: CSSProperties;
-  layoutType: LayoutType;
-  isAutoWrap: boolean;
 }
 

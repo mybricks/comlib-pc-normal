@@ -1,4 +1,4 @@
-import { Data, OutputIds, Schemas } from './constants';
+import { Data, Layout, OutputIds, Schemas } from './constants';
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
   /**
@@ -163,21 +163,24 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
 
   /**
-   * @description v1.0.22 -> 1.0.23 slotStyle兼容
+   * @description v1.0.22 -> 1.0.23 布局重构
    */
-  if (!data.slotStyle) {
-    const contentSlot = slot.get('item');
-    const flexDirection = contentSlot?.getLayout()?.split('-')?.[1] || 'row';
-    const alignItems = contentSlot?.getAlignItems() || 'flex-start';
-    const justifyContent = contentSlot?.getJustifyContent() || 'flex-start';
-    data.slotStyle = {
-      display: 'flex',
-      position: 'inherit',
-      flexWrap: 'nowrap',
-      flexDirection,
-      alignItems,
-      justifyContent
-    };
+  if (data.isResponsive) {
+    data.layout === Layout.Grid;
+  } else {
+    if (data.isAuto) {
+      if (data.isCustom) {
+        data.layout = Layout.Grid;
+      } else {
+        if (data.layout === 'horizontal') {
+          data.layout = Layout.Horizontal;
+        } else if (data.layout === 'vertical') {
+          data.layout = Layout.Vertical;
+        }
+      }
+    } else {
+      data.layout = Layout.Horizontal;
+    }
   }
 
   return true;
