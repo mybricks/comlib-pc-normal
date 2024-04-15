@@ -1,23 +1,23 @@
-import {useCallback} from "react";
+import { useCallback } from 'react';
 
-let cur = 0
+let cur = 0;
 
-export default function ({env, data, inputs, outputs}) {
-
+export default function ({ env, data, inputs, outputs }) {
   inputs['test']((val, relOutputs) => {
-    data.val = val
+    data.val = val;
 
-    relOutputs['testOut'](cur++)
-  })
+    relOutputs['testOut'](cur++);
+  });
 
-  const setVal = useCallback(()=>{
-    data.val = Math.random()
-  },[])
+  const setVal = useCallback(() => {
+    data.val = Math.random();
+    outputs['testOut'](data.val);
+  }, []);
 
   return (
-    <div style={{border: '1px solid blue', padding: 10}}>
+    <div style={{ border: '1px solid blue', padding: 10 }}>
       ::{data.val}::
       <button onClick={setVal}>setVal</button>
     </div>
-  )
+  );
 }

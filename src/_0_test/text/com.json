@@ -6,6 +6,7 @@
   "version": "1.0.0",
   "description": "schema为*",
   "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
   "inputs": [
     {
       "id": "test",
