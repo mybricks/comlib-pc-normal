@@ -146,7 +146,7 @@ export function setDelete({ data, focusArea, slots }: any) {
     }
   }
   const item = data.items[deleteItemIdx];
-  if (item?.slotId) {
+  if (item?.slotId && slots.get(item.slotId)) {
     slots.remove(item.slotId);
   }
   data.items.splice(deleteItemIdx, 1);
@@ -179,7 +179,7 @@ export const getDataSourceSchema = (data: Data) => {
 
 export const getDataDescSchema = (data: Data) => {
   const properties = getDataSourceSchema(data)
-  if(!Object.keys(properties).length) {
+  if (!Object.keys(properties).length) {
     return {
       type: 'any'
     }
