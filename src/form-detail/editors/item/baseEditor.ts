@@ -28,6 +28,7 @@ export const BaseEditor = [
           updateScopeIOSchema({ data, item, slots, input });
         } else {
           item.showLabel = true;
+          item.slotId = void 0;
         }
       }
     }
