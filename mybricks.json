@@ -254,24 +254,5 @@
       "./src/_pinyin/com.json"
     ]
   },
-  "externals": [
-    {
-      "name": "@ant-design/icons",
-      "library": "icons",
-      "urls": [
-        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
-      ]
-    },
-    {
-      "name": "antd",
-      "library": "antd",
-      "urls": [
-        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.css",
-        "https://assets.mybricks.world/pkg/moment-2.29.4/moment.min.js",
-        "https://assets.mybricks.world/pkg/moment-2.29.4/locale_zh-cn.js",
-        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.js",
-        "https://f2.eckwai.com/udata/pkg/eshop/fangzhou/pub/pkg/antd-4.21.6/locale/zh_CN.js"
-      ]
-    }
-  ]
+  "externals": []
 }
