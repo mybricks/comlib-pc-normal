@@ -5,17 +5,19 @@
 .container {
   height: inherit;
   width: inherit;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .listWrap {
-  height: 100%;
-  overflow: scroll;
+  // height: 100%;
+  // overflow-y: scroll;
+  // overflow-x: hidden;
   :global {
     .ant-list-item {
       height: 100%;
       margin-bottom: 0px !important;
-      padding: 0 !important;
+      // padding: 0 !important;
     }
     .ant-spin-nested-loading {
       height: 100%;
@@ -64,6 +66,7 @@
 }
 
 .scrollBox {
+  overflow-x: scroll;
   display: inline-block;
 }
 

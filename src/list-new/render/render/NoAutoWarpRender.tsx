@@ -4,16 +4,16 @@ import css from '../../style.less';
 import { Spin } from 'antd';
 import { NoAutoScrollRender, AutoRender  } from './render';
 
-const NoAutoWarpRender  = (loading:boolean, data:Data, dataSource:any, slots) => {
+const NoAutoWarpRender  = (loading:boolean, data:Data, dataSource:any, slots, env) => {
   return loading ? (
     <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
       {!data.isAuto} ? {NoAutoScrollRender(dataSource, data, slots)} :{' '}
-      {AutoRender(dataSource, data, slots)}
+      {AutoRender(dataSource, data, slots, env)}
     </Spin>
   ) : !data.isAuto ? (
     NoAutoScrollRender(dataSource, data, slots)
   ) : (
-    AutoRender(dataSource, data, slots)
+    AutoRender(dataSource, data, slots, env)
   );
 };
 

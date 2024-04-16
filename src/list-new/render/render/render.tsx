@@ -1,23 +1,32 @@
+import { Space } from 'antd';
 import { Data, Layout } from '../../constants';
 import css from '../../style.less';
 import React from 'react';
+import classnames from 'classnames';
 
 const rowKey = '_itemKey';
 //A、自动换行，列数不自定义
-const AutoRender = (dataSource: any, data: Data, slots) => {
+const AutoRender = (dataSource: any, data: Data, slots, env) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
-    <div className={css.flexContainer} style={{display: data.layout === Layout.Vertical ?  'block' : void 0}}>
+    <Space
+      className="list-new__root"
+      style={{ height: '100%', overflow: 'scroll', width:'inherit',maxWidth:'100%', display: env.edit ? 'flow' : void 0}}
+      size={gutter}
+      direction={'horizontal'}
+      wrap
+    >
       {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
         <div
           key={key}
           className="list-new__item"
           style={{
-            margin:
-              number !== dataSource.length - 1
-                ? `0 ${gutter[0]}px ${gutter[1]}px 0`
-                : `0 ${gutter[0]}px 0 0`
+            width: 'fit-content'
+            // margin:
+            //   number !== dataSource.length - 1
+            //     ? `0 ${data.layout === Layout.Vertical ? 0 : gutter[0]}px ${gutter[1]}px 0`
+            //     : `0 ${data.layout === Layout.Vertical ? 0 : gutter[0]}px 0 0`
           }}
         >
           {slots['item'].render({
@@ -25,6 +34,40 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
               itemData: item,
               index: index
             },
+            // style: {
+            //   overflow: 'auto'
+            // },
+            key: key
+          })}
+        </div>
+      ))}
+    </Space>
+  );
+};
+
+//B、纵向布局
+const VerticalRender = (dataSource: any, data: Data, slots) => {
+  const { grid } = data;
+  const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
+  return (
+    <div className="list-new__root" style={{height:'100%',overflowY: 'scroll'}}>
+      {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
+        <div
+          key={key}
+          className="list-new__item"
+          style={{
+            width: 'fit-content',
+            marginBottom: number !== dataSource.length - 1 ? `${gutter[1]}px` : 0
+          }}
+        >
+          {slots['item'].render({
+            inputValues: {
+              itemData: item,
+              index: index
+            },
+            // style: {
+            //   overflow: 'auto'
+            // },
             key: key
           })}
         </div>
@@ -59,17 +102,24 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
-    <div className={css.scrollContainer}>
-      {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
+    <div className={classnames(css.scrollContainer, 'list-new__root')}>
+      {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
         <div
           key={key}
           className={`${css.scrollBox} list-new__item`}
-          style={{ width: data.itemWidth, margin: `0 ${gutter[0]}px 0 0` }}
+          style={{
+            width: data.itemWidth,
+            margin: `0 ${number === dataSource?.length - 1 ? 0 : gutter[0]}px 0 0`
+          }}
         >
           {slots['item'].render({
             inputValues: {
               itemData: item,
               index: index
+            },
+            style: {
+              width: 'fit-content',
+              height: '100%',
             },
             key: key
           })}
@@ -79,4 +129,4 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
   );
 };
 
-export { AutoRender, NoAutoScrollRender };
+export { AutoRender, VerticalRender, NoAutoScrollRender };

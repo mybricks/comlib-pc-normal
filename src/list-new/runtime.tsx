@@ -203,9 +203,5 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     }
   };
 
-  return (
-    <div className={`${css.container} list-new__root`}>
-      {ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns)}
-    </div>
-  );
+  return ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns);
 };

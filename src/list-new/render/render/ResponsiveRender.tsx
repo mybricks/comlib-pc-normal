@@ -10,12 +10,16 @@ const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, s
   const rowKey = '_itemKey';
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
-      <List.Item key={key} className='list-new__item'>
+      <List.Item key={key} className='list-new__item' style={{ overflowX: 'scroll' }}>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
             itemData: item,
             index: index
+          },
+          style: {
+            width: 'fit-content',
+            height: '100%',
           },
           key: key
         })}
