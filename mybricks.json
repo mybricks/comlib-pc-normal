@@ -257,20 +257,29 @@
   "externals": [
     {
       "name": "@ant-design/icons",
+      "version": "4.7.0",
       "library": "icons",
       "urls": [
-        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+        "/mfs/mybricks_material_externals/ant-design-icons@4.7.0.min.js"
+      ]
+    },
+    {
+      "name": "moment",
+      "library": "moment",
+      "version": "2.29.4",
+      "urls": [
+        "/mfs/mybricks_material_externals/moment/moment@2.29.4.min.js",
+        "/mfs/mybricks_material_externals/moment/locale/zh-cn.min.js"
       ]
     },
     {
       "name": "antd",
       "library": "antd",
+      "version": "4.21.6",
       "urls": [
-        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.css",
-        "https://assets.mybricks.world/pkg/moment-2.29.4/moment.min.js",
-        "https://assets.mybricks.world/pkg/moment-2.29.4/locale_zh-cn.js",
-        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.js",
-        "https://f2.eckwai.com/udata/pkg/eshop/fangzhou/pub/pkg/antd-4.21.6/locale/zh_CN.js"
+        "/mfs/mybricks_material_externals/antd/antd@4.21.6.variable.min.css",
+        "/mfs/mybricks_material_externals/antd/antd@4.21.6.min.js",
+        "/mfs/mybricks_material_externals/antd/locale/zh_CN.js"
       ]
     }
   ]
