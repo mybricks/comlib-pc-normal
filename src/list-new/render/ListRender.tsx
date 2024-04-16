@@ -31,7 +31,7 @@ const ListRender = (
   }
   //1、垂直布局
   if (data.layout === Layout.Vertical) {
-    return VerticalWarpRender(loading, data, dataSource, slots);
+    return VerticalWarpRender(loading, data, dataSource, slots, env);
   }
   //2、栅格布局
   else if (data.layout === Layout.Grid) {

@@ -18,16 +18,18 @@ const CustomColumnRender = (
   const rowKey = '_itemKey';
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
-      <List.Item key={key} className="list-new__item" style={{ overflowX: 'scroll' }}>
+      <List.Item key={key} className="list-new__item" style={{ overflowX: env.edit ? 'visible' : 'scroll' }}>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
             itemData: item,
             index: index
           },
-          style: {
+          style: env.edit ? {
+            minHeight: '30px',
+          } : {
             width: 'fit-content',
-            height: '100%'
+            height: '100%',
           },
           key: key
         })}
@@ -67,9 +69,11 @@ const CustomColumnRender = (
                   itemData: item,
                   index
                 },
-                style: {
+                style: env.edit ? {
+                  minHeight: '30px',
+                } : {
                   width: 'fit-content',
-                  height: '100%'
+                  height: '100%',
                 },
                 key
               })}
