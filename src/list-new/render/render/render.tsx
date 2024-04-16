@@ -11,8 +11,7 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
     <Space
-      className="list-new__root"
-      style={{ height: '100%', overflow: 'scroll', width:'inherit',maxWidth:'100%', display: env.edit ? 'flow' : void 0}}
+      style={{ width: 'fit-content', display: env.edit ? 'flow' : void 0 }}
       size={gutter}
       direction={'horizontal'}
       wrap
@@ -22,7 +21,7 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
           key={key}
           className="list-new__item"
           style={{
-            width: env.edit ? '100%' : 'fit-content',
+            width: env.edit ? '100%' : 'fit-content'
             // margin:
             //   number !== dataSource.length - 1
             //     ? `0 ${data.layout === Layout.Vertical ? 0 : gutter[0]}px ${gutter[1]}px 0`
@@ -34,10 +33,12 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
               itemData: item,
               index: index
             },
-            style: env.edit ? {
-              minHeight: '30px',
-              minWidth: '30px'
-            } : void 0,
+            style: env.edit
+              ? {
+                  minHeight: '30px',
+                  minWidth: '30px'
+                }
+              : void 0,
             key: key
           })}
         </div>
@@ -51,7 +52,7 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
-    <div className="list-new__root" style={{height:'100%',overflowY: 'scroll'}}>
+    <div className="list-new__root" style={{ height: '100%', overflowY: 'scroll' }}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
         <div
           key={key}
@@ -66,10 +67,12 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
               itemData: item,
               index: index
             },
-            style: env.edit ? {
-              minHeight: '30px',
-              minWidth: '30px'
-            } : void 0,
+            style: env.edit
+              ? {
+                  minHeight: '30px',
+                  minWidth: '30px'
+                }
+              : void 0,
             key: key
           })}
         </div>
@@ -119,12 +122,14 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots, env) => {
               itemData: item,
               index: index
             },
-            style: env.edit ? {
-              minHeight: '30px',
-            } : {
-              width: 'fit-content',
-              height: '100%'
-            },
+            style: env.edit
+              ? {
+                  minHeight: '30px'
+                }
+              : {
+                  width: 'fit-content',
+                  height: '100%'
+                },
             key: key
           })}
         </div>
