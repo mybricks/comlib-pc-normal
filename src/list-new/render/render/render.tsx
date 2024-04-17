@@ -11,7 +11,7 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
     <Space
-      style={{ width: 'fit-content', display: env.edit ? 'flow' : void 0 }}
+      style={{ width: 'fit-content' }}
       size={gutter}
       direction={'horizontal'}
       wrap
@@ -21,7 +21,7 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
           key={key}
           className="list-new__item"
           style={{
-            width: env.edit ? '100%' : 'fit-content'
+            width: 'fit-content'
             // margin:
             //   number !== dataSource.length - 1
             //     ? `0 ${data.layout === Layout.Vertical ? 0 : gutter[0]}px ${gutter[1]}px 0`
@@ -36,7 +36,7 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
             style: env.edit
               ? {
                   minHeight: '30px',
-                  minWidth: '30px'
+                  minWidth: '100px'
                 }
               : void 0,
             key: key
@@ -58,7 +58,7 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
           key={key}
           className="list-new__item"
           style={{
-            width: env.edit ? '100%' : 'fit-content',
+            width: 'fit-content',
             marginBottom: number !== dataSource.length - 1 ? `${gutter[1]}px` : 0
           }}
         >
@@ -70,7 +70,7 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
             style: env.edit
               ? {
                   minHeight: '30px',
-                  minWidth: '30px'
+                  minWidth: '100px'
                 }
               : void 0,
             key: key
