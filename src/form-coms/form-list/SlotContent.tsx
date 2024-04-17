@@ -37,6 +37,11 @@ const SlotContent = (
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
         const { item, isFormItem } = getFormItem(data, com);
+        const { key } = field;
+        // 因为name更新后不会重新渲染，所以这里根据key自己更新下name
+        const name = data.fields.find((f) => f.key === key)?.name;
+        // @ts-ignore
+        field.name = name;
 
         return isFormItem ? (
           <FormItem data={data} slots={slots} com={com} item={item} field={field} env={env} />
