@@ -115,7 +115,15 @@ export default {
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  {
+                    type: 'size',
+                    config: {
+                      disableWidth: true,
+                      disableHeight: true,
+                      disableMinWidth: false
+                    }
+                  }
                 ],
                 target: '.ant-input-group-addon:first-child'
               },
@@ -124,7 +132,15 @@ export default {
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  {
+                    type: 'size',
+                    config: {
+                      disableWidth: true,
+                      disableHeight: true,
+                      disableMinWidth: false
+                    }
+                  }
                 ],
                 target: '.ant-input-group-addon:last-child'
               },
