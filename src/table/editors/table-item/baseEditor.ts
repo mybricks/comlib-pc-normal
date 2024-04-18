@@ -185,7 +185,10 @@ const createBaseEditor = ({ data }) => ({
 
       formatters: [
         {
-          formatter: 'KEYMAP'
+          formatter: 'KEYMAP',
+          options: {
+            locale: true,
+          }
         },
         {
           formatter: 'EXPRESSION',

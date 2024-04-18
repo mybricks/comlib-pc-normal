@@ -52,7 +52,11 @@ function ColumnRender(props: ColumnRenderProps) {
             value: oriValue
           }
         : oriValue;
-      oriValue = genFormatting(columnItem.formatData)(valueToBeFormat);
+      if (columnItem?.formatData?.formatterName === 'KEYMAP') {
+        oriValue = env.i18n(genFormatting(columnItem.formatData)(valueToBeFormat));
+      } else {
+        oriValue = genFormatting(columnItem.formatData)(valueToBeFormat);
+      }
     }
 
     // 如果是插槽，则不转成字符串

@@ -3,9 +3,12 @@ import { TFormatterInfo } from '../types'
 const keyMapFormatter: TFormatterInfo = {
   name: 'KEYMAP',
   label: '枚举映射',
-  genEditor() {
+  genEditor(options) {
     return {
-      type: 'map'
+      type: 'map',
+      options: {
+        ...options
+      }
     }
   },
   genFormatting(editorValue) {
