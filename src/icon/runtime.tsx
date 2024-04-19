@@ -27,10 +27,8 @@ export default function ({ env, data, outputs }: RuntimeParams<Data>) {
 
   return (
     <div
-      className={css.icon}
+      className={`${css.icon} icon`}
       style={{
-        fontSize: data.size,
-        color: data.color,
         cursor:
           outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
             ? 'pointer'
