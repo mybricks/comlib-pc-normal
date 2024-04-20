@@ -425,6 +425,7 @@ export default function ({
   const onModalOk = useCallback(() => {
     onModalClose();
     uploadCb.current?.setUrl(uploadModel);
+    change(false);
   }, [uploadModel]);
 
   const RenderImgModal: JSX.Element | undefined = useMemo(() => {
