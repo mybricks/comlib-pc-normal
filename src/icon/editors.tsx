@@ -61,6 +61,11 @@ export default {
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
             target: '[data-item-type="icon"]:hover'
+          },
+          {
+            catelog: 'Hover',
+            options: ['font'],
+            target: `.icon:hover`
           }
         ]
       }
