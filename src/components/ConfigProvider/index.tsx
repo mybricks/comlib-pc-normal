@@ -1,6 +1,12 @@
 import React, { ReactNode, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
-const localeMap = window.antd.locale;
+
+let localeMap;
+
+if (window.antd?.locale) {
+  localeMap = window.antd.locale;
+}
+
 const LocaleProvider = ({
   locale = 'zh-cn',
   children,
@@ -27,9 +33,15 @@ const LocaleProvider = ({
     ? undefined
     : localeMap?.[antdLocaleKey] || localeMap?.['zh_CN'];
   return (
-    <ConfigProvider locale={localLib?.default} {...rest}>
-      {children}
-    </ConfigProvider>
+    <>
+      {localeMap ? (
+        <ConfigProvider locale={localLib?.default} {...rest}>
+          {children}
+        </ConfigProvider>
+      ) : (
+        children
+      )}
+    </>
   );
 };
 
