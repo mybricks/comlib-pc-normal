@@ -53,6 +53,7 @@ export default function Runtime({
   data,
   inputs,
   outputs,
+  slots,
   logger,
   parentSlot,
   id,
@@ -293,25 +294,83 @@ export default function Runtime({
     //2、本地数据源, 不做处理
   };
 
+  const { options, ...configs } = data.config;
+  const renderOptions = data.slotAfterOption
+    ? void 0
+    : i18nFn(env.edit ? data.staticOptions : options, env);
+
+  const OptionsWithSlot = () => {
+    if (!data.slotAfterOption) return null;
+    return (
+      <>
+        {(env.edit ? [{ label: '搭建占位', value: 1 }] : options)?.map((opt, inx) => {
+          return (
+            <Select.Option value={opt.value} label={opt.label}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                <div
+                  style={{
+                    flex: 1,
+                    width: '100%'
+                  }}
+                >
+                  {opt.label}
+                </div>
+                <div
+                  onClick={(e) => {
+                    // 阻止触发选项选中事件
+                    e.stopPropagation();
+                  }}
+                  style={{
+                    minWidth: env.edit ? '60px' : void 0
+                  }}
+                >
+                  {slots[data.slotAfterOption].render({
+                    key: data.slotAfterOption,
+                    inputValues: {
+                      option: opt,
+                      index: inx
+                    }
+                  })}
+                </div>
+              </div>
+            </Select.Option>
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <div className={css.select} ref={ref} id="area">
       {data.isEditable ? (
         <Select
-          {...data.config}
+          {...configs}
           placeholder={env.i18n(data.config.placeholder)}
           labelInValue={false}
           showArrow={data.config.showArrow}
-          options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.config.options, env)}
+          options={renderOptions}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           maxTagCount={data.maxTagCount}
           dropdownClassName={id}
-          open={env.design ? true : void 0}
+          optionLabelProp={'label'}
+          open={
+            env.design || (env.edit && data.slotAfterOption && !data.hidePopWhenEdit)
+              ? true
+              : void 0
+          }
           onSearch={data.config.showSearch ? onSearch : void 0}
           notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
-        />
+        >
+          {OptionsWithSlot()}
+        </Select>
       ) : (
         <div>{Array.isArray(value) ? value.join(',') : value}</div>
       )}

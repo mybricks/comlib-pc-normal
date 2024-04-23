@@ -25,4 +25,8 @@ export interface Data {
   validateTrigger: string[];
   isEditable: boolean;
   resetOptionsWhenEmptySearch: boolean;
+  /**@description v1.1.17 选项后置插槽 */
+  slotAfterOption?: string;
+  /**@description v1.1.17 搭建态是否展示弹层 */
+  hidePopWhenEdit?: boolean;
 }
