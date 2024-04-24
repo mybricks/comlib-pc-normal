@@ -8,5 +8,6 @@ export interface Data {
   trigger?: Trigger;
   useTitleSlot?: boolean;
   useContentSlot?: boolean;
-  style?: CSSProperties
+  style?: CSSProperties;
+  slotStyle?: Object; 
 }

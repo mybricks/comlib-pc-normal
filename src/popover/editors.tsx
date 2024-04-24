@@ -1,16 +1,57 @@
 import { Data, Placement, Trigger } from './constants';
 
+const setSlotLayout = (slot, val) => {
+  if (!slot) return;
+  if (val.position === 'smart') {
+    slot.setLayout('smart');
+  } else if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};
+
 export default {
+  ':slot': {},
   '@init': ({ data, style }: EditorResult<Data>) => {
     style.width = 'fit-content';
+    style.height = 'fit-content';
   },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     items({ data }, ...cate) {
       cate[0].title = '配置';
       cate[0].items = [
+        {
+          title: '布局',
+          type: 'layout',
+          options: [],
+          value: {
+            get({ data, slots }: EditorResult<Data>) {
+              const { slotStyle = {} } = data;
+              const slotInstance = slots.get('carrier');
+              setSlotLayout(slotInstance, slotStyle);
+              return slotStyle;
+            },
+            set({ data, slots }: EditorResult<Data>, val: any) {
+              if (!data.slotStyle) {
+                data.slotStyle = {};
+              }
+              data.slotStyle = {
+                ...data.slotStyle,
+                ...val
+              };
+              const slotInstance = slots.get('carrier');
+              setSlotLayout(slotInstance, val);
+            }
+          }
+        },
         {
           title: '标题自定义',
           type: 'switch',
