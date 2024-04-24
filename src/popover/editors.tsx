@@ -19,6 +19,7 @@ export default {
   ':slot': {},
   '@init': ({ data, style }: EditorResult<Data>) => {
     style.width = 'fit-content';
+    style.height = 'fit-content';
   },
   '@resize': {
     options: ['width', 'height']
