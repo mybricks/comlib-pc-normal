@@ -7,6 +7,7 @@ import { Space, Image, Button } from 'antd';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const [disabled, setDisable] = useState(false);
+  const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
 
   //如果data.dataType是'external'的
   useEffect(() => {
@@ -37,7 +38,14 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         relOutputs['setDynamicDisabledDone'](value);
       });
     }
+    inputs['setDynamicStyle'] &&
+      inputs['setDynamicStyle']((style: React.CSSProperties, relOutputs) => {
+        setDynamicStyle(style);
+        typeof relOutputs['setDynamicStyleDone'] === 'function' &&
+          relOutputs['setDynamicStyleDone']();
+      });
   }, []);
+
   const onClick = useCallback(() => {
     if (env.runtime) {
       const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
@@ -145,6 +153,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         disabled={disabled}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
+        style={dynamicStyle}
       >
         {renderBtnContext(data)}
       </Button>
