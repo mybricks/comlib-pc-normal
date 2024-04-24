@@ -305,7 +305,7 @@ export default function Runtime({
       <>
         {(env.edit ? [{ label: '搭建占位', value: 1 }] : options)?.map((opt, inx) => {
           return (
-            <Select.Option value={opt.value} label={opt.label}>
+            <Select.Option value={opt.value} label={opt.label} key={opt.value}>
               <div
                 style={{
                   display: 'flex',
