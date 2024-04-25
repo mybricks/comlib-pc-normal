@@ -124,7 +124,7 @@ export default {
               {
                 title: '文本内容',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selection-search .ant-select-selection-search-input'
+                target: '.ant-select-selection-item'
               },
               {
                 title: '标签',

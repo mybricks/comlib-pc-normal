@@ -393,5 +393,16 @@ export default function ({
 
   //=========== v1.1.13 end ===============
 
+  /**
+   * @description v1.1.19 修改文本内容target
+  */
+  const preStyle = getDeclaredStyle('.ant-select-selection-search .ant-select-selection-search-input');
+  removeDeclaredStyle('.ant-select-selection-search .ant-select-selection-search-input');
+  if(preStyle?.css){
+    setDeclaredStyle(`.ant-select-selection-item`, preStyle.css);
+  }
+
+  //=========== v1.1.19 end ===============
+
   return true;
 }
