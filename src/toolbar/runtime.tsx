@@ -7,6 +7,7 @@ import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
 import { checkIfMobile } from '../utils';
 import { getWhatToDoWithoutPermission } from '../utils/permission';
+import { renderBtnContext } from './btnRender';
 
 export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -100,53 +101,14 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const renderTextAndIcon = (item: BtnItem) => {
     const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
     const Icon = Icons && Icons[icon as string]?.render();
+    const CustomIcon = <span style={{ fontSize: contentSize[0] }}>{Icon}</span>;
     return (
       <Space size={iconDistance}>
-        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
-          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
-        ) : null}
+        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? CustomIcon : null}
         {!useIcon || showText ? <span>{text}</span> : null}
-        {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
-          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
-        ) : null}
+        {useIcon && Icon && iconLocation === LocationEnum.BACK ? CustomIcon : null}
       </Space>
     );
-  };
-
-  const renderTextAndCustom = (item: BtnItem) => {
-    const { useIcon, iconLocation, iconDistance, text, showText, src, contentSize } = item;
-    return (
-      <Space size={iconDistance} className={css.space}>
-        {useIcon && src && iconLocation === LocationEnum.FRONT ? (
-          <Image
-            width={contentSize[1]}
-            height={contentSize[0]}
-            src={src}
-            preview={false}
-            alt={' '}
-          ></Image>
-        ) : null}
-        {!useIcon || showText ? <span>{text}</span> : null}
-        {useIcon && src && iconLocation === LocationEnum.BACK ? (
-          <Image
-            width={contentSize[1]}
-            height={contentSize[0]}
-            src={src}
-            preview={false}
-            alt={' '}
-          ></Image>
-        ) : null}
-      </Space>
-    );
-  };
-
-  const renderBtnContext = (item: BtnItem) => {
-    const { isCustom } = item;
-    if (isCustom === true) {
-      return renderTextAndCustom(item);
-    } else {
-      return renderTextAndIcon(item);
-    }
   };
 
   const renderEllipsisList = (btnList: BtnItem[]) => {
