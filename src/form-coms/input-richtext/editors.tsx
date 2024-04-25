@@ -22,6 +22,10 @@ export default {
         }
       }
     });
+    input.add('uploadReject', '上传失败响应', {
+      type: 'string',
+      title: '上传失败信息'
+    });
     output.add('upload', '上传', {
       type: 'object',
       properties: {
@@ -108,6 +112,12 @@ export default {
                       }
                     }
                   });
+                !input.get('uploadReject') &&
+                  input.add('uploadReject', '上传失败响应', {
+                    type: 'string',
+                    title: '上传失败信息'
+                  });
+
                 output.add('upload', '上传', {
                   type: 'object',
                   properties: {
@@ -127,6 +137,7 @@ export default {
                 });
               } else {
                 input.remove('uploadResponse');
+                input.remove('uploadReject');
                 output.remove('upload');
               }
             }

@@ -201,7 +201,7 @@ export default function ({
       isFS,
       placeholder: env.i18n(data.placeholder),
       customIconsId,
-      upload,
+      upload: data.customUpload ? upload : void 0,
       setUp: (editor: any) => {
         if (data.toolbar.includes('uploadimage')) {
           uploadCb.current = uploadimage({
