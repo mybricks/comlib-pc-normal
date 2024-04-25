@@ -11,7 +11,7 @@ interface InitProps {
   height: number | string;
   toolbar: string;
   target: any;
-  upload: UploadFn;
+  upload?: UploadFn;
   setUp: (...angs: any) => void;
   initCB: (...angs: any) => void;
   placeholder: string;
@@ -96,6 +96,8 @@ export function Init({
     convert_urls: false, //url不转换
     relative_urls: false, //转换为相对地址
     images_upload_handler: function (blobInfo, success, failure, progress) {
+      if(!upload) return success(`data:image/jpeg;base64,${blobInfo.base64()}`);
+
       let cnt = 0;
       const interval = setInterval(() => {
         progress(cnt++);
