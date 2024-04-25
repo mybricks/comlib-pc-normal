@@ -176,5 +176,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (data?.statusbar === undefined) {
     data.statusbar = false;
   }
+
+  // v1.1.30 新增上传响应失败
+  if (data.customUpload && !input.get('uploadReject')) {
+    input.add('uploadReject', '上传失败响应', {
+      type: 'string',
+      title: '上传失败信息',
+    });
+  }
+
   return true;
 }

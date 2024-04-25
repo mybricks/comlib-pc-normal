@@ -96,13 +96,21 @@ export function Init({
     convert_urls: false, //url不转换
     relative_urls: false, //转换为相对地址
     images_upload_handler: function (blobInfo, success, failure, progress) {
+      let cnt = 0;
+      const interval = setInterval(() => {
+        progress(cnt++);
+        if (cnt >= 100) clearInterval(interval);
+      }, 20)
       upload({
         file: blobInfo.blob(),
         file_name: `paste_img_${uuid()}`,
         file_type: 'image'
       }).then(res => {
         success(res.data)
-      });
+      }).catch(() => {
+        success('upload fail') // 展示图片的地址，因为是个不存在的地址，所以展示裂图
+        failure('upload fail') // 上传失败提示
+      }).finally(() => { clearInterval(interval); })
     },
     // skin: `oxide`,
     skin: false,
