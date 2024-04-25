@@ -1,6 +1,6 @@
 import { inputIds, outputIds } from '../form-container/constants';
 
-export default function ({ input, output, slot, data }): boolean {
+export default function ({ input, output, slot, data, getDeclaredStyle, removeDeclaredStyle, setDeclaredStyle }): boolean {
   //1.0.0 -> 1.0.1
   input.get('setValue')?.setSchema({
     type: 'array',
@@ -363,5 +363,17 @@ export default function ({ input, output, slot, data }): boolean {
 
   //=========== v1.0.33 end ===============
 
+  /**
+   * @description v1.0.40 change上传文案target
+   */
+  if(data.config.listType === "text" || data.config.listType === 'picture') {
+    const preStyle = getDeclaredStyle(`.ant-btn>.anticon+span`);
+    removeDeclaredStyle(`.ant-btn>.anticon+span`);
+    if(preStyle?.css){
+      setDeclaredStyle(`.text`, preStyle.css);
+    }
+  }
+
+  //=========== v1.0.40 end ===============
   return true;
 }

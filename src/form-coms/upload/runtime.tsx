@@ -434,7 +434,7 @@ export default function ({
         disabled={disabled}
         size={data.buttonSize}
       >
-        {env.i18n(buttonText)}
+        <span className="text">{env.i18n(buttonText)}</span>
       </Button>
     );
 
@@ -444,7 +444,7 @@ export default function ({
         disabled={disabled}
         size={data.buttonSize}
       >
-        {env.i18n(buttonText)}
+        <span className="text">{env.i18n(buttonText)}</span>
       </Button>
     );
 
