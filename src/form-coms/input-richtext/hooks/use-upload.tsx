@@ -7,15 +7,16 @@ export interface UploadParams {
 }
 
 export interface UploadFn {
-  (params: UploadParams): Promise<{ url: string }>;
+  (params: UploadParams): Promise<{ data: string }>;
 }
 
 export default function useUpload(inputs: any, outputs: any) {
   const resolvedRef = useRef<any>(null);
 
   const upload: UploadFn = async (params) => {
-    const responsePromise = new Promise<{ url: string }>((res) => {
+    const responsePromise = new Promise<{ data: string }>((res) => {
       resolvedRef.current = res;
+      return res;
     });
     outputs['upload'](params);
     return await responsePromise;
