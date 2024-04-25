@@ -209,7 +209,7 @@ export default {
       {
         title: '文案样式配置',
         options: ['font'],
-        target: '.ant-btn>.anticon+span',
+        target: ['.text'],
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.listType === 'text' || data.config.listType === 'picture';
         }
