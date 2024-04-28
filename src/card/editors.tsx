@@ -453,5 +453,35 @@ export default {
         ...actionItems
       ];
     }
+  },
+  '.ant-card-head': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.title;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.title = value;
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题内容',
+        type: 'Text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.showTitle;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.title;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.title = value;
+          }
+        }
+      }
+    ]
   }
 };
