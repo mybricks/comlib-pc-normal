@@ -1,6 +1,7 @@
-import { Button, Dropdown, Menu, Space, Image } from 'antd';
+import React from 'react';
+import { Space, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { Data, OutputIds, LocationEnum, InputIds } from './constants';
+import { LocationEnum } from './constants';
 import css from './runtime.less';
 
 export const renderBtnContext = (item) => {
