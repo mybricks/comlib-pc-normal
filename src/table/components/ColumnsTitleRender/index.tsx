@@ -40,6 +40,10 @@ const getCurCol = (data, cItem) => {
   return col
 }
 
+const checkIsFirstOrLastColumns = (data, cItem) => {
+  let len = data.columns.length 
+  return data.columns[0].key === cItem.key || data.columns[len-1].key === cItem.key
+}
 const checkIsDragging = (data) => {
   for (let c of data.columns) {
     if (c.isDragging) {
@@ -84,6 +88,10 @@ export default ({
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
+    let isFirstOrLastCol = checkIsFirstOrLastColumns(data,cItem)
+    if(isFirstOrLastCol) {
+      // console.log('cItem', cItem, isFirstOrLastCol)
+    }
     const content = cItem.hasTip ? (
       <div >
         <span style={{ marginRight: '6px' }}>{title}</span>
@@ -119,7 +127,7 @@ export default ({
       )}
     </>
 
-    return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable ? (
+    return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable && !isFirstOrLastCol ? (
       <Resizable
         axis="x"
         className={`${css.resizer}`}
