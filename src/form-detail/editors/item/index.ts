@@ -8,13 +8,42 @@ import {
   setNextSpan,
   createStyleForItem,
   createStyleForLabel,
-  createStyleForContent
+  createStyleForContent,
+  updateIOSchema
 } from '../utils';
 
 const itemKey = '.ant-descriptions-item';
+const itemLabelValue = {
+  get({ data, focusArea }: EditorResult<Data>) {
+    if (!focusArea) return;
+    return data.items[getEleIdx({ data, focusArea })]?.label;
+  },
+  set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+    if (!focusArea) return;
+    const item = data.items[getEleIdx({ data, focusArea })];
+    item.label = value;
+    const outputId = `${item.id}-suffixClick`;
+    if (output.get(outputId)) {
+      output.setTitle(outputId, `点击${item.label}`);
+    }
+    updateIOSchema({ data, input, output });
+  }
+}
 export const ItemsEditors = {
   [itemKey]: {
     title: '描述项',
+    "@dblclick": {
+      type: 'text',
+      value: itemLabelValue,
+      items: [{
+        title: '标签名称',
+        type: 'Text',
+        options: {
+          locale: true
+        },
+        value: itemLabelValue,
+      }]
+    },
     style: [
       createStyleForItem({
         target({ focusArea, data }) {
@@ -23,22 +52,20 @@ export const ItemsEditors = {
       }),
       createStyleForLabel({
         target({ focusArea, data }) {
-          const selector = `.${
-            data.items[getEleIdx({ data, focusArea })].id
-          }-item .ant-descriptions-item-label`;
+          const selector = `.${data.items[getEleIdx({ data, focusArea })].id
+            }-item .ant-descriptions-item-label`;
           return selector;
         }
       }),
       createStyleForContent({
         target({ focusArea, data }) {
-          const selector = `.${
-            data.items[getEleIdx({ data, focusArea })].id
-          }-item .ant-descriptions-item-content`;
+          const selector = `.${data.items[getEleIdx({ data, focusArea })].id
+            }-item .ant-descriptions-item-content`;
           return selector;
         }
       })
     ],
-    items: ({}: EditorResult<Data>, cate1) => {
+    items: ({ }: EditorResult<Data>, cate1) => {
       cate1.title = '常规';
       cate1.items = [...BaseEditor, ...StyleEditor, ...IndexEditor];
     }
