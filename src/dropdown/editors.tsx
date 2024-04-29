@@ -71,11 +71,13 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root': {
+  '.ant-space-item': {
     "@dblclick": {
       type: "text",
       value: contentValue
     },
+  },
+  ':root': {
     style: [
       {
         title: '菜单',
@@ -381,10 +383,6 @@ export default {
   },
   '[data-menu-item]': {
     title: '菜单项',
-    "@dblclick": {
-      type: "text",
-      value: itemLabelValue
-    },
     style: [
       {
         title: '选项',
