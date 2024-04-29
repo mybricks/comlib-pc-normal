@@ -4,7 +4,7 @@ import { createrCatelogEditor } from '../utils';
 import { Option, SizeEnum, SizeOptions } from '../types';
 import { Data } from './types';
 import { outputIds } from '../form-container/constants';
-
+import { getBtnItemInfo } from '../../toolbar/utils';
 let tempOptions: Option[] = [];
 
 const initParams = (data: Data) => {
@@ -493,5 +493,43 @@ export default {
         }
       }
     ]
-  }
+  },
+  '[data-btn-idx]': {
+    title: '按钮',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          console.log('data -==', data, focusArea)
+          if(!focusArea) return
+          const { item } = getBtnItemInfo(data, focusArea)
+          return item.label
+          // return getFormItemProp()
+        },
+        set({ data, focusArea, input, output }, value) {
+          console.log('set -- data', data, focusArea, value)
+          if(!focusArea) return
+          console.log('set -- data', data, focusArea, value)
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            console.log(' 标题---', data, focusArea)
+            return 'text'
+          },
+          set({ data, focusArea }: EditorResult<Data>, val) {
+            console.log(' 标题--- set', data, focusArea)
+          }
+        }
+      },
+    ]
+  },
 };

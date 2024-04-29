@@ -137,12 +137,26 @@ export default function Runtime({
   }, []);
 
   const onChange = useCallback((e) => {
+    if (env.edit) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
     const { value } = e.target;
     changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
 
+  const handleCommonCancel = (e, type) => {
+    console.log('ev == ', type, env.edit);
+    if (env.edit) {
+      e.stopPropagation();
+      e.stopImmediatePropagation?.();
+      console.log('stop ---- ');
+      return false;
+    }
+  };
   const renderRadio = () => {
     return (
       <div className={`${css.radio} radio`}>
@@ -167,12 +181,21 @@ export default function Runtime({
                     value={item.value}
                     disabled={item.disabled}
                     checked={item.checked}
+                    onClick={(e) => e.preventDefault()}
                     style={{
                       marginRight: 8,
                       color: value === item.value ? activeFontColor : ''
                     }}
                   >
-                    {env.i18n(label)}
+                    <span
+                      onDoubleClick={(e) => handleCommonCancel(e, 'dblclick')}
+                      onFocus={(e) => handleCommonCancel(e, 'focus')}
+                      data-btn-idx={item.key}
+                      onClick={(e) => handleCommonCancel(e, 'click')}
+                      onMouseDown={(e) => handleCommonCancel(e, 'mousedown')}
+                    >
+                      {env.i18n(label)}
+                    </span>
                   </Radio>
                 );
               })}

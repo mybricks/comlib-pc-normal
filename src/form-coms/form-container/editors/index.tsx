@@ -14,6 +14,7 @@ import { SizeOptions, SizeEnum } from '../../types';
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
 import DomainFieldEditor from './DomainFieldEditor';
+import { getBtnItemInfo } from '../../../toolbar/utils';
 
 function getFormItemProp(
   { data, ...com }: { data: Data; id: string; name: string },
@@ -549,9 +550,60 @@ export default {
       }
     }
   },
-
+  '[data-form-item]': {
+    title: '',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          console.log('data -==', data, focusArea);
+          if (!focusArea) return;
+          const { item } = getBtnItemInfo(data, focusArea);
+          return item.label;
+          // return getFormItemProp()
+        },
+        set({ data, focusArea, input, output }, value) {
+          console.log('set -- data', data, focusArea, value);
+          if (!focusArea) return;
+          console.log('set -- data', data, focusArea, value);
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            console.log(' 标题---', data, focusArea);
+            return 'text';
+          },
+          set({ data, focusArea }: EditorResult<Data>, val) {
+            console.log(' 标题--- set', data, focusArea);
+          }
+        }
+      }
+    ]
+  },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          console.log('data -==', data, focusArea);
+          if (!focusArea) return;
+          return '111';
+          // return getFormItemProp()
+        },
+        set({ data, focusArea, input, output }, value) {
+          console.log('set -- data', data, focusArea, value);
+        }
+      }
+    },
     style: [
       {
         title: '标题字体',
@@ -1041,6 +1093,20 @@ export default {
   },
   ':child(mybricks.normal-pc.form-container/form-addition-container)': {
     title: '其他内容',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          console.log('data -==', data, focusArea);
+          if (!focusArea) return;
+          return '111';
+          // return getFormItemProp()
+        },
+        set({ data, focusArea, input, output }, value) {
+          console.log('set -- data', data, focusArea, value);
+        }
+      }
+    },
     items: [
       {
         title: '样式',
@@ -1135,6 +1201,20 @@ export default {
     }
   },
   '[data-form-actions-item]': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          console.log('data -==', data, focusArea);
+          if (!focusArea) return;
+          return '111';
+          // return getFormItemProp()
+        },
+        set({ data, focusArea, input, output }, value) {
+          console.log('set -- data', data, focusArea, value);
+        }
+      }
+    },
     style: [
       {
         title: '风格',
