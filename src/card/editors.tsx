@@ -454,7 +454,7 @@ export default {
       ];
     }
   },
-  '.ant-card-head': {
+  '.ant-card-head .ant-card-head-wrapper .ant-card-head-title': {
     '@dblclick': {
       type: 'text',
       value: {
