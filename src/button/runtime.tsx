@@ -4,9 +4,11 @@ import { Data, OutputIds, LocationEnum, InputIds } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { Space, Image, Button } from 'antd';
+import { renderBtnContext } from './btnRender';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const [disabled, setDisable] = useState(false);
+  const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
 
   //如果data.dataType是'external'的
   useEffect(() => {
@@ -37,7 +39,14 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         relOutputs['setDynamicDisabledDone'](value);
       });
     }
+    inputs['setDynamicStyle'] &&
+      inputs['setDynamicStyle']((style: React.CSSProperties, relOutputs) => {
+        setDynamicStyle(style);
+        typeof relOutputs['setDynamicStyleDone'] === 'function' &&
+          relOutputs['setDynamicStyleDone']();
+      });
   }, []);
+
   const onClick = useCallback(() => {
     if (env.runtime) {
       const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
@@ -52,79 +61,6 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     }
   }, []);
 
-  const renderText = (text: string) => {
-    return <span>{env.i18n(text)}</span>;
-  };
-
-  // const renderTextAndIcon = (item: Data) => {
-  //   const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
-  //   const Icon = Icons && Icons[icon as string]?.render();
-  //   return (
-  //     <Space size={text !== '' ? iconDistance : 0}>
-  //       {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
-  //         <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
-  //       ) : null}
-  //       {!useIcon || showText ? renderText(text) : null}
-  //       {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
-  //         <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
-  //       ) : null}
-  //     </Space>
-  //   );
-  // };
-  const renderTextAndIcon = (item: Data) => {
-    const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
-    const Icon = Icons && Icons[icon as string]?.render();
-    return (
-      <Space size={text !== '' ? iconDistance : 0}>
-        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
-          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
-        ) : null}
-        {!useIcon || showText ? renderText(text) : null}
-        {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
-          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
-        ) : null}
-      </Space>
-    );
-  };
-
-  const renderTextAndCustom = (item: Data) => {
-    const { useIcon, iconLocation, iconDistance, text, showText, src, contentSize } = item;
-    return (
-      <Space size={text !== '' ? iconDistance : 0} className={css.space}>
-        {useIcon && src && iconLocation === LocationEnum.FRONT ? (
-          <Image
-            width={contentSize[1]}
-            height={contentSize[0]}
-            src={src}
-            preview={false}
-            alt={' '}
-          ></Image>
-        ) : null}
-        {!useIcon || showText ? renderText(text) : null}
-        {useIcon && src && iconLocation === LocationEnum.BACK ? (
-          <Image
-            width={contentSize[1]}
-            height={contentSize[0]}
-            src={src}
-            preview={false}
-            alt={' '}
-          ></Image>
-        ) : null}
-      </Space>
-    );
-  };
-
-  const renderBtnContext = (item: Data) => {
-    const { isCustom, text, useIcon } = item;
-    if (!useIcon) {
-      return renderText(text);
-    }
-    if (isCustom === true) {
-      return renderTextAndCustom(item);
-    } else {
-      return renderTextAndIcon(item);
-    }
-  };
   if (data.asMapArea) {
     return (
       <div
@@ -145,8 +81,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         disabled={disabled}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
+        style={dynamicStyle}
       >
-        {renderBtnContext(data)}
+        {renderBtnContext({ ...data, text: env.i18n(data.text) })}
       </Button>
     </div>
   );

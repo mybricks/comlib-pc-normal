@@ -1,5 +1,7 @@
 import contentMinCss from './tinymce/skins/ui/oxide/content.min.css';
 import defalutContentMinCss from './tinymce/skins/content/default/content.min.css';
+import { UploadFn } from './hooks/use-upload';
+import { uuid } from '../../utils';
 // 作用于iframe,所以使用该方式引入 因为skin,theme会按相对路径寻找,为本地化就关闭,再直接引入skin和theme
 interface InitProps {
   readonly?: boolean;
@@ -9,6 +11,7 @@ interface InitProps {
   height: number | string;
   toolbar: string;
   target: any;
+  upload?: UploadFn;
   setUp: (...angs: any) => void;
   initCB: (...angs: any) => void;
   placeholder: string;
@@ -29,6 +32,7 @@ export function Init({
   customIconsId,
   toolbar,
   placeholder,
+  upload,
   setUp,
   initCB,
   ...others
@@ -91,6 +95,25 @@ export function Init({
     paste_as_text: true, // 默认粘贴为文本
     convert_urls: false, //url不转换
     relative_urls: false, //转换为相对地址
+    images_upload_handler: function (blobInfo, success, failure, progress) {
+      if(!upload) return success(`data:image/jpeg;base64,${blobInfo.base64()}`);
+
+      let cnt = 0;
+      const interval = setInterval(() => {
+        progress(cnt++);
+        if (cnt >= 100) clearInterval(interval);
+      }, 20)
+      upload({
+        file: blobInfo.blob(),
+        file_name: `paste_img_${uuid()}`,
+        file_type: 'image'
+      }).then(res => {
+        success(res.data)
+      }).catch(() => {
+        success('upload fail') // 展示图片的地址，因为是个不存在的地址，所以展示裂图
+        failure('upload fail') // 上传失败提示
+      }).finally(() => { clearInterval(interval); })
+    },
     // skin: `oxide`,
     skin: false,
     // theme: 'silver',

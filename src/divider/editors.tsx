@@ -152,6 +152,17 @@ export default {
           }
         ]
       }
-    ]
+    ],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<DataType>) {
+          return data?.children;
+        },
+        set({ data }: EditorResult<DataType>, value: string) {
+          data.children = value;
+        }
+      }
+    }
   }
 };

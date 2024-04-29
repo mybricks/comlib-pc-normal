@@ -1,3 +1,5 @@
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 module.exports = {
   module: {
     rules: [
@@ -11,10 +13,7 @@ module.exports = {
               plugins: [
                 ['@babel/plugin-proposal-class-properties', { loose: true }],
                 ['@babel/plugin-proposal-private-methods', { loose: true }],
-                [
-                  '@babel/plugin-proposal-private-property-in-object',
-                  { loose: true }
-                ]
+                ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
               ],
               cacheDirectory: true
             }
@@ -27,14 +26,11 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [
-                '@babel/preset-env',
-                '@babel/preset-react'
-              ],
+              presets: ['@babel/preset-env', '@babel/preset-react'],
               plugins: [
-                ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-                ['@babel/plugin-proposal-private-methods', { 'loose': true }],
-                ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+                ['@babel/plugin-proposal-class-properties', { loose: true }],
+                ['@babel/plugin-proposal-private-methods', { loose: true }],
+                ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
               ],
               cacheDirectory: true
             }
@@ -70,24 +66,38 @@ module.exports = {
       }
     ]
   },
+  // externals: [
+  //   {
+  //     react: {
+  //       commonjs: 'react',
+  //       commonjs2: 'react',
+  //       amd: 'react',
+  //       root: 'React'
+  //     },
+  //     'react-dom': {
+  //       commonjs: 'react-dom',
+  //       commonjs2: 'react-dom',
+  //       amd: 'react-dom',
+  //       root: 'ReactDOM'
+  //     },
+  //     moment: 'moment',
+  //     antd: 'antd',
+  //     '@ant-design/icons': 'icons',
+  //     '@ant-design/charts': 'charts'
+  //   }
+  // ],
   externals: [
     {
-      react: {
-        commonjs: 'react',
-        commonjs2: 'react',
-        amd: 'react',
-        root: 'React'
-      },
-      'react-dom': {
-        commonjs: 'react-dom',
-        commonjs2: 'react-dom',
-        amd: 'react-dom',
-        root: 'ReactDOM'
-      },
-      moment: 'moment',
+      react: 'react',
+      'react-dom': 'react-dom',
       antd: 'antd',
-      '@ant-design/icons': 'icons',
-      '@ant-design/charts': 'charts',
+      moment: 'moment',
+      '@ant-design/icons': '@ant-design/icons'
     }
+  ],
+  plugins: [
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'static'
+    // })
   ]
-}
+};

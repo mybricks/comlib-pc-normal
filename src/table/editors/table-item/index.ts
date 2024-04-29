@@ -14,6 +14,18 @@ import { setCol } from '../../schema';
 const column = {
   [COLUMN_EDITORS_CLASS_KEY]: {
     title: '表格列',
+    "@dblclick": {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const item = getColumnItem(data, focusArea)
+          return item.title
+        },
+        set({ data, focusArea }: EditorResult<Data>, val) {
+          setCol({ data, focusArea }, 'title', val);
+        },
+      }
+    },
     items: ({ data }: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
       cateAry[0].items = [
@@ -23,9 +35,6 @@ const column = {
         TitleTipEditor,
         ...IndexEditor
       ];
-      // cateAry[1].title = '样式';
-      // cateAry[1].items = [...StyleEditor, TitleTipEditor];
-
       cateAry[1].title = '高级';
       cateAry[1].items = [SortEditor, FilterEditor];
       return {
@@ -33,19 +42,6 @@ const column = {
       };
     },
     style: [
-      // {
-      //   title: '开启斑马纹',
-      //   type: 'Switch',
-      //   description: '配置表格的单双行为不同样式',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.enableStripe;
-      //     },
-      //     set({ data }: EditorResult<Data>, value: boolean) {
-      //       data.enableStripe = value;
-      //     }
-      //   }
-      // },
       {
         title: '单行',
         ifVisible({ data }: EditorResult<Data>) {
@@ -110,13 +106,6 @@ const column = {
           return selector;
         }
       },
-      // createStyleForHead({
-      //   target({ data, focusArea, id }: EditorResult<Data>) {
-      //     const { tableThIdx } = focusArea.dataset;
-      //     const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(id)}`;
-      //     return selector;
-      //   }
-      // }),
       createStyleForColumnContent({
         catelog: '默认',
         target({ data, focusArea, id }: EditorResult<Data>) {

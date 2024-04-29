@@ -65,6 +65,7 @@ const refreshSchema = ({ input, output, data }: { input: any, output: any, data:
 };
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },
@@ -123,7 +124,7 @@ export default {
               {
                 title: '文本内容',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selection-search .ant-select-selection-search-input'
+                target: '.ant-select-selection-item'
               },
               {
                 title: '标签',
@@ -767,6 +768,72 @@ export default {
               },
               options: {
                 outputId: 'remoteSearch'
+              }
+            },
+          ]
+        },
+        {
+          title: '选项扩展',
+          items: [
+            {
+              title: '后置插槽',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !!data.slotAfterOption;
+                },
+                set({ data, slot }: EditorResult<Data>, value: boolean) {
+                  if (value) {
+                    data.slotAfterOption = 'slotAfterOption';
+                    slot.add({
+                      id: data.slotAfterOption,
+                      title: '后置插槽',
+                      type: 'scope',
+                      inputs: [
+                        {
+                          id: 'option',
+                          title: '当前选项',
+                          schema: {
+                            type: 'object',
+                            properties: {
+                              label: {
+                                type: 'string'
+                              },
+                              value: {
+                                type: 'any'
+                              },
+                            }
+                          }
+                        },
+                        {
+                          title: '当前索引',
+                          id: 'index',
+                          schema: {
+                            type: 'number'
+                          }
+                        }
+                      ]
+                    });
+                  } else {
+                    slot.remove(data.slotAfterOption);
+                    data.slotAfterOption = void 0;
+                  }
+                }
+              }
+            },
+            {
+              title: '显示弹层(仅搭建态生效)',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.slotAfterOption;;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !data.hidePopWhenEdit;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.hidePopWhenEdit = !value;
+                }
               }
             },
           ]

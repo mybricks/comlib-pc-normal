@@ -2,8 +2,8 @@ import { Data } from '../constants';
 import { updateIO, getFocusTab, removeIOAndSlot } from './common';
 
 export default {
-  '.ant-tabs-tab': {
-    title: "标签",
+  '.ant-tabs-tab div span': {
+    title: '标签',
     items: (props: EditorResult<Data>, cate1, cate2, cate3) => {
       if (!props.focusArea) return;
       const item = getFocusTab(props);
@@ -16,7 +16,7 @@ export default {
             locale: true
           },
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return item?.name;
             },
             set({ input, output, slots }: EditorResult<Data>, title: string) {
@@ -29,10 +29,10 @@ export default {
           title: '显示icon',
           type: 'Switch',
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return item?.showIcon;
             },
-            set({ }: EditorResult<Data>, value: boolean) {
+            set({}: EditorResult<Data>, value: boolean) {
               item.showIcon = value;
               item.icon = 'BellOutlined';
             }
@@ -42,14 +42,14 @@ export default {
           title: '图标自定义',
           type: 'Switch',
           description: '可选择是否需要自定义图标',
-          ifVisible({ }: EditorResult<Data>) {
+          ifVisible({}: EditorResult<Data>) {
             return item.showIcon;
           },
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return item.isChoose;
             },
-            set({ }: EditorResult<Data>, value: boolean) {
+            set({}: EditorResult<Data>, value: boolean) {
               item.isChoose = value;
               if (!item.isChoose) {
                 item.icon = 'BellOutlined';
@@ -60,14 +60,14 @@ export default {
         {
           title: '选择图标',
           type: 'icon',
-          ifVisible({ }: EditorResult<Data>) {
+          ifVisible({}: EditorResult<Data>) {
             return !!item.isChoose;
           },
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return item?.icon;
             },
-            set({ }: EditorResult<Data>, value: string) {
+            set({}: EditorResult<Data>, value: string) {
               item.icon = value;
             }
           }
@@ -80,10 +80,10 @@ export default {
             locale: true
           },
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return item?.tooltipText;
             },
-            set({ }: EditorResult<Data>, value: string) {
+            set({}: EditorResult<Data>, value: string) {
               item.tooltipText = value;
             }
           }
@@ -95,10 +95,10 @@ export default {
             return data.type === 'editable-card';
           },
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return item?.closable;
             },
-            set({ }: EditorResult<Data>, value: boolean) {
+            set({}: EditorResult<Data>, value: boolean) {
               item.closable = value;
             }
           }
@@ -109,7 +109,7 @@ export default {
             {
               title: '显示',
               type: '_Event',
-              options: ({ }: EditorResult<Data>) => {
+              options: ({}: EditorResult<Data>) => {
                 const id = item?.id;
                 return {
                   outputId: `${id}_into`
@@ -119,7 +119,7 @@ export default {
             {
               title: '隐藏',
               type: '_Event',
-              options: ({ }: EditorResult<Data>) => {
+              options: ({}: EditorResult<Data>) => {
                 const id = item?.id;
                 return {
                   outputId: `${id}_leave`
@@ -177,13 +177,12 @@ export default {
                     }
                     data.tabList.splice(focusArea.index, 1);
                     data.defaultActiveKey = data.tabList[0].key;
-
                   }
                 }
               }
             }
           ]
-        },
+        }
       ];
 
       cate2.title = '高级';
@@ -192,7 +191,7 @@ export default {
           title: '支持动态通知显示',
           type: 'Switch',
           value: {
-            get({ }: EditorResult<Data>) {
+            get({}: EditorResult<Data>) {
               return !!item?.dynamic;
             },
             set({ input }: EditorResult<Data>, value: boolean) {
@@ -214,11 +213,11 @@ export default {
             { label: '文本', value: 'text' },
             { label: '状态点', value: 'icon' }
           ],
-          ifVisible({ }) {
+          ifVisible({}) {
             return !!item?.dynamic;
           },
           value: {
-            get({ }) {
+            get({}) {
               return item.infoType || 'text';
             },
             set({ data }, value: 'text' | 'icon') {
@@ -233,11 +232,11 @@ export default {
             { label: '常规', value: 'default' },
             { label: '迷你', value: 'small' }
           ],
-          ifVisible({ }) {
+          ifVisible({}) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({ }) {
+            get({}) {
               return item.size || 'default';
             },
             set({ data }, value: 'text' | 'icon') {
@@ -249,14 +248,14 @@ export default {
           title: '数值-0-状态点显示',
           description: '数值为0时, 状态点是否显示',
           type: 'switch',
-          ifVisible({ }) {
+          ifVisible({}) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({ }) {
+            get({}) {
               return item.showZero || false;
             },
-            set({ }, value: number[]) {
+            set({}, value: number[]) {
               item.showZero = value;
             }
           }
@@ -269,14 +268,14 @@ export default {
             { title: '纵向', min: -100, max: 100, width: 100 }
           ],
           description: '设置状态点的位置偏移, 横向和纵向',
-          ifVisible({ }) {
+          ifVisible({}) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({ }) {
+            get({}) {
               return [item.offset[0], item.offset[1]] || [0, 0];
             },
-            set({ }, value: number[]) {
+            set({}, value: number[]) {
               item.offset = value;
             }
           }
@@ -289,13 +288,13 @@ export default {
             { label: '进行中', value: 'processing' },
             { label: '默认', value: 'default' },
             { label: '错误', value: 'error' },
-            { label: '警告', value: 'warning' },
+            { label: '警告', value: 'warning' }
           ],
-          ifVisible({ }) {
+          ifVisible({}) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({ }) {
+            get({}) {
               return item.status || 'error';
             },
             set({ data }, value: 'success' | 'processing' | 'default' | 'error' | 'warning') {
@@ -311,18 +310,33 @@ export default {
               description: '权限信息配置',
               type: '_permission',
               value: {
-                get({ }: EditorResult<Data>) {
+                get({}: EditorResult<Data>) {
                   return item.permission;
                 },
-                set({ }: EditorResult<Data>, value: ConfigPermission) {
-                  item.permission = value
-                  value.register?.()
+                set({}: EditorResult<Data>, value: ConfigPermission) {
+                  item.permission = value;
+                  value.register?.();
                 }
               }
             }
           ]
         }
       ];
+    },
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get(props: EditorResult<Data>) {
+          const item = getFocusTab(props);
+          return item?.name;
+        },
+        set(props: EditorResult<Data>, title: string) {
+          const item = getFocusTab(props);
+          item.name = title;
+          const { input, output, slots } = props;
+          updateIO({ input, output, item, slots });
+        }
+      }
     }
   }
 };

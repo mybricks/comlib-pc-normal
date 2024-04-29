@@ -13,10 +13,14 @@ import { FormListFieldData } from 'antd';
  * @param data 
  * @returns labelCol
  */
-export function getLabelCol(data: Data) {
-  const labelCol = data.labelWidthType === labelWidthTypes.SPAN
-    ? { span: data.labelCol }
-    : { flex: `0 0 ${data.labelWidth ? data.labelWidth : 25}px` }
+export function getLabelCol({ data, item }: { data: Data, item: FormItems }) {
+  let src: any = data;
+  if (item.showLabel === true) {
+    src = item;
+  }
+  const labelCol = src.labelWidthType === labelWidthTypes.SPAN
+    ? { span: src.labelCol }
+    : { flex: `0 0 ${src.labelWidth ? src.labelWidth : 25}px` }
 
   return labelCol
 }

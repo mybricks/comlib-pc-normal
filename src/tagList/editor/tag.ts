@@ -23,7 +23,7 @@ export default {
               title: '标签内容',
               type: 'text',
               options: {
-                locale: true,
+                locale: true
               },
               value: {
                 get({}: EditorResult<Data>) {
@@ -151,6 +151,19 @@ export default {
           }
         ]
       }
-    ]
+    ],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const [tag, index]: [Tag, number] = getTagItem(data, focusArea);
+          return tag.content;
+        },
+        set({ data, focusArea }: EditorResult<Data>, val: string) {
+          const [tag, index]: [Tag, number] = getTagItem(data, focusArea);
+          tag.content = val;
+        }
+      }
+    }
   }
 };
