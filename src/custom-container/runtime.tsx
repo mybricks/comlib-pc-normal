@@ -67,6 +67,10 @@ export default function (props: RuntimeParams<Data>) {
         }
       });
     }
+    if (env.edit) {
+      legacyStyle.maxHeight = void 0;
+      legacyStyle.maxWidth = void 0;
+    }
     return { ...legacyStyle, ...data.legacyConfigStyle };
   }, [data.legacyConfigStyle, data.legacyStyle]);
 
