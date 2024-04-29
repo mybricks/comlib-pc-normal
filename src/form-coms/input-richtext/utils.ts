@@ -108,7 +108,7 @@ export function Init({
         file_name: `paste_img_${uuid()}`,
         file_type: 'image'
       }).then(res => {
-        success(res.data)
+        success(res.url)
       }).catch(() => {
         success('upload fail') // 展示图片的地址，因为是个不存在的地址，所以展示裂图
         failure('upload fail') // 上传失败提示
