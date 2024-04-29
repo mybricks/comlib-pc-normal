@@ -1205,13 +1205,15 @@ export default {
       type: 'text',
       value: {
         get({ data, focusArea }) {
-          console.log('data -==', data, focusArea);
           if (!focusArea) return;
-          return '111';
-          // return getFormItemProp()
+          const comId = focusArea.dataset['formActionsItem'];
+          const item = data.actions.items.find((item) => item.key === comId);
+          return item.title;
         },
         set({ data, focusArea, input, output }, value) {
-          console.log('set -- data', data, focusArea, value);
+          const comId = focusArea.dataset['formActionsItem'];
+          const item = data.actions.items.find((item) => item.key === comId);
+          item.title = value;
         }
       }
     },

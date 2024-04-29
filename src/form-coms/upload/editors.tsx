@@ -766,6 +766,36 @@ export default {
         }
       ];
     }
+  },
+  '.upload-btn-text': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.config.buttonText;
+        },
+        set({ data }: EditorResult<Data>, val: string) {
+          data.config.buttonText = val;
+        }
+      }
+    },
+    items: [
+      {
+        title: '上传按钮文案',
+        type: 'Text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.buttonText;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.config.buttonText = value;
+          }
+        }
+      }
+    ]
   }
 };
 

@@ -140,7 +140,7 @@ export default function Runtime({
     if (env.edit) {
       e.preventDefault();
       e.stopPropagation();
-      return;
+      return false;
     }
     const { value } = e.target;
     changeValue(value);
@@ -178,24 +178,23 @@ export default function Runtime({
                   <Radio
                     autoFocus={autoFocus}
                     key={item.key}
+                    // data-radio-idx={item.key}
                     value={item.value}
                     disabled={item.disabled}
                     checked={item.checked}
-                    onClick={(e) => e.preventDefault()}
                     style={{
                       marginRight: 8,
                       color: value === item.value ? activeFontColor : ''
                     }}
                   >
-                    <span
+                    <span data-radio-idx={item.key}>{env.i18n(label)}</span>
+                    {/* <span
+                      className='custom-radio-label'
                       onDoubleClick={(e) => handleCommonCancel(e, 'dblclick')}
-                      onFocus={(e) => handleCommonCancel(e, 'focus')}
-                      data-btn-idx={item.key}
-                      onClick={(e) => handleCommonCancel(e, 'click')}
-                      onMouseDown={(e) => handleCommonCancel(e, 'mousedown')}
-                    >
-                      {env.i18n(label)}
-                    </span>
+                      data-radio-idx={item.id}
+                    > */}
+                    {/* {env.i18n(label)} */}
+                    {/* </span> */}
                   </Radio>
                 );
               })}
@@ -223,12 +222,13 @@ export default function Runtime({
             return (
               <Radio
                 key={item.value}
+                // data-radio-idx={item.key}
                 value={item.value}
                 disabled={item.disabled}
                 checked={item.checked}
                 style={{ color: value === item.value ? activeFontColor : '' }}
               >
-                {env.i18n(label)}
+                <span data-radio-idx={item.key}>{env.i18n(label)}</span>
               </Radio>
             );
           })}

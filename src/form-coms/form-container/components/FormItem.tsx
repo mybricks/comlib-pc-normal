@@ -45,8 +45,12 @@ const FormItem = (props) => {
         ? 'pre-wrap'
         : 'nowrap'
       : void 0;
-  console.log('showLabel', item?.label, com);
-
+  // const handleLabelClick = useCallback((e) => {
+  //   if(env.edit) {
+  //       e.stopPropagation()
+  //   }
+  //   console.log('dbclick form',)
+  // }, [env.edit])
   return (
     <Form.Item
       label={
@@ -55,10 +59,7 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
-          <label
-            data-form-item={com.name}
-            style={{ ...dynamicStyle.labelStyle, whiteSpace, color: 'green' }}
-          >
+          <label data-form-item={com.id} style={{ ...dynamicStyle.labelStyle, whiteSpace }}>
             {env.i18n(item?.label)}
           </label>
         )

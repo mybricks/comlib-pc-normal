@@ -186,7 +186,10 @@ export default function ({
       <Transfer
         className={styles.transfer}
         style={{ height: style.height }}
-        titles={[env.i18n(titles[0]), env.i18n(titles[1])]}
+        titles={[
+          <span data-transfer-title-idx="0">{env.i18n(titles[0])}</span>,
+          <span data-transfer-title-idx="1">{env.i18n(titles[1])}</span>
+        ]}
         dataSource={_dataSource}
         targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
         showSearch={showSearch}
