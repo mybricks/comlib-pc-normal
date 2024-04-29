@@ -20,11 +20,13 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root': {
+  '.ant-alert-message': {
     '@dblclick': {
       type: "text",
       value: messageValue
-    },
+    }
+  },
+  ':root': {
     style: [
       Editor<Data>('固定宽度', EditorType.Switch, 'openWidth'),
       Editor<Data>('百分比宽度', EditorType.Number, 'percentWidth', {
