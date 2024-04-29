@@ -25,6 +25,15 @@ import { itemEvent } from './itemEvent';
 import { subItemArr } from './subItemsArr';
 import IconEditor from './iconEditor';
 
+const dataMenuItem = {
+  get(props: EditorResult<Data>) {
+    return getMenuItem(props, 'title');
+  },
+  set(props: EditorResult<Data>, value: string) {
+    setMenuItem(props, 'title', value);
+  }
+}
+
 export default {
   '@init': ({ data, output, style }: EditorResult<Data>) => {
     const schema = {
@@ -219,9 +228,12 @@ export default {
     ]
   },
   '[data-menu-item]': {
+    "@dblclick": {
+      type: 'text',
+      value: dataMenuItem
+    },
     items: (props: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '菜单项';
-
       cate1.items = [
         {
           title: '标题',
@@ -229,14 +241,7 @@ export default {
           options: {
             locale: true
           },
-          value: {
-            get(props: EditorResult<Data>) {
-              return getMenuItem(props, 'title');
-            },
-            set(props: EditorResult<Data>, value: string) {
-              setMenuItem(props, 'title', value);
-            }
-          }
+          value: dataMenuItem
         },
         {
           title: '唯一标识',

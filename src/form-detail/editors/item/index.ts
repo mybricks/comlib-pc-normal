@@ -30,8 +30,7 @@ const itemLabelValue = {
   }
 }
 export const ItemsEditors = {
-  [itemKey]: {
-    title: '描述项',
+  '.ant-descriptions-item-label': {
     "@dblclick": {
       type: 'text',
       value: itemLabelValue,
@@ -44,6 +43,9 @@ export const ItemsEditors = {
         value: itemLabelValue,
       }]
     },
+  },
+  [itemKey]: {
+    title: '描述项',
     style: [
       createStyleForItem({
         target({ focusArea, data }) {
