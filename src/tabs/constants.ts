@@ -25,15 +25,15 @@ export interface TabItem {
   render?: boolean
 
   //类型
-  infoType: 'text' | 'icon';
+  infoType?: 'text' | 'icon';
   //状态点尺寸
-  size: 'default' | 'small';
+  size?: 'default' | 'small';
   //偏移量
-  offset: number[];
+  offset?: number[];
   //状态
-  status: 'success' | 'processing' | 'default' | 'error' | 'warning';
+  status?: 'success' | 'processing' | 'default' | 'error' | 'warning';
   //showZero
-  showZero: boolean;
+  showZero?: boolean;
 }
 /**
  * 数据源

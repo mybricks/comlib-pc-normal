@@ -304,6 +304,17 @@ export default {
           }
         ]
       }
-    ]
+    ],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.text;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.text = value;
+        }
+      }
+    }
   }
 };

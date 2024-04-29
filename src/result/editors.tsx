@@ -63,5 +63,31 @@ export default {
         }
       }
     }
-  ]
+  ],
+  '.ant-result-title': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: Result) {
+          return data.title;
+        },
+        set({ data }: Result, value: string) {
+          data.title = value;
+        }
+      }
+    }
+  },
+  '.ant-result-subtitle': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: Result) {
+          return data.subTitle;
+        },
+        set({ data }: Result, value: string) {
+          data.subTitle = value;
+        }
+      }
+    }
+  }
 };

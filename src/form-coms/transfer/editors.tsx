@@ -247,5 +247,52 @@ export default {
         }
       ];
     }
+  },
+  '[data-transfer-title-idx]': {
+    title: '按钮',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          const index = parseInt(focusArea.dataset['transferTitleIdx']);
+          let title = data.titles[index] ? data.titles[index] : index === 0 ? '源数据' : '目标数据';
+          return title;
+        },
+        set({ data, focusArea, input, output }, value) {
+          if (!focusArea) return;
+          const index = parseInt(focusArea.dataset['transferTitleIdx']);
+          data.titles[index] = value;
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            const index = parseInt(focusArea.dataset['transferTitleIdx']);
+            let title = data.titles?.[index]
+              ? data.titles[index]
+              : index === 0
+              ? '源数据'
+              : '目标数据';
+            return title;
+          },
+          set({ data, focusArea }: EditorResult<Data>, val) {
+            if (!focusArea) return;
+            const index = parseInt(focusArea.dataset['transferTitleIdx']);
+            if (data.titles) {
+              data.titles[index] = val;
+            }
+          }
+        }
+      }
+    ]
   }
 };

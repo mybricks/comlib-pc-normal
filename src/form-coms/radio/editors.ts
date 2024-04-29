@@ -4,8 +4,19 @@ import { createrCatelogEditor } from '../utils';
 import { Option, SizeEnum, SizeOptions } from '../types';
 import { Data } from './types';
 import { outputIds } from '../form-container/constants';
-
+// import { getBtnItemInfo } from '../../toolbar/utils';
 let tempOptions: Option[] = [];
+
+export const getBtnItemInfo = (
+  data: Data,
+  focusArea,
+  datasetKey = 'radioIdx'
+): { item: Option; index: number } => {
+  const key = focusArea?.dataset?.[datasetKey];
+  const index = data.staticOptions.findIndex((item) => key && item.key === key);
+  const res = index === -1 ? undefined : data.staticOptions[index];
+  return { item: res, index };
+};
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
@@ -493,5 +504,44 @@ export default {
         }
       }
     ]
-  }
+  },
+  '[data-radio-idx]': {
+    title: '按钮',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if(!focusArea) return
+          const { item } = getBtnItemInfo(data, focusArea)
+          return item.label
+        },
+        set({ data, focusArea, input, output }, value) {
+          if(!focusArea) return
+          const { item } = getBtnItemInfo(data, focusArea)
+          item.label = value
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if(!focusArea) return
+            const { item } = getBtnItemInfo(data, focusArea)
+            return item.label
+          },
+          set({ data, focusArea }: EditorResult<Data>, val) {
+            if(!focusArea) return
+            const { item } = getBtnItemInfo(data, focusArea)
+            item.label = val
+          }
+        }
+      },
+    ]
+  },
 };

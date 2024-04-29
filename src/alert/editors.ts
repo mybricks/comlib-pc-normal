@@ -1,9 +1,30 @@
 import { Editor, EditorType } from '../utils/editor';
 import { Data, SlotIds, TypeOptions } from './constants';
-
+const messageValue = {
+  get({ data }: EditorResult<Data>) {
+    if (typeof data.message !== 'string') {
+      return data.message
+    } else {
+      return decodeURIComponent(data.message);
+    }
+  },
+  set({ data }: EditorResult<Data>, value: string) {
+    if (typeof value !== 'string') {
+      data.message = value
+    } else {
+      data.message = encodeURIComponent(value);
+    }
+  }
+}
 export default {
   '@resize': {
     options: ['width']
+  },
+  '.ant-alert-message': {
+    '@dblclick': {
+      type: "text",
+      value: messageValue
+    }
   },
   ':root': {
     style: [
@@ -27,28 +48,28 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return data.type === 'info';
         },
-        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-alert-info'
       },
       {
         ifVisible({ data }: EditorResult<Data>) {
           return data.type === 'success';
         },
-        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-alert-success'
       },
       {
         ifVisible({ data }: EditorResult<Data>) {
           return data.type === 'error';
         },
-        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-alert-error'
       },
       {
         ifVisible({ data }: EditorResult<Data>) {
           return data.type === 'warning';
         },
-        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-alert-warning'
       },
       {
@@ -70,31 +91,13 @@ export default {
           fontSize: 16
         }
       },
-      // {
-      //   title: '图标尺寸',
-      //   type: 'text',
-      //   description: '图标尺寸,支持百分比和定宽',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return String(data.size);
-      //     },
-      //     set({ data }: EditorResult<Data>, value: string) {
-      //       if (/^\d+$/.test(value)) {
-      //         data.size = `${value}px`;
-      //       } else {
-      //         data.size = value;
-      //       }
-      //       console.log(data.size);
-      //     }
-      //   }
-      // },
       {
         title: '图标',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         target: '.ant-alert-icon'
       }
     ],
-    items: ({}: EditorResult<Data>, cate1, cate2) => {
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -103,22 +106,7 @@ export default {
           options: {
             locale: true
           },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              if(typeof data.message !== 'string'){
-                return data.message
-              }else{
-                return decodeURIComponent(data.message);
-              }
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              if(typeof value !== 'string'){
-                data.message = value
-              }else{
-                data.message = encodeURIComponent(value);
-              }
-            }
-          }
+          value: messageValue
         },
         Editor<Data>('类型', EditorType.Select, 'type', {
           options: TypeOptions
@@ -136,16 +124,16 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              if(typeof data.content !== 'string'){
+              if (typeof data.content !== 'string') {
                 return data.content
-              }else{
+              } else {
                 return decodeURIComponent(data.content);
               }
             },
             set({ data }: EditorResult<Data>, value: string) {
-              if(typeof value !== 'string'){
+              if (typeof value !== 'string') {
                 data.content = value
-              }else{
+              } else {
                 data.content = encodeURIComponent(value);
               }
             }
@@ -158,7 +146,7 @@ export default {
           }
         })
       ];
-  
+
       cate2.title = '高级';
       cate2.items = [
         Editor<Data>('介绍文案插槽', EditorType.Switch, 'useContentSlot', {
@@ -175,11 +163,11 @@ export default {
           }
         })
       ];
-  
+
       return {
         title: '警告提示',
       };
     }
-    
+
   }
 };

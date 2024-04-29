@@ -45,7 +45,6 @@ const FormItem = (props) => {
         ? 'pre-wrap'
         : 'nowrap'
       : void 0;
-
   return (
     <Form.Item
       label={
@@ -54,7 +53,9 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
-          <label style={{ ...dynamicStyle.labelStyle, whiteSpace }}>{env.i18n(item?.label)}</label>
+          <label data-form-item={com.id} style={{ ...dynamicStyle.labelStyle, whiteSpace }}>
+            {env.i18n(item?.label)}
+          </label>
         )
       }
       className={item.labelSlot ? css.customLabel : void 0}

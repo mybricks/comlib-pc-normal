@@ -21,7 +21,7 @@ export const updateIO = ({ input, output, item, slots }: { input?: any; output?:
   input.setTitle(key, `${name}的通知数`);
   output.setTitle(`${id}_into`, `${name}显示`);
   output.setTitle(`${id}_leave`, `${name}隐藏`);
-  slots.get(item.key)!.setTitle(`${name}`);
+  slots.get(item.key) && slots.get(item.key)!.setTitle(`${name}`);
 };
 
 export const removeIOAndSlot = (props: EditorResult<Data>, item: TabItem) => {

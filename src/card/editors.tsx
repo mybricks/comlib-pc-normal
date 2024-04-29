@@ -2,6 +2,7 @@ import { Data, OutputIds, SizeOptions, SlotIds, Item } from './constants';
 import { Editor, EditorType } from '../utils/editor';
 import { uuid } from '../utils';
 import { getFilterSelector } from '../utils/cssSelector';
+import { message } from 'antd';
 
 let ItemsLength, addItem, delItem;
 
@@ -274,8 +275,7 @@ export default {
               ifVisible({ data }: EditorResult<Data>) {
                 return data.dataType === 'object';
               },
-              description:
-                '点击按钮向外输出的值, 输出值无数据即为空对象，举例: {"name": "poweros"}',
+              description: '点击按钮向外输出的值, 输出值无数据即为空对象，举例: {"name": "power"}',
               value: {
                 get({ data }: EditorResult<Data>) {
                   try {
@@ -289,7 +289,7 @@ export default {
                     const resValue = JSON.parse(value.replace(/\n/g, '').replace(/\r/g, ''));
                     data.outputContent = resValue;
                   } catch {
-                    message.warning('输出值格式有误, 参考格式{"name": "poweros"}');
+                    message.warning('输出值格式有误, 参考格式{"name": "power"}');
                   }
                 }
               }
@@ -452,6 +452,19 @@ export default {
         ...eventItems,
         ...actionItems
       ];
+    }
+  },
+  '.ant-card-head .ant-card-head-wrapper .ant-card-head-title': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.title;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.title = value;
+        }
+      }
     }
   }
 };

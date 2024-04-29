@@ -4,6 +4,20 @@ import { Option, OutputIds } from '../types';
 import { Data } from './types';
 import { createrCatelogEditor } from '../utils';
 
+export const getCheckBoxItemInfo = (
+  data: Data,
+  focusArea,
+  datasetKey = 'checkboxIdx'
+): { item: Partial<Option>; index: number } => {
+  const key = focusArea?.dataset?.[datasetKey];
+  if(key === 'all') {
+    return { item: { label: data.checkAllText, key: 'all', index: 0  }}
+  }
+  const index = data.staticOptions.findIndex((item) => key && item.key === key);
+  const res = index === -1 ? undefined : data.staticOptions[index];
+  return { item: res, index };
+};
+
 export default {
   '@resize': {
     options: ['width']
@@ -469,5 +483,52 @@ export default {
         }
       ];
     }
-  }
+  },
+  '[data-checkbox-idx]': {
+    title: '选项',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if(!focusArea) return
+          const { item } = getCheckBoxItemInfo(data, focusArea)
+          return item.label
+        },
+        set({ data, focusArea, input, output }, value) {
+          if(!focusArea) return
+          const { item } = getCheckBoxItemInfo(data, focusArea)
+          if(item.key === 'all') {
+            data.checkAllText = value
+            return
+          }
+          item.label = value
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if(!focusArea) return
+          const { item } = getCheckBoxItemInfo(data, focusArea)
+          return item.label
+          },
+          set({ data, focusArea }: EditorResult<Data>, val) {
+            if(!focusArea) return
+            const { item } = getCheckBoxItemInfo(data, focusArea)
+            if(item.key === 'all') {
+              data.checkAllText = val
+              return
+            }
+            item.label = val
+          }
+        }
+      },
+    ]
+  },
 };
