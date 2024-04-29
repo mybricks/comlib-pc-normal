@@ -152,7 +152,9 @@ export default {
           }
         ]
       }
-    ],
+    ]
+  },
+  '.ant-divider-inner-text': {
     '@dblclick': {
       type: 'text',
       value: {
