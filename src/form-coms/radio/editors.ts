@@ -531,8 +531,14 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
+            if(!focusArea) return
+            const { item } = getBtnItemInfo(data, focusArea)
+            return item.label
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
+            if(!focusArea) return
+            const { item } = getBtnItemInfo(data, focusArea)
+            item.label = val
           }
         }
       },

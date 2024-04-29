@@ -45,12 +45,6 @@ const FormItem = (props) => {
         ? 'pre-wrap'
         : 'nowrap'
       : void 0;
-  // const handleLabelClick = useCallback((e) => {
-  //   if(env.edit) {
-  //       e.stopPropagation()
-  //   }
-  //   console.log('dbclick form',)
-  // }, [env.edit])
   return (
     <Form.Item
       label={

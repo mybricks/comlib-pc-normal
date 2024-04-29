@@ -5,7 +5,7 @@ import { ButtonType } from 'antd/es/button/button';
 import { actionsEditor } from './actions';
 import { inputIds, outputIds } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
-import { getFormItem } from '../utils';
+import { getFormItem, getFormItemById } from '../utils';
 import { uuid } from '../../../utils';
 import iconEditor from './iconEditor';
 import { createrCatelogEditor } from '../../utils/index';
@@ -556,16 +556,16 @@ export default {
       type: 'text',
       value: {
         get({ data, focusArea }) {
-          console.log('data -==', data, focusArea);
           if (!focusArea) return;
-          let id = focusArea.dataset.formId;
-          const { item } = getFormItem(data, { id });
+          let id = focusArea.dataset.formItem;
+          const { item } = getFormItemById(data, { id });
           return item.label;
-          // return getFormItemProp()
         },
         set({ data, focusArea, input, output }, value) {
-          console.log('set -- data', data, focusArea, value);
           if (!focusArea) return;
+          let id = focusArea.dataset.formItem;
+          const { item } = getFormItemById(data, { id });
+          item.label = value;
         }
       }
     },
@@ -578,11 +578,16 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
-            console.log(' 标题---', data, focusArea);
-            return 'text';
+            if (!focusArea) return;
+            let id = focusArea.dataset.formItem;
+            const { item } = getFormItemById(data, { id });
+            return item.label;
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
-            console.log(' 标题--- set', data, focusArea);
+            if (!focusArea) return;
+            let id = focusArea.dataset.formItem;
+            const { item } = getFormItemById(data, { id });
+            item.label = val;
           }
         }
       }
