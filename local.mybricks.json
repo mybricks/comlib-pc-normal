@@ -138,5 +138,6 @@
     "./src/_receive-message/com.json",
     "./src/_countdown/com.json"
   ],
-  "tags": "react"
+  "tags": "react",
+  "webpackConfig": "./webpack.config.local.js"
 }
