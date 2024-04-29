@@ -43,7 +43,7 @@ export const MaxHeightEditor = {
       }
     },
     {
-      title: '最大宽度',
+      title: '最大宽度(运行时生效)',
       type: 'text',
       description: '组件宽度需设置为适应内容/最大可能的宽度',
       options: {
@@ -62,7 +62,7 @@ export const MaxHeightEditor = {
       }
     },
     {
-      title: '最大高度',
+      title: '最大高度(运行时生效)',
       type: 'text',
       description: '组件高度需设置为适应内容/最大可能的高度',
       options: {
