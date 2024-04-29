@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -285,8 +286,16 @@ export default function Runtime({
     };
   });
 
-  // console.log('new options', newOptions)
-
+  const radioGroupChildren = useMemo(() => {
+    if (env.edit) {
+      return newOptions.map((item) => (
+        <span data-checkbox-idx={item.key}>
+          <Checkbox {...item}>{item.label}</Checkbox>
+        </span>
+      ));
+    }
+    return newOptions.map((item) => <Checkbox {...item}>{item.label}</Checkbox>);
+  }, [env.edit, newOptions]);
   return (
     <div className={`${css.checkbox} checkbox`} style={single ? singlebox : void 0}>
       {data.isEditable
@@ -309,15 +318,11 @@ export default function Runtime({
           style={checkboxGroup}
           // {...data.config}
           disabled={data.config.disabled}
-          // options={newOptions}
+          options={env.edit ? undefined : newOptions}
           value={value}
           onChange={onChange}
         >
-          {newOptions.map((item) => (
-            <span data-checkbox-idx={item.key}>
-              <Checkbox {...item}>{item.label}</Checkbox>
-            </span>
-          ))}
+          {radioGroupChildren}
         </Checkbox.Group>
       ) : Array.isArray(value) ? (
         value.join(',')
