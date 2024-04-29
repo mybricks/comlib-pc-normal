@@ -26,6 +26,17 @@ const addItem = (data) => {
   });
 };
 
+const itemContentValue = {
+  get({ data, focusArea }: Result) {
+    return findConfig({ data, focusArea }, 'content');
+  },
+  set({ data, focusArea }: Result, value: string) {
+    findConfig({ data, focusArea }, (config) => {
+      config.content = value;
+    });
+  }
+}
+
 function findConfig(
   { data, focusArea }: { data: Data; focusArea: any },
   configName: string | { (arg0: Children): void }
@@ -97,6 +108,10 @@ export default {
   ],
   '[data-sort]': {
     title: '子项操作',
+    "@dblclick": {
+      type: "text",
+      value: itemContentValue
+    },
     items: [
       {
         title: '标题',
@@ -104,16 +119,7 @@ export default {
         options: {
           locale: true
         },
-        value: {
-          get({ data, focusArea }: Result) {
-            return findConfig({ data, focusArea }, 'content');
-          },
-          set({ data, focusArea }: Result, value: string) {
-            findConfig({ data, focusArea }, (config) => {
-              config.content = value;
-            });
-          }
-        }
+        value: itemContentValue
       },
       {
         title: '字段名',

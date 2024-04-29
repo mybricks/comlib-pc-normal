@@ -44,19 +44,6 @@ export default {
     ]
   },
   ".ant-descriptions-title": {
-    title: '标题',
-    items: [{
-      title: '标题',
-      type: "text",
-      value: {
-        get({ data }) {
-          return data.title
-        },
-        set({ data }, val) {
-          data.title = val
-        }
-      }
-    }],
     "@dblclick": {
       type: 'text',
       value: {

@@ -10,6 +10,26 @@ let tempOptions: any = [],
   addOption,
   delOption;
 
+
+const contentValue = {
+  get({ data }: EditorResult<Data>) {
+    return data.content;
+  },
+  set({ data }: EditorResult<Data>, value: string) {
+    data.content = value;
+  }
+}
+
+const itemLabelValue = {
+  get({ data, focusArea }: EditorResult<Data>) {
+    return get(data, focusArea, 'menuItem', 'label');
+  },
+  set({ data, focusArea }: EditorResult<Data>, value: string) {
+    const res = get(data, focusArea, 'menuItem', 'obj');
+    res.label = value;
+  }
+}
+
 //设置初始的options
 const initParams = (data: Data) => {
   tempOptions = data.options || [];
@@ -52,6 +72,10 @@ export default {
     options: ['width']
   },
   ':root': {
+    "@dblclick": {
+      type: "text",
+      value: contentValue
+    },
     style: [
       {
         title: '菜单',
@@ -124,14 +148,7 @@ export default {
           ifVisible({ data }: EditorResult<Data>) {
             return !data.isCustom;
           },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.content;
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              data.content = value;
-            }
-          }
+          value: contentValue
         },
         {
           title: '自定义',
@@ -256,18 +273,18 @@ export default {
                   }
                 }
               }
-              if(val){
+              if (val) {
                 !input.get("setDynamicOptions") && input.add("setDynamicOptions", "设置选项", schema);
                 !output.get("setDynamicOptionsDone") &&
-                output.add("setDynamicOptionsDone", '设置选项完成', schema);
+                  output.add("setDynamicOptionsDone", '设置选项完成', schema);
 
                 input.get("setDynamicOptions").setRels(["setDynamicOptionsDone"]);
-              }else{
+              } else {
                 input.get("setDynamicOptions") && input.remove("setDynamicOptions");
                 output.get("setDynamicOptionsDone") && output.remove("setDynamicOptionsDone");
               }
 
-        
+
             }
           }
         },
@@ -364,6 +381,10 @@ export default {
   },
   '[data-menu-item]': {
     title: '菜单项',
+    "@dblclick": {
+      type: "text",
+      value: itemLabelValue
+    },
     style: [
       {
         title: '选项',
@@ -393,7 +414,7 @@ export default {
         }
       }
     ],
-    items: ({}: EditorResult<Data>, cate1) => {
+    items: ({ }: EditorResult<Data>, cate1) => {
       (cate1.title = '菜单项'),
         (cate1.items = [
           {
@@ -402,15 +423,7 @@ export default {
             options: {
               locale: true
             },
-            value: {
-              get({ data, focusArea }: EditorResult<Data>) {
-                return get(data, focusArea, 'menuItem', 'label');
-              },
-              set({ data, focusArea }: EditorResult<Data>, value: string) {
-                const res = get(data, focusArea, 'menuItem', 'obj');
-                res.label = value;
-              }
-            }
+            value: itemLabelValue
           },
           {
             title: '跳转链接(可选)',
