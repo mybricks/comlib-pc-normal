@@ -418,13 +418,25 @@ export default function ({
 
     render(<ImgPreview src={src} onClose={onClose} />, divEle);
   };
+
+  const handleLabelClick = useCallback(
+    (e) => {
+      if (env.edit) {
+        e.stopPropagation();
+        return;
+      }
+    },
+    [env.edit]
+  );
   const UploadNode = listType === 'dragger' ? Upload.Dragger : Upload;
   // 上传按钮渲染
   const renderUploadText = () => {
     const pictureButton = (
       <div>
         {data.hideIcon ? void 0 : Icons && Icons[data.picCardIcon]?.render()}
-        <div style={{ marginTop: 8 }}>{env.i18n(buttonText)}</div>
+        <div style={{ marginTop: 8 }} className="upload-btn-text" onClick={handleLabelClick}>
+          {env.i18n(buttonText)}
+        </div>
       </div>
     );
 
@@ -434,7 +446,9 @@ export default function ({
         disabled={disabled}
         size={data.buttonSize}
       >
-        <span className="text">{env.i18n(buttonText)}</span>
+        <span className="text upload-btn-text" onClick={handleLabelClick}>
+          {env.i18n(buttonText)}
+        </span>
       </Button>
     );
 
@@ -444,7 +458,9 @@ export default function ({
         disabled={disabled}
         size={data.buttonSize}
       >
-        <span className="text">{env.i18n(buttonText)}</span>
+        <span className="text upload-btn-text" onClick={handleLabelClick}>
+          {env.i18n(buttonText)}
+        </span>
       </Button>
     );
 
@@ -453,7 +469,9 @@ export default function ({
         <p className="ant-upload-drag-icon" style={{ display: data.hideIcon ? 'none' : void 0 }}>
           {Icons && Icons[data.dragIcon]?.render()}
         </p>
-        <p className="ant-upload-text">{env.i18n(buttonText)}</p>
+        <p className="ant-upload-text upload-btn-text" onClick={handleLabelClick}>
+          {env.i18n(buttonText)}
+        </p>
       </>
     );
 

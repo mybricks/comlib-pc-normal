@@ -137,12 +137,26 @@ export default function Runtime({
   }, []);
 
   const onChange = useCallback((e) => {
+    if (env.edit) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
     const { value } = e.target;
     changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
 
+  const handleCommonCancel = (e, type) => {
+    console.log('ev == ', type, env.edit);
+    if (env.edit) {
+      e.stopPropagation();
+      e.stopImmediatePropagation?.();
+      console.log('stop ---- ');
+      return false;
+    }
+  };
   const renderRadio = () => {
     return (
       <div className={`${css.radio} radio`}>
@@ -164,6 +178,7 @@ export default function Runtime({
                   <Radio
                     autoFocus={autoFocus}
                     key={item.key}
+                    // data-radio-idx={item.key}
                     value={item.value}
                     disabled={item.disabled}
                     checked={item.checked}
@@ -172,7 +187,14 @@ export default function Runtime({
                       color: value === item.value ? activeFontColor : ''
                     }}
                   >
-                    {env.i18n(label)}
+                    <span data-radio-idx={item.key}>{env.i18n(label)}</span>
+                    {/* <span
+                      className='custom-radio-label'
+                      onDoubleClick={(e) => handleCommonCancel(e, 'dblclick')}
+                      data-radio-idx={item.id}
+                    > */}
+                    {/* {env.i18n(label)} */}
+                    {/* </span> */}
                   </Radio>
                 );
               })}
@@ -200,12 +222,13 @@ export default function Runtime({
             return (
               <Radio
                 key={item.value}
+                // data-radio-idx={item.key}
                 value={item.value}
                 disabled={item.disabled}
                 checked={item.checked}
                 style={{ color: value === item.value ? activeFontColor : '' }}
               >
-                {env.i18n(label)}
+                <span data-radio-idx={item.key}>{env.i18n(label)}</span>
               </Radio>
             );
           })}
