@@ -285,29 +285,40 @@ export default function Runtime({
     };
   });
 
+  // console.log('new options', newOptions)
+
   return (
     <div className={`${css.checkbox} checkbox`} style={single ? singlebox : void 0}>
       {data.isEditable
         ? data.checkAll && (
-            <Checkbox
-              style={checkboxStyle}
-              indeterminate={indeterminate}
-              onChange={onCheckAllChange}
-              checked={checkAll}
-              disabled={data.config.disabled}
-            >
-              {env.i18n(data.checkAllText)}
-            </Checkbox>
+            <span data-checkbox-idx={'all'}>
+              <Checkbox
+                style={checkboxStyle}
+                indeterminate={indeterminate}
+                onChange={onCheckAllChange}
+                checked={checkAll}
+                disabled={data.config.disabled}
+              >
+                {env.i18n(data.checkAllText)}
+              </Checkbox>
+            </span>
           )
         : void 0}
       {data.isEditable ? (
         <Checkbox.Group
           style={checkboxGroup}
-          {...data.config}
-          options={newOptions}
+          // {...data.config}
+          disabled={data.config.disabled}
+          // options={newOptions}
           value={value}
           onChange={onChange}
-        />
+        >
+          {newOptions.map((item) => (
+            <span data-checkbox-idx={item.key}>
+              <Checkbox {...item}>{item.label}</Checkbox>
+            </span>
+          ))}
+        </Checkbox.Group>
       ) : Array.isArray(value) ? (
         value.join(',')
       ) : (

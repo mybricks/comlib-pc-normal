@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Radio, Space } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -140,6 +140,7 @@ export default function Runtime({
     if (env.edit) {
       e.preventDefault();
       e.stopPropagation();
+      console.log('enter onchange');
       return false;
     }
     const { value } = e.target;
@@ -155,6 +156,12 @@ export default function Runtime({
       e.stopImmediatePropagation?.();
       console.log('stop ---- ');
       return false;
+    }
+  };
+
+  const handleLabelFocus = (e) => {
+    if (env.edit) {
+      e.stopPropagation();
     }
   };
   const renderRadio = () => {
@@ -175,27 +182,22 @@ export default function Runtime({
                   !!data.autoFocus &&
                   (data.autoFocus === 'first' ? radioIdx === 0 : valueRef.current === item.value);
                 return (
-                  <Radio
-                    autoFocus={autoFocus}
-                    key={item.key}
-                    // data-radio-idx={item.key}
-                    value={item.value}
-                    disabled={item.disabled}
-                    checked={item.checked}
-                    style={{
-                      marginRight: 8,
-                      color: value === item.value ? activeFontColor : ''
-                    }}
-                  >
-                    <span data-radio-idx={item.key}>{env.i18n(label)}</span>
-                    {/* <span
-                      className='custom-radio-label'
-                      onDoubleClick={(e) => handleCommonCancel(e, 'dblclick')}
-                      data-radio-idx={item.id}
-                    > */}
-                    {/* {env.i18n(label)} */}
-                    {/* </span> */}
-                  </Radio>
+                  <div data-radio-idx={item.key} style={{ display: 'inline-block' }}>
+                    <Radio
+                      autoFocus={autoFocus}
+                      key={item.key}
+                      // data-radio-idx={item.key}
+                      value={item.value}
+                      disabled={item.disabled}
+                      checked={item.checked}
+                      style={{
+                        marginRight: 8,
+                        color: value === item.value ? activeFontColor : ''
+                      }}
+                    >
+                      {env.i18n(label)}
+                    </Radio>
+                  </div>
                 );
               })}
             </Space>

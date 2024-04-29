@@ -10,12 +10,11 @@ let tempOptions: Option[] = [];
 export const getBtnItemInfo = (
   data: Data,
   focusArea,
-  datasetKey = 'btnIdx'
+  datasetKey = 'radioIdx'
 ): { item: Option; index: number } => {
   const key = focusArea?.dataset?.[datasetKey];
   const index = data.staticOptions.findIndex((item) => key && item.key === key);
   const res = index === -1 ? undefined : data.staticOptions[index];
-  debugger
   return { item: res, index };
 };
 
@@ -512,14 +511,11 @@ export default {
       type: 'text',
       value: {
         get({ data, focusArea }) {
-          console.log('data -==', data, focusArea)
           if(!focusArea) return
           const { item } = getBtnItemInfo(data, focusArea)
           return item.label
-          // return getFormItemProp()
         },
         set({ data, focusArea, input, output }, value) {
-          console.log('set -- data', data, focusArea, value)
           if(!focusArea) return
           const { item } = getBtnItemInfo(data, focusArea)
           item.label = value
@@ -535,11 +531,8 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
-            console.log(' 标题---', data, focusArea)
-            return 'text'
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
-            console.log(' 标题--- set', data, focusArea)
           }
         }
       },
