@@ -6,17 +6,6 @@ export default {
     options: ['width']
   },
   ':root': {
-    '@dblclick': {
-      type: 'text',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.title;
-        },
-        set({ data }: EditorResult<Data>, value: string) {
-          data.title = value;
-        }
-      }
-    },
     items: ({}, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
@@ -118,7 +107,6 @@ export default {
       ];
     }
   },
-  // 不生效先使用root的
   '.ant-collapse-item .ant-collapse-header-text': {
     '@dblclick': {
       type: 'text',
@@ -130,20 +118,6 @@ export default {
           data.title = value;
         }
       }
-    },
-    items: [
-      {
-        title: '标题',
-        type: 'Text',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.title;
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.title = value;
-          }
-        }
-      }
-    ]
+    }
   }
 };
