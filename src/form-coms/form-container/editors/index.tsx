@@ -558,14 +558,14 @@ export default {
         get({ data, focusArea }) {
           console.log('data -==', data, focusArea);
           if (!focusArea) return;
-          const { item } = getBtnItemInfo(data, focusArea);
+          let id = focusArea.dataset.formId;
+          const { item } = getFormItem(data, { id });
           return item.label;
           // return getFormItemProp()
         },
         set({ data, focusArea, input, output }, value) {
           console.log('set -- data', data, focusArea, value);
           if (!focusArea) return;
-          console.log('set -- data', data, focusArea, value);
         }
       }
     },
@@ -590,20 +590,6 @@ export default {
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
-    '@dblclick': {
-      type: 'text',
-      value: {
-        get({ data, focusArea }) {
-          console.log('data -==', data, focusArea);
-          if (!focusArea) return;
-          return '111';
-          // return getFormItemProp()
-        },
-        set({ data, focusArea, input, output }, value) {
-          console.log('set -- data', data, focusArea, value);
-        }
-      }
-    },
     style: [
       {
         title: '标题字体',
@@ -1093,20 +1079,6 @@ export default {
   },
   ':child(mybricks.normal-pc.form-container/form-addition-container)': {
     title: '其他内容',
-    '@dblclick': {
-      type: 'text',
-      value: {
-        get({ data, focusArea }) {
-          console.log('data -==', data, focusArea);
-          if (!focusArea) return;
-          return '111';
-          // return getFormItemProp()
-        },
-        set({ data, focusArea, input, output }, value) {
-          console.log('set -- data', data, focusArea, value);
-        }
-      }
-    },
     items: [
       {
         title: '样式',
