@@ -34,16 +34,16 @@ export default async function ({ data, inputs, logger, onError }: RuntimeParams<
   };
 
   const createSheet = (sheet: Sheet) => {
-    const titleRow = Object.keys(sheet.data[0]);
-    const dataRow = (sheet.data || []).map((item) => {
-      return Object.keys(item).reduce((pre, cur) => {
-        return [...pre, item[cur]];
-      }, [] as any);
-    });
-    const sheetData = [titleRow, ...dataRow];
+    // const titleRow = Object.keys(sheet.data[0]);
+    // const dataRow = (sheet.data || []).map((item) => {
+    //   return Object.keys(item).reduce((pre, cur) => {
+    //     return [...pre, item[cur]];
+    //   }, [] as any);
+    // });
+    // const sheetData = [titleRow, ...dataRow];
 
     return {
-      [sheet.name || 'Untitled']: xlsx.utils.json_to_sheet(sheetData, { skipHeader: true })
+      [sheet.name || 'Untitled']: xlsx.utils.json_to_sheet(sheet.data, { header: sheet.header })
     };
   };
   inputs.dataSource((dataSource, relOutputs) => {
@@ -51,7 +51,7 @@ export default async function ({ data, inputs, logger, onError }: RuntimeParams<
       const workBook = createWorkbook(dataSource);
       const filename = `${data.filename ?? 'data'}.xlsx`;
       xlsx.writeFile(workBook, filename);
-      relOutputs['exportComplete']()
+      relOutputs['exportComplete']();
     } catch (error: any) {
       onError?.(error);
       logger.error(`'[excel导出运行错误]'：${error}`);

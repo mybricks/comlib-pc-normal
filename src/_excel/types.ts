@@ -1,5 +1,6 @@
 export type Sheet = {
   name: string;
+  header: string[];
   data: Array<Record<string, any>>;
 };
 
