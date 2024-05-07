@@ -55,9 +55,6 @@
       "title": "表单",
       "comAry": [
         "./src/form-coms/form-container/com.json",
-        "./src/form-coms/addition-container/com.json",
-        "./src/form-coms/form-list/com.json",
-        "./src/form-coms/form-item-container/com.json",
         "./src/form-coms/text/com.json",
         "./src/form-coms/input-number/com.json",
         "./src/form-coms/input-textarea/com.json",
@@ -83,7 +80,10 @@
         "./src/form-coms/phone-number/com.json",
         "./src/form-coms/color/com.json",
         "./src/form-coms/code/com.json",
-        "./src/form-coms/input-richtext/com.json"
+        "./src/form-coms/input-richtext/com.json",
+        "./src/form-coms/form-list/com.json",
+        "./src/form-coms/form-item-container/com.json",
+        "./src/form-coms/addition-container/com.json"
       ]
     },
     {

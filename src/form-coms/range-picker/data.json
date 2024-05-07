@@ -58,6 +58,7 @@
       "开始日期",
       "结束日期"
     ],
+    "allowClear": true,
     "size": "middle"
   },
   "dateType": "array",

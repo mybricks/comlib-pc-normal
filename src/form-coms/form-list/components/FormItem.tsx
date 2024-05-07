@@ -39,7 +39,7 @@ const FormItem = (props: Props) => {
   const config: FormItemProps = {
     colon: item?.colon === 'default' ? data.formItemConfig?.colon : item.colon,
     labelAlign: item?.labelAlign === 'default' ? data.formItemConfig.labelAlign : item.labelAlign,
-    labelCol: getLabelCol(data)
+    labelCol: getLabelCol({ data, item })
   };
   const showLabel = isShowLabel({ data, com });
 

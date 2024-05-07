@@ -19,7 +19,7 @@ export default {
     options: ['width']
   },
   ':root': {
-    items({}: EditorResult<Data>, cate1) {
+    items({ }: EditorResult<Data>, cate1) {
       cate1.title = '常规';
       cate1.items = [...BaseEditor];
       return { title: '描述列表' };
@@ -42,6 +42,19 @@ export default {
           )}`
       })
     ]
+  },
+  ".ant-descriptions-title": {
+    "@dblclick": {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          return data.title
+        },
+        set({ data, focusArea }: EditorResult<Data>, val) {
+          data.title = val
+        },
+      }
+    },
   },
   ...ItemsEditors
 };

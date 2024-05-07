@@ -20,7 +20,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["nextStepComplete"]
+      "rels": [
+        "nextStepComplete"
+      ]
     },
     {
       "id": "prevStep",
@@ -28,7 +30,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["prevStepComplete"]
+      "rels": [
+        "prevStepComplete"
+      ]
     },
     {
       "id": "jumpTo",
@@ -36,7 +40,9 @@
       "schema": {
         "type": "number"
       },
-      "rels": ["jumpToComplete"]
+      "rels": [
+        "jumpToComplete"
+      ]
     },
     {
       "id": "getIndex",
@@ -59,7 +65,9 @@
           "type": "number"
         }
       },
-      "rels": ["setHideStepsComplete"]
+      "rels": [
+        "setHideStepsComplete"
+      ]
     }
   ],
   "outputs": [

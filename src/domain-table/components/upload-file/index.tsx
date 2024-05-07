@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Upload, UploadFile } from 'antd';
+import { Button, Upload, type UploadFile } from 'antd';
 import { ajax } from '../../util';
 
 import styles from './index.less';

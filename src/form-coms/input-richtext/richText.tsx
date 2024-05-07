@@ -201,6 +201,7 @@ export default function ({
       isFS,
       placeholder: env.i18n(data.placeholder),
       customIconsId,
+      upload: data.customUpload ? upload : void 0,
       setUp: (editor: any) => {
         if (data.toolbar.includes('uploadimage')) {
           uploadCb.current = uploadimage({
@@ -425,6 +426,7 @@ export default function ({
   const onModalOk = useCallback(() => {
     onModalClose();
     uploadCb.current?.setUrl(uploadModel);
+    change(false);
   }, [uploadModel]);
 
   const RenderImgModal: JSX.Element | undefined = useMemo(() => {

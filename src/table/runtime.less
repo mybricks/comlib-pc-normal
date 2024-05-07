@@ -10,7 +10,10 @@
     .ant-btn {
       box-sizing: border-box;
     }
-
+    // 表格的最后一个表头，resize拖拽条隐藏
+    .ant-table-thead > tr:first-child > th:last-child > div[class*='resizer-r'] {
+      display: none !important;
+    }
     // 临时同步antd@1.10.4调整的样式内容，升级到antd>=1.10.4后可移除
     .ant-table-column-title {
       flex: unset;
@@ -44,7 +47,7 @@
     }
 
     colgroup col {
-      min-width: 30px;
+      min-width: 12px;
     }
   }
 }

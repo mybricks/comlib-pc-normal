@@ -24,38 +24,6 @@ export default {
           }
         },
         {
-          title: '颜色',
-          type: 'colorPicker',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.color;
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              if (!data.color) {
-                data.color = '#000000';
-              }
-              data.color = value;
-            }
-          }
-        },
-        {
-          title: '尺寸',
-          type: 'text',
-          description: '图标尺寸,支持百分比和定宽',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return String(data.size);
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              if (/^\d+$/.test(value)) {
-                data.size = `${value}px`;
-              } else {
-                data.size = value;
-              }
-            }
-          }
-        },
-        {
           title: '点击',
           type: '_Event',
           options: () => {
@@ -80,6 +48,11 @@ export default {
             target: `[data-item-type="icon"]`
           },
           {
+            catelog: '默认',
+            options: ['font'],
+            target: `.icon`
+          },
+          {
             title: 'Hover',
             catelog: 'Hover',
             options: [
@@ -88,6 +61,11 @@ export default {
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
             target: '[data-item-type="icon"]:hover'
+          },
+          {
+            catelog: 'Hover',
+            options: ['font'],
+            target: `.icon:hover`
           }
         ]
       }

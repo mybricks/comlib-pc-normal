@@ -39,3 +39,18 @@ export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: tru
 
   return { item, isFormItem };
 }
+
+export const getFormItemById = (data: Data, com): { item: FormItems, isFormItem: true } | { item: AdditionalItem, isFormItem: false } => {
+  const { items, additionalItems } = data;
+  let item, isFormItem = false;
+
+  // 查找表单项
+  item = items.find((item) => {
+    return item.id === com.id
+  });
+  if (item) return { item, isFormItem: true };
+
+  if (item) return { item, isFormItem: false };
+
+  return { item, isFormItem };
+}

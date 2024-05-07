@@ -47,6 +47,24 @@ const addBtn = ({
   data.tools.push({ ...defaultBtn, type: btnType || 'default', margin: [0, 0] });
 };
 
+const btnValue = {
+  get({ data, focusArea }: Result) {
+    return get(data, focusArea, 'btnId', 'title');
+  },
+  set({ data, focusArea, input, output, env }: Result, value: string) {
+    if (typeof env.i18n(value) !== 'string' || env.i18n(value).trim() === '') {
+      throw new Error('请输入正确的按钮标题');
+    }
+    const res = get(data, focusArea, 'btnId', 'obj', (index) => {
+      output.setTitle(data.tools[index].id, value);
+      input.setTitle(`display${data.tools[index].id}`, `显示${value}`);
+      input.setTitle(`hidden${data.tools[index].id}`, `隐藏${value}`);
+      input.setTitle(`disable${data.tools[index].id}`, `控制禁用${value}`);
+    });
+    res.title = value;
+  }
+}
+
 const get = (data: Data, focusArea: any, dataset: string, val = 'obj', cb?: any) => {
   if (!focusArea) return;
   const key = focusArea.dataset[dataset];
@@ -212,6 +230,10 @@ export default {
   ],
   '[data-btn-id]': {
     title: '按钮',
+    '@dblclick': {
+      type: 'text',
+      value: btnValue
+    },
     items: [
       {
         title: '名称',
@@ -219,23 +241,7 @@ export default {
         options: {
           locale: true
         },
-        value: {
-          get({ data, focusArea }: Result) {
-            return get(data, focusArea, 'btnId', 'title');
-          },
-          set({ data, focusArea, input, output, env }: Result, value: string) {
-            if (typeof env.i18n(value) !== 'string' || env.i18n(value).trim() === '') {
-              throw new Error('请输入正确的按钮标题');
-            }
-            const res = get(data, focusArea, 'btnId', 'obj', (index) => {
-              output.setTitle(data.tools[index].id, value);
-              input.setTitle(`display${data.tools[index].id}`, `显示${value}`);
-              input.setTitle(`hidden${data.tools[index].id}`, `隐藏${value}`);
-              input.setTitle(`disable${data.tools[index].id}`, `控制禁用${value}`);
-            });
-            res.title = value;
-          }
-        }
+        value: btnValue
       },
       {
         title: '支持动态显示/隐藏',

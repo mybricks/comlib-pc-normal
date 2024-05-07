@@ -4,11 +4,11 @@ export default {
   '[data-item-type="step"]': {
     title: '步骤',
     items({ data, focusArea, slot }: EditorResult<Data>, cate1) {
-      if(!focusArea) return
+      if (!focusArea) return
       const { index } = focusArea;
       const stepItem = data.stepAry[index]
       cate1.title = '常规';
-      cate1.items =  [
+      cate1.items = [
         {
           title: '标题',
           type: 'Text',
@@ -32,7 +32,7 @@ export default {
           },
           value: {
             get({ }: EditorResult<Data>) {
-              return stepItem.subTitle??'';
+              return stepItem.subTitle ?? '';
             },
             set({ }: EditorResult<Data>, values: string) {
               stepItem.subTitle = values;
@@ -51,13 +51,13 @@ export default {
             },
             set({ slots }: EditorResult<Data>, val: boolean) {
               stepItem.useCustomDesc = val
-              const slotId = `${stepItem.id}_customDescSlot` 
-              if(val) {
+              const slotId = `${stepItem.id}_customDescSlot`
+              if (val) {
                 slots.add({
                   id: slotId,
                   title: '自定义描述'
                 })
-              }else{
+              } else {
                 slots.remove(slotId)
               }
             }
@@ -164,7 +164,7 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data;
             },
-            set({ data }: EditorResult<Data>, val: string) {}
+            set({ data }: EditorResult<Data>, val: string) { }
           }
         },
         {
@@ -213,7 +213,7 @@ export default {
               if (data.stepAry.length === 1) return;
               output.remove(stepItem.id);
               slots.remove(stepItem.id);
-  
+
               if (focusArea.index === data.stepAry.length - 1) {
                 //删掉最后一步
                 const preStep = data.stepAry[focusArea.index - 1]
@@ -222,11 +222,11 @@ export default {
                 output.remove(preStep.id);
                 output.add(id, title, schema);
               }
-              
-  
+
+
               //移除i/o事件
               removeEventIO(output, stepItem.id)
-  
+
               data.stepAry.splice(focusArea.index, 1);
               if (data.stepAry.length > 0) {
                 if (focusArea.index == 0) {
@@ -237,7 +237,7 @@ export default {
               } else {
                 data.current = -1;
               }
-  
+
               data.stepAry.forEach((item, idx) => {
                 slots.get(item.id).setTitle(`步骤${idx + 1}`)
                 output.setTitle(
@@ -250,5 +250,59 @@ export default {
         }
       ]
     }
-  }
+  },
+  ".ant-steps-item-title": {
+    "@dblclick": {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          const stepItem = data.stepAry[index]
+
+          return stepItem.title;
+        },
+        set({ data, focusArea }: EditorResult<Data>, values: string) {
+          const { index } = focusArea;
+          const stepItem = data.stepAry[index]
+          stepItem.title = values;
+        }
+      }
+    }
+  },
+  ".ant-steps-item-subtitle": {
+    "@dblclick": {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          const stepItem = data.stepAry[index]
+
+          return stepItem.subTitle;
+        },
+        set({ data, focusArea }: EditorResult<Data>, values: string) {
+          const { index } = focusArea;
+          const stepItem = data.stepAry[index]
+          stepItem.subTitle = values;
+        }
+      }
+    }
+  },
+  ".ant-steps-item-description": {
+    "@dblclick": {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          const stepItem = data.stepAry[index]
+
+          return stepItem.description;
+        },
+        set({ data, focusArea }: EditorResult<Data>, values: string) {
+          const { index } = focusArea;
+          const stepItem = data.stepAry[index]
+          stepItem.description = values;
+        }
+      }
+    }
+  },
 };

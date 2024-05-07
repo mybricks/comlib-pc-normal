@@ -73,6 +73,9 @@ export interface FormItems {
   width?: number
   inlineMargin?: number[]
   slotAfter?: string
+  labelWidthType?: LabelWidthType
+  labelWidth?: number
+  labelCol?: number
 }
 
 export interface AdditionalItem {

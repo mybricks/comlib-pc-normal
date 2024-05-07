@@ -125,5 +125,19 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
     output.add("setExternalDone", '设置输出数据完成', { type: 'string' });
     input.get("external").setRels(["setExternalDone"]);
   }
+
+  //1.0.25 -> 1.0.26 设置按钮的动态样式
+  if (!input.get("setDynamicStyle")) {
+    input.add("setDynamicStyle", "设置动态样式", {
+      type: "object",
+      properties: {
+        background: {
+          type: "string",
+        },
+      },
+    });
+    output.add("setDynamicStyleDone", '设置动态样式完成', { type: 'any' })
+    input.get("setDynamicStyle").setRels(["setDynamicStyleDone"])
+  }
   return true;
 }

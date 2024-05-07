@@ -34,6 +34,17 @@ export default {
     },
     style: createStyleForDefault({
       target: 'div[data-root="root"] span[data-item-tag="append"]'
-    })
+    }),
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.appendBtn.text;
+        },
+        set({ data }: EditorResult<Data>, val: string) {
+          data.appendBtn.text = val;
+        }
+      }
+    }
   }
 };

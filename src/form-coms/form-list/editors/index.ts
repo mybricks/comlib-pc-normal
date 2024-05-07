@@ -275,10 +275,10 @@ export default {
           ]
         },
         {
-          title: '子项标题',
+          title: '表单项配置',
           items: [
             {
-              title: '显示',
+              title: '显示标题',
               type: 'Switch',
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -290,7 +290,7 @@ export default {
               }
             },
             {
-              title: '宽度类型',
+              title: '标题宽度类型',
               type: 'Select',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.showLabel;
@@ -341,36 +341,30 @@ export default {
               }
             },
             {
-              title: '显示冒号',
-              type: 'Switch',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.showLabel;
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.formItemConfig?.colon;
-                },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.formItemConfig.colon = value;
-                }
-              }
-            },
-            {
-              title: '对齐方式',
+              title: '标题对齐方式',
               type: 'Radio',
               options: [
                 { label: '左对齐', value: 'left' },
                 { label: '右对齐', value: 'right' }
               ],
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.showLabel;
-              },
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.formItemConfig?.labelAlign;
                 },
                 set({ data }: EditorResult<Data>, value: 'left' | 'right') {
                   data.formItemConfig.labelAlign = value;
+                }
+              }
+            },
+            {
+              title: '显示冒号',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemConfig?.colon;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.formItemConfig.colon = value;
                 }
               }
             }
@@ -538,9 +532,9 @@ export default {
         title: '显示标题',
         type: 'Radio',
         options: [
+          { label: '跟随容器', value: 'default' },
           { label: '是', value: true },
           { label: '否', value: false },
-          { label: '跟随容器配置', value: 'default' }
         ],
         value: {
           get({ id, name, data }: EditorResult<Data>) {
@@ -751,15 +745,68 @@ export default {
           //   }
           // },
           {
+            title: '标题宽度类型',
+            type: 'Select',
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return isShowLabel({ data, com: { id, name } });
+            },
+            options: [
+              { label: '固定像素', value: 'px' },
+              { label: '24 栅格', value: 'span' }
+            ],
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'labelWidthType') || data.labelWidthType;
+              },
+              set({ data, name, id }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, com: { name, id } }, 'labelWidthType', value);
+              }
+            }
+          },
+          {
+            title: '标题宽度(px)',
+            type: 'inputNumber',
+            options: [{ min: 1 }],
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              const labelWidthType = getFormItemProp({ data, com: { name, id } }, 'labelWidthType');
+              return isShowLabel({ data, com: { id, name } }) && (data.labelWidthType === 'px' || labelWidthType === 'px');
+            },
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return [getFormItemProp({ data, com: { name, id } }, 'labelWidth') || data.labelWidth];
+              },
+              set({ data, name, id }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, com: { name, id } }, 'labelWidth', value[0]);
+              }
+            }
+          },
+          {
+            title: '标题宽度(栅格)',
+            type: 'Slider',
+            options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              const labelWidthType = getFormItemProp({ data, com: { name, id } }, 'labelWidthType');
+              return isShowLabel({ data, com: { id, name } }) && (data.labelWidthType === 'span' || labelWidthType === 'span');
+            },
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'labelCol') || data.labelCol;
+              },
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'labelCol', value);
+              }
+            }
+          },
+          {
             title: '标题对齐方式',
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
               return isShowLabel({ data, com: { id, name } });
             },
             options: [
+              { label: '跟随容器', value: 'default' },
               { label: '左对齐', value: 'left' },
               { label: '右对齐', value: 'right' },
-              { label: '跟随容器配置', value: 'default' }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
@@ -778,9 +825,9 @@ export default {
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
+              { label: '跟随容器', value: 'default' },
               { label: '显示', value: true },
               { label: '隐藏', value: false },
-              { label: '跟随容器配置', value: 'default' }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {

@@ -428,7 +428,22 @@ export default {
           }
         }
       }
-    ]
+    ],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          return findEle({ data, focusArea }, 'textId').content;
+        },
+        set({ data, focusArea }, value) {
+          if (!focusArea) return;
+          findEle({ data, focusArea }, 'textId').content = value;
+          findEle({ data, focusArea }, 'textId').oldcontent = value;
+          data.items = [...data.items];
+        }
+      }
+    }
   },
   '[data-item-type="tag"]': {
     title: '标签',
@@ -592,6 +607,20 @@ export default {
           }
         }
       }
-    ]
+    ],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          return findEle({ data, focusArea }, 'tagId').content;
+        },
+        set({ data, focusArea }, value) {
+          if (!focusArea) return;
+          findEle({ data, focusArea }, 'tagId').content = value;
+          findEle({ data, focusArea }, 'tagId').oldcontent = value;
+        }
+      }
+    }
   }
 };

@@ -65,7 +65,8 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
       getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       // destroyTooltipOnHide
     >
-      <div className={styles.wrap}>{slots.carrier?.render({ style: { cursor: 'pointer' } })}</div>
+      {/* overflowY: 'hidden' 是为了在容器fit-content时防止外边距塌陷 */}
+      <div className={styles.wrap}>{slots.carrier?.render({ style: { cursor: 'pointer', overflowY: 'hidden', ...data.slotStyle, minHeight: env.runtime ? void 0 : 30, minWidth: env.runtime ? void 0 : 30}})}</div>
     </Popover>
   );
 }

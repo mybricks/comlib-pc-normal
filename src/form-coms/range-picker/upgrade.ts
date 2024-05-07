@@ -321,5 +321,12 @@ export default function ({
     }
   }
 
+  /**
+   * @description v1.1.14->1.1.15 新增 显示清除图标
+   */
+  if (typeof data.config.allowClear === "undefined") {
+    data.config.allowClear = true;
+  };
+
   return true;
 }

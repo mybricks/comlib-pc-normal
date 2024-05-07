@@ -5,7 +5,7 @@ import { ButtonType } from 'antd/es/button/button';
 import { actionsEditor } from './actions';
 import { inputIds, outputIds } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
-import { getFormItem } from '../utils';
+import { getFormItem, getFormItemById } from '../utils';
 import { uuid } from '../../../utils';
 import iconEditor from './iconEditor';
 import { createrCatelogEditor } from '../../utils/index';
@@ -14,6 +14,7 @@ import { SizeOptions, SizeEnum } from '../../types';
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
 import DomainFieldEditor from './DomainFieldEditor';
+import { getBtnItemInfo } from '../../../toolbar/utils';
 
 function getFormItemProp(
   { data, ...com }: { data: Data; id: string; name: string },
@@ -549,7 +550,49 @@ export default {
       }
     }
   },
-
+  '[data-form-item]': {
+    title: '',
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          let id = focusArea.dataset.formItem;
+          const { item } = getFormItemById(data, { id });
+          return item.label;
+        },
+        set({ data, focusArea, input, output }, value) {
+          if (!focusArea) return;
+          let id = focusArea.dataset.formItem;
+          const { item } = getFormItemById(data, { id });
+          item.label = value;
+        }
+      }
+    },
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            let id = focusArea.dataset.formItem;
+            const { item } = getFormItemById(data, { id });
+            return item.label;
+          },
+          set({ data, focusArea }: EditorResult<Data>, val) {
+            if (!focusArea) return;
+            let id = focusArea.dataset.formItem;
+            const { item } = getFormItemById(data, { id });
+            item.label = val;
+          }
+        }
+      }
+    ]
+  },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
     style: [
@@ -1135,6 +1178,22 @@ export default {
     }
   },
   '[data-form-actions-item]': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          const comId = focusArea.dataset['formActionsItem'];
+          const item = data.actions.items.find((item) => item.key === comId);
+          return item.title;
+        },
+        set({ data, focusArea, input, output }, value) {
+          const comId = focusArea.dataset['formActionsItem'];
+          const item = data.actions.items.find((item) => item.key === comId);
+          item.title = value;
+        }
+      }
+    },
     style: [
       {
         title: '风格',

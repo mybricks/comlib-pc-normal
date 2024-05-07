@@ -14,6 +14,14 @@ const defaultItems = [
   }
 ];
 
+const titleValue = {
+  get({ data, focusArea }: EditorResult<Data>) {
+    return findConfig({ data, focusArea }, 'label');
+  },
+  set({ data, focusArea }: EditorResult<Data>, value: string) {
+    findConfig({ data, focusArea }).label = value;
+  }
+}
 const addItem = ({ data, output }) => {
   defaultItems.forEach((item) => {
     const key = uuid();
@@ -115,6 +123,10 @@ export default {
   ],
   '[data-breadcrumb]': {
     title: '面包屑操作',
+    "@dblclick": {
+      type: 'text',
+      value: titleValue
+    },
     style: [
       {
         title: '文本',
@@ -138,14 +150,7 @@ export default {
         options: {
           locale: true
         },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return findConfig({ data, focusArea }, 'label');
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            findConfig({ data, focusArea }).label = value;
-          }
-        }
+        value: titleValue
       },
       {
         title: '事件',

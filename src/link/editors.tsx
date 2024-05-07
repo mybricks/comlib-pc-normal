@@ -6,6 +6,17 @@ export default {
     options: ['width']
   },
   ':root': {
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.content;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.content = value;
+        }
+      }
+    },
     style: [
       {
         items: [

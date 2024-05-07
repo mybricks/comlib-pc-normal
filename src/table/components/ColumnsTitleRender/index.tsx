@@ -37,23 +37,23 @@ const getCurCol = (data, cItem) => {
       }
     }
   }
-  return col
-}
+  return col;
+};
 
 const checkIsDragging = (data) => {
   for (let c of data.columns) {
     if (c.isDragging) {
-      return true
+      return true;
     } else if (c.children) {
       for (let cc of c.children) {
         if (cc.isDragging) {
-          return true
+          return true;
         }
       }
     }
   }
-  return false
-}
+  return false;
+};
 
 interface Props {
   env: Env;
@@ -80,12 +80,12 @@ export default ({
   focusCellinfo,
   filterIconDefault
 }: Props) => {
-  const isDragging = checkIsDragging(data)
+  const isDragging = checkIsDragging(data);
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
     const content = cItem.hasTip ? (
-      <div >
+      <div>
         <span style={{ marginRight: '6px' }}>{title}</span>
         <Tooltip
           placement="topLeft"
@@ -100,24 +100,26 @@ export default ({
       <>{title}</>
     );
 
-    const wrappedContent = <>
-      {
-        <div style={{
-          opacity: isDragging ? 0 : 1
-        }}>{content}</div>
-      }
-      {isDragging && (
-        <div
-          className={
-            cItem.isDragging
-              ? css.draggingTipW
-              : `${css.draggingTipW} ${css.dashed}`
-          }
-        >
-          {cItem.width}
-        </div>
-      )}
-    </>
+    const wrappedContent = (
+      <>
+        {
+          <div
+            style={{
+              opacity: isDragging ? 0 : 1
+            }}
+          >
+            {content}
+          </div>
+        }
+        {isDragging && (
+          <div
+            className={cItem.isDragging ? css.draggingTipW : `${css.draggingTipW} ${css.dashed}`}
+          >
+            {cItem.width}
+          </div>
+        )}
+      </>
+    );
 
     return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable ? (
       <Resizable
@@ -125,19 +127,19 @@ export default ({
         className={`${css.resizer}`}
         key={cItem.key}
         onResizeStart={() => {
-          let col = getCurCol(data, cItem)
-          if (col.isDragging) return
-          col.isDragging = true
+          let col = getCurCol(data, cItem);
+          if (col.isDragging) return;
+          col.isDragging = true;
           data.columns = [...data.columns];
         }}
         onResizeStop={() => {
-          let col = getCurCol(data, cItem)
-          if (!col.isDragging) return
-          col.isDragging = false
+          let col = getCurCol(data, cItem);
+          if (!col.isDragging) return;
+          col.isDragging = false;
           data.columns = [...data.columns];
         }}
         onResize={({ width }) => {
-          let col = getCurCol(data, cItem)
+          let col = getCurCol(data, cItem);
           col.width = Number(width);
           data.columns = [...data.columns];
         }}
@@ -171,12 +173,12 @@ export default ({
               'data-table-th-idx': cItem.key,
               style: cItem.headStyle
                 ? {
-                  ...cItem.headStyle
-                }
+                    ...cItem.headStyle
+                  }
                 : {
-                  color: cItem.titleColor,
-                  backgroundColor: cItem.titleBgColor
-                }
+                    color: cItem.titleColor,
+                    backgroundColor: cItem.titleBgColor
+                  }
             };
           }}
         >
@@ -230,14 +232,14 @@ export default ({
     const onFilter =
       cItem.filter?.type !== FilterTypeEnum.Request
         ? (value, record) => {
-          return get(record, cItem.dataIndex) == value;
-        }
+            return get(record, cItem.dataIndex) == value;
+          }
         : null;
 
     const filterVisibleProps = cItem.filter?.hideFilterDropdown
       ? {
-        filterDropdownVisible: false
-      }
+          filterDropdownVisible: false
+        }
       : {};
 
     const getCellConfig = (dataSource, currentField, rowIndex) => {
@@ -290,18 +292,18 @@ export default ({
         onClick:
           data.enableCellClick || data.enableCellFocus
             ? () => {
-              setFocusCellinfo(
-                isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
-              );
-              if (data.enableCellClick) {
-                outputs[OutputIds.CELL_CLICK]({
-                  record,
-                  index: rowIndex,
-                  dataIndex: cItem.dataIndex,
-                  isFocus: !isFocus
-                });
+                setFocusCellinfo(
+                  isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
+                );
+                if (data.enableCellClick) {
+                  outputs[OutputIds.CELL_CLICK]({
+                    record,
+                    index: rowIndex,
+                    dataIndex: cItem.dataIndex,
+                    isFocus: !isFocus
+                  });
+                }
               }
-            }
             : null
       };
       return res;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq'
 import { deepCopy, typeCheck, uuid } from '../utils';
 import {
   setCheckboxStatus,

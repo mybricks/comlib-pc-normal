@@ -1,4 +1,5 @@
 import dump_异步加载 from './case-异步加载/dump.json';
+import dump_设置数据完成 from './case-设置数据完成/dump.json';
 import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 describe('树', () => {
@@ -46,5 +47,17 @@ describe('树', () => {
 
     // 截图对比
     cy.compareSnapshot('树_异步加载');
+  });
+  enhancedIt('设置数据源', () => {
+    // 加载测试页面
+    dumpPreview(dump_设置数据完成, [
+      {
+        selector: 'div#u_yJfej',
+        text: '暂无数据'
+      }
+    ]);
+
+    // 截图对比
+    cy.compareSnapshot('树_设置数据源');
   });
 });
