@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
-import uniq from 'lodash/uniq'
+import uniq from 'lodash/uniq';
 import { deepCopy, typeCheck, uuid } from '../utils';
 import {
   setCheckboxStatus,
@@ -11,7 +11,6 @@ import {
   filterCheckedKeysByCheckedValues,
   excludeParentKeys,
   outputNodeValues,
-  filterTreeDataByKeys,
   traverseTree,
   keyToString,
   getFieldNames
@@ -19,7 +18,7 @@ import {
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
 import TreeNode from './Components/TreeNode/index';
-import AutoSizer from "react-virtualized-auto-sizer";
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 import css from './style.less';
 
@@ -113,7 +112,7 @@ export default function (props: RuntimeParams<Data>) {
     data.searchValue = searchValue;
     const searchedKeys = treeKeys.current.map((item) => {
       if (item.title?.indexOf(data.searchValue) > -1) {
-        return getParentKey(item.key, data.treeData, keyFieldName);
+        return getParentKey(item.key, data.treeData, { keyFieldName, childrenFieldName });
       }
       return null;
     });
@@ -133,8 +132,11 @@ export default function (props: RuntimeParams<Data>) {
       if (data.filterNames.some((filterName) => filterMethods(filterName)(item))) {
         let childKey = item.key;
         filterKeys.push(childKey);
-        while (getParentKey(childKey, data.treeData, keyFieldName)) {
-          const parentKey = getParentKey(childKey, data.treeData, keyFieldName);
+        while (getParentKey(childKey, data.treeData, { keyFieldName, childrenFieldName })) {
+          const parentKey = getParentKey(childKey, data.treeData, {
+            keyFieldName,
+            childrenFieldName
+          });
           if (parentKey === childKey) {
             console.error(`树中存在标识重复的节点, 重复key: ${parentKey}`);
             return;
@@ -255,7 +257,7 @@ export default function (props: RuntimeParams<Data>) {
           const selectedValues = outputNodeValues(
             data.treeData,
             strKeys,
-            keyFieldName,
+            { keyFieldName, childrenFieldName },
             data.valueType
           );
           outputs[OutputIds.OnNodeClick](selectedValues);
@@ -290,13 +292,17 @@ export default function (props: RuntimeParams<Data>) {
         });
       inputs['disableCheckbox'] &&
         inputs['disableCheckbox']((value: any, relOutputs) => {
-          data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: true })];
+          data.treeData = [
+            ...setCheckboxStatus({ treeData: data.treeData, childrenFieldName, value: true })
+          ];
           relOutputs['setDisableCheckboxDone']();
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       inputs['enableCheckbox'] &&
         inputs['enableCheckbox']((value: any, relOutputs) => {
-          data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
+          data.treeData = [
+            ...setCheckboxStatus({ treeData: data.treeData, childrenFieldName, value: false })
+          ];
           relOutputs['setEnableCheckboxDone']();
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
@@ -354,11 +360,18 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     const resultKeys =
-      data.outParentKeys || data.checkStrictly ? checkedKeys : excludeParentKeys(data, checkedKeys);
+      data.outParentKeys || data.checkStrictly
+        ? checkedKeys
+        : excludeParentKeys(data, checkedKeys, { keyFieldName, childrenFieldName });
     inputs['submit'] &&
       inputs['submit']((val, relOutputs) => {
         relOutputs['submit'](
-          outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+          outputNodeValues(
+            data.treeData,
+            resultKeys,
+            { keyFieldName, childrenFieldName },
+            data.valueType
+          )
         );
       });
   }, [checkedKeys]);
@@ -374,9 +387,16 @@ export default function (props: RuntimeParams<Data>) {
     setCheckedKeys([...checked]);
     if (data.useCheckEvent) {
       const resultKeys =
-        data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
+        data.outParentKeys || data.checkStrictly
+          ? checked
+          : excludeParentKeys(data, checked, { keyFieldName, childrenFieldName });
       outputs[OutputIds.OnCheck](
-        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+        outputNodeValues(
+          data.treeData,
+          resultKeys,
+          { keyFieldName, childrenFieldName },
+          data.valueType
+        )
       );
     }
   }, []);
@@ -400,7 +420,7 @@ export default function (props: RuntimeParams<Data>) {
     const selectedValues = outputNodeValues(
       data.treeData,
       selectedKeys,
-      keyFieldName,
+      { keyFieldName, childrenFieldName },
       data.valueType
     );
     if (data.clickExpandable) {
@@ -430,8 +450,16 @@ export default function (props: RuntimeParams<Data>) {
     const dropPos = info.node.pos.split('-');
     const dropFlag = info.dropPosition - Number(dropPos[dropPos.length - 1]); // dropPos[dropPos.length - 1]: 落下节点的index
 
-    const dragNodeInfo = traverseTree({ data, targetKey: dragKey as string });
-    const dropNodeInfo = traverseTree({ data, targetKey: dropKey as string });
+    const dragNodeInfo = traverseTree({
+      data,
+      targetKey: dragKey as string,
+      fieldNames: { keyFieldName, childrenFieldName }
+    });
+    const dropNodeInfo = traverseTree({
+      data,
+      targetKey: dropKey as string,
+      fieldNames: { keyFieldName, childrenFieldName }
+    });
     if (!dragNodeInfo || !dropNodeInfo) return;
     const { parent: dragNodeParent, node: dragNode, index: dragNodeIndex } = dragNodeInfo;
     const { parent: dropNodeParent, node: dropNode, index: dropNodeIndex } = dropNodeInfo;
@@ -536,74 +564,73 @@ export default function (props: RuntimeParams<Data>) {
   }, [filteredKeys.length]);
 
   const treeWithHeight = (height?) => {
-    return <Tree
-      checkable={!!data.checkable}
-      draggable={
-        data.draggable
-          ? (node) => {
-            return node['data-draggable'];
-          }
-          : false
-      }
-      height={height}
-      allowDrop={allowDrop}
-      loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
-      loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
-      showLine={data.showLine}
-      checkStrictly={data.checkStrictly}
-      onExpand={onExpand}
-      expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
-      autoExpandParent={autoExpandParent}
-      onCheck={onCheck}
-      checkedKeys={checkedKeys}
-      defaultExpandAll={data.defaultExpandAll}
-      defaultCheckedKeys={data.checkedKeys}
-      selectedKeys={selectedKeys}
-      onSelect={onSelect}
-      onDrop={onDrop}
-      blockNode
-    >
-      {TreeNode({
-        props,
-        fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
-        setExpandedKeys,
-        treeData: data.treeData || [],
-        filteredKeys,
-        depth: 0,
-        parent: { key: rootKey }
-      })}
-    </Tree>
-  }
-
+    return (
+      <Tree
+        checkable={!!data.checkable}
+        draggable={
+          data.draggable
+            ? (node) => {
+                return node['data-draggable'];
+              }
+            : false
+        }
+        height={height}
+        allowDrop={allowDrop}
+        loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
+        loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
+        showLine={data.showLine}
+        checkStrictly={data.checkStrictly}
+        onExpand={onExpand}
+        expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
+        autoExpandParent={autoExpandParent}
+        onCheck={onCheck}
+        checkedKeys={checkedKeys}
+        defaultExpandAll={data.defaultExpandAll}
+        defaultCheckedKeys={data.checkedKeys}
+        selectedKeys={selectedKeys}
+        onSelect={onSelect}
+        onDrop={onDrop}
+        blockNode
+      >
+        {TreeNode({
+          props,
+          fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+          setExpandedKeys,
+          treeData: data.treeData || [],
+          filteredKeys,
+          depth: 0,
+          parent: { key: rootKey }
+        })}
+      </Tree>
+    );
+  };
 
   return (
     <div
-      className={`${isEmpty ? css.emptyWrapper : ''} ${data.useCompactTheme ? css.singleCompact : ''
-        }`}
+      className={`${isEmpty ? css.emptyWrapper : ''} ${
+        data.useCompactTheme ? css.singleCompact : ''
+      }`}
       style={{
         maxHeight: isEmpty ? void 0 : data.scrollHeight,
         // height: isEmpty ? data.scrollHeight : void 0,
-        height: data.scrollHeight || void 0,
+        height: data.scrollHeight || void 0
         // overflowY: data.scrollHeight ? 'scroll' : void 0,
       }}
     >
-
-      {
-        isEmpty ? (
-          <Empty
-            description={<span>{env.i18n(data.description)}</span>}
-            image={data.isImage ? data.image : void 0}
-          />
-        ) : (
-          !!data.scrollHeight
-            ? <AutoSizer disableWidth>
-              {({ height }) => {
-                return treeWithHeight(height)
-              }}
-            </AutoSizer>
-            : treeWithHeight()
-        )
-      }
+      {isEmpty ? (
+        <Empty
+          description={<span>{env.i18n(data.description)}</span>}
+          image={data.isImage ? data.image : void 0}
+        />
+      ) : !!data.scrollHeight ? (
+        <AutoSizer disableWidth>
+          {({ height }) => {
+            return treeWithHeight(height);
+          }}
+        </AutoSizer>
+      ) : (
+        treeWithHeight()
+      )}
     </div>
   );
 }

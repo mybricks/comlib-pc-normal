@@ -15,16 +15,19 @@ export const keyToString = (key) => {
 
 export const setCheckboxStatus = ({
   treeData,
-  value,
+  childrenFieldName,
+  value
 }: {
   treeData: TreeData[];
+  childrenFieldName: string;
   value: boolean;
 }) => {
   if (!treeData || treeData.length === 0) return [];
   treeData.forEach((item) => {
     item.disableCheckbox = value;
-    if (item.children) {
-      setCheckboxStatus({ treeData: item.children || [], value }) || [];
+    if (item[childrenFieldName]) {
+      setCheckboxStatus({ treeData: item[childrenFieldName] || [], childrenFieldName, value }) ||
+        [];
     }
   });
   return treeData;
@@ -51,7 +54,7 @@ export const getFieldNames = ({
     childrenFieldName
   }
 };
-/**
+/** 暂未使用
  * @description 预处理树组件数据
  * @param param0
  * @returns
@@ -92,14 +95,14 @@ export const pretreatTreeData = ({
 export const traverseTree = ({
   data,
   targetKey,
-  isEdit
+  fieldNames
 }: {
   data: Data;
   targetKey: string;
-  isEdit?: boolean;
-}): { parent: TreeData, index: number, node: TreeData } | null => {
-  const { treeData, } = data;
-  const keyFieldName = isEdit ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
+  fieldNames: { keyFieldName: string; childrenFieldName: string };
+}): { parent: TreeData; index: number; node: TreeData } | null => {
+  const { treeData } = data;
+  const { keyFieldName, childrenFieldName } = fieldNames;
 
   if (!treeData || treeData.length === 0) return null;
   const searchTree = (treeNode: TreeData, index: number, parent: TreeData) => {
@@ -109,9 +112,9 @@ export const traverseTree = ({
         node: treeNode,
         index
       };
-    } else if (treeNode.children) {
-      for (let i = 0; i < treeNode.children.length; i++) {
-        const result = searchTree(treeNode.children[i], i, treeNode);
+    } else if (treeNode[childrenFieldName]) {
+      for (let i = 0; i < treeNode[childrenFieldName].length; i++) {
+        const result = searchTree(treeNode[childrenFieldName][i], i, treeNode);
         if (result !== null) return result;
       }
     }
@@ -119,7 +122,7 @@ export const traverseTree = ({
   };
 
   for (let i = 0; i < treeData.length; i++) {
-    const result = searchTree(treeData[i], i, { children: data.treeData });
+    const result = searchTree(treeData[i], i, { [childrenFieldName]: data.treeData } as TreeData);
     if (result) return result;
   }
   return null;
@@ -142,12 +145,13 @@ const flatten = (arr: any[]) => {
  * @param keyFieldName 标识字段
  * @returns
  */
-const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
+const getLeafNodes = (treeData: TreeData[], keyFieldName: string, childrenFieldName: string) => {
   const result: any[] = [];
   if (!treeData || treeData.length === 0) return [];
   treeData.forEach((item) => {
-    if (!item.children || item.children.length === 0) result.push(item[keyFieldName]);
-    else result.push(getLeafNodes(item.children || [], keyFieldName));
+    if (!item[childrenFieldName] || item[childrenFieldName].length === 0)
+      result.push(item[keyFieldName]);
+    else result.push(getLeafNodes(item[childrenFieldName] || [], keyFieldName, childrenFieldName));
   });
   return flatten(result);
 };
@@ -158,10 +162,14 @@ const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
  * @param data 组件数据
  * @returns
  */
-export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
-  const { treeData, keyFieldName = DefaultFieldName.Key } = data;
+export const excludeParentKeys = (
+  data: Data,
+  checkedKeys: React.Key[],
+  { keyFieldName, childrenFieldName }: { keyFieldName: string; childrenFieldName: string }
+) => {
+  const { treeData } = data;
   const result: any = [],
-    leafNodeKeys = getLeafNodes(treeData, keyFieldName).map(keyToString);
+    leafNodeKeys = getLeafNodes(treeData, keyFieldName, childrenFieldName).map(keyToString);
 
   if (checkedKeys && Array.isArray(checkedKeys)) {
     checkedKeys.forEach((key) => {
@@ -178,7 +186,12 @@ export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
  * @param keyFieldName 标识字段
  * @returns
  */
-export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFieldName: string, valueType: string) => {
+export const outputNodeValues = (
+  treeData: TreeData[],
+  keys: React.Key[],
+  { keyFieldName, childrenFieldName }: { keyFieldName: string; childrenFieldName: string },
+  valueType: string
+) => {
   const result: any[] = [];
   treeData
     .filter((def) => !!def)
@@ -190,7 +203,14 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFie
           result.push(item[keyFieldName]);
         }
       }
-      result.push(outputNodeValues(item.children || [], keys, keyFieldName, valueType));
+      result.push(
+        outputNodeValues(
+          item[childrenFieldName] || [],
+          keys,
+          { keyFieldName, childrenFieldName },
+          valueType
+        )
+      );
     });
   return flatten(result);
 };
@@ -201,8 +221,11 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFie
  * @param newNodeData 节点数据
  * @returns
  */
-export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData,
-  { keyFieldName, childrenFieldName }: { keyFieldName: string, childrenFieldName: string }) => {
+export const updateNodeData = (
+  treeData: TreeData[],
+  newNodeData: TreeData,
+  { keyFieldName, childrenFieldName }: { keyFieldName: string; childrenFieldName: string }
+) => {
   treeData = treeData.map((item, index) => {
     if (item[keyFieldName] === newNodeData[keyFieldName]) {
       item = {
@@ -210,7 +233,10 @@ export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData,
         ...newNodeData
       };
     } else if (item[childrenFieldName]) {
-      item[childrenFieldName] = updateNodeData(item[childrenFieldName], newNodeData, { keyFieldName, childrenFieldName });
+      item[childrenFieldName] = updateNodeData(item[childrenFieldName], newNodeData, {
+        keyFieldName,
+        childrenFieldName
+      });
     }
     treeData[index] = item;
     return item;
@@ -243,15 +269,19 @@ export const filterCheckedKeysByCheckedValues = (flatTrees: TreeData[], checkedV
  * @param keyFieldName 标识字段
  * @returns
  */
-export const getParentKey = (key, tree, keyFieldName: string) => {
+export const getParentKey = (
+  key,
+  tree,
+  { keyFieldName, childrenFieldName }: { keyFieldName: string; childrenFieldName: string }
+) => {
   let parentKey;
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
-    if (node.children) {
-      if (node.children.some((item) => item[keyFieldName] === key)) {
+    if (node[childrenFieldName]) {
+      if (node[childrenFieldName].some((item) => item[keyFieldName] === key)) {
         parentKey = node[keyFieldName];
-      } else if (getParentKey(key, node.children, keyFieldName)) {
-        parentKey = getParentKey(key, node.children, keyFieldName);
+      } else if (getParentKey(key, node[childrenFieldName], { keyFieldName, childrenFieldName })) {
+        parentKey = getParentKey(key, node[childrenFieldName], { keyFieldName, childrenFieldName });
       }
     }
   }
@@ -265,7 +295,13 @@ export const getParentKey = (key, tree, keyFieldName: string) => {
  * @param keyFieldName 标识字段
  * @param titleFieldName 标题字段
  */
-export const generateList = (treeData, dataList, { keyFieldName, titleFieldName, childrenFieldName }, parentKey = '0', depth = 0) => {
+export const generateList = (
+  treeData,
+  dataList,
+  { keyFieldName, titleFieldName, childrenFieldName },
+  parentKey = '0',
+  depth = 0
+) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
     if (node[keyFieldName] == null) {
@@ -275,12 +311,18 @@ export const generateList = (treeData, dataList, { keyFieldName, titleFieldName,
     const { [keyFieldName]: key, [titleFieldName]: title } = node;
     dataList.push({ ...node, key, title, depth });
     if (node[childrenFieldName]) {
-      generateList(node[childrenFieldName], dataList, { keyFieldName, titleFieldName, childrenFieldName }, key, depth + 1);
+      generateList(
+        node[childrenFieldName],
+        dataList,
+        { keyFieldName, titleFieldName, childrenFieldName },
+        key,
+        depth + 1
+      );
     }
   }
 };
 
-/**
+/** 暂未使用
  * 遍历树，根据key数组返回节点
  * @param treeData 树数据 
  * @param keys key数组 
