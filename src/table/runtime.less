@@ -10,9 +10,9 @@
     .ant-btn {
       box-sizing: border-box;
     }
-    // TODO:WF临时
-    .ant-table-thead>tr>th {
-      background-color: rgb(189, 249, 229);
+    // 表格的最后一个表头，resize拖拽条隐藏
+    .ant-table-thead > tr:first-child > th:last-child > div[class*='resizer-r'] {
+      display: none !important;
     }
     // 临时同步antd@1.10.4调整的样式内容，升级到antd>=1.10.4后可移除
     .ant-table-column-title {
