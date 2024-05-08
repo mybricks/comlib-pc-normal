@@ -33,7 +33,7 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
   }, []);
 
   const onClick = () => {
-    if (data.useClick && outputs[OutputIds.Click]) {
+    if (outputs[OutputIds.Click]) {
       outputs[OutputIds.Click](data.outputContent || data.content || '');
     }
   };
@@ -51,7 +51,10 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
             ...legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
-            cursor: data.useClick ? CursorTypeEnum.Pointer : void 0
+            cursor:
+            outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
+              ? CursorTypeEnum.Pointer
+              : undefined
           }}
           className={css.text}
           onClick={onClick}
@@ -67,7 +70,10 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
             ...data.legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
-            cursor: data.useClick ? CursorTypeEnum.Pointer : void 0
+            cursor:
+            outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
+              ? CursorTypeEnum.Pointer
+              : undefined
           }}
           className={css.text}
           onClick={onClick}

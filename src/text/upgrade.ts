@@ -48,5 +48,12 @@ export default function ({ data, config, setDeclaredStyle, input, output }: Upgr
     !input.get("content")?.rels?.includes("setContentDone")) {
     input.get("content").setRels(["setContentDone"]);
   }
+
+  /**
+    * @description v1.0.16 -> v1.0.17, 增加output 点击
+  */
+  if (!output.get("click")) {
+    output.add("click", '点击', { type: 'string' });
+  }
   return true;
 }

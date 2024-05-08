@@ -72,20 +72,9 @@ export default {
       const eventItems = [
         {
           title: '点击事件',
-          type: 'Switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useClick;
-            },
-            set({ data, output }: EditorResult<Data>, value: boolean) {
-              const event = output.get(OutputIds.Click);
-              if (value) {
-                !event && output.add(OutputIds.Click, '点击', Schemas.String);
-              } else {
-                event && output.remove(OutputIds.Click);
-              }
-              data.useClick = value;
-            }
+          type: '_Event',
+          options: {
+            outputId: OutputIds.Click
           }
         },
         {
@@ -94,9 +83,6 @@ export default {
           options: {
             placeholder: '默认输出文本内容'
           },
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.useClick;
-          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.outputContent;
@@ -104,18 +90,6 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.outputContent = value;
             }
-          }
-        },
-        {
-          title: '点击事件',
-          type: '_Event',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.useClick;
-          },
-          options: () => {
-            return {
-              outputId: OutputIds.Click
-            };
           }
         }
       ];
