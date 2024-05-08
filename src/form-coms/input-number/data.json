@@ -20,5 +20,7 @@
   "min": 0,
   "isEditable": true,
   "isControl": true,
-  "useGrouping": false
+  "useGrouping": false,
+  "isParser": false,
+  "isPrecision": false
 }

@@ -224,5 +224,17 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.useGrouping = false;
   }
   //=========== v1.1.11 end ===============
+
+  /**
+   * @description v1.1.16 新增 快捷增减、千分位
+   */
+  if(typeof data.isParser === 'undefined'){
+      data.isParser = true;
+  }
+  
+  if (typeof data.isPrecision === 'undefined') {
+    data.isPrecision = true;
+  }
+  //=========== v1.1.16 end ===============
   return true;
 }
