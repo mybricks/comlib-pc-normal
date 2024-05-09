@@ -1,0 +1,27 @@
+{
+  "title": "按钮测试",
+  "namespace": "mybricks.normal-pc.button2",
+  "version": "0.0.1",
+  "description": "测试按钮",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "dblClick",
+      "title": "双击",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

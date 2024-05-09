@@ -4,7 +4,13 @@ module.exports = Object.assign(
   {
     externals: [
       {
-        react: 'react',
+        // react: 'react',
+        react: {
+          commonjs: 'react',
+          commonjs2: 'react',
+          amd: 'react',
+          root: 'React'
+        },
         'react-dom': 'react-dom',
         antd: 'antd',
         moment: 'moment',

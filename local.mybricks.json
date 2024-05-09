@@ -3,6 +3,7 @@
   "version": "0.0.16",
   "componentType": "PC",
   "fileId": 7632,
+  "version": "1.5.95",
   "commitInfo": "update",
   "namespace": "mybricks.normal-pc",
   "comAry": [
@@ -18,7 +19,8 @@
         "./src/button/com.json",
         "./src/icon/com.json",
         "./src/richtext/com.json",
-        "./src/tagList/com.json"
+        "./src/tagList/com.json",
+        "./src/button2/com.json"
       ]
     },
     {
