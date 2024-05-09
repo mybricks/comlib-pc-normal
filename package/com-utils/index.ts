@@ -6,8 +6,13 @@ interface Props {
   callback?: () => any;
 }
 export function runJs(scriptText: string | any, model?: any[], props?: Props) {
-  const { env, callback = () => {} } = props || {};
+  const { env, callback = () => { } } = props || {};
   const isRuntime = env?.runtime && !env?.runtime?.debug;
+  // 出码场景下是一个可直接运行的函数
+  if (typeof scriptText === 'string' && scriptText.indexOf(`__MYBRICKS_EXTRACT_FNS__`) !== -1) {
+    eval(scriptText)(...(model || []))
+  }
+
   if (typeof scriptText === 'object') {
     scriptText = isRuntime ? scriptText?.transformCode || scriptText?.code : scriptText?.code;
   }

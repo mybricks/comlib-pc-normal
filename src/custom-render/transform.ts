@@ -27,7 +27,7 @@ const transform = (code: string) => {
 };
 
 const createElement: FuncType = (code) => {
-  if(code.includes('var _RTFN_')) {
+  if (code.includes('var _RTFN_') || code.indexOf(`__MYBRICKS_EXTRACT_FNS__`) !== -1) {
     return eval(decodeURIComponent(code))
   }
   code = `var _RTFN_ = ${code.trim().replace(/;$/, '')} `;
@@ -38,7 +38,7 @@ const createElement: FuncType = (code) => {
 
 const genLibTypes = async (schema: Record<string, any>) => {
   const SchemaToTypes = window.jstt;
-  if(!SchemaToTypes) return;
+  if (!SchemaToTypes) return;
   schema.title = 'Props';
   const propTypes = await SchemaToTypes.compile(schema, '', {
     bannerComment: '',
