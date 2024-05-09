@@ -2,7 +2,7 @@ import { Data, InputIds, OutputIds } from './constants';
 import { LayoutEditor } from './editor/layoutEditor';
 
 export default {
-  // ':slot': {},
+  ':slot': {},
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
     if (toPin.id === InputIds.DATA_SOURCE) {
       let itemSchema = {};
@@ -29,7 +29,7 @@ export default {
         target: '> .list-new__root'
       },
       {
-        title: '列表项',
+        title: '列表项（运行时生效）',
         catelog: '默认',
         options: [
           'border',
@@ -41,9 +41,10 @@ export default {
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {
-      cate1.title = '高级';
-      cate1.items = [
-        ...LayoutEditor,
+      cate1.title = '布局';
+      cate1.items = [...LayoutEditor];
+      cate2.title = '高级';
+      cate2.items = [
         {
           title: '获取列表数据',
           type: 'Switch',

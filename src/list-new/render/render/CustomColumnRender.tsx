@@ -18,18 +18,12 @@ const CustomColumnRender = (
   const rowKey = '_itemKey';
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
-      <List.Item key={key} className="list-new__item" style={{ overflowX: env.edit ? 'visible' : 'scroll' }}>
+      <List.Item key={key} className={env.edit ? '' :'list-new__item'} style={{ overflowX: env.edit ? 'visible' : 'scroll' }}>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
             itemData: item,
             index: index
-          },
-          style: env.edit ? {
-            minHeight: '30px',
-          } : {
-            width: 'fit-content',
-            height: '100%',
           },
           key: key
         })}
@@ -50,6 +44,7 @@ const CustomColumnRender = (
         rowKey={rowKey}
         className={classnames(
           css.listWrap,
+          css.height100,
           dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
         )}
       />
@@ -63,17 +58,11 @@ const CustomColumnRender = (
         helperClass={css['sort-helper']}
         renderItem={({ key, item, index }) => (
           <SortableItem key={key} index={index}>
-            <div className="list-new__item" style={{ overflowX: 'scroll' }}>
+            <div className={env.edit ? '' :'list-new__item'} style={{ overflowX: 'scroll' }}>
               {slots['item'].render({
                 inputValues: {
                   itemData: item,
                   index
-                },
-                style: env.edit ? {
-                  minHeight: '30px',
-                } : {
-                  width: 'fit-content',
-                  height: '100%',
                 },
                 key
               })}
@@ -97,6 +86,7 @@ const CustomColumnRender = (
         rowKey={rowKey}
         className={classnames(
           css.listWrap,
+          env.edit && css.height100,
           dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
         )}
       />

@@ -17,13 +17,6 @@ const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, s
             itemData: item,
             index: index
           },
-          style: env.edit ? {
-            minHeight: '30px',
-            minWidth: '100px',
-          } : {
-            width: 'fit-content',
-            height: '100%',
-          },
           key: key
         })}
       </List.Item>

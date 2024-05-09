@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { Data, Layout } from '../constants';
 import css from '../style.less';
 import React from 'react';
+import EditRender from './render/EditRender';
 
 const ListRender = (
   env,
@@ -20,6 +21,11 @@ const ListRender = (
   //0、无内容
   if (slots['item'].size === 0) {
     return slots['item'].render();
+  }
+  if (env.edit && !(data.layout === Layout.Grid && !data.isResponsive)) {
+    return (
+      EditRender(dataSource, data, slots, env)
+    )
   }
   //5、响应式布局
   if (data.layout === Layout.Grid && data.isResponsive) {

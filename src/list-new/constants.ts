@@ -1,5 +1,4 @@
 import { ListGridType } from 'antd/lib/list';
-import { CSSProperties } from 'react';
 
 export enum InputIds {
   DATA_SOURCE = 'dataSource',

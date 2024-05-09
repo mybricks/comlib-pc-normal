@@ -2,21 +2,6 @@ import { Layout } from './../constants';
 import { Data, OutputIds, Schemas, Option } from '../constants';
 import { unitConversion } from '../../utils';
 
-const setSlotLayout = (slot, val) => {
-  if (!slot) return;
-  if (val.position === 'smart') {
-    slot.setLayout('smart');
-  } else if (val.position === 'absolute') {
-    slot.setLayout(val.position);
-  } else if (val.display === 'flex') {
-    if (val.flexDirection === 'row') {
-      slot.setLayout('flex-row');
-    } else if (val.flexDirection === 'column') {
-      slot.setLayout('flex-column');
-    }
-  }
-};
-
 export const LayoutEditor = [
   {
     title: '布局',
@@ -149,22 +134,22 @@ export const LayoutEditor = [
           }
         }
       },
-      {
-        title: '自定义断点',
-        type: 'switch',
-        description: '开启后可以自定义配置断点位置, 及列表列数',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === Layout.Grid && !!data.isResponsive;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.isCustomPoints;
-          },
-          set({ data }: EditorResult<Data>, val) {
-            data.isCustomPoints = val;
-          }
-        }
-      },
+      // {
+      //   title: '自定义断点',
+      //   type: 'switch',
+      //   description: '开启后可以自定义配置断点位置, 及列表列数',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return data.layout === Layout.Grid && !!data.isResponsive;
+      //   },
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.isCustomPoints;
+      //     },
+      //     set({ data }: EditorResult<Data>, val) {
+      //       data.isCustomPoints = val;
+      //     }
+      //   }
+      // },
       {
         title: '断点列数',
         type: 'InputNumber',
@@ -192,62 +177,62 @@ export const LayoutEditor = [
           }
         }
       },
-      {
-        title: '断点配置',
-        type: 'Array',
-        description: '自定义配置项, 配置断点位置及列数, 如果对应断点区间没有配置列数, 默认为1',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === Layout.Grid && !!data.isResponsive && !!data.isCustomPoints;
-        },
-        options: {
-          getTitle: ({ point, relation, columns }) => {
-            return `${relation}${point}px的列数为${columns}`;
-          },
-          onAdd: () => {
-            const defaultOption = {
-              point: 1000,
-              relation: '≥',
-              columns: 5
-            };
-            return defaultOption;
-          },
-          items: [
-            {
-              title: '断点位置',
-              type: 'Text',
-              value: 'point',
-              options: {
-                type: 'number'
-              }
-            },
-            {
-              title: '关系',
-              type: 'Select',
-              options: [
-                { label: '≥', value: '≥' },
-                { label: '<', value: '<' }
-              ],
-              value: 'relation'
-            },
-            {
-              title: '列数',
-              type: 'Text',
-              value: 'columns',
-              options: {
-                type: 'number'
-              }
-            }
-          ]
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.customOptions;
-          },
-          set({ data }: EditorResult<Data>, options: Option[]) {
-            data.customOptions = options;
-          }
-        }
-      },
+      // {
+      //   title: '断点配置',
+      //   type: 'Array',
+      //   description: '自定义配置项, 配置断点位置及列数, 如果对应断点区间没有配置列数, 默认为1',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return data.layout === Layout.Grid && !!data.isResponsive && !!data.isCustomPoints;
+      //   },
+      //   options: {
+      //     getTitle: ({ point, relation, columns }) => {
+      //       return `${relation}${point}px的列数为${columns}`;
+      //     },
+      //     onAdd: () => {
+      //       const defaultOption = {
+      //         point: 1000,
+      //         relation: '≥',
+      //         columns: 5
+      //       };
+      //       return defaultOption;
+      //     },
+      //     items: [
+      //       {
+      //         title: '断点位置',
+      //         type: 'Text',
+      //         value: 'point',
+      //         options: {
+      //           type: 'number'
+      //         }
+      //       },
+      //       {
+      //         title: '关系',
+      //         type: 'Select',
+      //         options: [
+      //           { label: '≥', value: '≥' },
+      //           { label: '<', value: '<' }
+      //         ],
+      //         value: 'relation'
+      //       },
+      //       {
+      //         title: '列数',
+      //         type: 'Text',
+      //         value: 'columns',
+      //         options: {
+      //           type: 'number'
+      //         }
+      //       }
+      //     ]
+      //   },
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.customOptions;
+      //     },
+      //     set({ data }: EditorResult<Data>, options: Option[]) {
+      //       data.customOptions = options;
+      //     }
+      //   }
+      // },
       {
         title: '列表项间隔',
         type: 'InputNumber',
