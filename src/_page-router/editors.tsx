@@ -3,7 +3,7 @@ import { Data, InputIds, Schemas, TypeEnum, TypeEnumMap } from './constants';
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { type, useDynamic, url, title } = data;
   const info = [`类型：${TypeEnumMap[type]}`];
-  if (!useDynamic && url) {
+  if (!useDynamic && url && type !== TypeEnum.RELOAD) {
     info.push(`路径：${url}`);
   }
   if (

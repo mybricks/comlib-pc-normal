@@ -180,23 +180,129 @@ export default {
           }
         },
         {
-          title: '数值精度',
-          description: '精确到小数点后几位',
-          type: 'Slider',
-          options: {
-            max: 10,
-            min: 0,
-            steps: 1,
-            formatter: '/10'
-          },
-          value: {
-            get({ data }) {
-              return data.config.precision;
+          title: '小数控制',
+          items: [
+            {
+              title: '小数控制',
+              description: '开启后控制小数',
+              type: 'switch',
+              value: {
+                get({ data }) {
+                  return data.isPrecision;
+                },
+                set({ data }, value: boolean) {
+                  data.isPrecision = value;
+                }
+              }
             },
-            set({ data }, value: number) {
-              data.config.precision = value;
+            {
+              title: '数值精度',
+              description: '精确到小数点后几位',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.isPrecision;
+              },
+              type: 'Slider',
+              options: {
+                max: 10,
+                min: 0,
+                steps: 1,
+                formatter: '/10'
+              },
+              value: {
+                get({ data }) {
+                  return data.config.precision;
+                },
+                set({ data }, value: number) {
+                  data.config.precision = value;
+                }
+              }
+            },
+          ]
+        },
+        {
+          title: '格式化',
+          items: [
+            {
+              title: '格式化',
+              type: 'Switch',
+              description: '默认关闭，不开启格式化，开启后可配置格式化，并实时进行小数校验',
+              value: {
+                get({ data }) {
+                  return data.isParser;
+                },
+                set({ data }, value: boolean) {
+                  data.isParser = value;
+                }
+              }
+            },
+            {
+              title: '千分位',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.isParser;
+              },
+              description: '是否展示千分位分隔符',
+              value: {
+                get({ data }) {
+                  return data.useGrouping;
+                },
+                set({ data }, value: boolean) {
+                  data.useGrouping = value;
+                }
+              }
+            },
+            {
+              title: '格式化展示',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.isParser;
+              },
+              description: '开启开关后，格式化数字，以展示具有具体含义的数据',
+              value: {
+                get({ data }) {
+                  return data.isFormatter;
+                },
+                set({ data }, value: boolean) {
+                  data.isFormatter = value;
+                }
+              }
+            },
+            {
+              title: '字符位置',
+              type: 'Select',
+              ifVisible({ data }) {
+                return data.isFormatter && data.isParser;
+              },
+              options: [
+                { label: '前缀', value: 'prefix' },
+                { label: '后缀', value: 'suffix' }
+              ],
+              value: {
+                get({ data }) {
+                  return data.charPostion;
+                },
+                set({ data }, value: string) {
+                  data.charPostion = value;
+                }
+              }
+            },
+            {
+              title: '格式化字符',
+              type: 'Text',
+              description: '默认为¥, 可自定义',
+              ifVisible({ data }) {
+                return data.isFormatter && data.isParser;
+              },
+              value: {
+                get({ data }) {
+                  return data.character;
+                },
+                set({ data }, value: string) {
+                  data.character = value;
+                }
+              }
             }
-          }
+          ]
         },
         {
           title: '步长',
@@ -209,67 +315,6 @@ export default {
             set({ data }, value: string) {
               const num = parseInt(value, 10);
               data.config.step = isNaN(num) || num <= 0 ? undefined : num;
-            }
-          }
-        },
-        {
-          title: '千分位',
-          type: 'Switch',
-          description: '是否展示千分位分隔符',
-          value: {
-            get({ data }) {
-              return data.useGrouping;
-            },
-            set({ data }, value: boolean) {
-              data.useGrouping = value;
-            }
-          }
-        },
-        {
-          title: '格式化展示',
-          type: 'Switch',
-          description: '开启开关后，格式化数字，以展示具有具体含义的数据',
-          value: {
-            get({ data }) {
-              return data.isFormatter;
-            },
-            set({ data }, value: boolean) {
-              data.isFormatter = value;
-            }
-          }
-        },
-        {
-          title: '字符位置',
-          type: 'Select',
-          ifVisible({ data }) {
-            return data.isFormatter;
-          },
-          options: [
-            { label: '前缀', value: 'prefix' },
-            { label: '后缀', value: 'suffix' }
-          ],
-          value: {
-            get({ data }) {
-              return data.charPostion;
-            },
-            set({ data }, value: string) {
-              data.charPostion = value;
-            }
-          }
-        },
-        {
-          title: '格式化字符',
-          type: 'Text',
-          description: '默认为¥, 可自定义',
-          ifVisible({ data }) {
-            return data.isFormatter;
-          },
-          value: {
-            get({ data }) {
-              return data.character;
-            },
-            set({ data }, value: string) {
-              data.character = value;
             }
           }
         },

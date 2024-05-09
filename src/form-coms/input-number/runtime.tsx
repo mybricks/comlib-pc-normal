@@ -20,6 +20,8 @@ export interface Data {
   isEditable: boolean;
   isControl: boolean;
   useGrouping: boolean;
+  isParser: boolean;
+  isPrecision: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -133,14 +135,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   //数字输入框实时校验位数, 多的小数位禁止输入
   const NumberProps = useMemo(() => {
-    return {
+    return data.isParser ? {
       formatter: (value: any) => {
         let reStr = '\\d'.repeat(data.config.precision);
-        let reg;
-        if (data.config.precision === 0) {
-          reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
-        } else {
-          reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+        let reg = value;
+        if(data.isPrecision){
+          if (data.config.precision === 0) {
+            reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+          } else {
+            reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+          }
         }
         if (reg !== '') {
           if (data.useGrouping) {
@@ -155,12 +159,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
         return reg;
       }
-    };
-  }, [value, data.character, data.isFormatter, data.useGrouping]);
+    } : {};
+  }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
   //转换回数字的方式
   const ParserProps = useMemo(() => {
-    return {
+    return data.isParser ? {
       parser: (value: any) => {
         if (data.isFormatter) {
           let parser = value.replace(`${data.character}`, '');
@@ -175,8 +179,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return value;
         }
       }
-    };
-  }, [value, data.character, data.isFormatter, data.useGrouping]);
+    } : {};
+  }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
   return data.isEditable ? (
     <div className={css.inputNumber}>
@@ -185,6 +189,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {...data.config}
         {...NumberProps}
         {...ParserProps}
+        precision={data.isPrecision ? data.config.precision : void 0}
         placeholder={env.i18n(data.config.placeholder)}
         addonBefore={env.i18n(data.config.addonBefore)}
         addonAfter={env.i18n(data.config.addonAfter)}

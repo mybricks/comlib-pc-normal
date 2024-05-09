@@ -16,7 +16,6 @@ export interface Data {
   content: string;
   align?: AlignTypeEnum;
   style: React.CSSProperties;
-  useClick?: boolean;
   outputContent?: string;
   isEllipsis: boolean;
   ellipsis: Record<string, any>;

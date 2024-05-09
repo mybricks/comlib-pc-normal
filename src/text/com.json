@@ -1,7 +1,7 @@
 {
   "title": "文本",
   "namespace": "mybricks.normal-pc.text",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "文本",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -30,6 +30,13 @@
     {
       "id": "setContentDone",
       "title": "设置内容完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "click",
+      "title": "点击",
       "schema": {
         "type": "string"
       }
