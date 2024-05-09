@@ -67,6 +67,7 @@ export function getColumnsFromSchema(schema: any) {
 }
 
 export default {
+  ':slot': {},
   '@init': ({ style, data }) => {
     style.height = 'auto';
   },
