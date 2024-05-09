@@ -5,12 +5,20 @@ import classnames from 'classnames';
 import { Spin, List } from 'antd';
 import { SortableList, SortableItem } from './sort';
 
-const CustomColumnRender  = (loading:boolean, data:Data, dataSource:any,gutter, slots, env, onSortEnd) => {
+const CustomColumnRender = (
+  loading: boolean,
+  data: Data,
+  dataSource: any,
+  gutter,
+  slots,
+  env,
+  onSortEnd
+) => {
   let { grid } = data;
   const rowKey = '_itemKey';
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
-      <List.Item key={key}>
+      <List.Item key={key} className={env.edit ? '' :'list-new__item'} style={{ overflowX: env.edit ? 'visible' : 'scroll' }}>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
@@ -36,6 +44,7 @@ const CustomColumnRender  = (loading:boolean, data:Data, dataSource:any,gutter, 
         rowKey={rowKey}
         className={classnames(
           css.listWrap,
+          css.height100,
           dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
         )}
       />
@@ -49,13 +58,15 @@ const CustomColumnRender  = (loading:boolean, data:Data, dataSource:any,gutter, 
         helperClass={css['sort-helper']}
         renderItem={({ key, item, index }) => (
           <SortableItem key={key} index={index}>
-            {slots['item'].render({
-              inputValues: {
-                itemData: item,
-                index
-              },
-              key
-            })}
+            <div className={env.edit ? '' :'list-new__item'} style={{ overflowX: 'scroll' }}>
+              {slots['item'].render({
+                inputValues: {
+                  itemData: item,
+                  index
+                },
+                key
+              })}
+            </div>
           </SortableItem>
         )}
         onSortEnd={onSortEnd}
@@ -75,6 +86,7 @@ const CustomColumnRender  = (loading:boolean, data:Data, dataSource:any,gutter, 
         rowKey={rowKey}
         className={classnames(
           css.listWrap,
+          env.edit && css.height100,
           dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
         )}
       />

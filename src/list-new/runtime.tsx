@@ -4,7 +4,8 @@ import { checkIfMobile, uuid } from '../utils';
 import debounce from 'lodash/debounce';
 import { addItem, removeItem, changeItem, upMove, downMove } from './utils';
 import { ListRender } from './render/ListRender';
-import { sortUsePoint, columnHandel } from './utils'
+import { sortUsePoint, columnHandel } from './utils';
+import css from './style.less'
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -200,7 +201,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     if (data.canSort) {
       outputs[OutputIds.SortComplete](arrayMove(dataSource, oldIndex, newIndex));
     }
-  }
-  
-  return ListRender( env, slots, data, dataSource, loading, gutter, onSortEnd, columns )
+  };
+
+  return ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns);
 };

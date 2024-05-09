@@ -15,6 +15,12 @@ export enum OutputIds {
   SortComplete = 'sortComplete'
 }
 
+export enum Layout {
+  Horizontal = 'horizontal',
+  Vertical = 'vertical',
+  Grid = 'grid'
+}
+
 export const Schemas = {
   Array: {
     type: 'array',
@@ -58,8 +64,8 @@ export interface Data {
   //自定义rowKey
   rowKey: string;
 
-  //自动换行时，方向
-  layout: 'horizontal'|'vertical'
+  /** 布局类型 */
+  layout: Layout;
 
   //响应式布局
   isResponsive: boolean;

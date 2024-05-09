@@ -1,6 +1,6 @@
-import { Data, OutputIds, Schemas } from './constants';
+import { Data, Layout, OutputIds, Schemas } from './constants';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.3 增加列表项数据唯一标识
   */
@@ -160,6 +160,27 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if(data.useLoading && !output.get("setLoadingDone") && input.get("loading")){
     output.add("setLoadingDone", '设置loading完成', { type: 'boolean' });
     input.get("loading").setRels(["setLoadingDone"]);
+  }
+
+  /**
+   * @description v1.0.22 -> 1.0.23 布局重构
+   */
+  if (data.isResponsive) {
+    data.layout === Layout.Grid;
+  } else {
+    if (data.isAuto) {
+      if (data.isCustom) {
+        data.layout = Layout.Grid;
+      } else {
+        if (data.layout === 'horizontal') {
+          data.layout = Layout.Horizontal;
+        } else if (data.layout === 'vertical') {
+          data.layout = Layout.Vertical;
+        }
+      }
+    } else {
+      data.layout = Layout.Horizontal;
+    }
   }
 
   return true;
