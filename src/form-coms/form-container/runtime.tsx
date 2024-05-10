@@ -134,7 +134,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 if (validateInfo.validateStatus !== 'success') {
                   relOutputs['validateFieldsDone'](validateInfo);
                   count = 0;
-                } else if ((count = validNameList.length)) {
+                } else if (count === validNameList.length) {
                   relOutputs['validateFieldsDone']({
                     validateStatus: 'success'
                   });
