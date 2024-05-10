@@ -93,7 +93,8 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
           <Text
             style={{ 
               cursor: item.click || isSet ? 'pointer' : 'unset', ...fontStyle,
-              display: 'inline-block'
+              //display: 'inline-block',
+              wordBreak: 'break-word'
             }}
             className={!isUnity ? `${item.key} ${css.text} text` : void 0}
             type={item.textType}
