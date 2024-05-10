@@ -10,13 +10,13 @@ const loadDependence = async () => {
   return getWindowVal('XLSX');
 };
 
-export default async function ({ data, inputs, logger, onError }: RuntimeParams<Data>) {
-  const xlsx = await loadDependence();
+export default function ({ data, inputs, logger, onError }: RuntimeParams<Data>) {
+  let xlsx: any = null;
   const createWorkbook = (dataSource) => {
     let sheets: Array<Record<string, any>> = [];
     if (Array.isArray(dataSource)) {
       //muilt sheet
-      sheets = dataSource.map((item) => createSheet(item));
+      sheets = dataSource.map((item, index) => createSheet(item, index));
     } else if (isObject(dataSource)) {
       //single sheet
       sheets = [createSheet(dataSource as Sheet)];
@@ -33,24 +33,29 @@ export default async function ({ data, inputs, logger, onError }: RuntimeParams<
     };
   };
 
-  const createSheet = (sheet: Sheet) => {
-    // const titleRow = Object.keys(sheet.data[0]);
-    // const dataRow = (sheet.data || []).map((item) => {
-    //   return Object.keys(item).reduce((pre, cur) => {
-    //     return [...pre, item[cur]];
-    //   }, [] as any);
-    // });
-    // const sheetData = [titleRow, ...dataRow];
+  const createSheet = (sheet: Sheet, index?: number) => {
+    const ws = xlsx?.utils.json_to_sheet(sheet.data, { header: sheet.header });
+
+    if (sheet.columns) {
+      if (!ws['!cols']) ws['!cols'] = [];
+      for (let i = 0; i < sheet.columns.length; i++) {
+        if (!ws['!cols'][i])
+          ws['!cols'][i] = { wpx: sheet.columns[i]?.width, hidden: sheet.columns[i]?.hidden };
+      }
+    }
 
     return {
-      [sheet.name || 'Untitled']: xlsx.utils.json_to_sheet(sheet.data, { header: sheet.header })
+      [sheet.name || `Untitled${index ?? ''}`]: ws
     };
   };
-  inputs.dataSource((dataSource, relOutputs) => {
+  inputs['input'](async (input, relOutputs) => {
+    if (!xlsx) {
+      xlsx = await loadDependence();
+    }
     try {
-      const workBook = createWorkbook(dataSource);
-      const filename = `${data.filename ?? 'data'}.xlsx`;
-      xlsx.writeFile(workBook, filename);
+      const workBook = createWorkbook(input.dataSource);
+      const filename = `${input.filename ?? data.filename ?? 'data'}.xlsx`;
+      xlsx?.writeFile(workBook, filename);
       relOutputs['exportComplete']();
     } catch (error: any) {
       onError?.(error);
