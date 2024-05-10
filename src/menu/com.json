@@ -69,6 +69,7 @@
     {
       "id": "setMenuDataDone",
       "title": "设置数据完成",
+      "desc": "设置菜单数据输入, 触发设置数据完成事件",
       "schema": {
         "title": "菜单数据",
         "type": "object",
@@ -116,6 +117,7 @@
     {
       "id": "setActiveItemDone",
       "title": "设置选中项完成",
+      "desc": "设置菜单选中项, 触发设置选中项完成事件",
       "schema": {
         "title": "菜单名称/唯一标识",
         "type": "string"

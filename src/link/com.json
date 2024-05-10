@@ -14,6 +14,7 @@
     {
       "id": "content",
       "title": "文本内容",
+      "desc": "设置链接文本内容，并触发设置文本内容完成事件输出",
       "schema": {
         "type": "string"
       },
@@ -24,6 +25,7 @@
     {
       "id": "url",
       "title": "链接地址",
+      "desc": "设置链接的跳转地址，并触发设置链接地址完成事件输出",
       "schema": {
         "type": "string"
       },
@@ -36,6 +38,7 @@
     {
       "id": "setContentDone",
       "title": "设置文本内容完成",
+      "desc": "链接的设置文本内容输入，触发设置文本内容完成事件",
       "schema": {
         "type": "string"
       }
@@ -43,6 +46,7 @@
     {
       "id": "setUrlDone",
       "title": "设置链接地址完成",
+      "desc": "链接的设置链接地址输入，触发设置链接地址完成事件",
       "schema": {
         "type": "string"
       }

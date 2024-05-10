@@ -18,6 +18,7 @@
     {
       "id": "btn0",
       "title": "单击按钮0",
+      "desc": "单击按钮后，事件输出",
       "schema": {
         "type": "number"
       }
@@ -25,6 +26,7 @@
     {
       "id": "doubleClick_btn0",
       "title": "双击按钮0",
+      "desc": "双击按钮后，事件输出",
       "schema": {
         "type": "number"
       }

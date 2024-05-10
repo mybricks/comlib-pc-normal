@@ -63,6 +63,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发时间选择框的校验检查,并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -76,14 +77,14 @@
       "schema": {
         "type": "any"
       },
-      "desc": "禁用时间选择框",
+      "desc": "禁用时间选择框,并触发禁用完成事件输出",
       "rels": [
         "setDisabledDone"
       ]
     },
     {
       "id": "setEnabled",
-      "title": "设置启用",
+      "title": "设置启用,并触发启用完成事件输出",
       "schema": {
         "type": "any"
       },
@@ -95,6 +96,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "对时间选择框进行启用/禁用状态设置,并触发启用/禁用完成事件",
       "schema": {
         "type": "boolean"
       },
@@ -158,6 +160,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "时间选择框的值初始化事件输出",
       "schema": {
         "type": "number"
       }
@@ -165,6 +168,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "时间选择框的校验触发事件输出",
       "schema": {
         "title": "当前值",
         "type": "number"
@@ -173,6 +177,7 @@
     {
       "id": "returnValue",
       "title": "数据输出",
+      "desc": "时间选择框的获取值输入,触发值输出事件",
       "schema": {
         "type": "number"
       }
@@ -180,6 +185,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "时间选择框的校验输入,触发校验结果事件",
       "schema": {
         "type": "object",
         "properties": {
@@ -197,6 +203,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "时间选择框的值更新事件输出",
       "schema": {
         "type": "number"
       }

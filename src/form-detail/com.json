@@ -75,6 +75,7 @@
   "outputs": [
     {
       "id": "setTitleComplete",
+      "desc": "设置描述列表的标题后，会触发描述列表的设置标题完成输出",
       "title": "完成",
       "schema": {
         "type": "any"
@@ -82,6 +83,7 @@
     },
     {
       "id": "setDataSourceComplete",
+      "desc": "设置描述列表的数据源后，会触发设置数据源完成输出",
       "title": "完成",
       "schema": {
         "type": "any"
@@ -89,6 +91,7 @@
     },
     {
       "id": "setDataDescComplete",
+      "desc": "设置描述列表的数据源描述后，触发设置数据源描述完成事件输出",
       "title": "完成",
       "schema": {
         "type": "any"
