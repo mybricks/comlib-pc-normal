@@ -236,7 +236,11 @@ export default {
           {
             title: '默认',
             catelog: '默认',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } },
+              'padding'
+            ],
             ifVisible({ data }: EditorResult<Data>) {
               return !data.isUnity;
             },
