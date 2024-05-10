@@ -1,7 +1,7 @@
 {
   "title": "全局Loading",
   "namespace": "mybricks.normal-pc.global-loading",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "rtType": "js",
   "description": "",
   "author": "MyBricks",
@@ -15,6 +15,7 @@
     {
       "id": "open",
       "title": "打开",
+      "desc": "开启全局loading",
       "rels": ["finish"],
       "schema": {
         "type": "any"
@@ -25,6 +26,7 @@
     {
       "id": "finish",
       "title": "完成",
+      "desc": "全局loading完成",
       "schema": {
         "type": "follow"
       }

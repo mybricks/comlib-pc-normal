@@ -1,7 +1,7 @@
 {
   "title": "定时器",
   "namespace": "mybricks.normal-pc.timer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "rtType": "js",
   "description": "",
   "author": "MyBricks",
@@ -14,6 +14,7 @@
     {
       "id": "trigger",
       "title": "定时器",
+      "desc": "触发定时开始",
       "schema": {
         "type": "any"
       }
@@ -23,6 +24,7 @@
     {
       "id": "trigger",
       "title": "执行",
+      "desc": "规定时间后开始执行",
       "schema": {
         "type": "any"
       }

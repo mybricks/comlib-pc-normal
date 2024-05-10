@@ -1,7 +1,7 @@
 {
   "title": "消息提示",
   "namespace": "mybricks.normal-pc.message",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "rtType": "js",
   "description": "消息提示",
   "author": "HuangQiuyun",
@@ -15,6 +15,7 @@
     {
       "id": "showMsg",
       "title": "弹出提示",
+      "desc": "触发消息提示弹出",
       "schema": {
         "type": "follow"
       },
@@ -27,6 +28,7 @@
     {
       "id": "showMsgDone",
       "title": "弹出提示完成",
+      "desc": "消息提示弹出完成",
       "schema": {
         "type": "follow"
       }

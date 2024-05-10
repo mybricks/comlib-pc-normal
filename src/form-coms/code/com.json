@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.code-editor",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "用于在线编辑代码，支持多种编程语言",
   "runtime": "./runtime.tsx",
   "editors": "./editor.ts",
@@ -91,6 +91,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "根据输入值决定代码编辑器启用/禁用，true-启用，false-禁用",
       "schema": {
         "type": "boolean"
       },
@@ -132,6 +133,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "代码编辑器值初始化时触发",
       "schema": {
         "type": "string"
       }
@@ -139,6 +141,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "代码编辑器触发校验时触发",
       "schema": {
         "title": "当前值",
         "type": "string"
@@ -147,6 +150,7 @@
     {
       "id": "returnValue",
       "title": "数据输出",
+      "desc": "获取代码编辑器值后，值输出",
       "schema": {
         "type": "string"
       }
@@ -154,6 +158,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "代码编辑器输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -171,6 +176,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "代码编辑器值更新时触发",
       "schema": {
         "type": "string"
       }

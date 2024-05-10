@@ -1,7 +1,7 @@
 {
   "title": "下拉菜单",
   "namespace": "mybricks.normal-pc.dropdown",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "下拉菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -14,6 +14,7 @@
     {
       "id": "onChange",
       "title": "点击",
+      "desc": "下拉菜单点击触发",
       "schema": {
         "type": "object",
         "properties": {

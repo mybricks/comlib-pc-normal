@@ -1,7 +1,7 @@
 {
   "title": "确认提示",
   "namespace": "mybricks.normal-pc.tips",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "rtType": "js",
   "description": "确认提示对话框",
   "author": "MyBricks",
@@ -19,6 +19,7 @@
         "ok",
         "cancel"
       ],
+      "desc": "触发确认提示弹出",
       "schema": {
         "type": "object",
         "properties": {
@@ -45,6 +46,7 @@
     {
       "id": "ok",
       "title": "确认",
+      "desc": "点击确认后，输出内容",
       "schema": {
         "type": "any"
       }
@@ -52,6 +54,7 @@
     {
       "id": "cancel",
       "title": "取消",
+      "desc": "点击取消后，输出内容",
       "schema": {
         "type": "any"
       }
