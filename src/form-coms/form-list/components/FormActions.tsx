@@ -138,8 +138,11 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
     (typeof fieldIndex === 'number' && fieldIndex === data.fields.length - 1);
   const listLength = data.fields.length;
 
-  return (
-    <Space wrap>
+  // 是否所有的按钮都隐藏，如果是，则操作区不应该占位
+  let isEmpty = true;
+
+  const Items = (
+    <>
       {data.actions.items.map((item) => {
         const { iconConfig, ...res } = item;
         const icon = getBtnIcon(item);
@@ -162,6 +165,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
             return null;
           }
         }
+        isEmpty = false;
         return (
           <Button
             data-form-actions-item={item.key}
@@ -177,8 +181,9 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           </Button>
         );
       })}
-    </Space>
+    </>
   );
+  return isEmpty || <Space wrap>{Items}</Space>;
 };
 
 const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
@@ -208,12 +213,13 @@ const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
     label: '',
     colon: false
   };
+  const FormActions = Actions(props);
 
-  if (data.actions.visible) {
+  if (data.actions.visible && typeof FormActions !== 'boolean') {
     return (
       <Col data-form-actions flex={getFlexValue()} style={actionStyle}>
         <Form.Item {...formItemProps} style={{ margin: 0 }}>
-          <Actions {...props} />
+          {FormActions}
         </Form.Item>
       </Col>
     );
