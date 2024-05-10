@@ -1,7 +1,7 @@
 {
   "title": "excel导出",
   "namespace": "mybricks.normal-pc.excel",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "rtType": "js",
   "description": "数据导出excel",
   "author": "tangxiaoxin",
@@ -13,34 +13,51 @@
   "upgrade": "./upgrade.ts",
   "inputs": [
     {
-      "id": "dataSource",
-      "title": "输入数据源",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "header": {
-              "type": "array",
-              "items": {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "dataSource",
+          "title": "输入数据源",
+          "desc": "需要导出的表数据",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
                 "type": "string"
-              }
-            },
-            "data": {
-              "type": "array",
-              "items": {
-                "type": "object"
+              },
+              "header": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "width": {
+                      "type": "number"
+                    },
+                    "hidden": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
               }
             }
           }
         }
-      },
-      "rels": [
-        "exportComplete"
-      ]
+      ],
+      "rels": ["exportComplete"]
     }
   ],
   "outputs": [
