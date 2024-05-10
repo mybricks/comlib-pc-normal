@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -111,6 +111,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "设置多选框禁用，不能选择",
       "schema": {
         "type": "any"
       },
@@ -121,6 +122,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "设置多选框启用，能选择",
       "schema": {
         "type": "any"
       },
@@ -131,6 +133,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "根据输入值决定多选框启用/禁用，true-启用，false-禁用",
       "schema": {
         "type": "boolean"
       },
@@ -216,6 +219,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "多选框值初始化时触发",
       "schema": {
         "type": "array",
         "items": {
@@ -226,6 +230,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "多选框值更新时触发",
       "schema": {
         "type": "array",
         "items": {
@@ -236,6 +241,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "多选框触发校验时触发",
       "schema": {
         "title": "当前值",
         "type": "array",
@@ -247,6 +253,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "多选框输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -264,6 +271,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "获取多选框值后，值输出",
       "schema": {
         "type": "array",
         "items": {

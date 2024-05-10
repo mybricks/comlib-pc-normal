@@ -1,7 +1,7 @@
 {
   "title": "自定义容器",
   "namespace": "mybricks.normal-pc.custom-container",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "自定义容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -21,6 +21,7 @@
     {
       "id": "setStyle",
       "title": "动态设置样式",
+      "desc": "动态设置自定义容器的样式",
       "schema": {
         "type": "object",
         "properties": {
@@ -49,6 +50,7 @@
     {
       "id": "setStyleComplete",
       "title": "完成",
+      "desc": "动态设置样式完成",
       "schema": {
         "type": "any"
       }
@@ -56,6 +58,7 @@
     {
       "id": "scrollComplete",
       "title": "完成",
+      "desc": "滚动完成",
       "schema": {
         "type": "any"
       }

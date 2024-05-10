@@ -1,7 +1,7 @@
 {
   "title": "excel导出",
   "namespace": "mybricks.normal-pc.excel",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "rtType": "js",
   "description": "数据导出excel",
   "author": "tangxiaoxin",
@@ -15,11 +15,11 @@
     {
       "id": "input",
       "title": "输入项",
+      "desc": "需要导出的表数据",
       "schema": [
         {
           "name": "dataSource",
           "title": "输入数据源",
-          "desc": "需要导出的表数据",
           "type": "array",
           "items": {
             "type": "object",
@@ -64,6 +64,7 @@
     {
       "id": "exportComplete",
       "title": "完成",
+      "desc": "生成Excel完成后, 输出",
       "schema": {
         "type": "any"
       }

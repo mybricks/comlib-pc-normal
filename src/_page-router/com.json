@@ -14,6 +14,7 @@
   "inputs": [
     {
       "id": "routerAction",
+      "desc": "触发路由切换",
       "title": "路由切换",
       "schema": {
         "type": "any"

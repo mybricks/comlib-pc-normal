@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.color",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "颜色选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_50jt73.cb1a11284761ebfd.png",
@@ -73,6 +73,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "设置颜色选择框禁用，不能选择",
       "schema": {
         "type": "any"
       },
@@ -83,6 +84,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "设置颜色选择框启用，能选择",
       "schema": {
         "type": "any"
       },
@@ -93,6 +95,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "根据输入值决定颜色选择框启用/禁用，true-启用，false-禁用",
       "schema": {
         "type": "boolean"
       },
@@ -134,6 +137,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "颜色选择框初始化时触发",
       "schema": {
         "type": "string"
       }
@@ -141,6 +145,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "颜色选择框值更新时触发",
       "schema": {
         "type": "string"
       }
@@ -148,6 +153,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "颜色选择框输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -165,6 +171,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "获取颜色选择框值后，值输出",
       "schema": {
         "type": "string"
       }
@@ -172,6 +179,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "颜色选择框触发校验时触发",
       "schema": {
         "title": "当前值",
         "type": "string"

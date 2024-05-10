@@ -1,7 +1,7 @@
 {
   "title": "对象取值",
   "namespace": "mybricks.normal-pc.pick",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "对象取值",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -14,6 +14,7 @@
     {
       "id": "inputContext",
       "title": "输入项",
+      "desc": "传入对象",
       "schema": {
         "type": "follow"
       },

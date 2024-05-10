@@ -15,6 +15,7 @@
     {
       "id": "open",
       "title": "打开",
+      "desc": "开启全局loading",
       "rels": ["finish"],
       "schema": {
         "type": "any"
@@ -25,6 +26,7 @@
     {
       "id": "finish",
       "title": "完成",
+      "desc": "全局loading完成",
       "schema": {
         "type": "follow"
       }

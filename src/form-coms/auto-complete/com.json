@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.auto-complete",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0fcijz.b5f0933284f32e40.png",
@@ -73,6 +73,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "设置自动完成禁用，不能键入",
       "schema": {
         "type": "any"
       },
@@ -83,6 +84,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "设置自动完成启用，能键入",
       "schema": {
         "type": "any"
       },
@@ -93,6 +95,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "根据输入值决定自动完成启用/禁用，true-启用，false-禁用",
       "schema": {
         "type": "boolean"
       },
@@ -170,6 +173,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "自动完成值初始化时触发",
       "schema": {
         "type": "string"
       }
@@ -177,6 +181,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "自动完成值更新时触发",
       "schema": {
         "type": "string"
       }
@@ -184,6 +189,7 @@
     {
       "id": "onBlur",
       "title": "失去焦点",
+      "desc": "自动完成失去焦点时触发",
       "schema": {
         "type": "string"
       }
@@ -191,6 +197,7 @@
     {
       "id": "onSelect",
       "title": "值选择",
+      "desc": "自动完成完成值选择时触发",
       "schema": {
         "type": "any"
       }
@@ -198,6 +205,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "自动完成触发校验时触发",
       "schema": {
         "title": "当前值",
         "type": "string"
@@ -206,6 +214,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "自动完成输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -223,6 +232,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "获取自动完成值后，值输出",
       "schema": {
         "type": "string"
       }
