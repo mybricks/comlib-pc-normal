@@ -587,7 +587,30 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
   //5、校验表单项完成 validateFieldsDone
   if (!output.get("validateFieldsDone")) {
-    output.add("validateFieldsDone", '设置启用完成', { type: "boolean" });
+    output.add("validateFieldsDone", '校验表单项完成', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success'
+            },
+            {
+              type: 'string',
+              value: 'error'
+            }
+          ]
+        },
+        help: {
+          type: 'string'
+        },
+        name: {
+          type: 'string'
+        },
+      }
+    });
   }
   if (output.get("validateFieldsDone") &&
     input.get("validateFields") &&
@@ -656,6 +679,35 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     output.setTitle(item.outputId, item.title);
   })
   //=========== v1.4.49===============
+
+  /**
+   * @description v1.4.51 输出项“校验表单项完成”功能重构：输出时机和校验结果
+   */
+  output.get("validateFieldsDone").setSchema({
+    type: 'object',
+    properties: {
+      validateStatus: {
+        type: 'enum',
+        items: [
+          {
+            type: 'string',
+            value: 'success'
+          },
+          {
+            type: 'string',
+            value: 'error'
+          }
+        ]
+      },
+      help: {
+        type: 'string'
+      },
+      name: {
+        type: 'string'
+      },
+    }
+  })
+  //=========== v1.4.51 end ===============
 
   return true;
 }

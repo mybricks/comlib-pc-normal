@@ -108,28 +108,41 @@ export default function Runtime(props: RuntimeParams<Data>) {
       // 校验字段
       inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[], relOutputs) => {
         if (typeof nameList === 'string') nameList = [nameList];
-        let isValid = false;
         if (Array.isArray(nameList)) {
-          nameList.forEach((name) => {
+          const validNameList = nameList.filter((name) =>
+            data.items.find((item) => item.name === name)
+          );
+          if (!validNameList.length) {
+            logger.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
+            console.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
+            return;
+          }
+          let count = 0;
+          validNameList.forEach((name) => {
             const item = data.items.find((item) => item.name === name);
-            if (item) {
-              isValid = true;
-              const input = getFromItemInputEvent(item, childrenInputs);
-              validateForInput({
+            const input = getFromItemInputEvent(item, childrenInputs);
+            validateForInput(
+              {
                 input,
                 model: {
                   curFormItem: item,
                   ...formContext.current.store
                 }
-              });
-            }
+              },
+              (validateInfo) => {
+                count++;
+                if (validateInfo.validateStatus !== 'success') {
+                  relOutputs['validateFieldsDone'](validateInfo);
+                  count = 0;
+                } else if ((count = validNameList.length)) {
+                  relOutputs['validateFieldsDone']({
+                    validateStatus: 'success'
+                  });
+                }
+              }
+            );
           });
         }
-        if (!isValid) {
-          logger.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
-          console.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
-        }
-        relOutputs['validateFieldsDone'](isValid);
       });
 
       //------ For 表单项私有 start ---------
