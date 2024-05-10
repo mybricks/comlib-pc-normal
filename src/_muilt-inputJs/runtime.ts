@@ -10,7 +10,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
   try {
     if (runImmediate) {
       if (env.runtime) {
-        runJs(fns, [runJSParams]);
+        runJs(fns, [runJSParams], { env });
       }
     }
     inputs['input']((val) => {
@@ -20,7 +20,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
             ...runJSParams,
             inputs: val
           }
-        ]);
+        ], { env });
       } catch (ex: any) {
         onError?.(ex);
         console.error('js计算组件运行错误.', ex);

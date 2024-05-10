@@ -15,7 +15,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
   try {
     if (runImmediate) {
       if (env.runtime) {
-        runJs(fns, [runJSParams]);
+        runJs(fns, [runJSParams], { env });
       }
     }
 
@@ -32,7 +32,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
                 inputs: { ...inputValueMap },
                 inputValue: inputValueMap['inputValue0']
               }
-            ]);
+            ], { env });
             inputValueMap = {};
           } catch (ex) {
             onError?.(ex);

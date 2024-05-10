@@ -1010,7 +1010,7 @@ export default function (props: RuntimeParams<Data>) {
       if (!data.onRowScript) {
         data.onRowScript = DefaultOnRowScript;
       }
-      props = runJs(data?.onRowScript, [_record, index]);
+      props = runJs(data?.onRowScript, [_record, index], { env });
     }
 
     return {
