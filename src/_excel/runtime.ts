@@ -1,7 +1,7 @@
 import isObject from 'lodash/isObject';
 import { getWindowVal } from '../utils/getWindowVal';
 import { loadPkg } from '../utils/loadPkg';
-import { Data, Sheet } from './types';
+import { Data, InputData, Sheet } from './types';
 
 const XLSX_CDN = 'https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js';
 
@@ -10,7 +10,7 @@ const loadDependence = async () => {
   return getWindowVal('XLSX');
 };
 
-export default function ({ data, inputs, logger, onError }: RuntimeParams<Data>) {
+export default function ({ data, inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   let xlsx: any = null;
   const createWorkbook = (dataSource) => {
     let sheets: Array<Record<string, any>> = [];
@@ -48,15 +48,15 @@ export default function ({ data, inputs, logger, onError }: RuntimeParams<Data>)
       [sheet.name || `Untitled${index ?? ''}`]: ws
     };
   };
-  inputs['input'](async (input, relOutputs) => {
+  inputs['input'](async (val: InputData) => {
     if (!xlsx) {
       xlsx = await loadDependence();
     }
     try {
-      const workBook = createWorkbook(input.dataSource);
-      const filename = `${input.filename ?? data.filename ?? 'data'}.xlsx`;
+      const workBook = createWorkbook(val.dataSource);
+      const filename = `${val.filename ?? data.filename ?? 'data'}.xlsx`;
       xlsx?.writeFile(workBook, filename);
-      relOutputs['exportComplete']();
+      outputs['exportComplete']();
     } catch (error: any) {
       onError?.(error);
       logger.error(`'[excel导出运行错误]'：${error}`);

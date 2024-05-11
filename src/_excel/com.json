@@ -1,7 +1,7 @@
 {
   "title": "excel导出",
   "namespace": "mybricks.normal-pc.excel",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "rtType": "js",
   "description": "数据导出excel",
   "author": "tangxiaoxin",
@@ -56,8 +56,7 @@
             }
           }
         }
-      ],
-      "rels": ["exportComplete"]
+      ]
     }
   ],
   "outputs": [

@@ -1,17 +1,23 @@
 export type Sheet = {
-  name: string;
+  name?: string;
   header?: string[];
-  columns?: {
-    width: number;
-    hidden: boolean;
-  }[];
-  data: Array<Record<string, any>>;
+  columns?: Array<{
+    width?: number;
+    hidden?: boolean;
+  } | undefined>
+  data?: Array<Record<string, any>>;
 };
+
+export type DataSource = Array<Sheet>;
 
 export interface Data {
   filename: string;
   useDynamicFilename: boolean;
-  dataSource: Array<Partial<Sheet>>;
+}
+
+export interface InputData {
+  filename: string;
+  dataSource: DataSource;
 }
 
 export enum InputIds {
