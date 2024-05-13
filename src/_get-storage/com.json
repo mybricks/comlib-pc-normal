@@ -1,7 +1,7 @@
 {
   "title": "获取Storage数据",
   "namespace": "mybricks.normal-pc.get-storage",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "rtType": "js-autorun",
   "description": "获取Storage数据",
   "docs": "",
@@ -14,6 +14,7 @@
   "inputs": [
     {
       "id": "inputContext",
+      "desc": "从localStorage或sessionStorage中取值",
       "title": "开始",
       "schema": {
         "type": "any"
@@ -25,6 +26,7 @@
     {
       "id": "output0",
       "title": "key0",
+      "desc": "获取数据对应key的值",
       "schema": {
         "type": "any"
       },

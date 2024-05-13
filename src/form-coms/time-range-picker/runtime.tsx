@@ -77,13 +77,13 @@ export default function ({
         [start, end] = val;
       }
       const startM =
-        start === null || start === undefined
+        start === null || start === undefined || start === 0
           ? start
           : isNaN(Number(start))
           ? moment(start, _format)
           : moment(Number(start));
       const endM =
-        end === null || end === undefined
+        end === null || end === undefined || end === 0
           ? end
           : isNaN(Number(end))
           ? moment(end, _format)

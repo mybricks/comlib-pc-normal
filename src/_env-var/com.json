@@ -1,7 +1,7 @@
 {
   "title": "环境变量",
   "namespace": "mybricks.normal-pc.env-var",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js-autorun",
   "description": "环境变量",
   "author": "liuzhigang",
@@ -25,6 +25,7 @@
     {
       "id": "outputEnv",
       "title": "输出",
+      "desc": "获取环境变量输出",
       "schema": {
         "type": "string"
       }

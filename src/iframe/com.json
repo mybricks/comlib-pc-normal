@@ -1,7 +1,7 @@
 {
   "title": "iFrame",
   "namespace": "mybricks.normal-pc.iframe",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "iframe容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -14,6 +14,7 @@
     {
       "id": "setUrl",
       "title": "输入链接",
+      "desc": "输入iframe的链接",
       "schema": {
         "type": "string"
       },
