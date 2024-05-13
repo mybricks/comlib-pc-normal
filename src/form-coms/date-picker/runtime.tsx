@@ -149,7 +149,12 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
-      val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
+      val =
+        val === null || num === 0
+          ? null
+          : !result?._isValid || val === undefined
+          ? undefined
+          : result;
       const transValue = changeValue(val);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
@@ -163,7 +168,12 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
         // 为null设置为null
-        val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
+        val =
+          val === null || num === 0
+            ? null
+            : !result?._isValid || val === undefined
+            ? undefined
+            : result;
         const transValue = changeValue(val);
         if (relOutputs['setInitialValueDone']) {
           relOutputs['setInitialValueDone'](val);
