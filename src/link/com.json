@@ -1,7 +1,7 @@
 {
   "title": "链接",
   "namespace": "mybricks.normal-pc.link",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "链接",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -38,7 +38,7 @@
     {
       "id": "setContentDone",
       "title": "设置文本内容完成",
-      "desc": "链接的设置文本内容输入，触发设置文本内容完成事件",
+      "desc": "链接设置文本内容后，事件输出",
       "schema": {
         "type": "string"
       }
@@ -46,7 +46,7 @@
     {
       "id": "setUrlDone",
       "title": "设置链接地址完成",
-      "desc": "链接的设置链接地址输入，触发设置链接地址完成事件",
+      "desc": "链接的设置链接地址完成后，事件输出",
       "schema": {
         "type": "string"
       }

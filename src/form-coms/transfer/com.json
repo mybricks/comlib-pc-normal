@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -183,7 +183,7 @@
     {
       "id": "returnValue",
       "title": "数据输出",
-      "desc": "穿梭框的获取值输入，触发值输出事件",
+      "desc": "获取穿梭框的值后，值输出",
       "schema": {
         "type": "array",
         "items": {
@@ -245,7 +245,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
-      "desc": "穿梭框的校验输入，触发校验结果事件输出",
+      "desc": "穿梭框输出校验结果",
       "schema": {
         "type": "object",
         "properties": {

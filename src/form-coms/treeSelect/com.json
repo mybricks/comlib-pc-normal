@@ -1,7 +1,7 @@
 {
   "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.2.18",
+  "version": "1.2.19",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -261,7 +261,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
-      "desc": "树形选择的校验输入，触发校验结果输出",
+      "desc": "树形选择输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -279,7 +279,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
-      "desc": "树形选择的获取值输入，触发值输出事件",
+      "desc": "获取树形选择的值后，值输出",
       "schema": {
         "type": "string"
       }

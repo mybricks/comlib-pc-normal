@@ -1,7 +1,7 @@
 {
   "title": "图标",
   "namespace": "mybricks.normal-pc.icon",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "图标",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -14,7 +14,7 @@
     {
       "id": "click",
       "title": "点击",
-      "desc": "图标的点击事件输出",
+      "desc": "图标的点击后，事件输出",
       "schema": {
         "type": "any"
       }

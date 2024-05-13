@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "开关选择器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_8969hz.276cbe33b62e0f79.png",
@@ -173,7 +173,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
-      "desc": "开关的校验输入，触发校验结果事件",
+      "desc": "开关输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -191,7 +191,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
-      "desc": "开关的获取值输入，触发值输出事件",
+      "desc": "获取开关的值后，值输出",
       "schema": {
         "type": "boolean"
       }

@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -206,7 +206,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
-      "desc": "上传表单项的校验输入，触发校验结果事件",
+      "desc": "上传表单项输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -224,7 +224,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
-      "desc": "上传表单项的获取值输入，触发值输出事件",
+      "desc": "获取上传表单项的值后，值输出",
       "schema": {
         "type": "array",
         "items": {
@@ -252,7 +252,7 @@
     {
       "id": "remove",
       "title": "删除文件",
-      "desc": "上传表单项的获取值输入，触发值输出事件",
+      "desc": "删除上传表单项的文件后，触发删除文件事件",
       "schema": {
         "type": "object",
         "properties": {
