@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.61",
+  "version": "1.0.62",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -197,6 +197,17 @@
       "rels": [
         "returnTreeData"
       ]
+    },
+    {
+      "id": "getSelectedKeys",
+      "title": "获取选中节点",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取当前选中节点，输出数组数据",
+      "rels": [
+        "returnSelectedKeys"
+      ]
     }
   ],
   "outputs": [
@@ -259,6 +270,16 @@
     {
       "id": "submit",
       "title": "勾选项数据输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "returnSelectedKeys",
+      "title": "选中项数据输出",
       "schema": {
         "type": "array",
         "items": {
