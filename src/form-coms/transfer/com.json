@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -97,6 +97,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发穿梭框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -110,7 +111,7 @@
       "schema": {
         "type": "any"
       },
-      "desc": "禁用穿梭框组件",
+      "desc": "禁用穿梭框组件,并触发启用完成事件输出",
       "rels": [
         "setDisabledDone"
       ]
@@ -121,7 +122,7 @@
       "schema": {
         "type": "any"
       },
-      "desc": "启用穿梭框组件",
+      "desc": "启用穿梭框组件,并触发启用完成事件输出",
       "rels": [
         "setEnabledDone"
       ]
@@ -129,6 +130,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "对开关进行启用/禁用状态设置，并触发启用/禁用完成事件",
       "schema": {
         "type": "boolean"
       },
@@ -170,6 +172,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "穿梭框的值初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -180,6 +183,7 @@
     {
       "id": "returnValue",
       "title": "数据输出",
+      "desc": "获取穿梭框的值后，值输出",
       "schema": {
         "type": "array",
         "items": {
@@ -204,6 +208,7 @@
     {
       "id": "onChange",
       "title": "目标数据更新",
+      "desc": "穿梭框的目标数据更新事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -228,6 +233,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "穿梭框的校验触发事件输出",
       "schema": {
         "title": "当前值",
         "type": "array",
@@ -239,6 +245,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "穿梭框输出校验结果",
       "schema": {
         "type": "object",
         "properties": {

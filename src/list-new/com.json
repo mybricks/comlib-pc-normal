@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -117,6 +117,7 @@
     {
       "id": "addItemDone",
       "title": "添加一项完成",
+      "desc": "列表的添加一项输入，触发添加一项完成事件",
       "schema": {
         "type": "object",
         "properties": {
@@ -132,6 +133,7 @@
     {
       "id": "removeItemDone",
       "title": "删除一项完成",
+      "desc": "列表的删除一项输入，触发删除一项完成完成事件",
       "schema": {
         "type": "number"
       }
@@ -139,6 +141,7 @@
     {
       "id": "changeItemDone",
       "title": "修改一项(根据index)完成",
+      "desc": "列表的修改一项输入，触发修改一项完成完成事件",
       "schema": {
         "type": "object",
         "properties": {
@@ -154,6 +157,7 @@
     {
       "id": "moveUpDone",
       "title": "上移完成",
+      "desc": "列表的指定位置上移输入，触发上移完成事件",
       "schema": {
         "type": "number"
       }
@@ -161,6 +165,7 @@
     {
       "id": "moveDownDone",
       "title": "下移完成",
+      "desc": "列表的指定位置下移输入，触发下移完成事件",
       "schema": {
         "type": "number"
       }

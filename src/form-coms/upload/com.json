@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -80,6 +80,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发上传表单项的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -90,6 +91,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取上传表单项的值，并输出",
       "schema": {
         "type": "any"
       },
@@ -100,6 +102,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空上传表单项的值",
       "schema": {
         "type": "any"
       },
@@ -110,6 +113,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "禁用上传表单项，并触发禁用完成事件输出",
       "schema": {
         "type": "any"
       },
@@ -120,6 +124,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "启用上传表单项，并触发启用完成事件输出",
       "schema": {
         "type": "any"
       },
@@ -130,6 +135,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "对上传表单项进行启用/禁用状态设置，并触发启用/禁用完成事件",
       "schema": {
         "type": "boolean"
       },
@@ -151,6 +157,7 @@
     {
       "id": "remove",
       "title": "删除文件",
+      "desc": "删除上传表单项的文件，并触发删除文件完成事件输出",
       "schema": {
         "type": "object",
         "properties": {
@@ -171,6 +178,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "上传表单项的值初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -198,6 +206,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "上传表单项输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -215,6 +224,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "获取上传表单项的值后，值输出",
       "schema": {
         "type": "array",
         "items": {
@@ -242,6 +252,7 @@
     {
       "id": "remove",
       "title": "删除文件",
+      "desc": "删除上传表单项的文件后，触发删除文件事件",
       "schema": {
         "type": "object",
         "properties": {

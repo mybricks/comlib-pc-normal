@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.1.59",
+  "version": "1.1.60",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -79,6 +79,7 @@
     {
       "id": "getTableData",
       "title": "表格数据",
+      "desc": "获取表格数据，并输出内容",
       "schema": {
         "type": "array"
       }
@@ -86,6 +87,7 @@
     {
       "id": "columnsChange",
       "title": "列结构变化",
+      "desc": "表格的列数据变化，触发列结构变化输出",
       "schema": {
         "type": "array"
       }
@@ -93,6 +95,7 @@
     {
       "id": "dataSource",
       "title": "数据源",
+      "desc": "获取表格数据源，并输出数据源内容",
       "schema": {
         "type": "array"
       }
@@ -100,6 +103,7 @@
     {
       "id": "startLoading",
       "title": "开启loading后",
+      "desc": "设置表格的Loading状态，并输出",
       "schema": {
         "type": "any"
       }
@@ -107,6 +111,7 @@
     {
       "id": "endLoading",
       "title": "关闭loading后",
+      "desc": "关闭表格的Loading状态，并输出",
       "schema": {
         "type": "any"
       }
@@ -114,6 +119,7 @@
     {
       "id": "setSizeDone",
       "title": "设置布局风格完成",
+      "desc": "设置表格的布局风格，并输出",
       "schema": {
         "type": "string"
       }

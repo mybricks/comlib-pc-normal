@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -73,6 +73,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "禁用滑动输入条，并触发禁用完成事件输出",
       "schema": {
         "type": "any"
       },
@@ -83,6 +84,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "启用滑动输入条，并触发启用完成事件输出",
       "schema": {
         "type": "any"
       },
@@ -93,6 +95,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "对滑动输入条进行启用/禁用状态设置，并触发启用/禁用完成事件",
       "schema": {
         "type": "boolean"
       },
@@ -134,6 +137,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "滑动输入条的值初始化事件输出",
       "schema": {
         "type": "number"
       }
@@ -141,6 +145,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "滑动输入条的值更新事件输出",
       "schema": {
         "type": "number"
       }
@@ -148,6 +153,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "滑动输入条校验触发事件输出",
       "schema": {
         "title": "当前值",
         "type": "number"
@@ -156,6 +162,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "滑动输入条输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -173,6 +180,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "获取滑动输入条的值后，值输出",
       "schema": {
         "type": "number"
       }
@@ -180,6 +188,7 @@
     {
       "id": "setValueDone",
       "title": "设置值完成",
+      "desc": "设置滑动输入条的值后，触发设置值完成输出",
       "schema": {
         "type": "number"
       }
@@ -187,6 +196,7 @@
     {
       "id": "setInitialValueDone",
       "title": "设置初始值完成",
+      "desc": "设置滑动条初始取值后，触发设置初始值完成输出",
       "schema": {
         "type": "number"
       }

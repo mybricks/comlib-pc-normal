@@ -1,7 +1,7 @@
 {
   "title": "描述列表",
   "namespace": "mybricks.normal-pc.form-detail",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "描述列表",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -75,6 +75,7 @@
   "outputs": [
     {
       "id": "setTitleComplete",
+      "desc": "设置描述列表的标题完成后，输出",
       "title": "完成",
       "schema": {
         "type": "any"
@@ -82,6 +83,7 @@
     },
     {
       "id": "setDataSourceComplete",
+      "desc": "设置描述列表的数据源完成输出",
       "title": "完成",
       "schema": {
         "type": "any"
@@ -89,6 +91,7 @@
     },
     {
       "id": "setDataDescComplete",
+      "desc": "设置描述列表的数据源描述完成输出",
       "title": "完成",
       "schema": {
         "type": "any"

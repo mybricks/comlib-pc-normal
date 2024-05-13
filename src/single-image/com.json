@@ -1,7 +1,7 @@
 {
   "title": "图片",
   "namespace": "mybricks.normal-pc.single-image",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "可预览的单图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -17,6 +17,7 @@
     {
       "id": "setImgSrc",
       "title": "图片地址",
+      "desc": "设置图片资源链接",
       "schema": {
         "type": "string"
       },
@@ -29,13 +30,15 @@
     {
       "id": "click",
       "title": "单击图片",
+      "desc": "点击图片事件输出",
       "scheme": {
         "type": "any"
       }
     },
     {
       "id": "setImgSrcDone",
-      "title": "设置地址完成",
+      "title": "图片设置地址后，触发设置地址完成事件",
+      "desc": "",
       "schema": {
         "type": "string"
       }
