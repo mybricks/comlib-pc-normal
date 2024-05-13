@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.custom-render",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "自定义渲染 --- tsx",
   "icon": "./icon.svg",
   "runtime": "./runtime.tsx",
@@ -14,6 +14,7 @@
     {
       "id": "props",
       "title": "渲染数据",
+      "desc": "输入自定义渲染数据",
       "schema": {
         "type": "follow"
       }

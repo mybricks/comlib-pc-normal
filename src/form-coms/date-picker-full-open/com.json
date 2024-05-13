@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker-full-open",
   "author": "jidan.wd",
   "author_name": "jidan.wd",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "全开式日期选择器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -59,6 +59,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "设置全开式日期选择器禁用，不能选择",
       "schema": {
         "type": "any"
       },
@@ -67,6 +68,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "设置全开式日期选择器启用，能选择",
       "schema": {
         "type": "any"
       },
@@ -75,6 +77,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "根据输入值决定全开式日期选择器启用/禁用，true-启用，false-禁用",
       "schema": {
         "type": "boolean"
       },
@@ -119,6 +122,7 @@
     {
       "id": "disabledDate",
       "title": "禁用特定日期",
+      "desc": "禁用特定日期",
       "schema": {
         "type": "any"
       },
@@ -169,6 +173,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "全开式日期选择器初始化时触发",
       "schema": {
         "type": "string"
       }
@@ -176,6 +181,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "全开式日期选择器值更新时触发",
       "schema": {
         "type": "string"
       }
@@ -183,6 +189,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "全开式日期选择器触发校验时触发",
       "schema": {
         "title": "当前值",
         "type": "string"
@@ -191,6 +198,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "全开式日期选择器输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
@@ -208,6 +216,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "获取全开式日期选择器后，值输出",
       "schema": {
         "type": "string"
       }

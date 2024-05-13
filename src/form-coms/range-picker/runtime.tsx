@@ -163,7 +163,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         let initVal = val;
         val = val.map((item) => {
           const num = Number(item);
-          const result: any = isNaN(num) ? moment(item) : moment(num);
+          const result: any = num === 0 ? null : isNaN(num) ? moment(item) : moment(num);
           let data = !result?._isValid ? undefined : result;
           return data;
         });
@@ -187,8 +187,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           //如果是输入的值不合规范，即会输出[null, null]
           val = val.map((item) => {
             const num = Number(item);
-            const result: any = isNaN(num) ? moment(item) : moment(num);
-            let data = !result?._isValid ? undefined : result;
+            const result: any = num === 0 ? null : isNaN(num) ? moment(item) : moment(num);
+            let data = !result?._isValid && result !== null ? undefined : result;
             return data;
           });
           const transValue = changeValue(val);
@@ -337,7 +337,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     } else {
       transValue = value.map((item, index) => {
-        return transCalculation(item, data.contentType, props, index);
+        return item === null ? null : transCalculation(item, data.contentType, props, index);
       });
       if (data.dateType !== 'array') {
         transValue = transValue[0] + `${data.splitChart}` + transValue[1];

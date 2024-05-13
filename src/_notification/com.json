@@ -1,7 +1,7 @@
 {
   "title": "通知提醒",
   "namespace": "mybricks.normal-pc.notification",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "在系统四个角显示通知提醒信息",
   "author": "mybricks",
   "author_name": "MyBricks",
@@ -14,6 +14,7 @@
     {
       "id": "open",
       "title": "弹出",
+      "desc": "通知提醒弹出时触发",
       "rels": [
         "close"
       ],
@@ -34,6 +35,7 @@
     {
       "id": "close",
       "title": "关闭",
+      "desc": "关闭通知提醒时触发",
       "schema": {
         "type": "follow"
       }

@@ -1,7 +1,7 @@
 {
   "title": "设置Storage数据",
   "namespace": "mybricks.normal-pc.set-storage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "rtType": "js",
   "description": "设置storage数据",
   "author": "MyBricks",
@@ -14,6 +14,7 @@
     {
       "id": "setData",
       "title": "保存数据",
+      "desc": "将数据保存到localStorage或sessionStorage中",
       "schema": {
         "type": "follow"
       },
