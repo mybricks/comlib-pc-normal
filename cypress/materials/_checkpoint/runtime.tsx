@@ -6,7 +6,11 @@ export interface IData {
 export default function ({ data, inputs, outputs, env }: RuntimeParams<IData>) {
   if (env.runtime) {
     inputs['check']((value) => {
-      if (!data.id) return;
+      if (!data.id) {
+        console.error('检查点未配置id');
+        return;
+      }
+
       window.checklist = [
         ...(window.checklist || []),
         {

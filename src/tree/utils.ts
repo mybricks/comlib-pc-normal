@@ -580,9 +580,11 @@ export const refreshSchema = (props: EditorResult<Data>) => {
     case ValueType.TREE_NODE:
       output.get(OutputIds.OnNodeClick).setSchema(treeDataSchema);
       output.get(OutputIds.OnCheck)?.setSchema(treeDataSchema);
+      output.get(OutputIds.ReturnSelectedKeys)?.setSchema(treeDataSchema);
       break;
     default:
       output.get(OutputIds.OnNodeClick).setSchema(stringArraySchema);
       output.get(OutputIds.OnCheck)?.setSchema(stringArraySchema);
+      output.get(OutputIds.ReturnSelectedKeys)?.setSchema(stringArraySchema);
   }
 }

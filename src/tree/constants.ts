@@ -12,6 +12,7 @@ export const InputIds = {
   SetOpenDepth: 'setOpenDepth',
   SetAddTips: 'addTips',
   GetCheckedKeys: 'submit',
+  GetSelectedKeys: 'getSelectedKeys',
   GetTreeData: 'getTreeData',
   SetLoadData: 'setLoadData',
 }
@@ -23,6 +24,7 @@ export const OutputIds = {
   OnNodeClick: 'click',
   OnCheck: 'check',
   ReturnTreeData: 'returnTreeData',
+  ReturnSelectedKeys: 'returnSelectedKeys',
   LoadData: 'loadData',
   SetLoadDataDone: 'setLoadDataDone',
 }

@@ -33,6 +33,37 @@ export default function ({
     }
   };
 
+  const outputValueSchema: any = {
+    title: '节点数据',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        title: {
+          title: '标题',
+          type: 'string'
+        },
+        key: {
+          title: '字段名',
+          type: 'string'
+        },
+        children: {
+          title: '子项',
+          type: 'array',
+          items: {
+            type: 'object'
+          }
+        }
+      }
+    }
+  };
+
+  if (data.valueType === ValueType.KEY_FIELD) {
+    outputValueSchema.items = {
+      type: 'string'
+    };
+  }
+
   /**
   * @description v1.0.6 节点操作项支持省略样式配置
   */
@@ -496,5 +527,24 @@ export default function ({
     
 
   //=========== v1.0.46 end ===============
+
+  /**
+   * @description v1.0.62 增加 getSelectedKeys获取选中节点数据 输入项、returnSelectedKeys选中节点数据输出 输出项
+   */
+
+  if (!input.get(InputIds.GetSelectedKeys)) {
+    input.add(InputIds.GetSelectedKeys, '获取选中节点数据', {
+      type: 'any'
+    });
+  }
+  if (!output.get(OutputIds.ReturnSelectedKeys)) {
+    output.add(OutputIds.ReturnSelectedKeys, '选中节点数据输出', outputValueSchema);
+  }
+  const getSelectedKeysPin = input.get(InputIds.GetSelectedKeys);
+  if (!getSelectedKeysPin.rels) {
+    getSelectedKeysPin.setRels([OutputIds.ReturnSelectedKeys]);
+  }
+  //=========== v1.0.62 end ===============
+
   return true;
 }
