@@ -200,11 +200,11 @@
     },
     {
       "id": "getSelectedKeys",
-      "title": "获取选中节点",
+      "title": "获取选中节点数据",
       "schema": {
         "type": "any"
       },
-      "desc": "获取当前选中节点，输出数组数据",
+      "desc": "输出当前选中节点的数据",
       "rels": [
         "returnSelectedKeys"
       ]
@@ -279,7 +279,7 @@
     },
     {
       "id": "returnSelectedKeys",
-      "title": "选中项数据输出",
+      "title": "选中节点数据输出",
       "schema": {
         "type": "array",
         "items": {
