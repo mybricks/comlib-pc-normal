@@ -9,4 +9,5 @@ export interface Data {
     statusList: Status[];
     useDefaultStatus: boolean;
     value: boolean | number | string;
+    slotStyle?: Object; 
 }

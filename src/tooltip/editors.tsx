@@ -1,5 +1,6 @@
 import { Data, Trigger, Placement } from './types';
 export default {
+  ':slot': {},
   '@init': ({ data, style }: EditorResult<Data>) => {
     style.width = 'fit-content';
   },
@@ -10,6 +11,28 @@ export default {
     items({ data }, ...cate) {
       cate[0].title = '配置';
       cate[0].items = [
+        {
+          title: '布局',
+          type: 'layout',
+          options: [],
+          value: {
+            get({ data, slots }: EditorResult<Data>) {
+              const { slotStyle = {} } = data;
+              return slotStyle;
+            },
+            set({ data, slots }: EditorResult<Data>, val: any) {
+              if (!data.slotStyle) {
+                data.slotStyle = {};
+              }
+              data.slotStyle = {
+                ...data.slotStyle,
+                ...val
+              };
+              const slotInstance = slots.get('content');
+              // setSlotLayout(slotInstance, val);
+            }
+          }
+        },
         {
           title: '提示内容',
           type: 'Text',

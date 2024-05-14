@@ -366,6 +366,10 @@ export default function Runtime({
               ? true
               : void 0
           }
+          dropdownStyle={{
+            width: '100%',
+            border: '1px solid green'
+          }}
           onSearch={data.config.showSearch ? onSearch : void 0}
           notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
         >

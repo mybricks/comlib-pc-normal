@@ -76,6 +76,7 @@ const basicUploadDoneSchema = {
 };
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },
@@ -322,6 +323,29 @@ export default {
       catalog[0].title = '常规';
 
       catalog[0].items = [
+        {
+          title: '布局',
+          type: 'layout',
+          options: [],
+          value: {
+            get({ data, slots }: EditorResult<Data>) {
+              const { slotStyle = {} } = data;
+              return slotStyle;
+            },
+            set({ data, slots }: EditorResult<Data>, val: any) {
+              if (!data.slotStyle) {
+                data.slotStyle = {};
+              }
+              data.slotStyle = {
+                ...data.slotStyle,
+                ...val
+              };
+              const slotInstance = slots.get('content');
+              // TODO:wf
+              // setSlotLayout(slotInstance, val);
+            }
+          }
+        },
         {
           title: '上传配置',
           items: [

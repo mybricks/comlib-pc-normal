@@ -2,8 +2,31 @@ import { Status, Data } from './type';
 import visibleOpt from '../components/editorRender/visibleOpt';
 
 export default {
+  ':slot': {},
   ':root': ({ data, slot, env }: EditorResult<Data>, cate1) => {
     cate1.items = [
+      {
+        title: '布局',
+        type: 'layout',
+        options: [],
+        value: {
+          get({ data, slots }: EditorResult<Data>) {
+            const { slotStyle = {} } = data;
+            return slotStyle;
+          },
+          set({ data, slots }: EditorResult<Data>, val: any) {
+            if (!data.slotStyle) {
+              data.slotStyle = {};
+            }
+            data.slotStyle = {
+              ...data.slotStyle,
+              ...val
+            };
+            const slotInstance = slots.get('content');
+            // setSlotLayout(slotInstance, val);
+          }
+        }
+      },
       {
         title: '使用第一项作为默认状态',
         description: '开启时, 默认显示列表的第一项; 关闭时, 默认不显示',

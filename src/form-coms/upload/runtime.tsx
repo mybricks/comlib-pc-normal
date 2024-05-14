@@ -47,6 +47,7 @@ export interface Data {
   picIcon: string;
   picCardIcon: string;
   dragIcon: string;
+  slotStyle?: Object; 
   /**@description v1.0.35 按钮尺寸 */
   buttonSize: string;
 }
