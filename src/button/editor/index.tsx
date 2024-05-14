@@ -112,7 +112,18 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.asMapArea;
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
+          set({ data,style }: EditorResult<Data>, value: boolean) {
+            // 防止宽高塌陷
+            if(value) {
+              if(style.heightAuto) {
+                style.heightAuto = undefined
+                style.height = 32
+              }
+              if(style.widthAuto) {
+                style.widthAuto = undefined
+                style.width = 65
+              }
+            }
             data.asMapArea = value;
           }
         }
