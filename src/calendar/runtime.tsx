@@ -146,8 +146,8 @@ export default (props: RuntimeParams<Data>) => {
     // 日期单元格插槽渲染
     if (!isMonth && useCustomDateCell && slots[SlotIds.DateCell]) {
       if (env.edit) {
-        if (showOneSlot === true) {
-          showOneSlot = false;
+        const currentDate = new Date()
+        if (date.date() === currentDate.getDate()) {
           return slots[SlotIds.DateCell].render({
             inputValues: {
               [InputIds.CurrentDate]: formatDate(date),
@@ -155,7 +155,8 @@ export default (props: RuntimeParams<Data>) => {
             },
             key: formatDate(date)
           });
-        } else {
+        }
+        else {
           return <div style={{ color: '#ddd' }}>自定义内容</div>;
         }
       }
