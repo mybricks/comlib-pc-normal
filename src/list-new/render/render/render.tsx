@@ -31,7 +31,7 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
-    <div className="list-new__root" style={{ height: '100%', overflowY: 'scroll' }}>
+    <div className="list-new__root" style={{ height: '100%', overflowY: 'auto' }}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
         <div
           key={key}

@@ -18,7 +18,7 @@ const CustomColumnRender = (
   const rowKey = '_itemKey';
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
-      <List.Item key={key} className={env.edit ? '' :'list-new__item'} style={{ overflowX: env.edit ? 'visible' : 'scroll' }}>
+      <List.Item key={key} className={env.edit ? '' :'list-new__item'} style={{ overflowX: env.edit ? 'visible' : 'auto' }}>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
@@ -58,7 +58,7 @@ const CustomColumnRender = (
         helperClass={css['sort-helper']}
         renderItem={({ key, item, index }) => (
           <SortableItem key={key} index={index}>
-            <div className={env.edit ? '' :'list-new__item'} style={{ overflowX: 'scroll' }}>
+            <div className={env.edit ? '' :'list-new__item'} style={{ overflowX: 'auto' }}>
               {slots['item'].render({
                 inputValues: {
                   itemData: item,
