@@ -13,7 +13,10 @@ export interface Data {
     showSearch: boolean;
     filterOption: boolean;
     optionFilterProp: string;
+    
   } & SelectProps;
+  /** 搭建态resize的宽度，用于设置下拉框宽度 */
+  editResizeWidth?: number
   maxHeight: string;
   maxTagCount: number | 'responsive';
   rules: any[];

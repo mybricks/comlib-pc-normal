@@ -366,6 +366,7 @@ export default function Runtime({
               ? true
               : void 0
           }
+          dropdownStyle={env.edit ? { minWidth: data.editResizeWidth, width: data.editResizeWidth, maxWidth: data.editResizeWidth} : {}}
           onSearch={data.config.showSearch ? onSearch : void 0}
           notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
         >

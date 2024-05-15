@@ -67,7 +67,12 @@ const refreshSchema = ({ input, output, data }: { input: any, output: any, data:
 export default {
   ':slot': {},
   '@resize': {
-    options: ['width']
+    options: ['width'],
+    value:{
+      set({style, data},ctx){
+        data.editResizeWidth = ctx.width
+      }
+    }
   },
   '@init': ({ style }) => {
     style.width = '100%';
