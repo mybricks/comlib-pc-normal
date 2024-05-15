@@ -1,0 +1,12 @@
+{
+  "title": "测试--图标",
+  "namespace": "test.icon",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "图标render测试",
+  "runtime": "./runtime.tsx",
+  "schema": [
+    "*"
+  ]
+}
