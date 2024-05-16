@@ -39,19 +39,24 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     outputs.onCancel();
   };
 
+  const slotStyle = useMemo(() => {
+    return {...(data.slotStyle ?? {}), cursor: 'pointer' }
+  }, [data.slotStyle])
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <Popconfirm
         title={renderTitle(title as string)}
         icon={Icons[icon as string]?.render()}
-        defaultVisible={visible}
-        visible={visible}
+        // defaultVisible={visible}
+        // visible={visible}
+        {...env.edit ? { trigger:  data.trigger || ['click']} : {}}
         overlayClassName={id}
         overlayInnerStyle={{
           maxWidth: window.screen.availWidth,
-          maxHeight: window.screen.availHeight
+          maxHeight: window.screen.availHeight,
+          minWidth: 'max-content',
         }}
-        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+        getPopupContainer={(triggerNode: HTMLElement) => env.edit ? triggerNode : (env?.canvasElement || document.body)}
         destroyTooltipOnHide
         okText={env.i18n(okText)}
         cancelText={env.i18n(cancelText)}
@@ -61,9 +66,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
       >
         <div>
           {slots.carrier?.render({
-            style: {
-              cursor: 'pointer'
-            }
+            style: slotStyle
           })}
         </div>
       </Popconfirm>

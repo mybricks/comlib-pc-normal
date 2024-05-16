@@ -3,5 +3,15 @@
     "okText": "确认",
     "cancelText": "取消",
     "icon": "ExclamationCircle",
-    "showCancel": true
+    "showCancel": true,
+    "slotStyle": {
+        "display": "block",
+        "position": "smart",
+        "flexDirection": "column",
+        "alignItems": "flex-start",
+        "justifyContent": "flex-start",
+        "flexWrap": "nowrap",
+        "rowGap": 0,
+        "columnGap": 0
+      }
 }
