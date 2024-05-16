@@ -14,6 +14,8 @@ declare global {
         testThreshold?: number,
         retryOptions?: Partial<typeof RecurseDefaults>
       ): Chainable<Element>;
+
+      getIframeBody(iframeSelector: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
@@ -22,4 +24,12 @@ compareSnapshotCommand({
   failureThresholdType: 'percent', // percent of image or number of pixels
   customDiffConfig: { threshold: 0.1 }, // threshold for each pixel
   capture: 'viewport' // capture viewport in screenshot
+});
+
+// @ts-ignore
+Cypress.Commands.add('getIframeBody', (iframeSelector) => {
+  return cy
+    .get(iframeSelector)
+    .its('0.contentDocument.body').should('not.be.empty')
+    .then(cy.wrap);
 });

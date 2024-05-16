@@ -1,7 +1,7 @@
 import dump_禁用态编辑区可滚动 from './dump.json';
 import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
-describe('按钮', () => {
+describe('富文本输入', () => {
   enhancedIt('禁用态编辑区可滚动', () => {
     // 加载测试页面
     dumpPreview(dump_禁用态编辑区可滚动, [
