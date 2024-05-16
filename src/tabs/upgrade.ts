@@ -116,6 +116,19 @@ export default function ({
     output.add(OutputIds.RemoveTab, '标签页删除', TabListSchema)
   }
 
+  if (!data.slotStyle) {
+    data.slotStyle = {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap',
+      rowGap: 0,
+      columnGap: 0
+    };
+  }
+
   /**
   * @description v1.0.26 fix: slotStyle默认值问题
   */
