@@ -150,6 +150,17 @@
       "rels": [
         "setValidateInfoDone"
       ]
+    },
+    {
+      "id": "getCursorPos",
+      "title": "获取光标位置",
+      "desc": "获取文本域失焦前光标的位置并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnCursorPosValue"
+      ]
     }
   ],
   "outputs": [
@@ -293,6 +304,14 @@
           }
         }
       }
+    },
+    {
+      "id": "returnCursorPosValue",
+      "title": "光标位置输出",
+      "schema": {
+        "type": "number"
+      }
+
     }
   ],
   "schema": [

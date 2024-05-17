@@ -14,7 +14,8 @@ export interface Data {
   config: InputProps;
   minRows?: number;
   maxRows?: number;
-
+  /** 光标位置  */
+  selectionStart?: number;
   isEditable: boolean;
 }
 
@@ -109,6 +110,12 @@ export default function ({
           relOutputs['setColorDone'](color);
         }
       });
+      inputs['getCursorPos'] &&
+      inputs['getCursorPos']((val, relOutputs) => {
+        if (relOutputs['returnCursorPosValue']) {
+          relOutputs['returnCursorPosValue'](data.selectionStart);
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -141,7 +148,10 @@ export default function ({
     const value = e.target.value;
     changeValue(value);
     onValidateTrigger();
+    data.selectionStart = e.target.selectionStart ?? 0
+    console.log('blur --- textArea', data.selectionStart)
     outputs['onBlur'](value);
+    outputs['returnCursorPosValue'](data.selectionStart)
   }, []);
 
   const onPressEnter = useCallback((e) => {
