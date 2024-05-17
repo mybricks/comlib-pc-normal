@@ -18,10 +18,11 @@
   "inputs": [
     {
       "id": "setInitialValues",
-      "title": "设置表单数据（最新）",
+      "title": "设置表单数据",
       "schema": {
         "type": "object",
-        "properties": {}
+        "properties": {},
+        "description": "表单容器的默认值"
       },
       "desc": "给表单设置初始数据",
       "rels": [
@@ -182,7 +183,7 @@
     },
     {
       "id": "onValuesChange",
-      "title": "字段值更新输出（最新）",
+      "title": "字段值更新输出",
       "desc": "表单容器中有字段更新时输出",
       "schema": {
         "type": "object",
