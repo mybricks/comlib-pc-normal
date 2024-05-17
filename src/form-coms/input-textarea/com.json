@@ -113,7 +113,7 @@
     },
     {
       "id": "setColor",
-      "title": "设置字体颜色",
+      "title": "设置字体颜色（最新）",
       "desc": "设置文本域里字体的颜色",
       "schema": {
         "type": "string"
@@ -124,12 +124,13 @@
     },
     {
       "id": "setValidateInfo",
-      "title": "设置校验状态",
+      "title": "设置校验状态（最新）",
       "desc": "设置表单项的校验状态和校验失败提示文案",
       "schema": {
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验成功/失败状态",
             "type": "enum",
             "items": [
               {
@@ -143,6 +144,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }
@@ -166,7 +168,8 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "值初始化",
+      "title": "值初始化(最新)",
+      "desc": "设置初始值后触发",
       "schema": {
         "type": "string"
       }
@@ -221,7 +224,8 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "string"
+        "type": "string",
+        "description": "文本域的值"
       }
     },
     {
@@ -287,6 +291,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "descriptions": "返回校验状态",
             "type": "enum",
             "items": [
               {
@@ -300,6 +305,7 @@
             ]
           },
           "help": {
+            "descriptions": "提示信息",
             "type": "string"
           }
         }
