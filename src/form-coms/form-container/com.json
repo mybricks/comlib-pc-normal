@@ -21,7 +21,8 @@
       "title": "设置表单数据",
       "schema": {
         "type": "object",
-        "properties": {}
+        "properties": {},
+        "description": "表单容器的默认值"
       },
       "desc": "给表单设置初始数据",
       "rels": [
@@ -193,6 +194,7 @@
         "type": "object",
         "properties": {
           "changedValues": {
+            "description": "更新的表单字段的值",
             "type": "object",
             "description": "已更新字段的当前值",
             "properties": {}
@@ -218,7 +220,8 @@
       "title": "校验结果",
       "desc": "输出表单校验结果",
       "schema": {
-        "type": "boolean"
+        "type": "boolean",
+        "description": "布尔类型的校验结果"
       }
     },
     {
@@ -227,6 +230,7 @@
       "desc": "输出所有字段的当前值",
       "schema": {
         "type": "object",
+        "description": "输出表单所有项的值，格式为对象",
         "properties": {}
       }
     },
@@ -245,6 +249,7 @@
       "desc": "提交表单时触发，输出所有字段的当前值",
       "schema": {
         "type": "object",
+        "description": "表单容器提交事件输出",
         "properties": {}
       }
     },

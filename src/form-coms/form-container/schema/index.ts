@@ -6,13 +6,14 @@ function getSubmitSchema(data) {
   const properties = {}
   data.items.forEach(item => {
     const { id, label, schema, name } = item
-    properties[name || label] = { ...schema, title: label }
+    properties[name || label] = { ...schema, title: label, description: '字段名为 ' + name +'的表单项值' }
   })
 
   const schema = {
     type: 'object',
     properties
   }
+  console.log("getSubmitSchema", schema)
   return schema
 }
 
