@@ -28,6 +28,7 @@
     {
       "id": "outputTags",
       "title": "输出标签列表",
+      "desc": "获取标签列表后，输出数据内容",
       "schema": {
         "type": "array",
         "items": {

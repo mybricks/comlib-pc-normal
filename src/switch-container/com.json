@@ -13,6 +13,7 @@
     {
       "id": "setValue",
       "title": "设置状态",
+      "desc": "设置状态容器的状态，并触发设置状态完成输出",
       "rels": [
         "setValueDone"
       ],
@@ -23,6 +24,7 @@
     {
       "id": "getValue",
       "title": "获取状态",
+      "desc": "获取状态容器的状态",
       "rels": [
         "returnValue"
       ],
@@ -34,7 +36,8 @@
   "outputs": [
     {
       "id": "setValueDone",
-      "title": "设置状态完成",
+      "title": "设置状态完成,并输出状态",
+      "desc": "",
       "schema": {
         "type": "any"
       }
@@ -42,6 +45,7 @@
     {
       "id": "returnValue",
       "title": "当前状态",
+      "desc": "获取状态后，返回当前状态",
       "schema": {
         "type": "any"
       }
@@ -49,6 +53,7 @@
     {
       "id": "onChange",
       "title": "状态更新",
+      "decs": "状态容器的状态更新，并输出当前状态",
       "schema": {
         "type": "any"
       }

@@ -14,6 +14,7 @@
     {
       "id": "itemClick",
       "title": "单击节点",
+      "desc": "点击时间轴节点，输出点击的节点信息",
       "schema": {
         "type": "any"
       }

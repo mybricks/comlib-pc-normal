@@ -14,9 +14,11 @@
     {
       "id": "treeData",
       "title": "输入数据",
+      "desc": "树组件的节点数据，确保key唯一",
       "schema": {
         "title": "树组件数据",
         "type": "array",
+        "description": "数组格式的数据节后，需要包含以下字段title, key等字段",
         "items": {
           "type": "object",
           "properties": {
@@ -30,11 +32,13 @@
             },
             "disableCheckbox": {
               "title": "禁用勾选",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "勾选场景下，可以带上这个字段"
             },
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点子项的数据",
               "items": {
                 "type": "object"
               }
@@ -49,8 +53,10 @@
     {
       "id": "nodeData",
       "title": "更新节点数据",
+      "desc": "要更新的节点数据",
       "schema": {
         "type": "object",
+        "description": "节点数据格式",
         "properties": {
           "title": {
             "type": "string"
@@ -132,10 +138,12 @@
     {
       "id": "setDragConfig",
       "title": "设置拖拽功能",
+      "desc": "配置树组件的拖拽功能",
       "schema": {
         "type": "object",
         "properties": {
           "draggable": {
+            "description": "允许拖拽属性，可以为布尔值或者'custom'自定义节点",
             "type": "enum",
             "items": [
               {
@@ -148,10 +156,12 @@
             ]
           },
           "draggableScript": {
-            "type": "string"
+            "type": "string",
+            "description": "节点可拖拽表达式,根据表达式动态计算是否可拖拽"
           },
           "allowDrop": {
             "type": "enum",
+            "desc": "允许放置配置，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -163,10 +173,12 @@
             ]
           },
           "allowDropScript": {
-            "type": "string"
+            "type": "string",
+            "description": "节点可放置表达式,根据表达式动态计算是否可放置"
           },
           "useDropScope": {
             "type": "enum",
+            "description": "放置范围限制,false表示无限制，parent表示父节点",
             "items": [
               {
                 "type": "boolean",
@@ -179,7 +191,8 @@
             ]
           },
           "dropScopeMessage": {
-            "type": "string"
+            "type": "string",
+            "description": "禁止放置提示语"
           }
         }
       },
@@ -214,9 +227,11 @@
     {
       "id": "onChange",
       "title": "数据变化",
+      "desc": "更改树的数据出，触发数据变化输出",
       "schema": {
         "title": "树组件数据",
         "type": "array",
+        "description": "树的数据格式",
         "items": {
           "type": "object",
           "properties": {
@@ -242,9 +257,11 @@
     {
       "id": "returnTreeData",
       "title": "数据输出",
+      "desc": "获取树的数据后，输出数据",
       "schema": {
         "title": "树组件数据",
         "type": "array",
+        "description": "树的数据格式",
         "items": {
           "type": "object",
           "properties": {
@@ -270,8 +287,10 @@
     {
       "id": "submit",
       "title": "勾选项数据输出",
+      "desc": "支持勾选的场景下，获取勾选的数据后，勾选项数据输出",
       "schema": {
         "type": "array",
+        "description": "所有勾选的节点的key",
         "items": {
           "type": "string"
         }
@@ -280,8 +299,10 @@
     {
       "id": "returnSelectedKeys",
       "title": "选中节点数据输出",
+      "desc": "选中的数据",
       "schema": {
         "type": "array",
+        "desc": "数组结构的数据，里面包含节点的key",
         "items": {
           "type": "string"
         }
@@ -290,8 +311,10 @@
     {
       "id": "click",
       "title": "节点选中事件",
+      "desc": "节点选中后，事件输出",
       "schema": {
         "type": "array",
+        "description": "所有选中的节点的key",
         "items": {
           "type": "string"
         }
@@ -300,12 +323,15 @@
     {
       "id": "addNodeDone",
       "title": "添加完成",
+      "desc": "在开启'可添加节点'条件下，添加节点后，事件输出",
       "schema": {
         "type": "object",
+        "description": "新增节点的数据结构",
         "properties": {
           "node": {
             "type": "object",
             "title": "新增节点数据",
+            "description": "新增节点数据格式",
             "properties": {
               "title": {
                 "type": "string"
@@ -328,9 +354,11 @@
     {
       "id": "modify",
       "title": "修改",
+      "desc": "修改节点数据",
       "schema": {
         "title": "节点数据",
         "type": "object",
+        "description": "数据格式",
         "properties": {
           "title": {
             "title": "标题",
@@ -354,9 +382,11 @@
     {
       "id": "delete",
       "title": "删除",
+      "desc": "点击删除，输出节点内容",
       "schema": {
         "title": "节点数据",
         "type": "object",
+        "description": "返回删除的节点数据",
         "properties": {
           "title": {
             "title": "标题",
@@ -380,9 +410,11 @@
     {
       "id": "onDropDone",
       "title": "拖拽完成",
+      "desc": "拖拽完成后，输出拖拽相关节点信息",
       "schema": {
         "type": "object",
         "properties": {
+          "description": "拖拽节点信息",
           "dragNodeInfo": {
             "title": "拖拽节点信息",
             "type": "object",
@@ -420,6 +452,7 @@
           },
           "dropNodeInfo": {
             "title": "放置节点信息",
+            "description": "放置位置节点信息",
             "type": "object",
             "properties": {
               "parent": {
@@ -456,6 +489,7 @@
           "flag": {
             "title": "标识",
             "type": "enum",
+            "description": "相对放置节点位置标识",
             "items": [
               {
                 "type": "number",
@@ -474,6 +508,7 @@
           "treeData": {
             "title": "拖拽后的树组件数据",
             "type": "array",
+            "description": "拖拽后的树组件数据",
             "items": {
               "type": "object",
               "properties": {
@@ -501,6 +536,7 @@
     {
       "id": "setTreeDataDone",
       "title": "输入数据完成",
+      "desc": "设置树的数据后，输出设置的数据",
       "schema": {
         "title": "树组件数据",
         "type": "array",
@@ -533,8 +569,10 @@
     {
       "id": "setNodeDataDone",
       "title": "更新节点数据完成",
+      "desc": "更新节点数据后，输出",
       "schema": {
         "type": "object",
+        "description": "更新项内容",
         "properties": {
           "title": {
             "type": "string"
@@ -552,6 +590,7 @@
     {
       "id": "searchValueDone",
       "title": "搜索完成",
+      "desc": "搜索后，事件输出",
       "schema": {
         "type": "string"
       }
@@ -559,6 +598,7 @@
     {
       "id": "filterDone",
       "title": "过滤完成",
+      "desc": "过滤后，事件输出",
       "schema": {
         "type": "string"
       }
@@ -566,6 +606,7 @@
     {
       "id": "setSelectedKeysDone",
       "title": "设置选中节点完成",
+      "desc": "设置选中节点后，输出选中的节点key",
       "schema": {
         "type": "array",
         "items": {
@@ -576,6 +617,7 @@
     {
       "id": "setExpandedKeysDone",
       "title": "设置展开节点完成",
+      "desc": "设置展开节点后，输出展开的节点key",
       "schema": {
         "type": "array",
         "items": {
@@ -586,6 +628,7 @@
     {
       "id": "setOpenDepthDone",
       "title": "设置展开深度完成",
+      "desc": "设置展开深度完成并输出",
       "schema": {
         "type": "number"
       }
@@ -593,10 +636,12 @@
     {
       "id": "setDragConfigDone",
       "title": "设置拖拽功能完成",
+      "desc": "设置拖拽配置完成后，并输出配置内容",
       "schema": {
         "type": "object",
         "properties": {
           "draggable": {
+            "description": "允许拖拽属性，可以为布尔值或者'custom'自定义节点",
             "type": "enum",
             "items": [
               {
@@ -609,10 +654,12 @@
             ]
           },
           "draggableScript": {
-            "type": "string"
+            "type": "string",
+            "description": "节点可拖拽表达式,根据表达式动态计算是否可拖拽"
           },
           "allowDrop": {
             "type": "enum",
+            "desc": "允许放置配置，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -624,10 +671,12 @@
             ]
           },
           "allowDropScript": {
-            "type": "string"
+            "type": "string",
+            "description": "节点可放置表达式,根据表达式动态计算是否可放置"
           },
           "useDropScope": {
             "type": "enum",
+            "description": "放置范围限制,false表示无限制，parent表示父节点",
             "items": [
               {
                 "type": "boolean",
@@ -640,7 +689,8 @@
             ]
           },
           "dropScopeMessage": {
-            "type": "string"
+            "type": "string",
+            "description": "禁止放置提示语"
           }
         }
       }

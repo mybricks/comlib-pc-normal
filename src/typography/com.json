@@ -14,8 +14,10 @@
     {
       "id": "setData",
       "title": "设置数据",
+      "desc": "设置文本排版数据，并触发设置数据完成输出",
       "schema": {
         "type": "array",
+        "description": "文本排版动态列表数据",
         "items": {
           "type": "object",
           "properties": {
@@ -25,7 +27,8 @@
             },
             "type": {
               "title": "类型",
-              "type": "string"
+              "type": "string",
+              "description": "可以为文本 'Text'、标签 'Tag'、链接'Link'"
             },
             "link": {
               "title": "链接",
@@ -33,6 +36,7 @@
             },
             "style": {
               "type": "object",
+              "desc": "单个子项元素的样式",
               "properties": {
                 "color": {
                   "type": "string"
@@ -63,11 +67,14 @@
     {
       "id": "click",
       "title": "单击",
+      "desc": "点击某一文本排版内容后，事件输出",
       "schema": {
         "type": "object",
+        "description": "单击后，获取的当前点击的文版排版的索引和数据",
         "properties": {
           "values": {
             "type": "object",
+            "description": "当前点击项的数据内容",
             "properties": {
               "content": {
                 "title": "内容",
@@ -88,6 +95,7 @@
             }
           },
           "index": {
+            "description": "当前点击项的索引",
             "type": "number"
           }
         }
@@ -96,8 +104,10 @@
     {
       "id": "setDataDone",
       "title": "设置数据完成",
+      "desc": "设置文本排版数据完成后，事件输出",
       "schema": {
         "type": "array",
+        "desc": "数组结构的文本排版数据格式",
         "items": {
           "type": "object",
           "properties": {
@@ -107,14 +117,17 @@
             },
             "type": {
               "title": "类型",
-              "type": "string"
+              "type": "string",
+              "description": "可以为文本 'Text'、标签 'Tag'、链接'Link'"
             },
             "link": {
               "title": "链接",
-              "type": "string"
+              "type": "string",
+              "desc": "跳转链接"
             },
             "style": {
               "type": "object",
+              "description": "单个子项元素的样式",
               "properties": {
                 "color": {
                   "type": "string"
