@@ -18,37 +18,28 @@ const ListRender = (
   onSortEnd,
   columns
 ) => {
-  //0、无内容
+  // 无内容
   if (slots['item'].size === 0) {
     return slots['item'].render();
   }
+  // 非栅格布局编辑态
   if (env.edit && !(data.layout === Layout.Grid && !data.isResponsive)) {
-    return (
-      EditRender(dataSource, data, slots, env)
-    )
+    return EditRender(dataSource, data, slots, env);
   }
-  //5、响应式布局
+  // 响应式布局
   if (data.layout === Layout.Grid && data.isResponsive) {
-    return (
-      <div className={classnames(css.container, 'list-new__root')}>
-        {ResponsiveRender(loading, data, dataSource, gutter, slots, env, columns)}
-      </div>
-    );
+    return ResponsiveRender(loading, data, dataSource, gutter, slots, env, columns);
   }
-  //1、垂直布局
+  // 垂直布局
   if (data.layout === Layout.Vertical) {
     return VerticalWarpRender(loading, data, dataSource, slots, env);
   }
-  //2、栅格布局
-  else if (data.layout === Layout.Grid) {
-    return (
-      <div className={classnames(css.container, 'list-new__root')}>
-        {CustomColumnRender(loading, data, dataSource, gutter, slots, env, onSortEnd)}
-      </div>
-    );
+  // 栅格布局
+  if (data.layout === Layout.Grid) {
+    return CustomColumnRender(loading, data, dataSource, gutter, slots, env, onSortEnd);
   }
-  //3、横向布局
-  else if (data.layout === Layout.Horizontal) {
+  // 横向布局
+  if (data.layout === Layout.Horizontal) {
     return NoAutoWarpRender(loading, data, dataSource, slots, env);
   }
 };

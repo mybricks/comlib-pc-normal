@@ -42,9 +42,9 @@ export const LayoutEditor = [
       {
         title: '列表项宽度',
         type: 'text',
-        description: '横向布局且不换行时列表项的宽度，支持px, %及计算值',
+        description: '列表项的宽度，支持px, %及计算值',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === Layout.Horizontal && !data.isAuto;
+          return data.layout === Layout.Horizontal && !data.isAuto || data.layout === Layout.Vertical;
         },
         value: {
           get({ data }: EditorResult<Data>) {

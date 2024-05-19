@@ -1,11 +1,12 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { Data, InputIds, OutputIds } from './constants';
+import { Data, InputIds, Layout, OutputIds } from './constants';
 import { checkIfMobile, uuid } from '../utils';
 import debounce from 'lodash/debounce';
 import { addItem, removeItem, changeItem, upMove, downMove } from './utils';
 import { ListRender } from './render/ListRender';
 import { sortUsePoint, columnHandel } from './utils';
-import css from './style.less'
+import classnames from 'classnames';
+import css from './style.less';
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -15,7 +16,7 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
 };
 
 const rowKey = '_itemKey';
-export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Data>) => {
+export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {
   let { grid, useLoading, useGetDataSource } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
@@ -203,5 +204,45 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     }
   };
 
-  return ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns);
+  // hidden: 彻底防止产生滚动
+  const overflow = useMemo(() => {
+    let overflowX: string | undefined = undefined;
+    let overflowY: string | undefined = undefined;
+    if (style.width === 'fit-content' && style.height !== 'fit-content') {
+      overflowX = 'hidden';
+      overflowY = 'auto';
+    }
+    if (style.width !== 'fit-content' && style.height == 'fit-content') {
+      overflowX = 'auto';
+      overflowY = 'hidden';
+    }
+    if (style.width !== 'fit-content' && style.height !== 'fit-content') {
+      overflowX = 'auto';
+      overflowY = 'auto';
+    }
+    if (data.layout === Layout.Horizontal && !data.isAuto) {
+      overflowX = 'auto';
+      if (style.height === 'fit-content') {
+        overflowY = 'hidden';
+      } else {
+        overflowY = 'auto';
+      }
+    }
+    return [overflowX, overflowY];
+  }, [style.height, style.width]);
+
+  return (
+    <div
+      className={classnames(
+        css.container,
+        data.layout === Layout.Horizontal && !data.isAuto && css.scrollContainer,
+        'list-new__root'
+      )}
+      style={{
+        overflow: `${overflow[0]} ${overflow[1]}`
+      }}
+    >
+      {ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns)}
+    </div>
+  );
 };
