@@ -18,22 +18,23 @@
       "schema": {
         "title": "树组件数据",
         "type": "array",
-        "description": "数组格式的数据节点，需要包含以下字段title, key等字段",
         "items": {
           "type": "object",
           "properties": {
             "title": {
               "title": "标题",
+              "description": "树节点标题",
               "type": "string"
             },
             "key": {
               "title": "字段名",
+              "description": "树节点唯一的key",
               "type": "string"
             },
             "disableCheckbox": {
               "title": "禁用勾选",
-              "type": "boolean",
-              "description": "勾选场景下，可以带上这个字段"
+              "description": "勾选场景下，需要带上这个字段",
+              "type": "boolean"
             },
             "children": {
               "title": "子项",
@@ -56,14 +57,16 @@
       "desc": "要更新的节点数据",
       "schema": {
         "type": "object",
-        "description": "节点数据格式",
         "properties": {
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "树节点的标题"
+
           },
           "children": {
             "title": "子项",
             "type": "array",
+            "description": "树节点的子项",
             "items": {
               "type": "object"
             }
@@ -143,8 +146,8 @@
         "type": "object",
         "properties": {
           "draggable": {
-            "description": "允许拖拽属性，可以为布尔值或者'custom'自定义节点",
             "type": "enum",
+            "description": "允许拖拽属性，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -156,8 +159,8 @@
             ]
           },
           "draggableScript": {
-            "type": "string",
-            "description": "节点可拖拽表达式,根据表达式动态计算是否可拖拽"
+            "description": "节点可拖拽表达式,根据表达式动态计算是否可拖拽",
+            "type": "string"
           },
           "allowDrop": {
             "type": "enum",
@@ -231,21 +234,25 @@
       "schema": {
         "title": "树组件数据",
         "type": "array",
-        "description": "树的数据格式",
+        "description": "树组件的数据",
         "items": {
           "type": "object",
           "properties": {
             "title": {
               "title": "标题",
-              "type": "string"
+              "type": "string",
+              "description": "节点的标题"
             },
             "key": {
               "title": "字段名",
-              "type": "string"
+              "type": "string",
+              "description": "节点的字段名"
+
             },
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点的子项",
               "items": {
                 "type": "object"
               }
@@ -261,21 +268,24 @@
       "schema": {
         "title": "树组件数据",
         "type": "array",
-        "description": "树的数据格式",
+        "description": "树的数据内容",
         "items": {
           "type": "object",
           "properties": {
             "title": {
               "title": "标题",
-              "type": "string"
+              "type": "string",
+              "description": "节点标题"
             },
             "key": {
               "title": "字段名",
-              "type": "string"
+              "type": "string",
+              "description": "节点字段名"
             },
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点子项",
               "items": {
                 "type": "object"
               }
@@ -299,7 +309,7 @@
     {
       "id": "returnSelectedKeys",
       "title": "选中节点数据输出",
-      "desc": "选中的数据",
+      "desc": "选中的节点，节点key数据",
       "schema": {
         "type": "array",
         "desc": "数组结构的数据，里面包含节点的key",
@@ -326,7 +336,6 @@
       "desc": "在开启'可添加节点'条件下，添加节点后，事件输出",
       "schema": {
         "type": "object",
-        "description": "新增节点的数据结构",
         "properties": {
           "node": {
             "type": "object",
@@ -334,19 +343,23 @@
             "description": "新增节点数据格式",
             "properties": {
               "title": {
-                "type": "string"
+                "type": "string",
+                "description": "新增节点的标题"
               },
               "value": {
-                "type": "string"
+                "type": "string",
+                "description": "新增节点的值"
               },
               "key": {
-                "type": "string"
+                "type": "string",
+                "description": "新增节点的key"
               }
             }
           },
           "parent": {
             "type": "object",
-            "title": "新增节点的父节点数据"
+            "title": "新增节点的父节点数据",
+            "description": "新增节点的父节点数据"
           }
         }
       }
@@ -362,19 +375,24 @@
         "properties": {
           "title": {
             "title": "标题",
-            "type": "string"
+            "type": "string",
+            "description": "节点的标题"
           },
           "key": {
             "title": "字段名",
-            "type": "string"
+            "type": "string",
+            "description": "节点的字段名"
           },
           "value": {
             "title": "值",
-            "type": "string"
+            "type": "string",
+            "description": "节点的值"
+
           },
           "disableCheckbox": {
             "title": "禁用勾选",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "节点是否禁用勾选"
           }
         }
       }
@@ -390,19 +408,23 @@
         "properties": {
           "title": {
             "title": "标题",
-            "type": "string"
+            "type": "string",
+            "description": "节点的标题"
           },
           "key": {
             "title": "字段名",
-            "type": "string"
+            "type": "string",
+            "description": "节点的字段名"
           },
           "value": {
             "title": "值",
-            "type": "string"
+            "type": "string",
+            "description": "节点的值"
           },
           "disableCheckbox": {
             "title": "禁用勾选",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "节点是否禁用勾选"
           }
         }
       }
@@ -414,39 +436,46 @@
       "schema": {
         "type": "object",
         "properties": {
-          "description": "拖拽节点信息",
           "dragNodeInfo": {
             "title": "拖拽节点信息",
+            "description": "拖拽节点相关信息",
             "type": "object",
             "properties": {
               "parent": {
                 "type": "object",
+                "description": "拖拽节点的父节点信息",
                 "properties": {
                   "title": {
                     "title": "标题",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的标题"
                   },
                   "key": {
                     "title": "字段名",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的字段名"
                   }
                 }
               },
               "node": {
                 "type": "object",
+                "description": "当前拖拽的节点信息",
                 "properties": {
                   "title": {
                     "title": "标题",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的标题"
                   },
                   "key": {
                     "title": "字段名",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的字段名"
                   }
                 }
               },
               "index": {
-                "type": "number"
+                "type": "number",
+                "description": "当前拖拽的节点的索引"
               }
             }
           },
@@ -457,32 +486,39 @@
             "properties": {
               "parent": {
                 "type": "object",
+                "description": "放置位置节点的父节点信息",
                 "properties": {
                   "title": {
                     "title": "标题",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的标题"
                   },
                   "key": {
                     "title": "字段名",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的字段名"
                   }
                 }
               },
               "node": {
                 "type": "object",
+                "description": "放置位置的节点",
                 "properties": {
                   "title": {
                     "title": "标题",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的标题"
                   },
                   "key": {
                     "title": "字段名",
-                    "type": "string"
+                    "type": "string",
+                    "description": "节点的字段名"
                   }
                 }
               },
               "index": {
-                "type": "number"
+                "type": "number",
+                "description": "放置位置的节点的索引"
               }
             }
           },
@@ -514,15 +550,18 @@
               "properties": {
                 "title": {
                   "title": "标题",
-                  "type": "string"
+                  "type": "string",
+                  "description": "节点的标题"
                 },
                 "key": {
                   "title": "字段名",
-                  "type": "string"
+                  "type": "string",
+                  "description": "节点的字段名"
                 },
                 "children": {
                   "title": "子项",
                   "type": "array",
+                  "description": "节点的子项",
                   "items": {
                     "type": "object"
                   }
@@ -545,19 +584,23 @@
           "properties": {
             "title": {
               "title": "标题",
+              "description": "树节点标题",
               "type": "string"
             },
             "key": {
               "title": "字段名",
+              "description": "树节点唯一的key",
               "type": "string"
             },
             "disableCheckbox": {
               "title": "禁用勾选",
+              "description": "勾选场景下，需要带上这个字段",
               "type": "boolean"
             },
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点子项的数据",
               "items": {
                 "type": "object"
               }
@@ -569,10 +612,8 @@
     {
       "id": "setNodeDataDone",
       "title": "更新节点数据完成",
-      "desc": "更新节点数据后，输出",
       "schema": {
         "type": "object",
-        "description": "更新项内容",
         "properties": {
           "title": {
             "type": "string"
@@ -590,7 +631,6 @@
     {
       "id": "searchValueDone",
       "title": "搜索完成",
-      "desc": "搜索后，事件输出",
       "schema": {
         "type": "string"
       }
@@ -598,7 +638,6 @@
     {
       "id": "filterDone",
       "title": "过滤完成",
-      "desc": "过滤后，事件输出",
       "schema": {
         "type": "string"
       }
@@ -606,7 +645,6 @@
     {
       "id": "setSelectedKeysDone",
       "title": "设置选中节点完成",
-      "desc": "设置选中节点后，输出选中的节点key",
       "schema": {
         "type": "array",
         "items": {
@@ -617,7 +655,6 @@
     {
       "id": "setExpandedKeysDone",
       "title": "设置展开节点完成",
-      "desc": "设置展开节点后，输出展开的节点key",
       "schema": {
         "type": "array",
         "items": {
@@ -628,7 +665,6 @@
     {
       "id": "setOpenDepthDone",
       "title": "设置展开深度完成",
-      "desc": "设置展开深度完成并输出",
       "schema": {
         "type": "number"
       }
@@ -636,12 +672,10 @@
     {
       "id": "setDragConfigDone",
       "title": "设置拖拽功能完成",
-      "desc": "设置拖拽配置完成后，并输出配置内容",
       "schema": {
         "type": "object",
         "properties": {
           "draggable": {
-            "description": "允许拖拽属性，可以为布尔值或者'custom'自定义节点",
             "type": "enum",
             "items": [
               {
@@ -654,12 +688,10 @@
             ]
           },
           "draggableScript": {
-            "type": "string",
-            "description": "节点可拖拽表达式,根据表达式动态计算是否可拖拽"
+            "type": "string"
           },
           "allowDrop": {
             "type": "enum",
-            "desc": "允许放置配置，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -671,12 +703,10 @@
             ]
           },
           "allowDropScript": {
-            "type": "string",
-            "description": "节点可放置表达式,根据表达式动态计算是否可放置"
+            "type": "string"
           },
           "useDropScope": {
             "type": "enum",
-            "description": "放置范围限制,false表示无限制，parent表示父节点",
             "items": [
               {
                 "type": "boolean",
@@ -689,8 +719,7 @@
             ]
           },
           "dropScopeMessage": {
-            "type": "string",
-            "description": "禁止放置提示语"
+            "type": "string"
           }
         }
       }

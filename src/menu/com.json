@@ -28,7 +28,7 @@
           },
           "key": {
             "title": "唯一标识",
-            "description": "点击的菜单项标题",
+            "description": "点击的菜单项标识key",
             "type": "string"
           },
           "menuType": {
@@ -58,7 +58,7 @@
           },
           "key": {
             "title": "唯一标识",
-            "description": "选中的菜单项标题",
+            "description": "选中的菜单项的唯一标识",
             "type": "string"
           },
           "menuType": {
@@ -95,7 +95,7 @@
                 },
                 "key": {
                   "title": "唯一标识",
-                  "description": "菜单项标题",
+                  "description": "菜单项标标识",
                   "type": "string"
                 },
                 "menuType": {
@@ -151,6 +151,7 @@
                 },
                 "key": {
                   "title": "唯一标识",
+                  "description": "菜单项标识",
                   "type": "string"
                 },
                 "menuType": {
