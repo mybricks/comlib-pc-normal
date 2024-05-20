@@ -25,9 +25,7 @@ export const inputIds = {
   resetValue: 'resetValue',
 
   // 编辑/只读
-  isEditable: 'isEditable',
-  // 获取光标位置，目前仅文本域使用
-  GET_CURSOR_POS: 'getCursorPos'
+  isEditable: 'isEditable'
 }
 
 export const outputIds = {

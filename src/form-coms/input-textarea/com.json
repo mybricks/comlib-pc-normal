@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-textarea",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "文本域",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_44zp5y.91531f9e6ba88161.png",
@@ -153,10 +153,10 @@
     },
     {
       "id": "getCursorPos",
-      "title": "获取光标位置",
-      "desc": "获取文本域失焦前光标的位置并输出",
+      "title": "获取当前光标位置",
+      "desc": "当前光标位置为：文本域失焦前光标的位置或者IO方式更新文本域值后的光标位置(最后一个字符后)",
       "schema": {
-        "type": "any"
+        "type": "number"
       },
       "rels": [
         "returnCursorPosValue"

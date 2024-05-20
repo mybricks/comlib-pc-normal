@@ -110,9 +110,13 @@ export default function ({
           relOutputs['setColorDone'](color);
         }
       });
-      inputs['getCursorPos'] &&
-      inputs['getCursorPos']((val, relOutputs) => {
+    inputs[InputIds.GET_CURSOR_POS] &&
+      inputs[InputIds.GET_CURSOR_POS]((val, relOutputs) => {
         if (relOutputs['returnCursorPosValue']) {
+          if (!data.selectionStart) {
+            // 默认情况下，selectionStart 光标位置为0
+            data.selectionStart = 0;
+          }
           relOutputs['returnCursorPosValue'](data.selectionStart);
         }
       });
@@ -136,6 +140,8 @@ export default function ({
     setValue(val);
     valueRef.current = val;
     onChangeForFc(parentSlot, { id: id, name: name, value: val });
+    // 外部IO改变值时，更改光标位置: selectionStart 为字符串最后一个位置
+    data.selectionStart = val ? String(val).length : 0;
   }, []);
 
   const onChange = useCallback((e) => {
@@ -148,10 +154,9 @@ export default function ({
     const value = e.target.value;
     changeValue(value);
     onValidateTrigger();
-    data.selectionStart = e.target.selectionStart ?? 0
-    console.log('blur --- textArea', data.selectionStart)
+    // 失焦，更新光标位置
+    data.selectionStart = e.target.selectionStart ?? 0;
     outputs['onBlur'](value);
-    outputs['returnCursorPosValue'](data.selectionStart)
   }, []);
 
   const onPressEnter = useCallback((e) => {
