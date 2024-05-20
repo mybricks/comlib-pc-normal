@@ -79,6 +79,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
         const schema = {
           type: 'string',
           title: item.title,
+          description: '表格列的字段名为:' + item.dataIndex,
           ...schemaObj[colDataIndex]
         };
         if (item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex) {
@@ -106,19 +107,23 @@ function setDataSourceSchema(dataSchema: object, { input, data, output }: Props)
           properties: {
             dataSource: {
               type: 'array',
+              description: '表格数据源数据',
               items: {
                 type: 'object',
                 properties: dataSchema
               }
             },
             total: {
-              type: 'number'
+              type: 'number',
+              description: '数据总数'
             },
             pageSize: {
-              type: 'number'
+              type: 'number',
+              description: '表格每页条数'
             },
             pageNum: {
-              type: 'number'
+              type: 'number',
+              description: '表格当前页码'
             }
           }
         }
@@ -142,6 +147,7 @@ function setOutputsSchema(dataSchema, { output }: Props) {
     properties: {
       selectedRowKeys: {
         title: '勾选数据',
+        description: '勾选的数据，返回一组勾选行的key字段的数据',
         type: 'array',
         items: {
           type: 'string'
@@ -149,6 +155,7 @@ function setOutputsSchema(dataSchema, { output }: Props) {
       },
       selectedRows: {
         title: '勾选行完整数据',
+        description: '返回勾选行的完整数据',
         type: 'array',
         items: {
           type: 'object',
@@ -163,6 +170,7 @@ function setOutputsSchema(dataSchema, { output }: Props) {
     properties: {
       selectedRowKeys: {
         title: '勾选数据',
+        description: '勾选的数据，返回一组勾选行的key字段的数据',
         type: 'array',
         items: {
           type: 'string'
@@ -170,6 +178,7 @@ function setOutputsSchema(dataSchema, { output }: Props) {
       },
       selectedRows: {
         title: '勾选行完整数据',
+        description: '返回勾选行的完整数据',
         type: 'array',
         items: {
           type: 'object',
@@ -426,13 +435,16 @@ export const Schemas = {
       type: 'object',
       properties: {
         title: {
-          type: 'string'
+          type: 'string',
+          description: '表格列标题'
         },
         dataIndex: {
-          type: 'string'
+          type: 'string',
+          description: '表格列数据在数据项中的路径'
         },
         width: {
-          type: 'number'
+          type: 'number',
+          description: '表格列宽度'
         },
         usePrevious: {
           type: 'boolean'
@@ -441,13 +453,16 @@ export const Schemas = {
           type: 'object',
           properties: {
             enable: {
-              type: 'boolean'
+              type: 'boolean',
+              description: '是否启用过滤'
             },
             type: {
-              type: 'string'
+              type: 'string',
+              description: '过滤类型'
             },
             hideFilterDropdown: {
-              type: 'boolean'
+              type: 'boolean',
+              description: '是否隐藏表格列的过滤菜单'
             },
             options: {
               type: 'array',
@@ -455,10 +470,12 @@ export const Schemas = {
                 type: 'object',
                 properties: {
                   text: {
-                    type: 'string'
+                    type: 'string',
+                    description: '选项文字'
                   },
                   value: {
-                    type: 'string'
+                    type: 'string',
+                    description: '选项值'
                   }
                 }
               }
@@ -474,16 +491,20 @@ export const Schemas = {
       type: 'object',
       properties: {
         title: {
-          type: 'string'
+          type: 'string',
+          description: '表格列标题'
         },
         dataIndex: {
-          type: 'string'
+          type: 'string',
+          description: '表格列数据在数据项中的路径'
         },
         visible: {
-          type: 'boolean'
+          type: 'boolean',
+          description: '表格列是否可见'
         },
         width: {
-          type: 'number'
+          type: 'number',
+          description: '表格列宽度'
         }
       }
     }
@@ -492,10 +513,12 @@ export const Schemas = {
     type: 'object',
     properties: {
       index: {
-        type: 'number'
+        type: 'number',
+        description: '行序号'
       },
       record: {
-        type: 'object'
+        type: 'object',
+        description: '行数据'
       }
     }
   },
@@ -503,16 +526,20 @@ export const Schemas = {
     type: 'object',
     properties: {
       record: {
-        type: 'object'
+        type: 'object',
+        description: '行数据'
       },
       index: {
-        type: 'number'
+        type: 'number',
+        description: '单元格所在行的索引'
       },
       dataIndex: {
-        type: 'string'
+        type: 'string',
+        description: '单元格所在列在数据项中的路径'
       },
       isFocus: {
-        type: 'boolean'
+        type: 'boolean',
+        description: '单元格是否聚焦'
       }
     }
   },

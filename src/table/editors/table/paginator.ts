@@ -6,10 +6,12 @@ export const PageSchema = {
   type: 'object',
   properties: {
     pageNum: {
-      type: 'number'
+      type: 'number',
+      description: "表格当前页码",
     },
     pageSize: {
-      type: 'number'
+      type: 'number',
+      description: "表格每页条数",
     }
   }
 };
