@@ -14,7 +14,8 @@ export interface Data {
   config: InputProps;
   minRows?: number;
   maxRows?: number;
-
+  /** 光标位置  */
+  selectionStart?: number;
   isEditable: boolean;
 }
 
@@ -109,6 +110,16 @@ export default function ({
           relOutputs['setColorDone'](color);
         }
       });
+    inputs[InputIds.GET_CURSOR_POS] &&
+      inputs[InputIds.GET_CURSOR_POS]((val, relOutputs) => {
+        if (relOutputs['returnCursorPosValue']) {
+          if (!data.selectionStart) {
+            // 默认情况下，selectionStart 光标位置为0
+            data.selectionStart = 0;
+          }
+          relOutputs['returnCursorPosValue'](data.selectionStart);
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -129,6 +140,8 @@ export default function ({
     setValue(val);
     valueRef.current = val;
     onChangeForFc(parentSlot, { id: id, name: name, value: val });
+    // 外部IO改变值时，更改光标位置: selectionStart 为字符串最后一个位置
+    data.selectionStart = val ? String(val).length : 0;
   }, []);
 
   const onChange = useCallback((e) => {
@@ -141,6 +154,8 @@ export default function ({
     const value = e.target.value;
     changeValue(value);
     onValidateTrigger();
+    // 失焦，更新光标位置
+    data.selectionStart = e.target.selectionStart ?? 0;
     outputs['onBlur'](value);
   }, []);
 
