@@ -24,6 +24,8 @@ export const InputIds = {
   SetValidateInfo: 'setValidateInfo',
   SetColor: 'setColor',
   SetDynamicStyles: 'setDynamicStyles',
+  // 获取光标位置，目前仅文本域使用
+  GET_CURSOR_POS: 'getCursorPos'
 }
 
 export const OutputIds = {
