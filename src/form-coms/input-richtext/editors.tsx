@@ -322,7 +322,7 @@ export default {
           {
             title: '工具栏',
             catelog: '默认',
-            options: [{ type: 'background', config: { disableBackgroundImage: true } }, , 'border'],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: '.tox-toolbar-overlord .tox-toolbar__primary'
           },
           {
