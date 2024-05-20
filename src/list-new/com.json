@@ -20,6 +20,7 @@
       "schema": {
         "title": "列表数据",
         "type": "array",
+        "description": "列表容器的数据源，数组格式",
         "items": {
           "title": "列项数据",
           "type": "any"
@@ -37,10 +38,12 @@
         "type": "object",
         "properties": {
           "index": {
-            "type": "number"
+            "type": "number",
+            "description": "添加项要放在原数据中的索引"
           },
           "value": {
-            "type": "any"
+            "type": "any",
+            "description": "添加项的数据内容"
           }
         }
       },
@@ -53,7 +56,8 @@
       "title": "删除一项",
       "desc": "默认在末尾删除一项, 支持指定位置(合理范围内)",
       "schema": {
-        "type": "number"
+        "type": "number",
+        "description": "删除项在原数据源中的索引"
       },
       "rels": [
         "removeItemDone"
@@ -67,10 +71,12 @@
         "type": "object",
         "properties": {
           "index": {
-            "type": "number"
+            "type": "number",
+            "description": "修改项要放在原数据中的索引"
           },
           "value": {
-            "type": "any"
+            "type": "any",
+            "description": "被修改项的新值"
           }
         }
       },

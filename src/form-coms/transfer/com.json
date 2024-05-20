@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -21,6 +21,7 @@
       "title": "设置数据源",
       "schema": {
         "type": "array",
+        "description": "数组格式的数据源，渲染到左侧,需要包含以下字段title, key，description等字段",
         "items": {
           "type": "object",
           "properties": {
@@ -34,7 +35,8 @@
               "type": "string"
             },
             "disabled": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否禁用，可选的"
             }
           }
         }
@@ -146,6 +148,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -159,6 +162,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }
@@ -211,6 +215,7 @@
       "desc": "穿梭框的目标数据更新事件输出",
       "schema": {
         "type": "array",
+        "description": "数组格式的目标数据源，选中的数据列表，包含基础key,title,description等字段",
         "items": {
           "type": "object",
           "properties": {
@@ -251,11 +256,13 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态，成功/失败"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "帮助提示信息"
           }
         }
       }
@@ -339,6 +346,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -352,6 +360,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }

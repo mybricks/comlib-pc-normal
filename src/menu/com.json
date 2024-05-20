@@ -1,7 +1,7 @@
 {
   "title": "导航菜单",
   "namespace": "mybricks.normal-pc.menu",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "为页面和功能提供导航的菜单列表",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -23,18 +23,22 @@
         "properties": {
           "title": {
             "title": "标题",
+            "description": "点击的菜单项标题",
             "type": "string"
           },
           "key": {
             "title": "唯一标识",
+            "description": "点击的菜单项标题",
             "type": "string"
           },
           "menuType": {
             "title": "类型",
-            "type": "string"
+            "type": "string",
+            "description": "点击的菜单项类型"
           },
           "value": {
             "title": "其他数据",
+            "description": "点击的菜单项的其他数据",
             "type": "any"
           }
         }
@@ -49,18 +53,22 @@
         "properties": {
           "title": {
             "title": "标题",
+            "description": "选中的的菜单项标题",
             "type": "string"
           },
           "key": {
             "title": "唯一标识",
+            "description": "选中的菜单项标题",
             "type": "string"
           },
           "menuType": {
             "title": "类型",
-            "type": "string"
+            "type": "string",
+            "description": "选中的菜单项类型"
           },
           "value": {
             "title": "其他数据",
+            "description": "选中的菜单项的其他数据",
             "type": "any"
           }
         }
@@ -82,27 +90,23 @@
               "properties": {
                 "title": {
                   "title": "标题",
+                  "description": "菜单项标题",
                   "type": "string"
                 },
                 "key": {
                   "title": "唯一标识",
+                  "description": "菜单项标题",
                   "type": "string"
                 },
                 "menuType": {
                   "title": "类型",
-                  "type": "string"
-                },
-                "children": {
-                  "title": "子菜单数据",
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {}
-                  }
+                  "type": "string",
+                  "description": "菜单项类型"
                 },
                 "value": {
                   "title": "其他数据",
-                  "type": "string"
+                  "description": "菜单项的其他数据",
+                  "type": "any"
                 }
               }
             }
@@ -136,11 +140,13 @@
           "dataSource": {
             "title": "菜单数据",
             "type": "array",
+            "description": "导航菜单数据",
             "items": {
               "type": "object",
               "properties": {
                 "title": {
                   "title": "标题",
+                  "description": "菜单项标题",
                   "type": "string"
                 },
                 "key": {
@@ -149,10 +155,12 @@
                 },
                 "menuType": {
                   "title": "类型",
-                  "type": "string"
+                  "type": "string",
+                  "description": "菜单项类型，可以为普通菜单项menu、子菜单subMenu, 分组菜单group"
                 },
                 "children": {
                   "title": "子菜单数据",
+                  "description": "自菜单的数据，数组结构，内容和菜单项一致",
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -168,6 +176,7 @@
           },
           "defaultActive": {
             "title": "默认选中项",
+            "description": "默认选中的菜单，这里传菜单的key",
             "type": "string"
           }
         }

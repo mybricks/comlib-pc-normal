@@ -1,7 +1,7 @@
 {
   "title": "描述列表",
   "namespace": "mybricks.normal-pc.form-detail",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "描述列表",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -31,8 +31,10 @@
       "desc": "设置描述列表的数据源",
       "schema": {
         "type": "object",
+        "description": "描述列表的数据源数据，对象类型，格式为{fieldName: 'value'}",
         "properties": {
           "field1": {
+            "description":"字段名为field1 的描述项",
             "type": "string"
           }
         }
@@ -44,7 +46,7 @@
     {
       "id": "setDataDesc",
       "title": "设置数据源描述",
-      "desc": "设置数据源描述",
+      "desc": "描述列表的数据源数据，对象类型，格式为{fieldName: 'value'}, fieldName为字段名",
       "schema": {
         "type": "object",
         "properties": {
@@ -52,16 +54,20 @@
             "type": "object",
             "properties": {
               "label": {
-                "type": "string"
+                "type": "string",
+                "description": "描述项的标签名"
               },
               "labelDesc": {
-                "type": "string"
+                "type": "string",
+                "description": "描述项的标签说明信息、提示"
               },
               "showLabel": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "是否展示标签"
               },
               "visible": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "描述项是否可见"
               }
             }
           }

@@ -4,18 +4,22 @@ import { uuid } from '../../utils';
 
 const DescSchema = {
   type: 'object',
-  properties: {
-    label: {
-      type: 'string'
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "描述项的标签名"
     },
-    labelDesc: {
-      type: 'string'
+    "labelDesc": {
+      "type": "string",
+      "description": "描述项的标签说明信息、提示"
     },
-    showLabel: {
-      type: 'boolean'
+    "showLabel": {
+      "type": "boolean",
+      "description": "是否展示标签"
     },
-    visible: {
-      type: 'boolean'
+    "visible": {
+      "type": "boolean",
+      "description": "描述项是否可见"
     }
   }
 };
@@ -289,7 +293,8 @@ export const createItem = ({ data }: Pick<EditorResult<Data>, 'data'>): Item => 
     useSuffix: false,
     suffixBtnText: '查看更多',
     schema: {
-      type: 'string'
+      type: 'string',
+      "description": `字段名为 ${id} 的描述项`,
     },
     labelDesc: ''
   };
