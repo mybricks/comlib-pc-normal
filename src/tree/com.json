@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.62",
+  "version": "1.0.63",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -18,7 +18,7 @@
       "schema": {
         "title": "树组件数据",
         "type": "array",
-        "description": "数组格式的数据节后，需要包含以下字段title, key等字段",
+        "description": "数组格式的数据节点，需要包含以下字段title, key等字段",
         "items": {
           "type": "object",
           "properties": {

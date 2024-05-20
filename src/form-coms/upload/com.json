@@ -21,23 +21,29 @@
       "desc": "设置上传表单项的值",
       "schema": {
         "type": "array",
+        "description": "设置上传表单项的值",
         "items": {
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "文件名"
             },
             "url": {
-              "type": "string"
+              "type": "string",
+              "description": "文件地址"
             },
             "status": {
-              "type": "string"
+              "type": "string",
+              "description": "文件上传状态"
             },
             "percent": {
-              "type": "number"
+              "type": "number",
+              "description": "文件上传进度，百分比"
             },
             "response": {
-              "type": "string"
+              "type": "string",
+              "description": "服务端响应内容"
             }
           }
         }
@@ -52,23 +58,29 @@
       "desc": "设置上传表单项的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "array",
+        "description": "设置上传表单项的值",
         "items": {
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "文件名"
             },
             "url": {
-              "type": "string"
+              "type": "string",
+              "description": "文件地址"
             },
             "status": {
-              "type": "string"
+              "type": "string",
+              "description": "文件上传状态"
             },
             "percent": {
-              "type": "number"
+              "type": "number",
+              "description": "文件上传进度，百分比"
             },
             "response": {
-              "type": "string"
+              "type": "string",
+              "description": "服务端响应内容"
             }
           }
         }
@@ -181,23 +193,29 @@
       "desc": "上传表单项的值初始化事件输出",
       "schema": {
         "type": "array",
+        "description": "值初始化后，输出上传表单项的值",
         "items": {
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "文件名"
             },
             "url": {
-              "type": "string"
+              "type": "string",
+              "description": "文件地址"
             },
             "status": {
-              "type": "string"
+              "type": "string",
+              "description": "文件上传状态"
             },
             "percent": {
-              "type": "number"
+              "type": "number",
+              "description": "文件上传进度，百分比"
             },
             "response": {
-              "type": "string"
+              "type": "string",
+              "description": "服务端响应内容"
             }
           }
         }
@@ -227,23 +245,29 @@
       "desc": "获取上传表单项的值后，值输出",
       "schema": {
         "type": "array",
+        "description": "输出上传表单项的值",
         "items": {
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "文件名"
             },
             "url": {
-              "type": "string"
+              "type": "string",
+              "description": "文件地址"
             },
             "status": {
-              "type": "string"
+              "type": "string",
+              "description": "文件上传状态"
             },
             "percent": {
-              "type": "number"
+              "type": "number",
+              "description": "文件上传进度，百分比"
             },
             "response": {
-              "type": "string"
+              "type": "string",
+              "description": "服务端响应内容"
             }
           }
         }
@@ -282,23 +306,29 @@
       "title": "设置值完成",
       "schema": {
         "type": "array",
+        "description": "输出上传表单项的值",
         "items": {
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "文件名"
             },
             "url": {
-              "type": "string"
+              "type": "string",
+              "description": "文件地址"
             },
             "status": {
-              "type": "string"
+              "type": "string",
+              "description": "文件上传状态"
             },
             "percent": {
-              "type": "number"
+              "type": "number",
+              "description": "文件上传进度，百分比"
             },
             "response": {
-              "type": "string"
+              "type": "string",
+              "description": "服务端响应内容"
             }
           }
         }
@@ -309,23 +339,29 @@
       "title": "设置初始值完成",
       "schema": {
         "type": "array",
+        "description": "输出上传表单项的值",
         "items": {
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "文件名"
             },
             "url": {
-              "type": "string"
+              "type": "string",
+              "description": "文件地址"
             },
             "status": {
-              "type": "string"
+              "type": "string",
+              "description": "文件上传状态"
             },
             "percent": {
-              "type": "number"
+              "type": "number",
+              "description": "文件上传进度，百分比"
             },
             "response": {
-              "type": "string"
+              "type": "string",
+              "description": "服务端响应内容"
             }
           }
         }

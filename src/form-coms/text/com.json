@@ -144,6 +144,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -157,6 +158,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }
@@ -217,11 +219,13 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态，成功/失败"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "帮助提示信息"
           }
         }
       }
@@ -307,6 +311,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -320,6 +325,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }

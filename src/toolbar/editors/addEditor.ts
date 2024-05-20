@@ -15,11 +15,11 @@ const addEditor = [
           ...getNewBtn(),
           text: `按钮${data.btnList.length}`
         };
-        output.add(newItem.key, `单击${newItem.text}`, Schemas.Number);
+        output.add(newItem.key, `单击${newItem.text}`, { ...Schemas.Number, description: "点击按钮后，事件输出" });
         output.add(
           `${OutputIds.DoubleClick}_${newItem.key}`,
           `双击${newItem.text}`,
-          Schemas.Number
+          { ...Schemas.Number, description: "双击按钮后，事件输出" }
         );
         data.btnList.push(newItem);
       }

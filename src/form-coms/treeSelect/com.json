@@ -1,7 +1,7 @@
 {
   "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.2.19",
+  "version": "1.2.20",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -73,6 +73,7 @@
       "desc": "设置树选择的下拉选项列表",
       "schema": {
         "type": "array",
+        "description":"树形选择结构的下拉框列表数据",
         "items": {
           "type": "object",
           "properties": {
@@ -91,6 +92,7 @@
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点的子节点数组数据",
               "items": {
                 "type": "object",
                 "properties": {}
@@ -109,6 +111,7 @@
       "desc": "对树形选择设置异步加载数据，并触发设置异步加载数据完成事件",
       "schema": {
         "type": "object",
+        "description": "异步加载数据结构",
         "properties": {
           "label": {
             "title": "标签",
@@ -210,6 +213,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -223,6 +227,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }
@@ -267,11 +272,13 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态，成功/失败"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "帮助提示信息"
           }
         }
       }
@@ -290,6 +297,7 @@
       "desc": "树形选择的异步加载数据事件",
       "schema": {
         "type": "object",
+        "description":"异步加载数据，输出",
         "properties": {
           "label": {
             "title": "标签",
@@ -334,6 +342,7 @@
       "id": "setOptionsDone",
       "title": "设置数据源完成",
       "schema": {
+        "description":"设置数据源完成后，输出数据源数据",
         "type": "array",
         "items": {
           "type": "object",
@@ -353,6 +362,7 @@
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点子项数据",
               "items": {
                 "type": "object",
                 "properties": {}
@@ -436,6 +446,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -449,6 +460,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }
