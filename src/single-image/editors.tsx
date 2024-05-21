@@ -66,23 +66,23 @@ export default {
           }
         },
         {
-          title: '填充类型',
-          type: 'select',
+          title: '填充模式',
+          type: 'Select',
           options: [
             {
-              label: '填充',
+              label: '拉伸图片 (fill)',
               value: 'fill'
             },
             {
-              label: '包含',
+              label: '缩放图片 (contain)',
               value: 'contain'
             },
             {
-              label: '覆盖',
+              label: '裁剪图片 (cover)',
               value: 'cover'
             },
             {
-              label: '保持原始尺寸',
+              label: '原始尺寸 (none)',
               value: 'none'
             }
           ],
