@@ -35,7 +35,7 @@ export default {
         ]
       }
     ],
-    items: ({}: EditorResult<Data>, cate1) => {
+    items: ({ }: EditorResult<Data>, cate1) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -62,6 +62,36 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.src = value;
+            }
+          }
+        },
+        {
+          title: '填充类型',
+          type: 'select',
+          options: [
+            {
+              label: '拉伸填充',
+              value: 'fill'
+            },
+            {
+              label: '包含',
+              value: 'contain'
+            },
+            {
+              label: '覆盖',
+              value: 'cover'
+            },
+            {
+              label: '保持原始大小',
+              value: 'none'
+            },
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.objectFit || 'fill';
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.objectFit = value;
             }
           }
         },

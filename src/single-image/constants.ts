@@ -16,5 +16,7 @@ export interface Data {
   useFallback?: boolean;
   fallbackImgSrc?: string;
 
+  objectFit?: 'fill' | 'contain' | 'cover' | 'none';
+
   customStyle?: any;
 }
