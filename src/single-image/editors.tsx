@@ -1,4 +1,4 @@
-import { Data, InputIds, OutputIds } from './constants';
+import { Data, InputIds, ObjectFit, OutputIds } from './constants';
 
 export default {
   '@init': ({ style }: EditorResult<Data>) => {
@@ -35,7 +35,7 @@ export default {
         ]
       }
     ],
-    items: ({ }: EditorResult<Data>, cate1) => {
+    items: ({}: EditorResult<Data>, cate1) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -70,7 +70,7 @@ export default {
           type: 'select',
           options: [
             {
-              label: '拉伸填充',
+              label: '填充',
               value: 'fill'
             },
             {
@@ -82,15 +82,15 @@ export default {
               value: 'cover'
             },
             {
-              label: '保持原始大小',
+              label: '保持原始尺寸',
               value: 'none'
-            },
+            }
           ],
           value: {
             get({ data }: EditorResult<Data>) {
               return data.objectFit || 'fill';
             },
-            set({ data }: EditorResult<Data>, value: string) {
+            set({ data }: EditorResult<Data>, value: ObjectFit) {
               data.objectFit = value;
             }
           }
