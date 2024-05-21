@@ -13,14 +13,21 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
     '.root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab'
 });
 
-export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
+export const createFontStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
   title: '标签',
   initValue,
   options: [
     { type: 'font', config: { disableTextAlign: true } },
+  ],
+  target,
+});
+
+export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
+  initValue,
+  options: [
     { type: 'background', config: { disableBackgroundImage: true } }
   ],
-  target
+  target,
 });
 
 export const createStyleForBar = ({}: StyleModeType<Data> = {}) => ({

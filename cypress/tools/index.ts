@@ -70,7 +70,6 @@ export function dumpPreview(
         .click({ force: true });
     }
 
-
     cy.window().then((win) => {
       const upgradeBtn = win.document.querySelector(
         "div[class*='upgrade'] > div:nth-child(2) > button:nth-child(2)"
