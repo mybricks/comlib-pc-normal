@@ -6,6 +6,8 @@ export const InputIds = {
   SetPreviewImgSrc: 'setPreviewImgSrc'
 };
 
+export type ObjectFit = 'fill' | 'contain' | 'cover' | 'none';
+
 export interface Data {
   src: string;
   alt?: string;
@@ -15,6 +17,8 @@ export interface Data {
 
   useFallback?: boolean;
   fallbackImgSrc?: string;
+
+  objectFit?: ObjectFit;
 
   customStyle?: any;
 }

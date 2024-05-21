@@ -35,6 +35,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
         width="100%"
         height="100%"
         style={{
+          objectFit: data?.objectFit || 'fill',
           cursor:
             outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
               ? 'pointer'

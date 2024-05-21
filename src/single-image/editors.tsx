@@ -1,4 +1,4 @@
-import { Data, InputIds, OutputIds } from './constants';
+import { Data, InputIds, ObjectFit, OutputIds } from './constants';
 
 export default {
   '@init': ({ style }: EditorResult<Data>) => {
@@ -62,6 +62,36 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.src = value;
+            }
+          }
+        },
+        {
+          title: '填充模式',
+          type: 'Select',
+          options: [
+            {
+              label: '拉伸图片 (fill)',
+              value: 'fill'
+            },
+            {
+              label: '缩放图片 (contain)',
+              value: 'contain'
+            },
+            {
+              label: '裁剪图片 (cover)',
+              value: 'cover'
+            },
+            {
+              label: '原始尺寸 (none)',
+              value: 'none'
+            }
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.objectFit || 'fill';
+            },
+            set({ data }: EditorResult<Data>, value: ObjectFit) {
+              data.objectFit = value;
             }
           }
         },
