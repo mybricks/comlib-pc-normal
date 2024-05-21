@@ -77,7 +77,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   /**
    * @description v1.1.1 --> v1.1.2 新增回车事件
   */
-  if(!output.get('onPressEnter')){
+  if (!output.get('onPressEnter')) {
     output.add('onPressEnter', '按下回车', {
       type: 'string'
     })
@@ -208,5 +208,23 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.isEditable = true;
   }
   //=========== v1.1.9 end ===============
+
+  /**
+   * @description v1.1.14 新增获取光标位置
+   */
+
+  if (typeof data.selectionStart === 'undefined') {
+    // 初始selectionStart是0
+    data.selectionStart = 0;
+  }
+  if (!input.get('getCursorPos')) {
+    input.add('getCursorPos', '获取当前光标位置', { "type": "number" });
+  }
+
+  if (!output.get('returnCursorPosValue')) {
+    output.add('returnCursorPosValue', '光标位置输出', { "type": "number" });
+    input.get('getCursorPos').setRels(['returnCursorPosValue']);
+  }
+  //=========== v1.1.14 end ===============
   return true;
 }
