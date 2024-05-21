@@ -26,6 +26,7 @@ export default function ({
   data,
   input,
   output,
+  style,
   setDeclaredStyle,
   slot,
   registerPermission,
@@ -146,6 +147,19 @@ export default function ({
       setSlotLayout(slotInstance, data.slotStyle);
   })
   //=========== v1.0.28 end ===============
+
+  /**
+  * @description v1.0.33 fix: 修复标签页激活状态下字体颜色配置不生效问题
+  */
+  const activeTabSelector = `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active:not(#{id} *[data-isslot=\"1\"] *)`;
+  const activeTabFontSelector = `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active:not(#{id} *[data-isslot=\"1\"] *) div.ant-tabs-tab-btn`
+  const activeTabStyle = style.styleAry.find(item => item.selector === activeTabSelector);
+  const activeFontColor = activeTabStyle?.css?.color;
+  if (activeFontColor) {
+    setDeclaredStyle(activeTabFontSelector, { color: activeFontColor });
+  }
+
+  //=========== v1.0.33 end ===============
 
   return true;
 }

@@ -1,7 +1,7 @@
 import { Data, InputIds, OutputIds, SlotIds } from '../constants';
 import TabEditor from './tab';
 import { createItem, addEventIO } from './common';
-import { createStyleForDefault, createStyleForActive, createStyleForBar, setDynamicTabsIO } from './utils';
+import { createStyleForDefault, createStyleForActive, createStyleForBar, setDynamicTabsIO, createFontStyleForActive } from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
 
 export const setSlotLayout = (slot, val) => {
@@ -393,10 +393,6 @@ export default {
         target: '.ant-tabs-top>.ant-tabs-nav:before'
       },
       {
-        catelog: '默认',
-        ...createStyleForBar()
-      },
-      {
         catelog: 'Hover',
         title: '标签',
         options: [
@@ -407,6 +403,16 @@ export default {
       },
       {
         catelog: '激活',
+        ...createFontStyleForActive({
+          initValue: {
+            color: '#1890ff'
+          },
+          target: ({ id }: EditorResult<Data>) =>
+            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)} div.ant-tabs-tab-btn`
+        })
+      },
+      {
+        catelog: '激活',
         ...createStyleForActive({
           initValue: {
             color: '#1890ff'
@@ -414,6 +420,10 @@ export default {
           target: ({ id }: EditorResult<Data>) =>
             `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)}`
         })
+      },
+      {
+        catelog: '激活',
+        ...createStyleForBar()
       }
     ]
   },
