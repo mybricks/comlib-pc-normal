@@ -26,13 +26,16 @@
           "type": "object",
           "properties": {
             "key": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的唯一标识key"
             },
             "title": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的标题"
             },
             "description": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的描述"
             },
             "disabled": {
               "type": "boolean",
@@ -194,16 +197,20 @@
           "type": "object",
           "properties": {
             "key": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的唯一标识key"
             },
             "title": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的标题"
             },
             "description": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的描述"
             },
             "disabled": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否禁用，可选的"
             }
           }
         }
@@ -220,16 +227,20 @@
           "type": "object",
           "properties": {
             "key": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的唯一标识key"
             },
             "title": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的标题"
             },
             "description": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的描述"
             },
             "disabled": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否禁用，可选的"
             }
           }
         }
@@ -276,16 +287,20 @@
           "type": "object",
           "properties": {
             "key": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的唯一标识key"
             },
             "title": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的标题"
             },
             "description": {
-              "type": "string"
+              "type": "string",
+              "description": "数据项的描述"
             },
             "disabled": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否禁用，可选的"
             }
           }
         }

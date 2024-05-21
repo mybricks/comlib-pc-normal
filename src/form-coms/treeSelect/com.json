@@ -79,15 +79,18 @@
           "properties": {
             "label": {
               "title": "标签",
-              "type": "string"
+              "type": "string",
+              "description": "选项的标签"
             },
             "value": {
               "title": "值",
-              "type": "string"
+              "type": "string",
+              "description": "选项的值"
             },
             "isLeaf": {
               "title": "是否叶子节点",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否是叶子节点"
             },
             "children": {
               "title": "子项",
@@ -115,19 +118,23 @@
         "properties": {
           "label": {
             "title": "标签",
-            "type": "string"
+            "type": "string",
+            "description": "选项的标签"
           },
           "value": {
             "title": "值",
-            "type": "string"
+            "type": "string",
+            "description": "选项的值"
           },
           "isLeaf": {
             "title": "是否叶子节点",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "是否是叶子节点"
           },
           "children": {
             "title": "子项",
             "type": "array",
+            "description": "节点的子节点数组数据",
             "items": {
               "type": "object",
               "properties": {}
@@ -349,20 +356,23 @@
           "properties": {
             "label": {
               "title": "标签",
-              "type": "string"
+              "type": "string",
+              "description": "选项的标签"
             },
             "value": {
               "title": "值",
-              "type": "string"
+              "type": "string",
+              "description": "选项的值"
             },
             "isLeaf": {
               "title": "是否叶子节点",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否是叶子节点"
             },
             "children": {
               "title": "子项",
               "type": "array",
-              "description": "节点子项数据",
+              "description": "节点的子节点数组数据",
               "items": {
                 "type": "object",
                 "properties": {}
@@ -382,19 +392,23 @@
           "properties": {
             "label": {
               "title": "标签",
-              "type": "string"
+              "type": "string",
+              "description": "选项的标签"
             },
             "value": {
               "title": "值",
-              "type": "string"
+              "type": "string",
+              "description": "选项的值"
             },
             "isLeaf": {
               "title": "是否叶子节点",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "是否是叶子节点"
             },
             "children": {
               "title": "子项",
               "type": "array",
+              "description": "节点的子节点数组数据",
               "items": {
                 "type": "object",
                 "properties": {}
