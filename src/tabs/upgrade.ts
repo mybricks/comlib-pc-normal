@@ -153,7 +153,7 @@ export default function ({
   */
   const activeTabSelector = `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active:not(#{id} *[data-isslot=\"1\"] *)`;
   const activeTabFontSelector = `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active:not(#{id} *[data-isslot=\"1\"] *) div.ant-tabs-tab-btn`
-  const activeTabStyle = style.styleAry.find(item => item.selector === activeTabSelector);
+  const activeTabStyle = style.styleAry?.find?.(item => item.selector === activeTabSelector);
   const activeFontColor = activeTabStyle?.css?.color;
   if (activeFontColor) {
     setDeclaredStyle(activeTabFontSelector, { color: activeFontColor });
