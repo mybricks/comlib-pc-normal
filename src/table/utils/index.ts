@@ -1,6 +1,6 @@
 import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
-import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
+import { ContentTypeEnum, Data, IColumn, SorterTypeEnum, WidthTypeEnum } from '../types';
 import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
@@ -46,7 +46,8 @@ export const getNewColumn = (data?: Data) => {
   const obj: IColumn = {
     title,
     dataIndex: title,
-    width: 'auto',
+    isAutoWidth: WidthTypeEnum.Auto,
+    width: WidthTypeEnum.Auto,
     key: uuid(),
     contentType: ContentTypeEnum.Text,
     visible: true,

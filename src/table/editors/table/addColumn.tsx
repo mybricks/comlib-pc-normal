@@ -160,11 +160,14 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             }
             const cols = val.map((item) => ({
               ...item,
+              // width: item.isAutoWidth
+              //   ? WidthTypeEnum.Auto
+              //   : item.width === WidthTypeEnum.Auto
+              //     ? 'auto'
+              //     : Number(item.width),
               width: item.isAutoWidth
                 ? WidthTypeEnum.Auto
-                : item.width === WidthTypeEnum.Auto
-                  ? 140
-                  : Number(item.width),
+                : (Number(item.width) || 140),
               isAutoWidth: undefined
             }));
             setColumns({ data, slot }, cols);
