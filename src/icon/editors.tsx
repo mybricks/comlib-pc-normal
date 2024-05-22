@@ -1,12 +1,6 @@
 import { Data, OutputIds } from './constants';
 
 export default {
-  '@init'({ style }) {
-    style.width = 'fit-content';
-  },
-  '@resize': {
-    options: ['width']
-  },
   ':root': {
     items: ({}: EditorResult<Data>, cate1) => {
       cate1.title = '常规';
