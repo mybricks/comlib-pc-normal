@@ -56,7 +56,7 @@ export default function (props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
