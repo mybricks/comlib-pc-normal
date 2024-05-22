@@ -374,6 +374,11 @@ export default {
               options: {
                 mode: 'tags',
                 options: [
+                  { label: 'JPG图片', value: '.jpg,.jpeg' },
+                  { label: 'PNG图片', value: '.png' },
+                  { label: 'SVG图片', value: '.svg' },
+                  { label: 'GIF图片', value: '.gif' },
+                  { label: 'Tiff图片', value: '.tiff' },
                   { label: 'Word文档', value: '.doc,.docx' },
                   { label: 'Excel电子表格', value: '.xlsx,.xls,.xlsm' },
                   { label: 'PowerPoint演示文稿', value: '.pptx,.ppt' },
@@ -393,11 +398,6 @@ export default {
                   { label: 'Mp4视频文件', value: '.mp4' },
                   { label: 'Avi视频文件', value: '.avi' },
                   { label: 'Mov视频文件', value: '.mov' },
-                  { label: 'JPG图片', value: '.jpg,.jpeg' },
-                  { label: 'PNG图片', value: '.png' },
-                  { label: 'SVG图片', value: '.svg' },
-                  { label: 'GIF图片', value: '.gif' },
-                  { label: 'Tiff图片', value: '.tiff' }
                 ],
                 multiple: true
               },
