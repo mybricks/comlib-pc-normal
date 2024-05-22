@@ -1,4 +1,4 @@
-import { RuleKeys, defaultValidatorExample, LengthRules, showMessage, getTitle } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, LengthRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { Data, Options } from './runtime';
 import { uuid } from '../../utils';
 import { createrCatelogEditor } from '../utils';
@@ -510,10 +510,10 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? data.rules : LengthRules;
+              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
             },
             set({ data }, value: any) {
-              data.rules = value;
+              data.rules = formatRegexRules(value);
             }
           }
         },

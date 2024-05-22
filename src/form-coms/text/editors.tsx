@@ -3,7 +3,9 @@ import {
   defaultValidatorExample,
   LengthRules,
   getTitle,
-  showMessage
+  showMessage,
+  formatRegexRules,
+  FormatScene
 } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
 import { outputIds } from '../form-container/constants';
@@ -424,10 +426,10 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? data.rules : LengthRules;
+              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
             },
             set({ data }, value: any) {
-              data.rules = value;
+              data.rules = formatRegexRules(value);
             }
           }
         },

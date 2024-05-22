@@ -1,6 +1,6 @@
 import { setPath } from '../../utils/path';
 import { Data } from './constants';
-import { RuleKeys, ExpRules, getTitle, showMessage } from '../utils/validator';
+import { RuleKeys, ExpRules, getTitle, showMessage, formatRegexRules, FormatScene } from '../utils/validator';
 import { OutputIds } from '../types';
 export default {
   '@resize': {
@@ -163,10 +163,10 @@ export default {
             },
             value: {
               get({ data }) {
-                return data.rules.length > 0 ? data.rules : ExpRules;
+                return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : ExpRules;
               },
               set({ data }, value: any) {
-                data.rules = value;
+                data.rules = formatRegexRules(value);
               }
             }
           },

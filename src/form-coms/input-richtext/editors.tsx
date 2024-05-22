@@ -4,7 +4,9 @@ import {
   defaultValidatorExample,
   ExpRules,
   showMessage,
-  getTitle
+  getTitle,
+  formatRegexRules,
+  FormatScene
 } from '../utils/validator';
 import { Data, getBtnItemIndex, iconType } from './types';
 import { toolbarOptions, BtnItemDataSetKey } from './utils';
@@ -235,10 +237,10 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? data.rules : ExpRules;
+              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : ExpRules;
             },
             set({ data }, value: any) {
-              data.rules = value;
+              data.rules = formatRegexRules(value);
             }
           }
         },

@@ -1,5 +1,5 @@
 import { Data } from './types';
-import { RuleKeys, LengthRules, showMessage, getTitle } from '../utils/validator';
+import { RuleKeys, LengthRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 
@@ -251,10 +251,10 @@ export default {
               },
               value: {
                 get({ data }) {
-                  return data.rules.length > 0 ? data.rules : LengthRules;
+                  return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
                 },
                 set({ data }, value: any) {
-                  data.rules = value;
+                  data.rules = formatRegexRules(value);
                 }
               }
             }

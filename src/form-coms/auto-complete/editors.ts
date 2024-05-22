@@ -1,4 +1,4 @@
-import { RuleKeys, LengthRules, showMessage, getTitle } from '../utils/validator';
+import { RuleKeys, LengthRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { Data, Option } from './runtime';
 
 let tempOptions: Option[] = [],
@@ -229,10 +229,10 @@ export default {
         },
         value: {
           get({ data }) {
-            return data.rules.length > 0 ? data.rules : LengthRules;
+            return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
           },
           set({ data }, value: any) {
-            data.rules = value;
+            data.rules = formatRegexRules(value);
           }
         }
       },
