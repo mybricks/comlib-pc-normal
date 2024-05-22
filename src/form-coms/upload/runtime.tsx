@@ -233,9 +233,17 @@ export default function ({
     list.forEach((item) => {
       formatCompleteFile(item, fileListRef.current);
     });
-    changeFileList([...fileListRef.current]);
+    changeFileList(onCheckFileCount([...fileListRef.current]));
     outputs['uploadComplete'](res);
   };
+
+  // 上传文件数字检查
+  const onCheckFileCount = (uploadedList) => {
+    if(fileCount && uploadedList.length > fileCount){
+      uploadedList.shift();
+    }
+    return uploadedList
+  }
 
   // 文件数据格式化
   const onFormatFileList = (fileList: UploadFile[]) => {
