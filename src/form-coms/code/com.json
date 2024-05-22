@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.code-editor",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "用于在线编辑代码，支持多种编程语言",
   "runtime": "./runtime.tsx",
   "editors": "./editor.ts",
@@ -108,6 +108,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",
@@ -164,10 +165,12 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
+            "description": "校验状态，成功/失败",
             "type": "string"
           },
           "help": {
             "title": "校验提示",
+            "description": "帮助提示文案",
             "type": "string"
           }
         }
@@ -231,6 +234,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",

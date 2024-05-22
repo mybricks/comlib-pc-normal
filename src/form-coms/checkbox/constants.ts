@@ -1,111 +1,81 @@
-import { Data } from './runtime';
-
-export const InputIds = {
-  SetOptions: 'setOptions'
-};
-
-export const OutputIds = {
-  SetOptionsDone: 'setOptionsDone'
-};
-
-export const refreshSchema = (props: EditorResult<Data>) => {
-  const { data, input, output } = props;
-  const { label, value, children } = data.fieldNames;
-  const optionsSchema = {
-    title: '输入数据源数据',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        [label || 'label']: {
-          title: '标题',
-          type: 'string'
-        },
-        [value || 'value']: {
-          title: '字段名',
-          type: 'string'
-        },
-        disabled: {
-          title: '禁用勾选',
-          type: 'boolean'
-        },
-        [children || 'children']: {
-          title: '子项',
-          type: 'array',
-          items: {
-            type: 'object'
-          }
-        }
-      }
-    }
-  };
-  input.get(InputIds.SetOptions)?.setSchema(optionsSchema);
-  output.get(OutputIds.SetOptionsDone)?.setSchema(optionsSchema);
-};
-
 export const descriptionUpList = [
   {
-    type: "input",
     id: "setValue",
+    type: "input",
     schema: {
       "type": "array",
       "description": "设置对应选中项的值",
       "items": {
-        "type": "any"
+        "type": "string"
       }
     }
   },
   {
-    type: "input",
     id: "setInitialValue",
+    type: "input",
     schema: {
       "type": "array",
       "description": "设置对应选中项的初始值",
       "items": {
-        "type": "any"
+        "type": "string"
       }
     }
   },
   {
-    type: "input",
     id: "setOptions",
+    type: "input",
     schema: {
-      "title": "输入数据源数据",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "description": "选项标签（一般展示）",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "description": "选项值",
+            "type": "string"
+          },
+          "disabled": {
+            "title": "禁用",
+            "description": "选项禁用，true时禁用",
+            "type": "boolean"
+          },
+          "checked": {
+            "title": "选中",
+            "description": "选项禁用，true时禁用",
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  {
+    id: "setDynamicStyles",
+    type: "input",
+    schema: {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "value": {
-            "title": "值",
-            "description": "选项值",
-            "type": "any"
+            "type": "any",
+            "description": "设置动态样式的对应选项值"
           },
-          "label": {
-            "title": "名称",
-            "description": "选项标签（一般展示）",
-            "type": "string"
-          },
-          "disabled": {
-            "title": "禁用",
-            "description": "选项禁用，true为禁用",
-            "type": "boolean"
-          },
-          "children": {
-            "title": "子项",
-            "description": "子项内容，逐级嵌套",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {}
-            }
+          "style": {
+            "type": "object",
+            "description": "自定义样式"
           }
         }
       }
     }
   },
   {
-    type: "input",
     id: "setValidateInfo",
+    type: "input",
     schema: {
       "type": "object",
       "properties": {
@@ -130,8 +100,8 @@ export const descriptionUpList = [
     }
   },
   {
-    type: "output",
     id: "returnValidate",
+    type: "output",
     schema: {
       "type": "object",
       "properties": {
@@ -149,19 +119,21 @@ export const descriptionUpList = [
     }
   },
   {
-    type: "output",
     id: "setOptionsDone",
+    type: "output",
     schema: {
+      "type": "array",
+      "items": {
         "type": "object",
         "properties": {
+          "label": {
+            "title": "标签",
+            "description": "选项标签（一般展示）",
+            "type": "string"
+          },
           "value": {
             "title": "值",
             "description": "选项值",
-            "type": "any"
-          },
-          "label": {
-            "title": "名称",
-            "description": "选项标签（一般展示）",
             "type": "string"
           },
           "disabled": {
@@ -169,21 +141,18 @@ export const descriptionUpList = [
             "description": "选项禁用，true时禁用",
             "type": "boolean"
           },
-          "children": {
-            "title": "子项",
-            "description": "子项内容，逐级嵌套",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {}
-            }
+          "checked": {
+            "title": "选中",
+            "description": "选项禁用，true时禁用",
+            "type": "boolean"
           }
         }
       }
+    }
   },
   {
-    type: "output",
     id: "setValidateInfoDone",
+    type: "output",
     schema: {
       "type": "object",
       "properties": {
@@ -203,6 +172,38 @@ export const descriptionUpList = [
         },
         "help": {
           "type": "string"
+        }
+      }
+    }
+  },
+  {
+    id: "setOptionsDone",
+    type: "output",
+    schema: {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "description": "选项标签（一般展示）",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "description": "选项值",
+            "type": "string"
+          },
+          "disabled": {
+            "title": "禁用",
+            "description": "选项禁用，true时禁用",
+            "type": "boolean"
+          },
+          "checked": {
+            "title": "选中",
+            "description": "选项禁用，true时禁用",
+            "type": "boolean"
+          }
         }
       }
     }

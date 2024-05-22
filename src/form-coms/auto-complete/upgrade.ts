@@ -2,6 +2,8 @@ import { inputIds, outputIds } from '../form-container/constants';
 import { InputIds } from '../types';
 import { RuleKeys, LengthRules, mergeRules } from '../utils/validator';
 import { Data } from './runtime';
+import { descriptionUpList } from './constants'
+import { descriptionUp } from '../utils/descriptionUp'
 
 const valueSchema = {
   type: 'string'
@@ -235,5 +237,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.filterRule = 'value';
   }
   
+  /**
+   * @description v1.1.11 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== v1.1.11 end ===============
+
   return true;
 }

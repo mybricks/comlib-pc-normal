@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "级联选择",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
@@ -21,6 +21,7 @@
       "desc": "设置级联选择的选中项，并触发值更新事件输出",
       "schema": {
         "type": "array",
+        "description": "设置对应选中项的值",
         "items": {
           "type": "any"
         }
@@ -35,6 +36,7 @@
       "desc": "设置级联选择的初始值，并触发初始化事件输出",
       "schema": {
         "type": "array",
+        "description": "设置对应选中项的初始值",
         "items": {
           "type": "any"
         }
@@ -132,18 +134,22 @@
           "properties": {
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "any"
             },
             "label": {
               "title": "名称",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "disabled": {
               "title": "禁用",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             },
             "children": {
               "title": "子项",
+              "description": "子项内容，逐级嵌套",
               "type": "array",
               "items": {
                 "type": "object",
@@ -166,6 +172,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",
@@ -225,10 +232,12 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
+            "description": "校验状态，成功/失败",
             "type": "string"
           },
           "help": {
             "title": "校验提示",
+            "description": "帮助提示文案",
             "type": "string"
           }
         }
@@ -301,25 +310,26 @@
       "id": "setOptionsDone",
       "title": "设置数据源完成",
       "schema": {
-        "title": "输入数据源数据",
-        "type": "array",
-        "items": {
           "type": "object",
           "properties": {
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "any"
             },
             "label": {
               "title": "名称",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "disabled": {
               "title": "禁用",
+              "description": "选项禁用，true为禁用",
               "type": "boolean"
             },
             "children": {
               "title": "子项",
+              "description": "子项内容，逐级嵌套",
               "type": "array",
               "items": {
                 "type": "object",
@@ -328,7 +338,6 @@
             }
           }
         }
-      }
     },
     {
       "id": "setValidateInfoDone",
@@ -338,6 +347,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",

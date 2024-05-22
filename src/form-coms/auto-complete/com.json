@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.auto-complete",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0fcijz.b5f0933284f32e40.png",
@@ -116,7 +116,7 @@
     },
     {
       "id": "setOptions",
-      "title": "输入数据源",
+      "title": "设置数据源",
       "desc": "设置自动完成的下拉选项列表",
       "schema": {
         "title": "输入数据源数据",
@@ -126,10 +126,12 @@
           "properties": {
             "label": {
               "title": "标签",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "string"
             }
           }
@@ -148,6 +150,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",
@@ -220,11 +223,13 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态，成功/失败"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "帮助提示文案"
           }
         }
       }
@@ -290,17 +295,19 @@
       "id": "setOptionsDone",
       "title": "设置数据源完成",
       "schema": {
-        "title": "输入数据源数据",
+        "title": "输出数据源数据",
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
             "label": {
               "title": "标签",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "string"
             }
           }
@@ -315,6 +322,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",

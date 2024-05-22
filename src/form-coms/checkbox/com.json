@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -21,6 +21,7 @@
       "desc": "设置多选框的值，并触发值变化事件输出",
       "schema": {
         "type": "array",
+        "description": "设置对应选中项的值",
         "items": {
           "type": "string"
         }
@@ -35,6 +36,7 @@
       "desc": "设置多选框的初始值，并触发初始化事件输出",
       "schema": {
         "type": "array",
+        "description": "设置对应选中项的初始值",
         "items": {
           "type": "string"
         }
@@ -87,18 +89,22 @@
           "properties": {
             "label": {
               "title": "标签",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "string"
             },
             "disabled": {
               "title": "禁用",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             },
             "checked": {
               "title": "选中",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             }
           }
@@ -173,10 +179,12 @@
           "type": "object",
           "properties": {
             "value": {
-              "type": "any"
+              "type": "any",
+              "description": "设置动态样式的对应选项值"
             },
             "style": {
-              "type": "object"
+              "type": "object",
+              "description": "自定义样式"
             }
           }
         }
@@ -194,6 +202,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",
@@ -259,10 +268,12 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
+            "description": "校验状态，成功/失败",
             "type": "string"
           },
           "help": {
             "title": "校验提示",
+            "description": "帮助提示文案",
             "type": "string"
           }
         }
@@ -316,18 +327,22 @@
           "properties": {
             "label": {
               "title": "标签",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "string"
             },
             "disabled": {
               "title": "禁用",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             },
             "checked": {
               "title": "选中",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             }
           }
@@ -377,6 +392,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",
@@ -404,18 +420,22 @@
           "properties": {
             "label": {
               "title": "标签",
+              "description": "选项标签（一般展示）",
               "type": "string"
             },
             "value": {
               "title": "值",
+              "description": "选项值",
               "type": "string"
             },
             "disabled": {
               "title": "禁用",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             },
             "checked": {
               "title": "选中",
+              "description": "选项禁用，true时禁用",
               "type": "boolean"
             }
           }
