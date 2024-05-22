@@ -1,6 +1,6 @@
 import { SizeEnum, SizeOptions } from '../types';
 import { createrCatelogEditor } from '../utils';
-import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { Data } from './runtime';
 
 export default {
@@ -481,10 +481,10 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? data.rules : ValueRules;
+              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : ValueRules;
             },
             set({ data }, value: any) {
-              data.rules = value;
+              data.rules = formatRegexRules(value);
             }
           }
         },

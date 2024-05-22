@@ -220,7 +220,7 @@ export function validateFormItem({ value, model, env, rules }) {
             successed: () => res('success'),
             failed: (msg: string) => rej(msg)
           };
-
+          
           ruleFnMap[item.key]({
             value,
             env,
@@ -233,7 +233,7 @@ export function validateFormItem({ value, model, env, rules }) {
             ],
             validateCode: item.validateCode,
             message: item.message,
-            regExr: item?.regExr,
+            regExr: decodeURIComponent(item?.regExr),
             limitMinLength: item?.limitMinLength && item?.limitMinLength[0],
             limitMaxLength: item?.limitMaxLength && item?.limitMaxLength[0],
             limitMinValue: item?.limitMinValue && item?.limitMinValue[0],
@@ -272,3 +272,23 @@ export const getTitle = (item: any, index: number) => {
       return title;
   }
 };
+
+
+export enum FormatScene {
+  /** 更新后保存场景 */
+  Save = 'save',
+  /** 编辑器侧，展示正则表达式 */
+  Editor = 'editor'
+}
+export const formatRegexRules = (rules, scene: FormatScene =FormatScene.Save) => {
+  let newRules = rules;
+  if (scene === FormatScene.Editor) {
+    // 编辑器侧，不能改 data.rules里的内容
+    newRules = JSON.parse(JSON.stringify(rules));
+  }
+  let regexItem = newRules.find(item => item.key === RuleKeys.REG_EXP);
+  if(regexItem) {
+    regexItem.regExr = scene === 'save' ?  encodeURIComponent(regexItem.regExr) : decodeURIComponent(regexItem.regExr);
+  }
+  return newRules
+}

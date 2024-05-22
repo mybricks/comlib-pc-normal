@@ -1,4 +1,4 @@
-import { RuleKeys, defaultValidatorExample, showMessage, getTitle } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { Data } from './runtime';
 
@@ -294,10 +294,10 @@ export default {
               if (data.rules.length == 0) {
                 data.rules = emailRules;
               }
-              return data.rules;
+              return formatRegexRules(data.rules, FormatScene.Editor);
             },
             set({ data }, value: any) {
-              data.rules = value;
+              data.rules = formatRegexRules(value);
             }
           }
         },
