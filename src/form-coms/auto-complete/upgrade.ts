@@ -238,10 +238,10 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   
   /**
-   * @description v1.1.10 新增description
+   * @description v1.1.11 新增description
   */
   descriptionUp(descriptionUpList, input, output);
-  //=========== v1.1.10 end ===============
+  //=========== v1.1.11 end ===============
 
   return true;
 }
