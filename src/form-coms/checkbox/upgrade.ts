@@ -2,6 +2,8 @@ import { InputIds, OutputIds } from '../types';
 import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
+import { descriptionUpList } from './constants';
+import { descriptionUp } from '../utils/descriptionUp'
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -297,6 +299,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     });
   }
   //=========== v1.1.17 end ===============
+
+  /**
+   * @description v1.1.23 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== v1.1.23 end ===============
 
   return true;
 }

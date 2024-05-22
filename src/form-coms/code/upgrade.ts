@@ -1,7 +1,8 @@
 import { InputIds, OutputIds } from '../types';
 import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys, ExpRules, mergeRules } from '../utils/validator';
-import { Data } from './constants';
+import { Data, descriptionUpList } from './constants';
+import { descriptionUp } from '../utils/descriptionUp'
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   if (!data.hasOwnProperty('rules')) {
@@ -155,5 +156,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.1.4 end ===============
 
   data.rules = mergeRules(ExpRules, data.rules);
+
+  /**
+   * @description v1.1.14 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== v1.1.14 end ===============
   return true;
 }

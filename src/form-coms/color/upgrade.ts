@@ -2,6 +2,8 @@ import { Data } from './runtime';
 import { ValidateTriggerType } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { inputIds, outputIds } from '../form-container/constants';
+import { descriptionUpList } from './constants';
+import { descriptionUp } from '../utils/descriptionUp'
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -146,5 +148,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.3 end ===============
+
+  /**
+   * @description v1.1.12 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== v1.1.12 end ===============
   return true;
 }

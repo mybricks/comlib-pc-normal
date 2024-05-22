@@ -3,6 +3,8 @@ import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
 import { setIfUndefined } from '../../utils';
+import { descriptionUpList } from './constants'
+import { descriptionUp } from '../utils/descriptionUp'
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -274,5 +276,17 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     value: 'value',
     children: 'children'
   });
+
+  /**
+   * @description v1.1.14 新增description
+  */
+  // const IOMap = [{'input': input}, {'output': output}]
+
+  // descriptionUpList.map((item)=>{
+  //   IOMap[item.type].get(item.id).setSchema(item.schema)
+  // })
+  descriptionUp(descriptionUpList, input, output);
+  //=========== v1.1.14 end ===============
+
   return true;
 }
