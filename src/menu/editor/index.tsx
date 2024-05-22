@@ -174,7 +174,7 @@ export default {
         }
       },
       {
-        title: '点击',
+        title: '菜单项点击',
         type: '_Event',
         options: {
           outputId: OutputIds.ClickMenu
