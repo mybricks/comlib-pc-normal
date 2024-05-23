@@ -5,7 +5,7 @@ import { ButtonType } from 'antd/es/button/button';
 import { actionsEditor } from './actions';
 import { inputIds, outputIds } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
-import { getFormItem, getFormItemById } from '../utils';
+import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
 import iconEditor from './iconEditor';
 import { createrCatelogEditor } from '../../utils/index';
@@ -557,14 +557,14 @@ export default {
       value: {
         get({ data, focusArea }) {
           if (!focusArea) return;
-          let id = focusArea.dataset.formItem;
-          const { item } = getFormItemById(data, { id });
-          return item.label;
+          let name = focusArea.dataset.formItem;
+          const { item } = getFormItem(data, {id: name, name });
+          return item?.label;
         },
         set({ data, focusArea, input, output }, value) {
           if (!focusArea) return;
-          let id = focusArea.dataset.formItem;
-          const { item } = getFormItemById(data, { id });
+          let name = focusArea.dataset.formItem;
+          const { item } = getFormItem(data, { id: name, name });
           item.label = value;
         }
       }
@@ -579,14 +579,14 @@ export default {
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            let id = focusArea.dataset.formItem;
-            const { item } = getFormItemById(data, { id });
-            return item.label;
+            let name = focusArea.dataset.formItem;
+            const { item } = getFormItem(data, {  name });
+            return item?.label;
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
             if (!focusArea) return;
-            let id = focusArea.dataset.formItem;
-            const { item } = getFormItemById(data, { id });
+            let name = focusArea.dataset.formItem;
+            const { item } = getFormItem(data, { name });
             item.label = val;
           }
         }

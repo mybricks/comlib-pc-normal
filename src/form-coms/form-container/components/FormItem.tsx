@@ -53,7 +53,7 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
-          <label data-form-item={com.id} style={{ ...dynamicStyle.labelStyle, whiteSpace }}>
+          <label data-form-item={com.name} style={{ ...dynamicStyle.labelStyle, whiteSpace }}>
             {env.i18n(item?.label)}
           </label>
         )
