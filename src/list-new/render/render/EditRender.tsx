@@ -6,7 +6,7 @@ const rowKey = '_itemKey';
 export default (dataSource: any, data: Data, slots, env) => {
   return dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
     <div key={key} style={{ height: '100%' }}>
-      {slots['item'].render({
+      {slots['item']?.render({
         inputValues: {
           itemData: item,
           index: index

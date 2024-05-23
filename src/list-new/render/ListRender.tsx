@@ -20,7 +20,7 @@ const ListRender = (
 ) => {
   // 无内容
   if (slots['item'].size === 0) {
-    return slots['item'].render();
+    return slots['item']?.render();
   }
   // 非栅格布局编辑态
   if (env.edit && !(data.layout === Layout.Grid && !data.isResponsive)) {

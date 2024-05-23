@@ -28,7 +28,7 @@ export default function ({ env, data, inputs, slots }: RuntimeParams<Data>) {
   return (
     <Fragment>
       <Spin spinning={loading} size={data.size} tip={env.i18n(data.tip)}>
-        {slots && slots['content'].render()}
+        {slots['content']?.render()}
       </Spin>
     </Fragment>
   );

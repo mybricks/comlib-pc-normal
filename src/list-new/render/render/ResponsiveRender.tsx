@@ -12,7 +12,7 @@ const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, s
     return (
       <List.Item key={key} className='list-new__item' style={{ overflowX: 'auto' }}>
         {/* 当前项数据和索引 */}
-        {slots['item'].render({
+        {slots['item']?.render({
           inputValues: {
             itemData: item,
             index: index

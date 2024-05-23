@@ -88,7 +88,7 @@ export default function ({
       })
     : null;
 
-  const children = slots[SlotIds.Content].render();
+  const children = slots[SlotIds.Content]?.render();
 
   if (edit || debug) {
     return createPortal(

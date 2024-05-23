@@ -182,7 +182,7 @@ export default function ({
               height: '100%'
             }}
           >
-            {slots[id].render()}
+            {slots[id]?.render()}
           </div>
         );
       }
@@ -293,7 +293,7 @@ export default function ({
             if (data.steps.showDesc) {
               stepProps['description'] = !item.useCustomDesc
                 ? env.i18n(item.description)
-                : slots[`${item.id}_customDescSlot`].render();
+                : slots[`${item.id}_customDescSlot`]?.render();
             }
             if (env.edit || !!data.steps.canClick) {
               stepProps['onStepClick'] = () => {

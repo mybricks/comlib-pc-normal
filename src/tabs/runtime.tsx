@@ -328,8 +328,8 @@ export default function ({
         hideAdd={data.hideAdd}
         onEdit={env.edit ? undefined : onEdit}
         tabBarExtraContent={{
-          left: data.useLeftExtra ? slots[SlotIds.LeftExtra].render() : undefined,
-          right: data.useRigthExtra ? slots[SlotIds.RigthExtra].render() : undefined
+          left: data.useLeftExtra && slots[SlotIds.LeftExtra]?.render(),
+          right: data.useRigthExtra && slots[SlotIds.RigthExtra]?.render()
         }}
       >
         {renderItems()}

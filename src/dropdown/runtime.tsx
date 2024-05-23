@@ -44,7 +44,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
     if (env.edit) {
       return (
         <Menu style={{ width: data.width }}>
-          <Menu.Item>{slots['item'].render()}</Menu.Item>
+          <Menu.Item>{slots['item']?.render()}</Menu.Item>
         </Menu>
       );
     } else if (env.runtime) {
@@ -61,7 +61,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
                     key={index}
                     onClick={() => onClick(option)}
                   >
-                    {slots['item'].render({
+                    {slots['item']?.render({
                       inputValues: {
                         itemData: option.value,
                         index: index
@@ -165,7 +165,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
             </Space>
           </a>
         ) : (
-          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+          <div>{slots['carrier']?.render()}</div>
         )}
       </Dropdown>
     </div>

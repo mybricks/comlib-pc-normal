@@ -81,7 +81,7 @@ export default function (props: RuntimeParams<Data>) {
             ? decodeURIComponent(data.content)
             : env.i18n(data.content)
           : ''}
-        {data.useContentSlot && slots[SlotIds.DescSlot].render()}
+        {data.useContentSlot && slots[SlotIds.DescSlot]?.render()}
       </div>
     </>
   ) : void 0;

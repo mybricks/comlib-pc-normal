@@ -148,7 +148,7 @@ export default (props: RuntimeParams<Data>) => {
       if (env.edit) {
         const currentDate = new Date()
         if (date.date() === currentDate.getDate()) {
-          return slots[SlotIds.DateCell].render({
+          return slots[SlotIds.DateCell]?.render({
             inputValues: {
               [InputIds.CurrentDate]: formatDate(date),
               [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]
@@ -160,7 +160,7 @@ export default (props: RuntimeParams<Data>) => {
           return <div style={{ color: '#ddd' }}>自定义内容</div>;
         }
       }
-      return slots[SlotIds.DateCell].render({
+      return slots[SlotIds.DateCell]?.render({
         inputValues: {
           [InputIds.CurrentDate]: formatDate(date),
           [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]

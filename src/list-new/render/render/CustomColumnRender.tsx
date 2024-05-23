@@ -20,7 +20,7 @@ const CustomColumnRender = (
     return (
       <List.Item key={key} className={env.edit ? '' :'list-new__item'} style={{ overflowX: env.edit ? 'visible' : 'auto' }}>
         {/* 当前项数据和索引 */}
-        {slots['item'].render({
+        {slots['item']?.render({
           inputValues: {
             itemData: item,
             index: index
@@ -59,7 +59,7 @@ const CustomColumnRender = (
         renderItem={({ key, item, index }) => (
           <SortableItem key={key} index={index}>
             <div className={env.edit ? '' :'list-new__item'} style={{ overflowX: 'auto' }}>
-              {slots['item'].render({
+              {slots['item']?.render({
                 inputValues: {
                   itemData: item,
                   index

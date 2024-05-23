@@ -149,7 +149,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
   }, [data]);
 
   const extraRender = showExtra ? (
-    <div className={css.emptyWrap}> {slots[ScopeSlotIds.UpperRightArea].render()}</div>
+    <div className={css.emptyWrap}> {slots[ScopeSlotIds.UpperRightArea]?.render()}</div>
   ) : (
     void 0
   );

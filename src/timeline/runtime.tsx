@@ -51,7 +51,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const ItemRender = (item, index) => {
     if (data.useContentSlot && slots[SlotIds.Content]) {
-      return slots[SlotIds.Content].render({
+      return slots[SlotIds.Content]?.render({
         inputValues: {
           [InputIds.CurrentDs]: item,
           [InputIds.Index]: index

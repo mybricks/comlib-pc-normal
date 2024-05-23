@@ -329,7 +329,7 @@ export default function Runtime({
                     minWidth: env.edit ? '60px' : void 0
                   }}
                 >
-                  {slots[data.slotAfterOption].render({
+                  {slots[data.slotAfterOption]?.render({
                     key: data.slotAfterOption,
                     inputValues: {
                       option: opt,
