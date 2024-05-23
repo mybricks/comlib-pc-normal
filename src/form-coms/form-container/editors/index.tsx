@@ -558,13 +558,13 @@ export default {
         get({ data, focusArea }) {
           if (!focusArea) return;
           let name = focusArea.dataset.formItem;
-          const { item } = getFormItem(data, {id: name, name });
+          const { item } = getFormItem(data, { name });
           return item?.label;
         },
         set({ data, focusArea, input, output }, value) {
           if (!focusArea) return;
           let name = focusArea.dataset.formItem;
-          const { item } = getFormItem(data, { id: name, name });
+          const { item } = getFormItem(data, { name });
           item.label = value;
         }
       }
