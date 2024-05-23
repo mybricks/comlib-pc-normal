@@ -400,7 +400,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
           <div className="ant-picker-cell-inner">
             {currentDate.date()}
             {runtime || currentDate.isSame(today, 'day')
-              ? slots[SlotIds.DateCell].render({
+              ? slots[SlotIds.DateCell]?.render({
                   inputValues: {
                     [InputIds.CurrentDate]: currentDate,
                     [InputIds.Today]: today
@@ -504,10 +504,10 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
               return (
                 <div ref={dropdownWrapperRef}>
                   {data.useCustomPanelHeader &&
-                    slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
+                    slots[SlotIds.DatePanelHeader]?.render({ title: '顶部插槽' })}
                   {originPanel}
                   {data.useCustomPanelFooter &&
-                    slots[SlotIds.DatePanelFooter].render({ title: '底部插槽' })}
+                    slots[SlotIds.DatePanelFooter]?.render({ title: '底部插槽' })}
                 </div>
               );
             }}

@@ -67,9 +67,9 @@ export default function MyComponent({
       getContainer={!(edit || runtime.debug) ? () => env?.canvasElement || document.body : false}
     >
       {data.useTop && slots?.[SlotIds.TOPWORKSPACE] && (
-        <div>{slots?.[SlotIds.TOPWORKSPACE].render()}</div>
+        <div>{slots?.[SlotIds.TOPWORKSPACE]?.render()}</div>
       )}
-      <div ref={componentRef}>{slots?.[SlotIds.CONTENT].render()}</div>
+      <div ref={componentRef}>{slots?.[SlotIds.CONTENT]?.render()}</div>
     </Modal>
   );
 

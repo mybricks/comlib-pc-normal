@@ -1165,7 +1165,7 @@ export default function (props: RuntimeParams<Data>) {
                             data.expandDataIndex
                           );
                         }
-                        return slots[SlotIds.EXPAND_CONTENT].render({
+                        return slots[SlotIds.EXPAND_CONTENT]?.render({
                           inputValues,
                           key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
                         });

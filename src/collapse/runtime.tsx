@@ -47,9 +47,9 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         header={data.isCustomTitle ? slots[SlotIds.Title]?.render() : env.i18n(data.title)}
         key={defaultKey}
         forceRender
-        extra={data.useExtra && slots[SlotIds.Extra] ? slots[SlotIds.Extra].render() : null}
+        extra={data.useExtra && slots[SlotIds.Extra]?.render()}
       >
-        {slots[SlotIds.Content].render()}
+        {slots[SlotIds.Content]?.render()}
       </Panel>
     </Collapse>
   );

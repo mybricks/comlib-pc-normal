@@ -32,7 +32,7 @@ export default (props: Props): JSX.Element | null => {
       const isEmpty = slots[SlotIds.HEADER_OPERATION].size === 0;
       return (
         <div data-table-header-tablebtns className={classnames(isEmpty && css.emptyWrap)}>
-          {slots[SlotIds.HEADER_OPERATION].render()}
+          {slots[SlotIds.HEADER_OPERATION]?.render()}
         </div>
       );
     }
@@ -42,7 +42,7 @@ export default (props: Props): JSX.Element | null => {
   // 表格头部 标题区渲染
   const renderTableTitle = () => {
     if (data.useHeaderTitleSlot && slots[SlotIds.HEADER_TITLE]) {
-      return slots[SlotIds.HEADER_TITLE].render();
+      return slots[SlotIds.HEADER_TITLE]?.render();
     }
     return null;
   };

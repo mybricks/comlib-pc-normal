@@ -37,7 +37,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
                 flex: 'auto'
               }}
             >
-              {slots[status.id].render()}
+              {slots[status.id]?.render()}
             </div>
           ) : null;
         })}
@@ -49,7 +49,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   const showStatus = data.statusList.find((i) => i.value === value);
   return showStatus ? (
     <>
-      {slots[showStatus.id].render({
+      {slots[showStatus.id]?.render({
         key: showStatus.id
       })}
     </>

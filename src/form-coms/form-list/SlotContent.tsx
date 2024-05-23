@@ -34,7 +34,7 @@ const SlotContent = (
     callbacks
   } = props;
   const content = useMemo(() => {
-    return slots[SlotIds.FormItems].render({
+    return slots[SlotIds.FormItems]?.render({
       itemWrap(com: { id; jsx; name }) {
         const { item, isFormItem } = getFormItem(data, com);
         const { key } = field;

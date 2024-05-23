@@ -9,7 +9,7 @@ export default function ({ data, slots }: RuntimeParams<DataType>) {
 
   const childrenRender = useCallback(() => {
     if (customizableTitle) {
-      setRenderedChildren(slots['title'].render());
+      setRenderedChildren(slots['title']?.render());
     } else {
       setRenderedChildren(children);
     }

@@ -13,7 +13,7 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
     <Space size={gutter} direction={'horizontal'} wrap>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
         <div key={key} className="list-new__item">
-          {slots['item'].render({
+          {slots['item']?.render({
             inputValues: {
               itemData: item,
               index: index
@@ -39,7 +39,7 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
         marginBottom: number !== dataSource.length - 1 ? `${gutter[1]}px` : 0
       }}
     >
-      {slots['item'].render({
+      {slots['item']?.render({
         inputValues: {
           itemData: item,
           index: index
@@ -58,7 +58,7 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
 //     <div className={css.noflexContainer}>
 //       {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
 //         <div key={key} style={{ width: data.itemWidth, margin: `0 ${gutter[0]}px 0 0` }}>
-//           {slots['item'].render({
+//           {slots['item']?.render({
 //             inputValues: {
 //               itemData: item,
 //               index: index
@@ -84,7 +84,7 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots, env) => {
         margin: `0 ${number === dataSource?.length - 1 ? 0 : gutter[0]}px 0 0`
       }}
     >
-      {slots['item'].render({
+      {slots['item']?.render({
         inputValues: {
           itemData: item,
           index: index

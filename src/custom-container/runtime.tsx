@@ -177,7 +177,7 @@ export default function (props: RuntimeParams<Data>) {
           display: env.edit ? 'unset' : void 0
         }}
       >
-        {slots[SlotIds.Content].render({ style: slotStyle })}
+        {slots[SlotIds.Content]?.render({ style: slotStyle })}
       </div>
     );
   };
@@ -211,7 +211,7 @@ export default function (props: RuntimeParams<Data>) {
     >
       {data.isAutoScroll
         ? scrollRender()
-        : slots[SlotIds.Content].render({
+        : slots[SlotIds.Content]?.render({
             style:
               env.edit && data.slotStyle?.position === 'smart'
                 ? { ...data.slotStyle, minHeight: 30 }

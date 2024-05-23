@@ -53,7 +53,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     return (
       <List.Item key={key} id={`mybricks-anchor-${key}`}>
         {/* 当前项数据和索引 */}
-        {slots['item'].render({
+        {slots['item']?.render({
           inputValues: {
             itemData: item,
             index: index

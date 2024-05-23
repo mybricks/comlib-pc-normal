@@ -25,7 +25,7 @@ export default (props: Props): JSX.Element | null => {
       <div className={css.flex}>
         <div className={css.selectedWrap}>
           <div className={classnames(isEmpty && env.edit && css.emptyWrap)}>
-            {slots[SlotIds.ROW_SELECTION_OPERATION].render({
+            {slots[SlotIds.ROW_SELECTION_OPERATION]?.render({
               inputValues: {
                 [InputIds.ROW_SELECTION_SELECTED_ROW_KEYS]: selectedRowKeys,
                 [InputIds.ROW_SELECTION_SELECTED_ROWS]: selectedRows
