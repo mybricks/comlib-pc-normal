@@ -28,7 +28,7 @@ const CollapseButton: React.FC<Props> = (props) => {
 
   return (
     <>
-      <a className={styles.collapseButton} onClick={onClick}>
+      <a className={`${styles.collapseButton} collapseButton`} onClick={onClick}>
         <span>{collapsed ? '展开' : '收起'}</span>
         <span className={styles.icon}>{icon}</span>
       </a>

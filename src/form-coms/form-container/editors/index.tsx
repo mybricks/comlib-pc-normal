@@ -1164,12 +1164,18 @@ export default {
       {
         catelog: '默认',
         options: ['padding'],
-        target: `div.ant-col.formAction`
+        target: `.ant-form-item-control-input-content>.ant-space.ant-space-horizontal.ant-space-align-center`
       },
       {
         catelog: '默认',
         options: ['margin'],
-        target: `div.ant-col.formAction div.ant-row.ant-form-item`
+        target: `.ant-form-item-control-input-content>.ant-space.ant-space-horizontal.ant-space-align-center`
+      },
+      {
+        catelog: '默认',
+        title: '收起',
+        options: ['font'],
+        target: '.collapseButton'
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1) => {

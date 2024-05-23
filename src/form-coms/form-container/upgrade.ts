@@ -6,7 +6,7 @@ import pick from 'lodash/pick'
 import uniq from 'lodash/uniq'
 import { isEmptyObject, unitConversion } from '../../utils';
 
-export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children, setDeclaredStyle, style }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -709,5 +709,24 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   })
   //=========== v1.4.51 end ===============
 
+  /**
+   * @description v1.4.53 fix 操作区内外间距
+   */
+  const actionPaddingSelector = `div.ant-col.formAction`;
+  const actionMarginSelector = `div.ant-col.formAction div.ant-row.ant-form-item`;
+
+  const newActionSelector = `.ant-form-item-control-input-content>.ant-space.ant-space-horizontal.ant-space-align-center`
+  const paddingStyle = style.styleAry?.find?.(item => item.selector === actionPaddingSelector);
+  const marginStyle = style.styleAry?.find?.(item => item.selector === actionMarginSelector);
+  const padding = paddingStyle?.css;
+  const margin = marginStyle?.css;
+
+  if (margin) {
+    setDeclaredStyle(newActionSelector, {...margin, ...padding});
+  }
+  if (padding) {
+    setDeclaredStyle(newActionSelector , {...padding, ...margin});
+  }
+  //=========== v1.4.53 end ===============
   return true;
 }
