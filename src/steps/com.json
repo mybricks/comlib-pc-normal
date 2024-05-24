@@ -1,7 +1,7 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "步骤条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -16,7 +16,7 @@
   "inputs": [
     {
       "id": "nextStep",
-      "title": "显示下一步",
+      "title": "下一步",
       "schema": {
         "type": "any"
       },
@@ -26,7 +26,7 @@
     },
     {
       "id": "prevStep",
-      "title": "显示上一步",
+      "title": "上一步",
       "schema": {
         "type": "any"
       },

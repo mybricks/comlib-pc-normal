@@ -79,6 +79,16 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
     input.get('setHideSteps').setRels(['setHideStepsComplete'])
   }
 
+  /**
+   * @description v1.0.24 改变title
+   */
+  if (input.get('nextStep').title === "显示下一步") {
+    input.get('nextStep').setTitle('下一步');
+  }
+  if (input.get('prevStep').title === "显示上一步") {
+    input.get('prevStep').setTitle('上一步');
+  }
+  //=========== v1.1.3 end ===============
 
   return true;
 }
