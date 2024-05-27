@@ -138,3 +138,16 @@ export const DefaultOnRowScript = `/**
     style: {}
   }
 }`;
+
+export const DefaultOnCellScript = `/**
+ * 输入参数：
+ *  - 当前列数据: data
+ *  - 当前行数据: record
+ *  - 当前字段: dataIndex
+ *  - 当前行序号: rowIndex
+ **/
+(data, record, dataIndex, rowIndex) => {
+  return {
+    style: {}
+  }
+}`;

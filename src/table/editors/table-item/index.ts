@@ -4,6 +4,7 @@ import { Data, AlignEnum } from '../../types';
 import GroupEditor from './item/group';
 import IndexEditor from './indexEditor';
 import SortEditor from './sortEditor';
+import CellEditor from './cellEditor';
 import FilterEditor from './filterEditor';
 import createBaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
@@ -36,7 +37,7 @@ const column = {
         ...IndexEditor
       ];
       cateAry[1].title = '高级';
-      cateAry[1].items = [SortEditor, FilterEditor];
+      cateAry[1].items = [CellEditor, SortEditor, FilterEditor];
       return {
         title: '表格列'
       };

@@ -48,7 +48,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.Object);
             output.add(OutputIds.CLEAR_ROW_SELECTION, '清空勾选后', Schemas.Void);
             input.add(InputIds.CLEAR_ROW_SELECTION, '清空勾选', Schemas.Void);
-            input.add(InputIds.GET_ROW_SELECTION, '输出勾选数据', Schemas.Void);
+            input.add(InputIds.GET_ROW_SELECTION, '获取勾选数据', Schemas.Void);
             input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
             input.get(InputIds.CLEAR_ROW_SELECTION).setRels([OutputIds.CLEAR_ROW_SELECTION]);
             setDataSchema({ data, input, output, slot, ...res });

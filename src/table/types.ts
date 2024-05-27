@@ -4,7 +4,7 @@ import { Data as PaginationData } from './components/Paginator/constants';
 export enum ContentTypeEnum {
   Text = 'text',
   SlotItem = 'slotItem',
-  Group = 'group'
+  Group = 'group',
 }
 export enum AlignEnum {
   Left = 'left',
@@ -92,6 +92,9 @@ export interface IColumn {
 
   // 带排序列表头对齐方式
   sorterAlign?: AlignEnum;
+  fromColumn?: string; // 选择哪个列的配置
+  enableOnCell?: boolean;
+  onCellScript?: string;
 }
 
 export enum SizeEnum {

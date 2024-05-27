@@ -4,6 +4,7 @@ import { Row, Table, Tooltip } from 'antd';
 import { FilterFilled, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { CompareFn } from 'antd/es/table/interface';
+import { runJs } from '../../../../package/com-utils';
 import {
   AlignEnum,
   Data,
@@ -173,12 +174,12 @@ export default ({
               'data-table-th-idx': cItem.key,
               style: cItem.headStyle
                 ? {
-                    ...cItem.headStyle
-                  }
+                  ...cItem.headStyle
+                }
                 : {
-                    color: cItem.titleColor,
-                    backgroundColor: cItem.titleBgColor
-                  }
+                  color: cItem.titleColor,
+                  backgroundColor: cItem.titleBgColor
+                }
             };
           }}
         >
@@ -232,14 +233,14 @@ export default ({
     const onFilter =
       cItem.filter?.type !== FilterTypeEnum.Request
         ? (value, record) => {
-            return get(record, cItem.dataIndex) == value;
-          }
+          return get(record, cItem.dataIndex) == value;
+        }
         : null;
 
     const filterVisibleProps = cItem.filter?.hideFilterDropdown
       ? {
-          filterDropdownVisible: false
-        }
+        filterDropdownVisible: false
+      }
       : {};
 
     const getCellConfig = (dataSource, currentField, rowIndex) => {
@@ -289,23 +290,28 @@ export default ({
         'data-table-column-id': cItem.key,
         ...getCellConfig(dataSource, cItem.dataIndex, rowIndex),
         'data-focus-cell': data.enableCellFocus && isFocus ? true : undefined,
-        onClick:
-          data.enableCellClick || data.enableCellFocus
-            ? () => {
-                setFocusCellinfo(
-                  isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
-                );
-                if (data.enableCellClick) {
-                  outputs[OutputIds.CELL_CLICK]({
-                    record,
-                    index: rowIndex,
-                    dataIndex: cItem.dataIndex,
-                    isFocus: !isFocus
-                  });
-                }
-              }
-            : null
+        onClick: data.enableCellClick || data.enableCellFocus
+          ? () => {
+            setFocusCellinfo(
+              isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
+            );
+            if (data.enableCellClick) {
+              outputs[OutputIds.CELL_CLICK]({
+                record,
+                index: rowIndex,
+                dataIndex: cItem.dataIndex,
+                isFocus: !isFocus
+              });
+            }
+          }
+          : null
       };
+      if (env.runtime && cItem.enableOnCell && cItem.onCellScript) {
+        res = {
+          ...res,
+          ...runJs(cItem.onCellScript, [record[cItem.dataIndex], record, cItem.dataIndex, rowIndex], env)
+        }
+      }
       return res;
     };
 

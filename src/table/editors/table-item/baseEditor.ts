@@ -74,7 +74,7 @@ const createBaseEditor = ({ data }) => ({
     {
       title: '字段',
       type: 'editorRender',
-      description: '与后端返回数据字段对应，不填默认使用 列名 作为字段',
+      description: '与后端返回数据字段对应，不填默认使用列名作为字段',
       options: {
         render: Tree
       },
@@ -179,7 +179,6 @@ const createBaseEditor = ({ data }) => ({
         }
       }
     },
-
     createDataFormatEditor({
       title: '格式转化',
 

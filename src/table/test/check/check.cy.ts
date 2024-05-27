@@ -50,7 +50,7 @@ describe('数据表格-勾选', () => {
     // 勾选第一页的 key为 0, 1, 2, 4 的行，然后点击输出勾选数据按钮
     clickRow(0, 1, 2);
     clickRowCheckBox(4);
-    clickButtonAndWaitForCheckbox('输出勾选数据');
+    clickButtonAndWaitForCheckbox('获取勾选数据');
 
     // 跳转到第二页，勾选 key为 10, 11, 12, 13 的行
     clickPaginationItem(2);
