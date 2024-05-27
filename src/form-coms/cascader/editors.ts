@@ -328,6 +328,22 @@ export default {
             }
           }
         },
+        {
+          title: '输出选中节点的子节点',
+          type: 'Switch',
+          description: '默认情况下，选中父节点，选择后，选中节点后，级联的值中会包含所有子节点的值，类似于["父-key", "子节点-key"]的结构',
+          ifVisible({ data }) {
+            return data.isMultiple;
+          },
+          value: {
+            get({ data }) {
+              return data.isCheckAllWithChildren;
+            },
+            set({ data }, value: boolean) {
+              data.isCheckAllWithChildren = value;
+            }
+          }
+        },
         //选择自适应还是自选择点数
         {
           title: '节点数配置',
