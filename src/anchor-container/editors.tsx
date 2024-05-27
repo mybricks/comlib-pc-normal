@@ -1,6 +1,7 @@
 import { Data, InputIds, Option } from './constants';
 
 export default {
+  ':slot': {},
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
     if (toPin.id === InputIds.DATA_SOURCE) {
       let itemSchema = {};

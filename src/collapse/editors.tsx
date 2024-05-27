@@ -2,6 +2,7 @@ import { Data, InputIds, OutputIds, Schemas, SlotIds } from './constants';
 import { Editor, EditorType } from '../utils/editor';
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },

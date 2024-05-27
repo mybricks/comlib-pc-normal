@@ -1,6 +1,7 @@
 import { DataType } from './constants';
 
 export default {
+  ':slot': {},
   '@init'({ style }) {
     style.width = '100%';
     style.height = 'fit-content';
