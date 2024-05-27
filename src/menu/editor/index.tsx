@@ -197,6 +197,24 @@ export default {
           },
           {
             title: '菜单项',
+            catelog: 'Hover',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: 'ul li:hover'
+          },
+          ,
+          {
+            title: '选中标记',
+            catelog: 'Hover',
+            options: ['border'],
+            target: '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after'
+          },
+          {
+            title: '菜单项',
             catelog: '选中',
             options: [
               { type: 'font', config: { disableTextAlign: true } },
@@ -211,17 +229,6 @@ export default {
             catelog: '选中',
             options: ['border'],
             target: 'ul li.ant-menu-item-selected:after'
-          },
-          {
-            title: '菜单项',
-            catelog: 'Hover',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } },
-              'border',
-              'padding',
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            target: 'ul li:hover'
           }
         ]
       }
