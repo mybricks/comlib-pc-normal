@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Tooltip, Dropdown, Menu, Checkbox, Button } from 'antd';
 import { ControlOutlined, SettingOutlined } from '@ant-design/icons';
 import { Tree } from 'antd';
 import { DefaultRowKey, OutputIds } from '../../constants';
 import style from './index.less';
 
-const getDefaultCheckedKeys = (cloumns) => {
-  return cloumns.map((item) => item._id);
+const getCheckedKeys = (cloumns) => {
+  return cloumns.filter(item => item.visible).map((item) => item._id);
 };
 
 const flatTree = (tree) => {
@@ -29,7 +29,8 @@ const moveEle = (list, item, sourceIndex, targetIndex) => {
 
 export default function FilterColumnRender({ data, env, dataSource, outputs }) {
   //表格筛选栏渲染
-  const [checkedKeys, setCheckedKeys] = useState<string[]>(getDefaultCheckedKeys(data.columns));
+  const [checkedKeys, setCheckedKeys] = useState<string[]>(getCheckedKeys(data.columns));
+  const checkedKeysRef = useRef(checkedKeys)
   const rowKey = data.rowKey || DefaultRowKey;
 
   const treeData = useMemo(() => {
@@ -85,6 +86,13 @@ export default function FilterColumnRender({ data, env, dataSource, outputs }) {
   }, []);
 
   useEffect(() => {
+    const currentKeys = getCheckedKeys(data.columns)
+    if (currentKeys.length !== checkedKeysRef.current.length) {
+      setCheckedKeys(currentKeys)
+    }
+  }, [data.columns])
+
+  useEffect(() => {
     if (data.useColumnSetting) {
       outputs?.[OutputIds.COLUMNS_CHANGE](data.columns);
     }
@@ -92,6 +100,7 @@ export default function FilterColumnRender({ data, env, dataSource, outputs }) {
 
   useEffect(() => {
     if (env.runtime) {
+      checkedKeysRef.current = checkedKeys
       data.columns = data.columns.map((item) => {
         item.visible = checkedKeys.includes(item._id);
         return item;
