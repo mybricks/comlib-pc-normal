@@ -5,8 +5,9 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
   title: '标签',
   initValue,
   options: [
+    'border',
     { type: 'font', config: { disableTextAlign: true } },
-    { type: 'background', config: { disableBackgroundImage: true } }
+    { type: 'background', config: { disableBackgroundImage: true } },
   ],
   target,
   domTarget:
@@ -25,6 +26,7 @@ export const createFontStyleForActive = ({ initValue, target }: StyleModeType<Da
 export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
   initValue,
   options: [
+    'border',
     { type: 'background', config: { disableBackgroundImage: true } }
   ],
   target,
