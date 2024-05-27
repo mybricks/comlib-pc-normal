@@ -172,13 +172,16 @@ export default function ({
       };
     }
 
+    /** 同时使用 rows 和 autoSize 属性，可设置文本区域的初始行数 */
     return {
+      rows: data.minRows,
       autoSize: {
         minRows: data.minRows,
         maxRows: data.maxRows
       }
     };
   }, [env.edit, data.minRows, data.maxRows]);
+
 
   return data.isEditable ? (
     <div>
