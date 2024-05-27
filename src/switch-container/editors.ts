@@ -2,6 +2,9 @@ import { Status, Data } from './type';
 import visibleOpt from '../components/editorRender/visibleOpt';
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({ data, slot, env }: EditorResult<Data>, cate1) => {
     cate1.items = [
       {
@@ -19,13 +22,17 @@ export default {
       },
       {
         title:'状态列表',
-        description: '通过眼睛图标，控制编辑态各状态的显示和隐藏',
+        description: '通过眼睛图标，控制编辑态各状态的显示和隐藏；选中某一状态，可往此状态的容器添加内容',
         type: 'Array',
         options: {
+          selectable: true,
           addText: '添加状态',
           customOptRender: visibleOpt,
           getTitle: ({ title }) => {
             return env.i18n(title);
+          },
+          onSelect(_id) {
+            data._editSelectId_ = _id ?? data.statusList[0]?.id
           },
           onAdd: (id) => {
             const newSlot = {
