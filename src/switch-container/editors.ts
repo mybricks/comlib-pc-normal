@@ -2,6 +2,7 @@ import { Status, Data } from './type';
 import visibleOpt from '../components/editorRender/visibleOpt';
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },
