@@ -21,6 +21,15 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     setValue(val);
     outputs[OutputIds.OnChange](val);
   }, []);
+  useEffect(() => {
+    if(!data._editSelectId_ || !(data.statusList || []).some(i => i.id === data._editSelectId_)) {
+      data._editSelectId_ = data.statusList[0]?.id
+    }
+  }, [data.statusList, data._editSelectId_])
+  /** 搭建态选中 */
+  const isEditActive = (item ) => {
+    return  data._editSelectId_ === item.id || data._editSelectId_ === item._id
+  }
 
   /** 搭建态 */
   if (env.edit) {
@@ -31,7 +40,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         }}
       >
         {data.statusList.map((status) => {
-          return status.visible ? (
+          return status.visible && isEditActive(status) ? (
             <div
               style={{
                 flex: 'auto'
