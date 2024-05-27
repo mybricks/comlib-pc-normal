@@ -301,7 +301,7 @@ export default function (props: RuntimeParams<Data>) {
             } else if (item.fromColumn) {
               const templateCol = data.columns.find(i => i.dataIndex === item.fromColumn)
               if (!templateCol) {
-                throw new Error(`找不到名为${item.fromTemplate}的模板列！`)
+                throw new Error(`找不到名为${item.fromColumn}的模板列！`)
               }
               Object.keys(templateCol).forEach(key => {
                 if (!(key in item)) {
