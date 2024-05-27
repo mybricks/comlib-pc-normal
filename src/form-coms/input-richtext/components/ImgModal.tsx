@@ -255,7 +255,8 @@ const uploadFile = async (
       console.error(error);
       return [];
     });
-    return res.map(({ url }) => url);
+    const list = Array.isArray(res) ? res : [res];
+    return list.map(({ url }) => url);
   }
 };
 
