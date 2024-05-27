@@ -101,6 +101,10 @@ export interface Data {
    * 单行列数
    */
   formItemColumn: number
+  /**
+   * 启用24栅格布局，启用后，可设置表单项宽度；查询表单使用
+   */
+  enable24Grid?: boolean
   // /**
   //  * 数据类型
   //  */

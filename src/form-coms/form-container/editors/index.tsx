@@ -379,6 +379,40 @@ export default {
               }
             },
             {
+              title: '启用24栅格布局系统',
+              type: 'Switch',
+              description: '启用后，每个表单项宽度可以占据8、6、4等可以被24整除的数，相应这一行就被分为了3(24/8)、4(24/6)、6(24/4)列；未启用，可设置一行几列式布局',
+              ifVisible({ data, id, name }: EditorResult<Data>) {
+                return data.layoutType === 'QueryFilter';
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.enable24Grid;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.enable24Grid = value;
+                }
+              }
+            },
+            {
+              title: '每行列数',
+              type: 'Slider',
+              description:
+                '每行的表单项个数，可以实现平均分布各表单项及操作项，在查询表单下实现一行多列效果',
+              options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+              ifVisible({ data, id, name }: EditorResult<Data>) {
+                return data.layoutType === 'QueryFilter' && data.enable24Grid !== true;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemColumn;
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.formItemColumn = value;
+                }
+              }
+            },
+            {
               title: '表单项宽度',
               type: 'Slider',
               options: [
@@ -390,7 +424,7 @@ export default {
                 }
               ],
               ifVisible({ data, id, name }: EditorResult<Data>) {
-                return data.layoutType === 'QueryFilter';
+                return data.layoutType === 'QueryFilter' && data.enable24Grid === true;
               },
               value: {
                 get({ data, id, name }: EditorResult<Data>) {
