@@ -170,10 +170,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const onChange = (val, selectedOptions) => {
-    let useFormatted = data.isCheckAllWithChildren === true && data.isMultiple
+    let useFormatted = data.isCheckAutoWithChildren === true && data.isMultiple
     let flattedVal: Array<any> = []
-    // 多选模式下，为true时，第一级选项全选，带上下一级children的信息
-    if(data.isCheckAllWithChildren === true && data.isMultiple) {
+    // 多选模式下，为true时，某一项选项全选，带上下一级children的信息
+    // 例如[{label: 'A', value: 'A', children: [{ label: 'BB', value: 'BB'}, {label: 'CC', val: 'CC}]}], 选中[['A']]后，处理后的值是[['A', 'BB'], ['A', 'CC']]
+    if(data.isCheckAutoWithChildren === true && data.isMultiple) {
       if(val.length) {
         selectedOptions.forEach((selectedOpt, index) => {
           let last  = selectedOpt[selectedOpt.length -1];
@@ -186,7 +187,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
           }
         });
       }
-      console.log('flattern', flattedVal)
     }
     changeValue(useFormatted ? flattedVal : val);
     outputs['onChange'](useFormatted ? flattedVal : val);

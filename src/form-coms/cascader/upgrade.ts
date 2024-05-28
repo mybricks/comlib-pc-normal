@@ -288,9 +288,9 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   descriptionUp(descriptionUpList, input, output);
   //=========== v1.1.14 end ===============
 
-  if (typeof data.isCheckAllWithChildren === 'undefined') {
-    // 全选下，携带下一级children信息,默认为false
-    data.isCheckAllWithChildren = false;
+  if (typeof data.isCheckAutoWithChildren === 'undefined') {
+    // 全选某一级下，携带下一级子节点信息,默认为false
+    data.isCheckAutoWithChildren = false;
   }
   return true;
 }
