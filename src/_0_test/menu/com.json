@@ -1,0 +1,17 @@
+{
+  "title": "测试--菜单",
+  "namespace": "test.menu",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "schema为*",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+  ],
+  "outputs": [
+  ],
+  "schema": [
+    "*"
+  ]
+}
