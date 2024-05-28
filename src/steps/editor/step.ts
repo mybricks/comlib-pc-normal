@@ -209,7 +209,7 @@ export default {
           title: '删除',
           type: 'Button',
           value: {
-            set({ data, focusArea, output, slots }: EditorResult<Data>) {
+            set({ data, focusArea, input, output, slots }: EditorResult<Data>) {
               if (data.stepAry.length === 1) return;
               output.remove(stepItem.id);
               slots.remove(stepItem.id);
@@ -245,6 +245,8 @@ export default {
                   `步骤${idx + 1}下一步`
                 );
               });
+
+              input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
             }
           }
         }

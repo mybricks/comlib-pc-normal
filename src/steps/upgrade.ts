@@ -90,5 +90,11 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.3 end ===============
 
+
+  /**
+   * @description v1.0.25 校准jumpTo.Title
+   */
+  input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
+
   return true;
 }
