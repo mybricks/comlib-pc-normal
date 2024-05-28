@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.rate",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "评分",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_1tias6.65a8bc3682e3ebb4.png",
@@ -73,6 +73,7 @@
     {
       "id": "setDisabled",
       "title": "设置只读",
+      "desc": "阻止用户评分",
       "schema": {
         "type": "any"
       },
@@ -83,6 +84,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "允许用户评分",
       "schema": {
         "type": "any"
       },
@@ -93,6 +95,7 @@
     {
       "id": "isEnable",
       "title": "启用/只读",
+      "desc": "根据输入值控制评分启用/只读，true-启用，false-只读",
       "schema": {
         "type": "boolean"
       },
@@ -109,6 +112,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态",
             "items": [
               {
                 "type": "string",
@@ -121,7 +125,8 @@
             ]
           },
           "help": {
-            "type": "string"
+            "type": "string",
+            "description": "校验提示"
           }
         }
       },
@@ -134,6 +139,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "评分值初始化时触发，输出评分初始值",
       "schema": {
         "type": "number"
       }
@@ -141,6 +147,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "评分值更新时触发，输出评分当前值",
       "schema": {
         "type": "number"
       }
@@ -148,6 +155,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "评分校验时触发，输出评分当前值",
       "schema": {
         "title": "当前值",
         "type": "number"
@@ -156,16 +164,19 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "输出评分校验结果",
       "schema": {
         "type": "object",
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "校验提示"
           }
         }
       }
@@ -173,6 +184,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "输出评分当前值",
       "schema": {
         "type": "number"
       }
@@ -227,6 +239,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态",
             "items": [
               {
                 "type": "string",
@@ -239,7 +252,8 @@
             ]
           },
           "help": {
-            "type": "string"
+            "type": "string",
+            "description": "校验提示"
           }
         }
       }

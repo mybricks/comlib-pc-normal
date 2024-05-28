@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-list",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.2.30",
+  "version": "1.2.31",
   "description": "可以动态增加、删除的组合表单项，数据格式为数组",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",
@@ -76,6 +76,7 @@
     {
       "id": "setDisabled",
       "title": "设置禁用",
+      "desc": "禁用动态表单项，阻止用户交互",
       "schema": {
         "type": "any"
       },
@@ -86,6 +87,7 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "desc": "启用动态表单项，允许用户交互",
       "schema": {
         "type": "any"
       },
@@ -96,6 +98,7 @@
     {
       "id": "isEnable",
       "title": "启用/禁用",
+      "desc": "根据输入值控制动态表单项启用/禁用，true-启用，false-禁用",
       "schema": {
         "type": "boolean"
       },
@@ -112,6 +115,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态",
             "items": [
               {
                 "type": "string",
@@ -124,7 +128,8 @@
             ]
           },
           "help": {
-            "type": "string"
+            "type": "string",
+            "description": "校验提示"
           }
         }
       },
@@ -140,10 +145,12 @@
         "type": "object",
         "properties": {
           "index": {
-            "type": "number"
+            "type": "number",
+            "description": "指定添加位置(从0开始)"
           },
           "value": {
-            "type": "object"
+            "type": "object",
+            "description": "新增项的初始值"
           }
         }
       },
@@ -154,15 +161,17 @@
     {
       "id": "removeField",
       "title": "删除一项",
-      "desc": "默认删除最后一项, 支持指定位置(从0开始)删除",
+      "desc": "默认删除最后一项, 支持指定key或位置(从0开始)删除",
       "schema": {
         "type": "object",
         "properties": {
           "key": {
-            "type": "number"
+            "type": "number",
+            "description": "待删除项的标识"
           },
           "index": {
-            "type": "number"
+            "type": "number",
+            "description": "指定删除位置(从0开始)"
           }
         }
       },
@@ -175,6 +184,7 @@
     {
       "id": "onInitial",
       "title": "值初始化",
+      "desc": "动态表单项值初始化时触发，输出动态表单项初始值",
       "schema": {
         "type": "array",
         "items": {
@@ -185,6 +195,7 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "desc": "动态表单项值更新时触发，输出动态表单项当前值",
       "schema": {
         "type": "array",
         "items": {
@@ -195,16 +206,19 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "输出动态表单项校验结果",
       "schema": {
         "type": "object",
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "校验提示"
           }
         }
       }
@@ -212,6 +226,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "输出动态表单项当前值",
       "schema": {
         "type": "array",
         "items": {
@@ -222,6 +237,7 @@
     {
       "id": "onValidate",
       "title": "校验触发",
+      "desc": "动态表单项校验时触发，输出动态表单项当前值",
       "schema": {
         "title": "当前值",
         "type": "array",
@@ -233,16 +249,19 @@
     {
       "id": "add",
       "title": "点击添加",
+      "desc": "添加表单项时触发，输出新增项信息",
       "schema": {
         "type": "object",
         "properties": {
           "nextIndex": {
             "title": "新增项索引",
-            "type": "number"
+            "type": "number",
+            "description": "新增项索引"
           },
           "nextKey": {
             "title": "新增项标识",
-            "type": "number"
+            "type": "number",
+            "description": "新增项标识"
           }
         }
       }
@@ -250,20 +269,24 @@
     {
       "id": "remove",
       "title": "点击删除",
+      "desc": "删除表单项时触发，输出删除项信息",
       "schema": {
         "type": "object",
         "properties": {
           "value": {
             "title": "当前项数据",
-            "type": "object"
+            "type": "object",
+            "description": "当前项数据"
           },
           "index": {
             "title": "当前项索引",
-            "type": "number"
+            "type": "number",
+            "description": "当前项索引"
           },
           "key": {
             "title": "当前项标识",
-            "type": "number"
+            "type": "number",
+            "description": "当前项标识"
           }
         }
       }
@@ -318,6 +341,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态",
             "items": [
               {
                 "type": "string",
@@ -330,7 +354,8 @@
             ]
           },
           "help": {
-            "type": "string"
+            "type": "string",
+            "description": "校验提示"
           }
         }
       }
@@ -342,10 +367,12 @@
         "type": "object",
         "properties": {
           "index": {
-            "type": "number"
+            "type": "number",
+            "description": "添加位置(从0开始)"
           },
           "value": {
-            "type": "object"
+            "type": "object",
+            "description": "新增项的初始值"
           }
         }
       }
@@ -357,10 +384,12 @@
         "type": "object",
         "properties": {
           "key": {
-            "type": "number"
+            "type": "number",
+            "description": "删除项的标识"
           },
           "index": {
-            "type": "number"
+            "type": "number",
+            "description": "删除位置(从0开始)"
           }
         }
       }
@@ -400,7 +429,8 @@
             "properties": {
               "id": {
                 "type": "string",
-                "title": "组件ID"
+                "title": "组件ID",
+                "description": "组件ID"
               }
             }
           }
@@ -413,11 +443,13 @@
             "properties": {
               "id": {
                 "type": "string",
-                "title": "组件ID"
+                "title": "组件ID",
+                "description": "组件ID"
               },
               "value": {
                 "type": "any",
-                "title": "组件值"
+                "title": "组件值",
+                "description": "组件值"
               }
             }
           }

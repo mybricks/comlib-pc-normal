@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.53",
+  "version": "1.4.54",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -150,6 +150,7 @@
     {
       "id": "onFinish",
       "title": "提交数据输出",
+      "desc": "输出所有字段的当前值",
       "schema": {
         "type": "object",
         "properties": {}
@@ -158,16 +159,19 @@
     {
       "id": "onSubmitError",
       "title": "校验失败输出",
+      "desc": "输出校验失败信息",
       "schema": {
         "type": "object",
         "properties": {
           "name": {
             "title": "字段名",
-            "type": "string"
+            "type": "string",
+            "description": "字段名"
           },
           "help": {
             "title": "校验信息",
-            "type": "string"
+            "type": "string",
+            "description": "校验信息"
           }
         }
       }
@@ -175,6 +179,7 @@
     {
       "id": "onMergeFinish",
       "title": "提交数据输出",
+      "desc": "输出表单数据(合并输入项)",
       "schema": {
         "type": "object",
         "properties": {}
@@ -183,15 +188,18 @@
     {
       "id": "onValuesChange",
       "title": "字段值更新输出",
+      "desc": "当表单中任意字段的值被更新时触发，输出已更新字段的当前值以及所有字段的当前值",
       "schema": {
         "type": "object",
         "properties": {
           "changedValues": {
             "type": "object",
+            "description": "已更新字段的当前值",
             "properties": {}
           },
           "allValues": {
             "type": "object",
+            "description": "所有字段的当前值",
             "properties": {}
           }
         }
@@ -200,6 +208,7 @@
     {
       "id": "onResetFinish",
       "title": "重置完成",
+      "desc": "成功重置表单时触发",
       "schema": {
         "type": "any"
       }
@@ -207,6 +216,7 @@
     {
       "id": "returnValidate",
       "title": "校验结果",
+      "desc": "输出表单校验结果",
       "schema": {
         "type": "boolean"
       }
@@ -214,6 +224,7 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "desc": "输出所有字段的当前值",
       "schema": {
         "type": "object",
         "properties": {}
@@ -222,6 +233,7 @@
     {
       "id": "returnValues",
       "title": "表单数据输出",
+      "desc": "输出所有字段的当前值",
       "schema": {
         "type": "object",
         "properties": {}
@@ -230,6 +242,7 @@
     {
       "id": "onClickSubmit",
       "title": "提交",
+      "desc": "提交表单时触发，输出所有字段的当前值",
       "schema": {
         "type": "object",
         "properties": {}
@@ -238,6 +251,7 @@
     {
       "id": "onClickCancel",
       "title": "取消",
+      "desc": "取消表单时触发",
       "schema": {
         "type": "any"
       }
@@ -288,6 +302,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "description": "校验状态",
             "items": [
               {
                 "type": "string",
@@ -354,6 +369,7 @@
         {
           "id": "setFieldsValue",
           "title": "表单数据输入",
+          "description": "设置表单数据时触发，输出所有字段的当前值",
           "schema": {
             "type": "object",
             "properties": {}
