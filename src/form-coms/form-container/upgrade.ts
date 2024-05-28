@@ -728,5 +728,17 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     setDeclaredStyle(newActionSelector , {...padding, ...margin});
   }
   //=========== v1.4.53 end ===============
+
+  /**
+   * @description v1.4.55 feat 查询表单每行**列
+   */
+
+    if (typeof data.enable24Grid === 'undefined'){
+      // enable24Grid在查询表单下生效
+      data.enable24Grid = true
+    }
+  
+  //=========== v1.4.55 end ===============
+
   return true;
 }

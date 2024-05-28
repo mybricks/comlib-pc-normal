@@ -5,6 +5,7 @@
   "additionalItems": [],
   "nameCount": 0,
   "formItemColumn": 1,
+  "enable24Grid": true,
   "actions": {
     "visible": true,
     "widthOption": "flexFull",

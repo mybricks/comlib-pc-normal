@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Form, Col, Button, Space } from 'antd';
 import { Data } from '../../types';
 import styles from '../../styles.less';
@@ -26,11 +26,18 @@ const QueryFilter = (props: QueryFilterProps) => {
 
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
 
-  const span = data.span || 8;
+  const [span, colProps] = useMemo(() => {
+    if(data.enable24Grid) {
+      let spanVal = data.span || 8
+      return [spanVal, { span: spanVal}]
+    }
+    return [24 / data.formItemColumn, { flex: `0 1 ${100/ data.formItemColumn}%`}]
+  }, [data.formItemColumn, data.span, data.enable24Grid])
 
   const actionStyle: React.CSSProperties = {
     textAlign: 'right',
-    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
+    padding: inlinePadding?.map(String).map(unitConversion).join(' '),
+    // width: `${100 / data.formItemColumn}%`
   };
 
   const onClick = (item) => {
@@ -126,7 +133,7 @@ const QueryFilter = (props: QueryFilterProps) => {
         }
 
         return (
-          <Col style={{ display: display }} span={span} key={com.id}>
+          <Col style={{ display: display }} {...colProps} key={com.id}>
             {com.jsx}
           </Col>
         );
@@ -134,7 +141,7 @@ const QueryFilter = (props: QueryFilterProps) => {
 
       return (
         item?.visible && (
-          <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} span={span}>
+          <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
             {com.jsx}
           </Col>
         )
