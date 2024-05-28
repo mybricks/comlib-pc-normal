@@ -730,7 +730,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   //=========== v1.4.53 end ===============
 
   /**
-   * @description v1.4.54 feat 查询表单每行**列
+   * @description v1.4.55 feat 查询表单每行**列
    */
 
     if (typeof data.enable24Grid === 'undefined'){
@@ -738,7 +738,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       data.enable24Grid = true
     }
   
-  //=========== v1.4.53 end ===============
+  //=========== v1.4.55 end ===============
 
   return true;
 }
