@@ -92,7 +92,7 @@ export interface IColumn {
 
   // 带排序列表头对齐方式
   sorterAlign?: AlignEnum;
-  fromColumn?: string; // 选择哪个列的配置
+  template?: string; // 选择哪个列作为模板
   enableOnCell?: boolean;
   onCellScript?: string;
 }

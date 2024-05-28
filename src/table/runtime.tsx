@@ -298,10 +298,10 @@ export default function (props: RuntimeParams<Data>) {
             if (item.usePrevious) {
               const previousCol = data.columns.find((i) => i.dataIndex === item.dataIndex) || null;
               return previousCol || item;
-            } else if (item.fromColumn) {
-              const templateCol = data.columns.find(i => i.dataIndex === item.fromColumn)
+            } else if (item.template) {
+              const templateCol = data.columns.find(i => i.dataIndex === item.template)
               if (!templateCol) {
-                throw new Error(`找不到名为${item.fromColumn}的模板列！`)
+                throw new Error(`找不到名为${item.template}的模板列！`)
               }
               Object.keys(templateCol).forEach(key => {
                 if (!(key in item)) {
