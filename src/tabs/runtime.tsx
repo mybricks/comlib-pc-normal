@@ -305,6 +305,7 @@ export default function ({
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
                   {slots[item.id]?.render({
+                    key: item.id,
                     style: data.slotStyle
                   })}
                 </div>
