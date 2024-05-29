@@ -5,7 +5,7 @@ import { LocationEnum } from './constants';
 import css from './runtime.less';
 
 export const renderBtnContext = (item) => {
-  const { useIcon, icon, iconLocation, iconDistance, text, showText, src, contentSize, isCustom } =
+  const { useIcon, icon, iconLocation, iconDistance, text, showText, src, contentSize, isCustom, title } =
     item;
   const Icon = Icons && Icons[icon as string]?.render();
   //自定义图标
@@ -25,7 +25,7 @@ export const renderBtnContext = (item) => {
               : null
             : CustomIcon
           : null}
-        {!useIcon || showText ? <span>{text}</span> : null}
+        {(!useIcon || showText) && text !== '' ? <span>{text}</span> : null}
         {useIcon && iconLocation === LocationEnum.BACK
           ? isCustom
             ? src
