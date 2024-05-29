@@ -185,6 +185,17 @@ export default {
       {
         items: [
           {
+            title: '菜单',
+            catelog: '默认',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: 'ul.ant-menu'
+          },
+          {
             title: '菜单项',
             catelog: '默认',
             options: [
@@ -194,6 +205,17 @@ export default {
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
             target: 'ul li:not(.ant-menu-item-selected)'
+          },
+          {
+            title: '菜单',
+            catelog: 'Hover',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: 'ul.ant-menu:hover'
           },
           {
             title: '菜单项',
