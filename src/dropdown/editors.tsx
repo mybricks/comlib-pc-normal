@@ -66,7 +66,7 @@ export default {
     }
   },
   '@init': ({ data, style }: Result) => {
-    style.width = '100%';
+    style.width = 'fit-content';
   },
   '@resize': {
     options: ['width']
