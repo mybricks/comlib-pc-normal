@@ -144,7 +144,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const changeValue = (val) => {
-    if (Array.isArray(val) && ['object', 'function'].includes(typeof val[0])) {
+
+    if (Array.isArray(val) && !Array.isArray(val[0]) && ['object', 'function'].includes(typeof val[0])) {
       logger.warn(`${title}组件:【设置值】参数类型错误！`);
       if (env.runtime?.debug) {
         message.warn(`${title}组件:【设置值】参数类型错误！`);
@@ -156,9 +157,39 @@ export default function Runtime(props: RuntimeParams<Data>) {
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   };
 
-  const onChange = (val) => {
-    changeValue(val);
-    outputs['onChange'](val);
+  const getAllValues = (optionsArray: Array<Record<string, any>>, pre: Array<string>) => {
+    let values = [];
+    optionsArray.forEach(option => {
+      if (option[data.fieldNames.children]?.length) {
+        values.push(...getAllValues(option[data.fieldNames.children], [...pre, option[data.fieldNames?.value]]));
+      } else {
+        values.push([...pre, option[data.fieldNames?.value]]);
+      }
+    });
+    return values;
+  };
+
+  const onChange = (val, selectedOptions) => {
+    let useFormatted = data.isCheckAutoWithChildren === true && data.isMultiple
+    let flattedVal: Array<any> = []
+    // 多选模式下，为true时，某一项选项全选，带上下一级children的信息
+    // 例如[{label: 'A', value: 'A', children: [{ label: 'BB', value: 'BB'}, {label: 'CC', val: 'CC}]}], 选中[['A']]后，处理后的值是[['A', 'BB'], ['A', 'CC']]
+    if(data.isCheckAutoWithChildren === true && data.isMultiple) {
+      if(val.length) {
+        selectedOptions.forEach((selectedOpt, index) => {
+          let last  = selectedOpt[selectedOpt.length -1];
+          if(last[data.fieldNames.children]?.length) {
+            flattedVal.push(...getAllValues(last[data.fieldNames.children], val[index]))
+          } else {
+            if(Array.isArray(val[index])) {
+              flattedVal.push(val[index] as Array<any>)
+            }
+          }
+        });
+      }
+    }
+    changeValue(useFormatted ? flattedVal : val);
+    outputs['onChange'](useFormatted ? flattedVal : val);
     onValidateTrigger();
   };
 

@@ -328,6 +328,22 @@ export default {
             }
           }
         },
+        {
+          title: '输出选中节点及所有子节点的值',
+          type: 'Switch',
+          description: '默认情况下，级联选择器选中父节点后，只会包含父节点的key；如果需要级联选择的值中包含所有子节点的值，类似于["父-key", "子节点-key"]的结构，可以勾选',
+          ifVisible({ data }) {
+            return data.isMultiple;
+          },
+          value: {
+            get({ data }) {
+              return data.isCheckAutoWithChildren;
+            },
+            set({ data }, value: boolean) {
+              data.isCheckAutoWithChildren = value;
+            }
+          }
+        },
         //选择自适应还是自选择点数
         {
           title: '节点数配置',
