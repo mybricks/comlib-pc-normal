@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "url": "",
+      "slotId": "slot1",
+      "bgSize": "contain"
+    },
+    {
+      "url": "",
+      "slotId": "slot2",
+      "bgSize": "contain"
+    }
+  ],
+  "autoplay": false,
+  "autoplaySpeed": 3000,
+  "dotPosition": "bottom",
+  "dotsStyle": {
+    "height": "2px",
+    "background": "#ffffff"
+  },
+  "slideIndex": 0,
+  "catelogDot": "默认"
+}

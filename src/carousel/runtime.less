@@ -1,0 +1,50 @@
+.item {
+  height: 100%;
+  width: 100%;
+  // position: relative;
+}
+
+.itemSlotContainer {
+  //   position: absolute;
+  //   height: calc(100% - 40px);
+  width: 100%;
+  height: 100%;
+}
+
+.bg {
+  width: 100%;
+  height: 100%;
+}
+
+.carouselWrapper {
+  height: 100%;
+  width: 100%;
+
+  .empty {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8ff;
+  }
+
+  :global {
+    .ant-carousel {
+      height: 100%;
+      width: 100%;
+    }
+    .slick-list,
+    .slick-slider,
+    .slick-track {
+      height: 100%;
+      width: 100%;
+    }
+    .slick-slide {
+      > div {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+}

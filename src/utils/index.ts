@@ -174,3 +174,7 @@ export const i18nFn = (opts, env) => {
 export const setIfUndefined = <T>(value: T | undefined, defaultValue: T): T => {
   return value === undefined ? defaultValue : value;
 };
+
+export function isBase64Image(url) {
+  return url.startsWith('data:image/') && url.includes(';base64,');
+}
