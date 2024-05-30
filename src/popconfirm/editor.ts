@@ -151,5 +151,56 @@ export default {
         ]
       }
     ];
+  },
+  '.ant-popover-buttons .ant-btn-primary': {
+    title: '确认按钮',
+    items: (props: EditorResult<Data>, cate1) => {
+      if (!props.focusArea) return;
+      // const item = getFocusTab(props);
+      cate1.title = '常规';
+      cate1.items = [
+        {
+          title: '确认按钮文字',
+          type: 'text',
+          options: {
+            locale: true
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.okText;
+            },
+            set({ data }: EditorResult<Data>, val: string) {
+              data.okText = val;
+            }
+          }
+        }
+      ];
+    },
+  },
+  '.ant-popover-buttons .ant-btn-default': {
+    title: '确认按钮',
+    items: (props: EditorResult<Data>, cate1) => {
+      if (!props.focusArea) return;
+      // const item = getFocusTab(props);
+      cate1.title = '常规';
+      cate1.items = [
+        {
+          title: '取消按钮文字',
+          type: 'text',
+          options: {
+            locale: true
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.cancelText;
+            },
+            set({ data }: EditorResult<Data>, val: string) {
+              data.cancelText = val;
+            }
+          }
+        },
+      ];
+    },
   }
+
 };

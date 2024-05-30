@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Popconfirm } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { Data } from './types';
@@ -8,6 +8,7 @@ import ConfigProvider from '../components/ConfigProvider';
 export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) => {
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
+  const [visible, setVisible] = useState(false)
   const { title, icon, okText, cancelText, ...rest } = data;
   inputs.title((val: string, relOutputs) => {
     if (isString(val)) {
@@ -18,9 +19,9 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     relOutputs['setTitleComplete']();
   });
 
-  const visible = useMemo(() => {
-    return !!edit ? true : void 0;
-  }, [edit]);
+  // const visible = useMemo(() => {
+  //   return !!edit ? true : void 0;
+  // }, [edit]);
 
   const renderTitle = (title: string) => {
     return title ? (
@@ -31,11 +32,20 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     ) : null;
   };
 
-  const onConfirm = () => {
+  const onConfirm = (e: MouseEvent) => {
+    if(env.edit) {
+      setVisible(true);
+      return;
+    }
     outputs.onOk();
   };
 
-  const onCancel = () => {
+  const onCancel = (e: MouseEvent) => {
+    if(env.edit) {
+      // 确保聚焦在取消/确认按钮上，不会在编辑态自动关闭弹层
+      setVisible(true)
+      return
+    }
     outputs.onCancel();
   };
 
@@ -50,6 +60,8 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
         // defaultVisible={visible}
         // visible={visible}
         {...env.edit ? { trigger:  data.trigger || ['click']} : {}}
+        {...env.edit ? { visible } : {}}
+        onOpenChange={open => console.log('open change --- ', open)}
         overlayClassName={id}
         overlayInnerStyle={{
           maxWidth: window.screen.availWidth,
@@ -64,7 +76,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
         onConfirm={onConfirm}
         onCancel={onCancel}
       >
-        <div>
+        <div onClick={() => env.edit ? setVisible(!visible): void 0}>
           {slots.carrier?.render({
             style: slotStyle
           })}
