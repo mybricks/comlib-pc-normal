@@ -21,6 +21,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>(data.color);
 
+  const popPositionRef = useRef({})
+  const outRef = useRef(null);
+
   const [color, setColor] = useState(data.color);
 
   useLayoutEffect(() => {
@@ -142,6 +145,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onClick = (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
+    if(!isShow) {
+      const { top, left } = outRef.current?.getBoundingClientRect?.();
+      popPositionRef.current = { left, top }
+    }
     setIsShow(!isShow);
   };
 
@@ -199,7 +206,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   return (
-    <div style={{ width: data.width }}>
+    <div style={{ width: data.width }} ref={outRef}>
       <div
         onClick={data.disabled ? void 0 : onClick}
         className={css.block}
@@ -213,9 +220,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
           style={{ height: '22px', backgroundColor: data.disabled ? 'hsla(0,0%,100%,.8)' : void 0 }}
         ></div>
       </div>
-      <div className={css.colorPicker} style={{ top: data.width }} onClick={colorOnClick}>
+      <div className={css.colorPicker} style={{ top: '32px' }} onClick={colorOnClick}>
         {isShow ? (
-          <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
+          <ColorPicker color={color || '#000000'} el={outRef.current} positionRef={popPositionRef} onChangeComplete={onChangeComplete} />
         ) : (
           void 0
         )}
