@@ -105,3 +105,139 @@ export enum OutputIds {
   SetTabsDone = 'setTabsDone',
   GetTabsDone = 'getTabsDone'
 }
+
+
+export const descriptionUpList = [
+  {
+    type: 'output',
+    id: 'tabClick',
+    schema: {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "标签页id",
+          "type": "string",
+          "description": "点击的标签页的id"
+        },
+        "name": {
+          "title": "标签页标题",
+          "type": "string",
+          "description": "点击的标签页的标题"
+        },
+        "key": {
+          "title": "标签页key",
+          "type": "string",
+          "description": "点击的标签页的key"
+        },
+        "index": {
+          "title": "下标",
+          "type": "number",
+          "description": "点击的标签页的下标index"
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: 'addTab',
+    schema: {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string",
+            "description": "标签页的id"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string",
+            "description": "标签页的标题"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string",
+            "description": "标签页的key"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number",
+            "description": "标签页的下标index"
+          },
+          "closable": {
+            "title": "可关闭",
+            "type": "boolean",
+            "description": "标签页是否可关闭"
+          }
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: 'removeTab',
+    schema: {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string",
+            "description": "标签页的id"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string",
+            "description": "标签页的标题"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string",
+            "description": "标签页的key"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number",
+            "description": "标签页的下标index"
+          },
+          "closable": {
+            "title": "可关闭",
+            "type": "boolean",
+            "description": "标签页是否可关闭"
+          }
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: 'outActiveTab',
+    schema: {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "标签页id",
+          "type": "string",
+          "description": "点击的标签页的id"
+        },
+        "name": {
+          "title": "标签页标题",
+          "type": "string",
+          "description": "点击的标签页的标题"
+        },
+        "key": {
+          "title": "标签页key",
+          "type": "string",
+          "description": "点击的标签页的key"
+        },
+        "index": {
+          "title": "下标",
+          "type": "number",
+          "description": "点击的标签页的下标index"
+        }
+      }
+    }
+  }
+]

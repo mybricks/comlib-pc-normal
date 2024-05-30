@@ -13,7 +13,6 @@ function getSubmitSchema(data) {
     type: 'object',
     properties
   }
-  console.log("getSubmitSchema", schema)
   return schema
 }
 

@@ -1,4 +1,6 @@
 import { Data, MenuItem } from './constants';
+import { descriptionUp } from '../form-coms/utils/descriptionUp';
+import { descriptionUpList } from './constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -93,6 +95,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     !input.get("setActiveItem")?.rels?.includes("setActiveItemDone")) {
     input.get("setActiveItem").setRels(["setActiveItemDone"]);
   }
+
+  /**
+   * @description v1.0.20 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.20 end ===============
 
   return true;
 }

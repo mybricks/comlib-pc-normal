@@ -174,10 +174,12 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "文件名"
           },
           "uid": {
-            "type": "string"
+            "type": "string",
+            "description": "文件唯一标识符"
           }
         }
       },
@@ -229,11 +231,11 @@
         "type": "object",
         "properties": {
           "validateStatus": {
-            "title": "校验状态",
+            "title": "校验状态，成功/失败",
             "type": "string"
           },
           "help": {
-            "title": "校验提示",
+            "title": "帮助提示信息",
             "type": "string"
           }
         }
@@ -281,22 +283,28 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "文件名"
           },
           "uid": {
-            "type": "string"
+            "type": "string",
+            "description": "文件唯一标识符"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "description": "文件地址"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "文件上传状态"
           },
           "percent": {
-            "type": "number"
+            "type": "number",
+            "description": "文件上传进度，百分比"
           },
           "response": {
-            "type": "string"
+            "type": "string",
+            "description": "服务端响应内容"
           }
         }
       }
@@ -409,19 +417,24 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "文件名"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "description": "文件地址"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "文件上传状态"
           },
           "percent": {
-            "type": "number"
+            "type": "number",
+            "description": "文件上传进度，百分比"
           },
           "response": {
-            "type": "string"
+            "type": "string",
+            "description": "服务端响应内容"
           }
         }
       }
@@ -433,10 +446,12 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "文件名"
           },
           "uid": {
-            "type": "string"
+            "type": "string",
+            "description": "文件唯一标识符"
           }
         }
       }
@@ -471,19 +486,24 @@
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "文件名"
               },
               "url": {
-                "type": "string"
+                "type": "string",
+                "description": "文件地址"
               },
               "status": {
-                "type": "string"
+                "type": "string",
+                "description": "文件上传状态"
               },
               "percent": {
-                "type": "number"
+                "type": "number",
+                "description": "文件上传进度，百分比"
               },
               "response": {
-                "type": "string"
+                "type": "string",
+                "description": "服务端响应内容"
               }
             }
           }

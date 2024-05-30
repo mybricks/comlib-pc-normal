@@ -164,7 +164,7 @@
           },
           "allowDrop": {
             "type": "enum",
-            "desc": "允许放置配置，可以为布尔值或者'custom'自定义节点",
+            "description": "允许放置配置，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -312,7 +312,7 @@
       "desc": "选中的节点，节点key数据",
       "schema": {
         "type": "array",
-        "desc": "数组结构的数据，里面包含节点的key",
+        "description": "数组结构的数据，里面包含节点的key",
         "items": {
           "type": "string"
         }
@@ -616,13 +616,15 @@
         "type": "object",
         "properties": {
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "树节点的标题"
           },
           "children": {
             "title": "子项",
             "type": "array",
             "items": {
-              "type": "object"
+              "type": "object",
+              "description": "树节点的子项"
             }
           }
         }
@@ -677,6 +679,7 @@
         "properties": {
           "draggable": {
             "type": "enum",
+            "description": "允许拖拽属性，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -688,10 +691,12 @@
             ]
           },
           "draggableScript": {
+            "description": "节点可拖拽表达式,根据表达式动态计算是否可拖拽",
             "type": "string"
           },
           "allowDrop": {
             "type": "enum",
+            "description": "允许放置配置，可以为布尔值或者'custom'自定义节点",
             "items": [
               {
                 "type": "boolean"
@@ -703,10 +708,12 @@
             ]
           },
           "allowDropScript": {
-            "type": "string"
+            "type": "string",
+            "description": "节点可放置表达式,根据表达式动态计算是否可放置"
           },
           "useDropScope": {
             "type": "enum",
+            "description": "放置范围限制,false表示无限制，parent表示父节点",
             "items": [
               {
                 "type": "boolean",
@@ -719,7 +726,8 @@
             ]
           },
           "dropScopeMessage": {
-            "type": "string"
+            "type": "string",
+            "description": "禁止放置提示语"
           }
         }
       }

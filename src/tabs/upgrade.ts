@@ -1,5 +1,7 @@
 import { Data, InputIds, OutputIds } from './constants';
 import { setSlotLayout } from './editor';
+import { descriptionUp } from '../form-coms/utils/descriptionUp';
+import { descriptionUpList } from './constants';
 
 const TabListSchema = {
   type: 'array',
@@ -161,5 +163,10 @@ export default function ({
 
   //=========== v1.0.33 end ===============
 
+  /**
+   * @description v1.0.37 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.37 end ===============
   return true;
 }

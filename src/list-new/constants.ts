@@ -79,3 +79,60 @@ export interface Data {
   customOptions: Option[];
 }
 
+export const descriptionUpList = [
+  {
+    type: 'input',
+    id: 'dataSource',
+    schema: {
+      "title": "列表数据",
+      "type": "array",
+      "description": "列表容器的数据源，数组格式",
+      "items": {
+        "title": "每一项的数据",
+        "type": "any"
+      }
+    }
+  },
+  {
+    type: 'input',
+    id: 'removeItem',
+    schema: {
+      "type": "number",
+      "description": "删除项在原数据源中的索引"
+    }
+  },
+  {
+    type: 'input',
+    id: 'addItem',
+    schema: {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "number",
+          "description": "添加项要放在原数据中的索引"
+        },
+        "value": {
+          "type": "any",
+          "description": "添加项的数据内容"
+        }
+      }
+    }
+  },
+  {
+    type: 'input',
+    id: 'changeItem',
+    schema: {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "number",
+          "description": "修改项要放在原数据中的索引"
+        },
+        "value": {
+          "type": "any",
+          "description": "被修改项的新值"
+        }
+      }
+    }
+  }
+]

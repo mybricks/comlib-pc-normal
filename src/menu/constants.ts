@@ -77,3 +77,131 @@ export const findMenuItem = (
   }
   return undefined;
 };
+
+export const descriptionUpList = [
+  {
+    type: 'input',
+    id: 'setMenuData',
+    schema: {
+      "title": "菜单数据",
+      "type": "object",
+      "properties": {
+        "dataSource": {
+          "title": "菜单数据",
+          "type": "array",
+          "description": "导航菜单数据",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "title": "标题",
+                "description": "菜单项标题",
+                "type": "string"
+              },
+              "key": {
+                "title": "唯一标识",
+                "description": "菜单项标识",
+                "type": "string"
+              },
+              "menuType": {
+                "title": "类型",
+                "type": "string",
+                "description": "菜单项类型，可以为普通菜单项menu、子菜单subMenu, 分组菜单group"
+              },
+              "children": {
+                "title": "子菜单数据",
+                "description": "自菜单的数据，数组结构，内容和菜单项一致",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "value": {
+                "title": "其他数据",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "defaultActive": {
+          "title": "默认选中项",
+          "description": "默认选中的菜单，这里传菜单的key",
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: 'click',
+    schema: {
+      "type": "object",
+      "properties": {
+        "title": {
+          "title": "标题",
+          "description": "点击的菜单项标题",
+          "type": "string"
+        },
+        "key": {
+          "title": "唯一标识",
+          "description": "点击的菜单项标识key",
+          "type": "string"
+        },
+        "menuType": {
+          "title": "类型",
+          "type": "string",
+          "description": "点击的菜单项类型"
+        },
+        "value": {
+          "title": "其他数据",
+          "description": "点击的菜单项的其他数据",
+          "type": "any"
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: 'setMenuDataDone',
+    schema: {
+      "title": "菜单数据",
+      "type": "object",
+      "properties": {
+        "dataSource": {
+          "title": "菜单数据",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "title": "标题",
+                "description": "菜单项标题",
+                "type": "string"
+              },
+              "key": {
+                "title": "唯一标识",
+                "description": "菜单项标标识",
+                "type": "string"
+              },
+              "menuType": {
+                "title": "类型",
+                "type": "string",
+                "description": "菜单项类型"
+              },
+              "value": {
+                "title": "其他数据",
+                "description": "菜单项的其他数据",
+                "type": "any"
+              }
+            }
+          }
+        },
+        "defaultActive": {
+          "title": "默认选中项",
+          "type": "string"
+        }
+      }
+    }
+  }
+]
