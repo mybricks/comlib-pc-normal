@@ -43,11 +43,11 @@ const getCurCol = (data, cItem) => {
 
 const checkIsDragging = (data) => {
   for (let c of data.columns) {
-    if (c.isDragging) {
+    if (c?.isDragging) {
       return true;
     } else if (c.children) {
       for (let cc of c.children) {
-        if (cc.isDragging) {
+        if (cc?.isDragging) {
           return true;
         }
       }
@@ -81,7 +81,7 @@ export default ({
   focusCellinfo,
   filterIconDefault
 }: Props) => {
-  const isDragging = checkIsDragging(data);
+  const isDragging = env.runtime ? false : checkIsDragging(data);
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
@@ -155,7 +155,7 @@ export default ({
   const getColumns = () => {
     return [...(data.columns || [])].map((item) => ({
       ...item,
-      dataIndex: env.edit ? item.key : item.dataIndex
+      dataIndex: env.edit ? item?.key : item?.dataIndex
     }));
   };
 
@@ -367,5 +367,5 @@ export default ({
     );
   };
 
-  return getColumns().map((item) => renderColumn(item));
+  return getColumns().map((item) => !!item ? renderColumn(item) : null);
 };

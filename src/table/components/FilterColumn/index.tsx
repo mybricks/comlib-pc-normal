@@ -114,6 +114,7 @@ export default function FilterColumnRender({ data, env, dataSource, outputs }) {
 
       // 将节点拍平，方便进行节点的删除和插入操作
       let treeList = flatTree(treeData);
+
       const currentColumn = data.columns.find((item) => item._id === dragNode.key);
       const position = node.pos;
       if (position.indexOf('0-0') === 0) {
@@ -131,7 +132,8 @@ export default function FilterColumnRender({ data, env, dataSource, outputs }) {
       moveEle(treeList, dragNode, currentIndex, insertRreIndex);
       data.columns = treeList
         .filter((item) => !['left', 'right', 'center'].includes(item.key))
-        .map((node) => data.columns.find((item) => item._id === node.key));
+        .map((node) => data.columns.find((item) => item._id === node.key))
+        .filter(item => !!item);
     },
     [treeData]
   );
