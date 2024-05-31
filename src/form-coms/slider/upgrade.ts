@@ -168,11 +168,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.3 end ===============
 
-    /**
-   * @description v1.1.8 新增description
+  /**
+   * @description v1.1.18 新增description
   */
-    descriptionUp(commonFormItemUpdateSchema, input, output);
-    //=========== v1.1.8 end ===============
+  descriptionUp(commonFormItemUpdateSchema, input, output);
+  //=========== v1.1.18 end ===============
 
   return true;
 }

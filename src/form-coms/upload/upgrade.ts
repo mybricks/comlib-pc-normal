@@ -379,10 +379,10 @@ export default function ({ input, output, slot, data, getDeclaredStyle, removeDe
   //=========== v1.0.40 end ===============
 
   /**
-   * @description v1.0.44 新增description
+   * @description v1.0.45 新增description
   */
-  descriptionUp([...descriptionUpList], input, output);
-  //=========== 1.0.44 end ===============
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.45 end ===============
 
   return true;
 }
