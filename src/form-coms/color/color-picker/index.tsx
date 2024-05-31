@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import Sketch from '@mybricks/color-picker';
 
@@ -13,14 +13,22 @@ function getFakeColor(color: string) {
   }
 }
 
-export default function (props: { color: string; onChangeComplete: (color: string) => void; positionRef?: { current: { left: number, top: number}} }) {
-  const { color, onChangeComplete, positionRef } = props;
+export default function (props: {
+  color: string;
+  onChangeComplete: (color: string) => void;
+  positionRef: { current: { left: number; top: number } };
+  env: Env;
+  show?: boolean
+}) {
+  const { color, onChangeComplete, positionRef, env, show } = props;
 
+  const innerPosition = useRef(positionRef.current)
   const onSketchChangeComplete = useCallback((data: { rgb: any; hex: string }) => {
     const { hex, rgb } = data;
     onChangeComplete(`rgba(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`);
   }, []);
 
+  console.log('popPositionRef', positionRef.current)
   const rawColor = getFakeColor(color || '#FFFFFF00');
   // return ReactDOM.createPortal(<div className={css.colorPicker} id="color-inner" style={{
   //   position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: 10001

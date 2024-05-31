@@ -21,7 +21,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>(data.color);
 
-  const popPositionRef = useRef({})
+  const popPositionRef = useRef({});
   const outRef = useRef(null);
 
   const [color, setColor] = useState(data.color);
@@ -145,9 +145,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onClick = (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    if(!isShow) {
-      const { top, left } = outRef.current?.getBoundingClientRect?.();
-      popPositionRef.current = { left, top }
+    if (!isShow) {
+      // const { top, left } = outRef.current?.getBoundingClientRect?.();
+      // popPositionRef.current = { left, top }
+      updateColorPopPosition();
     }
     setIsShow(!isShow);
   };
@@ -204,6 +205,41 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
   }, []);
+
+  const updateColorPopPosition = (type: 'click'| 'scroll') => {
+    if (outRef.current) {
+      const { top, left } = outRef.current?.getBoundingClientRect?.();
+      let parentOffset;
+      if (env?.canvasElement) {
+        parentOffset = env?.canvasElement.getBoundingClientRect();
+        console.log('parent', parentOffset, top, left, env?.canvasElement,  outRef.current, left, top);
+        popPositionRef.current = { left: left - parentOffset.left, top: top- parentOffset.top };
+      } else {
+        parentOffset = document.body?.getBoundingClientRect();
+        popPositionRef.current = { left: left, top };
+      }
+    }
+    return popPositionRef.current
+    // console.log('uddate--', popPositionRef.current);
+  };
+
+  const handleWindowScroll = () => {
+    setIsShow(false)
+    // return updateColorPopPosition('scroll')
+  }
+
+  useEffect(() => {
+    if (isShow) {
+      (env?.canvasElement || document.body).addEventListener('scroll', handleWindowScroll);
+      (env?.canvasElement || document.body).addEventListener('resize', handleWindowScroll);
+      document.addEventListener('scroll', handleWindowScroll, true)
+      return () => {
+        (env?.canvasElement || document.body).removeEventListener('scroll', handleWindowScroll);
+        (env?.canvasElement || document.body).removeEventListener('resize', handleWindowScroll);
+        document.removeEventListener('scroll', handleWindowScroll, true)
+      };
+    }
+  }, [isShow]);
 
   return (
     <div style={{ width: data.width }} ref={outRef}>
