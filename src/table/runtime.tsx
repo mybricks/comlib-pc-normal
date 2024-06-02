@@ -299,7 +299,11 @@ export default function (props: RuntimeParams<Data>) {
               const previousCol = data.columns.find((i) => i.dataIndex === item.dataIndex) || null;
               return previousCol || item;
             } else if (item.template) {
-              const templateCol = data.columns.find(i => i.dataIndex === item.template)
+              // 解决连续动态设置问题，始终使用初始的配置
+              if (!data._inicCols) {
+                data._inicCols = data.columns
+              }
+              const templateCol = data._inicCols.find(i => i.dataIndex === item.template)
               if (!templateCol) {
                 throw new Error(`找不到名为${item.template}的模板列！`)
               }
