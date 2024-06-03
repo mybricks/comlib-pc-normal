@@ -3,5 +3,6 @@
   "loadingTip": "Loading...",
   "enableFix": true,
   "useDynamicData": false,
-  "staticData": [{ "id": "XsbYMT", "_id": "XsbYMT", "title": "锚点1" }]
+  "staticData": [{ "id": "XsbYMT", "_id": "XsbYMT", "title": "锚点1" }],
+  "anchorPosition": "left"
 }
