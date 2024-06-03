@@ -206,37 +206,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  const updateColorPopPosition = (type: 'click'| 'scroll') => {
+  const updateColorPopPosition = () => {
     if (outRef.current) {
       const { top, left } = outRef.current?.getBoundingClientRect?.();
       let parentOffset;
-      if (env?.canvasElement) {
-        parentOffset = env?.canvasElement.getBoundingClientRect();
-        console.log('parent', parentOffset, top, left, env?.canvasElement,  outRef.current, left, top);
-        popPositionRef.current = { left: left - parentOffset.left, top: top- parentOffset.top };
-      } else {
-        parentOffset = document.body?.getBoundingClientRect();
-        popPositionRef.current = { left: left, top };
+      parentOffset = env?.canvasElement
+        ? env.canvasElement.getBoundingClientRect()
+        : document.body?.getBoundingClientRect();
+      let calcTop = top - parentOffset.top;
+      if (top - parentOffset.top + 240 > window.innerHeight) {
+        calcTop = calcTop - 240 - 40;
       }
+
+      popPositionRef.current = { left: left - parentOffset.left, top: calcTop };
     }
-    return popPositionRef.current
-    // console.log('uddate--', popPositionRef.current);
   };
 
   const handleWindowScroll = () => {
-    setIsShow(false)
+    // 滚动关闭弹出层
+    setIsShow(false);
     // return updateColorPopPosition('scroll')
-  }
+  };
 
   useEffect(() => {
     if (isShow) {
       (env?.canvasElement || document.body).addEventListener('scroll', handleWindowScroll);
       (env?.canvasElement || document.body).addEventListener('resize', handleWindowScroll);
-      document.addEventListener('scroll', handleWindowScroll, true)
+      document.addEventListener('scroll', handleWindowScroll, true);
       return () => {
         (env?.canvasElement || document.body).removeEventListener('scroll', handleWindowScroll);
         (env?.canvasElement || document.body).removeEventListener('resize', handleWindowScroll);
-        document.removeEventListener('scroll', handleWindowScroll, true)
+        document.removeEventListener('scroll', handleWindowScroll, true);
       };
     }
   }, [isShow]);
@@ -258,7 +258,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </div>
       <div className={css.colorPicker} style={{ top: data.width, }} onClick={colorOnClick}>
         {isShow ? (
-          <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
+          <ColorPicker
+            color={color || '#000000'}
+            env={env}
+            positionRef={popPositionRef}
+            onChangeComplete={onChangeComplete}
+          />
         ) : (
           void 0
         )}
