@@ -124,11 +124,11 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
 
   const LeftContainer = useCallback(
     () => (data.anchorPosition === 'left' ? <AnchorBox /> : <ContentBox />),
-    [data.anchorPosition]
+    [data.anchorPosition, AnchorBox, ContentBox]
   );
   const RightContainer = useCallback(
     () => (data.anchorPosition === 'left' ? <ContentBox /> : <AnchorBox />),
-    [data.anchorPosition]
+    [data.anchorPosition, AnchorBox, ContentBox]
   );
 
   //0、 无内容
