@@ -122,7 +122,19 @@ const SlotContent = (
                 });
               };
               if (temp) {
+                let nextIndex = data.userAction.index + 1;
                 setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
+                let next = data.fields[nextIndex];
+                if (next) {
+                  // 添加到指定index位置，手动更新原位置的表单项，以防出现自定义容器内部值丢失问题
+                  setValuesOfChild({
+                    data,
+                    childrenStore,
+                    key: next.key,
+                    value: data.value[nextIndex],
+                    actionType
+                  });
+                }
               } else {
                 cb();
               }
