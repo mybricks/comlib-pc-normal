@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { List, Anchor, Col, Row } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds, OutputIds } from './constants';
@@ -47,7 +47,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     }
   }, []);
 
-  const ListItemRender = (itemProps) => {
+  const ListItemRender = useCallback((itemProps) => {
     const { [rowKey]: key, index: index, item: item } = itemProps;
 
     return (
@@ -62,14 +62,10 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         })}
       </List.Item>
     );
-  };
+  }, []);
 
-  //0、 无内容
-  if (dataSource.length === 0 && data.useDynamicData) {
-    return null;
-  }
-  return (
-    <Row>
+  const ContentBox = useCallback(
+    () => (
       <Col span={20}>
         {data.useDynamicData ? (
           <List
@@ -89,13 +85,22 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         ) : (
           data.staticData.map((item, index) => (
             <div key={item.id} id={`mybricks-anchor-${item.id}`}>
-              {slots[item.id]?.render()}
+              {slots[item.id]?.render({ key: item.id })}
             </div>
           ))
         )}
       </Col>
+    ),
+    [data.useDynamicData, data.staticData, dataSource, loading]
+  );
+
+  const AnchorBox = useCallback(
+    () => (
       <Col span={4}>
-        <Anchor affix={data.enableFix}>
+        <Anchor
+          affix={env.edit ? false : data.enableFix}
+          getContainer={() => document.querySelector('#root > div') as HTMLElement}
+        >
           {data.useDynamicData
             ? env.edit
               ? editAnchorData.map((i) => (
@@ -113,6 +118,27 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
               ))}
         </Anchor>
       </Col>
+    ),
+    [data.enableFix, data.useDynamicData, data.staticData, dataSource]
+  );
+
+  const LeftContainer = useCallback(
+    () => (data.anchorPosition === 'left' ? <AnchorBox /> : <ContentBox />),
+    [data.anchorPosition]
+  );
+  const RightContainer = useCallback(
+    () => (data.anchorPosition === 'left' ? <ContentBox /> : <AnchorBox />),
+    [data.anchorPosition]
+  );
+
+  //0、 无内容
+  if (dataSource.length === 0 && data.useDynamicData) {
+    return null;
+  }
+  return (
+    <Row>
+      <LeftContainer />
+      <RightContainer />
     </Row>
   );
 };

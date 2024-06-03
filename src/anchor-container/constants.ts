@@ -1,12 +1,13 @@
-import { ListGridType } from 'antd/lib/list';
 
 export enum InputIds {
   DATA_SOURCE = 'dataSource',
   LOADING = 'loading'
 }
 export enum OutputIds {
-  GetDataSource = 'getdataSource',
+  GetDataSource = 'getdataSource'
 }
+
+export type AnchorPosition = 'left' | 'right';
 
 export const Schemas = {
   Array: {
@@ -16,7 +17,7 @@ export const Schemas = {
       type: 'any'
     }
   }
-}
+};
 
 export interface Option {
   _id: string;
@@ -34,5 +35,5 @@ export interface Data {
   useLoading?: boolean;
   //加载中文案
   loadingTip?: string;
+  anchorPosition: AnchorPosition;
 }
-

@@ -1,4 +1,4 @@
-import { Data, InputIds, Option } from './constants';
+import { AnchorPosition, Data, InputIds, Option } from './constants';
 
 export default {
   ':slot': {},
@@ -107,7 +107,7 @@ export default {
         }
       },
       {
-        title: '是否固定显示锚点链接',
+        title: '固定显示锚点链接',
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
@@ -115,6 +115,28 @@ export default {
           },
           set({ data, input, output }: EditorResult<Data>, val: boolean) {
             data.enableFix = val;
+          }
+        }
+      },
+      {
+        title: '锚点链接位置',
+        type: 'radio',
+        options: [
+          {
+            label: '左',
+            value: 'left'
+          },
+          {
+            label: '右',
+            value: 'right'
+          }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.anchorPosition;
+          },
+          set({ data }: EditorResult<Data>, val: AnchorPosition) {
+            data.anchorPosition = val;
           }
         }
       }
