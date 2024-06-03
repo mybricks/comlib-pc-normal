@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.video",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "播放器",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -45,6 +45,7 @@
   "outputs": [
     {
       "id": "setLinkComplete",
+      "desc": "设置播放器链接后，事件输出",
       "title": "完成",
       "schema": {
         "type": "any"
@@ -53,6 +54,7 @@
     {
       "id": "screenshotComplete",
       "title": "完成",
+      "desc": "截屏完成后，事件输出",
       "schema": {
         "type": "any"
       }
@@ -60,6 +62,7 @@
     {
       "id": "setPosterComplete",
       "title": "完成",
+      "desc": "设置播放器封面后，事件输出",
       "schema": {
         "type": "any"
       }

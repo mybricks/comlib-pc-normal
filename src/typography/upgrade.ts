@@ -1,5 +1,6 @@
-import { Data } from './constants';
+import { Data, descriptionUpList } from './constants';
 import { differObject, isEmptyObject } from '../utils';
+import { descriptionUp } from '../form-coms/utils/descriptionUp';
 
 export default function ({ data, input, output, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   data.items.forEach((item) => {
@@ -146,5 +147,12 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
     !input.get("setData")?.rels?.includes("setDataDone")) {
     input.get("setData").setRels(["setDataDone"]);
   }
+
+  /**
+   * @description v1.0.19 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.19 end ===============
+
   return true;
 }

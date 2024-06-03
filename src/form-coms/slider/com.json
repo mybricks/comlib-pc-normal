@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -111,6 +111,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -124,6 +125,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }
@@ -168,11 +170,13 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
-            "type": "string"
+            "type": "string",
+            "description": "校验状态，成功/失败"
           },
           "help": {
             "title": "校验提示",
-            "type": "string"
+            "type": "string",
+            "description": "帮助提示信息"
           }
         }
       }
@@ -236,6 +240,7 @@
         "type": "object",
         "properties": {
           "validateStatus": {
+            "description": "校验状态，成功/失败",
             "type": "enum",
             "items": [
               {
@@ -249,6 +254,7 @@
             ]
           },
           "help": {
+            "description": "帮助提示信息",
             "type": "string"
           }
         }

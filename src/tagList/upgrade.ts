@@ -1,5 +1,6 @@
 import { Data } from './types';
 import { isEmptyObject } from '../utils';
+import { descriptionUp } from '../form-coms/utils/descriptionUp';
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const { tagStyle } = data;
@@ -65,10 +66,51 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
 
   const dynamicInput = input.get('dynamicTags');
   if (dynamicInput) {
-    if(!output.get('dynamicComplete')){
+    if (!output.get('dynamicComplete')) {
       output.add('dynamicComplete', '完成', { type: 'any' });
       dynamicInput.setRels(['dynamicComplete']);
     }
   }
+
+  /**
+   * @description v1.0.14 新增description
+  */
+  const descriptionUpList = [
+    {
+      type: 'output',
+      id: 'outputTags',
+      schema: {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "icon": {
+              "title": "图标",
+              "type": "string",
+              "description": "标签的图标"
+            },
+            "content": {
+              "title": "标签内容",
+              "type": "string",
+              "description": "标签的内容"
+            },
+            "color": {
+              "title": "背景颜色",
+              "type": "string",
+              "description": "标签的背景颜色"
+            },
+            "closable": {
+              "title": "是否可关闭",
+              "type": "boolean",
+              "description": "标签是否可关闭"
+            }
+          }
+        }
+      }
+    }
+  ];
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.14 end ===============
+
   return true;
 }

@@ -102,3 +102,25 @@ export const ScopeSlotIds = {
   Content: 'content',
   UpperRightArea: 'upperRightArea'
 }
+
+export const descSchema = {
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "描述项的标签名"
+    },
+    "labelDesc": {
+      "type": "string",
+      "description": "描述项的标签说明信息、提示"
+    },
+    "showLabel": {
+      "type": "boolean",
+      "description": "是否展示标签"
+    },
+    "visible": {
+      "type": "boolean",
+      "description": "描述项是否可见"
+    }
+  }
+}

@@ -1,7 +1,9 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data, IconType } from './types';
-import { inputIds, outputIds } from '../form-container/constants';
+import { descriptionUp } from '../utils/descriptionUp';
+import { descriptionUpList } from './constants';
+import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
 
@@ -351,5 +353,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.isEditable = true;
   }
   //=========== v1.2.11 end ===============
+
+
+  /**
+   * @description v1.2.20 新增description
+  */
+  descriptionUp([...descriptionUpList, ...commonFormItemUpdateSchema], input, output);
+  //=========== 1.2.20 end ===============
   return true;
 }

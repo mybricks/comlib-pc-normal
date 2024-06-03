@@ -153,3 +153,80 @@ export const formItemPropsSchema = {
   //   title: '是否显示'
   // },
 }
+
+/** 一些公有的表单类组件，更新的schema */
+export const commonFormItemUpdateSchema = [
+  {
+    type: 'input',
+    id: "setValidateInfo",
+    schema: {
+      "type": "object",
+      "properties": {
+        "validateStatus": {
+          "type": "enum",
+          "descriptions": "校验状态，成功/失败",
+          "items": [
+            {
+              "type": "string",
+              "value": "success"
+            },
+            {
+              "type": "string",
+              "value": "error"
+            }
+          ]
+        },
+        "help": {
+          "description": "帮助提示信息",
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: "returnValidate",
+    schema: {
+      "type": "object",
+      "properties": {
+        "validateStatus": {
+          "title": "校验状态",
+          "type": "string",
+          "description": "校验状态，成功/失败"
+        },
+        "help": {
+          "title": "校验提示",
+          "type": "string",
+          "description": "帮助提示文案"
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: "setValidateInfoDone",
+    schema: {
+      "type": "object",
+      "properties": {
+        "validateStatus": {
+          "type": "enum",
+          "descriptions": "校验状态，成功/失败",
+          "items": [
+            {
+              "type": "string",
+              "value": "success"
+            },
+            {
+              "type": "string",
+              "value": "error"
+            }
+          ]
+        },
+        "help": {
+          "description": "帮助提示信息",
+          "type": "string"
+        }
+      }
+    }
+  }
+]

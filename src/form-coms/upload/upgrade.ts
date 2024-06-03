@@ -1,4 +1,6 @@
-import { inputIds, outputIds } from '../form-container/constants';
+import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
+import { descriptionUp } from '../utils/descriptionUp';
+import { descriptionUpList } from './constants';
 
 export default function ({ input, output, slot, data, getDeclaredStyle, removeDeclaredStyle, setDeclaredStyle }): boolean {
   //1.0.0 -> 1.0.1
@@ -194,12 +196,12 @@ export default function ({ input, output, slot, data, getDeclaredStyle, removeDe
   /**
    * @description v1.0.27 新增关联输出项
    */
-  if(input.get('setDisabled').schema.type === 'boolean'){
+  if (input.get('setDisabled').schema.type === 'boolean') {
     input.get('setDisabled').setSchema({
       type: 'any'
     })
   }
-  if(input.get('setEnabled').schema.type === 'boolean'){
+  if (input.get('setEnabled').schema.type === 'boolean') {
     input.get('setEnabled').setSchema({
       type: 'any'
     })
@@ -312,14 +314,14 @@ export default function ({ input, output, slot, data, getDeclaredStyle, removeDe
     input.get("remove") &&
     !input.get("remove")?.rels?.includes("removeDone")) {
     input.get("remove").setRels(["removeDone"]);
-  }  
+  }
   //=========== v1.0.27 end ===============
 
-  
+
   /**
    * @description v1.0.30 新增hideIcon
   */
-  if(typeof data.hideIcon === "undefined"){
+  if (typeof data.hideIcon === "undefined") {
     data.hideIcon = false;
   };
   //=========== v1.0.30 end ===============
@@ -345,19 +347,19 @@ export default function ({ input, output, slot, data, getDeclaredStyle, removeDe
   /**
    * @description v1.0.33 新增 自定义图标配置
    */
-  if(typeof data.isCustomIcon === 'undefined'){
+  if (typeof data.isCustomIcon === 'undefined') {
     data.isCustomIcon = false;
   }
-  if(typeof data.textIcon === 'undefined'){
+  if (typeof data.textIcon === 'undefined') {
     data.textIcon = "UploadOutlined";
   }
-  if(typeof data.picIcon === 'undefined'){
+  if (typeof data.picIcon === 'undefined') {
     data.picIcon = "UploadOutlined";
   }
-  if(typeof data.picCardIcon === 'undefined'){
+  if (typeof data.picCardIcon === 'undefined') {
     data.picCardIcon = "PlusOutlined";
   }
-  if(typeof data.dragIcon === 'undefined'){
+  if (typeof data.dragIcon === 'undefined') {
     data.dragIcon = "InboxOutlined";
   }
 
@@ -366,14 +368,21 @@ export default function ({ input, output, slot, data, getDeclaredStyle, removeDe
   /**
    * @description v1.0.40 change上传文案target
    */
-  if(data.config.listType === "text" || data.config.listType === 'picture') {
+  if (data.config.listType === "text" || data.config.listType === 'picture') {
     const preStyle = getDeclaredStyle(`.ant-btn>.anticon+span`);
     removeDeclaredStyle(`.ant-btn>.anticon+span`);
-    if(preStyle?.css){
+    if (preStyle?.css) {
       setDeclaredStyle(`.text`, preStyle.css);
     }
   }
 
   //=========== v1.0.40 end ===============
+
+  /**
+   * @description v1.0.45 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.45 end ===============
+
   return true;
 }

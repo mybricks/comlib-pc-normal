@@ -1,6 +1,8 @@
 import { InputIds, OutputIds } from "./constants";
 import { Data, ValueType } from "./types";
 import { refreshSchema } from "./utils";
+import { descriptionUp } from "../form-coms/utils/descriptionUp";
+import { descriptionUpList } from "./constants";
 
 export default function ({
   data,
@@ -545,6 +547,12 @@ export default function ({
     getSelectedKeysPin.setRels([OutputIds.ReturnSelectedKeys]);
   }
   //=========== v1.0.62 end ===============
+
+    /**
+   * @description v1.0.63 新增description
+  */
+    descriptionUp(descriptionUpList, input, output);
+    //=========== 1.0.63 end ===============
 
   return true;
 }

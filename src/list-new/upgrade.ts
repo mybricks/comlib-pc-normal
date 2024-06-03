@@ -1,4 +1,6 @@
 import { Data, Layout, OutputIds, Schemas } from './constants';
+import { descriptionUp } from '../form-coms/utils/descriptionUp';
+import { descriptionUpList } from './constants';
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
   /**
@@ -22,33 +24,33 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   /**
     * @description v1.0.7->1.0.8 增加换行情况下，排列方式，默认纵向
   */
- if(typeof data.layout === "undefined"){
+  if (typeof data.layout === "undefined") {
     data.layout = "vertical"
- }
+  }
 
   /**
     * @description v1.0.11->1.0.12 已经是排序情况下，添加事件
   */
- if(data.canSort){
-  output.add(OutputIds.SortComplete, '拖拽完成', Schemas.Array);
- }
+  if (data.canSort) {
+    output.add(OutputIds.SortComplete, '拖拽完成', Schemas.Array);
+  }
 
   /**
     * @description v1.0.12->1.0.13 添加响应式布局，横向滚动时子项的宽度
   */
- if(typeof data.isResponsive === "undefined"){
+  if (typeof data.isResponsive === "undefined") {
     data.isResponsive = false
- }
- if(typeof data.bootstrap === "undefined"){
-    data.bootstrap = [1,2,4,4,6,3]
- }
- if(typeof data.itemWidth === "undefined"){
+  }
+  if (typeof data.bootstrap === "undefined") {
+    data.bootstrap = [1, 2, 4, 4, 6, 3]
+  }
+  if (typeof data.itemWidth === "undefined") {
     data.itemWidth = "100%"
- }
- if(typeof data.isCustomPoints === "undefined"){
+  }
+  if (typeof data.isCustomPoints === "undefined") {
     data.isCustomPoints = false
- }
- if(typeof data.customOptions === "undefined"){
+  }
+  if (typeof data.customOptions === "undefined") {
     data.customOptions = [
       {
         point: 576,
@@ -81,7 +83,7 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
         columns: 3
       }
     ]
- }
+  }
 
   /**
     * @description v1.0.13->1.0.14 添加crud、上移、下移
@@ -107,10 +109,10 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
   //2、删除一项
   if (!output.get('removeItemDone')) {
-    output.add('removeItemDone', '删除一项完成', {type: 'number'});
+    output.add('removeItemDone', '删除一项完成', { type: 'number' });
   }
   if (!input.get('removeItem')) {
-    input.add('removeItem', '删除一项', {type: 'number'});
+    input.add('removeItem', '删除一项', { type: 'number' });
     input.get('removeItem').setRels(['removeItemDone']);
   }
   //3、改动一项
@@ -123,18 +125,18 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
   //4、上移
   if (!output.get('moveUpDone')) {
-    output.add('moveUpDone', '上移完成', {type: 'number'});
+    output.add('moveUpDone', '上移完成', { type: 'number' });
   }
   if (!input.get('moveUp')) {
-    input.add('moveUp', '上移', {type: 'number'});
+    input.add('moveUp', '上移', { type: 'number' });
     input.get('moveUp').setRels(['moveUpDone']);
   }
   //5、下移
   if (!output.get('moveDownDone')) {
-    output.add('moveDownDone', '下移完成', {type: 'number'});
+    output.add('moveDownDone', '下移完成', { type: 'number' });
   }
   if (!input.get('moveDown')) {
-    input.add('moveDown', '下移', {type: 'number'});
+    input.add('moveDown', '下移', { type: 'number' });
     input.get('moveDown').setRels(['moveDownDone']);
   }
 
@@ -157,7 +159,7 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     input.get("dataSource").setRels(["setDataSourceDone"]);
   }
 
-  if(data.useLoading && !output.get("setLoadingDone") && input.get("loading")){
+  if (data.useLoading && !output.get("setLoadingDone") && input.get("loading")) {
     output.add("setLoadingDone", '设置loading完成', { type: 'boolean' });
     input.get("loading").setRels(["setLoadingDone"]);
   }
@@ -183,5 +185,10 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     }
   }
 
+  /**
+   * @description v1.0.29 新增description
+  */
+  descriptionUp(descriptionUpList, input, output);
+  //=========== 1.0.29 end ===============
   return true;
 }

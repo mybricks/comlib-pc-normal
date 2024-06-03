@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -78,19 +78,23 @@
         "properties": {
           "id": {
             "title": "标签页id",
-            "type": "string"
+            "type": "string",
+            "description": "点击的标签页的id"
           },
           "name": {
             "title": "标签页标题",
-            "type": "string"
+            "type": "string",
+            "description": "点击的标签页的标题"
           },
           "key": {
             "title": "标签页key",
-            "type": "string"
+            "type": "string",
+            "description": "点击的标签页的key"
           },
           "index": {
             "title": "下标",
-            "type": "number"
+            "type": "number",
+            "description": "点击的标签页的下标index"
           }
         }
       }
@@ -103,19 +107,23 @@
         "properties": {
           "id": {
             "title": "标签页id",
-            "type": "string"
+            "type": "string",
+            "description": "点击的标签页的id"
           },
           "name": {
             "title": "标签页标题",
-            "type": "string"
+            "type": "string",
+            "description": "点击的标签页的标题"
           },
           "key": {
             "title": "标签页key",
-            "type": "string"
+            "type": "string",
+            "description": "点击的标签页的key"
           },
           "index": {
             "title": "下标",
-            "type": "number"
+            "type": "number",
+            "description": "点击的标签页的下标index"
           }
         }
       }
@@ -165,23 +173,28 @@
           "properties": {
             "id": {
               "title": "标签页id",
-              "type": "string"
+              "type": "string",
+              "description": "标签页的id"
             },
             "name": {
               "title": "标签页标题",
-              "type": "string"
+              "type": "string",
+              "description": "标签页的标题"
             },
             "key": {
               "title": "标签页key",
-              "type": "string"
+              "type": "string",
+              "description": "标签页的key"
             },
             "index": {
               "title": "下标",
-              "type": "number"
+              "type": "number",
+              "description": "标签页的下标index"
             },
             "closable": {
               "title": "可关闭",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "标签页是否可关闭"
             }
           }
         }
@@ -197,23 +210,28 @@
           "properties": {
             "id": {
               "title": "标签页id",
-              "type": "string"
+              "type": "string",
+              "description": "标签页的id"
             },
             "name": {
               "title": "标签页标题",
-              "type": "string"
+              "type": "string",
+              "description": "标签页的标题"
             },
             "key": {
               "title": "标签页key",
-              "type": "string"
+              "type": "string",
+              "description": "标签页的key"
             },
             "index": {
               "title": "下标",
-              "type": "number"
+              "type": "number",
+              "description": "标签页的下标index"
             },
             "closable": {
               "title": "可关闭",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "标签页是否可关闭"
             }
           }
         }
@@ -229,15 +247,18 @@
           "properties": {
             "id": {
               "title": "标签页id",
-              "type": "string"
+              "type": "string",
+              "description": "标签页id"
             },
             "name": {
               "title": "标签页标题",
-              "type": "string"
+              "type": "string",
+              "description": "标签页标题"
             },
             "key": {
               "title": "标签页key",
-              "type": "string"
+              "type": "string",
+              "description": "标签页key"
             }
           }
         }

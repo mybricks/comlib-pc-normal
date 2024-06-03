@@ -1,7 +1,8 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
-import { inputIds, outputIds } from '../form-container/constants';
+import { descriptionUp } from '../utils/descriptionUp';
+import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
 
@@ -166,6 +167,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.3 end ===============
+
+  /**
+   * @description v1.1.18 新增description
+  */
+  descriptionUp(commonFormItemUpdateSchema, input, output);
+  //=========== v1.1.18 end ===============
 
   return true;
 }

@@ -1,7 +1,8 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
-import { inputIds, outputIds } from '../form-container/constants';
+import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
+import { descriptionUp } from '../utils/descriptionUp';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   if (typeof data.config.checked === "undefined") {
@@ -181,5 +182,10 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.7 end ===============
 
+  /**
+   * @description v1.1.12 新增description
+  */
+  descriptionUp(commonFormItemUpdateSchema, input, output);
+  //=========== v1.1.12 end ===============
   return true;
 }

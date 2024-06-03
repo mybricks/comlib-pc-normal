@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.tagList",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -28,6 +28,7 @@
     {
       "id": "outputTags",
       "title": "输出标签列表",
+      "desc": "获取标签列表后，输出数据内容",
       "schema": {
         "type": "array",
         "items": {
@@ -35,19 +36,23 @@
           "properties": {
             "icon": {
               "title": "图标",
-              "type": "string"
+              "type": "string",
+              "description": "标签的图标"
             },
             "content": {
               "title": "标签内容",
-              "type": "string"
+              "type": "string",
+              "description": "标签的内容"
             },
             "color": {
               "title": "背景颜色",
-              "type": "string"
+              "type": "string",
+              "description": "标签的背景颜色"
             },
             "closable": {
               "title": "是否可关闭",
-              "type": "boolean"
+              "type": "boolean",
+              "description": "标签是否可关闭"
             }
           }
         }

@@ -65,3 +65,110 @@ export interface Data {
   //唯一标识
   rowKey: string;
 }
+
+const itemsSchema = {
+  "type": "object",
+  "properties": {
+    "content": {
+      "title": "内容",
+      "type": "string",
+      "description": "文本内容"
+    },
+    "type": {
+      "title": "类型",
+      "type": "string",
+      "description": "可以为文本 'Text'、标签 'Tag'、链接'Link'"
+    },
+    "link": {
+      "title": "链接",
+      "type": "string",
+      "description": "跳转链接，在类型为链接时有效"
+    },
+    "style": {
+      "type": "object",
+      "desc": "单个子项元素的样式",
+      "properties": {
+        "color": {
+          "type": "string",
+          "description": "文本颜色"
+        },
+        "fontSize": {
+          "type": "string",
+          "description": "字体大小"
+        },
+        "fontWeight": {
+          "type": "number",
+          "description": "文本粗细程度"
+        },
+        "stylePadding": {
+          "type": "array",
+          "description": "文本的内边距",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
+
+export const descriptionUpList = [
+  {
+    type: 'input',
+    id: 'setData',
+    schema: {
+      "type": "array",
+      "description": "文本排版动态列表数据",
+      "items": itemsSchema
+    }
+  },
+  {
+    type: 'output',
+    id: 'click',
+    schema: {
+      "type": "object",
+      "description": "单击后，获取的当前点击的文版排版的索引和数据",
+      "properties": {
+        "values": {
+          "type": "object",
+          "description": "当前点击项的数据内容",
+          "properties": {
+            "content": {
+              "title": "内容",
+              "type": "string",
+              "description": "点击项的内容"
+            },
+            "key": {
+              "title": "唯一标识",
+              "type": "string",
+              "description": "点击项唯一标识key"
+            },
+            "type": {
+              "title": "类型",
+              "type": "string",
+              "description": "点击项的类型"
+            },
+            "link": {
+              "title": "链接",
+              "type": "string",
+              "description": "点击项的链接，在类型为链接时，有效"
+            }
+          }
+        },
+        "index": {
+          "description": "当前点击项的索引",
+          "type": "number"
+        }
+      }
+    }
+  },
+  {
+    type: 'output',
+    id: 'setDataDone',
+    schema: {
+      "type": "array",
+      "desc": "数组结构的文本排版数据格式",
+      "items": itemsSchema
+    }
+  }
+]

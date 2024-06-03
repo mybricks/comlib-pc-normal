@@ -1,6 +1,8 @@
 import { Data, InputIds } from './constants';
 import { isEmptyObject } from '../utils';
 import { getDataDescSchema } from './editors/utils';
+import { descriptionUp } from '../form-coms/utils/descriptionUp';
+import { descSchema } from './constants';
 
 export default function ({ data, input, output, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
@@ -74,10 +76,41 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
   }
 
   const setDataDesc = input.get(InputIds.SetDataDesc)
-  if(!setDataDesc) {
+  if (!setDataDesc) {
     input.add(InputIds.SetDataDesc, '设置数据源描述', getDataDescSchema(data))
     output.add('setDataDescComplete', '完成', { type: 'any' })
   }
 
+  /**
+   * @description v1.0.25 新增description
+  */
+  const dataSourceProperties = {};
+  const descProperties = {};
+  data.items.forEach(item => {
+    dataSourceProperties[item.id] = {
+      type: 'string',
+      description: `字段名为 ${item.id} 的描述项`,
+    }
+    descProperties[item.id] = descSchema
+  })
+  const setDataSourceSchema = {
+    id: 'setDataSource',
+    type: 'input',
+    "schema": {
+      "type": "object",
+      "description": "描述列表的数据源数据，对象类型，格式为{fieldName: 'value'}",
+      "properties": dataSourceProperties
+    }
+  };
+  const setDataDescSchema = {
+    id: 'setDataDesc',
+    type: 'input',
+    schema: {
+      "type": "object",
+      properties: descProperties
+    }
+  }
+  descriptionUp([setDataSourceSchema, setDataDescSchema,], input, output);
+  //=========== 1.0.25 end ===============
   return true;
 }

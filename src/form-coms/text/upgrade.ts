@@ -1,7 +1,8 @@
-import { inputIds, outputIds } from '../form-container/constants';
+import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
 import { ValidateTriggerType } from '../types';
 import { RuleKeys, LengthRules, mergeRules } from '../utils/validator';
 import { Data } from './runtime';
+import { descriptionUp } from '../utils/descriptionUp';
 import { InputIds } from '../types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -241,5 +242,10 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   input.get('setAutoFocus').setRels(['setAutoFocusDone']);
   //=========== v1.3.11 end ===============
 
+  /**
+   * @description v1.3.20 新增description
+  */
+  descriptionUp(commonFormItemUpdateSchema, input, output);
+  //=========== v1.3.20 end ===============
   return true;
 }
