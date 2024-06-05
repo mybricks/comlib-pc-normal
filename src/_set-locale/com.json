@@ -1,0 +1,37 @@
+{
+  "title": "设置语言",
+  "namespace": "mybricks.normal-pc.set-locale",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "设置语言类型",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setLocale",
+      "title": "设置语言类型",
+      "desc": "输入多语言类型",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setLocaleDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setLocaleDone",
+      "title": "设置语言类型完成",
+      "desc": "设置多语言类型完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": []
+}
