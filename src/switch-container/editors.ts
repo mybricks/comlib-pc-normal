@@ -1,5 +1,4 @@
 import { Status, Data } from './type';
-import once from 'lodash/once';
 import visibleOpt from '../components/editorRender/visibleOpt';
 
 export default {
