@@ -4,9 +4,25 @@ import { SlotIds, SlotInputIds, SlotOutputIds } from './constants';
 import { Data } from './types';
 import { outputIds } from '../form-container/constants';
 
+const setSlotLayout = (slot, val) => {
+  if (!slot) return;
+  if (val.position === 'smart') {
+    slot.setLayout('smart');
+  } else if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};
+
 export default {
+  ':slot': {},
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   '@init': ({ style }) => {
     style.width = '100%';
@@ -37,6 +53,28 @@ export default {
     catalog[0].title = '常规';
 
     catalog[0].items = [
+      {
+        title: '布局',
+        type: 'layout',
+        options: [],
+        value: {
+          get({ data, slots }: EditorResult<Data>) {
+            const { slotStyle = {} } = data;
+            return slotStyle;
+          },
+          set({ data, slots }: EditorResult<Data>, val: any) {
+            if (!data.slotStyle) {
+              data.slotStyle = {};
+            }
+            data.slotStyle = {
+              ...data.slotStyle,
+              ...val
+            };
+            const slotInstance = slots.get('formItem');
+            setSlotLayout(slotInstance, val);
+          }
+        }
+      },
       {
         title: '值数据类型',
         type: '_schema',

@@ -5,5 +5,6 @@ export interface Data {
   title: string;
   placement?: Placement;
   trigger?: Trigger;
-  style?: CSSProperties
+  style?: CSSProperties;
+  slotStyle?: Object;
 }

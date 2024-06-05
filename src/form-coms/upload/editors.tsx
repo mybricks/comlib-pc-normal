@@ -2,6 +2,21 @@ import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
 
+const setSlotLayout = (slot, val) => {
+  if (!slot) return;
+  if (val.position === 'smart') {
+    slot.setLayout('smart');
+  } else if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};
+
 const uploadEditors = {
   title: '上传按钮尺寸',
   items: [
@@ -76,6 +91,7 @@ const basicUploadDoneSchema = {
 };
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },
@@ -323,6 +339,36 @@ export default {
 
       catalog[0].items = [
         {
+          title: '布局',
+          type: 'layout',
+          options: [],
+          ifVisible({ data }: EditorResult<Data>) {
+            return (
+              data.isCustom &&
+              (data.config.listType === 'text' || data.config.listType === 'picture')
+            );
+          },
+          value: {
+            get({ data, slots }: EditorResult<Data>) {
+              const { slotStyle = {} } = data;
+              const slotInstance = slots.get('carrier');
+              setSlotLayout(slotInstance, slotStyle);
+              return slotStyle;
+            },
+            set({ data, slots }: EditorResult<Data>, val: any) {
+              if (!data.slotStyle) {
+                data.slotStyle = {};
+              }
+              data.slotStyle = {
+                ...data.slotStyle,
+                ...val
+              };
+              const slotInstance = slots.get('carrier');
+              setSlotLayout(slotInstance, val);
+            }
+          }
+        },
+        {
           title: '上传配置',
           items: [
             {
@@ -397,7 +443,7 @@ export default {
                   { label: 'Mp3音频文件', value: '.mp3' },
                   { label: 'Mp4视频文件', value: '.mp4' },
                   { label: 'Avi视频文件', value: '.avi' },
-                  { label: 'Mov视频文件', value: '.mov' },
+                  { label: 'Mov视频文件', value: '.mov' }
                 ],
                 multiple: true
               },

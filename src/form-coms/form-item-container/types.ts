@@ -5,4 +5,5 @@ export interface Data {
     childrenInputs: Record<string, any>;
     config: {};
     valueSchema: object;
+    slotStyle?: Object
 }

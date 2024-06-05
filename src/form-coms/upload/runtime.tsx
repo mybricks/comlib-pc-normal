@@ -49,12 +49,13 @@ export interface Data {
   dragIcon: string;
   /**@description v1.0.35 按钮尺寸 */
   buttonSize: string;
+  slotStyle?: Object;
 }
 
 interface Window {
   Image: {
     prototype: HTMLImageElement;
-    new(): HTMLImageElement;
+    new (): HTMLImageElement;
   };
 }
 
@@ -242,8 +243,8 @@ export default function ({
     if (fileCount && uploadedList.length > fileCount) {
       uploadedList.shift();
     }
-    return uploadedList
-  }
+    return uploadedList;
+  };
 
   // 文件数据格式化
   const onFormatFileList = (fileList: UploadFile[]) => {
@@ -560,7 +561,7 @@ export default function ({
         listType={listType}
         fileList={Array.isArray(fileList) ? fileList : void 0}
         accept={fileType.join()}
-        customRequest={() => { }}
+        customRequest={() => {}}
         beforeUpload={beforeUpload}
         onRemove={onRemove}
         onPreview={onPreview}
@@ -572,7 +573,7 @@ export default function ({
             ? false
             : { showPreviewIcon: usePreview }
         }
-      //iconRender={Icons && Icons[uploadIcon]?.render()}
+        //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
         {slots['customUpload']?.render({
           style: {
@@ -581,8 +582,8 @@ export default function ({
         })}
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
-          (data.isCustom === true && data.config.listType === 'picture') ? (
-          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        (data.isCustom === true && data.config.listType === 'picture') ? (
+          <div>{slots['carrier'] && slots['carrier'].render({ style: data.slotStyle })}</div>
         ) : data.isEditable ? (
           renderUploadText()
         ) : (

@@ -149,7 +149,8 @@ export default function (props: RuntimeParams<Data>) {
             });
 
             return <>{comAray.map((com) => com.jsx)}</>;
-          }
+          },
+          style: data.slotStyle
         })}
     </div>
   );

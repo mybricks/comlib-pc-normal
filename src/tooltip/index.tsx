@@ -13,7 +13,7 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
     } else {
       data.title = JSON.stringify(val);
     }
-    relOutputs['contentComplete']()
+    relOutputs['contentComplete']();
   });
   return (
     <Tooltip
@@ -29,7 +29,7 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
       getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       destroyTooltipOnHide
     >
-      <div>{slots.carrier?.render()}</div>
+      <div>{slots.carrier?.render({ style: data.slotSTyle })}</div>
     </Tooltip>
   );
 }
