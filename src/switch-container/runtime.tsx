@@ -22,14 +22,14 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     outputs[OutputIds.OnChange](val);
   }, []);
   useEffect(() => {
-    if(!data._editSelectId_ || !(data.statusList || []).some(i => i.id === data._editSelectId_)) {
-      data._editSelectId_ = data.statusList[0]?.id
+    if (!data._editSelectId || !(data.statusList || []).some((i) => i.id === data._editSelectId)) {
+      data._editSelectId = data.statusList[0]?.id;
     }
-  }, [data.statusList, data._editSelectId_])
+  }, [data.statusList, data._editSelectId]);
   /** 搭建态选中 */
-  const isEditActive = (item ) => {
-    return  data._editSelectId_ === item.id || data._editSelectId_ === item._id
-  }
+  const isEditActive = (item) => {
+    return data._editSelectId === item.id || data._editSelectId === item._id;
+  };
 
   /** 搭建态 */
   if (env.edit) {
