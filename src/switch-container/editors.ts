@@ -22,18 +22,19 @@ export default {
         }
       },
       {
-        title:'状态列表',
+        title: '状态列表',
         description: '通过眼睛图标，控制编辑态各状态的显示和隐藏；选中某一状态，可往此状态的容器添加内容',
         type: 'Array',
         options: {
           selectable: true,
           addText: '添加状态',
+          defaultSelect: data._editSelectId_ || data.statusList[0]?.id,
           customOptRender: visibleOpt,
           getTitle: ({ title }) => {
             return env.i18n(title);
           },
           onSelect(_id) {
-            data._editSelectId_ = _id ?? data.statusList[0]?.id
+            data._editSelectId_ = _id ?? data.statusList[0]?.id;
           },
           onAdd: (id) => {
             const newSlot = {
@@ -62,6 +63,9 @@ export default {
         },
         value: {
           get({ data }: EditorResult<Data>) {
+            if (!data._editSelectId_) {
+              data._editSelectId_ = data.statusList[0]?.id;
+            }
             return data.statusList;
           },
           set({ data }: EditorResult<Data>, value) {
