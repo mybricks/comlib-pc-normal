@@ -82,7 +82,7 @@ export default function (props: RuntimeParams<Data>) {
 
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
   const isUseOldHeight =
-    style.height === 'fit-content' || style.height === '100%' || style.height === 'auto' || style.height === undefined;
+    style.height === 'fit-content' || style.height === 'auto' || style.height === undefined;
 
   /**
    * 按需加载表格数据
