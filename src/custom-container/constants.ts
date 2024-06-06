@@ -45,10 +45,6 @@ export interface Data {
   overflowX?: OverflowEnum;
   useOverflowUnset?: boolean;
 
-  useClick?: boolean;
-  useMouseEnter?: boolean;
-  useMouseLeave?: boolean;
-
   slotStyle?: CSSProperties;
 
   id?: string;

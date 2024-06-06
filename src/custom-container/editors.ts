@@ -3,8 +3,7 @@ import { OverflowEditor } from './editors/overflowEditor';
 import { PageScrollEditor } from './editors/pageSrcollEditor';
 import { AutoScrollEditor } from './editors/autoScrollEditor';
 import { StyleEditor } from './editors/styleEditor';
-import { ClickEditor } from './editors/clickEditor';
-import { HoverEditor } from './editors/hoverEditor';
+import { EventEditor } from './editors/eventEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
 import { FixedEditor } from './editors/fixedEditor';
 import { getFilterSelector } from '../utils/cssSelector';
@@ -61,11 +60,11 @@ export default {
             }
           }
         },
-        ...ClickEditor, ...HoverEditor, ...AutoScrollEditor, ...PageScrollEditor
+        ...EventEditor, ...AutoScrollEditor, ...PageScrollEditor
       ];
 
       // cate2.title = '交互';
-      // cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
+      // cate2.items = [...EventEditor, ...AutoScrollEditor, ...PageScrollEditor];
 
       return {
         title: '自定义容器'
