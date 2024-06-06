@@ -1,4 +1,4 @@
-import { Data, SlotIds, InputIds } from './constants';
+import { Data, SlotIds, InputIds, OutputIds } from './constants';
 import { getFilterSelector, getFilterSelectorWithId, getLegacyDeclaredStyle } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 
@@ -134,6 +134,26 @@ export default function ({
     data.slotStyle.display = 'block';
   }
   //=========== v1.0.29 end ===============
+
+  /**
+  * @description v1.0.34 默认开放事件
+  */
+  if (!output.get(OutputIds.Click)) {
+    output.add(OutputIds.Click, "点击", {
+      type: "any"
+    });
+  }
+  if (!output.get(OutputIds.MouseEnter)) {
+    output.add(OutputIds.MouseEnter, "鼠标移入", {
+      type: "any"
+    });
+  }
+  if (!output.get(OutputIds.MouseLeave)) {
+    output.add(OutputIds.MouseLeave, "鼠标移出", {
+      type: "any"
+    });
+  }
+  //=========== v1.0.34 end ===============
 
   return true;
 }
