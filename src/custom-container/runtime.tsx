@@ -13,9 +13,6 @@ export default function (props: RuntimeParams<Data>) {
     overflowY,
     overflowX,
     useOverflowUnset,
-    useClick,
-    useMouseEnter,
-    useMouseLeave,
     useFixed
   } = data;
   const ref = useRef<HTMLDivElement>(null);
@@ -189,24 +186,18 @@ export default function (props: RuntimeParams<Data>) {
       className={`${css.container} root`}
       style={{
         position: useFixed ? 'fixed' : 'static',
-        cursor: useClick ? 'pointer' : '',
+        cursor: outputs[OutputIds.Click].getConnections().length ? 'pointer' : '',
         ...legacyStyle,
         ...dynamicStyle
       }}
       onClick={() => {
-        if (useClick && outputs[OutputIds.Click]) {
-          outputs[OutputIds.Click]();
-        }
+        outputs[OutputIds.Click]?.();
       }}
       onMouseEnter={() => {
-        if (useMouseEnter && outputs[OutputIds.MouseEnter]) {
-          outputs[OutputIds.MouseEnter]();
-        }
+        outputs[OutputIds.MouseEnter]?.();
       }}
       onMouseLeave={() => {
-        if (useMouseLeave && outputs[OutputIds.MouseLeave]) {
-          outputs[OutputIds.MouseLeave]();
-        }
+        outputs[OutputIds.MouseLeave]?.();
       }}
     >
       {data.isAutoScroll

@@ -128,16 +128,6 @@ export default function ({
   }
 
   /**
-   * @description v1.0.28 增加hover事件
-  */
-  if (typeof data.useMouseEnter === 'undefined') {
-    data.useMouseEnter = false
-  }
-  if (typeof data.useMouseLeave === 'undefined') {
-    data.useMouseLeave = false
-  }
-
-  /**
   * @description v1.0.29 fix: slotStyle默认值问题
   */
   if (data.slotStyle?.position === 'smart' && data.slotStyle?.display === 'flex') {
