@@ -7,12 +7,14 @@ import React, {
   useState,
   useRef
 } from 'react';
+import { uuid } from '../../utils';
 import { Form } from 'antd';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
+import { refreshSchema } from './schema';
 import css from './styles.less';
 import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
@@ -104,6 +106,55 @@ export default function Runtime(props: RuntimeParams<Data>) {
         setIsEditable(val);
         relOutputs['isReadOnlyDone'](val);
       });
+      // 动态设置表单项
+      if (data.useDynamicItems && inputs[inputIds.setDynamicFormItems]) {
+        inputs[inputIds.setDynamicFormItems]((val: Array<Record<string, any>>, relOutputs: any) => {
+          console.log('动态设置表单项', val, data.items);
+          let newItems: any[] = [];
+          val.forEach((item) => {
+            let sameNameItem = data.items.find((i) => i.name === item.relOriginField);
+            const newId = uuid() as string;
+            if (sameNameItem) {
+              // newItems.push({
+              //   ...sameNameItem,
+              //   id: newId,
+              //   comName: newId,
+              //   name: item.name,
+              //   label: item.label
+              // })
+              // TODO: 输入动态表单顺序和已有的顺序不一致，得知道移动和添加
+              // 输入的表单和搭建册不存在，默认如何添加/处理
+              newItems.push({ ...sameNameItem, name: item.name, label: item.label, id: uuid() });
+            } else {
+              // newItems.push({
+              // })
+            }
+          });
+          data.items = newItems;
+          console.log('finally', newItems);
+          // refreshSchema({ data, inputs, outputs, slots });
+          // const newCols = val.map((item) => {
+          //   if (item.usePrevious) {
+          //     const previousCol = data._inicCols.find((i) => i.dataIndex === item.dataIndex) || null;
+          //     return previousCol || item;
+          //   } else if (item.template) {
+          //     const templateCol = data._inicCols.find(i => i.dataIndex === item.template)
+          //     if (!templateCol) {
+          //       throw new Error(`找不到名为${item.template}的模板列！`)
+          //     }
+          //     Object.keys(templateCol).forEach(key => {
+          //       if (!(key in item)) {
+          //         item[key] = templateCol[key]
+          //       }
+          //     })
+          //     return item
+          //   } else {
+          //     return item;
+          //   }
+          // });
+          // data.columns = newCols;
+        });
+      }
 
       // 校验字段
       inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[], relOutputs) => {

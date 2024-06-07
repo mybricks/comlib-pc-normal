@@ -178,6 +178,8 @@ export interface Data {
   defaultCollapsed: boolean
 
   ellipseMode?: 'wrap' | 'ellipse'
+  /** shying动态设置表单项 */
+  useDynamicItems?: boolean
 }
 
 interface DomainModel {

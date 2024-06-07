@@ -42,6 +42,7 @@ const SlotContent = (props) => {
       itemWrap(com: { id; jsx; name; scope }) {
         // todo name
         const { item, isFormItem } = getFormItem(data, com);
+        // debugger
         return isFormItem ? (
           <FormItem
             data={data}
@@ -58,8 +59,8 @@ const SlotContent = (props) => {
       },
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
-
-        const jsx = comAray?.map((com, idx) => {
+        console.log('wrap --- ', items, data.useDynamicItems);
+        let jsx = comAray?.map((com, idx) => {
           if (com) {
             const { item, isFormItem } = getFormItem(data, com);
 
@@ -103,6 +104,52 @@ const SlotContent = (props) => {
           console.error(com, comAray);
           return <div key={idx}>组件错误</div>;
         });
+
+        if (data.useDynamicItems) {
+          jsx = data.items.map((subItem) => {
+            let com = comAray.find((item) => item.name === subItem.comName);
+            // console.log('com', com)
+            if (com) {
+              const { item, isFormItem } = getFormItem(data, com);
+
+              if (!item) {
+                if (items.length === comAray.length) {
+                  console.warn(`formItem comId ${com.id} formItem not found`);
+                }
+                return;
+              }
+
+              const { widthOption, span, width } = item;
+
+              // 表单项的处理
+              if (isFormItem) {
+                if (item.comName) {
+                  childrenInputs[com.name] = com.inputs;
+                } else {
+                  childrenInputs[com.id] = com.inputs;
+                }
+              }
+
+              if (typeof item?.visible !== 'undefined') {
+                item.visible = com.style.display !== 'none';
+              } else {
+                item['visible'] = true;
+              }
+
+              const flexBasis = isMobile
+                ? '100%'
+                : widthOption === 'px'
+                ? `${width}px`
+                : `${(span * 100) / 24}%`;
+
+              return (
+                <Col style={{ display: com.style.display, width: flexBasis }} key={subItem.id}>
+                  {com.jsx}
+                </Col>
+              );
+            }
+          });
+        }
 
         if (layoutType === 'QueryFilter') {
           // 查询表单，支持展开/收起
