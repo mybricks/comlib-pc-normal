@@ -3,9 +3,19 @@
   border: 5px solid #f7f7f7;
 }
 
-.colorPicker {
-  z-index: 10000;
-  position: absolute;
-  width: auto;
-  height: auto;
+.overlay {
+  :global {
+    .ant-popover-inner {
+      border-radius: 4px;
+    }
+    .ant-popover-inner-content {
+      padding: 0px;
+    }
+    .ant-popover-arrow-content {
+      box-shadow: 3px 3px 7px transparent !important;
+    }
+    .ant-popover-arrow-content:before {
+      background: transparent !important;
+    }
+  }
 }
