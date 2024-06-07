@@ -25,7 +25,10 @@ export const inputIds = {
   resetValue: 'resetValue',
 
   // 编辑/只读
-  isEditable: 'isEditable'
+  isEditable: 'isEditable',
+
+  // 动态设置表单项
+  setDynamicFormItems: 'setDynamicFormItems'
 }
 
 export const outputIds = {
@@ -51,7 +54,10 @@ export const outputIds = {
   setValidateInfoDone: "setValidateInfoDone",
 
   // 编辑/只读
-  isEditableDone: "isEditableDone"
+  isEditableDone: "isEditableDone",
+
+  // 动态设置表单项完成
+  setDynamicFormItemsDone: 'setDynamicFormItemsDone'
 }
 
 export const slotInputIds = {

@@ -145,6 +145,18 @@
         "setFormItemsPropsDone"
       ],
       "desc": "动态配置表单项标题、提示语、必填样式等"
+    },
+    {
+      "id": "setDynamicFormItems",
+      "title": "动态设置表单项配置",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "rels": [
+        "setDynamicFormItemsDone"
+      ],
+      "desc": "基于搭建的规则，动态生成新的一组表单项字段"
     }
   ],
   "outputs": [
@@ -320,14 +332,6 @@
             ]
           }
         }
-      }
-    },
-    {
-      "id": "setFormItemsPropsDone",
-      "title": "设置表单项配置完成",
-      "schema": {
-        "type": "object",
-        "properties": {}
       }
     }
   ],

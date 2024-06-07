@@ -66,6 +66,7 @@ export default {
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
+      console.log('child', child);
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {
@@ -74,7 +75,6 @@ export default {
           item.schema = com.schema;
         } else {
           const nowC = data.nameCount++;
-
           data.items.push({
             id,
             comName: name,
@@ -381,7 +381,8 @@ export default {
             {
               title: '启用24栅格布局系统',
               type: 'Switch',
-              description: '启用后，每个表单项宽度可以占据8、6、4等可以被24整除的数，相应这一行就被分为了3(24/8)、4(24/6)、6(24/4)列；未启用，可设置一行几列式布局',
+              description:
+                '启用后，每个表单项宽度可以占据8、6、4等可以被24整除的数，相应这一行就被分为了3(24/8)、4(24/6)、6(24/4)列；未启用，可设置一行几列式布局',
               ifVisible({ data, id, name }: EditorResult<Data>) {
                 return data.layoutType === 'QueryFilter';
               },
@@ -480,7 +481,59 @@ export default {
             }
           ]
         },
-
+        {
+          title: '动态设置表单项',
+          description:
+            '开启后, 支持通过逻辑连线,根据已有的编辑态搭建内容，动态设置表格标题、字段和宽度',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useDynamicItems;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
+              const hasEvent = input.get(inputIds.setDynamicFormItems);
+              const hasEvent1 = output.get(inputIds.setDynamicFormItems);
+              console.log('formItems,', data.items);
+              if (value) {
+                const formatSchema = {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      name: {
+                        type: 'string',
+                        description: '表单项字段名'
+                      },
+                      label: {
+                        type: 'string',
+                        description: '表单项标签'
+                      },
+                      relOriginField: {
+                        type: 'string',
+                        enum: data.items.map((iter) => iter.name),
+                        description: `使用搭建态表单中已有的字段类型,可以取以下字段,${data.items
+                          .map((iter) => iter.name)
+                          .join(',')}`
+                      }
+                    }
+                  }
+                };
+                console.log('set --- ', formatSchema);
+                !hasEvent &&
+                  input.add(inputIds.setDynamicFormItems, `动态设置表单项`, formatSchema);
+                !hasEvent1 &&
+                  output.add(inputIds.setDynamicFormItems, `生成表单项内容`, formatSchema);
+                input
+                  .get(inputIds.setDynamicFormItems)
+                  .setRels([outputIds.setDynamicFormItemsDone]);
+              } else {
+                hasEvent && input.remove(inputIds.setDynamicFormItems);
+                hasEvent1 && output.remove(inputIds.setDynamicFormItems);
+              }
+              data.useDynamicItems = value;
+            }
+          }
+        },
         {
           title: '标题',
           ifVisible({ data }: EditorResult<Data>) {
@@ -614,7 +667,7 @@ export default {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             let name = focusArea.dataset.formItem;
-            const { item } = getFormItem(data, {  name });
+            const { item } = getFormItem(data, { name });
             return item?.label;
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
