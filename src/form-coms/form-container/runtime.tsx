@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { uuid } from '../../utils';
 import { Form } from 'antd';
-import { Data, FormControlInputId, FormItems } from './types';
+import { Data, DynamicItemData, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
@@ -38,6 +38,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
+
+  const dynamicEnableOrDisabledRef = useRef(() => {})
 
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
@@ -108,51 +110,46 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
       // 动态设置表单项
       if (data.useDynamicItems && inputs[inputIds.setDynamicFormItems]) {
-        inputs[inputIds.setDynamicFormItems]((val: Array<Record<string, any>>, relOutputs: any) => {
-          console.log('动态设置表单项', val, data.items);
+        inputs[inputIds.setDynamicFormItems]((val: Array<DynamicItemData>, relOutputs: any) => {
           let newItems: any[] = [];
+          const uniqueNames:string[] = [];
+          const notFoundOrUniqueNames: string[] = [];
+          const disableFormList: string[] = [];
+          const enableFormList: string[] = [];
           val.forEach((item) => {
             let sameNameItem = data.items.find((i) => i.name === item.relOriginField);
-            const newId = uuid() as string;
-            if (sameNameItem) {
-              // newItems.push({
-              //   ...sameNameItem,
-              //   id: newId,
-              //   comName: newId,
-              //   name: item.name,
-              //   label: item.label
-              // })
-              // TODO: 输入动态表单顺序和已有的顺序不一致，得知道移动和添加
-              // 输入的表单和搭建册不存在，默认如何添加/处理
-              newItems.push({ ...sameNameItem, name: item.name, label: item.label, id: uuid() });
+            let isUniqueName = !uniqueNames.includes(item.name)
+            if (sameNameItem && isUniqueName) {
+              uniqueNames.push(item.name)
+              // 动态输入的表单在搭建册不存在，不添加
+              const disabledConfig =  item.common?.disabled !== undefined ? { disabled: item.common?.disabled } : {} 
+              const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } = item.common || {}
+              let dynamicStyle = {
+                labelStyle,
+                descriptionStyle,
+                labelAlign,
+                labelAutoWrap
+              }
+              if(typeof item.common?.disabled === 'boolean') {
+                (item.common?.disabled ? disableFormList : enableFormList).push(item.name);
+              }
+              let config = Object.assign(sameNameItem.config || { }, disabledConfig)
+              newItems.push({ ...sameNameItem, name: item.name, label: item.label, id: uuid(), ...(item?.common ? item.common : {}), config, dynamicStyle });
             } else {
-              // newItems.push({
-              // })
+              notFoundOrUniqueNames.push(item.name)
             }
           });
           data.items = newItems;
-          console.log('finally', newItems);
-          // refreshSchema({ data, inputs, outputs, slots });
-          // const newCols = val.map((item) => {
-          //   if (item.usePrevious) {
-          //     const previousCol = data._inicCols.find((i) => i.dataIndex === item.dataIndex) || null;
-          //     return previousCol || item;
-          //   } else if (item.template) {
-          //     const templateCol = data._inicCols.find(i => i.dataIndex === item.template)
-          //     if (!templateCol) {
-          //       throw new Error(`找不到名为${item.template}的模板列！`)
-          //     }
-          //     Object.keys(templateCol).forEach(key => {
-          //       if (!(key in item)) {
-          //         item[key] = templateCol[key]
-          //       }
-          //     })
-          //     return item
-          //   } else {
-          //     return item;
-          //   }
-          // });
-          // data.columns = newCols;
+          if(disableFormList.length || enableFormList.length) {
+              // 触发批量禁用、启用;需要在动态表单项childrenInputs
+              dynamicEnableOrDisabledRef.current = () => {
+                disableFormList.length && setDisabled(disableFormList)
+                enableFormList.length && setEnabled(enableFormList);
+              }
+          }
+          if(notFoundOrUniqueNames.length) {
+            console.warn(`以下动态设置的字段名重复或者在搭建册不存在关联的字段`, notFoundOrUniqueNames.join(','))
+          }
         });
       }
 
@@ -171,7 +168,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           let count = 0;
           validNameList.forEach((name) => {
             const item = data.items.find((item) => item.name === name);
-            const input = getFromItemInputEvent(item, childrenInputs);
+            const index = data.items.findIndex(item => item.name === name)
+            const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
             validateForInput(
               {
                 input,
@@ -320,7 +318,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       Object.keys(formData).forEach((key, inx) => {
         const isLast = inx === length;
         setValuesForInput(
-          { childrenInputs, formItems: data.items, name: key },
+          { childrenInputs, formItems: data.items, name: key, useDynamicItems: data.useDynamicItems },
           'setValue',
           formData,
           isLast ? cb : void 0
@@ -339,7 +337,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         Object.keys(formData).forEach((key, inx) => {
           const isLast = inx === length;
           setValuesForInput(
-            { childrenInputs, formItems: data.items, name: key },
+            { childrenInputs, formItems: data.items, name: key, useDynamicItems: data.useDynamicItems },
             'setInitialValue',
             formData,
             isLast ? cb : void 0
@@ -360,7 +358,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // const id = item.id;
         // const input = childrenInputs[id];
         const isLast = index === data.items.length - 1;
-        const input = getFromItemInputEvent(item, childrenInputs);
+        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
         input?.resetValue().resetValueDone(() => {
           item.validateStatus = undefined;
           item.help = undefined;
@@ -373,27 +371,27 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setDisabled = (nameList?: string[]) => {
-    data.items.forEach((item) => {
+    data.items.forEach((item, index) => {
       if (!nameList || nameList.includes(item.name)) {
-        const input = getFromItemInputEvent(item, childrenInputs);
+        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
         input?.setDisabled && input?.setDisabled();
       }
     });
   };
 
   const setEnabled = (nameList?: string[]) => {
-    data.items.forEach((item) => {
+    data.items.forEach((item, index) => {
       if (!nameList || nameList.includes(item.name)) {
-        const input = getFromItemInputEvent(item, childrenInputs);
+        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
         input?.setEnabled && input?.setEnabled();
       }
     });
   };
 
   const setIsEditable = (val, nameList?: string[]) => {
-    data.items.forEach((item) => {
+    data.items.forEach((item, index) => {
       if (!nameList || nameList.includes(item.name)) {
-        const input = getFromItemInputEvent(item, childrenInputs);
+        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
         input?.isEditable && input?.isEditable(val);
       }
     });
@@ -455,7 +453,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         formItems.map((item) => {
           // const id = item.id;
           // const input = childrenInputs[id];
-          const input = getFromItemInputEvent(item, childrenInputs);
+          const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
 
           return new Promise((resolve, reject) => {
             if (data.submitHiddenFields && !data.validateHiddenFields && !item.visible) {
@@ -494,12 +492,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const getValue = useCallback(() => {
     return new Promise((resolve, reject) => {
       const formItems = getFormItems(data, childrenInputs);
-
       Promise.all(
         formItems.map((item) => {
           // const id = item.id;
           // const input = childrenInputs[id];
-          const input = getFromItemInputEvent(item, childrenInputs);
+          const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
 
           return new Promise((resolve, reject) => {
             let value = {};
@@ -539,7 +536,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
         getValue()
           .then((values: any) => {
             let res = { ...values, ...params };
-
             if (
               data.domainModel?.entity?.fieldAry?.length > 0 &&
               data.domainModel?.isQuery &&
@@ -594,6 +590,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               data={data}
               childrenInputs={childrenInputs}
               outputs={outputs}
+              dynamicEnableOrDisabledRef={dynamicEnableOrDisabledRef}
               submit={submitMethod}
             />
           </Form>
@@ -610,7 +607,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
  */
 const getFormItems = (data: Data, childrenInputs) => {
   let formItems = data.items;
-
+  const useDynamicItems = data.useDynamicItems
+  if(useDynamicItems) {
+    if (data.items.length !== Object.keys(childrenInputs).length) {
+      formItems = formItems.filter((item, index) => {
+        if (item.comName) {
+          return childrenInputs[item.name];
+        }
+        return childrenInputs[item.id];
+      });
+    }
+      // 过滤隐藏表单项
+    if (!data.submitHiddenFields) {
+      formItems = formItems.filter((item) => item.visible);
+    }
+    return formItems
+  }
   // hack 脏数据问题，表单项数与实际表单项数不一致
   if (data.items.length !== Object.keys(childrenInputs).length) {
     formItems = formItems.filter((item) => {
@@ -626,7 +638,6 @@ const getFormItems = (data: Data, childrenInputs) => {
   if (!data.submitHiddenFields) {
     formItems = formItems.filter((item) => item.visible);
   }
-
   return formItems;
 };
 
@@ -674,12 +685,12 @@ const validateForInput = (
   });
 };
 
-const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values, cb?) => {
+const setValuesForInput = ({ childrenInputs, formItems, name, useDynamicItems }, inputId, values, cb?) => {
   const item = formItems.find((item) => item.name === name);
+  const itemIdx = formItems.findIndex(item => item.name === name)
   const inputDoneId = inputId + 'Done';
-
   if (item) {
-    const input = getFromItemInputEvent(item, childrenInputs);
+    const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems });
 
     if (input) {
       if (isObject(values[name])) {
@@ -698,8 +709,12 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values,
   }
 };
 
-const getFromItemInputEvent = (formItem, childrenInputs) => {
+const getFromItemInputEvent = (formItem, childrenInputs, options?: { useDynamicItems: boolean}) => {
   let input;
+  if(options?.useDynamicItems) {
+    input = childrenInputs[formItem.name];
+    return input
+  }
 
   input = childrenInputs[formItem.id];
   if (formItem.comName) {

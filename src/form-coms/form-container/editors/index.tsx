@@ -3,7 +3,7 @@ import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types';
 import { FormLayout } from 'antd/es/form/Form';
 import { ButtonType } from 'antd/es/button/button';
 import { actionsEditor } from './actions';
-import { inputIds, outputIds } from '../constants';
+import { inputIds, outputIds, commonDynamicItemSchema } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
 import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
@@ -66,7 +66,6 @@ export default {
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
-      console.log('child', child);
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {
@@ -514,15 +513,15 @@ export default {
                         description: `使用搭建态表单中已有的字段类型,可以取以下字段,${data.items
                           .map((iter) => iter.name)
                           .join(',')}`
-                      }
+                      },
+                      common: commonDynamicItemSchema
                     }
                   }
                 };
-                console.log('set --- ', formatSchema);
                 !hasEvent &&
                   input.add(inputIds.setDynamicFormItems, `动态设置表单项`, formatSchema);
                 !hasEvent1 &&
-                  output.add(inputIds.setDynamicFormItems, `生成表单项内容`, formatSchema);
+                  output.add(outputIds.setDynamicFormItemsDone, `生成表单项内容`, formatSchema);
                 input
                   .get(inputIds.setDynamicFormItems)
                   .setRels([outputIds.setDynamicFormItemsDone]);
