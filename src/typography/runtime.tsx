@@ -120,7 +120,8 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
             color={item.color}
             style={{
               margin: 0,
-              cursor: item.click ? 'pointer' : 'unset'
+              cursor: item.click ? 'pointer' : 'unset',
+              ...item.style
             }}
           >
             {itemContent}
