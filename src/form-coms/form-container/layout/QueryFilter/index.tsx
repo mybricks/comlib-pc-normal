@@ -27,11 +27,11 @@ const QueryFilter = (props: QueryFilterProps) => {
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
 
   const [span, colProps] = useMemo(() => {
-    if(data.enable24Grid) {
+    if (data.enable24Grid) {
       let spanVal = data.span || 8
-      return [spanVal, { span: spanVal}]
+      return [spanVal, { span: spanVal }]
     }
-    return [24 / data.formItemColumn, { flex: `0 1 ${100/ data.formItemColumn}%`}]
+    return [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }]
   }, [data.formItemColumn, data.span, data.enable24Grid])
 
   const actionStyle: React.CSSProperties = {
@@ -200,7 +200,7 @@ const QueryFilter = (props: QueryFilterProps) => {
                     disabled={item.disabled || data.config.disabled}
                     onClick={() => onClick(item)}
                   >
-                    {item.title}
+                    {env.i18n(item.title)}
                   </Button>
                 );
               })}
