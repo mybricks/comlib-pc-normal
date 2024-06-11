@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import { validateFormItem, RuleKeys } from '../utils/validator';
 import css from './runtime.less';
+import { Popover } from 'antd';
 import ColorPicker from './color-picker';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
@@ -21,8 +22,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>(data.color);
 
-  const popPositionRef = useRef({})
   const outRef = useRef(null);
+  const colorRef = useRef<HTMLDivElement>(null);
 
   const [color, setColor] = useState(data.color);
 
@@ -145,10 +146,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onClick = (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    if(!isShow) {
-      const { top, left } = outRef.current?.getBoundingClientRect?.();
-      popPositionRef.current = { left, top }
-    }
     setIsShow(!isShow);
   };
 
@@ -205,6 +202,32 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
+  const handleWindowScroll = () => {
+    // 滚动关闭弹出层
+    setIsShow(false);
+  };
+
+  const handlePanelClick = (e: MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  useEffect(() => {
+    if (isShow) {
+      (env?.canvasElement || document.body).addEventListener('scroll', handleWindowScroll, true);
+      (env?.canvasElement || document.body).addEventListener('resize', handleWindowScroll);
+      colorRef.current?.addEventListener?.('click', handlePanelClick);
+      return () => {
+        (env?.canvasElement || document.body).removeEventListener(
+          'scroll',
+          handleWindowScroll,
+          true
+        );
+        (env?.canvasElement || document.body).removeEventListener('resize', handleWindowScroll);
+        colorRef.current?.addEventListener?.('click', handlePanelClick);
+      };
+    }
+  }, [isShow]);
+
   return (
     <div style={{ width: data.width }} ref={outRef}>
       <div
@@ -216,17 +239,41 @@ export default function Runtime(props: RuntimeParams<Data>) {
           cursor: data.disabled ? 'not-allowed' : void 0
         }}
       >
-        <div
-          style={{ height: '22px', backgroundColor: data.disabled ? 'hsla(0,0%,100%,.8)' : void 0 }}
-        ></div>
+        <Popover
+          trigger={['click']}
+          visible={isShow}
+          placement="top"
+          autoAdjustOverflow={true}
+          arrowPointAtCenter={false}
+          mouseLeaveDelay={1}
+          overlayClassName={css.overlay}
+          content={
+            <div ref={colorRef}>
+              <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
+            </div>
+          }
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+        >
+          <div
+            style={{
+              height: '22px',
+              backgroundColor: data.disabled ? 'hsla(0,0%,100%,.8)' : void 0
+            }}
+          ></div>
+        </Popover>
       </div>
-      <div className={css.colorPicker} style={{ top: data.width, }} onClick={colorOnClick}>
-        {isShow ? (
-          <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
+      {/* <div className={css.colorPicker} style={{ top: '32px' }} onClick={colorOnClick}> */}
+      {/* {isShow ? (
+          <ColorPicker
+            color={color || '#000000'}
+            env={env}
+            positionRef={popPositionRef}
+            onChangeComplete={onChangeComplete}
+          />
         ) : (
           void 0
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
     </div>
   );
 }
