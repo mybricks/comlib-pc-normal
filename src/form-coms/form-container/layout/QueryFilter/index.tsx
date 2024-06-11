@@ -10,7 +10,16 @@ import { getWhatToDoWithoutPermission } from '../../../../utils/permission';
 
 interface QueryFilterProps {
   data: Data;
-  comAray: { id; name; jsx; def; inputs; outputs; style }[];
+  comAray: {
+    index?: number;
+    id;
+    name;
+    jsx;
+    def;
+    inputs;
+    outputs;
+    style;
+  }[];
   children?: React.ReactNode;
   isEmpty: boolean;
   isVerticalModel: boolean;
@@ -36,7 +45,7 @@ const QueryFilter = (props: QueryFilterProps) => {
 
   const actionStyle: React.CSSProperties = {
     textAlign: 'right',
-    padding: inlinePadding?.map(String).map(unitConversion).join(' '),
+    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
     // width: `${100 / data.formItemColumn}%`
   };
 
@@ -81,12 +90,12 @@ const QueryFilter = (props: QueryFilterProps) => {
   // console.log(processedList)
 
   let idx = -1;
-  const doms = comAray?.map((com) => {
+  const doms = data.items?.map((subItem, index) => {
     const items = data.items;
-
+    let com = comAray.find((item) => item.name === subItem.comName);
     if (com) {
+      com.index = index;
       const { item, isFormItem } = getFormItem(data, com);
-
       if (!item) {
         if (items.length === comAray.length) {
           console.warn(`formItem comId ${com.id} formItem not found`);
@@ -97,13 +106,20 @@ const QueryFilter = (props: QueryFilterProps) => {
       // const { widthOption, width } = item;
 
       let hidden = false;
+      let comJSX = data.useDynamicItems ? com.getJsx({ index: index, id: item.name }) : com;
 
       // 表单项的处理
       if (isFormItem) {
-        if (item.comName) {
-          childrenInputs[com.name] = com.inputs;
+        if (!data.useDynamicItems) {
+          if (item.comName) {
+            childrenInputs[com.name] = com.inputs;
+          } else {
+            childrenInputs[com.id] = com.inputs;
+          }
         } else {
-          childrenInputs[com.id] = com.inputs;
+          if (item.comName) {
+            childrenInputs[item.name] = comJSX.inputs;
+          }
         }
       }
 
@@ -134,7 +150,7 @@ const QueryFilter = (props: QueryFilterProps) => {
 
         return (
           <Col style={{ display: display }} {...colProps} key={com.id}>
-            {com.jsx}
+            {comJSX.jsx}
           </Col>
         );
       }
@@ -142,12 +158,79 @@ const QueryFilter = (props: QueryFilterProps) => {
       return (
         item?.visible && (
           <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
-            {com.jsx}
+            {comJSX.jsx}
           </Col>
         )
       );
     }
   });
+  // const doms = comAray?.map((com) => {
+  //   const items = data.items;
+
+  //   if (com) {
+  //     const { item, isFormItem } = getFormItem(data, com);
+
+  //     if (!item) {
+  //       if (items.length === comAray.length) {
+  //         console.warn(`formItem comId ${com.id} formItem not found`);
+  //       }
+  //       return;
+  //     }
+
+  //     // const { widthOption, width } = item;
+
+  //     let hidden = false;
+
+  //     // 表单项的处理
+  //     if (isFormItem) {
+  //       if (item.comName) {
+  //         childrenInputs[com.name] = com.inputs;
+  //       } else {
+  //         childrenInputs[com.id] = com.inputs;
+  //       }
+  //     }
+
+  //     if (typeof item?.visible !== 'undefined') {
+  //       item.visible = com.style.display !== 'none';
+  //     } else {
+  //       item['visible'] = true;
+  //     }
+  //     if (item['visible']) {
+  //       idx++;
+  //     }
+  //     if (idx === 0) {
+  //       firstRowFull = span === 24;
+  //     }
+
+  //     if (collapsed) {
+  //       hidden = (firstRowFull || idx >= 24 / span - 1) && !!idx;
+  //     }
+
+  //     item['hidden'] = hidden;
+
+  //     if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
+  //       let display = com.style.display;
+
+  //       if (display !== 'none') {
+  //         display = item?.hidden ? 'none' : 'block';
+  //       }
+
+  //       return (
+  //         <Col style={{ display: display }} {...colProps} key={com.id}>
+  //           {com.jsx}
+  //         </Col>
+  //       );
+  //     }
+
+  //     return (
+  //       item?.visible && (
+  //         <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
+  //           {com.jsx}
+  //         </Col>
+  //       )
+  //     );
+  //   }
+  // });
   // 表单项总宽度超出一行时显示展开/收起按钮
   const showCollapseButton = (idx + 1) * span >= 24;
 

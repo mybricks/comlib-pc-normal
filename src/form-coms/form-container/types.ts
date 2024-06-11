@@ -1,5 +1,6 @@
 import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
+import { CSSProperties } from 'react'
 export interface Action {
   title: string
   loading?: boolean
@@ -199,6 +200,7 @@ export interface FormControlProps {
   value?: string | number
   onChange?: (value: string | number | undefined) => void
   field?: any
+  index?: number
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
@@ -210,4 +212,21 @@ export type FormItemColonType = true | false | "default";
 export enum LocationEnum {
   FRONT = 'front',
   BACK = 'back'
+}
+
+
+export interface DynamicItemData {
+  name: string
+  relOriginField: string
+  label: string
+  common?: {
+    labelAlign?: 'left' | 'right' | 'default'
+    labelAutoWrap?: boolean | 'default'
+    description?: string
+    labelStyle?: CSSProperties
+    descriptionStyle?: CSSProperties
+    tooltip?: string
+    disabled?: boolean
+    required?: boolean
+  }
 }

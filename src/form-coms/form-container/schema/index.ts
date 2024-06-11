@@ -1,4 +1,4 @@
-import { outputIds, inputIds, slotInputIds, formItemPropsSchema } from '../constants'
+import { outputIds, inputIds, slotInputIds, formItemPropsSchema, commonDynamicItemSchema } from '../constants'
 import { deepCopy } from '../../../utils'
 import { Data } from '../types'
 
@@ -14,6 +14,33 @@ function getSubmitSchema(data) {
     properties
   }
   return schema
+}
+
+function getDynamicItemsSchema(data) {
+  return {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          description: '表单项字段名'
+        },
+        label: {
+          type: 'string',
+          description: '表单项标签'
+        },
+        relOriginField: {
+          type: 'string',
+          enum: data.items.map((iter) => iter.name),
+          description: `使用搭建态表单中已有的字段类型,可以取以下字段:${data.items
+            .map((iter) => iter.name)
+            .join(',')}`
+        },
+        common: commonDynamicItemSchema
+      }
+    }
+  };
 }
 
 function getFormItemPropsSchema(data: Data) {
@@ -63,6 +90,12 @@ function refreshSchema({ data, inputs, outputs, slots }) {
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
   inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema);
 
+  if(data.useDynamicItems) {
+    // 动态生成表单项开启后，更新schema内容
+    const dynamicItemsSchema  = getDynamicItemsSchema(data)
+    inputs.get(inputIds.setDynamicFormItems).setSchema(dynamicItemsSchema)
+    outputs.get(outputIds.setDynamicFormItemsDone).setSchema(dynamicItemsSchema)
+  }
   if (outputs.get('setInitialValuesDone')) {
     outputs.get('setInitialValuesDone').setSchema(schema);
   }
