@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Spin } from 'antd';
 import { SpinSize } from 'antd/es/spin';
+import css from './runtime.less';
 
 export interface Data {
   tip?: string;
@@ -27,7 +28,7 @@ export default function ({ env, data, inputs, slots }: RuntimeParams<Data>) {
 
   return (
     <Fragment>
-      <Spin spinning={loading} size={data.size} tip={env.i18n(data.tip)}>
+      <Spin wrapperClassName={css['spin-wrapper']} spinning={loading} size={data.size} tip={env.i18n(data.tip)}>
         {slots['content']?.render()}
       </Spin>
     </Fragment>

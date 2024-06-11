@@ -20,8 +20,11 @@ import {
 } from './utils';
 
 export default {
+  '@init': ({ style }) => {
+    style.height = 'fit-content';
+  },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     title: '树组件',
@@ -50,12 +53,19 @@ export default {
           }
         }
       },
+      /**
+       * v1.0.64已废弃
+       */
       {
         title: '设置滚动高度',
         description: '固定树组件的高度，同时可以开启虚拟滚动，提高加载性能',
         type: 'text',
         options: {
           placeholder: '例如：100px/100%/100vw/calc(100px)'
+        },
+        // 兼容老页面
+        ifVisible({ data, style }: EditorResult<Data>) {
+          return style.height === 'auto' && !!data.scrollHeight;
         },
         value: {
           get({ data }: EditorResult<Data>) {

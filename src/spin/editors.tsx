@@ -9,6 +9,12 @@ interface Result {
 }
 
 export default {
+  '@resize': {
+    options: ['height']
+  },
+  '@init': ({ style }) => {
+    style.height = 'fit-content'
+  },
   ':root': [
     {
       title: '加载图标大小',

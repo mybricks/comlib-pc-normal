@@ -21,9 +21,10 @@ import TreeNode from './Components/TreeNode/index';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import css from './style.less';
+import useParentHeight from './hooks/use-parent-height';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, onError, logger, title } = props;
+  const { env, data, style, inputs, outputs, onError, logger, title } = props;
 
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
@@ -37,6 +38,10 @@ export default function (props: RuntimeParams<Data>) {
   const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
   const setTreeDataDone = useRef<null | ((arg: any) => any)>(null);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [parentHeight] = useParentHeight(ref);
 
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
@@ -618,13 +623,18 @@ export default function (props: RuntimeParams<Data>) {
 
   return (
     <div
+      ref={ref}
       className={`${isEmpty ? css.emptyWrapper : ''} ${
         data.useCompactTheme ? css.singleCompact : ''
       }`}
       style={{
-        maxHeight: isEmpty ? void 0 : data.scrollHeight,
+        maxHeight: isEmpty
+          ? void 0
+          : style.height === 'fit-content'
+          ? data.scrollHeight
+          : parentHeight,
         // height: isEmpty ? data.scrollHeight : void 0,
-        height: data.scrollHeight || void 0
+        height: style.height === 'fit-content' ? data.scrollHeight : parentHeight || void 0
         // overflowY: data.scrollHeight ? 'scroll' : void 0,
       }}
     >
@@ -633,14 +643,14 @@ export default function (props: RuntimeParams<Data>) {
           description={<span>{env.i18n(data.description)}</span>}
           image={data.isImage ? data.image : void 0}
         />
-      ) : !!data.scrollHeight ? (
+      ) : style.height === 'fit-content' && !data.scrollHeight ? (
+        treeWithHeight()
+      ) : (
         <AutoSizer disableWidth>
           {({ height }) => {
             return treeWithHeight(height);
           }}
         </AutoSizer>
-      ) : (
-        treeWithHeight()
       )}
     </div>
   );
