@@ -26,5 +26,39 @@ export default function ({
     input.get(InputIds.Open).setRels(["ok", "cancel"]);
   }
 
+  /**
+   * @description v1.0.12 -> v1.0.13 增加description
+   * 
+  */
+  const openSchema = {
+    type: "object",
+    properties: {
+      title: {
+        type: "string",
+        description: "标题文案"
+      },
+      content: {
+        type: "string",
+        description: "内容文案"
+      },
+      cancelText: {
+        type: "string",
+        description: "取消按钮文案"
+      },
+      okText: {
+        type: "string",
+        description: "确认按钮文案"
+      },
+      outputValue: {
+        type: "any",
+        description: "输出值内容"
+      }
+    }
+  }
+  const oldSchema = input.get(InputIds.Open).schema;
+  if(oldSchema !== openSchema){
+    input.get(InputIds.Open).setSchema(openSchema);
+  }
+
   return true;
 }

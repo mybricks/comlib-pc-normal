@@ -9,6 +9,8 @@ export const descriptionUp = (
   }
 
   list.map((item)=>{
-    IOMap[item.type].get(item.id).setSchema(item.schema)
+    if(IOMap[item.type].get(item.id).schema !== item.schema){
+      IOMap[item.type].get(item.id).setSchema(item.schema);
+    }
   })
 }

@@ -3,13 +3,14 @@
   "namespace": "mybricks.normal-pc.date-picker-full-open",
   "author": "jidan.wd",
   "author_name": "jidan.wd",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "全开式日期选择器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
   "data": "../date-picker/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../date-picker/editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
@@ -101,6 +102,7 @@
         "properties": {
           "validateStatus": {
             "type": "enum",
+            "descriptions": "校验状态，成功/失败",
             "items": [
               {
                 "type": "string",
@@ -204,10 +206,12 @@
         "properties": {
           "validateStatus": {
             "title": "校验状态",
+            "description": "校验状态",
             "type": "string"
           },
           "help": {
             "title": "校验提示",
+            "description": "校验提示",
             "type": "string"
           }
         }
@@ -275,6 +279,7 @@
       "title": "设置校验状态完成",
       "schema": {
         "type": "object",
+        "descriptions": "校验状态，成功/失败",
         "properties": {
           "validateStatus": {
             "type": "enum",
@@ -346,10 +351,12 @@
         "properties": {
           "value": {
             "title": "日期",
+            "description": "日期面板值",
             "type": "string"
           },
           "mode": {
             "title": "日期选择类型",
+            "description": "日期选择类型，包括year、month、date等",
             "type": "string"
           }
         }
