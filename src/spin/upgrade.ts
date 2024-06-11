@@ -1,4 +1,4 @@
-export default function ({ input, output, slot, data }): boolean {
+export default function ({ input, output, slot, data, style }): boolean {
   // 补全 output => openLoadingDone
   if (!output.get('openLoadingDone')) {
     output.add('openLoadingDone', '开始加载后', {
@@ -29,6 +29,11 @@ export default function ({ input, output, slot, data }): boolean {
     !input.get('closeLoading')?.rels?.includes('closeLoadingDone')
   ) {
     input.get('closeLoading').setRels(['closeLoadingDone']);
+  }
+
+  if(!style.height) {
+    style.height = 'fit-content'
+    style.heightAuto = true
   }
 
   return true;
