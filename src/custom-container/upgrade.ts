@@ -155,5 +155,23 @@ export default function ({
   }
   //=========== v1.0.34 end ===============
 
+  /**
+  * @description v1.0.34 -> v1.0.35
+  */
+  const styleSchema = {
+    "type": "object",
+    "properties": {
+      "background": {
+        "type": "string",
+        "description": "背景色"
+      }
+    }
+  }
+  const oldSchema = input.get("setStyle").schema;
+  if(oldSchema !== styleSchema){
+    input.get("setStyle").setSchema(styleSchema);
+  }
+  //=========== v1.0.35 end ===============
+  
   return true;
 }

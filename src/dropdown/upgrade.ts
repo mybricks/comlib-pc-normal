@@ -102,6 +102,32 @@ export default function ({
   if(typeof data.dynamicOptions === "undefined"){
     data.dynamicOptions = [];
   };
+
+  /**
+  * @description v1.0.34 -> v1.0.35
+  */
+  const onChangeSchema = {
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string",
+        "description": "点击项标签"
+      },
+      "link": {
+        "type": "string",
+        "description": "点击项链接"
+      },
+      "key": {
+        "type": "string",
+        "description": "点击项唯一标识"
+      }
+    }
+  }
+  const oldSchema = output.get("onChange").schema;
+  if(oldSchema !== onChangeSchema){
+    output.get("onChange").setSchema(onChangeSchema);
+  }
+  //=========== v1.0.35 end ===============
   
   return true;
 }

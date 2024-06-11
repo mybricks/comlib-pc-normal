@@ -1,7 +1,7 @@
 {
   "title": "excel导出",
   "namespace": "mybricks.normal-pc.excel",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "rtType": "js",
   "description": "数据导出excel",
   "author": "tangxiaoxin",
@@ -25,30 +25,36 @@
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "表名称"
               },
               "header": {
                 "type": "array",
+                "description": "表头",
                 "items": {
                   "type": "string"
                 }
               },
               "columns": {
                 "type": "array",
+                "description": "列配置",
                 "items": {
                   "type": "object",
                   "properties": {
                     "width": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "列宽"
                     },
                     "hidden": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "列是否隐藏"
                     }
                   }
                 }
               },
               "data": {
                 "type": "array",
+                "description": "表数据",
                 "items": {
                   "type": "object"
                 }

@@ -1,7 +1,7 @@
 {
   "title": "自定义容器",
   "namespace": "mybricks.normal-pc.custom-container",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "description": "自定义容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -26,7 +26,8 @@
         "type": "object",
         "properties": {
           "background": {
-            "type": "string"
+            "type": "string",
+            "description": "背景色"
           }
         }
       },
