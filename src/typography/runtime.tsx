@@ -25,8 +25,8 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
   const itemContent = env.edit
     ? env.i18n(item.content)
     : item.src === 1
-    ? env.i18n(item.content)
-    : '';
+      ? env.i18n(item.content)
+      : '';
   //文本、链接等点击事件
   const textClick = () => {
     if (item.click && !isSet && env.runtime) {
@@ -58,22 +58,22 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
         ? item.style.color
         : 'unset'
       : item.style && item.style.color
-      ? item.style.color
-      : void 0,
+        ? item.style.color
+        : void 0,
     fontSize: isUnity
       ? isSet && item.style.fontSize
         ? item.style.fontSize
         : 'unset'
       : isSet && item.style.fontSize
-      ? item.style.fontSize
-      : void 0,
+        ? item.style.fontSize
+        : void 0,
     fontWeight: isUnity
       ? isSet && item.style.fontWeight
         ? item.style.fontWeight
         : 'unset'
       : isSet && item.style.fontWeight
-      ? item.style.fontWeight
-      : void 0
+        ? item.style.fontWeight
+        : void 0
   };
   if (itemContent == null) return null;
   switch (item.type) {
@@ -91,10 +91,11 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
           }}
         >
           <Text
-            style={{ 
+            style={{
               cursor: item.click || isSet ? 'pointer' : 'unset', ...fontStyle,
               //display: 'inline-block',
-              wordBreak: 'break-word'
+              wordBreak: 'break-word',
+              ...item.style
             }}
             className={!isUnity ? `${item.key} ${css.text} text` : void 0}
             type={item.textType}

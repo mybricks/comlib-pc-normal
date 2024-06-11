@@ -1,7 +1,7 @@
 {
   "title": "文本排版",
   "namespace": "mybricks.normal-pc.typography",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "展示文本基本格式",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -51,6 +51,10 @@
                 "fontWeight": {
                   "type": "number",
                   "description": "文本粗细程度"
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "description": "背景颜色"
                 },
                 "stylePadding": {
                   "type": "array",
