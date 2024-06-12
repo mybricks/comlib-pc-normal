@@ -80,6 +80,24 @@ export default {
   ':root': {
     style: [
       {
+        title: '提示内容',
+        catelog: '默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        global: true,
+        target({ id }) {
+          return `.ant-dropdown-trigger`;
+        }
+      },
+      {
+        title: '提示内容箭头',
+        catelog: '默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        global: true,
+        target({ id }) {
+          return `.anticon-down`;
+        }
+      },
+      {
         title: '菜单',
         catelog: '默认',
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
@@ -107,6 +125,24 @@ export default {
         global: true,
         target({ id }) {
           return `.{id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
+        }
+      },
+      {
+        title: '提示内容',
+        catelog: 'Hover',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        global: true,
+        target({ id }) {
+          return `.ant-dropdown-trigger:hover`;
+        }
+      },
+      {
+        title: '提示内容箭头',
+        catelog: 'Hover',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        global: true,
+        target({ id }) {
+          return `.ant-dropdown-trigger:hover .anticon-down`;
         }
       },
       {

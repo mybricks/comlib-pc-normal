@@ -29,6 +29,37 @@ const TagSchema = {
     }
   }
 };
+
+const clickTagSchema = {
+  type: 'object',
+  properties: {
+    key: {
+      title: '唯一标识',
+      description: '唯一标识',
+      type: 'string'
+    },
+    icon: {
+      title: '图标',
+      description: '图标',
+      type: 'string'
+    },
+    content: {
+      title: '标签内容',
+      description: '标签内容',
+      type: 'string'
+    },
+    color: {
+      title: '背景颜色',
+      description: '背景颜色',
+      type: 'string'
+    },
+    closable: {
+      title: '是否可关闭',
+      description: '是否可关闭',
+      type: 'boolean'
+    }
+  }
+};
 export default {
   ':root': {
     items({ data }: EditorResult<Data>, ...cate) {
@@ -249,7 +280,36 @@ export default {
               outputId: 'onCheck'
             };
           }
-        }
+        },
+        {
+          title: '可点击',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.clickAble;
+            },
+            set({ data, output }: EditorResult<Data>, val: boolean) {
+              data.clickAble = val;
+              if (val) {
+                output.add('onClick', '标签项点击', clickTagSchema);
+              } else if (output.get('onClick')) {
+                output.remove('onClick');
+              }
+            }
+          }
+        },
+        {
+          title: '标签项点击',
+          type: '_Event',
+          ifVisible({}: EditorResult<Data>) {
+            return !!data.clickAble;
+          },
+          options: () => {
+            return {
+              outputId: 'onClick'
+            };
+          }
+        },
       ];
     },
     style: [
