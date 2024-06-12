@@ -21,5 +21,6 @@
     "text": "新增",
     "icon": "PlusOutlined"
   },
-  "useAppendBtn": true
+  "useAppendBtn": true,
+  "clickAble": false
 }

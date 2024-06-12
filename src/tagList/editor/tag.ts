@@ -35,6 +35,18 @@ export default {
               }
             },
             {
+              title: '唯一标识',
+              type: 'text',
+              value: {
+                get({}: EditorResult<Data>) {
+                  return tag.key;
+                },
+                set({}: EditorResult<Data>, val: string) {
+                  tag.key = val;
+                }
+              }
+            },
+            {
               title: '类型',
               type: 'select',
               options: {

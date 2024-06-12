@@ -112,5 +112,12 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   descriptionUp(descriptionUpList, input, output);
   //=========== 1.0.14 end ===============
 
+  /**
+   * @description v1.0.15 新增clickAble 是否可点击
+  */
+  if (typeof data.clickAble === 'undefined' ) {
+    data.clickAble = false;
+  }
+  //=========== 1.0.15 end ===============
   return true;
 }

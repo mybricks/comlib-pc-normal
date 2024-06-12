@@ -36,5 +36,6 @@ export interface Data extends SpaceProps {
     textColor: string;
   }>;
   closeAble: boolean
-  appendBtn: AppendBtn
+  appendBtn: AppendBtn;
+  clickAble: boolean;
 }

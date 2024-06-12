@@ -77,6 +77,11 @@ const DefaultTag = ({
     outputs['onChange']({ changed: { ...tag, index }, allTag: data.tags });
   };
 
+  const onTagClick = (tag: TagType) => {
+    if (env.edit) return;
+    outputs['onClick'](tag);
+  };
+
   const showInput = () => {
     if (env.edit) return;
     setInputVisible(true);
@@ -154,6 +159,10 @@ const DefaultTag = ({
             closable={closeAble}
             onClose={() => onTagClose(index, tag)}
             icon={Icons && Icons[icon as string]?.render()}
+            onClick={data.clickAble ? (()=>onTagClick(tag)): void 0}
+            style={{
+              cursor: data.clickAble ? 'pointer' : void 0
+            }}
           >
             <span style={getTagStyle(data)}>{env.i18n(content)}</span>
           </Tag>
