@@ -166,7 +166,7 @@ export const BaseEditor = [
 function addScopeSlotInputs({ data, item, slots }) {
   slots.add({
     id: item.slotId,
-    title: item.label,
+    title: JSON.stringify(item.label),
     type: 'scope',
     inputs: [
       {
