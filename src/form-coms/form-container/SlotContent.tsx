@@ -168,7 +168,10 @@ const SlotContent = (props) => {
           dynamicEnableOrDisabledRef
         ) {
           // 动态设置表单项后，childrenInputs收集完成后，再执行表单项设置启用/禁用
-          dynamicEnableOrDisabledRef.current?.();
+          if (dynamicEnableOrDisabledRef.current) {
+            dynamicEnableOrDisabledRef.current?.();
+            dynamicEnableOrDisabledRef.current = null;
+          }
         }
 
         if (layoutType === 'QueryFilter') {
@@ -182,6 +185,7 @@ const SlotContent = (props) => {
               comAray={comAray}
               outputs={outputs}
               submit={submit}
+              dynamicEnableOrDisabledRef={dynamicEnableOrDisabledRef}
               childrenInputs={childrenInputs}
             ></QueryFilter>
           );

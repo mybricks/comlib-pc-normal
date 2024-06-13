@@ -39,7 +39,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
 
-  const dynamicEnableOrDisabledRef = useRef(() => {})
+  const dynamicEnableOrDisabledRef = useRef(() => {});
 
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
@@ -112,43 +112,55 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (data.useDynamicItems && inputs[inputIds.setDynamicFormItems]) {
         inputs[inputIds.setDynamicFormItems]((val: Array<DynamicItemData>, relOutputs: any) => {
           let newItems: any[] = [];
-          const uniqueNames:string[] = [];
+          const uniqueNames: string[] = [];
           const notFoundOrUniqueNames: string[] = [];
           const disableFormList: string[] = [];
           const enableFormList: string[] = [];
           val.forEach((item) => {
             let sameNameItem = data.items.find((i) => i.name === item.relOriginField);
-            let isUniqueName = !uniqueNames.includes(item.name)
+            let isUniqueName = !uniqueNames.includes(item.name);
             if (sameNameItem && isUniqueName) {
-              uniqueNames.push(item.name)
+              uniqueNames.push(item.name);
               // 动态输入的表单在搭建册不存在，不添加
-              const disabledConfig =  item.common?.disabled !== undefined ? { disabled: item.common?.disabled } : {} 
-              const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } = item.common || {}
+              const disabledConfig =
+                item.common?.disabled !== undefined ? { disabled: item.common?.disabled } : {};
+              const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } = item.common || {};
               let dynamicStyle = {
                 labelStyle,
                 descriptionStyle,
                 labelAlign,
                 labelAutoWrap
-              }
-              if(typeof item.common?.disabled === 'boolean') {
+              };
+              if (typeof item.common?.disabled === 'boolean') {
                 (item.common?.disabled ? disableFormList : enableFormList).push(item.name);
               }
-              let config = Object.assign(sameNameItem.config || { }, disabledConfig)
-              newItems.push({ ...sameNameItem, name: item.name, label: item.label, id: uuid(), ...(item?.common ? item.common : {}), config, dynamicStyle });
+              let config = Object.assign(sameNameItem.config || {}, disabledConfig);
+              newItems.push({
+                ...sameNameItem,
+                name: item.name,
+                label: item.label,
+                id: uuid(),
+                ...(item?.common ? item.common : {}),
+                config,
+                dynamicStyle
+              });
             } else {
-              notFoundOrUniqueNames.push(item.name)
+              notFoundOrUniqueNames.push(item.name);
             }
           });
           data.items = newItems;
-          if(disableFormList.length || enableFormList.length) {
-              // 触发批量禁用、启用;需要在动态表单项childrenInputs
-              dynamicEnableOrDisabledRef.current = () => {
-                disableFormList.length && setDisabled(disableFormList)
-                enableFormList.length && setEnabled(enableFormList);
-              }
+          if (disableFormList.length || enableFormList.length) {
+            // 触发批量禁用、启用;需要在动态表单项childrenInputs
+            dynamicEnableOrDisabledRef.current = () => {
+              disableFormList.length && setDisabled(disableFormList);
+              enableFormList.length && setEnabled(enableFormList);
+            };
           }
-          if(notFoundOrUniqueNames.length) {
-            console.warn(`以下动态设置的字段名重复或者在搭建册不存在关联的字段`, notFoundOrUniqueNames.join(','))
+          if (notFoundOrUniqueNames.length) {
+            console.warn(
+              `以下动态设置的字段名重复或者在搭建册不存在关联的字段`,
+              notFoundOrUniqueNames.join(',')
+            );
           }
         });
       }
@@ -168,8 +180,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
           let count = 0;
           validNameList.forEach((name) => {
             const item = data.items.find((item) => item.name === name);
-            const index = data.items.findIndex(item => item.name === name)
-            const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+            const index = data.items.findIndex((item) => item.name === name);
+            const input = getFromItemInputEvent(item, childrenInputs, {
+              useDynamicItems: data.useDynamicItems
+            });
             validateForInput(
               {
                 input,
@@ -318,7 +332,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
       Object.keys(formData).forEach((key, inx) => {
         const isLast = inx === length;
         setValuesForInput(
-          { childrenInputs, formItems: data.items, name: key, useDynamicItems: data.useDynamicItems },
+          {
+            childrenInputs,
+            formItems: data.items,
+            name: key,
+            useDynamicItems: data.useDynamicItems
+          },
           'setValue',
           formData,
           isLast ? cb : void 0
@@ -337,7 +356,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         Object.keys(formData).forEach((key, inx) => {
           const isLast = inx === length;
           setValuesForInput(
-            { childrenInputs, formItems: data.items, name: key, useDynamicItems: data.useDynamicItems },
+            {
+              childrenInputs,
+              formItems: data.items,
+              name: key,
+              useDynamicItems: data.useDynamicItems
+            },
             'setInitialValue',
             formData,
             isLast ? cb : void 0
@@ -358,7 +382,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // const id = item.id;
         // const input = childrenInputs[id];
         const isLast = index === data.items.length - 1;
-        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+        const input = getFromItemInputEvent(item, childrenInputs, {
+          useDynamicItems: data.useDynamicItems
+        });
         input?.resetValue().resetValueDone(() => {
           item.validateStatus = undefined;
           item.help = undefined;
@@ -373,7 +399,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const setDisabled = (nameList?: string[]) => {
     data.items.forEach((item, index) => {
       if (!nameList || nameList.includes(item.name)) {
-        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+        const input = getFromItemInputEvent(item, childrenInputs, {
+          useDynamicItems: data.useDynamicItems
+        });
         input?.setDisabled && input?.setDisabled();
       }
     });
@@ -382,7 +410,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const setEnabled = (nameList?: string[]) => {
     data.items.forEach((item, index) => {
       if (!nameList || nameList.includes(item.name)) {
-        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+        const input = getFromItemInputEvent(item, childrenInputs, {
+          useDynamicItems: data.useDynamicItems
+        });
         input?.setEnabled && input?.setEnabled();
       }
     });
@@ -391,7 +421,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const setIsEditable = (val, nameList?: string[]) => {
     data.items.forEach((item, index) => {
       if (!nameList || nameList.includes(item.name)) {
-        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+        const input = getFromItemInputEvent(item, childrenInputs, {
+          useDynamicItems: data.useDynamicItems
+        });
         input?.isEditable && input?.isEditable(val);
       }
     });
@@ -453,7 +485,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         formItems.map((item) => {
           // const id = item.id;
           // const input = childrenInputs[id];
-          const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+          const input = getFromItemInputEvent(item, childrenInputs, {
+            useDynamicItems: data.useDynamicItems
+          });
 
           return new Promise((resolve, reject) => {
             if (data.submitHiddenFields && !data.validateHiddenFields && !item.visible) {
@@ -496,7 +530,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         formItems.map((item) => {
           // const id = item.id;
           // const input = childrenInputs[id];
-          const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems });
+          const input = getFromItemInputEvent(item, childrenInputs, {
+            useDynamicItems: data.useDynamicItems
+          });
 
           return new Promise((resolve, reject) => {
             let value = {};
@@ -567,6 +603,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const { labelWrap, disabled, ...formCfg } = data.config;
 
+  const templateLable = () => {
+    return (
+      <>
+        <div className={css.infoLabel} style={{ top: 0, left: 0 }}>
+          模板
+        </div>
+        <div className={css.infoLabel} style={{ top: 0, right: 0 }}>
+          模板
+        </div>
+        <div className={css.infoLabel} style={{ bottom: 0, left: 0 }}>
+          模板
+        </div>
+        <div className={css.infoLabel} style={{ bottom: 0, right: 0 }}>
+          模板
+        </div>
+      </>
+    );
+  };
   return (
     <div className={css.wrapper}>
       <Fragment>
@@ -597,6 +651,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         ) : (
           <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
         )}
+        {data.useDynamicItems && !env.runtime && templateLable()}
       </Fragment>
     </div>
   );
@@ -607,8 +662,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
  */
 const getFormItems = (data: Data, childrenInputs) => {
   let formItems = data.items;
-  const useDynamicItems = data.useDynamicItems
-  if(useDynamicItems) {
+  const useDynamicItems = data.useDynamicItems;
+  if (useDynamicItems) {
     if (data.items.length !== Object.keys(childrenInputs).length) {
       formItems = formItems.filter((item, index) => {
         if (item.comName) {
@@ -617,11 +672,11 @@ const getFormItems = (data: Data, childrenInputs) => {
         return childrenInputs[item.id];
       });
     }
-      // 过滤隐藏表单项
+    // 过滤隐藏表单项
     if (!data.submitHiddenFields) {
       formItems = formItems.filter((item) => item.visible);
     }
-    return formItems
+    return formItems;
   }
   // hack 脏数据问题，表单项数与实际表单项数不一致
   if (data.items.length !== Object.keys(childrenInputs).length) {
@@ -685,9 +740,14 @@ const validateForInput = (
   });
 };
 
-const setValuesForInput = ({ childrenInputs, formItems, name, useDynamicItems }, inputId, values, cb?) => {
+const setValuesForInput = (
+  { childrenInputs, formItems, name, useDynamicItems },
+  inputId,
+  values,
+  cb?
+) => {
   const item = formItems.find((item) => item.name === name);
-  const itemIdx = formItems.findIndex(item => item.name === name)
+  const itemIdx = formItems.findIndex((item) => item.name === name);
   const inputDoneId = inputId + 'Done';
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems });
@@ -709,11 +769,15 @@ const setValuesForInput = ({ childrenInputs, formItems, name, useDynamicItems },
   }
 };
 
-const getFromItemInputEvent = (formItem, childrenInputs, options?: { useDynamicItems: boolean}) => {
+const getFromItemInputEvent = (
+  formItem,
+  childrenInputs,
+  options?: { useDynamicItems: boolean }
+) => {
   let input;
-  if(options?.useDynamicItems) {
+  if (options?.useDynamicItems) {
     input = childrenInputs[formItem.name];
-    return input
+    return input;
   }
 
   input = childrenInputs[formItem.id];
