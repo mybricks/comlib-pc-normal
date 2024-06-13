@@ -1109,6 +1109,14 @@ export default function (props: RuntimeParams<Data>) {
     </div>
   );
 
+  const templateLable = () => {
+    return <>
+      <div className={css.infoLabel} style={{ top: 0, left: 0 }}>模板</div>
+      <div className={css.infoLabel} style={{ top: 0, right: 0 }}>模板</div>
+      <div className={css.infoLabel} style={{ bottom: 0, left: 0 }}>模板</div>
+      <div className={css.infoLabel} style={{ bottom: 0, right: 0 }}>模板</div>
+    </>
+  }
   return (
     <div ref={ref} style={{
       position: 'relative'
@@ -1228,8 +1236,7 @@ export default function (props: RuntimeParams<Data>) {
           </div>
         </TableContext.Provider>
       </ConfigProvider>
-      { }
-      {data.useDynamicTitle && <div className={css.infoLabel}>动态表格</div>}
+      {data.useDynamicTitle && !env.runtime && templateLable()}
     </div>
   );
 }
