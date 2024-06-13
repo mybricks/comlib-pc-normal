@@ -27,21 +27,32 @@ interface QueryFilterProps {
   env: any;
   submit: (outputId: string, outputRels?: any) => void;
   outputs: any;
+  dynamicEnableOrDisabledRef: any;
 }
 
 const QueryFilter = (props: QueryFilterProps) => {
-  const { data, isEmpty, isVerticalModel, comAray, childrenInputs, env, submit, outputs } = props;
+  const {
+    data,
+    isEmpty,
+    isVerticalModel,
+    comAray,
+    childrenInputs,
+    env,
+    submit,
+    outputs,
+    dynamicEnableOrDisabledRef
+  } = props;
   const { align, inlinePadding } = data.actions;
 
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
 
   const [span, colProps] = useMemo(() => {
     if (data.enable24Grid) {
-      let spanVal = data.span || 8
-      return [spanVal, { span: spanVal }]
+      let spanVal = data.span || 8;
+      return [spanVal, { span: spanVal }];
     }
-    return [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }]
-  }, [data.formItemColumn, data.span, data.enable24Grid])
+    return [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }];
+  }, [data.formItemColumn, data.span, data.enable24Grid]);
 
   const actionStyle: React.CSSProperties = {
     textAlign: 'right',
@@ -233,10 +244,13 @@ const QueryFilter = (props: QueryFilterProps) => {
         );
       }
     });
+    if (dynamicEnableOrDisabledRef.current) {
+      dynamicEnableOrDisabledRef?.current?.();
+      dynamicEnableOrDisabledRef.current = null;
+    }
   }
   // 表单项总宽度超出一行时显示展开/收起按钮
   const showCollapseButton = (idx + 1) * span >= 24;
-
   return (
     <div className={styles.slotInlineWrapper}>
       {doms}
