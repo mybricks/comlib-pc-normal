@@ -32,7 +32,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     });
 
   return checkable ? (
-    <CheckTag data={data} outputs={outputs} env={env} />
+    <CheckTag data={data} outputs={outputs} inputs={inputs} env={env} />
   ) : (
     <DefaultTag data={data} outputs={outputs} env={env} />
   );
@@ -176,14 +176,25 @@ const DefaultTag = ({
 const CheckTag = ({
   data,
   outputs,
+  inputs,
   env
-}: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'env'>) => {
+}: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'inputs' |'env'>) => {
   const { direction, align, wrap, size, tags, tagSize } = data;
   const onTagChange = (index: number) => {
     const pre = data.tags[index];
     data.tags[index] = { ...pre, checked: !pre.checked };
-    outputs['onCheck']({ changed: { ...data.tags[index], index }, allTag: data.tags });
+    const checkedTags = data.tags.filter((tag) => tag.checked === true);
+    outputs['onCheck']({ changed: { ...data.tags[index], index }, checked: checkedTags, allTag: data.tags });
   };
+
+  useEffect(()=>{
+    if (env.runtime && inputs['getCheckedTags']) {
+      inputs['getCheckedTags']((ds, relOutputs) => {
+        const checkedTags = data.tags.filter((tag) => tag.checked === true);
+        relOutputs['checkedTags'](checkedTags);
+      });
+    }
+  }, [])
 
   return (
     <Space

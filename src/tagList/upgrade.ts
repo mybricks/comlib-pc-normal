@@ -1,6 +1,7 @@
 import { Data } from './types';
 import { isEmptyObject } from '../utils';
 import { descriptionUp } from '../form-coms/utils/descriptionUp';
+import { clickTagSchema } from './editor/index'
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const { tagStyle } = data;
@@ -119,5 +120,40 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     data.clickAble = false;
   }
   //=========== 1.0.15 end ===============
+
+  /**
+   * @description v1.0.16 升级'onCheck''选中状态改变时'的schema
+  */
+  const onCheckSchema = {
+    type: 'object',
+    properties: {
+      changed: clickTagSchema,
+      checked: {
+        type: 'array',
+        description: "选中项",
+        items: clickTagSchema
+      },
+      allTag: {
+        type: 'array',
+        description: '全部标签项',
+        items: clickTagSchema
+      }
+    }
+  };
+  const oldSchema = output.get('onCheck');
+  if (output.get('onCheck') &&  oldSchema !== onCheckSchema) {
+    output.get('onCheck').setSchema(onCheckSchema);
+  }
+  if(data.checkable === true && !input.get('getCheckedTags') && !output.get('checkedTags')){
+    input.add('getCheckedTags', '获取选中项', {type: 'any'});
+    output.add('checkedTags', '选中项', {
+      type: 'array',
+      description: "选中项",
+      items: clickTagSchema
+    })
+    ;
+    input.get('getCheckedTags').setRels(['checkedTags']);
+  }
+  //=========== 1.0.16 end ===============
   return true;
 }
