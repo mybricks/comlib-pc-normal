@@ -492,7 +492,6 @@ export default {
             set({ data, input, output }: EditorResult<Data>, value: boolean) {
               const hasEvent = input.get(inputIds.setDynamicFormItems);
               const hasEvent1 = output.get(inputIds.setDynamicFormItems);
-              console.log('formItems,', data.items);
               if (value) {
                 const formatSchema = {
                   type: 'array',
