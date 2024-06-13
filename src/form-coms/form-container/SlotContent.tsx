@@ -41,7 +41,12 @@ const SlotContent = (props) => {
     return slots['content']?.render({
       itemWrap(com: { id; jsx; name; scope; index }) {
         // todo name
-        const { item, isFormItem } = getFormItem(data, com);
+        const indexConfig = env.runtime && data.useDynamicItems ? { index: com.index } : {};
+        const { item, isFormItem } = getFormItem(data, {
+          name: com.name,
+          id: com.id,
+          ...indexConfig
+        });
         return isFormItem ? (
           <FormItem
             data={data}
@@ -58,57 +63,104 @@ const SlotContent = (props) => {
       },
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style; getJsx }[]) {
         const items = data.items;
+        let jsx;
+        if (env.edit || !data.useDynamicItems) {
+          jsx = comAray?.map((com, idx) => {
+            if (com) {
+              const { item, isFormItem } = getFormItem(data, { name: com.name, id: com.id });
 
-        let jsx = data.items.map((subItem, iIdex) => {
-          let com = comAray.find((item) => item.name === subItem.comName);
-          if (com) {
-            const { item, isFormItem } = getFormItem(data, { ...com, index: iIdex });
-            if (!item) {
-              if (items.length === comAray.length) {
-                console.warn(`formItem comId ${com.id} formItem not found`);
+              if (!item) {
+                if (items.length === comAray.length) {
+                  console.warn(`formItem comId ${com.id} formItem not found`);
+                }
+                return;
               }
-              return;
-            }
 
-            const { widthOption, span, width } = item;
-            let comJSX = data.useDynamicItems ? com.getJsx({ index: iIdex, id: item.name }) : com;
-            // 表单项的处理
-            if (isFormItem) {
-              if (!data.useDynamicItems) {
-                // 静态表单项，保留原处理逻辑
+              const { widthOption, span, width } = item;
+
+              // 表单项的处理
+              if (isFormItem) {
                 if (item.comName) {
                   childrenInputs[com.name] = com.inputs;
                 } else {
                   childrenInputs[com.id] = com.inputs;
                 }
+              }
+
+              if (typeof item?.visible !== 'undefined') {
+                item.visible = com.style.display !== 'none';
               } else {
-                // 动态设置表单项
-                // 新的处理逻辑，使用item.name作为唯一key
-                if (item.comName) {
-                  childrenInputs[item.name] = comJSX.inputs;
+                item['visible'] = true;
+              }
+
+              const flexBasis = isMobile
+                ? '100%'
+                : widthOption === 'px'
+                ? `${width}px`
+                : `${(span * 100) / 24}%`;
+
+              return (
+                <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
+                  {com.jsx}
+                </Col>
+              );
+            }
+
+            console.error(com, comAray);
+            return <div key={idx}>组件错误</div>;
+          });
+        }
+        if (env.runtime && data.useDynamicItems && layoutType !== 'QueryFilter') {
+          jsx = data.items.map((subItem, iIdex) => {
+            let com = comAray.find((item) => item.name === subItem.comName);
+            if (com) {
+              const { item, isFormItem } = getFormItem(data, { ...com, index: iIdex });
+              if (!item) {
+                if (items.length === comAray.length) {
+                  console.warn(`formItem comId ${com.id} formItem not found`);
+                }
+                return;
+              }
+
+              const { widthOption, span, width } = item;
+              let comJSX = data.useDynamicItems ? com.getJsx({ index: iIdex, id: item.name }) : com;
+              // 表单项的处理
+              if (isFormItem) {
+                if (!data.useDynamicItems) {
+                  // 静态表单项，保留原处理逻辑
+                  if (item.comName) {
+                    childrenInputs[com.name] = com.inputs;
+                  } else {
+                    childrenInputs[com.id] = com.inputs;
+                  }
+                } else {
+                  // 动态设置表单项, 新的处理逻辑，使用item.name作为唯一key
+                  if (item.comName) {
+                    childrenInputs[item.name] = comJSX.inputs;
+                  }
                 }
               }
+
+              if (typeof item?.visible !== 'undefined') {
+                item.visible = com.style.display !== 'none';
+              } else {
+                item['visible'] = true;
+              }
+
+              const flexBasis = isMobile
+                ? '100%'
+                : widthOption === 'px'
+                ? `${width}px`
+                : `${(span * 100) / 24}%`;
+
+              return (
+                <Col style={{ display: com.style.display, width: flexBasis }} key={subItem.id}>
+                  {comJSX.jsx}
+                </Col>
+              );
             }
-
-            if (typeof item?.visible !== 'undefined') {
-              item.visible = com.style.display !== 'none';
-            } else {
-              item['visible'] = true;
-            }
-
-            const flexBasis = isMobile
-              ? '100%'
-              : widthOption === 'px'
-              ? `${width}px`
-              : `${(span * 100) / 24}%`;
-
-            return (
-              <Col style={{ display: com.style.display, width: flexBasis }} key={subItem.id}>
-                {comJSX.jsx}
-              </Col>
-            );
-          }
-        });
+          });
+        }
         if (
           data.useDynamicItems &&
           env.runtime &&
