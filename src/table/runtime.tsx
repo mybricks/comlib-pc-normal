@@ -1110,7 +1110,9 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{
+      position: 'relative'
+    }}>
       <ConfigProvider
         locale={env.vars?.locale}
         renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
@@ -1226,6 +1228,8 @@ export default function (props: RuntimeParams<Data>) {
           </div>
         </TableContext.Provider>
       </ConfigProvider>
+      { }
+      {data.useDynamicTitle && <div className={css.infoLabel}>动态表格</div>}
     </div>
   );
 }

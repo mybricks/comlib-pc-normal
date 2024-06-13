@@ -10,10 +10,12 @@
     .ant-btn {
       box-sizing: border-box;
     }
+
     // 表格的最后一个表头，resize拖拽条隐藏
-    .ant-table-thead > tr:first-child > th:last-child > div[class*='resizer-r'] {
+    .ant-table-thead>tr:first-child>th:last-child>div[class*='resizer-r'] {
       display: none !important;
     }
+
     // 临时同步antd@1.10.4调整的样式内容，升级到antd>=1.10.4后可移除
     .ant-table-column-title {
       flex: unset;
@@ -76,3 +78,14 @@
 //   line-height: 1.5717;
 //   text-align: center;
 // }
+
+.infoLabel {
+  position: absolute;
+  background: #FA6400;
+  color: white;
+  font-weight: bold;
+  border-bottom-left-radius: 4px;
+  right: 0;
+  padding: 2px 10px;
+  top: 0
+}
