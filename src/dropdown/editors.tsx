@@ -89,6 +89,14 @@ export default {
         }
       },
       {
+        catelog: '默认',
+        options: [{ type: 'border'}],
+        global: true,
+        target({ id }) {
+          return `.{id} .dropdown`;
+        }
+      },
+      {
         title: '提示内容箭头',
         catelog: '默认',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
