@@ -30,7 +30,7 @@ const TagSchema = {
   }
 };
 
-const clickTagSchema = {
+export const clickTagSchema = {
   type: 'object',
   properties: {
     key: {
@@ -250,21 +250,38 @@ export default {
             get({ data }: EditorResult<Data>) {
               return !!data.checkable;
             },
-            set({ data, output }: EditorResult<Data>, val: boolean) {
+            set({ data, output, input }: EditorResult<Data>, val: boolean) {
               data.checkable = val;
               if (val) {
                 output.add('onCheck', '选中状态改变时', {
                   type: 'object',
                   properties: {
-                    changed: TagSchema,
+                    changed: clickTagSchema,
+                    checked: {
+                      type: 'array',
+                      description: "选中项",
+                      items: clickTagSchema
+                    },
                     allTag: {
                       type: 'array',
-                      items: TagSchema
+                      description: '全部标签项',
+                      items: clickTagSchema
                     }
                   }
                 });
+                input.add('getCheckedTags', '获取选中项', {type: 'any'});
+                output.add('checkedTags', '选中项', {
+                  type: 'array',
+                  description: "选中项",
+                  items: clickTagSchema
+                })
+                ;
+                input.get('getCheckedTags').setRels(['checkedTags']);
+
               } else if (output.get('onCheck')) {
                 output.remove('onCheck');
+                input.remove('getCheckedTags');
+                output.remove('checkedTags');
               }
             }
           }
