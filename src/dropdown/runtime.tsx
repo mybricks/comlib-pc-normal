@@ -146,7 +146,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   }, [env, data.isChildCustom, data.isDynamic]);
 
   return (
-    <div>
+    <div className='dropdown'>
       <Dropdown
         overlayClassName={id}
         overlay={data.isDynamic ? dynamicMenuRender({ data }) : menuRender({ data })}
