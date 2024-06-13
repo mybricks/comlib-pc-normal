@@ -85,7 +85,7 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }) {
-          return `.ant-dropdown-trigger`;
+          return `.{id} .ant-dropdown-trigger`;
         }
       },
       {
@@ -94,7 +94,7 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }) {
-          return `.anticon-down`;
+          return `.{id} .anticon-down`;
         }
       },
       {
@@ -133,7 +133,7 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }) {
-          return `.ant-dropdown-trigger:hover`;
+          return `.{id} .ant-dropdown-trigger:hover`;
         }
       },
       {
@@ -142,7 +142,7 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }) {
-          return `.ant-dropdown-trigger:hover .anticon-down`;
+          return `.{id} .ant-dropdown-trigger:hover .anticon-down`;
         }
       },
       {

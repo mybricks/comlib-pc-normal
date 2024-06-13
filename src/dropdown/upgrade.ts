@@ -5,6 +5,8 @@ export default function ({
   data,
   output,
   setDeclaredStyle,
+  getDeclaredStyle,
+  removeDeclaredStyle,
   id,
   slot
 }: UpgradeParams<Data>): boolean {
@@ -104,7 +106,7 @@ export default function ({
   };
 
   /**
-  * @description v1.0.34 -> v1.0.35
+  * @description v1.0.24 -> v1.0.25
   */
   const onChangeSchema = {
     "type": "object",
@@ -127,7 +129,43 @@ export default function ({
   if(oldSchema !== onChangeSchema){
     output.get("onChange").setSchema(onChangeSchema);
   }
-  //=========== v1.0.35 end ===============
+  //=========== v1.0.25 end ===============
+
+  /**
+  * @description v1.0.25 -> v1.0.26
+  */
+  const preContentStyle = getDeclaredStyle(`.ant-dropdown-trigger`);
+  const preActionStyle = getDeclaredStyle(`.anticon-down`);
+
+  const preContentHoverStyle = getDeclaredStyle(`.ant-dropdown-trigger:hover`);
+  const preActionHoverStyle = getDeclaredStyle(`.ant-dropdown-trigger:hover .anticon-down`);
+
+
+  if (preContentStyle) {
+    let contentCss = { ...preContentStyle.css };
+    removeDeclaredStyle(`.ant-dropdown-trigger`);
+    setDeclaredStyle('.{id} .ant-dropdown-trigger', contentCss, true);
+  }
+    
+  if (preActionStyle) {
+    let actionCss = { ...preActionStyle.css };
+    removeDeclaredStyle(`.anticon-down`);
+    setDeclaredStyle('.{id} .anticon-down', actionCss, true);
+  }
+
+  if (preContentHoverStyle) {
+    let contentHoverCss = { ...preContentHoverStyle.css };
+    removeDeclaredStyle(`.ant-dropdown-trigger:hover`);
+    setDeclaredStyle('.{id} .ant-dropdown-trigger:hover', contentHoverCss, true);
+  }
+
+  if (preActionHoverStyle) {
+    let actionHoverCss = { ...preActionHoverStyle.css };
+    removeDeclaredStyle(`.ant-dropdown-trigger:hover .anticon-down`);
+    setDeclaredStyle('.{id} .ant-dropdown-trigger:hover .anticon-down', actionHoverCss, true);
+  }
+
+  //=========== v1.0.26 end ===============
   
   return true;
 }
