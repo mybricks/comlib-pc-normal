@@ -740,5 +740,15 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   
   //=========== v1.4.55 end ===============
 
+    /**
+   * @description v1.4.58 feat 标题超长配置
+   */
+
+    if (typeof data.ellipseMode === 'undefined'){
+      // 标题超长默认自动换行
+      data.ellipseMode = "wrap"
+    }
+  
+  //=========== v1.4.58 end ===============
   return true;
 }

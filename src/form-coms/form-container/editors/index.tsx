@@ -381,7 +381,8 @@ export default {
             {
               title: '启用24栅格布局系统',
               type: 'Switch',
-              description: '启用后，每个表单项宽度可以占据8、6、4等可以被24整除的数，相应这一行就被分为了3(24/8)、4(24/6)、6(24/4)列；未启用，可设置一行几列式布局',
+              description:
+                '启用后，每个表单项宽度可以占据8、6、4等可以被24整除的数，相应这一行就被分为了3(24/8)、4(24/6)、6(24/4)列；未启用，可设置一行几列式布局',
               ifVisible({ data, id, name }: EditorResult<Data>) {
                 return data.layoutType === 'QueryFilter';
               },
@@ -536,6 +537,22 @@ export default {
               }
             },
             {
+              title: '标题超长配置',
+              type: 'Radio',
+              options: [
+                { label: '超长省略', value: 'ellipse' },
+                { label: '自动换行', value: 'wrap' }
+              ],
+              value: {
+                set({ data }: EditorResult<Data>, value: 'left' | 'center' | 'right') {
+                  data.ellipseMode = value;
+                },
+                get({ data }: EditorResult<Data>) {
+                  return data.ellipseMode;
+                }
+              }
+            },
+            {
               title: '显示冒号',
               type: 'Switch',
               value: {
@@ -614,7 +631,7 @@ export default {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             let name = focusArea.dataset.formItem;
-            const { item } = getFormItem(data, {  name });
+            const { item } = getFormItem(data, { name });
             return item?.label;
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
