@@ -4,17 +4,40 @@ export default {
   },
   ":root": [
     {
-      title: "选择工具条",
-      type: "sceneComSelector",
+      title: '选择组件',
+      type: 'sceneComSelector',
+      options: {
+        filter:({namespace}) => {
+          return namespace === 'mybricks.normal-pc.toolbar'
+        }
+      },
       value: {
         get({ data }) {
-          return data?.toolbar ?? {};
+          return data.comDef
         },
-        set({ data, setDesc }, toolbar) {
-          data.toolbar = toolbar;
-          setDesc(toolbar.title);
+        set({ data, setDesc }, comDef) {
+          data.comDef = comDef
+          setDesc(comDef.title)
+        }
+      }
+    },
+    {
+      title: '工具条操作',
+      type: 'Select',
+      description: '默认整体设置工具条数据，可以切换为在工具条前或后添加子项',
+      options: [
+        { label: '整体设置', value: 'setData' },
+        { label: '整体前添加', value: 'addBefore' },
+        { label: '整体后添加', value: 'addAfter' },
+      ],
+      value: {
+        get({ data }) {
+          return data?.operationType || 'setData';
         },
-      },
+        set({ data, input }, value: 'setData' | 'addBefore' | 'addAfter') {
+          data.operationType = value;
+        }
+      }
     },
   ],
 };
