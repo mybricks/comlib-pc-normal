@@ -1,20 +1,31 @@
 import { merge } from "lodash";
 export default ({ env, data, inputs, outputs, onError }) => {
   const next = !env.runtime.debug;
+  //const next = true;
   inputs.creator((value) => {
-    const { sceneId, toolbarData } = value;
-    if (!sceneId) {
-      onError("没有场景id");
-      return;
-    }
+    const { toolbarData } = value;
     if (next && toolbarData) {
-      const toolbar = env.canvas.getCom({ sceneId, comId: data.toolbar.id });
+      const toolbar = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
       let { btnList } = toolbarData;
       btnList = (btnList || []).map((btn) => {
+        if(!btn.contentSize){
+          btn.contentSize = [14, 14]
+        }
         return btn;
       });
-      toolbar.data = merge(toolbar.data, { ...toolbarData, btnList });
-      outputs.onComplete(sceneId);
+
+      if (data.operationType === "setData") {
+        toolbar.data = merge(toolbar.data, { ...toolbarData, btnList });
+        outputs.onComplete();
+      } else if (data.operationType === "addBefore") {
+        let newBtnLists = [...btnList, ...toolbar.data.btnList];
+        toolbar.data.btnList = newBtnLists;
+        toolbar.data = merge(toolbar.data, { ...toolbarData, btnList });
+        outputs.onComplete();
+      } else if (data.operationType === "addAfter") {
+        toolbar.data = merge(toolbar.data, { ...toolbarData, btnList: [...toolbar.data.btnList, ...btnList] });
+        outputs.onComplete();
+      }
     }
   });
 };
