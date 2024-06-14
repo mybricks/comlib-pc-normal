@@ -137,7 +137,13 @@
     "./src/_get-storage/com.json",
     "./src/_set-storage/com.json",
     "./src/_receive-message/com.json",
-    "./src/_countdown/com.json"
+    "./src/_countdown/com.json",
+    "./src/_template-compute/_config-form/com.json",
+    "./src/_template-compute/_config-table/com.json",
+    "./src/_template-compute/_config-toolbar/com.json",
+    "./src/_template-compute/_list-form-item/com.json",
+    "./src/_template-compute//_edit-form-container/com.json",
+    "./src/_template-compute/_edit-dialog/com.json"
   ],
   "externals": [],
   "tags": "react"

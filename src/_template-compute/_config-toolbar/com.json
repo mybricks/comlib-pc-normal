@@ -1,0 +1,86 @@
+{
+    "title": "配置工具条",
+    "namespace": "mybricks.comlib-template-compute._config_toolbar",
+    "version": "1.0.1",
+    "description": "配置工具条",
+    "author": "MyBricks",
+    "author_name": "MyBricks",
+    "icon": "./icon.png",
+    "data": "./data.json",
+    "runtime": "./index.ts",
+    "editors": "./editor.ts",
+    "rtType": "js",
+    "type": "meta",
+    "inputs": [
+      {
+        "id": "creator",
+        "title": "开始",
+        "schema": [
+          {
+            "name": "sceneId",
+            "title": "场景ID",
+            "type": "string",
+            "description": "修改该场景（ID）下组件"
+          },
+          {
+            "name": "toolbarData",
+            "title": "配置工具条",
+            "type": "object",
+            "properties": {
+              "btnList": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "唯一标识"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "按钮文案"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "按钮类型"
+                    },
+                    "shape": {
+                      "type": "string",
+                      "description": "按钮形状"
+                    },
+                    "size": {
+                      "type": "string",
+                      "description": "按钮尺寸"
+                    },
+                    "icon": {
+                        "type": "string",
+                        "description": "按钮图标"
+                    },
+                    "disabled": {
+                        "type": "boolean",
+                        "description": "是否禁用"
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "description": "是否隐藏"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "id": "onComplete",
+        "title": "完成",
+        "schema": {
+          "type": "string",
+          "description": "场景ID"
+        }
+      }
+    ]
+  }
+  

@@ -1,0 +1,33 @@
+{
+    "formItemList": [
+        "mybricks.normal-pc.form-text",
+        "mybricks.normal-pc.select",
+        "mybricks.normal-pc.search",
+        "mybricks.normal-pc.input-textarea",
+        "mybricks.normal-pc.input-number",
+        "mybricks.normal-pc.switch",
+        "mybricks.normal-pc.radio",
+        "mybricks.normal-pc.checkbox",
+        "mybricks.normal-pc.date-picker",
+        "mybricks.normal-pc.time-picker",
+        "mybricks.normal-pc.time-range-picker",
+        "mybricks.normal-pc.range-picker",
+        "mybricks.normal-pc.cascader",
+        "mybricks.normal-pc.upload",
+        "mybricks.normal-pc.treeSelect",
+        "mybricks.normal-pc.auto-complete",
+        "mybricks.normal-pc.date-picker-full-open",
+        "mybricks.normal-pc.transfer",
+        "mybricks.normal-pc.slider",
+        "mybricks.normal-pc.rate",
+        "mybricks.normal-pc.form-email",
+        "mybricks.normal-pc.password",
+        "mybricks.normal-pc.form-phone-number",
+        "mybricks.normal-pc.color",
+        "mybricks.normal-pc.code-editor",
+        "mybricks.normal-pc.input-richtext",
+        "mybricks.normal-pc.form-addition-container",
+        "mybricks.normal-pc.form-list",
+        "mybricks.normal-pc.form-item-container"
+    ]
+}
