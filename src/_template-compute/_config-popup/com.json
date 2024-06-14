@@ -1,0 +1,66 @@
+{
+  "title": "配置对话框",
+  "namespace": "mybricks.comlib-template-compute._config_popup",
+  "version": "1.0.2",
+  "description": "配置对话框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./index.ts",
+  "editors": "./editor.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "addCom",
+      "title": "添加组件",
+      "description": "添加一个或多个组件",
+      "schema": [
+        {
+          "name": "sceneId",
+          "title": "场景ID",
+          "type": "string",
+          "description": "修改该场景（ID）下组件"
+        },
+        {
+          "name": "formData",
+          "title": "配置表单",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "description": "标题"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "字段"
+                  },
+                  "namespace": {
+                    "type": "string",
+                    "description": "组件namespace"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onComplete",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

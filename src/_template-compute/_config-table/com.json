@@ -1,0 +1,55 @@
+{
+  "title": "配置表格",
+  "namespace": "mybricks.comlib-template-compute._config_table",
+  "version": "1.0.6",
+  "description": "配置表格",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./index.ts",
+  "editors": "./editor.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "setColumn",
+      "title": "列配置",
+      "schema": {
+        "type": "array",
+        "description": "列配置,可以整体输入表格数据、列前添加、列后添加",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "列标题，必填"
+            },
+            "dataIndex": {
+              "type": "string",
+              "description": "列字段，必填"
+            },
+            "width": {
+              "type": "number",
+              "description": "列宽度，可选"
+            },
+            "visible": {
+              "type": "boolean",
+              "description": "是否显示，可选"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onComplete",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}
