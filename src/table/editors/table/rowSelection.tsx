@@ -3,6 +3,32 @@ import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constan
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
 import { Schemas, setDataSchema } from '../../schema';
 
+function updateSlot({ data, slot }) {
+  if (
+    data.useRowSelection &&
+    data.selectionType !== RowSelectionTypeEnum.Radio &&
+    data.rowSelectionPostion?.length
+  ) {
+    if (!slot.get(SlotIds.ROW_SELECTION_OPERATION)) {
+      slot.add({
+        id: SlotIds.ROW_SELECTION_OPERATION,
+        title: `勾选操作区`,
+        type: 'scope'
+      });
+      slot
+        .get(SlotIds.ROW_SELECTION_OPERATION)
+        .inputs.add(InputIds.ROW_SELECTION_SELECTED_ROW_KEYS, '当前勾选数据-标识', Schemas.Array);
+      slot
+        .get(SlotIds.ROW_SELECTION_OPERATION)
+        .inputs.add(InputIds.ROW_SELECTION_SELECTED_ROWS, '当前勾选数据-行数据', Schemas.Array);
+    }
+  } else {
+    if (slot.get(SlotIds.ROW_SELECTION_OPERATION)) {
+      slot.remove(SlotIds.ROW_SELECTION_OPERATION);
+    }
+  }
+}
+
 const getRowSelectionEditor = (props: EditorResult<Data>) => {
   const suggestions: any[] = [];
   props?.data?.columns?.forEach((col) => {
@@ -28,21 +54,21 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             data.selectionType = RowSelectionTypeEnum.Checkbox;
           }
           if (value) {
-            slot.add({ id: SlotIds.ROW_SELECTION_OPERATION, title: `勾选操作区`, type: 'scope' });
-            slot
-              .get(SlotIds.ROW_SELECTION_OPERATION)
-              .inputs.add(
-                InputIds.ROW_SELECTION_SELECTED_ROW_KEYS,
-                '当前勾选数据-标识',
-                Schemas.Array
-              );
-            slot
-              .get(SlotIds.ROW_SELECTION_OPERATION)
-              .inputs.add(
-                InputIds.ROW_SELECTION_SELECTED_ROWS,
-                '当前勾选数据-行数据',
-                Schemas.Array
-              );
+            // slot.add({ id: SlotIds.ROW_SELECTION_OPERATION, title: `勾选操作区`, type: 'scope' });
+            // slot
+            //   .get(SlotIds.ROW_SELECTION_OPERATION)
+            //   .inputs.add(
+            //     InputIds.ROW_SELECTION_SELECTED_ROW_KEYS,
+            //     '当前勾选数据-标识',
+            //     Schemas.Array
+            //   );
+            // slot
+            //   .get(SlotIds.ROW_SELECTION_OPERATION)
+            //   .inputs.add(
+            //     InputIds.ROW_SELECTION_SELECTED_ROWS,
+            //     '当前勾选数据-行数据',
+            //     Schemas.Array
+            //   );
 
             output.add(OutputIds.ROW_SELECTION, '勾选事件', Schemas.Object);
             output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.Object);
@@ -65,7 +91,9 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             if (input.get(InputIds.GET_ROW_SELECTION)) {
               input.remove(InputIds.GET_ROW_SELECTION);
             }
-            slot.remove(SlotIds.ROW_SELECTION_OPERATION);
+            if (slot.get(SlotIds.ROW_SELECTION_OPERATION)) {
+              slot.remove(SlotIds.ROW_SELECTION_OPERATION);
+            }
           }
         }
       }
@@ -131,7 +159,8 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
-            get({ data }: EditorResult<Data>) {
+            get({ data, slot }: EditorResult<Data>) {
+              updateSlot({ data, slot });
               return (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.TOP);
             },
             set({ data }: EditorResult<Data>, value: boolean) {
@@ -153,7 +182,8 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
-            get({ data }: EditorResult<Data>) {
+            get({ data, slot }: EditorResult<Data>) {
+              updateSlot({ data, slot });
               return (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.BOTTOM);
             },
             set({ data }: EditorResult<Data>, value: boolean) {
