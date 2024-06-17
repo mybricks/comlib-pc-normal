@@ -11,6 +11,10 @@
     "step": 1,
     "size": "middle"
   },
+  "validateTrigger": [
+    "onBlur",
+    "onPressEnter"
+  ],
   "isFormatter": false,
   "charPostion": "prefix",
   "character": "¥",

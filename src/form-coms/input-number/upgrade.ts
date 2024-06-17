@@ -1,6 +1,7 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys, ValueRules, mergeRules } from '../utils/validator';
 import { Data } from './runtime';
+import { ValidateTriggerType } from '../types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -236,5 +237,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.isPrecision = true;
   }
   //=========== v1.1.16 end ===============
+
+  /**
+   * @description v1.1.18 新增 校验触发时机 配置项
+   */
+
+  if (!data.validateTrigger) {
+    data.validateTrigger = [ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter];
+  }
+  //=========== v1.1.19 end ===============
   return true;
 }
