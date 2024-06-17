@@ -3,7 +3,8 @@ import { InputNumber, InputNumberProps } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
-import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
+import { ValidateTriggerType } from '../types';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
 export interface Data {
@@ -22,6 +23,7 @@ export interface Data {
   useGrouping: boolean;
   isParser: boolean;
   isPrecision: boolean;
+  validateTrigger: string[];
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -102,8 +104,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id, name: props.name });
+  const onValidateTrigger = (type: string) => {
+    data.validateTrigger?.includes(type) &&
+      debounceValidateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const changeValue = (val) => {
@@ -115,11 +118,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onChange = (val) => {
     changeValue(val);
     outputs['onChange'](val);
+    onValidateTrigger(ValidateTriggerType.OnChange);
   };
 
   const onBlur = useCallback(
     (e) => {
-      onValidateTrigger();
+      onValidateTrigger(ValidateTriggerType.OnBlur);
       outputs['onBlur'](valueRef.current);
     },
     [value]
@@ -127,7 +131,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const onPressEnter = useCallback(
     (e) => {
-      onValidateTrigger();
+      onValidateTrigger(ValidateTriggerType.OnPressEnter);
       outputs['onPressEnter'](valueRef.current);
     },
     [value]

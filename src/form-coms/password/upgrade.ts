@@ -167,6 +167,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.3 end ===============
 
+  /**
+   * @description v1.1.11 新增 校验触发时机 配置项
+   */
+
+  if (!data.validateTrigger) {
+    data.validateTrigger = [ValidateTriggerType.OnPressEnter];
+  }
+  //=========== v1.1.12 end ===============
+
   data.rules = mergeRules(LengthRules, data.rules);
   return true;
 }

@@ -5,6 +5,7 @@ import { validateFormItem, RuleKeys } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import css from './style.less';
 import { validateTrigger } from '../form-container/models/validate';
+import { ValidateTriggerType } from '../types';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function ({
@@ -97,12 +98,12 @@ export default function ({
     [value]
   );
 
-  // const onValidateTrigger = (type: string) => {
-  //   data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
-  // };
-  const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id, name });
+  const onValidateTrigger = (type: string) => {
+    data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
   };
+  // const onValidateTrigger = () => {
+  //   validateTrigger(parentSlot, { id, name });
+  // };
 
   const getValue = useCallback(() => valueRef.current, [value]);
 
@@ -116,11 +117,12 @@ export default function ({
     const _value = e.target.value;
     changeValue(_value);
     outputs['onChange'](_value);
+    onValidateTrigger(ValidateTriggerType.OnChange);
   };
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger();
+    onValidateTrigger(ValidateTriggerType.OnPressEnter);
     outputs['onPressEnter'](value);
   }, []);
 

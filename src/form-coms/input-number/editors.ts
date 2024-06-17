@@ -1,4 +1,4 @@
-import { SizeEnum, SizeOptions } from '../types';
+import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { createrCatelogEditor } from '../utils';
 import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { Data } from './runtime';
@@ -386,6 +386,28 @@ export default {
             },
             set({ data }, value: boolean) {
               data.isControl = value;
+            }
+          }
+        },
+        {
+          title: '校验触发时机',
+          type: 'Select',
+          description: '配置校验触发的时机',
+          options: {
+            mode: 'tags',
+            multiple: true,
+            options: [
+              { label: '值变化', value: ValidateTriggerType.OnChange },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+              { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.validateTrigger || [ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter];
+            },
+            set({ data }: EditorResult<Data>, value: string[]) {
+              data.validateTrigger = value;
             }
           }
         },
