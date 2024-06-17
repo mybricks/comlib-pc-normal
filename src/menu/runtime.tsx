@@ -141,7 +141,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         data.forEach((item) => {
           if (item.menuType === 'subMenu') {
             filterKeys.push(item.key);
-            if (item.children.length !== 0) {
+            if (item.children && item.children.length !== 0) {
               filterFun(item.children);
             }
           }
