@@ -7,6 +7,7 @@ import debounce from 'lodash/debounce';
 import { addField } from './components/FormActions';
 import { deepCopy } from '../../utils';
 import { FormListFieldData } from 'antd';
+import { inputIds } from '../form-container/constants';
 
 /**
  * 计算标签宽度
@@ -299,7 +300,7 @@ export function setValuesForInput({
       if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
       const isLast = (valIndex === values.length - 1);
-      setValuesOfChild({ data, childrenStore, key, value, actionType }, isLast ? cb : void 0);
+      setValuesOfChild({ data, childrenStore, key, value, actionType: actionType === 'add' ? inputIds.setInitialValue : actionType }, isLast ? cb : void 0);
     });
   })
     .then(v => {

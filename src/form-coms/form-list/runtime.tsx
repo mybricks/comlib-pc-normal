@@ -187,7 +187,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const { index } = val || {};
       let key = val?.key;
       const fieldIndex = typeof index === 'number' ? index : data.fields.length - 1;
-      if (typeof key === 'number') {
+      if (typeof key !== 'number') {
         key = data.fields[fieldIndex]?.key;
       }
       const field = {
