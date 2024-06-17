@@ -11,6 +11,7 @@ import {
   setValuesForInput,
   setValuesOfChild
 } from './utils';
+import { inputIds } from '../form-container/constants';
 
 const SlotContent = (
   props: RuntimeParams<Data> & {
@@ -121,20 +122,13 @@ const SlotContent = (
                   }
                 });
               };
+              if (actionType === 'add' && data.userAction.index < data.fields.length - 1) {
+                // 增加一项的情况下，添加位置为数据最后一个位置之前，这个位置之后的都要重新设置表单项值
+                data.userAction.type = inputIds.setInitialValue;
+                setValuesForInput({ data, childrenStore });
+              }
               if (temp) {
-                let nextIndex = data.userAction.index + 1;
                 setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
-                let next = data.fields[nextIndex];
-                if (next) {
-                  // 添加到指定index位置，手动更新原位置的表单项，以防出现自定义容器内部值丢失问题
-                  setValuesOfChild({
-                    data,
-                    childrenStore,
-                    key: next.key,
-                    value: data.value[nextIndex],
-                    actionType
-                  });
-                }
               } else {
                 cb();
               }
