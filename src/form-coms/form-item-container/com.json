@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-item-container",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "自定义表单项的容器，支持拖入其他任意组件搭建组合表单项",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_w362ze.31720498c703e91b.png",
@@ -130,6 +130,19 @@
       "rels": [
         "setValidateInfoDone"
       ]
+    },
+    {
+      "id": "setFieldSource",
+      "title": "设置数据源输入",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "rels": [
+        "setFieldSourceDone"
+      ]
     }
   ],
   "outputs": [
@@ -254,6 +267,16 @@
           }
         }
       }
+    },
+    {
+      "id": "setFieldSourceDone",
+      "title": "设置数据源输入",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
     }
   ],
   "slots": [
@@ -267,6 +290,16 @@
           "title": "表单项值",
           "schema": {
             "type": "any"
+          }
+        },
+        {
+          "id": "fieldSource",
+          "title": "数据源选项输入",
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         {

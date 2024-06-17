@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.60",
+  "version": "1.4.61",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -38,6 +38,19 @@
       },
       "rels": [
         "setFieldsValueDone"
+      ],
+      "desc": "给表单设置初始数据且触发表单项值变化输出"
+    },
+    {
+      "id": "setFieldsSource",
+      "title": "表单数据源选项输入",
+      "description": "设置表单选项数据源数据时触发，给组件的选项赋值",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "rels": [
+        "setFieldsSourceDone"
       ],
       "desc": "给表单设置初始数据且触发表单项值变化输出"
     },
@@ -278,6 +291,14 @@
       }
     },
     {
+      "id": "setFieldsSourceDone",
+      "title": "设置表单数据源完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
       "id": "setDisabledDone",
       "title": "设置禁用完成",
       "schema": {
@@ -375,6 +396,15 @@
           "id": "setFieldsValue",
           "title": "表单数据输入",
           "description": "设置表单数据时触发，输出所有字段的当前值",
+          "schema": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        {
+          "id": "setFieldsSource",
+          "title": "表单数据源选项输入",
+          "description": "设置表单选项数据源数据时触发，给组件的选项赋值",
           "schema": {
             "type": "object",
             "properties": {}

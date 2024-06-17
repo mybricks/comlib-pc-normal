@@ -3,6 +3,7 @@ export const SlotIds = {
 };
 export const SlotInputIds = {
     CurValue: 'curValue',
+    FieldSource: 'fieldSource'
 };
 export const SlotOutputIds = {
     SetCurValue: 'setCurValue',

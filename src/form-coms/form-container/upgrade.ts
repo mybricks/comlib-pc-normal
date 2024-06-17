@@ -749,6 +749,28 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       data.ellipseMode = "ellipse"
     }
   
-  //=========== v1.4.59 end ===============
+  //=========== v1.4.58 end ===============
+  /**
+   * @description v1.4.59 feat 数据源选项输入
+   */
+
+  if (!input.get(inputIds.setFieldsSource)) {
+    const schema = {
+      type: 'object',
+      properties: {}
+    };
+
+    input.add(inputIds.setFieldsSource, '表单数据源选项输入', schema);
+    let contentSlot = slot.get('content')
+    const hasFieldsSource = contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)
+    if (!hasFieldsSource) {
+      contentSlot.inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', schema)
+      // slot?.get('content')._inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', schema)
+    }
+  }
+
+//=========== v1.4.59 end ===============
+
+//
   return true;
 }

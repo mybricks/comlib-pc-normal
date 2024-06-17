@@ -28,7 +28,10 @@ export const inputIds = {
   isEditable: 'isEditable',
 
   // 动态设置表单项
-  setDynamicFormItems: 'setDynamicFormItems'
+  setDynamicFormItems: 'setDynamicFormItems',
+
+  // 设置数据源
+  setFieldsSource: 'setFieldsSource'
 }
 
 export const outputIds = {
@@ -57,13 +60,17 @@ export const outputIds = {
   isEditableDone: "isEditableDone",
 
   // 动态设置表单项完成
-  setDynamicFormItemsDone: 'setDynamicFormItemsDone'
+  setDynamicFormItemsDone: 'setDynamicFormItemsDone',
+
+  // 设置数据源完成
+  setFieldsSourceDone: 'setFieldsSourceDone'
 }
 
 export const slotInputIds = {
   SET_FIELDS_VALUE: 'setFieldsValue',
   VALIDATE_TRIGGER: 'validateTrigger',
-  ON_CHANGE: 'onChange'
+  ON_CHANGE: 'onChange',
+  SET_FIELDS_SOURCE: 'setFieldsSource'
 }
 
 export const labelWidthTypes = {

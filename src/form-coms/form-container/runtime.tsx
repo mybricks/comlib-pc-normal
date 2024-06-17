@@ -18,6 +18,7 @@ import { refreshSchema } from './schema';
 import css from './styles.less';
 import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
+import { isArray } from 'lodash';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -55,6 +56,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
         setFieldsValue(val, () => {
           slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
           relOutputs['setFieldsValueDone'](val);
+        });
+      });
+
+      inputs[inputIds.setFieldsSource]((val, relOutputs) => {
+        setFieldsSourceValue(val, () => {
+          console.log('val ---', val);
+          slots['content'].inputs[slotInputIds.SET_FIELDS_SOURCE](val);
+          relOutputs['setFieldsSourceDone'](val);
         });
       });
 
@@ -348,6 +357,28 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
+  const setFieldsSourceValue = (val, cb?) => {
+    const formData = objectFilter(val);
+    if (Object.keys(formData).length > 0) {
+      const length = Object.keys(formData).length - 1;
+      Object.keys(formData).forEach((key, inx) => {
+        const isLast = inx === length;
+        setFieldSourceForInput(
+          {
+            childrenInputs,
+            formItems: data.items,
+            name: key,
+            useDynamicItems: data.useDynamicItems
+          },
+          'setFieldSource',
+          formData,
+          isLast ? cb : void 0
+        );
+      });
+    } else {
+      cb();
+    }
+  };
   const setInitialValues = (val, cb?) => {
     try {
       const formData = objectFilter(val);
@@ -747,7 +778,6 @@ const setValuesForInput = (
   cb?
 ) => {
   const item = formItems.find((item) => item.name === name);
-  const itemIdx = formItems.findIndex((item) => item.name === name);
   const inputDoneId = inputId + 'Done';
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems });
@@ -756,6 +786,36 @@ const setValuesForInput = (
       if (isObject(values[name])) {
         if (input[inputId]) {
           input?.[inputId]?.({ ...values[name] })[inputDoneId]?.((val) => {
+            cb?.();
+          });
+        }
+      } else {
+        input[inputId] &&
+          input[inputId](values[name])[inputDoneId]?.((val) => {
+            cb?.();
+          });
+      }
+    }
+  }
+};
+
+const setFieldSourceForInput = (
+  { childrenInputs, formItems, name, useDynamicItems },
+  inputId,
+  values,
+  cb?
+) => {
+  const item = formItems.find((item) => item.name === name);
+  const inputDoneId = inputId + 'Done';
+  if (item) {
+    const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems });
+
+    if (input) {
+      if (isObject(values[name]) || isArray(values[name])) {
+        if (input[inputId]) {
+          const a = input[inputId](values[name]);
+          // debugger;
+          a?.[inputDoneId]?.((val) => {
             cb?.();
           });
         }

@@ -26,6 +26,12 @@ export default function (props: RuntimeParams<Data>) {
       outputs['onChange'](val);
     });
 
+    inputs['setFieldSource']((val, outputRels) => {
+      console.log('设置数据源IO-自定义表单项', val);
+      outputRels['setFieldSourceDone']?.(val);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.FieldSource](val);
+    });
+
     inputs['setInitialValue']((val, outputRels) => {
       changeValue(val);
       outputRels['setInitialValueDone']?.(val);
