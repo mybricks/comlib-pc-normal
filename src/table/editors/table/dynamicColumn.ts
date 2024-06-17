@@ -15,7 +15,12 @@ const DynamicColumnEditor = [
         const hasEvent = input.get(InputIds.SET_SHOW_COLUMNS);
         const hasEvent1 = output.get(InputIds.SET_SHOW_COLUMNS);
         if (value) {
-          !hasEvent && input.add(InputIds.SET_SHOW_COLUMNS, `设置显示列`, Schemas.SET_SHOW_COLUMNS);
+          !hasEvent && input.add({
+            id:InputIds.SET_SHOW_COLUMNS,
+            title: '设置显示列',
+            schema: Schemas.SET_SHOW_COLUMNS,
+            desc: '需要显示的列字段列表'
+          });
           !hasEvent1 && output.add(OutputIds.SET_SHOW_COLUMNS, `显示列`, Schemas.SET_SHOW_COLUMNS);
           input.get(InputIds.SET_SHOW_COLUMNS).setRels([OutputIds.SET_SHOW_COLUMNS]);
         } else {
