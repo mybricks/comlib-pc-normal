@@ -1,6 +1,6 @@
 import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
-import { ContentTypeEnum, IColumn } from './types';
+import { ContentTypeEnum, IColumn, RowSelectionTypeEnum } from './types';
 import { DefaultOnRowScript, InputIds, OutputIds, SlotIds } from './constants';
 import { Schemas, upgradeSchema } from './schema';
 import {
@@ -320,6 +320,15 @@ export default function ({
       else item.filter.filterIconInherit = true;
     }
   });
+
+  if (
+    data.useRowSelection &&
+    (data.selectionType === RowSelectionTypeEnum.Radio || !data.rowSelectionPostion?.length)
+  ) {
+    if (slot.get(SlotIds.ROW_SELECTION_OPERATION)) {
+      slot.remove(SlotIds.ROW_SELECTION_OPERATION);
+    }
+  }
 
   return true;
 }
