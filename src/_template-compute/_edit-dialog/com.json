@@ -5,7 +5,6 @@
   "description": "配置对话框",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
