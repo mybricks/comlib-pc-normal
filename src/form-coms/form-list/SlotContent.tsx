@@ -128,10 +128,7 @@ const SlotContent = (
                 setValuesForInput({ data, childrenStore });
               }
               if (temp) {
-                let nextIndex = data.userAction.index + 1;
-                // setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
-                let next = data.fields[nextIndex];
-                // setValuesForInput({ data, childrenStore });
+                setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
               } else {
                 cb();
               }
