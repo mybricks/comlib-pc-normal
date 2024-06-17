@@ -1,6 +1,7 @@
-import React from 'react';
-import { Form } from 'antd';
+import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import { Form, Tooltip } from 'antd';
 import { Data, FormControlProps } from '../types';
+import { usePrevious } from '../../../utils/hooks';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 
@@ -25,10 +26,12 @@ const JSXWrapper = (props: FormControlProps) => {
 
 const FormItem = (props) => {
   const { com, item, data, slots, isMobile, env } = props;
-  const { dynamicStyle = {} } = item;
-
+  const { dynamicStyle = {}, label } = item;
+  const [isShowTips, setIsShowTips] = useState(false);
   const formColon = data.config?.colon || data.colon;
   const colon = item?.colon === 'default' ? formColon : item.colon;
+  const labelRef = useRef<HTMLLabelElement>();
+  const prevLabel = usePrevious(label);
 
   const labelAlign =
     dynamicStyle.labelAlign && dynamicStyle.labelAlign !== 'default'
@@ -45,6 +48,59 @@ const FormItem = (props) => {
         ? 'pre-wrap'
         : 'nowrap'
       : void 0;
+  const ellipseConfig = useMemo(() => {
+    if (data.ellipseMode === 'ellipse') {
+      return {
+        overflow: 'hidden',
+        WebkitBoxOrient: 'vertical',
+        wordBreak: 'break-all',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box !important'
+      };
+    }
+    if ((data.ellipseMode = 'wrap')) {
+      return {
+        whiteSpace: 'pre-wrap'
+      };
+    }
+    return {};
+  }, [data.ellipseMode]);
+  useEffect(() => {
+    if (env.runtime && data.ellipseMode === 'ellipse' && labelRef.current) {
+      const labelRefWidth = labelRef.current?.offsetWidth;
+      if (labelRef.current.scrollWidth > labelRefWidth) {
+        setIsShowTips(true);
+      } else {
+        setIsShowTips(false);
+      }
+    }
+  }, [labelRef.current, env.runtime, data.ellipseMode, item.label, dynamicStyle.labelAutoWrap]);
+
+  const handleMouseEnter = useCallback(() => {
+    if (
+      data.layoutType === 'Form' ||
+      env.edit ||
+      dynamicStyle.labelAutoWrap === true ||
+      data.ellipseMode === 'wrap'
+    ) {
+      // 基础表单、编辑态、自动换行不做处理
+      return;
+    }
+    if (isShowTips && prevLabel === item.label) {
+      return;
+    }
+    try {
+      const labelRefWidth = labelRef.current?.offsetWidth;
+      if (labelRef.current.scrollWidth > labelRefWidth) {
+        setIsShowTips(true);
+      } else {
+        setIsShowTips(false);
+      }
+    } catch (error) {
+      setIsShowTips(false);
+    }
+  }, [data.layoutType, item.label, prevLabel, isShowTips]);
+
   return (
     <Form.Item
       label={
@@ -53,8 +109,18 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
-          <label data-form-item={com.name} style={{ ...dynamicStyle.labelStyle, whiteSpace }}>
-            {env.i18n(item?.label)}
+          <label
+            ref={labelRef}
+            data-form-item={com.name}
+            onMouseEnter={handleMouseEnter}
+            style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
+          >
+            <Tooltip
+              placement="topLeft"
+              title={isShowTips && env.runtime ? env.i18n(item?.label) : null}
+            >
+              {env.i18n(item?.label)}
+            </Tooltip>
           </label>
         )
       }
