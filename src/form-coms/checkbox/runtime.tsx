@@ -34,10 +34,27 @@ export default function Runtime({
   const valueRef = useRef<any>(data.value);
 
   const [value, setValue] = useState<any>(data.value);
+  // 运行时只执行一次
+  const hasSetDefaultChecked = useRef<boolean>(false);
 
   useLayoutEffect(() => {
     if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);
+
+  useEffect(() => {
+    // 编辑态，只改变全选框状态，不更新值
+    if (env.edit) {
+      setCheckAll(data.defaultCheckedAll);
+    }
+    if (env.runtime && hasSetDefaultChecked.current === false) {
+      hasSetDefaultChecked.current = true;
+      let allValues = data.config.options.map((item) => item.value);
+      if (data.defaultCheckedAll) {
+        allValues.length ? changeValue(data.defaultCheckedAll ? allValues : []) : void 0;
+        setCheckAll(data.defaultCheckedAll);
+      }
+    }
+  }, [data.defaultCheckedAll, hasSetDefaultChecked.current, data.value]);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
@@ -141,13 +158,23 @@ export default function Runtime({
         data.config.options = [...ds];
         outputRels['setOptionsDone'](ds);
         let newValArray: any[] = [];
+        let allCheckedArray = [];
         ds.map((item) => {
           const { checked, value } = item;
           if (checked && value != undefined) {
             newValArray.push(value);
           }
+          if (value !== undefined) {
+            allCheckedArray.push(value);
+          }
         });
-        newValArray.length ? changeValue(newValArray) : void 0;
+        if (data.defaultCheckedAll) {
+          changeValue(allCheckedArray);
+        } else {
+          // 这里再执行一边
+          changeValue(newValArray);
+        }
+        // newValArray.length ? changeValue(newValArray) : void 0;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
@@ -212,7 +239,9 @@ export default function Runtime({
           : !!checkedValue.length && checkedValue.length < data.config.options.length
       );
       setCheckAll(
-        data.isIndeterminate ? false : checkedValue.length === data.config.options.length
+        data.isIndeterminate
+          ? false
+          : checkedValue.length && checkedValue.length === data.config.options.length
       );
       setValue(checkedValue);
       valueRef.current = checkedValue;
