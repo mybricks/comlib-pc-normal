@@ -306,5 +306,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   descriptionUp(descriptionUpList, input, output);
   //=========== v1.1.23 end ===============
 
+  /**
+   * @description v1.1.24 新增默认选中
+  */
+
+  if(typeof data.defaultCheckedAll === 'undefined') {
+    data.defaultCheckedAll = false
+  }
+
+  //=========== v1.1.24 end ===============
+
   return true;
 }
