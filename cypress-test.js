@@ -52,7 +52,7 @@ async function main() {
       return pre;
     }, '').slice(1);
 
-    if(spec.length === 0) {
+    if (spec.length === 0) {
       beautifulLog('没有可执行测试用例，不需要执行测试');
       return process.exit(0);
     }
@@ -60,7 +60,7 @@ async function main() {
     const command = `npx cypress run --env port=${port},check="${modifiedComponents.join(
       ' '
     )}" --spec="${spec}"`;
-    
+
     beautifulLog(`执行命令：${command}`);
     execSync(command, {
       stdio: 'inherit'
@@ -102,7 +102,7 @@ async function getDebugPort() {
         isFind = true;
         break;
       }
-    } catch (e) {}
+    } catch (e) { }
 
     port++;
   }
@@ -179,6 +179,8 @@ function getVscodePluginDirPath() {
 
     const file = files.find((file) => file.includes('comlib_pc_normal_test_mybricks_json.js'));
 
+    if (file === undefined) { return undefined; }
+
     return path.join(webpackConfigDirPath, file);
   })();
 
@@ -192,10 +194,15 @@ function getVscodePluginDirPath() {
  */
 async function ensureDebugServerStart() {
   let port = await getDebugPort();
-  if (port) return { port, kill: () => {} };
+  if (port) return { port, kill: () => { } };
 
   // 找到 .vscode 文件夹的路径
   const { dirPath, webpackConfigPath } = getVscodePluginDirPath();
+
+  if (!dirPath || !webpackConfigPath) {
+    beautifulLog('请先使用 test.mybricks.json 进行一次调试，以初始化测试用例运行环境', 'error');
+    return { port: false, kill: () => { } };
+  }
 
   const command = `npm run --prefix ${dirPath} dev:comlib ${webpackConfigPath}`;
   beautifulLog(`执行命令：${command}`);
