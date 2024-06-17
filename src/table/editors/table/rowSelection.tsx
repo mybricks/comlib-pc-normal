@@ -54,21 +54,6 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             data.selectionType = RowSelectionTypeEnum.Checkbox;
           }
           if (value) {
-            // slot.add({ id: SlotIds.ROW_SELECTION_OPERATION, title: `勾选操作区`, type: 'scope' });
-            // slot
-            //   .get(SlotIds.ROW_SELECTION_OPERATION)
-            //   .inputs.add(
-            //     InputIds.ROW_SELECTION_SELECTED_ROW_KEYS,
-            //     '当前勾选数据-标识',
-            //     Schemas.Array
-            //   );
-            // slot
-            //   .get(SlotIds.ROW_SELECTION_OPERATION)
-            //   .inputs.add(
-            //     InputIds.ROW_SELECTION_SELECTED_ROWS,
-            //     '当前勾选数据-行数据',
-            //     Schemas.Array
-            //   );
 
             output.add(OutputIds.ROW_SELECTION, '勾选事件', Schemas.Object);
             output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.Object);
@@ -91,10 +76,8 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             if (input.get(InputIds.GET_ROW_SELECTION)) {
               input.remove(InputIds.GET_ROW_SELECTION);
             }
-            if (slot.get(SlotIds.ROW_SELECTION_OPERATION)) {
-              slot.remove(SlotIds.ROW_SELECTION_OPERATION);
-            }
           }
+          updateSlot({data, slot})
         }
       }
     },
@@ -115,8 +98,9 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             get({ data }: EditorResult<Data>) {
               return data.selectionType || RowSelectionTypeEnum.Checkbox;
             },
-            set({ data }: EditorResult<Data>, value: RowSelectionTypeEnum) {
+            set({ data, slot }: EditorResult<Data>, value: RowSelectionTypeEnum) {
               data.selectionType = value;
+              updateSlot({ data, slot });
             }
           }
         },
@@ -159,11 +143,10 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
-            get({ data, slot }: EditorResult<Data>) {
-              updateSlot({ data, slot });
+            get({ data }: EditorResult<Data>) {
               return (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.TOP);
             },
-            set({ data }: EditorResult<Data>, value: boolean) {
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
               const temp = (data.rowSelectionPostion || []).filter(
                 (item) => item !== RowSelectionPostionEnum.TOP
               );
@@ -171,6 +154,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
                 temp.push(RowSelectionPostionEnum.TOP);
               }
               data.rowSelectionPostion = temp;
+              updateSlot({ data, slot });
             }
           }
         },
@@ -182,11 +166,10 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
-            get({ data, slot }: EditorResult<Data>) {
-              updateSlot({ data, slot });
+            get({ data }: EditorResult<Data>) {
               return (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.BOTTOM);
             },
-            set({ data }: EditorResult<Data>, value: boolean) {
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
               const temp = (data.rowSelectionPostion || []).filter(
                 (item) => item !== RowSelectionPostionEnum.BOTTOM
               );
@@ -194,6 +177,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
                 temp.push(RowSelectionPostionEnum.BOTTOM);
               }
               data.rowSelectionPostion = temp;
+              updateSlot({ data, slot });
             }
           }
         },
