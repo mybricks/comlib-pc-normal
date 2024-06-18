@@ -769,13 +769,17 @@ export default {
             options: [{ min: 1 }],
             ifVisible({ id, name, data }: EditorResult<Data>) {
               const labelWidthType = getFormItemProp({ data, com: { name, id } }, 'labelWidthType');
-              return isShowLabel({ data, com: { id, name } }) && (data.labelWidthType === 'px' || labelWidthType === 'px');
+              let pxVisible = labelWidthType === undefined ? (data.labelWidthType === 'px'): (labelWidthType === 'px' )
+              return isShowLabel({ data, com: { id, name } }) && pxVisible;
             },
             value: {
               get({ data, name, id }: EditorResult<Data>) {
                 return [getFormItemProp({ data, com: { name, id } }, 'labelWidth') || data.labelWidth];
               },
               set({ data, name, id }: EditorResult<Data>, value: number[]) {
+                if(getFormItemProp({ data, com: { name, id } }, 'labelWidthType') === undefined) {
+                  setFormItemProps({ data, com: { name, id } }, 'labelWidthType', 'px');
+                }
                 setFormItemProps({ data, com: { name, id } }, 'labelWidth', value[0]);
               }
             }
@@ -786,13 +790,17 @@ export default {
             options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
             ifVisible({ id, name, data }: EditorResult<Data>) {
               const labelWidthType = getFormItemProp({ data, com: { name, id } }, 'labelWidthType');
-              return isShowLabel({ data, com: { id, name } }) && (data.labelWidthType === 'span' || labelWidthType === 'span');
+              let spanVisible = labelWidthType === undefined ? (data.labelWidthType === 'span') : (labelWidthType === 'span' )
+              return isShowLabel({ data, com: { id, name } }) && spanVisible
             },
             value: {
               get({ data, name, id }: EditorResult<Data>) {
                 return getFormItemProp({ data, com: { name, id } }, 'labelCol') || data.labelCol;
               },
               set({ data, name, id }: EditorResult<Data>, value: number) {
+                if(getFormItemProp({ data, com: { name, id } }, 'labelWidthType') === undefined) {
+                  setFormItemProps({ data, com: { name, id } }, 'labelWidthType', 'span');
+                }
                 setFormItemProps({ data, com: { name, id } }, 'labelCol', value);
               }
             }
