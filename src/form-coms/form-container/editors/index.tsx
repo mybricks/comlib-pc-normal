@@ -544,7 +544,7 @@ export default {
                 { label: '自动换行', value: 'wrap' }
               ],
               value: {
-                set({ data }: EditorResult<Data>, value: 'left' | 'center' | 'right') {
+                set({ data }: EditorResult<Data>, value: 'ellipse' | 'wrap') {
                   data.ellipseMode = value;
                 },
                 get({ data }: EditorResult<Data>) {

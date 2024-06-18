@@ -6,7 +6,7 @@
   "nameCount": 0,
   "formItemColumn": 1,
   "enable24Grid": true,
-  "ellipseMode": "wrap",
+  "ellipseMode": "ellipse",
   "actions": {
     "visible": true,
     "widthOption": "flexFull",
