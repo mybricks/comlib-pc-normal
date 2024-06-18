@@ -176,6 +176,8 @@ export interface Data {
   * 默认状态下是否折叠超出的表单项
   */
   defaultCollapsed: boolean
+
+  ellipseMode?: 'wrap' | 'ellipse'
 }
 
 interface DomainModel {

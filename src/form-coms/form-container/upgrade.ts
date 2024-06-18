@@ -740,15 +740,15 @@ export default function ({ data, env, input, output, slot, children, setDeclared
 
   //=========== v1.4.55 end ===============
 
-  /**
- * @description v1.4.58 feat 标题超长配置
- */
+    /**
+   * @description v1.4.59 feat 标题超长配置默认值
+   */
 
-  if (typeof data.ellipseMode === 'undefined') {
-    // 标题超长默认自动换行
-    data.ellipseMode = "wrap"
-  }
-
-  //=========== v1.4.58 end ===============
+    if (typeof data.ellipseMode === 'undefined'){
+      // 标题超长默认 超长省略
+      data.ellipseMode = "ellipse"
+    }
+  
+  //=========== v1.4.59 end ===============
   return true;
 }
