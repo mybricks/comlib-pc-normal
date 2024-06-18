@@ -18,13 +18,13 @@ const itemLabelValue = {
     if (!focusArea) return;
     return data.items[getEleIdx({ data, focusArea })]?.label;
   },
-  set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+  set({ data, focusArea, input, output, env }: EditorResult<Data>, value: string) {
     if (!focusArea) return;
     const item = data.items[getEleIdx({ data, focusArea })];
     item.label = value;
     const outputId = `${item.id}-suffixClick`;
     if (output.get(outputId)) {
-      output.setTitle(outputId, `点击${item.label}`);
+      output.setTitle(outputId, `点击${env.i18n(item.label)}`);
     }
     updateIOSchema({ data, input, output });
   }

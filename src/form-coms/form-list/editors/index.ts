@@ -1265,9 +1265,9 @@ export default {
             get({ data }: EditorResult<Data>) {
               return btn.title;
             },
-            set({ data, output }: EditorResult<Data>, val) {
+            set({ data, output, env }: EditorResult<Data>, val) {
               btn.title = val;
-              output.setTitle(btn.outputId, `点击${btn.title}`);
+              output.setTitle(btn.outputId, `点击${env.i18n(btn.title)}`);
             }
           }
         },

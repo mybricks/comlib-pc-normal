@@ -101,7 +101,7 @@ export default {
           set({ data, focusArea, env }: EditorResult<Data>, options: Option[]) {
             data.staticData = options;
             options.forEach((item) => {
-              slots.get(item.id).setTitle(`${item.title}目标`);
+              slots.get(item.id).setTitle(`${env.i18n(item.title)}目标`);
             });
           }
         }

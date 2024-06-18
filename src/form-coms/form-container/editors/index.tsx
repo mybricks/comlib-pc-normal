@@ -1378,7 +1378,7 @@ export default {
         ]
       }
     ],
-    items: ({}: EditorResult<Data>, cate1, cate2) => {
+    items: ({ env }: EditorResult<Data>, cate1, cate2) => {
       (cate1.title = '操作'),
         (cate1.items = [
           {
@@ -1418,7 +1418,7 @@ export default {
                 const item = data.actions.items.find((item) => item.key === comId);
                 if (item) {
                   item.title = val;
-                  output.setTitle(item.outputId, `点击${item.title}`);
+                  output.setTitle(item.outputId, `点击${env.i18n(item.title)}`);
                 }
               }
             }

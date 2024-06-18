@@ -6,7 +6,7 @@ import pick from 'lodash/pick'
 import uniq from 'lodash/uniq'
 import { isEmptyObject, unitConversion } from '../../utils';
 
-export default function ({ data, input, output, slot, children, setDeclaredStyle, style }: UpgradeParams<Data>): boolean {
+export default function ({ data, env, input, output, slot, children, setDeclaredStyle, style }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -675,8 +675,8 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   /**
    * @description v1.4.48去除操作项“点击”
   */
-  data.actions.items.forEach((item)=>{
-    output.setTitle(item.outputId, item.title);
+  data.actions.items.forEach((item) => {
+    output.setTitle(item.outputId, env.i18n(item.title));
   })
   //=========== v1.4.49===============
 
@@ -722,10 +722,10 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   const margin = marginStyle?.css;
 
   if (margin) {
-    setDeclaredStyle(newActionSelector, {...margin, ...padding});
+    setDeclaredStyle(newActionSelector, { ...margin, ...padding });
   }
   if (padding) {
-    setDeclaredStyle(newActionSelector , {...padding, ...margin});
+    setDeclaredStyle(newActionSelector, { ...padding, ...margin });
   }
   //=========== v1.4.53 end ===============
 
@@ -733,22 +733,22 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
    * @description v1.4.55 feat 查询表单每行**列
    */
 
-    if (typeof data.enable24Grid === 'undefined'){
-      // enable24Grid在查询表单下生效
-      data.enable24Grid = true
-    }
-  
+  if (typeof data.enable24Grid === 'undefined') {
+    // enable24Grid在查询表单下生效
+    data.enable24Grid = true
+  }
+
   //=========== v1.4.55 end ===============
 
-    /**
-   * @description v1.4.58 feat 标题超长配置
-   */
+  /**
+ * @description v1.4.58 feat 标题超长配置
+ */
 
-    if (typeof data.ellipseMode === 'undefined'){
-      // 标题超长默认自动换行
-      data.ellipseMode = "wrap"
-    }
-  
+  if (typeof data.ellipseMode === 'undefined') {
+    // 标题超长默认自动换行
+    data.ellipseMode = "wrap"
+  }
+
   //=========== v1.4.58 end ===============
   return true;
 }
