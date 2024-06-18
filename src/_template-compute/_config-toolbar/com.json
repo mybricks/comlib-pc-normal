@@ -1,7 +1,7 @@
 {
   "title": "配置工具条",
   "namespace": "mybricks.comlib-template-compute._config_toolbar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "配置工具条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./index.ts",
   "editors": "./editor.ts",
+  "upgrade": "./upgrade.ts",
   "rtType": "js",
   "type": "meta",
   "inputs": [
