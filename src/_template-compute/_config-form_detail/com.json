@@ -1,7 +1,7 @@
 {
     "title": "配置描述列表",
     "namespace": "mybricks.comlib-template-compute._config_form_detail",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "配置描述列表",
     "author": "MyBricks",
     "author_name": "MyBricks",
@@ -9,6 +9,7 @@
     "data": "./data.json",
     "runtime": "./index.ts",
     "editors": "./editor.ts",
+    "upgrade": "./upgrade.ts",
     "rtType": "js",
     "type": "meta",
     "inputs": [
@@ -47,6 +48,10 @@
                   "visible": {
                     "type": "boolean",
                     "description": "描述项是否可见"
+                  },
+                  "span": {
+                    "type": "number",
+                    "description": "范围是 1 到该行剩余column数"
                   }
                 }
               }
@@ -58,6 +63,10 @@
             "showTitle": {
               "type": "boolean",
               "description": "展示标题"
+            },
+            "column": {
+              "type": "number",
+              "description": "描述列表的列数"
             }
           }
         }

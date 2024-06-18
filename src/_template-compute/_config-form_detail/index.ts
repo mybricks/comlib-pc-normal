@@ -7,7 +7,7 @@ export default ({ env, data, inputs, outputs, onError }) => {
   inputs["setFormDetail"]((ds) => {
     if (ds) {
       const formDetail = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
-      let {itemData, title, showTitle} = ds;
+      let {itemData, title, showTitle, column} = ds;
       let items = (itemData || []).map((item) => {
         if (!item.key) {
           item.key = uuid();
@@ -28,7 +28,8 @@ export default ({ env, data, inputs, outputs, onError }) => {
       formDetail.data = merge(formDetail.data, { 
         items: items, 
         title: title ? title : data.title, 
-        showTitle: showTitle ? showTitle: data.showTitle
+        showTitle: showTitle ? showTitle: data.showTitle,
+        column: column ? column: data.column
       });
       
       outputs["onComplete"]();
