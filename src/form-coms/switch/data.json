@@ -9,5 +9,7 @@
     "disabled": false,
     "size": "middle"
   },
-  "isEditable": true
+  "isEditable": true,
+  "uncheckedValue": false,
+  "checkedValue": true
 }

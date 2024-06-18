@@ -1,5 +1,5 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { StatusEnum } from './const';
+import { StatusEnum, schemaUpdate } from './const';
 import { Data } from './runtime';
 import { createrCatelogEditor } from '../utils';
 import { OutputIds, SizeEnum } from '../types';
@@ -107,15 +107,15 @@ export default {
           }
         },
         {
-          title: '默认值',
+          title: '默认状态',
           type: 'select',
           options: [
             {
-              label: 'True',
+              label: '开启',
               value: true
             },
             {
-              label: 'False',
+              label: '关闭',
               value: false
             }
           ],
@@ -125,6 +125,36 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               data.config.checked = value;
+            }
+          }
+        },
+        {
+          title: '开启值',
+          description: '开关开启时的value',  
+          type: 'valueSelect',
+          options: ['text', 'number', 'boolean'],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.checkedValue;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: any) {
+              data.checkedValue = value;
+              schemaUpdate(input, output, value, data.uncheckedValue);
+            }
+          }
+        },
+        {
+          title: '关闭值',
+          description: '开关关闭时的value',  
+          type: 'valueSelect',
+          options: ['text', 'number', 'boolean'],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.uncheckedValue;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: any) {
+              data.uncheckedValue = value;
+              schemaUpdate(input, output, value, data.checkedValue);
             }
           }
         },

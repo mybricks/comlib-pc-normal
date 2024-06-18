@@ -16,6 +16,8 @@ export interface Data {
   };
   config: SwitchProps;
   isEditable: boolean;
+  checkedValue: any;
+  uncheckedValue: any;
 }
 
 export default function ({
@@ -119,16 +121,24 @@ export default function ({
 
   const changeValue = useCallback((checked) => {
     if (env.edit) return;
-    setChecked(checked);
+    const valueMap = {
+      [data.checkedValue] : true,
+      [data.uncheckedValue]: false
+    };
+    setChecked(valueMap[checked]);
     valueRef.current = checked;
-    onChangeForFc(parentSlot, { id: id, value: checked, name: name });
+    onChangeForFc(parentSlot, { id: id, value: valueMap[checked], name: name });
   }, []);
 
   const onChange = useCallback((checked) => {
     if (env.edit) return;
-    changeValue(checked);
+    const valueMap = {
+      true: data.checkedValue,
+      false: data.uncheckedValue
+    };
+    changeValue(valueMap[checked]);
     onValidateTrigger();
-    outputs['onChange'](checked);
+    outputs['onChange'](valueMap[checked]);
   }, []);
 
   return (
