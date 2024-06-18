@@ -44,6 +44,21 @@ export const ItemsEditors = {
       }]
     },
   },
+  '.ant-descriptions-item-content': {
+    "@dblclick": {
+      type: 'text',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          return data.items[getEleIdx({ data, focusArea })]?.value;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: string) {
+          if (!focusArea) return;
+          data.items[getEleIdx({ data, focusArea })].value = value;
+        }
+      },
+    },
+  },
   [itemKey]: {
     title: '描述项',
     style: [
