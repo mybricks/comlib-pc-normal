@@ -1,10 +1,10 @@
 import { merge } from "lodash";
 export default ({ env, data, inputs, outputs, onError }) => {
-  const next = !env.runtime.debug;
+  //const next = !env.runtime.debug;
   //const next = true;
   inputs.creator((value) => {
     const { toolbarData } = value;
-    if (next && toolbarData) {
+    if (toolbarData) {
       const toolbar = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
       let { btnList } = toolbarData;
       btnList = (btnList || []).map((btn) => {
