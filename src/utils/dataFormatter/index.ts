@@ -41,7 +41,6 @@ const convertFormatter2Editor = (formatterConfig, accessor: Params['value']) => 
         return values[name]
       },
       set(info, value) {
-        debugger
         const data = accessor?.get(info) || {}
         if (!data.values) {
           data.values = {}
