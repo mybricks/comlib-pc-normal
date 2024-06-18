@@ -127,7 +127,7 @@ export default function ({
     };
     setChecked(valueMap[checked]);
     valueRef.current = checked;
-    onChangeForFc(parentSlot, { id: id, value: valueMap[checked], name: name });
+    onChangeForFc(parentSlot, { id: id, value: checked, name: name });
   }, []);
 
   const onChange = useCallback((checked) => {
