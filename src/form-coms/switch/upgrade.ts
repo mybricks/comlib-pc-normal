@@ -187,5 +187,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   */
   descriptionUp(commonFormItemUpdateSchema, input, output);
   //=========== v1.1.12 end ===============
+
+  /**
+   * @description v1.1.13 新增uncheckedValue和checkedValue字段
+  */
+  if (typeof data.uncheckedValue === 'undefined') {
+    data.uncheckedValue = false;
+  }
+  if (typeof data.checkedValue === 'undefined') {
+    data.checkedValue = true;
+  }
+  //=========== v1.1.13 end ===============
   return true;
 }
