@@ -61,7 +61,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
       inputs[inputIds.setFieldsSource]((val, relOutputs) => {
         setFieldsSourceValue(val, () => {
-          console.log('val ---', val);
           slots['content'].inputs[slotInputIds.SET_FIELDS_SOURCE](val);
           relOutputs['setFieldsSourceDone'](val);
         });
@@ -242,7 +241,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
        */
       slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
         const { id, name } = params;
-        const { item, isFormItem } = getFormItem(data, { id, name });
+        const { item, isFormItem } = getFormItem(data, {
+          id,
+          name,
+          useDynamicItems: data.useDynamicItems
+        });
+        // console.log('VALIDATE_TRIGGER ', params)
 
         if (item && isFormItem) {
           // const input = childrenInputs[item.id];
@@ -266,8 +270,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
-      const { item, isFormItem } = getFormItem(data, { id, name });
-
+      const { item, isFormItem } = getFormItem(data, {
+        id,
+        name,
+        useDynamicItems: data.useDynamicItems
+      });
+      console.log('接收到change --- FORM CONTAINER', id, name, value, item);
       if (item && isFormItem) {
         const fieldsValue = { [item.name]: value };
 

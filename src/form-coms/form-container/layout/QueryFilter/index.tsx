@@ -186,7 +186,8 @@ const QueryFilter = (props: QueryFilterProps) => {
         }
 
         let hidden = false;
-        let comJSX = data.useDynamicItems ? com.getJsx({ index: index, id: item.name }) : com;
+        let id = com.name + '::' + item.id;
+        let comJSX = data.useDynamicItems ? com.getJsx({ index: index, id: id }) : com;
 
         // 表单项的处理
         if (isFormItem) {

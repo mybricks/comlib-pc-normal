@@ -43,6 +43,7 @@ export default function (props: RuntimeParams<Data>) {
     slots[SlotIds.FormItem].outputs[SlotOutputIds.SetCurValue]?.((val) => {
       changeValue(val);
       outputs['onChange'](val);
+      // console.log('自定义表单项IO输出设置值', val, props.id, props.name)
       onValidateTrigger();
     });
 

@@ -18,7 +18,14 @@ export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: tru
   const { items, additionalItems } = data;
   let item, isFormItem = false;
 
+  
   // 查找表单项
+  if(com.useDynamicItems) {
+    item = items.find(item => {
+      return item.comName +'::' + item.id === com.id
+    })
+    if(item) return { item, isFormItem: true}
+  }
   item = items.find((item, idx) => {
     if (item.comName) {
       return item.comName === com.name && (com.index ? com.index === idx : true)
