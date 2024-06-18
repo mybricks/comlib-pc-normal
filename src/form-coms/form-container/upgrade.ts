@@ -6,7 +6,7 @@ import pick from 'lodash/pick'
 import uniq from 'lodash/uniq'
 import { isEmptyObject, unitConversion } from '../../utils';
 
-export default function ({ data, env, input, output, slot, children, setDeclaredStyle, style }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children, setDeclaredStyle, style }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -675,9 +675,9 @@ export default function ({ data, env, input, output, slot, children, setDeclared
   /**
    * @description v1.4.48去除操作项“点击”
   */
-  data.actions.items.forEach((item) => {
-    output.setTitle(item.outputId, env.i18n(item.title));
-  })
+  // data.actions.items.forEach((item) => {
+  //   output.setTitle(item.outputId, item.title);
+  // })
   //=========== v1.4.49===============
 
   /**
