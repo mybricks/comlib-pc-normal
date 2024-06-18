@@ -41,10 +41,13 @@ const convertFormatter2Editor = (formatterConfig, accessor: Params['value']) => 
         return values[name]
       },
       set(info, value) {
+        debugger
         const data = accessor?.get(info) || {}
-        const values = data.values || {}
+        if (!data.values) {
+          data.values = {}
+        }
         // 设置当前格式器的数据
-        values[name] = value
+        data.values[name] = value
         // 设置当前格式化方法
         accessor.set(info, data)
       }
