@@ -16,13 +16,15 @@ import { inputIds } from '../form-container/constants';
  */
 export function getLabelCol({ data, item }: { data: Data, item: FormItems }) {
   let src: any = data;
-  if (item.showLabel === true) {
-    src = item;
-  }
-  const labelCol = src.labelWidthType === labelWidthTypes.SPAN
-    ? { span: src.labelCol }
-    : { flex: `0 0 ${src.labelWidth ? src.labelWidth : 25}px` }
-
+  // if (item.showLabel === true) {
+  //   src = item;
+  // }
+  const finalWidthType = item.labelWidthType || data.labelWidthType
+  const fLabelCol = item.labelCol || data.labelCol
+  const fLabelWIdth = item.labelWidth || data.labelWidth
+  const labelCol = finalWidthType === labelWidthTypes.SPAN
+    ? { span: fLabelCol }
+    : { flex: `0 0 ${fLabelWIdth ? fLabelWIdth : 25}px` }
   return labelCol
 }
 
