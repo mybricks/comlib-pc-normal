@@ -1,7 +1,7 @@
 {
     "title": "配置描述列表",
     "namespace": "mybricks.comlib-template-compute._config_form_detail",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "配置描述列表",
     "author": "MyBricks",
     "author_name": "MyBricks",

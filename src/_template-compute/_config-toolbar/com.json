@@ -1,7 +1,7 @@
 {
   "title": "配置工具条",
   "namespace": "mybricks.comlib-template-compute._config_toolbar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "配置工具条",
   "author": "MyBricks",
   "author_name": "MyBricks",

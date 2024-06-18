@@ -1,11 +1,11 @@
 import { merge } from "lodash";
 import { uuid } from "../utils"
 export default ({ env, data, inputs, outputs, onError }) => {
-  const next = !env.runtime.debug;
+  //const next = !env.runtime.debug;
   //const next = true;
   // 设置描述列表列表项
   inputs["setFormDetail"]((ds) => {
-    if (next && ds) {
+    if (ds) {
       const formDetail = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
       let {itemData, title, showTitle} = ds;
       let items = (itemData || []).map((item) => {
