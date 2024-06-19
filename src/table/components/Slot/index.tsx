@@ -30,9 +30,9 @@ export default React.memo((props: Props): JSX.Element | null => {
         },
         [InputIds.INDEX]: colIndex
       },
-      style: {
-        minHeight: isEdit ? '30px' : undefined
-      },
+      // style: {
+      //   minHeight: isEdit ? '30px' : undefined
+      // },
       key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${colKey}`
     });
   }
@@ -45,9 +45,9 @@ export default React.memo((props: Props): JSX.Element | null => {
       [InputIds.SLOT_ROW_VALUE]: value,
       [InputIds.INDEX]: colIndex
     },
-    style: {
-      minHeight: isEdit ? '30px' : undefined
-    },
+    // style: {
+    //   minHeight: isEdit ? '30px' : undefined
+    // },
     key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${colKey}`
   });
 });
