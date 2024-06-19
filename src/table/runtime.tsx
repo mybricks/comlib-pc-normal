@@ -1118,7 +1118,6 @@ export default function (props: RuntimeParams<Data>) {
     </>
   }
 
-  console.log(`table data`, data)
   return (
     <div ref={ref} style={{
       position: 'relative'
