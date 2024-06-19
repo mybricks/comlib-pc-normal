@@ -1,4 +1,6 @@
 import omit from 'lodash/omit'
+import { uuid } from '../utils'
+
 export default function ({ env, data, inputs, outputs, onError }) {
 
   const next = !!env.runtime // !env.runtime.debug // !env.runtime.debug // !env.runtime.debug //  
@@ -34,7 +36,7 @@ export default function ({ env, data, inputs, outputs, onError }) {
           // 给表单容器的插槽添加组件，同时返回当前组件的信息
           comItem = comForm.slots[0].appendChild({
             namespace: item.namespace || 'mybricks.normal-pc.form-text',
-            data: {... omit(item, ['namespace']), ...(item.disabled !== undefined ? { config: { disabled: item.disabled}} : {})}
+            data: {... omit(item, ['namespace', 'field']), name: item.field || ('表单项' + uuid()), ...(item.disabled !== undefined ? { config: { disabled: item.disabled}} : {})}
           })
 
         } catch (error) {
