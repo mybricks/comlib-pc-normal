@@ -9,7 +9,7 @@ export default {
       title: '选择组件',
       type: 'sceneComSelector',
       options: {
-        filter:({namespace}) => {
+        filter: ({ namespace }) => {
           return namespace === 'mybricks.normal-pc.table'
         }
       },
@@ -52,37 +52,6 @@ export default {
           data.operationType = value;
         }
       }
-    },
-    {
-      title: "分页配置",
-      type: "switch",
-      description: "开关开启后，增加对应分页配置",
-      value: {
-        get({ data }) {
-          return data.isPagination || false;
-        },
-        set({ data, setDesc, input }, value: boolean) {
-          data.isPagination = value;
-          if(value){
-            input.add("setPagination","设置分页",{
-              type: "object",
-              properties: {
-                total: {
-                  type: "number",
-                },
-                current: {
-                  type: "number"
-                },
-                defaultPageSize: {
-                  type: "number"
-                }
-              }
-            })
-          }else{
-            input.remove("setPagination")
-          }
-        },
-      }
-    },
+    }
   ],
 };

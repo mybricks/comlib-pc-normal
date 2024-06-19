@@ -1117,6 +1117,8 @@ export default function (props: RuntimeParams<Data>) {
       <div className={css.infoLabel} style={{ bottom: 0, right: 0 }}>模板</div>
     </>
   }
+
+  console.log(`table data`, data)
   return (
     <div ref={ref} style={{
       position: 'relative'
