@@ -4,7 +4,7 @@ import visibleOpt from '../components/editorRender/visibleOpt';
 export default {
   ':slot': {},
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': ({ data, slot, env }: EditorResult<Data>, cate1) => {
     cate1.items = [
