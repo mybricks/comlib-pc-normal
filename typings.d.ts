@@ -33,6 +33,7 @@ interface Env {
   ajax: (url: string, opt: Record<string, any>) => Promise<any>;
   events: any[];
   vars?: {
+    i18nContent: string;
     getQuery: () => any;
     getExecuteEnv?: () => any;
     getProps: () => any;

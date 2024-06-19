@@ -1,0 +1,34 @@
+{
+  "title": "获取语言包",
+  "namespace": "mybricks.normal-pc.i18n-content",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "获取语言包数据",
+  "author": "liuzhigang",
+  "author_name": "liuzhigang",
+  "docs": "",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "get",
+      "title": "获取",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取语言包数据"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出",
+      "desc": "输出语言包数据",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}
