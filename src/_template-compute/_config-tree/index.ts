@@ -1,4 +1,4 @@
-import { merge } from "lodash";
+import merge  from "lodash/merge";
 export default ({ env, data, inputs, outputs, onError }) => {
   const next = env.runtime;
   // 设置数据源
