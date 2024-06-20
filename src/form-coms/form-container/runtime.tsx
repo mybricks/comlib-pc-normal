@@ -249,7 +249,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
         if (item && isFormItem) {
           // const input = childrenInputs[item.id];
-          const input = getFromItemInputEvent(item, childrenInputs);
+        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems});
           validateForInput({
             input,
             model: {
@@ -838,7 +838,7 @@ const setFieldSourceForInput = (
 const getFromItemInputEvent = (
   formItem,
   childrenInputs,
-  options?: { useDynamicItems: boolean }
+  options?: { useDynamicItems?: boolean }
 ) => {
   let input;
   if (options?.useDynamicItems) {
