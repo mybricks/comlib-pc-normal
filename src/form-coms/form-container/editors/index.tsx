@@ -327,6 +327,58 @@ export default {
           }
         },
         {
+          title: '动态设置表单项',
+          description:
+            '开启后, 支持通过逻辑连线,根据已有的编辑态搭建内容，动态设置表格标题、字段和宽度',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useDynamicItems;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
+              const hasEvent = input.get(inputIds.setDynamicFormItems);
+              const hasEvent1 = output.get(inputIds.setDynamicFormItems);
+              if (value) {
+                const formatSchema = {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      name: {
+                        type: 'string',
+                        description: '表单项字段名'
+                      },
+                      label: {
+                        type: 'string',
+                        description: '表单项标签'
+                      },
+                      relOriginField: {
+                        type: 'string',
+                        enum: data.items.map((iter) => iter.name),
+                        description: `使用搭建态表单中已有的字段类型,可以取以下字段,${data.items
+                          .map((iter) => iter.name)
+                          .join(',')}`
+                      },
+                      common: commonDynamicItemSchema
+                    }
+                  }
+                };
+                !hasEvent &&
+                  input.add(inputIds.setDynamicFormItems, `动态设置表单项`, formatSchema);
+                !hasEvent1 &&
+                  output.add(outputIds.setDynamicFormItemsDone, `生成表单项内容`, formatSchema);
+                input
+                  .get(inputIds.setDynamicFormItems)
+                  .setRels([outputIds.setDynamicFormItemsDone]);
+              } else {
+                hasEvent && input.remove(inputIds.setDynamicFormItems);
+                hasEvent1 && output.remove(inputIds.setDynamicFormItems);
+              }
+              data.useDynamicItems = value;
+            }
+          }
+        },
+        {
           title: '校验隐藏表单项字段',
           type: 'Switch',
           description: '提交隐藏表单项字段时，是否需要对隐藏字段进行校验，默认为 True 需要校验',
@@ -479,58 +531,6 @@ export default {
               }
             }
           ]
-        },
-        {
-          title: '动态设置表单项',
-          description:
-            '开启后, 支持通过逻辑连线,根据已有的编辑态搭建内容，动态设置表格标题、字段和宽度',
-          type: 'switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useDynamicItems;
-            },
-            set({ data, input, output }: EditorResult<Data>, value: boolean) {
-              const hasEvent = input.get(inputIds.setDynamicFormItems);
-              const hasEvent1 = output.get(inputIds.setDynamicFormItems);
-              if (value) {
-                const formatSchema = {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      name: {
-                        type: 'string',
-                        description: '表单项字段名'
-                      },
-                      label: {
-                        type: 'string',
-                        description: '表单项标签'
-                      },
-                      relOriginField: {
-                        type: 'string',
-                        enum: data.items.map((iter) => iter.name),
-                        description: `使用搭建态表单中已有的字段类型,可以取以下字段,${data.items
-                          .map((iter) => iter.name)
-                          .join(',')}`
-                      },
-                      common: commonDynamicItemSchema
-                    }
-                  }
-                };
-                !hasEvent &&
-                  input.add(inputIds.setDynamicFormItems, `动态设置表单项`, formatSchema);
-                !hasEvent1 &&
-                  output.add(outputIds.setDynamicFormItemsDone, `生成表单项内容`, formatSchema);
-                input
-                  .get(inputIds.setDynamicFormItems)
-                  .setRels([outputIds.setDynamicFormItemsDone]);
-              } else {
-                hasEvent && input.remove(inputIds.setDynamicFormItems);
-                hasEvent1 && output.remove(inputIds.setDynamicFormItems);
-              }
-              data.useDynamicItems = value;
-            }
-          }
         },
         {
           title: '标题',
