@@ -157,13 +157,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }
           });
           data.items = newItems;
-          if (disableFormList.length || enableFormList.length) {
-            // 触发批量禁用、启用;需要在动态表单项childrenInputs
-            dynamicEnableOrDisabledRef.current = () => {
-              disableFormList.length && setDisabled(disableFormList);
-              enableFormList.length && setEnabled(enableFormList);
-            };
-          }
+          // 触发批量禁用、启用;需要在动态表单项childrenInputs
+          dynamicEnableOrDisabledRef.current = () => {
+            disableFormList.length && setDisabled(disableFormList);
+            enableFormList.length && setEnabled(enableFormList);
+            relOutputs['setDynamicFormItemsDone']('done');
+          };
           if (notFoundOrUniqueNames.length) {
             console.warn(
               `以下动态设置的字段名重复或者在搭建册不存在关联的字段`,

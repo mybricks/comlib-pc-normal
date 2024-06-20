@@ -366,7 +366,9 @@ export default {
                 !hasEvent &&
                   input.add(inputIds.setDynamicFormItems, `动态设置表单项`, formatSchema);
                 !hasEvent1 &&
-                  output.add(outputIds.setDynamicFormItemsDone, `生成表单项内容`, formatSchema);
+                  output.add(outputIds.setDynamicFormItemsDone, `生成表单项内容完成`, {
+                    type: 'any'
+                  });
                 input
                   .get(inputIds.setDynamicFormItems)
                   .setRels([outputIds.setDynamicFormItemsDone]);
