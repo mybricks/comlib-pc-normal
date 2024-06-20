@@ -146,7 +146,8 @@
     "./src/_template-compute/_config-toolbar/com.json",
     "./src/_template-compute/_list-form-item/com.json",
     "./src/_template-compute/_edit-form-container/com.json",
-    "./src/_template-compute/_config-form_detail/com.json"
+    "./src/_template-compute/_config-form_detail/com.json",
+    "./src/_template-compute/_config-tree/com.json"
   ],
   "externals": [],
   "tags": "react"

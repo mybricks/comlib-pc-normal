@@ -1,0 +1,5 @@
+{
+  "titleFieldName": "title",
+  "keyFieldName": "key",
+  "childrenFieldName": "children"
+}

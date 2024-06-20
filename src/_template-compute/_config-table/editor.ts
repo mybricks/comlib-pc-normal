@@ -19,7 +19,7 @@ export default {
         },
         set({ data, setDesc }, comDef) {
           data.comDef = comDef
-          setDesc(comDef.title)
+          setDesc(comDef.label)
         }
       }
     },
