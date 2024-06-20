@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -58,6 +58,24 @@
       "rels": [
         "returnValue"
       ]
+    },
+    {
+      "id": "setSliderRange",
+      "title": "动态设置范围",
+      "desc": "动态设置滑动输入条的范围",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "min": {
+            "description": "范围的最小值",
+            "type": "number"
+          },
+          "max": {
+            "description": "范围的最大值",
+            "type": "number"
+          }
+        }
+      }
     },
     {
       "id": "resetValue",

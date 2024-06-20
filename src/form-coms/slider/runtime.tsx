@@ -93,6 +93,15 @@ export default function Runtime({
         relOutputs['setValidateInfoDone'](info);
       }
     });
+    inputs['setSliderRange'] &&
+      inputs['setSliderRange']((val, relOutputs) => {
+        if (val.min !== undefined) {
+          data.config.min = val.min;
+        }
+        if (val.max !== undefined) {
+          data.config.max = val.max;
+        }
+      });
   }, []);
 
   /**监听事件和格式化函数 */

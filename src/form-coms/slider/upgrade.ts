@@ -169,10 +169,31 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.1.3 end ===============
 
   /**
-   * @description v1.1.18 新增description
+   * @description v1.1.8 新增description
   */
   descriptionUp(commonFormItemUpdateSchema, input, output);
-  //=========== v1.1.18 end ===============
+  //=========== v1.1.8 end ===============
+
+  /**
+   * @description v1.1.9 新增 动态设置滑动输入条范围
+  */
+  if (!input.get('setSliderRange')) {
+    const dynamicRangeSchema = {
+      "type": "object",
+      "properties": {
+        "min": {
+          "description": "范围的最小值",
+          "type": "number"
+        },
+        "max": {
+          "description": "范围的最大值",
+          "type": "number"
+        }
+      }
+    }
+    input.add('setSliderRange', '动态设置范围', dynamicRangeSchema);
+  }
+  //=========== v1.1.9 end ===============
 
   return true;
 }
