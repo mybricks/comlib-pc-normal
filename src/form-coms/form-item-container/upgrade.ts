@@ -207,10 +207,20 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   //=========== v1.1.4 end ===============
 
   /** 
-  * @description v1.1.10 增加作用域输入：数据源选项输入
+  * @description v1.1.10 增加作用域/IO输入：数据源选项输入，
   */
+  if (!input.get('setFieldSource')) {
+    input.add('setFieldSource', '设置数据源输入', { type: 'any'});
+  }
+  if (!output.get('setFieldSourceDone')) {
+    output.add('setFieldSourceDone', '设置数据源输入完成', { type: 'any' });
+  }
+  if (output.get('setFieldSourceDone') &&
+    input.get('setFieldSource') &&
+    !input.get('setFieldSource')?.rels?.includes('setFieldSourceDone')) {
+    input.get('setFieldSource').setRels(['setFieldSourceDone']);
+  }
   if (!slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.FieldSource)) {
-    // const hasFieldsSource = contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)
     slot.get(SlotIds.FormItem).inputs.add(SlotInputIds.FieldSource, '数据源选项输入', { type: 'any' })
   }
   //=========== v1.1.10 end ===============

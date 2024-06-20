@@ -64,6 +64,7 @@ const SlotContent = (props) => {
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style; getJsx }[]) {
         const items = data.items;
         let jsx;
+        // 无动态设置表单项的情况，保持原来的逻辑
         if (env.edit || !data.useDynamicItems) {
           jsx = comAray?.map((com, idx) => {
             if (com) {
@@ -168,7 +169,7 @@ const SlotContent = (props) => {
           isDynamicChildrenStoreValid(data, childrenInputs) &&
           dynamicEnableOrDisabledRef
         ) {
-          // 动态设置表单项后，childrenInputs收集完成后，再执行表单项设置启用/禁用
+          // 动态设置表单项后，childrenInputs收集完成后，再执行动态设置进来的表单项的启用/禁用
           if (dynamicEnableOrDisabledRef.current) {
             dynamicEnableOrDisabledRef.current?.();
             dynamicEnableOrDisabledRef.current = null;

@@ -135,10 +135,7 @@
       "id": "setFieldSource",
       "title": "设置数据源输入",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
+        "type": "any"
       },
       "rels": [
         "setFieldSourceDone"
@@ -270,12 +267,9 @@
     },
     {
       "id": "setFieldSourceDone",
-      "title": "设置数据源输入",
+      "title": "设置数据源输入完成",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
+        "type": "any"
       }
     }
   ],

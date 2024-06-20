@@ -27,7 +27,6 @@ export default function (props: RuntimeParams<Data>) {
     });
 
     inputs['setFieldSource']((val, outputRels) => {
-      console.log('设置数据源IO-自定义表单项', val);
       outputRels['setFieldSourceDone']?.(val);
       slots[SlotIds.FormItem].inputs[SlotInputIds.FieldSource](val);
     });
@@ -43,7 +42,6 @@ export default function (props: RuntimeParams<Data>) {
     slots[SlotIds.FormItem].outputs[SlotOutputIds.SetCurValue]?.((val) => {
       changeValue(val);
       outputs['onChange'](val);
-      // console.log('自定义表单项IO输出设置值', val, props.id, props.name)
       onValidateTrigger();
     });
 
