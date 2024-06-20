@@ -24,9 +24,6 @@ export default function Runtime({
   const [value, setValue] = useState<any>(data.value);
   const valueRef = useRef<any>(data.value);
 
-  useEffect(() => {
-    console.log('RADIO ID NAME', id, name);
-  }, [id]);
   useLayoutEffect(() => {
     if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);

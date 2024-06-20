@@ -206,5 +206,15 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   }
   //=========== v1.1.4 end ===============
 
+  /** 
+  * @description v1.1.10 增加作用域输入：数据源选项输入
+  */
+  if (!slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.FieldSource)) {
+    // const hasFieldsSource = contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)
+    slot.get(SlotIds.FormItem).inputs.add(SlotInputIds.FieldSource, '数据源选项输入', { type: 'any' })
+  }
+  //=========== v1.1.10 end ===============
+
+
   return true;
 }

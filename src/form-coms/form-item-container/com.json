@@ -296,10 +296,7 @@
           "id": "fieldSource",
           "title": "数据源选项输入",
           "schema": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "any"
           }
         },
         {

@@ -58,7 +58,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           relOutputs['setFieldsValueDone'](val);
         });
       });
-
+      /** 设置表单数据源 */
       inputs[inputIds.setFieldsSource]((val, relOutputs) => {
         setFieldsSourceValue(val, () => {
           slots['content'].inputs[slotInputIds.SET_FIELDS_SOURCE](val);
@@ -275,7 +275,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
         name,
         useDynamicItems: data.useDynamicItems
       });
-      console.log('接收到change --- FORM CONTAINER', id, name, value, item);
       if (item && isFormItem) {
         const fieldsValue = { [item.name]: value };
 

@@ -124,7 +124,6 @@ const SlotContent = (props) => {
 
               const { widthOption, span, width } = item;
               let id = com.name + '::' + item.id;
-              console.log('id', item.name, id);
               let comJSX = data.useDynamicItems ? com.getJsx({ index: iIdex, id: id }) : com;
               // 表单项的处理
               if (isFormItem) {
