@@ -1,7 +1,7 @@
 import { Data } from './types';
 import { isEmptyObject } from '../utils';
 import { descriptionUp } from '../form-coms/utils/descriptionUp';
-import { clickTagSchema } from './editor/index'
+import { TagSchema, clickTagSchema } from './editor/index'
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const { tagStyle } = data;
@@ -155,5 +155,13 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     input.get('getCheckedTags').setRels(['checkedTags']);
   }
   //=========== 1.0.16 end ===============
+
+
+  if (data.checkable) {
+    input.get('dynamicTags').setSchema({ type: 'array', items: clickTagSchema })
+  } else {
+    input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema })
+  }
+
   return true;
 }
