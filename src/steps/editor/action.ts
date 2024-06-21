@@ -1,51 +1,77 @@
-import { Data, Btn } from '../constants';
-const createBtnValue = (field: string) => {
+import visibleOpt from '../../components/editorRender/visibleOpt';
+import { Data, BtnType } from '../constants';
+import { getButton } from '../utils';
+const createBtnValue = (buttonType: BtnType) => {
   return {
     set({ data }: EditorResult<Data>, value: string) {
-      if (!value) return;
-      data.toolbar[field] = value;
+      const btn = getButton(data.toolbar.btns, buttonType);
+      if (!value || !btn) return;
+      btn.label = value;
     },
     get({ data }: EditorResult<Data>) {
-      return data.toolbar[field];
+      const btn = getButton(data.toolbar.btns, buttonType);
+      return btn?.label;
     }
-  }
-}
+  };
+};
 export default {
   '[data-item-type="stepActions"]': {
     title: '操作项',
     items({ focusArea }: EditorResult<Data>, cate1) {
-      if (!focusArea) return
-      cate1.title = "操作栏"
+      if (!focusArea) return;
+      cate1.title = '操作栏';
       cate1.items = [
         {
           title: '按钮组',
-          type: 'select',
+          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
+          type: 'array',
           options: {
-            options: [
-              {
-                label: "上一步",
-                value: "previous"
-              },
-              {
-                label: "下一步",
-                value: "next"
-              },
-              {
-                label: "提交",
-                value: "submit"
-              },
-            ],
-            mode: "multiple"
+            deletable: false,
+            addable: false,
+            editable: false,
+            customOptRender: visibleOpt,
+            getTitle: (item) => {
+              return item?.label;
+            }
           },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.toolbar.btns || [];
             },
-            set({ data }: EditorResult<Data>, val: Array<Btn>) {
-              data.toolbar.btns = val
+            set({ data }: EditorResult<Data>, val: any[]) {
+              data.toolbar.btns = val;
             }
           }
         },
+        // {
+        //   title: '按钮组',
+        //   type: 'select',
+        //   options: {
+        //     options: [
+        //       {
+        //         label: '上一步',
+        //         value: 'previous'
+        //       },
+        //       {
+        //         label: '下一步',
+        //         value: 'next'
+        //       },
+        //       {
+        //         label: '提交',
+        //         value: 'submit'
+        //       }
+        //     ],
+        //     mode: 'multiple'
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.toolbar.btns || [];
+        //     },
+        //     set({ data }: EditorResult<Data>, val: Array<Btn>) {
+        //       data.toolbar.btns = val;
+        //     }
+        //   }
+        // },
         {
           title: '对齐方式',
           type: 'Select',
@@ -74,7 +100,7 @@ export default {
               return !!data.toolbar.fixed;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.toolbar.fixed = val
+              data.toolbar.fixed = val;
             }
           }
         },
@@ -90,25 +116,29 @@ export default {
               return [data.toolbar.bottom];
             },
             set({ data }: EditorResult<Data>, val: number[]) {
-              data.toolbar.bottom = val[0]
+              data.toolbar.bottom = val[0];
             }
           }
         }
-      ]
+      ];
     },
     style: [
       {
         title: '样式',
-        options: ['padding', { type: 'background', config: { disableBackgroundImage: true } }, 'boxshadow'],
+        options: [
+          'padding',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          'boxshadow'
+        ],
         target: () => '.step-toolbar'
       }
     ]
   },
-  '[data-item-type="next"]': {
-    title: '主按钮',
-    "@dblclick": {
+  '[data-item-type="cancel"]': {
+    title: '取消',
+    '@dblclick': {
       type: 'text',
-      value: createBtnValue(`primaryBtnText`)
+      value: createBtnValue('cancel')
     },
     items: [
       {
@@ -117,7 +147,38 @@ export default {
         options: {
           locale: true
         },
-        value: createBtnValue(`primaryBtnText`)
+        value: createBtnValue('cancel')
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '点击',
+            type: '_Event',
+            options: ({ data }) => {
+              return {
+                outputId: 'cancel'
+              };
+            }
+          }
+        ]
+      }
+    ]
+  },
+  '[data-item-type="next"]': {
+    title: '下一步',
+    '@dblclick': {
+      type: 'text',
+      value: createBtnValue('next')
+    },
+    items: [
+      {
+        title: '文案',
+        type: 'Text',
+        options: {
+          locale: true
+        },
+        value: createBtnValue('next')
       },
       {
         title: '事件',
@@ -138,9 +199,9 @@ export default {
   },
   '[data-item-type="pre"]': {
     title: '上一步',
-    "@dblclick": {
+    '@dblclick': {
       type: 'text',
-      value: createBtnValue(`secondBtnText`)
+      value: createBtnValue('previous')
     },
     items: [
       {
@@ -149,15 +210,15 @@ export default {
         options: {
           locale: true
         },
-        value: createBtnValue('secondBtnText')
+        value: createBtnValue('previous')
       }
     ]
   },
   '[data-item-type="submit"]': {
-    title: '提交按钮',
-    "@dblclick": {
+    title: '提交',
+    '@dblclick': {
       type: 'text',
-      value: createBtnValue(`submitText`)
+      value: createBtnValue('submit')
     },
     items: [
       {
@@ -166,8 +227,7 @@ export default {
         options: {
           locale: true
         },
-        value: createBtnValue(`submitText`)
-
+        value: createBtnValue('submit')
       },
       {
         title: '事件',
@@ -178,20 +238,20 @@ export default {
             options: ({ data }) => {
               return {
                 outputId: 'submit'
-              }
+              };
             }
           }
         ]
       }
     ]
-  },
+  }
 };
 
-const getExtraBtn = (data, focusArea) => {
-  return data.toolbar.extraBtns[focusArea.index]
-}
+// const getExtraBtn = (data, focusArea) => {
+//   return data.toolbar.extraBtns[focusArea.index];
+// };
 
-const updateExtraBtn = (data, focusArea, val) => {
-  const btn = getExtraBtn(data, focusArea)
-  data.toolbar.extraBtns[focusArea.index] = { ...btn, ...val }
-}
+// const updateExtraBtn = (data, focusArea, val) => {
+//   const btn = getExtraBtn(data, focusArea);
+//   data.toolbar.extraBtns[focusArea.index] = { ...btn, ...val };
+// };

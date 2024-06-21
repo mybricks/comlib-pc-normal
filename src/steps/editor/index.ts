@@ -3,6 +3,7 @@ import { Data, Btn } from '../constants';
 import StepEditor from './step';
 import ActionEditor from './action';
 import { addSlot, addEventIO, setDynamicStepsIO } from './util'
+import visibleOpt from '../../components/editorRender/visibleOpt';
 
 const DefaultSchema = {
   type: 'any'
@@ -275,36 +276,61 @@ export default {
         },
         {
           title: '按钮组',
-          type: 'select',
+          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
+          type: 'array',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.toolbar.showActions;
           },
           options: {
-            options: [
-              {
-                label: "上一步",
-                value: "previous"
-              },
-              {
-                label: "下一步",
-                value: "next"
-              },
-              {
-                label: "提交",
-                value: "submit"
-              },
-            ],
-            mode: "multiple"
+            deletable: false,
+            addable: false,
+            editable: false,
+            customOptRender: visibleOpt,
+            getTitle: (item) => {
+              return item?.label;
+            }
           },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.toolbar.btns || [];
             },
-            set({ data }: EditorResult<Data>, val: Array<Btn>) {
-              data.toolbar.btns = val
+            set({ data }: EditorResult<Data>, val: any[]) {
+              data.toolbar.btns = val;
             }
           }
         },
+        // {
+        //   title: '按钮组',
+        //   type: 'select',
+        //   ifVisible({ data }: EditorResult<Data>) {
+        //     return !!data.toolbar.showActions;
+        //   },
+        //   options: {
+        //     options: [
+        //       {
+        //         label: "上一步",
+        //         value: "previous"
+        //       },
+        //       {
+        //         label: "下一步",
+        //         value: "next"
+        //       },
+        //       {
+        //         label: "提交",
+        //         value: "submit"
+        //       },
+        //     ],
+        //     mode: "multiple"
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.toolbar.btns || [];
+        //     },
+        //     set({ data }: EditorResult<Data>, val: Array<Btn>) {
+        //       data.toolbar.btns = val
+        //     }
+        //   }
+        // },
         // {
         //   title: '添加操作',
         //   type: 'button',
