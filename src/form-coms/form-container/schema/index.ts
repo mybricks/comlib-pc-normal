@@ -37,7 +37,7 @@ function getDynamicItemsSchema(data) {
             .map((iter) => iter.name)
             .join(',')}`
         },
-        common: commonDynamicItemSchema
+        formItemProps: commonDynamicItemSchema
       }
     }
   };
