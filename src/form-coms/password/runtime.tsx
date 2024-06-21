@@ -120,6 +120,12 @@ export default function ({
     onValidateTrigger(ValidateTriggerType.OnChange);
   };
 
+  const onBlur = useCallback((e) => {
+    const value = e.target.value;
+    onValidateTrigger(ValidateTriggerType.OnBlur);
+    outputs['onBlur'](value);
+  }, []);
+
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
     onValidateTrigger(ValidateTriggerType.OnPressEnter);
@@ -143,6 +149,7 @@ export default function ({
       value={value}
       disabled={disabled}
       onChange={onChange}
+      onBlur={onBlur}
       onPressEnter={onPressEnter}
       className={css.password}
     />

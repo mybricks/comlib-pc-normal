@@ -176,6 +176,22 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.12 end ===============
 
+  /**
+   * @description v1.1.12 新增 失去焦点 output
+   */
+  
+  if (!output.get("onBlur")) {
+    output.add({
+      id: "onBlur", 
+      title: "失去焦点", 
+      desc: "密码框的失去焦点事件输出",
+      schema: {
+        type: "string"
+      }
+    });
+  }
+  //=========== v1.1.13 end ===============
+
   data.rules = mergeRules(LengthRules, data.rules);
   return true;
 }
