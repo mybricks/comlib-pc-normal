@@ -161,12 +161,13 @@ export default {
             multiple: true,
             options: [
               { label: '值更新', value: ValidateTriggerType.OnChange },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
               { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
             ]
           },
           value: {
             get({ data }) {
-              return data.validateTrigger || [ ValidateTriggerType.OnPressEnter ];
+              return data.validateTrigger || [ ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter ];
             },
             set({ data }, value: string[]) {
               data.validateTrigger = value;
@@ -287,6 +288,13 @@ export default {
               type: '_Event',
               options: {
                 outputId: 'onChange'
+              }
+            },
+            {
+              title: '失去焦点',
+              type: '_event',
+              options: {
+                outputId: 'onBlur'
               }
             },
             {

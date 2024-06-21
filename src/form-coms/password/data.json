@@ -5,6 +5,7 @@
     "size": "middle"
   },
   "validateTrigger": [
+    "onBlur",
     "onPressEnter"
   ]
 }
