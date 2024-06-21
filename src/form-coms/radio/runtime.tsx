@@ -91,20 +91,28 @@ export default function Runtime({
   );
 
   useLayoutEffect(() => {
-    inputs['setOptions']((ds) => {
+    inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
         let newVal;
+
         ds.map((radio) => {
           const { checked, value } = radio;
           if (checked && value != undefined) {
             newVal = value;
           }
         });
+
         if (typeof newVal !== 'undefined') {
           changeValue(newVal);
         }
+
         data.config.options = ds;
+
+        relOutputs['setOptionsDone'](ds);
       } else {
+        const warnText = `${title}组件:【设置数据源】参数必须是{label, value}数组！`;
+
+        console.warn(warnText);
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
     });
