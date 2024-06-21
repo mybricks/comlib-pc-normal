@@ -148,7 +148,8 @@ const DefaultTag = ({
       size={size}
     >
       {tags.map((tag, index) => {
-        const { key, content, color, icon } = tag;
+        let { key, content, color, icon, closable } = tag;
+        closable = closable ?? closeAble;
         return (
           <Tag
             key={key}
@@ -156,10 +157,10 @@ const DefaultTag = ({
             data-index={index}
             data-item-tag="tag"
             color={color}
-            closable={closeAble}
+            closable={closable}
             onClose={() => onTagClose(index, tag)}
             icon={Icons && Icons[icon as string]?.render()}
-            onClick={data.clickAble ? (()=>onTagClick(tag)): void 0}
+            onClick={data.clickAble ? () => onTagClick(tag) : void 0}
             style={{
               cursor: data.clickAble ? 'pointer' : void 0
             }}
@@ -178,23 +179,27 @@ const CheckTag = ({
   outputs,
   inputs,
   env
-}: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'inputs' |'env'>) => {
+}: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'inputs' | 'env'>) => {
   const { direction, align, wrap, size, tags, tagSize } = data;
   const onTagChange = (index: number) => {
     const pre = data.tags[index];
     data.tags[index] = { ...pre, checked: !pre.checked };
     const checkedTags = data.tags.filter((tag) => tag.checked === true);
-    outputs['onCheck']({ changed: { ...data.tags[index], index }, checked: checkedTags, allTag: data.tags });
+    outputs['onCheck']({
+      changed: { ...data.tags[index], index },
+      checked: checkedTags,
+      allTag: data.tags
+    });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (env.runtime && inputs['getCheckedTags']) {
       inputs['getCheckedTags']((ds, relOutputs) => {
         const checkedTags = data.tags.filter((tag) => tag.checked === true);
         relOutputs['checkedTags'](checkedTags);
       });
     }
-  }, [])
+  }, []);
 
   return (
     <Space

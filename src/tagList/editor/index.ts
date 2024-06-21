@@ -8,7 +8,7 @@ import {
   createStyleForCheckableHover
 } from './util';
 
-const TagSchema = {
+export const TagSchema = {
   type: 'object',
   properties: {
     icon: {
@@ -52,14 +52,10 @@ export const clickTagSchema = {
       title: '背景颜色',
       description: '背景颜色',
       type: 'string'
-    },
-    closable: {
-      title: '是否可关闭',
-      description: '是否可关闭',
-      type: 'boolean'
     }
   }
 };
+
 export default {
   ':root': {
     items({ data }: EditorResult<Data>, ...cate) {
@@ -174,6 +170,9 @@ export default {
         {
           title: '可关闭',
           type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.checkable;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.closeAble;
@@ -231,7 +230,7 @@ export default {
           title: '标签删除/改变时',
           description: '标签关闭/勾选/删除时触发',
           type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return data.appendAble;
           },
           options: () => {
@@ -252,6 +251,13 @@ export default {
             },
             set({ data, output, input }: EditorResult<Data>, val: boolean) {
               data.checkable = val;
+
+              if (val) {
+                input.get('dynamicTags').setSchema({ type: 'array', items: clickTagSchema })
+              } else {
+                input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema })
+              }
+
               if (val) {
                 output.add('onCheck', '选中状态改变时', {
                   type: 'object',
@@ -269,15 +275,13 @@ export default {
                     }
                   }
                 });
-                input.add('getCheckedTags', '获取选中项', {type: 'any'});
+                input.add('getCheckedTags', '获取选中项', { type: 'any' });
                 output.add('checkedTags', '选中项', {
                   type: 'array',
                   description: "选中项",
                   items: clickTagSchema
-                })
-                ;
+                });
                 input.get('getCheckedTags').setRels(['checkedTags']);
-
               } else if (output.get('onCheck')) {
                 output.remove('onCheck');
                 input.remove('getCheckedTags');
@@ -289,7 +293,7 @@ export default {
         {
           title: '选中状态改变时',
           type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return data.checkable;
           },
           options: () => {
@@ -318,7 +322,7 @@ export default {
         {
           title: '标签项点击',
           type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return !!data.clickAble;
           },
           options: () => {
