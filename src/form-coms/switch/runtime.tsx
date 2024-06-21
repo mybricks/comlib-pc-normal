@@ -122,7 +122,7 @@ export default function ({
   const changeValue = useCallback((checked) => {
     if (env.edit) return;
     const valueMap = {
-      [data.checkedValue] : true,
+      [data.checkedValue]: true,
       [data.uncheckedValue]: false
     };
     setChecked(valueMap[checked]);
@@ -141,14 +141,20 @@ export default function ({
     outputs['onChange'](valueMap[checked]);
   }, []);
 
+  const config = {
+    ...data.config,
+    checkedChildren: env.i18n(data.textMap?.[StatusEnum.check] || ''),
+    unCheckedChildren: env.i18n(data.textMap?.[StatusEnum.unCheck] || '')
+  }
+
   return (
     <div>
       {data.isEditable ? (
         <Switch
-          {...data.config}
+          {...config}
           checked={checked}
           onChange={onChange}
-          // onBlur={onBlur}
+        // onBlur={onBlur}
         />
       ) : (
         `${checked || false}`

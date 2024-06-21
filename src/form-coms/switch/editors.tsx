@@ -130,7 +130,7 @@ export default {
         },
         {
           title: '开启值',
-          description: '开关开启时的value',  
+          description: '开关开启时的value',
           type: 'valueSelect',
           options: ['text', 'number', 'boolean'],
           value: {
@@ -145,7 +145,7 @@ export default {
         },
         {
           title: '关闭值',
-          description: '开关关闭时的value',  
+          description: '开关关闭时的value',
           type: 'valueSelect',
           options: ['text', 'number', 'boolean'],
           value: {
@@ -163,7 +163,8 @@ export default {
           type: 'Map',
           options: {
             notaddel: true,
-            noteditkey: true
+            noteditkey: true,
+            locale: true
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -176,11 +177,6 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: any) {
               data.textMap = value;
-              data.config = {
-                ...data.config,
-                checkedChildren: value[StatusEnum.check],
-                unCheckedChildren: value[StatusEnum.unCheck]
-              };
             }
           }
         },
