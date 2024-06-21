@@ -168,10 +168,16 @@ export default function ({
     }
   }
   const oldSchema = input.get("setStyle").schema;
-  if(oldSchema !== styleSchema){
+  if (oldSchema !== styleSchema) {
     input.get("setStyle").setSchema(styleSchema);
   }
   //=========== v1.0.35 end ===============
-  
+
+  // @ts-expect-error
+  if (data.slotStyle.position === 'smart') {
+  // @ts-expect-error
+    data.slotStyle = { position: 'smart' }
+  }
+
   return true;
 }
