@@ -124,6 +124,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const notFoundOrUniqueNames: string[] = [];
           const disableFormList: string[] = [];
           const enableFormList: string[] = [];
+          const fieldsSource = {};
           val.forEach((item) => {
             let sameNameItem = data.items.find((i) => i.name === item.relOriginField);
             let isUniqueName = !uniqueNames.includes(item.name);
@@ -131,24 +132,33 @@ export default function Runtime(props: RuntimeParams<Data>) {
               uniqueNames.push(item.name);
               // 动态输入的表单在搭建册不存在，不添加
               const disabledConfig =
-                item.common?.disabled !== undefined ? { disabled: item.common?.disabled } : {};
-              const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } = item.common || {};
+                item.formItemProps?.disabled !== undefined
+                  ? { disabled: item.formItemProps?.disabled }
+                  : {};
+              const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } =
+                item.formItemProps || {};
               let dynamicStyle = {
                 labelStyle,
                 descriptionStyle,
                 labelAlign,
                 labelAutoWrap
               };
-              if (typeof item.common?.disabled === 'boolean') {
-                (item.common?.disabled ? disableFormList : enableFormList).push(item.name);
+              if (typeof item.formItemProps?.disabled === 'boolean') {
+                (item.formItemProps?.disabled ? disableFormList : enableFormList).push(item.name);
               }
-              let config = Object.assign(sameNameItem.config || {}, disabledConfig);
+              if (
+                isArray(item.formItemProps?.fieldSource) ||
+                isObject(item.formItemProps?.fieldSource)
+              ) {
+                fieldsSource[item.name] = item.formItemProps?.fieldSource;
+              }
+              let config = Object.assign(sameNameItem?.config || {}, disabledConfig);
               newItems.push({
                 ...sameNameItem,
                 name: item.name,
                 label: item.label,
                 id: uuid(),
-                ...(item?.common ? item.common : {}),
+                ...(item?.formItemProps ? item.formItemProps : {}),
                 config,
                 dynamicStyle
               });
@@ -161,6 +171,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
           dynamicEnableOrDisabledRef.current = () => {
             disableFormList.length && setDisabled(disableFormList);
             enableFormList.length && setEnabled(enableFormList);
+            Object.keys(fieldsSource).length > 0 &&
+              setFieldsSourceValue(fieldsSource, () => {
+                slots['content'].inputs[slotInputIds.SET_FIELDS_SOURCE](fieldsSource);
+              });
             relOutputs['setDynamicFormItemsDone']('done');
           };
           if (notFoundOrUniqueNames.length) {
@@ -249,7 +263,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
         if (item && isFormItem) {
           // const input = childrenInputs[item.id];
-        const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems: data.useDynamicItems});
+          const input = getFromItemInputEvent(item, childrenInputs, {
+            useDynamicItems: data.useDynamicItems
+          });
           validateForInput({
             input,
             model: {
@@ -376,7 +392,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             name: key,
             useDynamicItems: data.useDynamicItems
           },
-          'setFieldSource',
+          'setOptions',
           formData,
           isLast ? cb : void 0
         );
@@ -813,18 +829,28 @@ const setFieldSourceForInput = (
 ) => {
   const item = formItems.find((item) => item.name === name);
   const inputDoneId = inputId + 'Done';
+  let optionalId = ['setSource'];
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs, { useDynamicItems });
 
     if (input) {
       if (isObject(values[name]) || isArray(values[name])) {
+        let flag = false;
         if (input[inputId]) {
           const a = input[inputId](values[name]);
-          // debugger;
           a?.[inputDoneId]?.((val) => {
             cb?.();
           });
         }
+        optionalId.forEach((tryId) => {
+          if (input[tryId]) {
+            const a = input[tryId](values[name]);
+            flag = true;
+            a?.[tryId]?.((val) => {
+              cb?.();
+            });
+          }
+        });
       } else {
         input[inputId] &&
           input[inputId](values[name])[inputDoneId]?.((val) => {

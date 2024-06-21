@@ -247,7 +247,7 @@ export const commonFormItemUpdateSchema = [
 
 export const commonDynamicItemSchema = {
   "type": "object",
-  "description": "公共配置",
+  "description": "表单项配置",
   "properties": {
     "disabled": {
       "type": "boolean",
@@ -284,5 +284,10 @@ export const commonDynamicItemSchema = {
       "title": '标签冒号',
       "description": "标签后面是否有冒号"
     },
+    "fieldSource": {
+      "type": "any",
+      "title": "表单项数据源，非必填，按钮、下拉框、树选择等组件一般具有数据源",
+      "description": "格式一般为数组，取决于表单项对应的组件，所需要的数据源格式"
+    }
   }
 }

@@ -221,7 +221,8 @@ export interface DynamicItemData {
   name: string
   relOriginField: string
   label: string
-  common?: {
+  /** 表单项配置 */
+  formItemProps?: {
     labelAlign?: 'left' | 'right' | 'default'
     labelAutoWrap?: boolean | 'default'
     description?: string
@@ -230,5 +231,6 @@ export interface DynamicItemData {
     tooltip?: string
     disabled?: boolean
     required?: boolean
+    fieldSource?: any
   }
 }

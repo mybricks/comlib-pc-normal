@@ -132,13 +132,13 @@
       ]
     },
     {
-      "id": "setFieldSource",
+      "id": "setOptions",
       "title": "设置数据源输入",
       "schema": {
         "type": "any"
       },
       "rels": [
-        "setFieldSourceDone"
+        "setOptionsDone"
       ]
     }
   ],
@@ -266,7 +266,7 @@
       }
     },
     {
-      "id": "setFieldSourceDone",
+      "id": "setOptionsDone",
       "title": "设置数据源输入完成",
       "schema": {
         "type": "any"
@@ -281,7 +281,7 @@
       "inputs": [
         {
           "id": "curValue",
-          "title": "表单项值",
+          "title": "初始值输入",
           "schema": {
             "type": "any"
           }

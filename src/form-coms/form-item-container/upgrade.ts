@@ -207,21 +207,26 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   //=========== v1.1.4 end ===============
 
   /** 
-  * @description v1.1.10 增加作用域/IO输入：数据源选项输入，
+  * @description v1.1.10 增加作用域/IO输入：数据源选项输入，；表单项值 scope IO 名字改为初始值输入
   */
-  if (!input.get('setFieldSource')) {
-    input.add('setFieldSource', '设置数据源输入', { type: 'any'});
+  if (!input.get('setOptions')) {
+    input.add('setOptions', '设置数据源输入', { type: 'any'});
   }
-  if (!output.get('setFieldSourceDone')) {
-    output.add('setFieldSourceDone', '设置数据源输入完成', { type: 'any' });
+  if (!output.get('setOptionsDone')) {
+    output.add('setOptionsDone', '设置数据源输入完成', { type: 'any' });
   }
-  if (output.get('setFieldSourceDone') &&
-    input.get('setFieldSource') &&
-    !input.get('setFieldSource')?.rels?.includes('setFieldSourceDone')) {
-    input.get('setFieldSource').setRels(['setFieldSourceDone']);
+  if (output.get('setOptions') &&
+    input.get('setOptions') &&
+    !input.get('setOptions')?.rels?.includes('setOptions')) {
+    input.get('setOptions').setRels(['setOptions']);
   }
   if (!slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.FieldSource)) {
     slot.get(SlotIds.FormItem).inputs.add(SlotInputIds.FieldSource, '数据源选项输入', { type: 'any' })
+  }
+
+  if (slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.CurValue)) {
+    slot.get(SlotIds.FormItem)
+      .inputs.get(SlotInputIds.CurValue).setTitle('初始值输入');
   }
   //=========== v1.1.10 end ===============
 
