@@ -3,7 +3,7 @@ import { Image } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
 import css from './runtime.less';
 
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
   const { alt, src, customStyle, useFallback, fallbackImgSrc, usePreview, previewImgSrc } = data;
 
   useEffect(() => {

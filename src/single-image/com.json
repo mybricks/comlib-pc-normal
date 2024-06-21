@@ -1,7 +1,7 @@
 {
   "title": "图片",
   "namespace": "mybricks.normal-pc.single-image",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "可预览的单图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -21,9 +21,7 @@
       "schema": {
         "type": "string"
       },
-      "rels": [
-        "setImgSrcDone"
-      ]
+      "rels": ["setImgSrcDone"]
     }
   ],
   "outputs": [

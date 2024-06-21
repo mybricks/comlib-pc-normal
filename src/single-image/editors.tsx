@@ -2,7 +2,7 @@ import { Data, InputIds, ObjectFit, OutputIds } from './constants';
 
 export default {
   '@init': ({ style }: EditorResult<Data>) => {
-    style.width = 'fit-content';
+    style.width = '200px';
     style.height = 'auto';
   },
   '@resize': {
