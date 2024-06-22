@@ -1,14 +1,7 @@
 {
   "style": {},
   "slotStyle": {
-    "display": "block",
-    "position": "smart",
-    "flexDirection": "column",
-    "alignItems": "flex-start",
-    "justifyContent": "flex-start",
-    "flexWrap": "nowrap",
-    "rowGap": 0,
-    "columnGap": 0
+   "position": "smart"
   },
   "legacyConfigStyle": {},
   "legacyStyle": {},

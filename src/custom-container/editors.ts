@@ -43,18 +43,10 @@ export default {
           value: {
             get({ data, slots }: EditorResult<Data>) {
               const { slotStyle = {} } = data;
-              // const slotInstance = slots.get('content');
-              // setSlotLayout(slotInstance, slotStyle);
               return slotStyle;
             },
             set({ data, slots }: EditorResult<Data>, val: any) {
-              if (!data.slotStyle) {
-                data.slotStyle = {};
-              }
-              data.slotStyle = {
-                ...data.slotStyle,
-                ...val
-              };
+              data.slotStyle = val
               const slotInstance = slots.get('content');
               setSlotLayout(slotInstance, val);
             }
