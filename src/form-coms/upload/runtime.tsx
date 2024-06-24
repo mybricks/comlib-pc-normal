@@ -630,6 +630,7 @@ export default function ({
               <img
                 src={fileList[0]?.url}
                 alt="uploaded"
+                onClick={(e) => e.stopPropagation()}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             ) : (
