@@ -52,9 +52,25 @@ export default {
           }
         },
         {
+          title: '静默打印',
+          description: '打印时不弹出打印对话框。浏览器自带的打印预览需要自行处理',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.silentPrint;
+            },
+            set({ data }, value: boolean) {
+              data.silentPrint = value;
+            }
+          }
+        },
+        {
           title: '打印完成后关闭窗口',
           description: '打印对话框关闭后是否关闭对话窗口',
           type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.silentPrint;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.closeScene;
@@ -67,6 +83,9 @@ export default {
         {
           title: '显示底部操作区',
           type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.silentPrint;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.useFooter;
@@ -79,15 +98,18 @@ export default {
         {
           title: '顶部操作区插槽',
           type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.silentPrint;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.useTop;
             },
             set({ data, slot }, value: boolean) {
               if (value) {
-                slot.add(SlotIds.TOPWORKSPACE, '顶部操作区插槽');
+                slot.add(SlotIds.TOP_WORKSPACE, '顶部操作区插槽');
               } else {
-                slot.remove(SlotIds.TOPWORKSPACE);
+                slot.remove(SlotIds.TOP_WORKSPACE);
               }
               data.useTop = value;
             }
@@ -96,6 +118,9 @@ export default {
         {
           title: '显示关闭按钮',
           type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.silentPrint;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.closable;
