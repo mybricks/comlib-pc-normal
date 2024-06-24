@@ -10,6 +10,40 @@
   }
 }
 
+.uploadPictureCardHideWrap {
+  :global {
+    .ant-upload.ant-upload-select-picture-card {
+      display: none !important;
+    }
+  }
+}
+
+.custom-upload-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-upload-image:hover {
+  .overlay-text {
+    display: block;
+  }
+}
+.overlay-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: none;
+  border-radius: 0 0 2px 2px;
+  // transform: translate(0, -50%);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
 .fullWidth {
   width: 100%;
 }
