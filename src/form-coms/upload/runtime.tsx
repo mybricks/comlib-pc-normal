@@ -442,25 +442,24 @@ export default function ({
   const UploadNode = listType === 'dragger' ? Upload.Dragger : Upload;
 
   const hideUploadButton = useMemo(() => {
-    if (listType !== 'picture-card') return false;
+    if (listType !== 'picture-card' || env.edit) return false;
     // 接收类型全是图片，且文件个数为1且已经上传了一个时，隐藏
     const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
-    const isAllAcceptImage = fileType.every((fType) => imageTypes.includes(fType));
+    const isAllAcceptImage =
+      fileType?.length && fileType.every((fType) => imageTypes.includes(fType));
     return (
       listType === 'picture-card' &&
       isAllAcceptImage &&
       fileCount === 1 &&
       (fileList || []).length === 1
     );
-  }, [fileCount, fileList, listType, fileType]);
+  }, [fileCount, fileList, listType, fileType, env.edit]);
 
   const outerSlotRender = useMemo(() => {
     const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
-    return (
-      listType === 'picture-card' &&
-      fileCount === 1 &&
-      fileType.every((fType) => imageTypes.includes(fType))
-    );
+    const isAllAcceptImage =
+      fileType?.length && fileType.every((fType) => imageTypes.includes(fType));
+    return listType === 'picture-card' && fileCount === 1 && isAllAcceptImage;
   }, [fileCount, fileList, listType, fileType]);
 
   // 上传按钮渲染
