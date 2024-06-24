@@ -7,6 +7,7 @@
  */
 export interface Data {
   documentTitle: string;
+  silentPrint: boolean;
   closeScene: boolean;
   useFooter: boolean;
   useTop?: boolean;
@@ -20,5 +21,5 @@ export enum InputIds {
 
 export const SlotIds = {
   CONTENT: 'content',
-  TOPWORKSPACE: 'topWorkspace'
+  TOP_WORKSPACE: 'topWorkspace'
 }

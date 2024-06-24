@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import { Modal, message } from 'antd';
 import { Data, InputIds, SlotIds } from './constants';
 import { useReactToPrint } from 'react-to-print';
@@ -17,7 +17,7 @@ export default function MyComponent({
   const componentRef = useRef(null);
 
   const handlePrint = useCallback(() => {
-    if (closeScene) {
+    if (!data.silentPrint && closeScene) {
       _env.currentScenes.close();
     }
     outputs.afterPrint();
@@ -32,11 +32,10 @@ export default function MyComponent({
   });
 
   useEffect(() => {
-    if (!runtime.debug) {
-      inputs[InputIds.StartPrint](() => {
-        handlePrintAction();
-      });
-    }
+    inputs[InputIds.StartPrint](() => {
+      if (!runtime.debug) handlePrintAction();
+      else message.warn('请预览查看效果，调试不支持打印预览');
+    });
   }, [runtime.debug, inputs, handlePrintAction]);
 
   const handleClose = useCallback(() => {
@@ -66,14 +65,28 @@ export default function MyComponent({
       closable={closable}
       getContainer={!(edit || runtime.debug) ? () => env?.canvasElement || document.body : false}
     >
-      {data.useTop && slots?.[SlotIds.TOPWORKSPACE] && (
-        <div>{slots?.[SlotIds.TOPWORKSPACE]?.render()}</div>
+      {data.useTop && slots?.[SlotIds.TOP_WORKSPACE] && (
+        <div>{slots?.[SlotIds.TOP_WORKSPACE]?.render()}</div>
       )}
       <div ref={componentRef}>{slots?.[SlotIds.CONTENT]?.render()}</div>
     </Modal>
   );
 
   const getContent = () => {
+    if (data.silentPrint) {
+      const style: React.CSSProperties = { width };
+      if (runtime) {
+        style.position = 'fixed';
+        style.top = '-9999px';
+        style.left = '-9999px';
+      }
+      return (
+        <div style={style}>
+          <div ref={componentRef}>{slots?.[SlotIds.CONTENT]?.render()}</div>
+        </div>
+      );
+    }
+
     if (runtime?.debug) {
       return (
         <div className={css.debugMask}>

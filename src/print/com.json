@@ -2,7 +2,7 @@
   "title": "打印",
   "visibility": false,
   "namespace": "mybricks.normal-pc.print",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "可用于打印组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,13 +10,15 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "startPrint",
       "title": "开始打印",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": ["afterPrint"]
     }
   ],
   "outputs": [
