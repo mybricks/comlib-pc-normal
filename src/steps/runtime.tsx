@@ -147,6 +147,12 @@ export default function ({
     return stepAry[data.current + (!!pre ? pre : 0)] || {};
   };
 
+  const runCustomOperation = (id) => {
+    if (runtime) {
+      outputs[id](undefined);
+    }
+  };
+
   const prev = useCallback((_, relOutputs) => {
     if (runtime) {
       if (data.current > 0) {
@@ -190,31 +196,66 @@ export default function ({
     return rtn;
   };
 
+  const renderButtons = () => {
+    return data.toolbar.btns.map((btn) => {
+      switch (btn.value) {
+        case 'previous':
+          return renderPreviousBtn();
+        case 'next':
+          return renderNextBtn();
+        case 'submit':
+          return renderSubmitBtn();
+        default:
+          return renderCustomBtn(btn.value);
+      }
+    });
+  };
+
+  const getButton = useCallback(
+    (buttonType: string) => {
+      return data.toolbar.btns.find((btn) => btn.value === buttonType);
+    },
+    [data.toolbar.btns]
+  );
+
+  const renderCustomBtn = (id: string) => {
+    const customBtn = getButton(id);
+    return customBtn?.visible ? (
+      <Button key={`${id}`} onClick={() => runCustomOperation(id)} data-item-type={`custom-${id}`}>
+        {env.i18n(customBtn.label)}
+      </Button>
+    ) : null;
+  };
+
   const renderPreviousBtn = () => {
-    return data.toolbar.btns.includes('previous') && data.current > 0 ? (
-      <Button
-        style={isMobile ? { margin: '5px 0' } : { margin: '0 8px' }}
-        onClick={() => prev(getCurrentStep(-1))}
-        data-item-type="pre"
-      >
-        {env.i18n(data.toolbar.secondBtnText || '上一步')}
+    const previousBtn = getButton('previous');
+    return previousBtn?.visible && data.current > 0 ? (
+      <Button key="previous" onClick={() => prev(getCurrentStep(-1))} data-item-type="pre">
+        {env.i18n(previousBtn.label)}
       </Button>
     ) : null;
   };
 
   const renderNextBtn = () => {
-    if (data.current === stepAry.length - 1 || !data.toolbar.btns.includes('next')) return null;
+    const nextBtn = getButton('next');
+    if (data.current === stepAry.length - 1 || !nextBtn?.visible) return null;
     return (
-      <Button type="primary" onClick={() => next(getCurrentStep())} data-item-type="next">
-        {env.i18n(data.toolbar.primaryBtnText || '下一步')}
+      <Button
+        key="next"
+        type="primary"
+        onClick={() => next(getCurrentStep())}
+        data-item-type="next"
+      >
+        {env.i18n(nextBtn.label)}
       </Button>
     );
   };
 
   const renderSubmitBtn = () => {
-    return data.current === stepAry.length - 1 && data.toolbar.btns.includes('submit') ? (
-      <Button type="primary" onClick={submit} data-item-type="submit">
-        {env.i18n(data.toolbar.submitText || '提交')}
+    const submitBtn = getButton('submit');
+    return data.current === stepAry.length - 1 && submitBtn?.visible ? (
+      <Button key="submit" type="primary" onClick={submit} data-item-type="submit">
+        {env.i18n(submitBtn.label)}
       </Button>
     ) : null;
   };
@@ -244,9 +285,7 @@ export default function ({
           bottom: data.toolbar.bottom
         }}
       >
-        {renderPreviousBtn()}
-        {renderNextBtn()}
-        {renderSubmitBtn()}
+        {renderButtons()}
         {renderExtraBtn()}
       </div>
     ) : null;

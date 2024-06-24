@@ -21,10 +21,23 @@
     "showActions": true,
     "submit": true,
     "actionAlign": "center",
-    "primaryBtnText": "下一步",
-    "secondBtnText": "上一步",
-    "submitText": "提交",
-    "btns": ["previous", "next", "submit"],
+    "btns": [
+      {
+        "label": "上一步",
+        "value": "previous",
+        "visible": true
+      },
+      {
+        "label": "下一步",
+        "value": "next",
+        "visible": true
+      },
+      {
+        "label": "提交",
+        "value": "submit",
+        "visible": true
+      }
+    ],
     "bottom": 0
   },
   "fullSubmit": false

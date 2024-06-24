@@ -1,51 +1,85 @@
-import { Data, Btn } from '../constants';
-const createBtnValue = (field: string) => {
+import visibleOpt from '../../components/editorRender/visibleOpt';
+import { Data } from '../constants';
+import { getButton } from '../utils';
+const createBtnValue = (buttonType: string) => {
   return {
     set({ data }: EditorResult<Data>, value: string) {
-      if (!value) return;
-      data.toolbar[field] = value;
+      const btn = getButton(data.toolbar.btns, buttonType);
+      if (!value || !btn) return;
+      btn.label = value;
     },
     get({ data }: EditorResult<Data>) {
-      return data.toolbar[field];
+      const btn = getButton(data.toolbar.btns, buttonType);
+      return btn?.label;
     }
-  }
-}
+  };
+};
 export default {
   '[data-item-type="stepActions"]': {
     title: '操作项',
-    items({ focusArea }: EditorResult<Data>, cate1) {
-      if (!focusArea) return
-      cate1.title = "操作栏"
+    items({ data, output, focusArea }: EditorResult<Data>, cate1) {
+      if (!focusArea) return;
+      cate1.title = '操作栏';
       cate1.items = [
         {
           title: '按钮组',
-          type: 'select',
+          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
+          type: 'array',
           options: {
-            options: [
-              {
-                label: "上一步",
-                value: "previous"
-              },
-              {
-                label: "下一步",
-                value: "next"
-              },
-              {
-                label: "提交",
-                value: "submit"
-              },
-            ],
-            mode: "multiple"
+            deletable: false,
+            addable: true,
+            editable: false,
+            customOptRender: visibleOpt,
+            getTitle: (item) => {
+              return item?.label;
+            },
+            onAdd: (id) => {
+              output.add(id, `点击自定义操作${data.toolbar.btns.length - 3}`, { type: 'any' });
+              return {
+                label: `自定义操作${data.toolbar.btns.length - 3}`,
+                value: id,
+                visible: true
+              };
+            }
           },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.toolbar.btns || [];
             },
-            set({ data }: EditorResult<Data>, val: Array<Btn>) {
-              data.toolbar.btns = val
+            set({ data }: EditorResult<Data>, val: any[]) {
+              data.toolbar.btns = val;
             }
           }
         },
+        // {
+        //   title: '按钮组',
+        //   type: 'select',
+        //   options: {
+        //     options: [
+        //       {
+        //         label: '上一步',
+        //         value: 'previous'
+        //       },
+        //       {
+        //         label: '下一步',
+        //         value: 'next'
+        //       },
+        //       {
+        //         label: '提交',
+        //         value: 'submit'
+        //       }
+        //     ],
+        //     mode: 'multiple'
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.toolbar.btns || [];
+        //     },
+        //     set({ data }: EditorResult<Data>, val: Array<Btn>) {
+        //       data.toolbar.btns = val;
+        //     }
+        //   }
+        // },
         {
           title: '对齐方式',
           type: 'Select',
@@ -74,7 +108,7 @@ export default {
               return !!data.toolbar.fixed;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.toolbar.fixed = val
+              data.toolbar.fixed = val;
             }
           }
         },
@@ -90,25 +124,129 @@ export default {
               return [data.toolbar.bottom];
             },
             set({ data }: EditorResult<Data>, val: number[]) {
-              data.toolbar.bottom = val[0]
+              data.toolbar.bottom = val[0];
             }
           }
         }
-      ]
+      ];
     },
     style: [
       {
         title: '样式',
-        options: ['padding', { type: 'background', config: { disableBackgroundImage: true } }, 'boxshadow'],
+        options: [
+          'padding',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          'boxshadow'
+        ],
         target: () => '.step-toolbar'
       }
     ]
   },
-  '[data-item-type="next"]': {
-    title: '主按钮',
-    "@dblclick": {
+  '[data-item-type^=custom]': {
+    title: '自定义操作',
+    '@dblclick': {
       type: 'text',
-      value: createBtnValue(`primaryBtnText`)
+      value: {
+        set({ data, output, focusArea }: EditorResult<Data>, value: string) {
+          const id = focusArea.dataset['itemType'];
+          const btn = data.toolbar.btns.find(
+            (item) => item.value === id.substring('custom-'.length)
+          );
+          if (!value || !btn) return;
+          output.get(btn.value).setTitle(value);
+          btn.label = value;
+        },
+        get({ data, focusArea }: EditorResult<Data>) {
+          const id = focusArea.dataset['itemType'];
+          const btn = data.toolbar.btns.find(
+            (item) => item.value === id.substring('custom-'.length)
+          );
+          return btn?.label;
+        }
+      }
+    },
+    //  ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+    //   if (!focusArea) return;
+    //   console.log('focusArea', focusArea);
+    //   const id = focusArea.dataset['itemType'];
+    //   const btn = data.toolbar.btns.find((item) => item.value === id.substring('custom-'.length));
+    //   console.log('btn', btn);
+
+    //   if (!btn) return;
+
+    //   cate1.items = [
+    //     {
+    //       type: 'text',
+    //       value: {
+    //         set({ data }: EditorResult<Data>, value: string) {
+    //           if (!value || !btn) return;
+    //           btn.label = value;
+    //         },
+    //         get({ data }: EditorResult<Data>) {
+    //           return btn?.label;
+    //         }
+    //       }
+    //     }
+    //   ];
+    // }
+    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+      if (!focusArea) return;
+      const id = focusArea.dataset['itemType'];
+      const btn = data.toolbar.btns.find((item) => item.value === id.substring('custom-'.length));
+
+      if (!btn) return;
+
+      cate1.items = [
+        {
+          title: '文案',
+          type: 'Text',
+          options: {
+            locale: true
+          },
+          value: {
+            set({ data, output }: EditorResult<Data>, value: string) {
+              if (!value || !btn) return;
+              output.get(btn.value).setTitle(value);
+              btn.label = value;
+            },
+            get({ data }: EditorResult<Data>) {
+              return btn?.label;
+            }
+          }
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '点击',
+              type: '_Event',
+              options: ({ data }) => {
+                return {
+                  outputId: btn.value
+                };
+              }
+            }
+          ]
+        },
+        {
+          title: '删除',
+          type: 'Button',
+          value: {
+            set({ data, output, focusArea }: EditorResult<Data>) {
+              const index = data.toolbar.btns.findIndex((item) => item.value === btn.value);
+              output.remove(btn.value);
+              data.toolbar.btns.splice(index, 1);
+            }
+          }
+        }
+      ];
+    }
+  },
+  '[data-item-type="next"]': {
+    title: '下一步',
+    '@dblclick': {
+      type: 'text',
+      value: createBtnValue('next')
     },
     items: [
       {
@@ -117,7 +255,7 @@ export default {
         options: {
           locale: true
         },
-        value: createBtnValue(`primaryBtnText`)
+        value: createBtnValue('next')
       },
       {
         title: '事件',
@@ -138,9 +276,9 @@ export default {
   },
   '[data-item-type="pre"]': {
     title: '上一步',
-    "@dblclick": {
+    '@dblclick': {
       type: 'text',
-      value: createBtnValue(`secondBtnText`)
+      value: createBtnValue('previous')
     },
     items: [
       {
@@ -149,15 +287,15 @@ export default {
         options: {
           locale: true
         },
-        value: createBtnValue('secondBtnText')
+        value: createBtnValue('previous')
       }
     ]
   },
   '[data-item-type="submit"]': {
-    title: '提交按钮',
-    "@dblclick": {
+    title: '提交',
+    '@dblclick': {
       type: 'text',
-      value: createBtnValue(`submitText`)
+      value: createBtnValue('submit')
     },
     items: [
       {
@@ -166,8 +304,7 @@ export default {
         options: {
           locale: true
         },
-        value: createBtnValue(`submitText`)
-
+        value: createBtnValue('submit')
       },
       {
         title: '事件',
@@ -178,20 +315,20 @@ export default {
             options: ({ data }) => {
               return {
                 outputId: 'submit'
-              }
+              };
             }
           }
         ]
       }
     ]
-  },
+  }
 };
 
-const getExtraBtn = (data, focusArea) => {
-  return data.toolbar.extraBtns[focusArea.index]
-}
+// const getExtraBtn = (data, focusArea) => {
+//   return data.toolbar.extraBtns[focusArea.index];
+// };
 
-const updateExtraBtn = (data, focusArea, val) => {
-  const btn = getExtraBtn(data, focusArea)
-  data.toolbar.extraBtns[focusArea.index] = { ...btn, ...val }
-}
+// const updateExtraBtn = (data, focusArea, val) => {
+//   const btn = getExtraBtn(data, focusArea);
+//   data.toolbar.extraBtns[focusArea.index] = { ...btn, ...val };
+// };

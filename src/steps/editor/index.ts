@@ -2,7 +2,8 @@ import { uuid } from '../../utils';
 import { Data, Btn } from '../constants';
 import StepEditor from './step';
 import ActionEditor from './action';
-import { addSlot, addEventIO, setDynamicStepsIO } from './util'
+import { addSlot, addEventIO, setDynamicStepsIO } from './util';
+import visibleOpt from '../../components/editorRender/visibleOpt';
 
 const DefaultSchema = {
   type: 'any'
@@ -12,34 +13,28 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root':{
+  ':root': {
     style: [
       {
         items: [
           {
             title: '标题',
             catelog: '默认',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            target: '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title'
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target:
+              '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title'
           },
           {
             title: '子标题',
             catelog: '默认',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } },
-              'border'
-            ],
-            target: '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
+            options: [{ type: 'font', config: { disableTextAlign: true } }, 'border'],
+            target:
+              '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
           },
           {
             title: '图标',
             catelog: '默认',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              'border'
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon'
           },
           {
@@ -57,9 +52,7 @@ export default {
             ifVisible({ data }: EditorResult<Data>) {
               return data.steps.direction === 'horizontal';
             },
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-steps-item-finish .ant-steps-item-title:after'
           },
           {
@@ -68,42 +61,33 @@ export default {
             ifVisible({ data }: EditorResult<Data>) {
               return data.steps.direction === 'vertical';
             },
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-steps-item-finish .ant-steps-item-tail:after'
           },
           {
             title: '标题',
             catelog: '完成态',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            target: '.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title'
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target:
+              '.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title'
           },
           {
             title: '子标题',
             catelog: '完成态',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            target: '.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target:
+              '.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
           },
           {
             title: '图标',
             catelog: '完成态',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              'border'
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: '.ant-steps-item-finish .ant-steps-item-icon'
           },
           {
             title: '对勾',
             catelog: '完成态',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
             target: '.ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon'
           },
           {
@@ -112,9 +96,7 @@ export default {
             ifVisible({ data }: EditorResult<Data>) {
               return data.steps.direction === 'horizontal';
             },
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-steps-item-title:after'
           },
           {
@@ -123,49 +105,40 @@ export default {
             ifVisible({ data }: EditorResult<Data>) {
               return data.steps.direction === 'vertical';
             },
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-steps-item-tail:after'
           },
           {
             title: '标题',
             catelog: '禁用态',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            target: '.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title'
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target:
+              '.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title'
           },
           {
             title: '子标题',
             catelog: '禁用态',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            target: '.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target:
+              '.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
           },
           {
             title: '图标',
             catelog: '禁用态',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              'border'
-            ],
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: ['.ant-steps-item-wait .ant-steps-item-icon']
           },
           {
             title: '数字',
             catelog: '禁用态',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
             target: '.ant-steps-item-wait .ant-steps-item-icon>.ant-steps-icon'
           }
         ]
       }
     ],
-    items: (({}, cate1, cate2) => {
-      cate1.title = "常规"
+    items: ({ data, output }, cate1, cate2) => {
+      cate1.title = '常规';
       cate1.items = [
         {
           title: '添加步骤',
@@ -179,12 +152,12 @@ export default {
                 description: '新添加的步骤',
                 index: data.stepAry.length
               });
-              addSlot(slots, id, `步骤${data.stepAry.length}`)
+              addSlot(slots, id, `步骤${data.stepAry.length}`);
               output.add(id, `步骤${data.stepAry.length}下一步`, DefaultSchema);
               //添加事件i/0
-              addEventIO(output, id, `步骤${data.stepAry.length}`)
+              addEventIO(output, id, `步骤${data.stepAry.length}`);
               //设置跳转title
-              input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
+              input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`);
             }
           }
         },
@@ -257,7 +230,7 @@ export default {
               return !!data.steps.canClick;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.steps.canClick = val
+              data.steps.canClick = val;
             }
           }
         },
@@ -269,42 +242,75 @@ export default {
               return data.toolbar.showActions;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.toolbar.showActions = val
+              data.toolbar.showActions = val;
             }
           }
         },
         {
           title: '按钮组',
-          type: 'select',
+          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
+          type: 'array',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.toolbar.showActions;
           },
           options: {
-            options: [
-              {
-                label: "上一步",
-                value: "previous"
-              },
-              {
-                label: "下一步",
-                value: "next"
-              },
-              {
-                label: "提交",
-                value: "submit"
-              },
-            ],
-            mode: "multiple"
+            deletable: false,
+            addable: true,
+            editable: false,
+            customOptRender: visibleOpt,
+            getTitle: (item) => {
+              return item?.label;
+            },
+            onAdd: (id) => {
+              output.add(id, `点击自定义操作${data.toolbar.btns.length - 3}`, { type: 'any' });
+              return {
+                label: `自定义操作${data.toolbar.btns.length - 3}`,
+                value: id,
+                visible: true
+              };
+            }
           },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.toolbar.btns || [];
             },
-            set({ data }: EditorResult<Data>, val: Array<Btn>) {
-              data.toolbar.btns = val
+            set({ data }: EditorResult<Data>, val: any[]) {
+              data.toolbar.btns = val;
             }
           }
-        },
+        }
+        // {
+        //   title: '按钮组',
+        //   type: 'select',
+        //   ifVisible({ data }: EditorResult<Data>) {
+        //     return !!data.toolbar.showActions;
+        //   },
+        //   options: {
+        //     options: [
+        //       {
+        //         label: "上一步",
+        //         value: "previous"
+        //       },
+        //       {
+        //         label: "下一步",
+        //         value: "next"
+        //       },
+        //       {
+        //         label: "提交",
+        //         value: "submit"
+        //       },
+        //     ],
+        //     mode: "multiple"
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.toolbar.btns || [];
+        //     },
+        //     set({ data }: EditorResult<Data>, val: Array<Btn>) {
+        //       data.toolbar.btns = val
+        //     }
+        //   }
+        // },
         // {
         //   title: '添加操作',
         //   type: 'button',
@@ -326,9 +332,8 @@ export default {
         //     }
         //   }
         // },
-        
-      ]
-      cate2.title = "高级"
+      ];
+      cate2.title = '高级';
       cate2.items = [
         {
           title: '隐藏插槽占位',
@@ -350,11 +355,11 @@ export default {
               return !!data.dynamicSteps;
             },
             set(props: EditorResult<Data>, val: boolean) {
-              const { data } = props
-              data.dynamicSteps = val
-              setDynamicStepsIO(props, val)
-              data.hideSlots = val
-              data.toolbar.showActions = !val
+              const { data } = props;
+              data.dynamicSteps = val;
+              setDynamicStepsIO(props, val);
+              data.hideSlots = val;
+              data.toolbar.showActions = !val;
             }
           }
         },
@@ -369,7 +374,7 @@ export default {
               outputId: 'onStepChange'
             };
           }
-        },
+        }
         // {
         //   title: '全量提交',
         //   type: 'Switch',
@@ -384,8 +389,8 @@ export default {
         //     }
         //   }
         // }
-      ]
-    })
+      ];
+    }
   },
   ...StepEditor,
   ...ActionEditor
