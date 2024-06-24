@@ -72,6 +72,8 @@ export default function ({
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
+
+  const uploadInputRef = useRef(null);
   // fileListRef.current = fileList;
   const uploadRef = useRef();
   const {
@@ -91,7 +93,6 @@ export default function ({
   useLayoutEffect(() => {
     // ≥ v1.0.34 设置上传结果
     slots['customUpload']?.outputs['setFileInfo']?.((file) => {
-      console.log('设置上传结果', file);
       onUploadComplete(file);
     });
 
@@ -288,8 +289,6 @@ export default function ({
       changeFileList(onFormatFileList(fileList));
       // ≥ v1.0.34
       slots['customUpload']?.inputs['fileData'](formData);
-      debugger;
-      console.log('formData ', formData);
       // ＜ v1.0.34
       outputs?.upload?.(formData);
     }
@@ -361,7 +360,6 @@ export default function ({
     });
 
     if (!isNotAccept) {
-      console.log('isNot Accept', fileList, !isNotAccept);
       onCustomRequest(fileList);
     }
     return !isNotAccept;
@@ -443,10 +441,27 @@ export default function ({
   );
   const UploadNode = listType === 'dragger' ? Upload.Dragger : Upload;
 
-  const hideUploadPLusIcon = useMemo(() => {
+  const hideUploadButton = useMemo(() => {
     if (listType !== 'picture-card') return false;
-    return listType === 'picture-card' && fileCount === 1 && (fileList || []).length === 1;
-  }, [fileCount, fileList, listType]);
+    // 接收类型全是图片，且文件个数为1且已经上传了一个时，隐藏
+    const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
+    const isAllAcceptImage = fileType.every((fType) => imageTypes.includes(fType));
+    return (
+      listType === 'picture-card' &&
+      isAllAcceptImage &&
+      fileCount === 1 &&
+      (fileList || []).length === 1
+    );
+  }, [fileCount, fileList, listType, fileType]);
+
+  const outerSlotRender = useMemo(() => {
+    const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
+    return (
+      listType === 'picture-card' &&
+      fileCount === 1 &&
+      fileType.every((fType) => imageTypes.includes(fType))
+    );
+  }, [fileCount, fileList, listType, fileType]);
 
   // 上传按钮渲染
   const renderUploadText = () => {
@@ -565,7 +580,7 @@ export default function ({
     data.isCustom === true &&
     (data.config.listType === 'text' || data.config.listType === 'picture');
 
-  // hideUploadPLusIcon ? css.uploadPictureCardHideWrap : ''
+  // hideUploadButton ? css.uploadPictureCardHideWrap : ''
   return (
     <div ref={uploadRef} className={cls(classnames.join(' '))}>
       <UploadNode
@@ -573,6 +588,7 @@ export default function ({
         listType={listType}
         fileList={Array.isArray(fileList) ? fileList : void 0}
         accept={fileType.join()}
+        ref={uploadInputRef}
         customRequest={() => {}}
         beforeUpload={beforeUpload}
         onRemove={onRemove}
@@ -583,51 +599,55 @@ export default function ({
         showUploadList={
           data.isShowUploadList === false && data.config.listType !== 'picture-card'
             ? false
-            : hideUploadPLusIcon
+            : hideUploadButton
             ? false
             : {
-                showPreviewIcon: usePreview,
-                ...(hideUploadPLusIcon
-                  ? {
-                      previewIcon: <div onClick={(e) => e.preventDefault()}>111</div>,
-                      showRemoveIcon: false
-                    }
-                  : {})
+                showPreviewIcon: usePreview
               }
         }
         //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
-        {slots['customUpload']?.render({
-          style: {
-            display: 'none'
-          }
-        })}
+        {!outerSlotRender &&
+          slots['customUpload']?.render({
+            style: {
+              display: 'none'
+            }
+          })}
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
         ) : data.isEditable ? (
-          hideUploadPLusIcon ? null : (
+          hideUploadButton ? null : (
             renderUploadText()
           )
         ) : (
           ''
         )}
-        {hideUploadPLusIcon ? (
+        {hideUploadButton ? (
           <div className={css['custom-upload-image']}>
-            <img
-              src={fileList[0]?.url}
-              alt="uploaded"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-            <div className={css['overlay-text']} onClick={handleLabelClick}>
-              重新上传
-            </div>
+            {fileList[0]?.url ? (
+              <img
+                src={fileList[0]?.url}
+                alt="uploaded"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <span style={{ marginTop: '20%', display: 'inline-block' }}>Uploading </span>
+            )}
+            <div className={css['overlay-text']}>重新上传</div>
           </div>
         ) : (
           <div></div>
         )}
       </UploadNode>
+      {outerSlotRender
+        ? slots['customUpload']?.render({
+            style: {
+              display: 'none'
+            }
+          })
+        : null}
     </div>
   );
 }
