@@ -1,7 +1,7 @@
 import visibleOpt from '../../components/editorRender/visibleOpt';
-import { Data, BtnType } from '../constants';
+import { Data } from '../constants';
 import { getButton } from '../utils';
-const createBtnValue = (buttonType: BtnType) => {
+const createBtnValue = (buttonType: string) => {
   return {
     set({ data }: EditorResult<Data>, value: string) {
       const btn = getButton(data.toolbar.btns, buttonType);
@@ -17,7 +17,7 @@ const createBtnValue = (buttonType: BtnType) => {
 export default {
   '[data-item-type="stepActions"]': {
     title: '操作项',
-    items({ focusArea }: EditorResult<Data>, cate1) {
+    items({ data, output, focusArea }: EditorResult<Data>, cate1) {
       if (!focusArea) return;
       cate1.title = '操作栏';
       cate1.items = [
@@ -27,11 +27,19 @@ export default {
           type: 'array',
           options: {
             deletable: false,
-            addable: false,
+            addable: true,
             editable: false,
             customOptRender: visibleOpt,
             getTitle: (item) => {
               return item?.label;
+            },
+            onAdd: (id) => {
+              output.add(id, `点击自定义操作${data.toolbar.btns.length - 3}`, { type: 'any' });
+              return {
+                label: `自定义操作${data.toolbar.btns.length - 3}`,
+                value: id,
+                visible: true
+              };
             }
           },
           value: {
@@ -134,36 +142,105 @@ export default {
       }
     ]
   },
-  '[data-item-type="cancel"]': {
-    title: '取消',
+  '[data-item-type^=custom]': {
+    title: '自定义操作',
     '@dblclick': {
       type: 'text',
-      value: createBtnValue('cancel')
-    },
-    items: [
-      {
-        title: '文案',
-        type: 'Text',
-        options: {
-          locale: true
+      value: {
+        set({ data, output, focusArea }: EditorResult<Data>, value: string) {
+          const id = focusArea.dataset['itemType'];
+          const btn = data.toolbar.btns.find(
+            (item) => item.value === id.substring('custom-'.length)
+          );
+          if (!value || !btn) return;
+          output.get(btn.value).setTitle(value);
+          btn.label = value;
         },
-        value: createBtnValue('cancel')
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '点击',
-            type: '_Event',
-            options: ({ data }) => {
-              return {
-                outputId: 'cancel'
-              };
+        get({ data, focusArea }: EditorResult<Data>) {
+          const id = focusArea.dataset['itemType'];
+          const btn = data.toolbar.btns.find(
+            (item) => item.value === id.substring('custom-'.length)
+          );
+          return btn?.label;
+        }
+      }
+    },
+    //  ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+    //   if (!focusArea) return;
+    //   console.log('focusArea', focusArea);
+    //   const id = focusArea.dataset['itemType'];
+    //   const btn = data.toolbar.btns.find((item) => item.value === id.substring('custom-'.length));
+    //   console.log('btn', btn);
+
+    //   if (!btn) return;
+
+    //   cate1.items = [
+    //     {
+    //       type: 'text',
+    //       value: {
+    //         set({ data }: EditorResult<Data>, value: string) {
+    //           if (!value || !btn) return;
+    //           btn.label = value;
+    //         },
+    //         get({ data }: EditorResult<Data>) {
+    //           return btn?.label;
+    //         }
+    //       }
+    //     }
+    //   ];
+    // }
+    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+      if (!focusArea) return;
+      const id = focusArea.dataset['itemType'];
+      const btn = data.toolbar.btns.find((item) => item.value === id.substring('custom-'.length));
+
+      if (!btn) return;
+
+      cate1.items = [
+        {
+          title: '文案',
+          type: 'Text',
+          options: {
+            locale: true
+          },
+          value: {
+            set({ data, output }: EditorResult<Data>, value: string) {
+              if (!value || !btn) return;
+              output.get(btn.value).setTitle(value);
+              btn.label = value;
+            },
+            get({ data }: EditorResult<Data>) {
+              return btn?.label;
             }
           }
-        ]
-      }
-    ]
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '点击',
+              type: '_Event',
+              options: ({ data }) => {
+                return {
+                  outputId: btn.value
+                };
+              }
+            }
+          ]
+        },
+        {
+          title: '删除',
+          type: 'Button',
+          value: {
+            set({ data, output, focusArea }: EditorResult<Data>) {
+              const index = data.toolbar.btns.findIndex((item) => item.value === btn.value);
+              output.remove(btn.value);
+              data.toolbar.btns.splice(index, 1);
+            }
+          }
+        }
+      ];
+    }
   },
   '[data-item-type="next"]': {
     title: '下一步',

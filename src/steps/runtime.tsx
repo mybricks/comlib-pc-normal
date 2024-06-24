@@ -147,9 +147,9 @@ export default function ({
     return stepAry[data.current + (!!pre ? pre : 0)] || {};
   };
 
-  const cancel = () => {
+  const runCustomOperation = (id) => {
     if (runtime) {
-      outputs['cancel'](undefined);
+      outputs[id](undefined);
     }
   };
 
@@ -196,7 +196,7 @@ export default function ({
     return rtn;
   };
 
-  const renderButtons = useCallback(() => {
+  const renderButtons = () => {
     return data.toolbar.btns.map((btn) => {
       switch (btn.value) {
         case 'previous':
@@ -205,13 +205,11 @@ export default function ({
           return renderNextBtn();
         case 'submit':
           return renderSubmitBtn();
-        case 'cancel':
-          return renderCancelBtn();
         default:
-          return null;
+          return renderCustomBtn(btn.value);
       }
     });
-  }, [data.toolbar.btns]);
+  };
 
   const getButton = useCallback(
     (buttonType: string) => {
@@ -220,11 +218,11 @@ export default function ({
     [data.toolbar.btns]
   );
 
-  const renderCancelBtn = () => {
-    const cancelBtn = getButton('cancel');
-    return cancelBtn?.visible ? (
-      <Button key="cancel" onClick={cancel} data-item-type="cancel">
-        {env.i18n(cancelBtn.label)}
+  const renderCustomBtn = (id: string) => {
+    const customBtn = getButton(id);
+    return customBtn?.visible ? (
+      <Button key={`${id}`} onClick={() => runCustomOperation(id)} data-item-type={`custom-${id}`}>
+        {env.i18n(customBtn.label)}
       </Button>
     ) : null;
   };

@@ -75,14 +75,6 @@
   ],
   "outputs": [
     {
-      "id": "cancel",
-      "title": "取消",
-      "desc": "取消",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
       "id": "submit",
       "title": "数据提交",
       "desc": "提交步骤条数据",

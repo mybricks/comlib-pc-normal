@@ -96,15 +96,10 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
   input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`);
 
   /**
-   * @description v1.0.27 工具条重构，新增取消按钮
+   * @description v1.0.27 工具条重构，新增自定义操作
    */
   if (data.toolbar.btns.every((btn) => typeof btn === 'string')) {
     data.toolbar.btns = [
-      {
-        label: '取消',
-        value: 'cancel',
-        visible: false
-      },
       {
         label: '上一步',
         value: 'previous',
@@ -133,14 +128,6 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
   }
   if (data.toolbar.submitText && submitBtn) {
     submitBtn.label = data.toolbar.submitText;
-  }
-  if (!output.get('cancel')) {
-    output.add({
-      id: 'cancel',
-      title: '取消',
-      schema: { type: 'any' },
-      desc: '取消'
-    });
   }
   //=========== v1.0.27 end ===============
 

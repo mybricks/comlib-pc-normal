@@ -23,11 +23,6 @@
     "actionAlign": "center",
     "btns": [
       {
-        "label": "取消",
-        "value": "cancel",
-        "visible": false
-      },
-      {
         "label": "上一步",
         "value": "previous",
         "visible": true

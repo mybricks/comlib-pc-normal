@@ -16,9 +16,7 @@ export interface StepItem {
   iconSize?: [number, number];
 }
 
-export type BtnType = 'cancel' | 'previous' | 'next' | 'submit';
-
-export type Btn = { label: string; value: BtnType; visible: boolean };
+export type Btn = { label: string; value: string; visible: boolean };
 
 type ExtraBtn = {
   id: string;
