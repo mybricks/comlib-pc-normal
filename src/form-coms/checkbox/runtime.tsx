@@ -172,7 +172,8 @@ export default function Runtime({
           changeValue(allCheckedArray);
         } else {
           // 这里再执行一边
-          changeValue(newValArray);
+          // changeValue(newValArray);
+          newValArray.length ? changeValue(newValArray) : void 0;
         }
         // newValArray.length ? changeValue(newValArray) : void 0;
       } else {
