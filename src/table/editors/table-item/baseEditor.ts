@@ -132,7 +132,7 @@ const createBaseEditor = ({ data }) => ({
           return getColumnItem(data, focusArea).contentType;
         },
         set(
-          { data, focusArea, output, input, slot, ...res }: EditorResult<Data>,
+          { data, focusArea, output, input, slot, env, ...res }: EditorResult<Data>,
           value: ContentTypeEnum
         ) {
           if (!focusArea) return;
@@ -148,7 +148,7 @@ const createBaseEditor = ({ data }) => ({
           if (value === ContentTypeEnum.SlotItem) {
             const slotId = uuid();
             column['slotId'] = slotId;
-            slot.add({ id: slotId, title: `自定义${column.title}列`, type: 'scope' });
+            slot.add({ id: slotId, title: `自定义${env.i18n(column.title)}列`, type: 'scope' });
             if (column.keepDataIndex) {
               slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
             }
@@ -175,7 +175,7 @@ const createBaseEditor = ({ data }) => ({
             }
           }
           setCol({ data, focusArea }, 'contentType', value);
-          setDataSchema({ data, focusArea, output, input, slot, ...res });
+          setDataSchema({ data, focusArea, output, input, slot, env, ...res });
         }
       }
     },

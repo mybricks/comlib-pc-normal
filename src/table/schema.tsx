@@ -8,6 +8,7 @@ interface Props {
   input: any;
   output: any;
   slot: any;
+  env: any;
 }
 
 function getColumnsWithExpand(data: Data) {
@@ -285,11 +286,11 @@ function setExpandSlotSchema(schemaObj: object, dataSchema, { slot, data }: Prop
 }
 
 // 列插槽作用域schema
-function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }: Props) {
+function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot, env }: Props) {
   data.columns.forEach((col) => {
     const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
-      slot?.setTitle(col.slotId, `自定义${col.title}列`);
+      slot?.setTitle(col.slotId, `自定义${env.i18n(col.title)}列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
         type: 'object',
         properties: dataSchema
@@ -353,7 +354,7 @@ export function getTableSchema({ data }) {
   return dataSchema;
 }
 
-export function setDataSchema({ data, output, input, slot }: EditorResult<Data>) {
+export function setDataSchema({ data, output, input, slot, env }: EditorResult<Data>) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
 
@@ -361,7 +362,7 @@ export function setDataSchema({ data, output, input, slot }: EditorResult<Data>)
   setOutputsSchema(dataSchema, { data, output, input, slot });
   setFilterSchema(schemaObj, { data, output, input, slot });
   setExpandSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
-  setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
+  setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot, env });
   setRowClickSchema(dataSchema, { data, output, input, slot });
 }
 
