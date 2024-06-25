@@ -52,9 +52,10 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor:
-            outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
-              ? CursorTypeEnum.Pointer
-              : undefined
+              outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
+                ? CursorTypeEnum.Pointer
+                : undefined,
+            marginBottom: 0
           }}
           className={css.text}
           onClick={onClick}
@@ -71,9 +72,9 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor:
-            outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
-              ? CursorTypeEnum.Pointer
-              : undefined
+              outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
+                ? CursorTypeEnum.Pointer
+                : undefined
           }}
           className={css.text}
           onClick={onClick}
