@@ -35,7 +35,7 @@ export default function MyComponent({
       if (!runtime.debug) {
         setTimeout(() => {
           handlePrintAction();
-        }, waitRenderTime || 2000);
+        }, waitRenderTime || 500);
       } else message.warn('请预览查看效果，调试不支持打印预览');
     });
   }, [runtime.debug, inputs, handlePrintAction, waitRenderTime]);

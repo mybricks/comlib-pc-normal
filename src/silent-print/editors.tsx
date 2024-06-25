@@ -60,7 +60,7 @@ export default {
         },
         {
           title: '等待渲染时间(ms)',
-          description: '设置等待渲染的时间，默认2000ms',
+          description: '设置等待渲染的时间，默认500ms',
           type: 'inputNumber',
           options: [{ width: 100, min: 0 }],
           value: {
