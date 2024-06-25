@@ -404,5 +404,23 @@ export default function ({
 
   //=========== v1.1.19 end ===============
 
+  /**
+   * @description 1.1.22 设置值，设置初始值及输出的schema类型
+   */
+  const valueSchema = { type: "any", description: "任意类型,一般为基础数据类型,取决于数据源中value字段的类型" }
+  if(input.get(InputIds.SetInitialValue).schema !== valueSchema) {
+    input.get(InputIds.SetInitialValue).setSchema(valueSchema)
+  }
+  if(input.get(InputIds.SetValue).schema !== valueSchema) {
+    input.get(InputIds.SetValue).setSchema(valueSchema)
+  }
+  if(output.get(outputIds.setValueDone).schema !== valueSchema) {
+    output.get(outputIds.setValueDone).setSchema(valueSchema)
+  }
+  if(output.get(outputIds.setInitialValueDone).schema !== valueSchema) {
+    output.get(outputIds.setInitialValueDone).setSchema(valueSchema)
+  }
+  //=========== v1.1.22 end ===============
+
   return true;
 }
