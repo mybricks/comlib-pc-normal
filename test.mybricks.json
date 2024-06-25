@@ -119,6 +119,7 @@
         "./src/sort-bar/com.json",
         "./src/video/com.json",
         "./src/print/com.json",
+        "./src/silent-print/com.json",
         "./src/carousel/com.json"
       ]
     },

@@ -1,0 +1,34 @@
+@media all {
+  .page-break {
+    display: none;
+  }
+}
+
+@media print {
+  html,
+  body {
+    height: 100vh;
+    // height: initial !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+  }
+
+  @page {
+    size: landscape;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 0;
+}
