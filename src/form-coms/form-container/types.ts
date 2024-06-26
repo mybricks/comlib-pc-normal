@@ -179,8 +179,10 @@ export interface Data {
   defaultCollapsed: boolean
 
   ellipseMode?: 'wrap' | 'ellipse'
-  /** shying动态设置表单项 */
+  /** 开启动态设置表单项 */
   useDynamicItems?: boolean
+  /**  动态设置的依赖的原始模板表单项列表 */
+  originItems: FormItems[]
 }
 
 interface DomainModel {

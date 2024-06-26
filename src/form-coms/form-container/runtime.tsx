@@ -120,13 +120,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (data.useDynamicItems && inputs[inputIds.setDynamicFormItems]) {
         inputs[inputIds.setDynamicFormItems]((val: Array<DynamicItemData>, relOutputs: any) => {
           let newItems: any[] = [];
+          if (!data.originItems) {
+            // 运行时只执行一次，记录原始表单项
+            data.originItems = JSON.parse(JSON.stringify(data.items));
+          }
           const uniqueNames: string[] = [];
           const notFoundOrUniqueNames: string[] = [];
           const disableFormList: string[] = [];
           const enableFormList: string[] = [];
           const fieldsSource = {};
           val.forEach((item) => {
-            let sameNameItem = data.items.find((i) => i.name === item.relOriginField);
+            let sameNameItem = data.originItems.find((i) => i.name === item.relOriginField);
             let isUniqueName = !uniqueNames.includes(item.name);
             if (sameNameItem && isUniqueName) {
               uniqueNames.push(item.name);

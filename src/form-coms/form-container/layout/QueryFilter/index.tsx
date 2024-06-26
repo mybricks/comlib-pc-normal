@@ -172,6 +172,7 @@ const QueryFilter = (props: QueryFilterProps) => {
     });
   }
   if (env.runtime && data.useDynamicItems) {
+    // 动态设置表单项渲染逻辑
     doms = data.items?.map((subItem, index) => {
       const items = data.items;
       let com = comAray.find((item) => item.name === subItem.comName);
