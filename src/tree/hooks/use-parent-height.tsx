@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import ResizeObserver from 'resize-observer-polyfill';
 /**
  * 获取父容器高度
  */

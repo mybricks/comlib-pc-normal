@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 
 function useElementHeight(ref: React.RefObject<HTMLElement>) {
   /** 元素高度px数字 */
