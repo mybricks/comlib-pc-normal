@@ -23,7 +23,7 @@
     }
   },
   "compileOnSave": true,
-  "include": ["./src"],
+  "include": ["./src", "./cypress"],
   "files": ["typings.d.ts"],
   "exclude": ["./node_modules"]
 }

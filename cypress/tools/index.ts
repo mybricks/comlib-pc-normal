@@ -16,7 +16,7 @@ export function getPort() {
  */
 export function dumpPreview(
   dump: Record<string, unknown>,
-  updateQueries: ({ type?: 'contains', selector: keyof HTMLElementTagNameMap; text: string | number | RegExp } | { type: 'get', selector: string })[]
+  updateQueries: { type?: 'contains' | 'get', selector: string; text: string | number | RegExp }[]
 ) {
   // 加载空白页面
   cy.visit(`http://localhost:${getPort()}`, {
