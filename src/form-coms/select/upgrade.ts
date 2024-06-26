@@ -422,5 +422,13 @@ export default function ({
   }
   //=========== v1.1.22 end ===============
 
+  /**
+   * @description 1.1.23 增加字段配置
+   */
+  if (typeof data.customField === "undefined") {
+    data.customField = false;
+  };
+  //=========== v1.1.23 end ===============
+
   return true;
 }
