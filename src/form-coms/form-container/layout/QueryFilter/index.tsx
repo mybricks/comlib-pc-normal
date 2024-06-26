@@ -10,7 +10,16 @@ import { getWhatToDoWithoutPermission } from '../../../../utils/permission';
 
 interface QueryFilterProps {
   data: Data;
-  comAray: { id; name; jsx; def; inputs; outputs; style }[];
+  comAray: {
+    index?: number;
+    id;
+    name;
+    jsx;
+    def;
+    inputs;
+    outputs;
+    style;
+  }[];
   children?: React.ReactNode;
   isEmpty: boolean;
   isVerticalModel: boolean;
@@ -18,25 +27,36 @@ interface QueryFilterProps {
   env: any;
   submit: (outputId: string, outputRels?: any) => void;
   outputs: any;
+  dynamicEnableOrDisabledRef: any;
 }
 
 const QueryFilter = (props: QueryFilterProps) => {
-  const { data, isEmpty, isVerticalModel, comAray, childrenInputs, env, submit, outputs } = props;
+  const {
+    data,
+    isEmpty,
+    isVerticalModel,
+    comAray,
+    childrenInputs,
+    env,
+    submit,
+    outputs,
+    dynamicEnableOrDisabledRef
+  } = props;
   const { align, inlinePadding } = data.actions;
 
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
 
   const [span, colProps] = useMemo(() => {
     if (data.enable24Grid) {
-      let spanVal = data.span || 8
-      return [spanVal, { span: spanVal }]
+      let spanVal = data.span || 8;
+      return [spanVal, { span: spanVal }];
     }
-    return [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }]
-  }, [data.formItemColumn, data.span, data.enable24Grid])
+    return [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }];
+  }, [data.formItemColumn, data.span, data.enable24Grid]);
 
   const actionStyle: React.CSSProperties = {
     textAlign: 'right',
-    padding: inlinePadding?.map(String).map(unitConversion).join(' '),
+    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
     // width: `${100 / data.formItemColumn}%`
   };
 
@@ -81,76 +101,158 @@ const QueryFilter = (props: QueryFilterProps) => {
   // console.log(processedList)
 
   let idx = -1;
-  const doms = comAray?.map((com) => {
-    const items = data.items;
+  let doms;
+  if (env.edit || !data.useDynamicItems || (env.runtime && !data.useDynamicItems)) {
+    doms = comAray?.map((com) => {
+      const items = data.items;
 
-    if (com) {
-      const { item, isFormItem } = getFormItem(data, com);
+      if (com) {
+        const { item, isFormItem } = getFormItem(data, { name: com.name, id: com.id });
 
-      if (!item) {
-        if (items.length === comAray.length) {
-          console.warn(`formItem comId ${com.id} formItem not found`);
+        if (!item) {
+          if (items.length === comAray.length) {
+            console.warn(`formItem comId ${com.id} formItem not found`);
+          }
+          return;
         }
-        return;
-      }
 
-      // const { widthOption, width } = item;
+        // const { widthOption, width } = item;
 
-      let hidden = false;
+        let hidden = false;
 
-      // 表单项的处理
-      if (isFormItem) {
-        if (item.comName) {
-          childrenInputs[com.name] = com.inputs;
+        // 表单项的处理
+        if (isFormItem) {
+          if (item.comName) {
+            childrenInputs[com.name] = com.inputs;
+          } else {
+            childrenInputs[com.id] = com.inputs;
+          }
+        }
+
+        if (typeof item?.visible !== 'undefined') {
+          item.visible = com.style.display !== 'none';
         } else {
-          childrenInputs[com.id] = com.inputs;
+          item['visible'] = true;
         }
-      }
+        if (item['visible']) {
+          idx++;
+        }
+        if (idx === 0) {
+          firstRowFull = span === 24;
+        }
 
-      if (typeof item?.visible !== 'undefined') {
-        item.visible = com.style.display !== 'none';
-      } else {
-        item['visible'] = true;
-      }
-      if (item['visible']) {
-        idx++;
-      }
-      if (idx === 0) {
-        firstRowFull = span === 24;
-      }
+        if (collapsed) {
+          hidden = (firstRowFull || idx >= 24 / span - 1) && !!idx;
+        }
 
-      if (collapsed) {
-        hidden = (firstRowFull || idx >= 24 / span - 1) && !!idx;
-      }
+        item['hidden'] = hidden;
 
-      item['hidden'] = hidden;
+        if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
+          let display = com.style.display;
 
-      if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
-        let display = com.style.display;
+          if (display !== 'none') {
+            display = item?.hidden ? 'none' : 'block';
+          }
 
-        if (display !== 'none') {
-          display = item?.hidden ? 'none' : 'block';
+          return (
+            <Col style={{ display: display }} {...colProps} key={com.id}>
+              {com.jsx}
+            </Col>
+          );
         }
 
         return (
-          <Col style={{ display: display }} {...colProps} key={com.id}>
-            {com.jsx}
-          </Col>
+          item?.visible && (
+            <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
+              {com.jsx}
+            </Col>
+          )
         );
       }
+    });
+  }
+  if (env.runtime && data.useDynamicItems) {
+    // 动态设置表单项渲染逻辑
+    doms = data.items?.map((subItem, index) => {
+      const items = data.items;
+      let com = comAray.find((item) => item.name === subItem.comName);
+      if (com) {
+        // com.index= index
+        const { item, isFormItem } = getFormItem(data, { ...com, index });
+        if (!item) {
+          if (items.length === comAray.length) {
+            console.warn(`formItem comId ${com.id} formItem not found`);
+          }
+          return;
+        }
 
-      return (
-        item?.visible && (
-          <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
-            {com.jsx}
-          </Col>
-        )
-      );
+        let hidden = false;
+        let id = com.name + '::' + item.id;
+        let comJSX = data.useDynamicItems ? com.getJsx({ index: index, id: id }) : com;
+
+        // 表单项的处理
+        if (isFormItem) {
+          if (!data.useDynamicItems) {
+            if (item.comName) {
+              childrenInputs[com.name] = com.inputs;
+            } else {
+              childrenInputs[com.id] = com.inputs;
+            }
+          } else {
+            if (item.comName) {
+              childrenInputs[item.name] = comJSX.inputs;
+            }
+          }
+        }
+
+        if (typeof item?.visible !== 'undefined') {
+          item.visible = com.style.display !== 'none';
+        } else {
+          item['visible'] = true;
+        }
+        if (item['visible']) {
+          idx++;
+        }
+        if (idx === 0) {
+          firstRowFull = span === 24;
+        }
+
+        if (collapsed) {
+          hidden = (firstRowFull || idx >= 24 / span - 1) && !!idx;
+        }
+
+        item['hidden'] = hidden;
+
+        if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
+          let display = com.style.display;
+
+          if (display !== 'none') {
+            display = item?.hidden ? 'none' : 'block';
+          }
+
+          return (
+            <Col style={{ display: display }} {...colProps} key={com.id}>
+              {comJSX.jsx}
+            </Col>
+          );
+        }
+
+        return (
+          item?.visible && (
+            <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
+              {comJSX.jsx}
+            </Col>
+          )
+        );
+      }
+    });
+    if (dynamicEnableOrDisabledRef.current) {
+      dynamicEnableOrDisabledRef?.current?.();
+      dynamicEnableOrDisabledRef.current = null;
     }
-  });
+  }
   // 表单项总宽度超出一行时显示展开/收起按钮
   const showCollapseButton = (idx + 1) * span >= 24;
-
   return (
     <div className={styles.slotInlineWrapper}>
       {doms}

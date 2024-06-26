@@ -26,6 +26,11 @@ export default function (props: RuntimeParams<Data>) {
       outputs['onChange'](val);
     });
 
+    inputs['setOptions']?.((val, outputRels) => {
+      outputRels['setOptionsDone']?.(val);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.FieldSource](val);
+    });
+
     inputs['setInitialValue']((val, outputRels) => {
       changeValue(val);
       outputRels['setInitialValueDone']?.(val);

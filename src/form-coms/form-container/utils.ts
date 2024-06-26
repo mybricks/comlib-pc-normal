@@ -18,10 +18,17 @@ export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: tru
   const { items, additionalItems } = data;
   let item, isFormItem = false;
 
+  
   // 查找表单项
-  item = items.find((item) => {
+  if(com.useDynamicItems) {
+    item = items.find(item => {
+      return item.comName +'::' + item.id === com.id
+    })
+    if(item) return { item, isFormItem: true}
+  }
+  item = items.find((item, idx) => {
     if (item.comName) {
-      return item.comName === com.name
+      return item.comName === com.name && (com.index ? com.index === idx : true)
     }
 
     return item.id === com.id
@@ -53,4 +60,13 @@ export const getFormItemById = (data: Data, com): { item: FormItems, isFormItem:
   if (item) return { item, isFormItem: false };
 
   return { item, isFormItem };
+}
+
+
+export function isDynamicChildrenStoreValid(data, childrenStore): boolean {
+  const res = data.items.every(field => {
+    const { name } = field;
+    return childrenStore[name]
+  });
+  return res;
 }

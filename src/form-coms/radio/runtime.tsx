@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Radio, Space } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';

@@ -749,6 +749,37 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       data.ellipseMode = "ellipse"
     }
   
-  //=========== v1.4.59 end ===============
+  //=========== v1.4.58 end ===============
+  /**
+   * @description v1.4.59 feat 数据源选项输入
+   */
+
+  const fieldSourceSchema = {
+    type: 'object',
+    properties: {}
+  }
+  if (!input.get(inputIds.setFieldsSource || !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone))) {
+    input.add(inputIds.setFieldsSource, '表单数据源选项输入', fieldSourceSchema);
+  }
+
+  if(!output.get(outputIds.setFieldsSourceDone)) {
+    output.add(outputIds.setFieldsSourceDone, '设置表单数据源完成', fieldSourceSchema)
+  }
+  if (output.get(outputIds.setFieldsSourceDone) &&
+  input.get(inputIds.setFieldsSource) &&
+  !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone)) {
+  input.get(inputIds.setFieldsSource).setRels([outputIds.setFieldsSourceDone]);
+}
+    
+  let contentSlot = slot.get('content')
+  const hasFieldsSource = contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)
+  if (!hasFieldsSource) {
+    contentSlot.inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', fieldSourceSchema)
+    // slot?.get('content')._inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', schema)
+  }
+
+//=========== v1.4.59 end ===============
+
+//
   return true;
 }

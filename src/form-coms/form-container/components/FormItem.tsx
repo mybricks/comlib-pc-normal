@@ -16,7 +16,6 @@ interface FormItemProps {
 
 const JSXWrapper = (props: FormControlProps) => {
   const { com, value, onChange, field } = props;
-
   // useLayoutEffect(() => { // 初始化表单项值
   //   com.inputs?.setValue(value) // 需求区分 表单API行为触发 与 用户行为触发 => inputs or _inputs
   // }, [value])
@@ -137,7 +136,7 @@ const FormItem = (props) => {
     >
       <div className={css.formItemControl}>
         <div className={css.formItemSlotContent}>
-          <JSXWrapper com={com} />
+          <JSXWrapper com={com}  />
         </div>
         {item.slotAfter && (
           <div className={css.formItemSlotAfter}>
