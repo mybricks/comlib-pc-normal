@@ -677,8 +677,23 @@ export default {
           title: '字段配置',
           items: [
             {
+              title: '字段配置',
+              type: 'switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.customField
+                },
+                set({ data, input, output }: EditorResult<Data>, value: boolean) {
+                  data.customField = value
+                }
+              }
+            },
+            {
               title: '标题字段',
               type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
               options: {
                 placeholder: '默认值为 label'
               },
@@ -695,6 +710,9 @@ export default {
             {
               title: '值字段',
               type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
               options: {
                 placeholder: '默认值为 value'
               },
@@ -711,6 +729,9 @@ export default {
             {
               title: '禁用字段',
               type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
               options: {
                 placeholder: '默认值为 disabled'
               },
@@ -727,6 +748,9 @@ export default {
             {
               title: '选中字段',
               type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
               options: {
                 placeholder: '默认值为 checked'
               },

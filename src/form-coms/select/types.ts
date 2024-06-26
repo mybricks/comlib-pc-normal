@@ -33,4 +33,5 @@ export interface Data {
   valueFieldName: string;
   disabledFieldName: string;
   checkedFieldName: string;
+  customField: boolean;
 }

@@ -165,7 +165,7 @@ export default function Runtime({
     inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
         const fieldNames = getFieldNames(data);
-        const newOptions = ds.map((item) => {
+        const newOptions = data.customField ? ds.map((item) => {
           return {
             ...item[fieldNames.value] ? {
               value: item[fieldNames.value]
@@ -180,7 +180,7 @@ export default function Runtime({
               checked: item[fieldNames.checked]
             } : {}
           };
-        });
+        }) : ds;
         data.config.options = [...newOptions];
         relOutputs['setOptionsDone'](ds);
 

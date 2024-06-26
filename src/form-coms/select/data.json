@@ -23,5 +23,6 @@
   "labelFieldName": "",
   "valueFieldName": "",
   "disabledFieldName": "",
-  "checkedFieldName": ""
+  "checkedFieldName": "",
+  "customField": false
 }
