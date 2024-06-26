@@ -1,6 +1,7 @@
 import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
+import { getFilterSelector } from '../../utils/cssSelector';
 
 const uploadEditors = {
   title: '上传按钮尺寸',
@@ -196,7 +197,9 @@ export default {
       {
         title: '背景',
         options: ['background', 'border'],
-        target: ['.ant-upload', '.ant-btn']
+        target: ({ id }: EditorResult<Data>) =>
+          [`.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`, `.ant-upload .ant-btn${getFilterSelector(id)}`]
+        //target: ['.ant-upload.ant-upload-select-picture-card', `.ant-upload .ant-btn`],
       },
       {
         title: '图标样式配置',

@@ -1,8 +1,18 @@
 import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
 import { descriptionUp } from '../utils/descriptionUp';
 import { descriptionUpList } from './constants';
+import { getFilterSelector } from '../../utils/cssSelector';
 
-export default function ({ input, output, slot, data, getDeclaredStyle, removeDeclaredStyle, setDeclaredStyle }): boolean {
+export default function ({ 
+  id,
+  input,
+  output,
+  slot, 
+  data, 
+  getDeclaredStyle, 
+  removeDeclaredStyle, 
+  setDeclaredStyle 
+}): boolean {
   //1.0.0 -> 1.0.1
   input.get('setValue')?.setSchema({
     type: 'array',
@@ -384,5 +394,16 @@ export default function ({ input, output, slot, data, getDeclaredStyle, removeDe
   descriptionUp(descriptionUpList, input, output);
   //=========== 1.0.45 end ===============
 
+  /**
+   * @description v1.0.48 背景色，target 变化
+  */
+  const preStyle = getDeclaredStyle(['.ant-upload', '.ant-btn']);
+
+  if ( preStyle) {
+    let contentCss = { ...preStyle.css };
+    removeDeclaredStyle(['.ant-upload', '.ant-btn']);
+    setDeclaredStyle([`.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`, `.ant-upload .ant-btn${getFilterSelector(id)}`], contentCss, true);
+  }
+  //=========== 1.0.45 end ===============
   return true;
 }
