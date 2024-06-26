@@ -1,6 +1,6 @@
 {
   "name": "@mybricks/comlib-pc-normal",
-  "version": "1.7.92",
+  "version": "1.7.93",
   "description": "通用PC组件库",
   "main": "index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "react-sortable-hoc": "^2.0.0",
     "react-to-print": "^2.14.13",
     "react-virtualized-auto-sizer": "^1.0.24",
+    "resize-observer-polyfill": "^1.5.1",
     "to-json-schema": "^0.2.5"
   },
   "devDependencies": {
