@@ -48,6 +48,17 @@ const getOutputValue = (data, env, value) => {
   return outputValue;
 };
 
+const getFieldNames = (data: Data,) => {
+  const fieldNames = {
+      label: data.labelFieldName || 'label',
+      value: data.valueFieldName || 'value',
+      disabled: data.disabledFieldName || 'disabled',
+      checked: data.checkedFieldName || 'checked'
+  };
+
+  return fieldNames;
+};
+
 export default function Runtime({
   env,
   data,
@@ -153,14 +164,31 @@ export default function Runtime({
 
     inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
-        data.config.options = [...ds];
+        const fieldNames = getFieldNames(data);
+        const newOptions = ds.map((item) => {
+          return {
+            ...item[fieldNames.value] ? {
+              value: item[fieldNames.value]
+            } : {},
+            ...item[fieldNames.label] ? {
+              label: item[fieldNames.label]
+            } : {},
+            ...item[fieldNames.disabled] ? {
+              disabled: item[fieldNames.disabled]
+            } : {},
+            ...item[fieldNames.checked] ? {
+              checked: item[fieldNames.checked]
+            } : {}
+          };
+        });
+        data.config.options = [...newOptions];
         relOutputs['setOptionsDone'](ds);
 
         //计算值更新
         let newValArray: any[] = [],
           newVal;
         let updateValue = false;
-        ds.map((item) => {
+        newOptions.map((item) => {
           const { checked, value } = item;
           if (checked && value != undefined) {
             updateValue = true;

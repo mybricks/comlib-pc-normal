@@ -64,6 +64,53 @@ const refreshSchema = ({ input, output, data }: { input: any, output: any, data:
   output.get(OutputIds.OnValidate).setSchema(returnValueSchema);
 };
 
+const reFiledNameSchema = (data: Data, input, output) => {
+  const trueValueFieldName = data.valueFieldName || 'value';
+  const trueLabelFieldName = data.labelFieldName || 'label';
+  const trueDisabledFieldName = data.disabledFieldName || 'disabled';
+  const trueCheckedFieldName = data.checkedFieldName || 'checked';
+
+  const schema = {
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        [trueLabelFieldName]: {
+          title: "标签",
+          type: "string",
+          description: "标签"
+        },
+        [trueValueFieldName]: {
+          title: "值",
+          type: "string",
+          description: "值"
+        },
+        [trueDisabledFieldName]: {
+          title: "禁用",
+          type: "boolean",
+          description: "是否禁用"
+        },
+        [trueCheckedFieldName]: {
+          title: "选中",
+          type: "boolean",
+          description: "是否选中"
+        }
+      }
+    }
+  };
+
+  const setOptionsPin = input.get('setOptions')
+  const setOptionsDonePin = output.get('setOptionsDone')
+
+  if (setOptionsPin) {
+    setOptionsPin.setSchema(schema)
+  }
+
+  if (setOptionsDonePin) {
+    setOptionsDonePin.setSchema(schema)
+  }
+}
+
 export default {
   ':slot': {},
   '@resize': {
@@ -626,6 +673,75 @@ export default {
       ];
 
       catalog[1].items = [
+        {
+          title: '字段配置',
+          items: [
+            {
+              title: '标题字段',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 label'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelFieldName
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.labelFieldName = value
+                  reFiledNameSchema(data, input, output)
+                }
+              }
+            },
+            {
+              title: '值字段',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 value'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.valueFieldName
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.valueFieldName = value
+                  reFiledNameSchema(data, input, output)
+                }
+              }
+            },
+            {
+              title: '禁用字段',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 disabled'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disabledFieldName
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.disabledFieldName = value
+                  reFiledNameSchema(data, input, output)
+                }
+              }
+            },
+            {
+              title: '选中字段',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 checked'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.checkedFieldName
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.checkedFieldName = value
+                  reFiledNameSchema(data, input, output)
+                }
+              }
+            },
+          ]
+        },
         {
           title: '输入配置',
           ifVisible({ data }) {

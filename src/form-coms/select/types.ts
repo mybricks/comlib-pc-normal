@@ -29,4 +29,8 @@ export interface Data {
   slotAfterOption?: string;
   /**@description v1.1.17 搭建态是否展示弹层 */
   hidePopWhenEdit?: boolean;
+  labelFieldName: string;
+  valueFieldName: string;
+  disabledFieldName: string;
+  checkedFieldName: string;
 }

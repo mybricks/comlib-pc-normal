@@ -19,5 +19,9 @@
   "dropdownSearchOption": false,
   "outputValueType": "value",
   "isEditable": true,
-  "resetOptionsWhenEmptySearch": true
+  "resetOptionsWhenEmptySearch": true,
+  "labelFieldName": "",
+  "valueFieldName": "",
+  "disabledFieldName": "",
+  "checkedFieldName": ""
 }
