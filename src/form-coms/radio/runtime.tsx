@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Radio, Space } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -216,33 +216,38 @@ export default function Runtime({
       </div>
     );
   };
+  if (env.edit && data.staticOptions?.length === 0) {
+    return <div className={css.suggestion}>在编辑栏中添加静态选项</div>;
+  }
 
   return data.enableButtonStyle ? (
     <div className="radio">
       {data.isEditable ? (
-        <Radio.Group
-          {...data.config}
-          optionType={data.enableButtonStyle ? 'button' : 'default'}
-          buttonStyle={data.buttonStyle}
-          value={value}
-          onChange={onChange}
-        >
-          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-            const label = item.label;
-            return (
-              <Radio
-                key={item.value}
-                // data-radio-idx={item.key}
-                value={item.value}
-                disabled={item.disabled}
-                checked={item.checked}
-                style={{ color: value === item.value ? activeFontColor : '' }}
-              >
-                <span data-radio-idx={item.key}>{env.i18n(label)}</span>
-              </Radio>
-            );
-          })}
-        </Radio.Group>
+        <>
+          <Radio.Group
+            {...data.config}
+            optionType={data.enableButtonStyle ? 'button' : 'default'}
+            buttonStyle={data.buttonStyle}
+            value={value}
+            onChange={onChange}
+          >
+            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+              const label = item.label;
+              return (
+                <Radio
+                  key={item.value}
+                  // data-radio-idx={item.key}
+                  value={item.value}
+                  disabled={item.disabled}
+                  checked={item.checked}
+                  style={{ color: value === item.value ? activeFontColor : '' }}
+                >
+                  <span data-radio-idx={item.key}>{env.i18n(label)}</span>
+                </Radio>
+              );
+            })}
+          </Radio.Group>
+        </>
       ) : (
         value
       )}

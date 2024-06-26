@@ -326,6 +326,11 @@ export default function Runtime({
     }
     return newOptions.map((item) => <Checkbox {...item}>{item.label}</Checkbox>);
   }, [env.edit, newOptions]);
+
+  if (env.edit && data.staticOptions?.length === 0) {
+    return <div className={css.suggestion}>在编辑栏中添加静态选项</div>;
+  }
+
   return (
     <div className={`${css.checkbox} checkbox`} style={single ? singlebox : void 0}>
       {data.isEditable
