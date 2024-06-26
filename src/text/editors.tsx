@@ -119,7 +119,7 @@ export default {
             set({ data }: EditorResult<Data>, value: boolean) {
               data.isEllipsis = value;
               if (value === true && !data.ellipsis) {
-                data.ellipsis = { rows: 3 };
+                data.ellipsis = { rows: 1 };
               }
             }
           }
