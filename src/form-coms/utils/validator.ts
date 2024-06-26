@@ -106,7 +106,7 @@ export const ValueRules = [
 ];
 
 export const showMessage = (key: RuleKeys) =>
-  [RuleKeys.REQUIRED, RuleKeys.REG_EXP, RuleKeys.MIN_LENGTH, RuleKeys.MAX_LENGTH].includes(key);
+  [RuleKeys.REQUIRED, RuleKeys.REG_EXP, RuleKeys.MIN_LENGTH, RuleKeys.MAX_LENGTH, RuleKeys.MIN, RuleKeys.MAX].includes(key);
 
 export const mergeRules = (newRules: any[], oldRules: any[]) => {
   if (!oldRules?.length || oldRules?.length < 1) {
