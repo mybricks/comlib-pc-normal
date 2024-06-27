@@ -50,10 +50,10 @@ const getOutputValue = (data, env, value) => {
 
 const getFieldNames = (data: Data,) => {
   const fieldNames = {
-      label: data.labelFieldName || 'label',
-      value: data.valueFieldName || 'value',
-      disabled: data.disabledFieldName || 'disabled',
-      checked: data.checkedFieldName || 'checked'
+    label: data.labelFieldName || 'label',
+    value: data.valueFieldName || 'value',
+    disabled: data.disabledFieldName || 'disabled',
+    checked: data.checkedFieldName || 'checked'
   };
 
   return fieldNames;
@@ -278,7 +278,7 @@ export default function Runtime({
     if (maxHeight && isNumberString.test(maxHeight)) {
       maxHeight = maxHeight + 'px';
     }
-    ref.current?.style.setProperty('--select--selection-overflow-max-height', maxHeight);
+    // ref.current?.querySelector('select')?.style.setProperty('--select--selection-overflow-max-height', maxHeight);
   }, [data.maxHeight]);
 
   const onValidateTrigger = (type: string) => {
@@ -388,6 +388,8 @@ export default function Runtime({
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           maxTagCount={data.maxTagCount}
           dropdownClassName={id}
+          listHeight={Number(data.maxHeight)}
+          placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}
           open={
             env.design || (env.edit && data.slotAfterOption && !data.hidePopWhenEdit)

@@ -34,4 +34,5 @@ export interface Data {
   disabledFieldName: string;
   checkedFieldName: string;
   customField: boolean;
+  placement: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 }

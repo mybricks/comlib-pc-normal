@@ -350,6 +350,24 @@ export default {
           }
         },
         {
+          title: '选择框弹出位置',
+          type: 'select',
+          options: [
+            { label: '左上方', value: 'topLeft' },
+            { label: '右上方', value: 'topRight' },
+            { label: '左下方', value: 'bottomLeft' },
+            { label: '右下方', value: 'bottomRight' },
+          ],
+          value: {
+            get({ data }) {
+              return data.placement || `bottomLeft`;
+            },
+            set({ data }, value: string) {
+              data.placement = value;
+            }
+          }
+        },
+        {
           title: '下拉框模式',
           type: 'select',
           description: '可设置下拉框的模式为多选或标签',
