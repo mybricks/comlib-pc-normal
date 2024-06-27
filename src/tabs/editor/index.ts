@@ -24,6 +24,9 @@ export default {
   '@resize': {
     options: ['width', 'height']
   },
+  '@init': ({ style }) => {
+    style.height = 'auto';
+  },
   ':root': {
     items({ }: EditorResult<Data>, cate1, cate2, cate3) {
       cate1.title = '常规';
