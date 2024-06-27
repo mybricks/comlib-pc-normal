@@ -103,39 +103,39 @@ function setDataSourceSchema(dataSchema: object, { input, data, output }: Props)
   const TableDataSchema =
     data.usePagination && !data.paginationConfig?.useFrontPage
       ? {
-          title: '数据列表',
-          type: 'object',
-          properties: {
-            dataSource: {
-              type: 'array',
-              description: '表格数据源数据',
-              items: {
-                type: 'object',
-                properties: dataSchema
-              }
-            },
-            total: {
-              type: 'number',
-              description: '数据总数'
-            },
-            pageSize: {
-              type: 'number',
-              description: '表格每页条数'
-            },
-            pageNum: {
-              type: 'number',
-              description: '表格当前页码'
+        title: '数据列表',
+        type: 'object',
+        properties: {
+          dataSource: {
+            type: 'array',
+            description: '表格数据源数据',
+            items: {
+              type: 'object',
+              properties: dataSchema
             }
+          },
+          total: {
+            type: 'number',
+            description: '数据总数'
+          },
+          pageSize: {
+            type: 'number',
+            description: '表格每页条数'
+          },
+          pageNum: {
+            type: 'number',
+            description: '表格当前页码'
           }
         }
+      }
       : {
-          title: '数据列表',
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: dataSchema
-          }
-        };
+        title: '数据列表',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: dataSchema
+        }
+      };
   input.get(InputIds.SET_DATA_SOURCE)?.setSchema(TableDataSchema);
   output.get(OutputIds.SET_DATA_SOURCE)?.setSchema?.(TableDataSchema);
 }
@@ -290,7 +290,7 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot, e
   data.columns.forEach((col) => {
     const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
-      slot?.setTitle(col.slotId, `自定义${env.i18n(col.title)}列`);
+      slot?.setTitle(col.slotId, `自定义${env?.i18n ? env.i18n(col.title) : col.title}列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
         type: 'object',
         properties: dataSchema
