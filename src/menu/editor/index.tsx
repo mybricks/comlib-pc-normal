@@ -188,7 +188,6 @@ export default {
             title: '菜单',
             catelog: '默认',
             options: [
-              { type: 'font', config: { disableTextAlign: true } },
               'border',
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -210,7 +209,6 @@ export default {
             title: '菜单',
             catelog: 'Hover',
             options: [
-              { type: 'font', config: { disableTextAlign: true } },
               'border',
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -221,7 +219,19 @@ export default {
             title: '菜单项',
             catelog: 'Hover',
             options: [
-              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'font', config: { disableTextAlign: true } }
+            ],
+            target: [
+              'ul li:hover','.ant-menu-light .ant-menu-submenu-title:hover',
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open',
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover',  
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open',
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover'
+            ]
+          },
+          {
+            catelog: 'Hover',
+            options: [
               'border',
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -233,7 +243,13 @@ export default {
             title: '选中标记',
             catelog: 'Hover',
             options: ['border'],
-            target: '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after'
+            target: [
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after',
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after',
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after',
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open::after', 
+              '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after', 
+            ]
           },
           {
             title: '菜单项',

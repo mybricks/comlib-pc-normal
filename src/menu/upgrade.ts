@@ -2,7 +2,14 @@ import { Data, MenuItem } from './constants';
 import { descriptionUp } from '../form-coms/utils/descriptionUp';
 import { descriptionUpList } from './constants';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ 
+  data, 
+  input, 
+  output, 
+  getDeclaredStyle, 
+  removeDeclaredStyle,
+  setDeclaredStyle
+}: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.5->1.0.6 改变设置数据的schema
   */
@@ -102,5 +109,37 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   descriptionUp(descriptionUpList, input, output);
   //=========== 1.0.20 end ===============
 
+  /**
+   * @description v1.0.22 改变target
+  */
+  const preItemStyle = getDeclaredStyle('ul li:hover');
+
+  if ( preItemStyle) {
+    let contentCss = { ...preItemStyle.css };
+    removeDeclaredStyle('ul li:hover');
+    setDeclaredStyle([
+      'ul li:hover','.ant-menu-light .ant-menu-submenu-title:hover',
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open',
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover',  
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open',
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover'
+
+    ], contentCss, true);
+  }
+
+  const preTargetStyle = getDeclaredStyle('.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after');
+  if(preTargetStyle){
+    let contentCss = { ...preTargetStyle.css };
+    removeDeclaredStyle('.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after');
+    setDeclaredStyle([
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after',
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after',
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after',
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open::after', 
+      '.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after',
+    ], contentCss, true);
+  }
+
+  //=========== 1.0.22 end ===============
   return true;
 }
