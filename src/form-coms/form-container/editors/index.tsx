@@ -1170,6 +1170,23 @@ export default {
             }
           },
           {
+            title: '标题超长配置',
+            description: '不配置时，以表单容器的超长配置为准',
+            type: 'Radio',
+            options: [
+              { label: '超长省略', value: 'ellipse' },
+              { label: '自动换行', value: 'wrap' }
+            ],
+            value: {
+              set({ id, name, data }: EditorResult<Data>, value: 'ellipse' | 'wrap') {
+                setFormItemProps({ data, id, name }, 'ellipseMode', value);
+              },
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'ellipseMode') || data.ellipseMode;
+              }
+            }
+          },
+          {
             title: '必填样式',
             type: 'Switch',
             value: {
