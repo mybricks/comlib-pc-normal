@@ -64,6 +64,32 @@ const FormItem = (props) => {
     }
     return {};
   }, [data.ellipseMode]);
+
+  //标签换行样式
+  useEffect(() => {
+    if (!labelRef.current) {
+      return;
+    }
+    // 动态配置的labelAutoWrap 优先级高于表单组件的labelAutoWrap
+    let flag = false;
+    if (dynamicStyle.labelAutoWrap) {
+      flag = true;
+    }
+    flag = data.ellipseMode === 'wrap';
+    // if(!flag) return;
+    let targetLabel = labelRef.current.closest('.ant-form-item-label');
+    if (targetLabel) {
+      if (flag) {
+        targetLabel.classList.add(css['ant-form-item-cus-wrap']);
+      } else {
+        targetLabel.classList.remove(css['ant-form-item-cus-wrap']);
+      }
+    }
+    // console.log('targetLabel', targetLabel)
+
+    // return flag ? css['ant-form-item-wrap-1'] : ''
+  }, [dynamicStyle.labelAutoWrap, data.ellipseMode, labelRef.current]);
+
   useEffect(() => {
     if (env.runtime && data.ellipseMode === 'ellipse' && labelRef.current) {
       const labelRefWidth = labelRef.current?.offsetWidth;
@@ -111,6 +137,7 @@ const FormItem = (props) => {
           <label
             ref={labelRef}
             data-form-item={com.name}
+            className="custom-wrap-classname"
             onMouseEnter={handleMouseEnter}
             style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
           >
