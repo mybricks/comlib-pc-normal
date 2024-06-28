@@ -65,6 +65,8 @@ export interface FormItems {
   hidden?: boolean
   /** @description 标题插槽ID v1.4.44 */
   labelSlot?: string
+  /** 单个表单项，过长配置 */
+  ellipseMode?: 'wrap' | 'ellipse'
 }
 
 export interface AdditionalItem {

@@ -48,7 +48,9 @@ const FormItem = (props) => {
         : 'nowrap'
       : void 0;
   const ellipseConfig = useMemo(() => {
-    if (data.ellipseMode === 'ellipse') {
+    const ellipseMode =
+      typeof item.ellipseMode !== 'undefined' ? item.ellipseMode : data.ellipseMode;
+    if (ellipseMode === 'ellipse') {
       return {
         overflow: 'hidden',
         WebkitBoxOrient: 'vertical',
@@ -57,13 +59,13 @@ const FormItem = (props) => {
         display: '-webkit-box !important'
       };
     }
-    if ((data.ellipseMode = 'wrap')) {
+    if (ellipseMode === 'wrap') {
       return {
         whiteSpace: 'pre-wrap'
       };
     }
     return {};
-  }, [data.ellipseMode]);
+  }, [data.ellipseMode, item.ellipseMode]);
 
   //标签换行样式
   useEffect(() => {
@@ -75,7 +77,8 @@ const FormItem = (props) => {
     if (dynamicStyle.labelAutoWrap) {
       flag = true;
     }
-    flag = data.ellipseMode === 'wrap';
+    let ellipseMode = typeof item.ellipseMode !== 'undefined' ? item.ellipseMode : data.ellipseMode;
+    flag = ellipseMode === 'wrap';
     // if(!flag) return;
     let targetLabel = labelRef.current.closest('.ant-form-item-label');
     if (targetLabel) {
@@ -85,13 +88,13 @@ const FormItem = (props) => {
         targetLabel.classList.remove(css['ant-form-item-cus-wrap']);
       }
     }
-    // console.log('targetLabel', targetLabel)
 
     // return flag ? css['ant-form-item-wrap-1'] : ''
-  }, [dynamicStyle.labelAutoWrap, data.ellipseMode, labelRef.current]);
+  }, [dynamicStyle.labelAutoWrap, data.ellipseMode, labelRef.current, item.ellipseMode]);
 
   useEffect(() => {
-    if (env.runtime && data.ellipseMode === 'ellipse' && labelRef.current) {
+    let ellipseMode = typeof item.ellipseMode !== 'undefined' ? item.ellipseMode : data.ellipseMode;
+    if (env.runtime && ellipseMode === 'ellipse' && labelRef.current) {
       const labelRefWidth = labelRef.current?.offsetWidth;
       if (labelRef.current.scrollWidth > labelRefWidth) {
         setIsShowTips(true);
@@ -99,7 +102,14 @@ const FormItem = (props) => {
         setIsShowTips(false);
       }
     }
-  }, [labelRef.current, env.runtime, data.ellipseMode, item.label, dynamicStyle.labelAutoWrap]);
+  }, [
+    labelRef.current,
+    env.runtime,
+    data.ellipseMode,
+    item.ellipseMode,
+    item.label,
+    dynamicStyle.labelAutoWrap
+  ]);
 
   const handleMouseEnter = useCallback(() => {
     if (
