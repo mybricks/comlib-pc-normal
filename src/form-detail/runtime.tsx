@@ -6,7 +6,7 @@ import css from './runtime.less';
 import isObject from 'lodash/isObject';
 import { checkIfMobile } from '../utils';
 
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 export default function ({ env, data, inputs, slots, outputs, onError }: RuntimeParams<Data>) {
   const { size, title, showTitle, layout, bordered, colon, showExtra } = data || {};
@@ -96,12 +96,12 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
             {type === TypeEnum.PartSlot ? (
               SlotItem
             ) : (
-              <Text
+              <Paragraph
                 style={{ color: 'inherit' }}
-                ellipsis={ellipsis ? { rows, tooltip: true } : false}
+                ellipsis={ellipsis ? { rows: rows, tooltip: true } : false}
               >
                 {env.i18n(value)}
-              </Text>
+              </Paragraph>
             )}
             {SuffixRender(item)}
           </Descriptions.Item>
