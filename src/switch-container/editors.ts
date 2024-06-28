@@ -3,8 +3,11 @@ import visibleOpt from '../components/editorRender/visibleOpt';
 
 export default {
   ':slot': {},
+  '@init': ({ style }) => {
+    style.height = 'fit-content'
+  },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': ({ data, slot, env }: EditorResult<Data>, cate1) => {
     cate1.items = [
