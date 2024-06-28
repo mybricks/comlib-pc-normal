@@ -66,7 +66,7 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
   /**
    * @description v1.0.7 style编辑器改造
    */
-  if (!isEmptyObject(data.style)) {
+  if (!isEmptyObject(data.style) && (data.type === TypeEnum.Primary || data.type === TypeEnum.Danger)) {
     if (typeof data.style.fontSize === 'number') data.style.fontSize = data.style.fontSize + 'px';
     setDeclaredStyle(`.button`, data.style);
     data.style = {};
