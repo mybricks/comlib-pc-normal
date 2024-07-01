@@ -295,24 +295,25 @@ export default function (props: RuntimeParams<Data>) {
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
         // 解决连续动态设置问题，始终使用初始的配置
         if (!data._inicCols) {
-          data._inicCols = data.columns || []
+          data._inicCols = data.columns || [];
         }
         inputs[InputIds.SET_SHOW_TitleS]((val: any, relOutputs: any) => {
           const newCols = val.map((item) => {
             if (item.usePrevious) {
-              const previousCol = data._inicCols.find((i) => i.dataIndex === item.dataIndex) || null;
+              const previousCol =
+                data._inicCols.find((i) => i.dataIndex === item.dataIndex) || null;
               return previousCol || item;
             } else if (item.template) {
-              const templateCol = data._inicCols.find(i => i.dataIndex === item.template)
+              const templateCol = data._inicCols.find((i) => i.dataIndex === item.template);
               if (!templateCol) {
-                throw new Error(`找不到名为${item.template}的模板列！`)
+                throw new Error(`找不到名为${item.template}的模板列！`);
               }
-              Object.keys(templateCol).forEach(key => {
+              Object.keys(templateCol).forEach((key) => {
                 if (!(key in item)) {
-                  item[key] = templateCol[key]
+                  item[key] = templateCol[key];
                 }
-              })
-              return item
+              });
+              return item;
             } else {
               return item;
             }
@@ -480,8 +481,10 @@ export default function (props: RuntimeParams<Data>) {
                   (item) => targetRowKeyVal === item[rowKey]
                 );
                 // 需要判断对应的row数据是否存在
-                newSelectedRows.push(tempItem);
-                newSelectedRowKeys.push(targetRowKeyVal);
+                if (tempItem !== undefined) {
+                  newSelectedRows.push(tempItem);
+                  newSelectedRowKeys.push(targetRowKeyVal);
+                }
               });
               setSelectedRowKeys(newSelectedRowKeys);
               setSelectedRows(newSelectedRows);
@@ -1110,18 +1113,31 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   const templateLable = () => {
-    return <>
-      <div className={css.infoLabel} style={{ top: 0, left: 0 }}>模板</div>
-      <div className={css.infoLabel} style={{ top: 0, right: 0 }}>模板</div>
-      <div className={css.infoLabel} style={{ bottom: 0, left: 0 }}>模板</div>
-      <div className={css.infoLabel} style={{ bottom: 0, right: 0 }}>模板</div>
-    </>
-  }
+    return (
+      <>
+        <div className={css.infoLabel} style={{ top: 0, left: 0 }}>
+          模板
+        </div>
+        <div className={css.infoLabel} style={{ top: 0, right: 0 }}>
+          模板
+        </div>
+        <div className={css.infoLabel} style={{ bottom: 0, left: 0 }}>
+          模板
+        </div>
+        <div className={css.infoLabel} style={{ bottom: 0, right: 0 }}>
+          模板
+        </div>
+      </>
+    );
+  };
 
   return (
-    <div ref={ref} style={{
-      position: 'relative'
-    }}>
+    <div
+      ref={ref}
+      style={{
+        position: 'relative'
+      }}
+    >
       <ConfigProvider
         locale={env.vars?.locale}
         renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
@@ -1178,36 +1194,36 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.useExpand && slots[SlotIds.EXPAND_CONTENT]
                     ? {
-                      expandedRowRender: (record, index) => {
-                        const inputValues = {
-                          [InputIds.EXP_COL_VALUES]: {
-                            ...record
-                          },
-                          [InputIds.INDEX]: index
-                        };
-                        if (data.useExpand && data.expandDataIndex) {
-                          inputValues[InputIds.EXP_ROW_VALUES] = get(
-                            record,
-                            data.expandDataIndex
-                          );
-                        }
-                        return slots[SlotIds.EXPAND_CONTENT]?.render({
-                          inputValues,
-                          key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                        });
-                      },
-                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                      onExpand: (expanded, record) => {
-                        if (!env.runtime) return;
-                        const key = record[rowKey];
-                        if (expanded && !expandedRowKeys.includes(key)) {
-                          setExpandedRowKeys([...expandedRowKeys, key]);
-                        } else if (!expanded && expandedRowKeys.includes(key)) {
-                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                          setExpandedRowKeys([...expandedRowKeys]);
+                        expandedRowRender: (record, index) => {
+                          const inputValues = {
+                            [InputIds.EXP_COL_VALUES]: {
+                              ...record
+                            },
+                            [InputIds.INDEX]: index
+                          };
+                          if (data.useExpand && data.expandDataIndex) {
+                            inputValues[InputIds.EXP_ROW_VALUES] = get(
+                              record,
+                              data.expandDataIndex
+                            );
+                          }
+                          return slots[SlotIds.EXPAND_CONTENT]?.render({
+                            inputValues,
+                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                          });
+                        },
+                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                        onExpand: (expanded, record) => {
+                          if (!env.runtime) return;
+                          const key = record[rowKey];
+                          if (expanded && !expandedRowKeys.includes(key)) {
+                            setExpandedRowKeys([...expandedRowKeys, key]);
+                          } else if (!expanded && expandedRowKeys.includes(key)) {
+                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                            setExpandedRowKeys([...expandedRowKeys]);
+                          }
                         }
                       }
-                    }
                     : undefined
                 }
                 onChange={onChange}
