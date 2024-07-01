@@ -7,7 +7,7 @@ export default {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
   ':root': {
     style: [
@@ -100,14 +100,12 @@ export default {
             },
             {
               title: '此刻',
-              options: [
-                { type: 'font', config: { disableTextAlign: true } }
-              ],
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
               global: true,
               target: `.{id} a`
             }
           ]
-        }),
+        })
       },
       {
         items: createrCatelogEditor({
@@ -150,9 +148,7 @@ export default {
             },
             {
               title: '此刻',
-              options: [
-                { type: 'font', config: { disableTextAlign: true } }
-              ],
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
               global: true,
               target: `.{id} a:hover`
             }
@@ -167,7 +163,7 @@ export default {
             //   target: `.{id} .ant-btn-primary[disabled]:hover`
             // },
           ]
-        }),
+        })
       },
       {
         items: createrCatelogEditor({
@@ -177,7 +173,7 @@ export default {
               title: '边框',
               options: ['border', 'BoxShadow'],
               target: '.ant-picker-focused.ant-picker'
-            },
+            }
           ]
         })
       },
@@ -208,9 +204,7 @@ export default {
             },
             {
               title: '此刻',
-              options: [
-                { type: 'font', config: { disableTextAlign: true } }
-              ],
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
               global: true,
               target: `.{id} a:active`
             }
@@ -237,10 +231,10 @@ export default {
               catelog: '禁用',
               options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
               target: '.ant-picker.ant-picker-disabled'
-            },
+            }
           ]
         })
-      },
+      }
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '配置';
@@ -279,7 +273,7 @@ export default {
           ]
         },
         {
-          title: "输出数据处理",
+          title: '输出数据处理',
           items: [
             {
               title: '时间格式模版',
@@ -289,8 +283,8 @@ export default {
                   { label: '时:分:秒', value: 'HH:mm:ss' },
                   { label: '时:分', value: 'HH:mm' },
                   { label: '时', value: 'HH' },
-                  { label: "时间戳", value: "timeStamp" },
-                  { label: '自定义', value: 'custom' },
+                  { label: '时间戳', value: 'timeStamp' },
+                  { label: '自定义', value: 'custom' }
                 ]
               },
               value: {
@@ -298,14 +292,14 @@ export default {
                   return data.format || 'HH:mm:ss';
                 },
                 set({ data, output }: EditorResult<Data>, val: string) {
-                  data.format = val
+                  data.format = val;
                   let valueSchema = {
                     type: 'string'
                   };
                   if (data.format === 'timeStamp') {
                     valueSchema = {
                       type: 'number'
-                    }
+                    };
                   }
                   output.get(OutputIds.OnValidate).setSchema(valueSchema);
                 }
@@ -322,7 +316,54 @@ export default {
                   return data.customFormat || 'HH:mm:ss';
                 },
                 set({ data }: EditorResult<Data>, val: string) {
-                  data.customFormat = val
+                  data.customFormat = val;
+                }
+              }
+            }
+          ]
+        },
+        {
+          title: '步长',
+          items: [
+            {
+              title: '时',
+              description: '展示可选的小时',
+              type: 'inputNumber',
+              options: [{ width: 100, min: 1, max: 24 }],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.config?.hourStep || 1];
+                },
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.config.hourStep = value[0];
+                }
+              }
+            },
+            {
+              title: '分',
+              description: '展示可选的分钟',
+              type: 'inputNumber',
+              options: [{ width: 100, min: 0, max: 60 }],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.config?.minuteStep || 1];
+                },
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.config.minuteStep = value[0];
+                }
+              }
+            },
+            {
+              title: '秒',
+              description: '展示可选的秒',
+              type: 'inputNumber',
+              options: [{ width: 100, min: 0, max: 60 }],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.config?.secondStep || 1];
+                },
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.config.secondStep = value[0];
                 }
               }
             }
@@ -398,7 +439,7 @@ export default {
               options: {
                 outputId: OutputIds.OnValidate
               }
-            },
+            }
           ]
         },
         {
