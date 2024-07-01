@@ -8,9 +8,9 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { SlotIds, InputIds } from './constant';
-import { defaultDisabledDateRule } from './editors';
+import { defaultDisabledDateRule, defaultDisabledTimeRule } from './editors';
 
-type DisabledDateRule = {
+export type DisabledDateRule = {
   title: string;
   checked: boolean;
   offset: Array<number>;
@@ -32,6 +32,8 @@ export interface Data {
   customExtraText: boolean;
   config: DatePickerProps;
   useDisabledDate: 'default' | 'static';
+  useDisabledTime?: 'default' | 'static' | 'now';
+  staticDisabledTime?: Array<DisabledDateRule>;
   hideDatePanel: boolean;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
   formatMap: {
@@ -448,6 +450,92 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
     [data.useDisabledDate, JSON.stringify(data.staticDisabledDate)]
   );
 
+  const range = (start: number, end: number) => {
+    // 遍历获取禁用的时间数组
+    const result: Array<number> = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  const getDisabledRange = (rule: DisabledDateRule, baseNumber = 60) => {
+    // 获取禁用的时间区间
+    if (!rule.checked) return [];
+    const { direction, offset } = rule;
+    if (direction === 'before') return range(0, offset[0]);
+    if (direction === 'after') return range(offset[0], baseNumber);
+    return [];
+  };
+
+  const getCombinedDisabledRangeWithOverlap = (
+    rules: Array<DisabledDateRule>,
+    baseNumber?: number
+  ) => {
+    if (rules.length !== 2) return [];
+
+    const [rule1, rule2] = rules.sort((a, b) => a.offset[0] - b.offset[0]);
+    if (
+      rule1.direction === 'after' &&
+      rule2.direction === 'before' &&
+      rule1.checked &&
+      rule2.checked
+    ) {
+      // 禁用中间区域
+      return range(rule1.offset[0], rule2.offset[0]);
+    }
+
+    // 禁用两端
+    return [...getDisabledRange(rule1, baseNumber), ...getDisabledRange(rule2, baseNumber)];
+  };
+
+  const disabledDateTimeConfig = useCallback(
+    (now: Moment) => {
+      if (!data.useDisabledTime || data.useDisabledTime === 'default') return {};
+
+      if (data.useDisabledTime === 'now') {
+        const toDay = moment(); // 获取当前时间
+        if (!now || (now && toDay && now.isSame(toDay, 'day'))) {
+          const getDisabledRange = (maxUnitValue: number) => {
+            const rangeArray: Array<number> = [];
+
+            for (let i = 0; i <= maxUnitValue; i++) {
+              rangeArray.push(i);
+            }
+
+            return rangeArray;
+          };
+          return {
+            disabledHours: () => getDisabledRange(toDay.hour()),
+            disabledMinutes: (selectedHour: number) => {
+              if (selectedHour !== -1) return [];
+
+              return getDisabledRange(toDay.minute());
+            },
+            disabledSeconds: (selectedHour: number, selectedMinute: number) => {
+              if (selectedHour !== -1 || selectedMinute !== -1) return [];
+              return getDisabledRange(toDay.second());
+            }
+          };
+        }
+      } else if (data.useDisabledTime === 'static') {
+        const disabledRules = data.staticDisabledTime ?? defaultDisabledTimeRule;
+
+        return {
+          disabledHours: () =>
+            getCombinedDisabledRangeWithOverlap([disabledRules[0], disabledRules[1]], 24),
+          disabledMinutes: () =>
+            getCombinedDisabledRangeWithOverlap([disabledRules[2], disabledRules[3]]),
+          disabledSeconds: () =>
+            getCombinedDisabledRangeWithOverlap([disabledRules[4], disabledRules[5]])
+        };
+      }
+
+      return {};
+    },
+    [data.useDisabledTime, JSON.stringify(data.staticDisabledTime)]
+  );
+
   const finalOpen = (() => {
     if (fullOpen) return true;
     if (runtime && data.controlled) {
@@ -525,6 +613,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             onChange={onChange}
             onPanelChange={onPanelChange}
             disabledDate={data.disabledDate || disabledDateConfig}
+            disabledTime={disabledDateTimeConfig}
             getPopupContainer={(triggerNode: HTMLElement) => {
               if (fullOpen) return wrapperRef.current;
               return env?.canvasElement || document.body;
