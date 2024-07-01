@@ -185,6 +185,11 @@ export interface Data {
   useDynamicItems?: boolean
   /**  动态设置的依赖的原始模板表单项列表 */
   originItems: FormItems[]
+
+  /** 展开文案 */
+  expandText?: string
+  /** 收起文案 */
+  collapsedText?: string
 }
 
 interface DomainModel {

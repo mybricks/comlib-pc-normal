@@ -778,8 +778,19 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     // slot?.get('content')._inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', schema)
   }
 
-//=========== v1.4.59 end ===============
+  //=========== v1.4.59 end ===============
 
-//
+  /**
+   * @description v1.4.63 展开/收起国际化文案
+   */
+  if (typeof data.expandText === 'undefined') {
+    data.expandText = '展开';
+  }
+
+  if (typeof data.collapsedText === 'undefined') {
+    data.collapsedText = '收起';
+  }
+  //  =========== v1.4.63 end ===============
+
   return true;
 }
