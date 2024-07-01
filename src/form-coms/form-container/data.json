@@ -7,6 +7,8 @@
   "formItemColumn": 1,
   "enable24Grid": true,
   "ellipseMode": "ellipse",
+  "expandText": "展开",
+  "collapsedText": "收起",
   "actions": {
     "visible": true,
     "widthOption": "flexFull",

@@ -279,6 +279,8 @@ const QueryFilter = (props: QueryFilterProps) => {
                   collapsed={collapsed}
                   setCollapsed={setCollapsed}
                   outputs={outputs}
+                  env={env}
+                  data={data}
                 />
               )}
               {data.actions.items.map((item) => {

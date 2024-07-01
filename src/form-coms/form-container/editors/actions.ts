@@ -20,6 +20,36 @@ export const actionsEditor = (data: Data, output, env) => {
         }
       },
       {
+        title: '展开文案',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.expandText;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.expandText = value;
+          }
+        }
+      },
+      {
+        title: '收起文案',
+        type: 'text',
+        options: {
+          locale: true
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.collapsedText;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.collapsedText = value;
+          }
+        }
+      },
+      {
         title: '宽度模式',
         type: 'Select',
         options: [
