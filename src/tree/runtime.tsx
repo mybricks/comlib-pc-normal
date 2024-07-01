@@ -362,6 +362,19 @@ export default function (props: RuntimeParams<Data>) {
         inputs[InputIds.GetTreeData]((_, relOutput) => {
           relOutput[OutputIds.ReturnTreeData](deepCopy(data.treeData));
         });
+
+      /** @description 1.0.66 动态设置父子勾选联动 */
+      inputs['setCheckStrictly'] &&
+        inputs['setCheckStrictly']((value: boolean, relOutputs) => {
+          if (!!data.checkable) {
+            // 支持可勾选
+            data.checkStrictly = !value;
+            relOutputs['setCheckStrictlyDone']('done');
+          } else {
+            relOutputs['setCheckStrictlyDone']('请开启支持勾选');
+          }
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
+        });
     }
   }, []);
 

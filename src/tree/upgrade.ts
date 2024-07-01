@@ -575,5 +575,22 @@ export default function ({ data, style, input, output }: UpgradeParams<Data>): b
   }
   //=========== 1.0.64 end ===============
 
+  /**
+   * @description v1.0.65 设置父子节点勾选联动
+   */
+  if (!input.get('setCheckStrictly')) {
+    input.add('setCheckStrictly', '设置父子节点勾选联动', { type: 'boolean' });
+  }
+  if (!output.get('setCheckStrictlyDone')) {
+    output.add('setCheckStrictlyDone', '设置父子节点勾选联动完成', { type: 'string' });
+  }
+  if (
+    output.get('setCheckStrictlyDone') &&
+    input.get('setCheckStrictly') &&
+    !input.get('setCheckStrictly')?.rels?.includes('setCheckStrictlyDone')
+  ) {
+    input.get('setCheckStrictly').setRels(['setCheckStrictlyDone']);
+  }
+  //=========== 1.0.65 end ===============
   return true;
 }

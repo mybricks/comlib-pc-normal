@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.65",
+  "version": "1.0.66",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -223,6 +223,17 @@
       "desc": "输出当前选中节点的数据",
       "rels": [
         "returnSelectedKeys"
+      ]
+    },
+    {
+      "id": "setCheckStrictly",
+      "title": "设置父子节点勾选联动",
+      "desc": "在开启勾选功能下使用。关闭后，可以单独勾选父节点，子节点不再被联动选择。",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setCheckStrictlyDone"
       ]
     }
   ],
@@ -640,6 +651,13 @@
     {
       "id": "filterDone",
       "title": "过滤完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setCheckStrictlyDone",
+      "title": "设置父子节点勾选联动完成",
       "schema": {
         "type": "string"
       }

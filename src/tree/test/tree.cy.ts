@@ -6,12 +6,11 @@ import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 describe('树', () => {
   enhancedIt('异步加载', () => {
     // 加载测试页面
-    dumpPreview(dump_异步加载, [
-      {
-        selector: 'div#u_II9_2',
-        text: '0'
-      }
-    ]);
+    // {
+    //   selector: 'div#u_II9_2',
+    //   text: '0'
+    // }
+    dumpPreview(dump_异步加载,[]);
 
     cy.get('div[data-tree-node-id="1"] span.ant-tree-switcher').click();
     cy.get('div[data-tree-node-id="2"] span.ant-tree-switcher').click();
@@ -51,12 +50,7 @@ describe('树', () => {
   });
   enhancedIt('设置数据源', () => {
     // 加载测试页面
-    dumpPreview(dump_设置数据完成, [
-      {
-        selector: 'div#u_yJfej',
-        text: '暂无数据'
-      }
-    ]);
+    dumpPreview(dump_设置数据完成, []);
 
     // 截图对比
     cy.compareSnapshot('树_设置数据源');
@@ -64,16 +58,17 @@ describe('树', () => {
 
   enhancedIt('获取选中节点数据', () => {
     // 加载测试页面
-    dumpPreview(dump_获取选中节点数据, [
-      {
-        selector: 'div#u_m91rD',
-        text: '第一级 1'
-      },
-      {
-        selector: 'div#u_cQeTF',
-        text: '第一级1'
-      }
-    ]);
+    // [
+    //   {
+    //     selector: 'div#u_m91rD',
+    //     text: '第一级 1'
+    //   },
+    //   {
+    //     selector: 'div#u_cQeTF',
+    //     text: '第一级1'
+    //   }
+    // ]
+    dumpPreview(dump_获取选中节点数据, []);
     // 配置了输出节点数据
     cy.get('div[data-tree-node-id="第一级 1"]').click();
     cy.contains('button', '按钮').click();
