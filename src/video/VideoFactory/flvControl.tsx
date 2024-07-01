@@ -32,7 +32,7 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
       player.detachMediaElement();
       player.destroy();
     };
-  }, []);
+  }, [src]);
   const handleClick = () => {
     //控制权交给controls
     if (controls) return;
