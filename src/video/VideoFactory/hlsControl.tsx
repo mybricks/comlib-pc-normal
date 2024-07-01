@@ -38,7 +38,7 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
     return () => {
       hls?.destroy();
     };
-  }, []);
+  }, [src]);
   const handleClick = () => {
     //控制权交给controls
     if (controls) return;
