@@ -60,6 +60,7 @@ interface RuntimeParams<T> {
         key?: number | string;
         style?: React.CSSProperties;
         outputs?: { [key: string]: Function };
+        title?: string;
       }) => React.ReactNode;
       inputs: any;
       [key: string]: any;

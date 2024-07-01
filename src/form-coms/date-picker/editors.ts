@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { RuleKeys, defaultRules } from '../utils/validator';
-import { Data } from './runtime';
-import { SlotIds, InputIds } from './constant'
+import { Data, DisabledDateRule } from './runtime';
+import { SlotIds, InputIds } from './constant';
 import styleEditor from './styleEditor';
 import { OutputIds, SizeEnum, SizeOptions } from '../types';
 
-export const defaultDisabledDateRule = [
+export const defaultDisabledDateRule: Array<DisabledDateRule> = [
   {
     title: '当前日期',
     checked: true,
@@ -16,6 +16,45 @@ export const defaultDisabledDateRule = [
     title: '当前日期',
     checked: true,
     offset: [7],
+    direction: 'after'
+  }
+];
+
+export const defaultDisabledTimeRule: Array<DisabledDateRule> = [
+  {
+    title: '时',
+    checked: true,
+    offset: [8],
+    direction: 'before'
+  },
+  {
+    title: '时',
+    checked: true,
+    offset: [20],
+    direction: 'after'
+  },
+  {
+    title: '分',
+    checked: false,
+    offset: [10],
+    direction: 'before'
+  },
+  {
+    title: '分',
+    checked: false,
+    offset: [50],
+    direction: 'after'
+  },
+  {
+    title: '秒',
+    checked: false,
+    offset: [10],
+    direction: 'before'
+  },
+  {
+    title: '秒',
+    checked: false,
+    offset: [50],
     direction: 'after'
   }
 ];
@@ -214,7 +253,7 @@ export default {
                 type: 'InputNumber',
                 value: 'offset',
                 options: [{ min: -1000, max: 1000, width: 200 }]
-              }
+              },
             ]
           },
           value: {
@@ -223,6 +262,76 @@ export default {
             },
             set({ data }, val: []) {
               data.staticDisabledDate = val;
+            }
+          }
+        },
+        {
+          title: '时分秒禁止选择',
+          type: 'select',
+          description: '',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.showTime;
+          },
+          options: [
+            {
+              label: '无',
+              value: 'default'
+            },
+            {
+              label: '静态配置',
+              value: 'static'
+            },
+            {
+              label: '当天此刻前',
+              value: 'now'
+            }
+          ],
+          value: {
+            get({ data }) {
+              return data?.useDisabledTime ?? 'default';
+            },
+            set({ data }, val: string) {
+              data.useDisabledTime = val;
+            }
+          }
+        },
+        {
+          type: 'ArrayCheckbox',
+          ifVisible({ data }) {
+            return data?.useDisabledTime === 'static';
+          },
+          options: {
+            checkField: 'checked',
+            deletable: false,
+            addable: false,
+            getTitle: (item, index: number) => {
+              const { direction, offset, title } = item;
+              return `${offset}${title}${direction === 'before' ? '之前' : '之后'}  禁止选择`;
+            },
+            items: [
+              {
+                title: '方向',
+                type: 'Select',
+                value: 'direction',
+                options: [
+                  { label: '之前', value: 'before' },
+                  { label: '之后', value: 'after' }
+                ]
+              },
+              {
+                title: '偏移',
+                type: 'InputNumber',
+                value: 'offset',
+                options: [{ min: 0, max: 1000, width: 200 }]
+              }
+            ]
+          },
+          value: {
+            get({ data }) {
+              return data.staticDisabledTime ?? defaultDisabledTimeRule;
+            },
+            set({ data }, val: []) {
+              data.staticDisabledTime = val;
             }
           }
         },
@@ -494,7 +603,6 @@ export default {
               if (value) {
                 const hasEvent = input.get(InputIds.ConfigExtraText);
                 !hasEvent && input.add(InputIds.ConfigExtraText, `自定义日期文本`, { type: 'any' });
-
               } else {
                 input.remove(InputIds.ConfigExtraText);
               }
