@@ -24,6 +24,17 @@ export const defaultValidatorExample =
 }
 `);
 
+export const emailValidator = 
+encodeURIComponent(`export default async function (value, context) {
+  let reg = new RegExp( \`^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$\`);
+  if (value && !reg.test(value)) {
+    context.failed(\`邮箱格式不符合要求\`);
+  } else {
+    context.successed();
+  }
+}
+`);
+
 const REQUIRED_RULE = {
   key: RuleKeys.REQUIRED,
   status: false,
@@ -191,13 +202,16 @@ export const ruleFnMap = {
   [RuleKeys.CODE_VALIDATOR]: ({ validateCode, args, env }) => {
     return runJs(validateCode, args, { env });
   },
-  [RuleKeys.Email_VALIDATOR]: ({ value, message, failed, successed, env }) => {
-    let reg = new RegExp(`^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$`);
-    if (value && !reg.test(value)) {
-      return failed(env.i18n(message));
-    }
-    return successed();
+  [RuleKeys.Email_VALIDATOR]: ({ validateCode, args, env }) => {
+    return runJs(validateCode, args, { env });
   },
+  // [RuleKeys.Email_VALIDATOR]: ({ value, message, failed, successed, env }) => {
+  //   let reg = new RegExp(`^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$`);
+  //   if (value && !reg.test(value)) {
+  //     return failed(env.i18n(message));
+  //   }
+  //   return successed();
+  // },
   [RuleKeys.PHONE_NUMBER_VALIDATOR]: ({ value, message, failed, successed, env }) => {
     let reg = new RegExp(`^1\\d{10}$`);
     if (value && !reg.test(value)) {

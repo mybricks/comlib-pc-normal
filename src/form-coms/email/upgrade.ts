@@ -161,6 +161,27 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.3 end ===============
 
+  /**
+   * @description v1.1.12 邮箱校验展示
+  */
+  data.rules = data.rules.map((item)=>{
+    if(item.key === "emailValidator" && item.visible === false){
+      item.visible = true;
+      item.validateCode = encodeURIComponent(`export default async function (value, context) {
+        let reg = new RegExp( \`^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$\`);
+        if (value && !reg.test(value)) {
+          context.failed(\`邮箱格式不符合要求\`);
+        } else {
+          context.successed();
+        }
+      }
+      `);
+    }
+    return item
+  })
+  
+  //=========== v1.1.3 end ===============
+
   data.rules = mergeRules(emailRules, data.rules);
 
   return true;
