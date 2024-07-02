@@ -93,10 +93,20 @@ export default function (props: RuntimeParams<Data>) {
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 relOutput(r);
+                debounceValidateTrigger(parentSlot, {
+                  id: props.id,
+                  name: props.name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               relOutput(e);
+              debounceValidateTrigger(parentSlot, {
+                id: props.id,
+                name: props.name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -120,6 +130,7 @@ export default function (props: RuntimeParams<Data>) {
     inputs[inputIds.SET_VALIDATE_INFO]?.((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
+        debounceValidateTrigger(parentSlot, { id: props.id, name: props.name, validateInfo: info });
         relOutputs['setValidateInfoDone'](info);
       }
     });

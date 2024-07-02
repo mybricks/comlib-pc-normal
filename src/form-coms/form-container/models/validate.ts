@@ -1,9 +1,11 @@
 import debounce from 'lodash/debounce';
 import { slotInputIds } from '../constants'
-
+import { ValidateInfo } from '../../types';
 interface ValidateTriggerProps {
   id: string
   name: string
+  /** 携带这个字段时，表单项校验传到表单容器后，不用在表单容器侧触发表单项的validate */
+  validateInfo?: ValidateInfo
 }
 
 /**
