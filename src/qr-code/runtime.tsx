@@ -10,7 +10,9 @@ export default (props: RuntimeParams<Data>) => {
   useEffect(() => {
     inputs['link']((value: string, relOutputs) => {
       data.link = value;
-      relOutputs['setLinkComplete']()
+      setTimeout(()=>{
+        relOutputs['setLinkComplete']()
+      }, 500)
     });
 
     inputs['download'] && inputs['download'](downloadQR);
