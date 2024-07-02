@@ -1,4 +1,4 @@
-import { RuleKeys, defaultValidatorExample, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, emailValidator, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { Data } from './runtime';
 
@@ -13,9 +13,10 @@ export const emailRules = [
   {
     key: RuleKeys.Email_VALIDATOR,
     status: true,
-    visible: false,
+    visible: true,
     title: '邮箱校验',
-    message: '邮箱不符合格式要求'
+    //message: '邮箱不符合格式要求',
+    validateCode: emailValidator
   },
   {
     key: RuleKeys.REG_EXP,
@@ -283,7 +284,7 @@ export default {
                   }
                 },
                 ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.CODE_VALIDATOR;
+                  return item.key === RuleKeys.CODE_VALIDATOR || item.key === RuleKeys.Email_VALIDATOR;
                 },
                 value: 'validateCode'
               }
