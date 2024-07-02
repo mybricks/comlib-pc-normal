@@ -257,7 +257,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
        * @description 响应触发对应表单项校验
        */
       slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
-        const { id, name } = params;
+        const { id, name, validateInfo } = params;
         const { item, isFormItem } = getFormItem(data, {
           id,
           name,
@@ -266,6 +266,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // console.log('VALIDATE_TRIGGER ', params)
 
         if (item && isFormItem) {
+          if (validateInfo) {
+            item.validateStatus = validateInfo?.validateStatus;
+            item.help = validateInfo?.help;
+            return;
+          }
           // const input = childrenInputs[item.id];
           const input = getFromItemInputEvent(item, childrenInputs, {
             useDynamicItems: data.useDynamicItems
@@ -277,6 +282,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               ...formContext.current.store
             }
           });
+          debugger;
         }
       });
     }
@@ -783,6 +789,7 @@ const validateForInput = (
 ): void => {
   const item = model?.curFormItem;
   input?.validate(model).returnValidate((validateInfo) => {
+    debugger;
     // 存在index, 表示校验失败项是动态表单项的子项
     if (validateInfo.index === undefined) {
       item.validateStatus = validateInfo?.validateStatus;
