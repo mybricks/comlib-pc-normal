@@ -4,12 +4,7 @@ import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 describe('下拉框', () => {
   enhancedIt('选项后置插槽', () => {
     // 加载测试页面
-    dumpPreview(dump_选项后置插槽, [
-      {
-        selector: 'div#u_AIZTi',
-        text: '请选择'
-      }
-    ]);
+    dumpPreview(dump_选项后置插槽);
 
     cy.get('div#u_AIZTi').click()
     cy.contains('button', '1').click()

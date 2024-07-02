@@ -4,12 +4,7 @@ import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 describe('JSON展示', () => {
   enhancedIt('各种事件触发检查', () => {
     // 加载测试页面
-    dumpPreview(dump_各种事件触发检查, [
-      {
-        selector: 'div.ant-tree',
-        text: '{}'
-      }
-    ]);
+    dumpPreview(dump_各种事件触发检查);
 
     cy.window().then(win => {
       let cnt = 0;

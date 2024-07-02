@@ -5,20 +5,7 @@ import { dumpPreview, enhancedIt, eventCheck } from '@/../cypress/tools';
 describe('表单容器', () => {
   enhancedIt('表单项自定义标题', () => {
     // 加载测试页面
-    dumpPreview(dump_表单项自定义标题检查, [
-      {
-        selector: 'div#u_h9UtT',
-        text: '提交'
-      },
-      {
-        selector: 'div#u_nJj1k',
-        text: '提交'
-      },
-      {
-        selector: 'div#u_Im9_s',
-        text: '提交'
-      }
-    ]);
+    dumpPreview(dump_表单项自定义标题检查);
 
     // 截图对比
     cy.compareSnapshot('表单容器_表单项自定义标题');
@@ -26,12 +13,7 @@ describe('表单容器', () => {
 
   enhancedIt('校验表单项完成输出', () => {
     // 加载测试页面
-    dumpPreview(dump_校验表单项完成输出检查, [
-      {
-        selector: 'div#u_Zp8qj',
-        text: '提交'
-      }
-    ]);
+    dumpPreview(dump_校验表单项完成输出检查);
 
     cy.contains('button', '添加').click();
     cy.contains('button', '添加').click();

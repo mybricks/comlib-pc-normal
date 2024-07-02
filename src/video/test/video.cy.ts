@@ -3,10 +3,7 @@ import poster from './case/video-poster.json';
 
 describe('播放器', () => {
   enhancedIt('封面', () => {
-    dumpPreview(poster, [{
-      type: 'get',
-      selector: '#u_hn_7G > div.video-wrap-bda34'
-    }]);
+    dumpPreview(poster);
 
     // 等待视频元素加载
     cy.get('video').should('be.visible');

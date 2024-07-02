@@ -16,7 +16,7 @@ const selectCascaderOption = (index: number, options: string[]) => {
 
 describe('数据源 字段映射配置', () => {
   enhancedIt('各种 output 检查', () => {
-    dumpPreview(dump, []);
+    dumpPreview(dump);
     selectCascaderOption(0, ['bdJpte', 'bdJpte1']); // 默认对照
     selectCascaderOption(1, ['MaKDET', 'MaKDET1']); // 配置了字段映射
     eventCheck([

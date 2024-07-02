@@ -10,7 +10,7 @@ const checkMinWidth = (text: string, minWidth: number | string) => {
 
 describe('文本框-前、后置标签', () => {
   enhancedIt('样式 检查 min-width', () => {
-    dumpPreview(dump, []);
+    dumpPreview(dump);
 
     checkMinWidth('111', '100px');
     checkMinWidth('222', '100px');
