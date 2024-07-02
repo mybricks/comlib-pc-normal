@@ -37,5 +37,13 @@ export default function ({
     data.objectFit = 'fill';
   }
 
+  if (typeof data.disableDrag === 'undefined') {
+    data.disableDrag = false;
+  }
+
+  if (typeof data.disableContextMenu === 'undefined') {
+    data.disableContextMenu = false;
+  }
+
   return true;
 }

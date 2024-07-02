@@ -4,7 +4,17 @@ import { Data, InputIds, OutputIds } from './constants';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
-  const { alt, src, customStyle, useFallback, fallbackImgSrc, usePreview, previewImgSrc } = data;
+  const {
+    alt,
+    src,
+    customStyle,
+    useFallback,
+    fallbackImgSrc,
+    usePreview,
+    previewImgSrc,
+    disableDrag,
+    disableContextMenu
+  } = data;
 
   useEffect(() => {
     if (env.runtime) {
@@ -45,6 +55,8 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
         fallback={useFallback && fallbackImgSrc ? fallbackImgSrc : undefined}
         preview={usePreview && env.runtime ? { src: previewImgSrc || src } : false}
         onClick={onClick}
+        onContextMenu={(e) => disableContextMenu && e.preventDefault()}
+        onDragStart={(e) => disableDrag && e.preventDefault()}
       />
     </div>
   );

@@ -105,6 +105,30 @@ export default {
           }
         },
         {
+          title: '禁止右键下载',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data?.disableContextMenu;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.disableContextMenu = value;
+            }
+          }
+        },
+        {
+          title: '禁止拖拽图片',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data?.disableDrag;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.disableDrag = value;
+            }
+          }
+        },
+        {
           title: '预览配置',
           items: [
             {
