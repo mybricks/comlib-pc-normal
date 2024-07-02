@@ -135,6 +135,7 @@
     "./src/_websocket/com.json",
     "./src/_pick/com.json",
     "./src/_excel/com.json",
+    "./src/_parseExcel/com.json",
     "./src/_pinyin/com.json",
     "./src/_post-message/com.json",
     "./src/_get-storage/com.json",
