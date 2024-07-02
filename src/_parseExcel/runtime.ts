@@ -27,7 +27,6 @@ export default function ({ data, inputs, outputs, logger, onError }: RuntimePara
       xlsx = await loadDependence();
     }
     const fileList = val.dataSource
-    console.log('val', val, fileList)
     let result: any[] = []
     try {
       
@@ -59,7 +58,6 @@ export default function ({ data, inputs, outputs, logger, onError }: RuntimePara
             fields,
             json: jsonData
           })
-          console.log('json', json)
         }
         fileParseData.data = sheetData
         result.push(fileParseData)
