@@ -34,7 +34,28 @@ export default function ({ data, inputs, outputs, logger, onError }: RuntimePara
   };
 
   const createSheet = (sheet: Sheet, index?: number) => {
-    const ws = xlsx?.utils.json_to_sheet(sheet.data, { header: sheet.header });
+    let extraOpt = {}
+    // 描述信息，不在标题行，直接往data里追加数据
+   if(sheet.additionalInfo?.data?.length && sheet.additionalInfo?.rowIndex) {
+      // 描述信息行,插入位置大于1(不在标题行)处理
+      let rowIndex = sheet.additionalInfo?.rowIndex
+      const formattedAddedInfoData = {};
+      sheet.header?.forEach((header, idx) => {
+       formattedAddedInfoData[header] = sheet.additionalInfo?.data[idx]
+      })
+      if(rowIndex > 1) {
+         sheet.data?.splice(rowIndex - 1, 0, formattedAddedInfoData)
+      } else if(rowIndex === 1) {
+        const formattedHeader = {};
+         sheet.header?.forEach((header, idx) => {
+          formattedHeader[header] = header
+         })
+        // 等于1时，标题行和附加行都放进data里面
+        sheet.data?.unshift(formattedAddedInfoData, formattedHeader)
+        extraOpt = { skipHeader: true }
+      }
+    } 
+    const ws = xlsx?.utils.json_to_sheet(sheet.data, { header: sheet.header, ...extraOpt });
 
     if (sheet.columns) {
       if (!ws['!cols']) ws['!cols'] = [];
@@ -42,6 +63,8 @@ export default function ({ data, inputs, outputs, logger, onError }: RuntimePara
         if (!ws['!cols'][i])
           ws['!cols'][i] = { wpx: sheet.columns[i]?.width, hidden: sheet.columns[i]?.hidden };
       }
+    }
+    if(sheet.additionalInfo?.data?.length && sheet.additionalInfo?.rowIndex) {
     }
 
     return {

@@ -85,6 +85,22 @@ export default function ({
             type: "string"
           }
         },
+        additionalInfo: {
+          type: "object",
+          description: "补充的描述性信息，可以指定内容加在第几行",
+          properties: {
+            data: {
+              type: "array",
+              items: {
+                type: "string"
+              }
+            },
+            rowIndex: {
+              type: "number",
+              description: "所在的行索引,从1开始(不超过excel内容行数),若设为1,将设置在标题行,header的内容会下移一行"
+            }
+          }
+        },
         columns: {
           type: "array",
           description: "列配置",

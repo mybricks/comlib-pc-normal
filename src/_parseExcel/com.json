@@ -1,0 +1,76 @@
+{
+  "title": "Excel解析",
+  "namespace": "mybricks.normal-pc.parseExcel",
+  "version": "0.0.1",
+  "rtType": "js",
+  "description": "将excel文件解析成数据",
+  "author": "wufan",
+  "author_name": "吴凡",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "icon": "./icon.svg",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "desc": "需要解析的excel文件数据，格式为数组",
+      "rels": [
+        "parseComplete"
+      ],
+      "schema": [
+        {
+          "name": "dataSource",
+          "title": "输入数据源",
+          "type": "array"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "parseComplete",
+      "title": "解析完成",
+      "desc": "解析Excel文件完成后, 输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "filename": {
+              "type": "string",
+              "description": "文件名"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sheetName": {
+                    "type": "string",
+                    "description": "工作表名"
+                  },
+                  "headers": {
+                    "type": "array",
+                    "description": "表头内容数组，设置标题行序号>0 时，会有输出"
+                  },
+                  "fields": {
+                    "type": "array",
+                    "description": "字段名内容数组，excel字段行序号>0 时，会有正确输出"
+                  },
+                  "json": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": { "type": "number" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

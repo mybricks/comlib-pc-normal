@@ -5,6 +5,10 @@ export type Sheet = {
     width?: number;
     hidden?: boolean;
   } | undefined>
+  additionalInfo?: {
+    data: Array<string>,
+    rowIndex: number
+  } 
   data?: Array<Record<string, any>>;
 };
 
