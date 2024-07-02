@@ -6,12 +6,7 @@ import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 describe('按钮', () => {
   enhancedIt('各种事件触发检查', () => {
     // 加载测试页面
-    dumpPreview(dump_各种事件触发检查, [
-      {
-        selector: 'button',
-        text: '单击按钮'
-      }
-    ]);
+    dumpPreview(dump_各种事件触发检查);
 
     // 找到包含文本“单击按钮”的按钮组件并单击
     cy.contains('button', '单击按钮').click();
@@ -43,12 +38,7 @@ describe('按钮', () => {
 
   enhancedIt('各种静态配置检查', () => {
     // 加载测试页面
-    dumpPreview(dump_各种静态配置检查, [
-      {
-        selector: 'button',
-        text: '按钮'
-      }
-    ]);
+    dumpPreview(dump_各种静态配置检查);
 
     // 截图对比
     cy.compareSnapshot('按钮_各种静态配置检查');
@@ -56,12 +46,7 @@ describe('按钮', () => {
 
   enhancedIt('动态样式配置检查', () => {
     // 加载测试页面
-    dumpPreview(dump_动态样式配置检查, [
-      {
-        selector: 'button',
-        text: '动态设置按钮样式'
-      }
-    ]);
+    dumpPreview(dump_动态样式配置检查);
 
     // 找到包含文本“单击按钮”的按钮组件并单击
     cy.contains('button', '动态设置按钮样式').click();

@@ -4,7 +4,7 @@ import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 describe('富文本输入', () => {
   enhancedIt('粘贴图片自动上传', () => {
     // 加载测试页面
-    dumpPreview(dump, [{ selector: 'div', text: '正文' }]);
+    dumpPreview(dump);
 
     cy.fixture('./paste-image.jpg', 'base64').then((imageBase64) => {
       const mimeType = 'image/jpeg';

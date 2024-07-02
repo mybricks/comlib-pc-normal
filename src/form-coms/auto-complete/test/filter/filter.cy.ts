@@ -12,7 +12,7 @@ const selectOption = (index: number, typeString: string, itemLength: number, ite
 
 describe('自动完成-筛选规则', () => {
   enhancedIt('各种 output 检查', () => {
-    dumpPreview(dump, []);
+    dumpPreview(dump);
     // 分别选择不同的筛选规则
     selectOption(0, 'txQ6nA', 10, 0); // None
     selectOption(1, 'pJeEXp', 11, 10); // VALUE

@@ -40,12 +40,7 @@ function generateArray(length: number) {
 
 describe('数据表格-勾选', () => {
   enhancedIt('各种 output 检查', () => {
-    dumpPreview(dump, [
-      {
-        selector: 'div',
-        text: '已选中'
-      }
-    ]);
+    dumpPreview(dump);
 
     // 勾选第一页的 key为 0, 1, 2, 4 的行，然后点击输出勾选数据按钮
     clickRow(0, 1, 2);
@@ -237,12 +232,7 @@ describe('数据表格-勾选', () => {
   });
 
   enhancedIt('全选/全不选 检查', () => {
-    dumpPreview(dump, [
-      {
-        selector: 'div',
-        text: '已选中'
-      }
-    ]);
+    dumpPreview(dump);
 
     toggleSelectAll();
     clickPaginationItem(2);

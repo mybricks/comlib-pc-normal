@@ -14,10 +14,7 @@ export function getPort() {
  * @param dump
  * @param updateQueries 需要更新的元素列表 (因为是模拟点击“升级全部”按钮，所以同一种元素只需要一个)
  */
-export function dumpPreview(
-  dump: Record<string, unknown>,
-  updateQueries: { type?: 'contains' | 'get', selector: string; text: string | number | RegExp }[]
-) {
+export function dumpPreview(dump: Record<string, unknown>) {
   // 加载空白页面
   cy.visit(`http://localhost:${getPort()}`, {
     onBeforeLoad(win) {
@@ -57,34 +54,17 @@ export function dumpPreview(
     menuBtn.click();
   });
 
-  updateQueries.forEach((query) => {
-    if (query.type === 'get') {
-      cy.get('#_mybricks-geo-webview_')
-        .shadow()
-        .find(query.selector)
-        .click({ force: true });
-    } else {
-      cy.get('#_mybricks-geo-webview_')
-        .shadow()
-        .contains(query.selector, query.text)
-        .click({ force: true });
+  cy.log('尝试寻找升级全部按钮');
+  cy.get('#_mybricks-geo-webview_').click();
+  cy.get('button').then($buttons => {
+    const $targetButton = $buttons.filter((index, button) => Cypress.$(button).text().includes('升级全部'));
+    if ($targetButton.length > 0) {
+      cy.wrap($targetButton).click();
+      cy.log('点击了升级全部按钮');
     }
-
-    cy.window().then((win) => {
-      const upgradeBtn = win.document.querySelector(
-        "div[class*='upgrade'] > div:nth-child(2) > button:nth-child(2)"
-      );
-
-      if (!!upgradeBtn) {
-        cy.log('点击升级全部按钮');
-        cy.get("div[class*='upgrade'] > div:nth-child(2) > button:nth-child(2)").click();
-      } else {
-        cy.log('没有升级全部按钮');
-      }
-    });
   });
 
-  if (!updateQueries || !updateQueries.length) cy.wait(1000)
+  cy.wait(1000)
 
   cy.contains('预览').click();
 

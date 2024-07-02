@@ -5,7 +5,7 @@ import { multiCheckCheckList } from './data'
 
 describe('懒加载', () => {
   enhancedIt('基础能力检查', () => {
-    dumpPreview(dump, [{ selector: 'tbody', text: 'a1' }]);
+    dumpPreview(dump);
 
     cy.get('div.ant-table-body').should('have.prop', 'scrollHeight', 940);
     cy.get('div.ant-table-body').scrollTo('bottom')
@@ -13,7 +13,7 @@ describe('懒加载', () => {
   });
 
   enhancedIt('搭配多选能力检查', () => {
-    dumpPreview(withMultiCheckDump, [{ selector: 'tbody', text: 'a1' }]);
+    dumpPreview(withMultiCheckDump);
 
     cy.get("th.ant-table-cell.ant-table-selection-column input").click()
 

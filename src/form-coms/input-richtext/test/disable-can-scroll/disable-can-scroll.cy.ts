@@ -4,12 +4,7 @@ import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 describe('富文本输入', () => {
   enhancedIt('禁用态编辑区可滚动', () => {
     // 加载测试页面
-    dumpPreview(dump_禁用态编辑区可滚动, [
-      {
-        selector: 'div',
-        text: '正文'
-      }
-    ]);
+    dumpPreview(dump_禁用态编辑区可滚动);
 
     cy.get('iframe[id^="_pceditor_tinymce"]')
       .should('be.visible')
