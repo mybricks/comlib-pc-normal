@@ -27,3 +27,5 @@ import './tinymce/plugins/fullscreen/plugin.min.js';
 import './tinymce/plugins/emoticons/plugin.min.js';
 import './tinymce/plugins/emoticons/js/emojis.min.js';
 import './tinymce/plugins/emoticons/js/emojiimages.js';
+
+import './tinymce/plugins/indent2em/plugin.js';

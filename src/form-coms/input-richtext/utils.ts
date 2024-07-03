@@ -59,7 +59,8 @@ export function Init({
     'code',
     'codesample',
     'letterspacing',
-    'attachment'
+    'attachment',
+    'indent2em'
   ];
 
   tinyMCE.init({
@@ -176,7 +177,8 @@ const optionMappings = [
   // 缩进相关
   ['增加缩进', 'indent'],
   ['减少缩进', 'outdent'],
-
+  ['首行缩进', 'indent2em'],
+  
   // 媒体相关
   ['图片上传', 'uploadimage'],
   ['视频上传', 'uploadVideo'],
