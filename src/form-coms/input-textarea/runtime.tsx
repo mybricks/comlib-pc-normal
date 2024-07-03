@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import useFormItemInputs from '../form-container/models/FormItem';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { TextAreaRef } from 'antd/lib/input/TextArea';
 import { inputIds, outputIds } from '../form-container/constants';
@@ -88,10 +89,12 @@ export default function ({
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
             });
         }
       }
@@ -128,6 +131,7 @@ export default function ({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
       }
     });
   }, []);
@@ -181,7 +185,6 @@ export default function ({
       }
     };
   }, [env.edit, data.minRows, data.maxRows]);
-
 
   return data.isEditable ? (
     <div>

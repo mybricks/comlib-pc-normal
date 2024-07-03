@@ -3,6 +3,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { SlotIds, SlotInputIds, SlotOutputIds } from './constants';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data } from './types';
 import { inputIds, outputIds } from '../form-container/constants';
@@ -61,10 +62,12 @@ export default function (props: RuntimeParams<Data>) {
             outputs[outputIds.ON_VALIDATE](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     });
     inputs['getValue']((val, outputRels) => {
@@ -123,6 +126,7 @@ export default function (props: RuntimeParams<Data>) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
       }
     });
   }, [value]);

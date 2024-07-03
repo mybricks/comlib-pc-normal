@@ -3,6 +3,7 @@ import { message, Transfer } from 'antd';
 import { Data } from './types';
 import { uuid } from '../../utils';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -83,10 +84,12 @@ export default function ({
             outputs[OutputIds.OnValidate](getTransferValue());
           } else {
             outputRels(r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
           }
         })
         .catch((e) => {
           outputRels(e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     },
     [targetKeys]
@@ -155,6 +158,7 @@ export default function ({
     if (validateRelOutputRef.current) {
       validateRelOutputRef.current(info);
       relOutputs['setValidateInfoDone'](info);
+      debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
     }
   });
 

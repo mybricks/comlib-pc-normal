@@ -2,6 +2,7 @@ import { Form, Input, InputProps } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { validateFormItem, RuleKeys } from '../utils/validator';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 export interface Data {
@@ -72,10 +73,20 @@ export default function ({
                 outputs['onValidate'](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id,
+                  name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id,
+                name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -120,6 +131,11 @@ export default function ({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id,
+          name,
+          validateInfo: info
+        });
       }
     });
   }, []);

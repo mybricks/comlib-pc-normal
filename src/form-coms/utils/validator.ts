@@ -1,5 +1,6 @@
 import { typeCheck } from '../../utils';
 import { runJs } from '../../../package/com-utils';
+import { ValidateInfo } from '../types';
 
 export enum RuleKeys {
   REQUIRED = 'required',
@@ -221,7 +222,7 @@ export const ruleFnMap = {
   }
 };
 
-export function validateFormItem({ value, model, env, rules }) {
+export function validateFormItem({ value, model, env, rules }): Promise<ValidateInfo> {
   const curRule = (rules || defaultRules).filter(
     (item) => item.status && item.key !== RuleKeys.CUSTOM_EVENT
   );

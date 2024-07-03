@@ -3,7 +3,7 @@ import { AutoComplete, Input, InputRef } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
-import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger, validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
 import { InputIds } from '../types';
@@ -94,10 +94,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id: props.id,
+                  name: props.name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id: props.id,
+                name: props.name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -124,6 +134,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
+        debounceValidateTrigger(parentSlot, { id: props.id, name: props.name, validateInfo: info });
         relOutputs['setValidateInfoDone'](info);
       }
     });

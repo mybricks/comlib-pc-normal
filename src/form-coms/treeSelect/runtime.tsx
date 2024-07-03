@@ -6,6 +6,7 @@ import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
 import { InputIds, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data, IconType, Option } from './types';
 import { getDynamicDisplay, setTreeDataForLoadData, getFieldNames, traversalTree } from './utils';
@@ -90,10 +91,12 @@ export default function Runtime({
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     });
 
@@ -204,6 +207,7 @@ export default function Runtime({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
       }
     });
     // 设置下拉框字体颜色

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { DatePicker, DatePickerProps, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import css from './runtime.less';
 import { OutputIds, InputIds as CommonInputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
@@ -207,10 +208,20 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             outputs[OutputIds.OnValidate](transValue);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, {
+              id: props.id,
+              name: props.name,
+              validateInfo: r
+            });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, {
+            id: props.id,
+            name: props.name,
+            validateInfo: e
+          });
         });
     });
 
@@ -242,6 +253,11 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id: props.id,
+          name: props.name,
+          validateInfo: info as any
+        });
       }
     });
   }, [value]);
