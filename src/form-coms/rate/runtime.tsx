@@ -6,6 +6,7 @@ import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
 
 export interface Data {

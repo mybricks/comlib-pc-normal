@@ -83,10 +83,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id: props.id,
+                  name: props.name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id: props.id,
+                name: props.name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -100,6 +110,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id: props.id, name: props.name, validateInfo: info });
       }
     });
   }, []);
@@ -139,51 +150,55 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   //数字输入框实时校验位数, 多的小数位禁止输入
   const NumberProps = useMemo(() => {
-    return data.isParser ? {
-      formatter: (value: any) => {
-        let reStr = '\\d'.repeat(data.config.precision);
-        let reg = value;
-        if(data.isPrecision){
-          if (data.config.precision === 0) {
-            reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
-          } else {
-            reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+    return data.isParser
+      ? {
+          formatter: (value: any) => {
+            let reStr = '\\d'.repeat(data.config.precision);
+            let reg = value;
+            if (data.isPrecision) {
+              if (data.config.precision === 0) {
+                reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+              } else {
+                reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+              }
+            }
+            if (reg !== '') {
+              if (data.useGrouping) {
+                reg = reg.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              }
+              if (data.isFormatter && data.charPostion === 'suffix') {
+                reg = `${reg}${data.character}`;
+              }
+              if (data.isFormatter && data.charPostion === 'prefix') {
+                reg = `${data.character}${reg}`;
+              }
+            }
+            return reg;
           }
         }
-        if (reg !== '') {
-          if (data.useGrouping) {
-            reg = reg.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          }
-          if (data.isFormatter && data.charPostion === 'suffix') {
-            reg = `${reg}${data.character}`;
-          }
-          if (data.isFormatter && data.charPostion === 'prefix') {
-            reg = `${data.character}${reg}`;
-          }
-        }
-        return reg;
-      }
-    } : {};
+      : {};
   }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
   //转换回数字的方式
   const ParserProps = useMemo(() => {
-    return data.isParser ? {
-      parser: (value: any) => {
-        if (data.isFormatter) {
-          let parser = value.replace(`${data.character}`, '');
-          if (data.useGrouping) {
-            parser = parser!.replace(/\$\s?|(,*)/g, '');
+    return data.isParser
+      ? {
+          parser: (value: any) => {
+            if (data.isFormatter) {
+              let parser = value.replace(`${data.character}`, '');
+              if (data.useGrouping) {
+                parser = parser!.replace(/\$\s?|(,*)/g, '');
+              }
+              return parser;
+            } else {
+              if (data.useGrouping) {
+                return value!.replace(/\$\s?|(,*)/g, '');
+              }
+              return value;
+            }
           }
-          return parser;
-        } else {
-          if (data.useGrouping) {
-            return value!.replace(/\$\s?|(,*)/g, '');
-          }
-          return value;
         }
-      }
-    } : {};
+      : {};
   }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
   return data.isEditable ? (

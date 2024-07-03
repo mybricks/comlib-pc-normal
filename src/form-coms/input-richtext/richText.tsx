@@ -5,6 +5,7 @@ import { outputIds } from '../form-container/constants';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { Init, getWindowVal } from './utils';
 import { uuid } from '../../utils';
 // import { loadPkg } from '../../utils/loadPkg';
@@ -117,10 +118,12 @@ export default function ({
                 outputs[outputIds.ON_VALIDATE] && outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
             });
         }
       }
@@ -537,6 +540,7 @@ export default function ({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info as any });
       }
     });
   }, [value]);

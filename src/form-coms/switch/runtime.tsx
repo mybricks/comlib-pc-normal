@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState, useLayoutEffect } from
 import useFormItemInputs from '../form-container/models/FormItem';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { StatusEnum } from './const';
 import { InputIds, OutputIds } from '../types';
@@ -145,7 +146,7 @@ export default function ({
     ...data.config,
     checkedChildren: env.i18n(data.textMap?.[StatusEnum.check] || ''),
     unCheckedChildren: env.i18n(data.textMap?.[StatusEnum.unCheck] || '')
-  }
+  };
 
   return (
     <div>
@@ -154,7 +155,7 @@ export default function ({
           {...config}
           checked={checked}
           onChange={onChange}
-        // onBlur={onBlur}
+          // onBlur={onBlur}
         />
       ) : (
         `${checked || false}`

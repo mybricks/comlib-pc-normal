@@ -8,6 +8,7 @@ import { typeCheck } from '../../utils';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { InputIds, OutputIds } from '../types';
 
