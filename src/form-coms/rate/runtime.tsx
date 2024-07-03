@@ -81,10 +81,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id: props.id,
+                  name: props.name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id: props.id,
+                name: props.name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -98,6 +108,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id: props.id,
+          name: props.name,
+          validateInfo: info
+        });
       }
     });
   }, []);

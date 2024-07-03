@@ -118,17 +118,15 @@ export default function ({
                 outputs[outputIds.ON_VALIDATE] && outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
-                debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
               }
             })
             .catch((e) => {
               outputRels(e);
-              debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
             });
         }
       }
     },
-    [value]
+    [value, env.runtime]
   );
 
   const Load: () => void = useCallback(async () => {
@@ -493,10 +491,12 @@ export default function ({
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     });
 

@@ -80,10 +80,20 @@ export default function Runtime({
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id,
+                  name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id,
+                name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -122,6 +132,11 @@ export default function Runtime({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id,
+          name,
+          validateInfo: info
+        });
       }
     });
 
@@ -149,7 +164,6 @@ export default function Runtime({
     if (env.edit) {
       e.preventDefault();
       e.stopPropagation();
-      console.log('enter onchange');
       return false;
     }
     const { value } = e.target;
@@ -158,21 +172,6 @@ export default function Runtime({
     onValidateTrigger();
   }, []);
 
-  const handleCommonCancel = (e, type) => {
-    console.log('ev == ', type, env.edit);
-    if (env.edit) {
-      e.stopPropagation();
-      e.stopImmediatePropagation?.();
-      console.log('stop ---- ');
-      return false;
-    }
-  };
-
-  const handleLabelFocus = (e) => {
-    if (env.edit) {
-      e.stopPropagation();
-    }
-  };
   const renderRadio = () => {
     return (
       <div className={`${css.radio} radio`}>

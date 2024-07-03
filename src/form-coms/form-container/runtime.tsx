@@ -263,7 +263,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
           name,
           useDynamicItems: data.useDynamicItems
         });
-        // console.log('VALIDATE_TRIGGER ', params)
 
         if (item && isFormItem) {
           if (validateInfo) {
@@ -282,7 +281,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
               ...formContext.current.store
             }
           });
-          debugger;
         }
       });
     }
@@ -789,7 +787,6 @@ const validateForInput = (
 ): void => {
   const item = model?.curFormItem;
   input?.validate(model).returnValidate((validateInfo) => {
-    debugger;
     // 存在index, 表示校验失败项是动态表单项的子项
     if (validateInfo.index === undefined) {
       item.validateStatus = validateInfo?.validateStatus;
