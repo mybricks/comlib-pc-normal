@@ -21,4 +21,7 @@ export interface Data {
   objectFit?: ObjectFit;
 
   customStyle?: any;
+
+  disableContextMenu?: boolean; // 禁止右键下载
+  disableDrag?: boolean; // 禁止拖拽图片
 }
