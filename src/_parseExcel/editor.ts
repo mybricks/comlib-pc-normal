@@ -31,6 +31,22 @@ export default {
           }
         }
       },
+      {
+        title: '时间格式类型',
+        type: 'select',
+        options: [
+          { label: 'yyyy-mm-dd', value: 'yyyy-mm-dd' },
+          { label: 'mm/dd/yyyy', value: 'mm"/"dd"/"yyyy' },
+        ],
+        value: {
+          get({ data }) {
+            return data.dateNF || `yyyy-mm-dd`;
+          },
+          set({ data }, value: string) {
+            data.dateNF = value;
+          }
+        }
+      },
     ];
   }
 };

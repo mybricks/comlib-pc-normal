@@ -44,7 +44,7 @@ export default function ({ data, inputs, outputs, logger, onError }: RuntimePara
         for (let sheetName of workbook.SheetNames) {
           const first_sheet = workbook.Sheets[sheetName];
           // 将worksheet中的数据转换为json结构的数据
-          const json =  xlsx?.utils.sheet_to_json(first_sheet, { header: 1, raw: true })
+          const json =  xlsx?.utils.sheet_to_json(first_sheet, { header: 1, raw: false, dateNF: data.dateNF || 'yyyy-mm-dd' })
           const headers = data.titleIndex > 0 ? json[data.titleIndex -1] : []
           const fields = data.fieldIndex > 0 ? json[data.fieldIndex-1] : []
           let jsonData = json.filter((_item, index) => {
