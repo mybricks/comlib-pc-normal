@@ -80,7 +80,15 @@ export const ItemsEditors = {
             }-item .ant-descriptions-item-content`;
           return selector;
         }
-      })
+      }),
+      {
+        title: '内容边距',
+        options: ['margin'],
+        target({ focusArea, data }) {
+          return `.${data.items[getEleIdx({ data, focusArea })].id
+            }-item .ant-descriptions-item-content .ant-typography p, div.ant-typography`
+        }
+      }
     ],
     items: ({ }: EditorResult<Data>, cate1) => {
       cate1.title = '常规';
