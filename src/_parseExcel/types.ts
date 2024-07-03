@@ -3,6 +3,7 @@ export type DataSource = Array<File>;
 export interface Data {
   titleIndex: number;
   fieldIndex: number
+  dateNF?: string
 }
 
 export interface InputData {

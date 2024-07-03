@@ -1,4 +1,5 @@
 {
     "titleIndex": 1,
-    "fieldIndex": 0
+    "fieldIndex": 0,
+    "dateNF": "yyyy-mm-dd"
 }
