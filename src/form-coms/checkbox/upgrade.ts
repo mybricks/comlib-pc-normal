@@ -316,5 +316,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   //=========== v1.1.24 end ===============
 
+  /**
+   * @description v1.1.28 新增禁止冒泡开关
+  */
+
+  if(typeof data.eventBubble === 'undefined') {
+    data.eventBubble = false
+  }
+
+  //=========== v1.1.28 end ===============
+
   return true;
 }
