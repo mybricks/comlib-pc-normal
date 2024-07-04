@@ -63,7 +63,6 @@ export default function (props: RuntimeParams<Data>) {
         },
         setDisabled() {
           data.config.disabled = true;
-          console.log('文本框设置禁用执行');
         },
         setEnabled() {
           data.config.disabled = false;

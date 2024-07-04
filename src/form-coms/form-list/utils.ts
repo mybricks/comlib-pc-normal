@@ -299,7 +299,6 @@ export function setValuesForInput({
       resolve(1);
     }
     values?.forEach((value, valIndex) => {
-      debugger
       if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
       const isLast = (valIndex === values.length - 1);
@@ -346,8 +345,6 @@ export function setValuesOfChild({
       const isLast = (inx === names.length - 1);
       if (item) {
         const { inputs, index } = childrenStore[key][item.comName];
-        console.log('inputs[inputId]', inputs[inputId], deepCopy(value[name]), value[name])
-        debugger
         inputs[inputId] && inputs[inputId](deepCopy(value[name]))
         [inputDoneId]?.(val => {
           if (isLast) {

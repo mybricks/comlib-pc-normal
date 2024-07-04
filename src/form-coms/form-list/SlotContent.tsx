@@ -114,6 +114,8 @@ const SlotContent = (
                 changeValue({ data, id, outputs, parentSlot, name: props.name });
                 data.userAction.index = -1;
                 data.userAction.key = -1;
+                // callback 里面把 data.userAction.startIndex重置
+                data.userAction.startIndex = -1;
                 data.userAction.value = undefined;
                 Object.entries(callbacks).forEach(([key, cb]) => {
                   if (typeof cb === 'function') {
