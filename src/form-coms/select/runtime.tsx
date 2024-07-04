@@ -48,7 +48,7 @@ const getOutputValue = (data, env, value) => {
   return outputValue;
 };
 
-const getFieldNames = (data: Data,) => {
+const getFieldNames = (data: Data) => {
   const fieldNames = {
     label: data.labelFieldName || 'label',
     value: data.valueFieldName || 'value',
@@ -118,10 +118,20 @@ export default function Runtime({
             outputs[OutputIds.OnValidate](outputValue);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, {
+              id,
+              name,
+              validateInfo: r
+            });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, {
+            id,
+            name,
+            validateInfo: e
+          });
         });
     });
 
@@ -165,22 +175,32 @@ export default function Runtime({
     inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
         const fieldNames = getFieldNames(data);
-        const newOptions = data.customField ? ds.map((item) => {
-          return {
-            ...item[fieldNames.value] ? {
-              value: item[fieldNames.value]
-            } : {},
-            ...item[fieldNames.label] ? {
-              label: item[fieldNames.label]
-            } : {},
-            ...item[fieldNames.disabled] ? {
-              disabled: item[fieldNames.disabled]
-            } : {},
-            ...item[fieldNames.checked] ? {
-              checked: item[fieldNames.checked]
-            } : {}
-          };
-        }) : ds;
+        const newOptions = data.customField
+          ? ds.map((item) => {
+              return {
+                ...(item[fieldNames.value]
+                  ? {
+                      value: item[fieldNames.value]
+                    }
+                  : {}),
+                ...(item[fieldNames.label]
+                  ? {
+                      label: item[fieldNames.label]
+                    }
+                  : {}),
+                ...(item[fieldNames.disabled]
+                  ? {
+                      disabled: item[fieldNames.disabled]
+                    }
+                  : {}),
+                ...(item[fieldNames.checked]
+                  ? {
+                      checked: item[fieldNames.checked]
+                    }
+                  : {})
+              };
+            })
+          : ds;
         data.config.options = [...newOptions];
         relOutputs['setOptionsDone'](ds);
 
@@ -260,6 +280,11 @@ export default function Runtime({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id,
+          name: name,
+          validateInfo: info
+        });
       }
     });
     // 设置下拉框字体颜色

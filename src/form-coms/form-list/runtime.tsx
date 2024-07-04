@@ -11,6 +11,7 @@ import {
 } from './utils';
 import { deepCopy, typeCheck } from '../../utils';
 import { RuleKeys, validateFormItem } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { ActionsWrapper, addField, removeField } from './components/FormActions';
 import { SlotIds, SlotInputIds, InputIds as SelfInputIds } from './constants';
 import { InputIds, OutputIds } from '../types';
@@ -154,14 +155,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 outputs[outputIds.ON_VALIDATE](data.value);
               } else {
                 outputRels['returnValidate'](r);
+                debounceValidateTrigger(parentSlot, { id, name: props.name, validateInfo: r });
               }
             })
             .catch((e) => {
               outputRels['returnValidate'](e);
+              debounceValidateTrigger(parentSlot, { id, name: props.name, validateInfo: e });
             });
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, { id, name: props.name, validateInfo: e });
           console.log('校验失败', e);
         });
     });
@@ -171,6 +175,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name: props.name, validateInfo: info });
       }
     });
 

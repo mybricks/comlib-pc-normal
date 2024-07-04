@@ -257,15 +257,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
        * @description 响应触发对应表单项校验
        */
       slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
-        const { id, name } = params;
+        const { id, name, validateInfo } = params;
         const { item, isFormItem } = getFormItem(data, {
           id,
           name,
           useDynamicItems: data.useDynamicItems
         });
-        // console.log('VALIDATE_TRIGGER ', params)
 
         if (item && isFormItem) {
+          if (validateInfo) {
+            item.validateStatus = validateInfo?.validateStatus;
+            item.help = validateInfo?.help;
+            return;
+          }
           // const input = childrenInputs[item.id];
           const input = getFromItemInputEvent(item, childrenInputs, {
             useDynamicItems: data.useDynamicItems

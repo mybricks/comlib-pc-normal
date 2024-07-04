@@ -24,5 +24,6 @@
   "layout": "horizontal",
   "checkAllText": "全选",
   "isEditable": true,
-  "isIndeterminate": false
+  "isIndeterminate": false,
+  "eventBubble": false
 }

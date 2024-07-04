@@ -1,7 +1,7 @@
 {
   "title": "Excel解析",
   "namespace": "mybricks.normal-pc.parseExcel",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "rtType": "js",
   "description": "将excel文件解析成数据",
   "author": "wufan",

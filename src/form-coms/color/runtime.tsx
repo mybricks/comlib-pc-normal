@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import { validateFormItem, RuleKeys } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import css from './runtime.less';
 import { Popover } from 'antd';
 import ColorPicker from './color-picker';
@@ -88,10 +89,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
             outputs['onValidate'](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, {
+              id: props.id,
+              name: props.name,
+              validateInfo: r
+            });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, {
+            id: props.id,
+            name: props.name,
+            validateInfo: e
+          });
         });
     });
     //4. 获取值
@@ -198,6 +209,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id: props.id,
+          name: props.name,
+          validateInfo: info as any
+        });
       }
     });
   }, []);

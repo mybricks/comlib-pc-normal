@@ -3,6 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import * as Icons from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { validateFormItem } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import cls from 'classnames';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
@@ -119,9 +120,11 @@ export default function ({
       })
         .then((r) => {
           outputRels['returnValidate'](r);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     });
     inputs['getValue']?.((val, outputRels) => {

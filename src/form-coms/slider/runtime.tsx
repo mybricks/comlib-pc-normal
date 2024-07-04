@@ -8,6 +8,7 @@ import { typeCheck } from '../../utils';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { InputIds, OutputIds } from '../types';
 
@@ -75,10 +76,20 @@ export default function Runtime({
                 outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id,
+                  name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id,
+                name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -91,6 +102,11 @@ export default function Runtime({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id,
+          name,
+          validateInfo: info
+        });
       }
     });
     inputs['setSliderRange'] &&

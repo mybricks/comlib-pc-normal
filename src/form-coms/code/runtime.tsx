@@ -3,6 +3,7 @@ import { Input } from 'antd';
 import { Data } from './constants';
 import CodeEditor from './CodeLocal';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
@@ -38,10 +39,20 @@ export default function ({
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels(r);
+            debounceValidateTrigger(parentSlot, {
+              id,
+              name,
+              validateInfo: r
+            });
           }
         })
         .catch((e) => {
           outputRels(e);
+          debounceValidateTrigger(parentSlot, {
+            id,
+            name,
+            validateInfo: e
+          });
         });
     },
     [value]
@@ -90,6 +101,11 @@ export default function ({
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
+        debounceValidateTrigger(parentSlot, {
+          id,
+          name,
+          validateInfo: info
+        });
         relOutputs['setValidateInfoDone'](info);
       }
     });

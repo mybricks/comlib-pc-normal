@@ -59,6 +59,7 @@ export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) =
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
   data.value?.splice(field.name, 1);
   let index = data.fields.findIndex((i) => i.key === field.key);
+  let fieldLength = data.fields?.length;
   // 删除当前field，更新name
   data.fields = data.fields
     .filter((i) => i.key !== field.key)
@@ -74,6 +75,10 @@ export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) =
   data.userAction.type = InputIds.SetInitialValue;
   // 从这个索引位置之后，重新设置初始值
   data.userAction.startIndex = index;
+  // 如果索引是最后一项，将startIndex 设置为-1
+  if (index === fieldLength - 1) {
+    data.userAction.startIndex = -1;
+  }
 
   changeValue({ data, id, outputs, parentSlot, name: props.name });
 };

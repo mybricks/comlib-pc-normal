@@ -3,6 +3,7 @@ import { Data } from './types';
 import { TimePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { isValidInput, isValidRange, isDefaultInput } from './util';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
@@ -51,10 +52,12 @@ export default function ({
             outputs[OutputIds.OnValidate](getValue(valueRef.current));
           } else {
             outputRels(r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
           }
         })
         .catch((e) => {
           outputRels(e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     },
     [value]
@@ -159,6 +162,7 @@ export default function ({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
       }
     });
   }, []);

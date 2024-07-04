@@ -61,11 +61,11 @@ export default function Tree({ editConfig }: any) {
   const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, value));
 
   const onChange = useCallback((val) => {
-    if (val === '') {
-      message.warn(`字段不能为空！`);
-      editConfig.value.set(value);
-      return;
-    }
+    // if (val === '') {
+    //   message.warn(`字段不能为空！`);
+    //   editConfig.value.set(value);
+    //   return;
+    // }
     if (value !== val) {
       editConfig.value.set(val);
     }

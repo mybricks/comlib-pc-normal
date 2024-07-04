@@ -15,5 +15,6 @@ export interface Data {
     layout: 'vertical' | 'horizontal';
     isEditable: boolean;
     isIndeterminate: boolean;
-    defaultCheckedAll?: boolean
+    defaultCheckedAll?: boolean;
+    eventBubble?: boolean;
 }

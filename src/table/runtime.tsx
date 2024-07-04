@@ -4,6 +4,7 @@ import { Table, Empty, Image, message, Input } from 'antd';
 import ConfigProvider from '../components/ConfigProvider';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
+import unionBy from 'lodash/unionBy';
 import {
   InputIds,
   OutputIds,
@@ -454,7 +455,22 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     dataSourceRef.current = dataSource;
+    if (env.runtime?.debug && rowKey) {
+      if (
+        dataSource.some((item) => {
+          return typeof item[rowKey] === 'undefined' || item[rowKey] === null;
+        })
+      ) {
+        throw new Error(
+          `请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`
+        );
+      }
 
+      const list = unionBy(dataSource, rowKey);
+      if (list.length !== dataSource.length) {
+        throw new Error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
+      }
+    }
     if (env.runtime) {
       // 输出表格数据
       inputs[InputIds.GET_TABLE_DATA] &&

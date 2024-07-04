@@ -4,6 +4,7 @@ import { TimePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
 import ConfigProvider from '../../components/ConfigProvider';
@@ -48,10 +49,12 @@ export default function ({
             outputs[OutputIds.OnValidate](getValue(valueRef.current));
           } else {
             outputRels(r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
           }
         })
         .catch((e) => {
           outputRels(e);
+          debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
     },
     [value]
@@ -137,6 +140,7 @@ export default function ({
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
       }
     });
   });

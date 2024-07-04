@@ -5,6 +5,7 @@ import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import { InputIds, OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
@@ -230,10 +231,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
             outputs[OutputIds.OnValidate](transValue);
           } else {
             outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, {
+              id,
+              name,
+              validateInfo: r
+            });
           }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
+          debounceValidateTrigger(parentSlot, {
+            id,
+            name,
+            validateInfo: e
+          });
         });
     });
 
@@ -308,6 +319,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, {
+          id,
+          name,
+          validateInfo: info
+        });
       }
     });
   }, []);

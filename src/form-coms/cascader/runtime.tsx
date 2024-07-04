@@ -4,6 +4,7 @@ import type { FieldNames } from 'rc-cascader';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { mockData } from './mockData';
@@ -114,10 +115,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
+                debounceValidateTrigger(parentSlot, {
+                  id: props.id,
+                  name: props.name,
+                  validateInfo: r
+                });
               }
             })
             .catch((e) => {
               outputRels(e);
+              debounceValidateTrigger(parentSlot, {
+                id: props.id,
+                name: props.name,
+                validateInfo: e
+              });
             });
         }
       }
@@ -134,6 +145,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
+        debounceValidateTrigger(parentSlot, { id: props.id, name: props.name, validateInfo: info });
         relOutputs['setValidateInfoDone'](info);
       }
     });
@@ -144,8 +156,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const changeValue = (val) => {
-
-    if (Array.isArray(val) && !Array.isArray(val[0]) && ['object', 'function'].includes(typeof val[0])) {
+    if (
+      Array.isArray(val) &&
+      !Array.isArray(val[0]) &&
+      ['object', 'function'].includes(typeof val[0])
+    ) {
       logger.warn(`${title}组件:【设置值】参数类型错误！`);
       if (env.runtime?.debug) {
         message.warn(`${title}组件:【设置值】参数类型错误！`);
@@ -159,9 +174,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const getAllValues = (optionsArray: Array<Record<string, any>>, pre: Array<string>) => {
     let values = [];
-    optionsArray.forEach(option => {
+    optionsArray.forEach((option) => {
       if (option[data.fieldNames.children]?.length) {
-        values.push(...getAllValues(option[data.fieldNames.children], [...pre, option[data.fieldNames?.value]]));
+        values.push(
+          ...getAllValues(option[data.fieldNames.children], [
+            ...pre,
+            option[data.fieldNames?.value]
+          ])
+        );
       } else {
         values.push([...pre, option[data.fieldNames?.value]]);
       }
@@ -170,19 +190,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const onChange = (val, selectedOptions) => {
-    let useFormatted = data.isCheckAutoWithChildren === true && data.isMultiple
-    let flattedVal: Array<any> = []
+    let useFormatted = data.isCheckAutoWithChildren === true && data.isMultiple;
+    let flattedVal: Array<any> = [];
     // 多选模式下，为true时，某一项选项全选，带上下一级children的信息
     // 例如[{label: 'A', value: 'A', children: [{ label: 'BB', value: 'BB'}, {label: 'CC', val: 'CC}]}], 选中[['A']]后，处理后的值是[['A', 'BB'], ['A', 'CC']]
-    if(data.isCheckAutoWithChildren === true && data.isMultiple) {
-      if(val.length) {
+    if (data.isCheckAutoWithChildren === true && data.isMultiple) {
+      if (val.length) {
         selectedOptions.forEach((selectedOpt, index) => {
-          let last  = selectedOpt[selectedOpt.length -1];
-          if(last[data.fieldNames.children]?.length) {
-            flattedVal.push(...getAllValues(last[data.fieldNames.children], val[index]))
+          let last = selectedOpt[selectedOpt.length - 1];
+          if (last[data.fieldNames.children]?.length) {
+            flattedVal.push(...getAllValues(last[data.fieldNames.children], val[index]));
           } else {
-            if(Array.isArray(val[index])) {
-              flattedVal.push(val[index] as Array<any>)
+            if (Array.isArray(val[index])) {
+              flattedVal.push(val[index] as Array<any>);
             }
           }
         });
