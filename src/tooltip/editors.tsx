@@ -12,7 +12,7 @@ export default {
       cate[0].items = [
         {
           title: '提示内容',
-          type: 'Text',
+          type: 'textarea',
           options: {
             locale: true
           },
