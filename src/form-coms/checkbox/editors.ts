@@ -372,6 +372,18 @@ export default {
           }
         },
         {
+          title: '禁止冒泡',
+          description: '默认关闭，阻止多选框的点击事件冒泡',
+          type:'switch',
+          value: {
+            get({ data }) {
+              return data.eventBubble;
+            },
+           set({ data }, value: boolean) {
+              data.eventBubble = value;
+            }}
+        },
+        {
           title: '布局',
           description: '水平排列和垂直排列',
           type: 'select',

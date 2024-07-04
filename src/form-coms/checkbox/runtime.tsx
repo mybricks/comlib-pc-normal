@@ -302,6 +302,12 @@ export default function Runtime({
     width: '16px'
   };
 
+  const onBubbleClick = (e)=>{
+    //e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }
+
   let options = env.edit ? data.staticOptions : data.config.options;
   let newOptions = options.map((opt) => {
     const dynamicStyle = dynamicStyles.find((i) => i?.value === opt.value)?.style || {};
@@ -328,8 +334,22 @@ export default function Runtime({
         </span>
       ));
     }
-    return newOptions.map((item) => <Checkbox {...item}>{item.label}</Checkbox>);
-  }, [env.edit, newOptions]);
+    return !data.eventBubble ? newOptions.map((item) => <Checkbox {...item}>{item.label}</Checkbox>) : 
+    newOptions.map((item) => {
+      return (
+        <span onClick={onBubbleClick}>
+          <Checkbox 
+            value={item.value} 
+            checked={valueRef.current?.includes(item.value)}
+            disabled={item.disabled}
+            onClick={onBubbleClick}
+          >
+            {item.label}
+          </Checkbox>
+        </span>
+      )
+    });
+  }, [env.edit, newOptions, data.eventBubble]);
 
   if (env.edit && data.staticOptions?.length === 0) {
     return <div className={css.suggestion}>在编辑栏中添加静态选项</div>;
@@ -346,6 +366,7 @@ export default function Runtime({
                 onChange={onCheckAllChange}
                 checked={checkAll}
                 disabled={data.config.disabled}
+                onClick={data.eventBubble ? onBubbleClick : undefined}
               >
                 {env.i18n(data.checkAllText)}
               </Checkbox>
@@ -357,7 +378,7 @@ export default function Runtime({
           style={checkboxGroup}
           // {...data.config}
           disabled={data.config.disabled}
-          options={env.edit ? undefined : newOptions}
+          options={env.edit ? undefined : (data.eventBubble ? undefined :newOptions)}
           value={value}
           onChange={onChange}
         >
