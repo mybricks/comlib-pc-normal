@@ -1574,7 +1574,7 @@ export default {
                   comId && data.actions.items.find((item) => item.key === comId)?.useDynamicDisabled
                 );
               },
-              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const comId = focusArea.dataset['formActionsItem'];
                 const item = data.actions.items.find((item) => item.key === comId);
@@ -1584,9 +1584,10 @@ export default {
 
                 const event1 = input.get(eventKey1);
                 const event2 = input.get(eventKey2);
+                const title = env.i18(item?.title);
                 if (value) {
-                  !event1 && input.add(eventKey1, `启用-"${item?.title}"`, { type: 'any' });
-                  !event2 && input.add(eventKey2, `禁用-"${item?.title}"`, { type: 'any' });
+                  !event1 && input.add(eventKey1, `启用-"${title}"`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `禁用-"${title}"`, { type: 'any' });
                 } else {
                   event1 && input.remove(eventKey1);
                   event2 && input.remove(eventKey2);
@@ -1608,7 +1609,7 @@ export default {
                   comId && data.actions.items.find((item) => item.key === comId)?.useDynamicHidden
                 );
               },
-              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const comId = focusArea.dataset['formActionsItem'];
                 const item = data.actions.items.find((item) => item.key === comId);
@@ -1618,9 +1619,10 @@ export default {
 
                 const event1 = input.get(eventKey1);
                 const event2 = input.get(eventKey2);
+                const title = env.i18(item?.title);
                 if (value) {
-                  !event1 && input.add(eventKey1, `显示-"${item?.title}"`, { type: 'any' });
-                  !event2 && input.add(eventKey2, `隐藏-"${item?.title}"`, { type: 'any' });
+                  !event1 && input.add(eventKey1, `显示-"${title}"`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `隐藏-"${title}"`, { type: 'any' });
                 } else {
                   event1 && input.remove(eventKey1);
                   event2 && input.remove(eventKey2);
