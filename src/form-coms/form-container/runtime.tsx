@@ -19,6 +19,7 @@ import css from './styles.less';
 import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 import { isArray } from 'lodash';
+import useElementWidth from './hooks/use-element-width';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -38,15 +39,29 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const isMobile = checkIfMobile(env);
 
   const dynamicEnableOrDisabledRef = useRef(() => {});
 
+  const [wrapperWidth] = useElementWidth(wrapperRef);
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
   }>(() => {
     return {};
   }, [env.edit]);
+
+  useEffect(() => {
+    // 调试态，手动加antd表单项 换行相关样式
+    if (env.runtime && env.runtime.debug) {
+      if (wrapperWidth > 575) {
+        wrapperRef.current?.classList.remove(css.minWrapSize);
+      } else {
+        wrapperRef.current?.classList.add(css.minWrapSize);
+      }
+    }
+  }, [env.runtime, wrapperWidth]);
 
   useLayoutEffect(() => {
     if (env.runtime) {
@@ -683,7 +698,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   };
   return (
-    <div className={css.wrapper}>
+    <div className={css.wrapper} ref={wrapperRef}>
       <Fragment>
         {!data.isFormItem ? (
           <Form
