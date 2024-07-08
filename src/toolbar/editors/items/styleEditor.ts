@@ -10,7 +10,7 @@ const StyleEditor = [
       return [
         { value: SizeEnum.Large, label: '大' },
         { value: SizeEnum.Middle, label: '中等' },
-        { value: SizeEnum.Small, label: '小' },
+        { value: SizeEnum.Small, label: '小' }
       ];
     },
     value: {
@@ -28,7 +28,7 @@ const StyleEditor = [
           height: SizeHeightMap[item.size]
         };
       }
-    },
+    }
   },
   {
     title: '风格',
@@ -53,7 +53,7 @@ const StyleEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         item.type = value;
       }
-    },
+    }
   },
   {
     title: '危险按钮',
@@ -69,7 +69,7 @@ const StyleEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         item.danger = value;
       }
-    },
+    }
   },
   {
     title: '形状',
@@ -92,7 +92,7 @@ const StyleEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         item.shape = value;
       }
-    },
+    }
   }
 ];
 

@@ -12,7 +12,7 @@ const DynamicEventEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         return item.useDynamicLoading;
       },
-      set({ data, focusArea, input, output }: EditorResult<Data>, value: boolean) {
+      set({ data, focusArea, input, output, env }: EditorResult<Data>, value: boolean) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
         const eventOpenKey = `${InputIds.SetBtnOpenLoading}_${item.key}`;
@@ -21,22 +21,21 @@ const DynamicEventEditor = [
         const eventOpenDoneKey = `${OutputIds.SetBtnOpenLoadingDone}_${item.key}`;
         const eventCloseDoneKey = `${OutputIds.SetBtnCloseLoadingDone}_${item.key}`;
 
-
         const eventOpen = input.get(eventOpenKey);
         const eventClose = input.get(eventOpenKey);
-        
+
         const eventOpenDone = output.get(eventOpenDoneKey);
         const eventCloseDone = output.get(eventCloseDoneKey);
+        const text = env.i18(item.text);
         if (value) {
-          !eventOpen && input.add(eventOpenKey, `开启${item.text}loading`, Schemas.Any);
-          !eventClose && input.add(eventCloseKey, `关闭${item.text}loading`, Schemas.Any);
+          !eventOpen && input.add(eventOpenKey, `开启${text}loading`, Schemas.Any);
+          !eventClose && input.add(eventCloseKey, `关闭${text}loading`, Schemas.Any);
 
-          !eventOpenDone && output.add(eventOpenDoneKey, `开启${item.text}loading完成`, Schemas.Any);
-          !eventCloseDone && output.add(eventCloseDoneKey, `关闭${item.text}loading完成`, Schemas.Any);
+          !eventOpenDone && output.add(eventOpenDoneKey, `开启${text}loading完成`, Schemas.Any);
+          !eventCloseDone && output.add(eventCloseDoneKey, `关闭${text}loading完成`, Schemas.Any);
 
           input.get(eventOpenKey).setRels([eventOpenDoneKey]);
           input.get(eventCloseKey).setRels([eventCloseDoneKey]);
-
         } else {
           eventOpen && input.remove(eventOpenKey);
           eventClose && input.remove(eventCloseKey);
@@ -57,7 +56,7 @@ const DynamicEventEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         return item.useDynamicText;
       },
-      set({ data, focusArea, input, output }: EditorResult<Data>, value: boolean) {
+      set({ data, focusArea, input, output, env }: EditorResult<Data>, value: boolean) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
         const eventKey = `${InputIds.SetBtnText}_${item.key}`;
@@ -65,9 +64,10 @@ const DynamicEventEditor = [
 
         const event = input.get(eventKey);
         const eventDone = output.get(eventDoneKey);
+        const text = env.i18(item.text);
         if (value) {
-          !event && input.add(eventKey, `设置${item.text}名称`, Schemas.String);
-          !eventDone && output.add(eventDoneKey, `设置${item.text}名称完成`, Schemas.String);
+          !event && input.add(eventKey, `设置${text}名称`, Schemas.String);
+          !eventDone && output.add(eventDoneKey, `设置${text}名称完成`, Schemas.String);
 
           input.get(eventKey).setRels([eventDoneKey]);
         } else {
