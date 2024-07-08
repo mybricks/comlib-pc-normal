@@ -30,6 +30,18 @@
   }
 }
 
+.minWrapSize {
+  :global {
+    .ant-form .ant-form-item {
+      flex-wrap: wrap !important;
+    }
+    .ant-form .ant-form-item .ant-form-item-control,
+    .ant-form .ant-form-item .ant-form-item-label {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+  }
+}
 .ant-form-item-cus-wrap {
   overflow: unset !important;
   line-height: 1.3215em !important;

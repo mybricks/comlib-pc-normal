@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import { Form, Tooltip } from 'antd';
 import { Data, FormControlProps } from '../types';
 import { usePrevious } from '../../../utils/hooks';
+import debounce from 'lodash/debounce';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 
@@ -56,6 +57,7 @@ const FormItem = (props) => {
         WebkitBoxOrient: 'vertical',
         wordBreak: 'break-all',
         textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
         display: '-webkit-box !important'
       };
     }
@@ -92,10 +94,29 @@ const FormItem = (props) => {
     // return flag ? css['ant-form-item-wrap-1'] : ''
   }, [dynamicStyle.labelAutoWrap, data.ellipseMode, labelRef.current, item.ellipseMode]);
 
+  const handleWindowResize = debounce(() => {
+    // 一旦resize，将展示提示设为false，mouseEnter的时候，重新计算
+    setIsShowTips(false);
+  }, 300);
+
+  useEffect(() => {
+    if (env.runtime) {
+      // 标题宽度类型
+      let labelWidthType = getLabelWidthType();
+      if (labelWidthType === 'span') {
+        // px类型宽度固定，resize不影响label的宽度；span类型，resize，label的宽度时会变的，需要重置展示tip
+        window.addEventListener('resize', handleWindowResize);
+        return () => {
+          window.removeEventListener('resize', handleWindowResize);
+        };
+      }
+    }
+  }, [env.runtime, data.labelWidthType, item.labelWidthType]);
+
   useEffect(() => {
     let ellipseMode = typeof item.ellipseMode !== 'undefined' ? item.ellipseMode : data.ellipseMode;
     if (env.runtime && ellipseMode === 'ellipse' && labelRef.current) {
-      const labelRefWidth = labelRef.current?.offsetWidth;
+      let labelRefWidth = labelRef.current?.offsetWidth;
       if (labelRef.current.scrollWidth > labelRefWidth) {
         setIsShowTips(true);
       } else {
@@ -111,12 +132,23 @@ const FormItem = (props) => {
     dynamicStyle.labelAutoWrap
   ]);
 
+  const getEllipseMode = () => {
+    return typeof item.ellipseMode !== 'undefined' ? item.ellipseMode : data.ellipseMode;
+  };
+
+  const getLabelWidthType = () => {
+    return typeof item.labelWidthType !== 'undefined' && item.labelWidthType !== 'default'
+      ? item.labelWidthType
+      : data.labelWidthType;
+  };
+
   const handleMouseEnter = useCallback(() => {
+    let ellipseMode = getEllipseMode();
     if (
-      data.layoutType === 'Form' ||
+      // data.layoutType === 'Form' ||
       env.edit ||
       dynamicStyle.labelAutoWrap === true ||
-      data.ellipseMode === 'wrap'
+      ellipseMode === 'wrap'
     ) {
       // 基础表单、编辑态、自动换行不做处理
       return;
@@ -173,7 +205,7 @@ const FormItem = (props) => {
     >
       <div className={css.formItemControl}>
         <div className={css.formItemSlotContent}>
-          <JSXWrapper com={com}  />
+          <JSXWrapper com={com} />
         </div>
         {item.slotAfter && (
           <div className={css.formItemSlotAfter}>
