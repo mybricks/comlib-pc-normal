@@ -25,8 +25,8 @@ export const defaultValidatorExample =
 }
 `);
 
-export const emailValidator = 
-encodeURIComponent(`export default async function (value, context) {
+export const emailValidator =
+  encodeURIComponent(`export default async function (value, context) {
   let reg = new RegExp( \`^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$\`);
   if (value && !reg.test(value)) {
     context.failed(\`邮箱格式不符合要求\`);
@@ -235,7 +235,7 @@ export function validateFormItem({ value, model, env, rules }): Promise<Validate
             successed: () => res('success'),
             failed: (msg: string) => rej(msg)
           };
-          
+
           ruleFnMap[item.key]({
             value,
             env,
@@ -243,8 +243,9 @@ export function validateFormItem({ value, model, env, rules }): Promise<Validate
               value,
               {
                 model,
+                i18nContent: env?.vars?.getI18nContent() || {},
                 ...validateFn
-              }
+              },
             ],
             validateCode: item.validateCode,
             message: item.message,
@@ -295,15 +296,15 @@ export enum FormatScene {
   /** 编辑器侧，展示正则表达式 */
   Editor = 'editor'
 }
-export const formatRegexRules = (rules, scene: FormatScene =FormatScene.Save) => {
+export const formatRegexRules = (rules, scene: FormatScene = FormatScene.Save) => {
   let newRules = rules;
   if (scene === FormatScene.Editor) {
     // 编辑器侧，不能改 data.rules里的内容
     newRules = JSON.parse(JSON.stringify(rules));
   }
   let regexItem = newRules.find(item => item.key === RuleKeys.REG_EXP);
-  if(regexItem) {
-    regexItem.regExr = scene === 'save' ?  encodeURIComponent(regexItem.regExr) : decodeURIComponent(regexItem.regExr);
+  if (regexItem) {
+    regexItem.regExr = scene === 'save' ? encodeURIComponent(regexItem.regExr) : decodeURIComponent(regexItem.regExr);
   }
   return newRules
 }
