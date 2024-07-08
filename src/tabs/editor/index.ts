@@ -60,7 +60,7 @@ export default {
           title: '添加标签页',
           type: 'Button',
           value: {
-            set({ data, slots, output }: EditorResult<Data>) {
+            set({ data, slots, output, env }: EditorResult<Data>) {
               const newItem = createItem(data);
               slots.add({
                 id: newItem.id,
@@ -68,7 +68,7 @@ export default {
               });
               const slotInstance = slots.get(newItem.id);
               setSlotLayout(slotInstance, data.slotStyle);
-              addEventIO(output, newItem);
+              addEventIO(output, newItem, env);
               data.tabList.push(newItem);
               // slots.add({
               //   id,

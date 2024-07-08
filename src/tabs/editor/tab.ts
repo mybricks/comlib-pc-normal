@@ -19,9 +19,9 @@ export default {
             get({}: EditorResult<Data>) {
               return item?.name;
             },
-            set({ input, output, slots }: EditorResult<Data>, title: string) {
+            set({ input, output, slots, env }: EditorResult<Data>, title: string) {
               item.name = title;
-              updateIO({ input, output, item, slots });
+              updateIO({ input, output, item, slots, env });
             }
           }
         },
@@ -333,8 +333,8 @@ export default {
         set(props: EditorResult<Data>, title: string) {
           const item = getFocusTab(props);
           item.name = title;
-          const { input, output, slots } = props;
-          updateIO({ input, output, item, slots });
+          const { input, output, slots, env } = props;
+          updateIO({ input, output, item, slots, env });
         }
       }
     }
