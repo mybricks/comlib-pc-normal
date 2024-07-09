@@ -56,9 +56,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 调试态，手动加antd表单项 换行相关样式
     if (env.runtime && env.runtime.debug) {
       if (wrapperWidth > 575) {
-        wrapperRef.current?.classList.remove(css.minWrapSize);
+        // wrapperRef.current?.classList.remove(css.minWrapSize);
       } else {
-        wrapperRef.current?.classList.add(css.minWrapSize);
+        // 先不加antd 换行样式，需要研究下代码，看什么情况下，antd会加换行样式
+        // wrapperRef.current?.classList.add(css.minWrapSize);
       }
     }
   }, [env.runtime, wrapperWidth]);
