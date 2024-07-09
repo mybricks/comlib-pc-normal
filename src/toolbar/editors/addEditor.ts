@@ -7,7 +7,7 @@ const addEditor = [
     title: '添加按钮',
     type: 'Button',
     value: {
-      set({ data, output }: EditorResult<Data>) {
+      set({ data, output, env }: EditorResult<Data>) {
         if (!data.btnList) {
           data.btnList = [];
         }
@@ -15,12 +15,15 @@ const addEditor = [
           ...getNewBtn(),
           text: `按钮${data.btnList.length}`
         };
-        output.add(newItem.key, `单击${newItem.text}`, { ...Schemas.Number, description: "点击按钮后，事件输出" });
-        output.add(
-          `${OutputIds.DoubleClick}_${newItem.key}`,
-          `双击${newItem.text}`,
-          { ...Schemas.Number, description: "双击按钮后，事件输出" }
-        );
+        const text = env.i18n(newItem.text);
+        output.add(newItem.key, `单击${text}`, {
+          ...Schemas.Number,
+          description: '点击按钮后，事件输出'
+        });
+        output.add(`${OutputIds.DoubleClick}_${newItem.key}`, `双击${text}`, {
+          ...Schemas.Number,
+          description: '双击按钮后，事件输出'
+        });
         data.btnList.push(newItem);
       }
     }

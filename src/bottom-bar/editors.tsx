@@ -9,6 +9,7 @@ interface Result {
   output: any;
   focusArea?: any;
   style: any;
+  env?: any;
 }
 
 const addBtn = ({
@@ -31,7 +32,7 @@ const addBtn = ({
   const schema = {
     type: type === 'btn' ? 'number' : 'follow'
   };
-  const defaultBtn = {
+  const defaultBtn: any = {
     id,
     title,
     icon: '',
@@ -56,14 +57,15 @@ const btnValue = {
       throw new Error('请输入正确的按钮标题');
     }
     const res = get(data, focusArea, 'btnId', 'obj', (index) => {
-      output.setTitle(data.tools[index].id, value);
-      input.setTitle(`display${data.tools[index].id}`, `显示${value}`);
-      input.setTitle(`hidden${data.tools[index].id}`, `隐藏${value}`);
-      input.setTitle(`disable${data.tools[index].id}`, `控制禁用${value}`);
+      const newValue = env.i18n(value);
+      output.setTitle(data.tools[index].id, newValue);
+      input.setTitle(`display${data.tools[index].id}`, `显示${newValue}`);
+      input.setTitle(`hidden${data.tools[index].id}`, `隐藏${newValue}`);
+      input.setTitle(`disable${data.tools[index].id}`, `控制禁用${newValue}`);
     });
     res.title = value;
   }
-}
+};
 
 const get = (data: Data, focusArea: any, dataset: string, val = 'obj', cb?: any) => {
   if (!focusArea) return;
@@ -250,7 +252,7 @@ export default {
           get({ data, focusArea }: Result) {
             return get(data, focusArea, 'btnId', 'dynamicDisplay');
           },
-          set({ data, focusArea, input, output }: Result, value: boolean) {
+          set({ data, focusArea, input, env }: Result, value: boolean) {
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {
               // output.setTitle(data.tools[index].id, value);
               const schema = {
@@ -259,12 +261,12 @@ export default {
               if (value) {
                 input.add(
                   `display${data.tools[index].id}`,
-                  `显示${data.tools[index].title}`,
+                  `显示${env.i18n(data.tools[index].title)}`,
                   schema
                 );
                 input.add(
                   `hidden${data.tools[index].id}`,
-                  `隐藏${data.tools[index].title}`,
+                  `隐藏${env.i18n(data.tools[index].title)}`,
                   schema
                 );
               } else {
@@ -283,7 +285,7 @@ export default {
           get({ data, focusArea }: Result) {
             return get(data, focusArea, 'btnId', 'dynamicDisabled');
           },
-          set({ data, focusArea, input, output }: Result, value: boolean) {
+          set({ data, focusArea, input, output, env }: Result, value: boolean) {
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {
               // output.setTitle(data.tools[index].id, value);
               const schema = {
@@ -292,7 +294,7 @@ export default {
               if (value) {
                 input.add(
                   `disable${data.tools[index].id}`,
-                  `控制禁用${data.tools[index].title}`,
+                  `控制禁用${env.i18n(data.tools[index].title)}`,
                   schema
                 );
               } else {

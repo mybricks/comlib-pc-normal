@@ -36,7 +36,10 @@ const OutputValEditor = [
             // }
             return item.dataType || 'number';
           },
-          set({ data, focusArea, input, output }: EditorResult<Data>, value: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external') {
+          set(
+            { data, focusArea, input, output, env }: EditorResult<Data>,
+            value: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external'
+          ) {
             if (!focusArea) return;
             const { item } = getBtnItemInfo(data, focusArea);
             //单击的事件
@@ -94,7 +97,7 @@ const OutputValEditor = [
               dbClick.setSchema({
                 type: 'follow'
               });
-              input.add(item.key, `设置${item.text}输出数据`, {
+              input.add(item.key, `设置${env.i18n(item.text)}输出数据`, {
                 type: 'follow'
               });
             } else {
@@ -173,24 +176,19 @@ const OutputValEditor = [
           const { item } = getBtnItemInfo(data, focusArea);
           return item.dataType === 'object';
         },
-        description:
-          '点击按钮向外输出的值, 输出值无数据即为空对象，举例: {"name": "poweros"}',
+        description: '点击按钮向外输出的值, 输出值无数据即为空对象，举例: {"name": "poweros"}',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             const { item } = getBtnItemInfo(data, focusArea);
             try {
-              return (
-                JSON.stringify(item.outVal) || '{}'
-              );
+              return JSON.stringify(item.outVal) || '{}';
             } catch {
               return '{}';
             }
           },
           set({ data, focusArea }: EditorResult<Data>, value: string) {
             try {
-              const resValue = JSON.parse(
-                value.replace(/\n/g, '').replace(/\r/g, '')
-              );
+              const resValue = JSON.parse(value.replace(/\n/g, '').replace(/\r/g, ''));
               const { item } = getBtnItemInfo(data, focusArea);
               item.outVal = resValue;
             } catch {

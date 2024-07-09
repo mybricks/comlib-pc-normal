@@ -30,7 +30,7 @@ export interface Data {
   height: number;
   parentId: string;
   inputContent?: any;
-  width: string | number;
+  width?: string | number;
 }
 
 export default function BottomBar({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {

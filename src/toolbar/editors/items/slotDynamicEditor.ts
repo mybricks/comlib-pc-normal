@@ -12,7 +12,7 @@ const DynamicEventEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         return item.useDynamicHidden;
       },
-      set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+      set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea, Object.keys(focusArea.dataset)[0]);
 
@@ -21,9 +21,10 @@ const DynamicEventEditor = [
 
         const event1 = input.get(eventKey1);
         const event2 = input.get(eventKey2);
+        const text = env.i18n(item.text);
         if (value) {
-          !event1 && input.add(eventKey1, `显示${item.text}`, Schemas.Any);
-          !event2 && input.add(eventKey2, `隐藏${item.text}`, Schemas.Any);
+          !event1 && input.add(eventKey1, `显示${text}`, Schemas.Any);
+          !event2 && input.add(eventKey2, `隐藏${text}`, Schemas.Any);
         } else {
           event1 && input.remove(eventKey1);
           event2 && input.remove(eventKey2);

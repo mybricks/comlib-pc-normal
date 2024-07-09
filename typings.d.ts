@@ -11,7 +11,12 @@ declare module '*.svg' {
 /**
  * hasPermission 返回的权限数据格式
  */
-type DynamicPermission = { permission: boolean, type: "hide" | "hintLink", hintLinkUrl?: string, hintLinkTitle?: string }
+type DynamicPermission = {
+  permission: boolean;
+  type: 'hide' | 'hintLink';
+  hintLinkUrl?: string;
+  hintLinkTitle?: string;
+};
 
 /**
  * _permission 设置器返回的数据格式
@@ -19,7 +24,7 @@ type DynamicPermission = { permission: boolean, type: "hide" | "hintLink", hintL
 type ConfigPermission = {
   id: string;
   type?: string;
-  remark?: string
+  remark?: string;
   hintLink?: string;
   registerData?: {
     noPrivilege?: 'hide' | 'hintLink';
@@ -41,7 +46,8 @@ interface Env {
     getRouter: () => Record<string, Function>;
     locale: string | number | symbol | undefined;
   };
-  hasPermission: (id: string) => (boolean | DynamicPermission);
+  hasPermission: (id: string) => boolean | DynamicPermission;
+  i18n: (text: any) => any;
   [x: string]: any;
 }
 interface RuntimeParams<T> {
@@ -110,7 +116,12 @@ interface UpgradeParams<T> {
   style: any;
   setAutoRun: (auto?: boolean) => void;
   isAutoRun: () => boolean;
-  setDeclaredStyle: (selector: string | string[], style: React.CSSProperties, global?, withParentComId?: boolean) => void;
+  setDeclaredStyle: (
+    selector: string | string[],
+    style: React.CSSProperties,
+    global?,
+    withParentComId?: boolean
+  ) => void;
   getDeclaredStyle: (selector: string) => { selector: string; css: React.CSSProperties };
   removeDeclaredStyle: (selector: string) => void;
   config: {
@@ -154,5 +165,5 @@ declare interface Window {
   ace: any;
   Babel: any;
   myTinymce: any; // Tinymce
-  jstt: any
+  jstt: any;
 }

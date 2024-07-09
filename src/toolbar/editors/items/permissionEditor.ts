@@ -15,14 +15,11 @@ const PermissionEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         return item.permission;
       },
-      set(
-        { data, focusArea }: EditorResult<Data>,
-        value: ConfigPermission
-      ) {
+      set({ data, focusArea }: EditorResult<Data>, value: ConfigPermission) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
         item.permission = value;
-        value.register?.()
+        value.register?.();
       }
     }
   }
