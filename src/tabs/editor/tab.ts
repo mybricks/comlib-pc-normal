@@ -194,10 +194,10 @@ export default {
             get({}: EditorResult<Data>) {
               return !!item?.dynamic;
             },
-            set({ input }: EditorResult<Data>, value: boolean) {
+            set({ input, env }: EditorResult<Data>, value: boolean) {
               item.dynamic = value;
               if (value) {
-                input.add(item.key, `${item.name}的通知数`, {
+                input.add(item.key, `${env.i18n(item.name)}的通知数`, {
                   type: 'string'
                 });
               } else {

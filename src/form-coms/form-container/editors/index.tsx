@@ -1478,7 +1478,7 @@ export default {
                 const comId = focusArea.dataset.formActionsItem as string;
                 return comId && data.actions.items.find((item) => item.key === comId)?.title;
               },
-              set({ data, focusArea, output }: EditorResult<Data>, val) {
+              set({ data, focusArea, output, input }: EditorResult<Data>, val) {
                 if (!val) {
                   return message.warn('操作标题不能为空');
                 }
@@ -1487,7 +1487,29 @@ export default {
                 const item = data.actions.items.find((item) => item.key === comId);
                 if (item) {
                   item.title = val;
-                  output.setTitle(item.outputId, `点击${env.i18n(item.title)}`);
+                  const title = env.i18n(item?.title);
+                  output.setTitle(item.outputId, `点击${title}`);
+
+                  const setTitle = (key: string, title: string) => {
+                    if (input.get(key)) {
+                      input.setTitle(key, title);
+                    }
+                  };
+
+                  if (item.useDynamicDisabled) {
+                    const eventKey1 = `${inputIds.SetEnable}_${item?.key}`;
+                    const eventKey2 = `${inputIds.SetDisable}_${item?.key}`;
+
+                    setTitle(eventKey1, `启用-"${title}"`);
+                    setTitle(eventKey2, `禁用-"${title}"`);
+                  }
+                  if (item.useDynamicHidden) {
+                    const eventKey1 = `${inputIds.SetShow}_${item?.key}`;
+                    const eventKey2 = `${inputIds.SetHidden}_${item?.key}`;
+
+                    setTitle(eventKey1, `显示-"${title}"`);
+                    setTitle(eventKey2, `隐藏-"${title}"`);
+                  }
                 }
               }
             }

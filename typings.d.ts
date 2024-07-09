@@ -47,7 +47,7 @@ interface Env {
     locale: string | number | symbol | undefined;
   };
   hasPermission: (id: string) => boolean | DynamicPermission;
-  i18: (text: any) => any;
+  i18n: (text: any) => any;
   [x: string]: any;
 }
 interface RuntimeParams<T> {
