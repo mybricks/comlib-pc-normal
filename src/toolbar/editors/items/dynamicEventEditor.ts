@@ -26,7 +26,7 @@ const DynamicEventEditor = [
 
         const eventOpenDone = output.get(eventOpenDoneKey);
         const eventCloseDone = output.get(eventCloseDoneKey);
-        const text = env.i18(item.text);
+        const text = env.i18n(item.text);
         if (value) {
           !eventOpen && input.add(eventOpenKey, `开启${text}loading`, Schemas.Any);
           !eventClose && input.add(eventCloseKey, `关闭${text}loading`, Schemas.Any);
@@ -64,7 +64,7 @@ const DynamicEventEditor = [
 
         const event = input.get(eventKey);
         const eventDone = output.get(eventDoneKey);
-        const text = env.i18(item.text);
+        const text = env.i18n(item.text);
         if (value) {
           !event && input.add(eventKey, `设置${text}名称`, Schemas.String);
           !eventDone && output.add(eventDoneKey, `设置${text}名称完成`, Schemas.String);

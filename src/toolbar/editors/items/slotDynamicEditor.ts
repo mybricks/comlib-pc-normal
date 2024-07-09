@@ -21,7 +21,7 @@ const DynamicEventEditor = [
 
         const event1 = input.get(eventKey1);
         const event2 = input.get(eventKey2);
-        const text = env.i18(item.text);
+        const text = env.i18n(item.text);
         if (value) {
           !event1 && input.add(eventKey1, `显示${text}`, Schemas.Any);
           !event2 && input.add(eventKey2, `隐藏${text}`, Schemas.Any);

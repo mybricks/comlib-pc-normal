@@ -97,7 +97,7 @@ const OutputValEditor = [
               dbClick.setSchema({
                 type: 'follow'
               });
-              input.add(item.key, `设置${env.i18(item.text)}输出数据`, {
+              input.add(item.key, `设置${env.i18n(item.text)}输出数据`, {
                 type: 'follow'
               });
             } else {

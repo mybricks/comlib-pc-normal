@@ -1584,7 +1584,7 @@ export default {
 
                 const event1 = input.get(eventKey1);
                 const event2 = input.get(eventKey2);
-                const title = env.i18(item?.title);
+                const title = env.i18n(item?.title);
                 if (value) {
                   !event1 && input.add(eventKey1, `启用-"${title}"`, { type: 'any' });
                   !event2 && input.add(eventKey2, `禁用-"${title}"`, { type: 'any' });
@@ -1619,7 +1619,7 @@ export default {
 
                 const event1 = input.get(eventKey1);
                 const event2 = input.get(eventKey2);
-                const title = env.i18(item?.title);
+                const title = env.i18n(item?.title);
                 if (value) {
                   !event1 && input.add(eventKey1, `显示-"${title}"`, { type: 'any' });
                   !event2 && input.add(eventKey2, `隐藏-"${title}"`, { type: 'any' });

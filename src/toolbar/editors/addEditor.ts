@@ -15,7 +15,7 @@ const addEditor = [
           ...getNewBtn(),
           text: `按钮${data.btnList.length}`
         };
-        const text = env.i18(newItem.text);
+        const text = env.i18n(newItem.text);
         output.add(newItem.key, `单击${text}`, {
           ...Schemas.Number,
           description: '点击按钮后，事件输出'

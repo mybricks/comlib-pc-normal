@@ -12,7 +12,7 @@ export const createItem = (data): TabItem => {
 
 export const addEventIO = (output, item: TabItem, env) => {
   const { id, key, name: originName } = item;
-  const name = env.i18(originName);
+  const name = env.i18n(originName);
   output.add(`${id}_into`, `${name}显示`, { type: 'any' });
   output.add(`${id}_leave`, `${name}隐藏`, { type: 'any' });
 };
@@ -31,7 +31,7 @@ export const updateIO = ({
   env;
 }) => {
   const { id, key, name: originName } = item;
-  const name = env.i18(originName);
+  const name = env.i18n(originName);
   input.setTitle(key, `${name}的通知数`);
   output.setTitle(`${id}_into`, `${name}显示`);
   output.setTitle(`${id}_leave`, `${name}隐藏`);
