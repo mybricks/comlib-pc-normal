@@ -127,6 +127,7 @@
     "./src/_page-router/com.json",
     "./src/_global-loading/com.json",
     "./src/_props/com.json",
+    "./src/_custom-methods/com.json",
     "./src/_env-var/com.json",
     "./src/_i18n-content/com.json",
     "./src/_array-merge/com.json",
