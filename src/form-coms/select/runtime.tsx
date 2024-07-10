@@ -77,6 +77,7 @@ export default function Runtime({
   const validateRelOutputRef = useRef<any>(null);
   const [value, setValue] = useState<any>(data.value);
   const valueRef = useRef<any>(data.value);
+  const [color, setColor] = useState('');
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -289,11 +290,10 @@ export default function Runtime({
     });
     // 设置下拉框字体颜色
     inputs[InputIds.SetColor]((color: string, relOutputs) => {
-      const target = ref.current?.querySelector?.('.ant-select-selection-item') as HTMLSpanElement;
-      if (target) {
-        target.style.color = typeof color === 'string' ? color : '';
+      if (typeof color === 'string') {
+        setColor(color);
+        relOutputs['setColorDone'](color);
       }
-      relOutputs['setColorDone'](color);
     });
   }, [value]);
 
@@ -416,6 +416,9 @@ export default function Runtime({
           listHeight={Number(data.maxHeight)}
           placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}
+          style= {{
+            color: color
+          }}
           open={
             env.design || (env.edit && data.slotAfterOption && !data.hidePopWhenEdit)
               ? true
