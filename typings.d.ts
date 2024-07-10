@@ -45,6 +45,10 @@ interface Env {
     getCookies: () => any;
     getRouter: () => Record<string, Function>;
     locale: string | number | symbol | undefined;
+    customMethods?: {
+      options?: { label: string, value: string },
+      methodMap?: Record<string, Function>
+    }
   };
   hasPermission: (id: string) => boolean | DynamicPermission;
   i18n: (text: any) => any;
