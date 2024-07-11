@@ -40,6 +40,7 @@ export default function Runtime({
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef<any>();
+  const [color, setColor] = useState('');
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
@@ -211,14 +212,11 @@ export default function Runtime({
       }
     });
     // 设置下拉框字体颜色
-    inputs[InputIds.SetColor]((color: string, outputRels) => {
-      const target = wrapperRef.current?.querySelector(
-        '.ant-select-selection-item'
-      ) as HTMLSpanElement;
-      if (typeof color === 'string' && target) {
-        target.style.color = color;
+    inputs[InputIds.SetColor]((color: string, relOutputs) => {
+      if (typeof color === 'string') {
+        setColor(color);
+        relOutputs['setColorDone'](color);
       }
-      outputRels['setColorDone'](color);
     });
   }, [value]);
 
@@ -380,6 +378,9 @@ export default function Runtime({
           dropdownClassName={id}
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           notFoundContent={data.customOnSearch && fetching ? <Spin size="small" /> : void 0}
+          style= {{
+            color: color
+          }}
         >
           {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
         </TreeSelect>
