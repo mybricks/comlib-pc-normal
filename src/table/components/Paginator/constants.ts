@@ -77,6 +77,9 @@ export const Schemas = {
 };
 
 export const templateRender = (template: string, params: any) => {
+  if (!template) {
+    return ''
+  }
   return template.replace(/\{([^\{\}]*?)\}/g, (match, key) => {
     switch (key?.trim?.()) {
       case 'total':

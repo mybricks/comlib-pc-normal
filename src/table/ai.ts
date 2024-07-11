@@ -29,7 +29,7 @@ export default {
       data.contentStyle = { ...def.contentStyle };
     }
 
-    data.columns = def.columns.map((item) => {
+    data.columns = def?.columns?.map((item) => {
       let slotId;
       // if (Array.isArray(def.columns) && def.columns.length > 0) {
       //   if (Array.isArray(item.slots) && item.slots.length > 0) {
