@@ -5,7 +5,7 @@ export default {
     return `下面是数据表格的问答示例
     例如：
     请回答：设计一个表格
-    {
+    返回： {
           type:'mybricks.normal-pc.table',
           usePagination: true,
           headStyle: {
@@ -23,13 +23,13 @@ export default {
     const { def, data, slots } = props;
 
     if (def.headStyle) {
-      data.headStyle = { ...def.headStyle };
+      data.headStyle = { ...def.data?.headStyle };
     }
     if (def.contentStyle) {
-      data.contentStyle = { ...def.contentStyle };
+      data.contentStyle = { ...def.data?.contentStyle };
     }
 
-    data.columns = def?.columns?.map((item) => {
+    data.columns = def?.data?.columns?.map((item) => {
       let slotId;
       // if (Array.isArray(def.columns) && def.columns.length > 0) {
       //   if (Array.isArray(item.slots) && item.slots.length > 0) {
@@ -53,7 +53,7 @@ export default {
         headStyle: def.headStyle ? { ...def.headStyle } : {},
         contentStyle: def.contentStyle ? { ...def.contentStyle } : {}
       };
-    });
+    }) || [];
 
     if (typeof def.usePagination !== 'undefined') {
       data.usePagination = def.usePagination;
