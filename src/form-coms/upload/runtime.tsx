@@ -383,7 +383,11 @@ export default function ({
   };
 
   const onPreview = (file) => {
-    if (usePreview && /\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
+    if (
+      usePreview &&
+      (/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name) ||
+        /\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.url))
+    ) {
       onpenImgPreview(file.url);
       if (data.fileClick && env.runtime) {
         outputs['fileClick'](file);
