@@ -185,6 +185,12 @@ export default function ({
     return title;
   };
 
+  // 勾选数据更新
+  const onSelectChange = (sourceSelectedKeys: string[], targetSelectedKeys: string[]) => {
+    outputs['onSelectChange'] &&
+      outputs['onSelectChange']({ sourceSelectedKeys, targetSelectedKeys });
+  };
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <Transfer
@@ -203,6 +209,7 @@ export default function ({
         render={renderItem}
         pagination={showPagination && pagination}
         onChange={onChange}
+        onSelectChange={onSelectChange}
       />
     </ConfigProvider>
   );
