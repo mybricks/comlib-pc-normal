@@ -384,9 +384,10 @@ export default function ({
 
   const onPreview = (file) => {
     if (usePreview && /\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
-      onpenImgPreview(file.url);
       if (data.fileClick && env.runtime) {
         outputs['fileClick'](file);
+      } else {
+        onpenImgPreview(file.url);
       }
     } else if (data.fileClick && env.runtime) {
       outputs['fileClick'](file);

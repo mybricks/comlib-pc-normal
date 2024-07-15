@@ -197,8 +197,10 @@ export default {
       {
         title: '背景',
         options: ['background', 'border'],
-        target: ({ id }: EditorResult<Data>) =>
-          [`.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`, `.ant-upload .ant-btn${getFilterSelector(id)}`]
+        target: ({ id }: EditorResult<Data>) => [
+          `.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`,
+          `.ant-upload .ant-btn${getFilterSelector(id)}`
+        ]
         //target: ['.ant-upload.ant-upload-select-picture-card', `.ant-upload .ant-btn`],
       },
       {
@@ -400,7 +402,7 @@ export default {
                   { label: 'Mp3音频文件', value: '.mp3' },
                   { label: 'Mp4视频文件', value: '.mp4' },
                   { label: 'Avi视频文件', value: '.avi' },
-                  { label: 'Mov视频文件', value: '.mov' },
+                  { label: 'Mov视频文件', value: '.mov' }
                 ],
                 multiple: true
               },
@@ -718,7 +720,7 @@ export default {
         {
           title: '开启文件点击',
           type: 'switch',
-          description: '开启后, 可自定义上传文件的点击事件且不跳转到新页面',
+          description: '开启后, 可自定义上传文件的点击事件且不跳转到新页面, 会阻止图片的预览',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.fileClick;
