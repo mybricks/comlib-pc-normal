@@ -1,7 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
-import { descriptionUpList } from './constants';
+import { descriptionUpList, onSelectChangeSchema } from './constants';
 import { inputIds, outputIds, commonFormItemUpdateSchema } from '../form-container/constants';
 import { descriptionUp } from '../utils/descriptionUp';
 
@@ -194,6 +194,10 @@ export default function ({ data, input, output, style }: UpgradeParams<Data>): b
   */
   descriptionUp([...descriptionUpList, ...commonFormItemUpdateSchema], input, output);
   //=========== 1.1.14 end ===============
+
+  if (!output.get('onSelectChange')) {
+    output.add('onSelectChange', '勾选数据更新', onSelectChangeSchema)
+  }
 
   return true;
 }

@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -45,9 +45,7 @@
         }
       },
       "desc": "给穿梭框设置数据源",
-      "rels": [
-        "setSourceDone"
-      ]
+      "rels": ["setSourceDone"]
     },
     {
       "id": "setValue",
@@ -59,9 +57,7 @@
         }
       },
       "desc": "给穿梭框设置目标值",
-      "rels": [
-        "setValueDone"
-      ]
+      "rels": ["setValueDone"]
     },
     {
       "id": "setInitialValue",
@@ -73,9 +69,7 @@
           "type": "string"
         }
       },
-      "rels": [
-        "setInitialValueDone"
-      ]
+      "rels": ["setInitialValueDone"]
     },
     {
       "id": "getValue",
@@ -83,9 +77,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValue"
-      ],
+      "rels": ["returnValue"],
       "desc": "获取穿梭框目标值"
     },
     {
@@ -95,9 +87,7 @@
         "type": "any"
       },
       "desc": "重置穿梭框目标值",
-      "rels": [
-        "resetValueDone"
-      ]
+      "rels": ["resetValueDone"]
     },
     {
       "id": "validate",
@@ -106,9 +96,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValidate"
-      ]
+      "rels": ["returnValidate"]
     },
     {
       "id": "setDisabled",
@@ -117,9 +105,7 @@
         "type": "any"
       },
       "desc": "禁用穿梭框组件,并触发启用完成事件输出",
-      "rels": [
-        "setDisabledDone"
-      ]
+      "rels": ["setDisabledDone"]
     },
     {
       "id": "setEnabled",
@@ -128,9 +114,7 @@
         "type": "any"
       },
       "desc": "启用穿梭框组件,并触发启用完成事件输出",
-      "rels": [
-        "setEnabledDone"
-      ]
+      "rels": ["setEnabledDone"]
     },
     {
       "id": "isEnable",
@@ -139,9 +123,7 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": [
-        "isEnableDone"
-      ]
+      "rels": ["isEnableDone"]
     },
     {
       "id": "setValidateInfo",
@@ -170,9 +152,7 @@
           }
         }
       },
-      "rels": [
-        "setValidateInfoDone"
-      ]
+      "rels": ["setValidateInfoDone"]
     }
   ],
   "outputs": [
@@ -241,6 +221,32 @@
             "disabled": {
               "type": "boolean",
               "description": "是否禁用，可选的"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "onSelectChange",
+      "title": "勾选数据更新",
+      "desc": "穿梭框的勾选数据更新事件输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "sourceSelectedKeys": {
+            "type": "array",
+            "description": "源数据数据项的唯一标识key数组",
+            "items": {
+              "type": "string",
+              "description": "源数据数据项的唯一标识key"
+            }
+          },
+          "targetSelectedKeys": {
+            "type": "array",
+            "description": "目标数据项的唯一标识key数组",
+            "items": {
+              "type": "string",
+              "description": "目标数据项的唯一标识key"
             }
           }
         }
@@ -383,8 +389,5 @@
     }
   ],
   "slots": [],
-  "schema": [
-    "mybricks.normal-pc.form-container/form-item",
-    "*"
-  ]
+  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
 }

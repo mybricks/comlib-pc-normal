@@ -242,6 +242,15 @@ export default {
                   outputId: 'onChange'
                 };
               }
+            },
+            {
+              title: '勾选数据更新',
+              type: '_Event',
+              options: ({}: EditorResult<Data>) => {
+                return {
+                  outputId: 'onSelectChange'
+                };
+              }
             }
           ]
         }
