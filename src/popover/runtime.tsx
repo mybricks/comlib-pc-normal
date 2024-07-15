@@ -15,7 +15,7 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
     } else {
       data.title = JSON.stringify(val);
     }
-    typeof relOutputs['_titleComplete'] === 'function' && relOutputs['_titleComplete']()
+    typeof relOutputs['_titleComplete'] === 'function' && relOutputs['_titleComplete']();
   });
 
   inputs['content']((val, relOutputs) => {
@@ -24,7 +24,7 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
     } else {
       data.content = JSON.stringify(val);
     }
-    typeof relOutputs['contentComplete'] === 'function' && relOutputs['contentComplete']()
+    typeof relOutputs['contentComplete'] === 'function' && relOutputs['contentComplete']();
   });
 
   /** display self */
@@ -35,9 +35,9 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
     }
   }, [style.display]);
 
-  const visible = useMemo(() => {
-    return env.edit && (useTitleSlot || useContentSlot) ? true : undefined;
-  }, [useTitleSlot, useContentSlot]);
+  const visibleProps = useMemo(() => {
+    return env.edit && (useTitleSlot || useContentSlot) ? { visible: true } : {};
+  }, [useTitleSlot, useContentSlot, env.edit]);
 
   const renderWrapText = (content: string) => {
     return content !== '' ? (
@@ -55,7 +55,8 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
       placement={placement}
       title={useTitleSlot ? slots['title']?.render() : renderWrapText(title as string)}
       content={useContentSlot ? slots['content']?.render() : renderWrapText(content as string)}
-      // visible={visible}
+      visible={env.edit && useTitleSlot ? true : undefined}
+      {...visibleProps}
       trigger={trigger}
       overlayClassName={id}
       overlayInnerStyle={{
@@ -66,7 +67,17 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
       // destroyTooltipOnHide
     >
       {/* overflowY: 'hidden' 是为了在容器fit-content时防止外边距塌陷 */}
-      <div className={styles.wrap}>{slots.carrier?.render({ style: { cursor: 'pointer', overflowY: 'hidden', ...data.slotStyle, minHeight: env.runtime ? void 0 : 30, minWidth: env.runtime ? void 0 : 30}})}</div>
+      <div className={styles.wrap}>
+        {slots.carrier?.render({
+          style: {
+            cursor: 'pointer',
+            overflowY: 'hidden',
+            ...data.slotStyle,
+            minHeight: env.runtime ? void 0 : 30,
+            minWidth: env.runtime ? void 0 : 30
+          }
+        })}
+      </div>
     </Popover>
   );
 }
