@@ -2,6 +2,10 @@ import { Editor, EditorType } from '../utils/editor';
 import { Data, OutputIds, SlotIds, Schemas, InputIds } from './constants';
 
 export default {
+  '@init': ({ style }: EditorResult<Data>) => {
+    style.width = '100%';
+    style.height = 'auto';
+  },
   '@resize': {
     options: ['width', 'height']
   },

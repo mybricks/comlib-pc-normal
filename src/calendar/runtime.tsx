@@ -146,7 +146,7 @@ export default (props: RuntimeParams<Data>) => {
     // 日期单元格插槽渲染
     if (!isMonth && useCustomDateCell && slots[SlotIds.DateCell]) {
       if (env.edit) {
-        const currentDate = new Date()
+        const currentDate = new Date();
         if (date.date() === currentDate.getDate()) {
           return slots[SlotIds.DateCell]?.render({
             inputValues: {
@@ -155,8 +155,7 @@ export default (props: RuntimeParams<Data>) => {
             },
             key: formatDate(date)
           });
-        }
-        else {
+        } else {
           return <div style={{ color: '#ddd' }}>自定义内容</div>;
         }
       }
@@ -196,22 +195,23 @@ export default (props: RuntimeParams<Data>) => {
       </div>
     );
   };
-
   return (
-    <Calendar
-      mode={data.mode}
-      fullscreen={!isMobile}
-      className={classnames(
-        css.calendar,
-        !useModeSwitch && css.hideModeSwitch,
-        !useMonthSelect && css.hideMonthSwitch,
-        !useYearSelect && css.hideYearSwitch
-      )}
-      onPanelChange={onPanelChange}
-      dateFullCellRender={DateFullCellRender}
-      monthFullCellRender={MonthFullCellRender}
-      onChange={onChange}
-      value={currDate}
-    />
+    <div className={css.calenderWrap}>
+      <Calendar
+        mode={data.mode}
+        fullscreen={!isMobile}
+        className={classnames(
+          css.calendar,
+          !useModeSwitch && css.hideModeSwitch,
+          !useMonthSelect && css.hideMonthSwitch,
+          !useYearSelect && css.hideYearSwitch
+        )}
+        onPanelChange={onPanelChange}
+        dateFullCellRender={DateFullCellRender}
+        monthFullCellRender={MonthFullCellRender}
+        onChange={onChange}
+        value={currDate}
+      />
+    </div>
   );
 };
