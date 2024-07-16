@@ -19,5 +19,8 @@ export default function ({ input, output, data, id, setDeclaredStyle }: UpgradeP
     input.get('content').setRels(['contentComplete'])
   }
 
+  if (typeof data.hidePopupPanel === 'undefined') {
+    data.hidePopupPanel = false;
+  }
   return true;
 }

@@ -125,6 +125,22 @@ export default {
           }
         },
         {
+          title: '隐藏气泡弹出层面板',
+          description: '仅在搭建时,开启标题自定义或内容自定义下设置生效',
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useTitleSlot || data.useContentSlot;
+          },
+          value: {
+            get({ data }) {
+              return data.hidePopupPanel || false;
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              data.hidePopupPanel = value;
+            }
+          }
+        },
+        {
           title: '触发方式',
           type: 'Select',
           options: [
