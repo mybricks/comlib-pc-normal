@@ -208,7 +208,7 @@ export default function ({
       // tabRenderHook();
       tabLeaveHook().then(tabIntoHook);
     }
-  }, [data.defaultActiveKey, showTabs]);
+  }, [data.defaultActiveKey]);
 
   const tabRenderHook = () => {
     const currentTab = findTargetByKey();
