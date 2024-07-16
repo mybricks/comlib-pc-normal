@@ -2,6 +2,9 @@ import { Editor, EditorType } from '../utils/editor';
 import { Data, OutputIds, SlotIds, Schemas, InputIds } from './constants';
 
 export default {
+  '@resize': {
+    options: ['width', 'height']
+  },
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
