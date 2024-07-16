@@ -36,8 +36,13 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
   }, [style.display]);
 
   const visibleProps = useMemo(() => {
+    if (env.edit && data.hidePopupPanel) {
+      return { visible: false };
+    }
     return env.edit && (useTitleSlot || useContentSlot) ? { visible: true } : {};
-  }, [useTitleSlot, useContentSlot, env.edit]);
+  }, [useTitleSlot, useContentSlot, env.edit, data.hidePopupPanel]);
+
+  console.log('visibleProps', visibleProps);
 
   const renderWrapText = (content: string) => {
     return content !== '' ? (

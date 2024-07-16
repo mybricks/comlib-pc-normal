@@ -10,4 +10,6 @@ export interface Data {
   useContentSlot?: boolean;
   style?: CSSProperties;
   slotStyle?: Object; 
+  /** 编辑态隐藏自定义标题和内容时的弹出层面板 */
+  hidePopupPanel?: boolean
 }
