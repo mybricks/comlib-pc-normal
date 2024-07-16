@@ -158,9 +158,11 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
 
 
   if (data.checkable) {
-    input.get('dynamicTags').setSchema({ type: 'array', items: clickTagSchema })
+    input.get('dynamicTags') &&
+      input.get('dynamicTags').setSchema({ type: 'array', items: clickTagSchema });
   } else {
-    input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema })
+    input.get('dynamicTags') &&
+      input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema });
   }
 
   return true;
