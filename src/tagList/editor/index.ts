@@ -30,7 +30,7 @@ export const TagSchema = {
   }
 };
 
-export const clickTagSchema = {
+export const checkableTagSchema = {
   type: 'object',
   properties: {
     key: {
@@ -38,20 +38,15 @@ export const clickTagSchema = {
       description: '唯一标识',
       type: 'string'
     },
-    icon: {
-      title: '图标',
-      description: '图标',
-      type: 'string'
-    },
     content: {
       title: '标签内容',
       description: '标签内容',
       type: 'string'
     },
-    color: {
-      title: '背景颜色',
-      description: '背景颜色',
-      type: 'string'
+    checked: {
+      title: '是否选中',
+      description: '是否选中',
+      type: 'boolean'
     }
   }
 };
@@ -253,7 +248,7 @@ export default {
               data.checkable = val;
 
               if (val) {
-                input.get('dynamicTags').setSchema({ type: 'array', items: clickTagSchema })
+                input.get('dynamicTags').setSchema({ type: 'array', items: checkableTagSchema })
               } else {
                 input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema })
               }
@@ -262,16 +257,16 @@ export default {
                 output.add('onCheck', '选中状态改变时', {
                   type: 'object',
                   properties: {
-                    changed: clickTagSchema,
+                    changed: checkableTagSchema,
                     checked: {
                       type: 'array',
                       description: "选中项",
-                      items: clickTagSchema
+                      items: checkableTagSchema
                     },
                     allTag: {
                       type: 'array',
                       description: '全部标签项',
-                      items: clickTagSchema
+                      items: checkableTagSchema
                     }
                   }
                 });
@@ -279,7 +274,7 @@ export default {
                 output.add('checkedTags', '选中项', {
                   type: 'array',
                   description: "选中项",
-                  items: clickTagSchema
+                  items: checkableTagSchema
                 });
                 input.get('getCheckedTags').setRels(['checkedTags']);
               } else if (output.get('onCheck')) {
@@ -312,7 +307,7 @@ export default {
             set({ data, output }: EditorResult<Data>, val: boolean) {
               data.clickAble = val;
               if (val) {
-                output.add('onClick', '标签项点击', clickTagSchema);
+                output.add('onClick', '标签项点击', checkableTagSchema);
               } else if (output.get('onClick')) {
                 output.remove('onClick');
               }

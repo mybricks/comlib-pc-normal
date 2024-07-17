@@ -1,7 +1,7 @@
 import { Data } from './types';
 import { isEmptyObject } from '../utils';
 import { descriptionUp } from '../form-coms/utils/descriptionUp';
-import { TagSchema, clickTagSchema } from './editor/index'
+import { TagSchema, checkableTagSchema } from './editor/index'
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const { tagStyle } = data;
@@ -127,16 +127,16 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   const onCheckSchema = {
     type: 'object',
     properties: {
-      changed: clickTagSchema,
+      changed: checkableTagSchema,
       checked: {
         type: 'array',
         description: "选中项",
-        items: clickTagSchema
+        items: checkableTagSchema
       },
       allTag: {
         type: 'array',
         description: '全部标签项',
-        items: clickTagSchema
+        items: checkableTagSchema
       }
     }
   };
@@ -149,7 +149,7 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     output.add('checkedTags', '选中项', {
       type: 'array',
       description: "选中项",
-      items: clickTagSchema
+      items: checkableTagSchema
     })
     ;
     input.get('getCheckedTags').setRels(['checkedTags']);
@@ -159,7 +159,7 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
 
   if (data.checkable) {
     input.get('dynamicTags') &&
-      input.get('dynamicTags').setSchema({ type: 'array', items: clickTagSchema });
+      input.get('dynamicTags').setSchema({ type: 'array', items: checkableTagSchema });
   } else {
     input.get('dynamicTags') &&
       input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema });
