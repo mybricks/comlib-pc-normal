@@ -253,7 +253,6 @@ export default function ({
         outputs[OutputIds.AddTab](data.tabList);
       },
       remove(key: string) {
-        console.log(key);
         data.tabList = data.tabList.filter((i) => i.key != key);
         if (data.defaultActiveKey === key && data.tabList.length) {
           data.defaultActiveKey = data.tabList[data.tabList.length].key + '';
