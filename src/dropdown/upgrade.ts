@@ -1,9 +1,11 @@
 import { Data } from './types';
 import { uuid } from '../utils';
+import { InputIds } from './constants';
 
 export default function ({ 
   data,
   output,
+  input,
   setDeclaredStyle,
   getDeclaredStyle,
   removeDeclaredStyle,
@@ -166,6 +168,38 @@ export default function ({
   }
 
   //=========== v1.0.26 end ===============
+
+  if (!input.get(InputIds.DynamicallyModifySubitems)) {
+    input.add({
+      id: 'dynamicallyModifySubitems',
+      title: '设置子项属性',
+      desc: '动态设置子项属性',
+      schema: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            key: {
+              type: 'string',
+              description: '唯一标识 必需'
+            },
+            label: {
+              type: 'string',
+              description: '标签'
+            },
+            link: {
+              type: 'string',
+              description: '链接'
+            },
+            disabled: {
+              type: 'boolean',
+              description: '是否禁用'
+            }
+          }
+        }
+      }
+    });
+  }
   
   return true;
 }
