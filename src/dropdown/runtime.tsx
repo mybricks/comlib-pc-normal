@@ -4,6 +4,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { Data } from './types';
 import * as Icons from '@ant-design/icons';
 import { uuid } from '../utils';
+import { InputIds } from './constants';
 
 export default function ({ data, env, style, inputs, outputs, slots, id }: RuntimeParams<Data>) {
   const { edit, runtime } = env;
@@ -11,10 +12,31 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   const rowKey = '_itemKey';
   const [visible, setVisible] = useState({});
 
+  // 动态修改选项
+  function updateObjectsInArray<T>(sourceArray: T[], updateArray: T[]): T[] {
+    const keys = 'key';
+
+    const updateMap = new Map<string, T>();
+    updateArray.forEach((updateObj) => {
+      const identifier = updateObj[keys];
+      updateMap.set(identifier, updateObj);
+    });
+
+    return sourceArray.map((sourceObj) => {
+      const identifier = sourceObj[keys];
+      const updateObj = updateMap.get(identifier);
+      if (updateObj) {
+        // 以旧的为底，新增的属性覆盖下
+        return { ...sourceObj, ...updateObj };
+      }
+      return sourceObj;
+    });
+  }
+
   //设置数据源输入
   useEffect(() => {
     if (env.runtime) {
-      inputs['setDynamicOptions']((v, relOutputs) => {
+      inputs[InputIds.SetDynamicOptions]((v, relOutputs) => {
         if (Array.isArray(v)) {
           const ds = v.map((item, index) => {
             if (item.value) {
@@ -34,6 +56,14 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
           });
           data.dynamicOptions = ds;
           relOutputs['setDynamicOptionsDone'](v);
+        }
+      });
+      inputs[InputIds.DynamicallyModifySubitems]((v: Data['options']) => {
+        if (Array.isArray(v)) {
+          if (!data.isDynamic) {
+            const ds = updateObjectsInArray(data.options, v);
+            data.options = ds;
+          }
         }
       });
     }
@@ -146,7 +176,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   }, [env, data.isChildCustom, data.isDynamic]);
 
   return (
-    <div className='dropdown'>
+    <div className="dropdown">
       <Dropdown
         overlayClassName={id}
         overlay={data.isDynamic ? dynamicMenuRender({ data }) : menuRender({ data })}
