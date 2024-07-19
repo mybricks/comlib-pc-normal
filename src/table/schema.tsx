@@ -290,7 +290,7 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot, e
   data.columns.forEach((col) => {
     const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
-      slot?.setTitle(col.slotId, `自定义${env?.i18n ? env.i18n(col.title) : col.title}列`);
+      slot?.setTitle(col.slotId, `${env?.i18n ? env.i18n(col.title) : col.title}-列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
         type: 'object',
         properties: dataSchema

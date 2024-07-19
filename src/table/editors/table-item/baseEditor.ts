@@ -148,7 +148,7 @@ const createBaseEditor = ({ data }) => ({
           if (value === ContentTypeEnum.SlotItem) {
             const slotId = uuid();
             column['slotId'] = slotId;
-            slot.add({ id: slotId, title: `自定义${env.i18n(column.title)}列`, type: 'scope' });
+            slot.add({ id: slotId, title: `${env.i18n(column.title)}-列`, type: 'scope' });
             if (column.keepDataIndex) {
               slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
             }
