@@ -352,7 +352,7 @@ export default function Runtime({
   };
 
   return (
-    <div ref={wrapperRef} className={css.select}>
+    <div ref={wrapperRef} className={`${css.select} ${color ? css.selectColor : ''}`}>
       {data.isEditable ? (
         <TreeSelect
           treeIcon

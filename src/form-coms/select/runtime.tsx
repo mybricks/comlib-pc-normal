@@ -399,7 +399,7 @@ export default function Runtime({
   };
 
   return (
-    <div className={css.select} ref={ref} id="area">
+    <div className={`${css.select} ${color ? css.selectColor : ''}`} ref={ref} id="area">
       {data.isEditable ? (
         <Select
           {...configs}
