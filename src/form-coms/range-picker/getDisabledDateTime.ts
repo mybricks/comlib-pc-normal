@@ -45,7 +45,7 @@ export const getDisabledDateTime = ({ data, dates }: { data: Data, dates }) => {
         baseDate: dates?.[0]
     });
     const useStartDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
-    const useEndDateLimit = useDisabledDate === 'static' && endDateLimit.checked && dates?.[0];
+    const useEndDateLimit = useDisabledDate === 'static' && endDateLimit.checked && (endDateLimit.type === 'custom' ? dates?.[0] : true);
 
     /** 日期禁用函数 */
     const disabledDate = (current) => {
