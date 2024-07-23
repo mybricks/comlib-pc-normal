@@ -1131,7 +1131,7 @@ export default {
                 return data.useHoverPanel;
               },
               options: {
-                placeholder: `例：{node.disabled} 节点disabled为true时禁用`,
+                placeholder: `例：{node.key === '0-0'} 节点key为"0-0" 时禁用`,
                 suggestions
               },
               value: {
