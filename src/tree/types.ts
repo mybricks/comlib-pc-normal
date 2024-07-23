@@ -143,6 +143,20 @@ export interface Data {
    */
   useLoadData?: boolean
   loadDataOnce?: boolean,
+  /**
+   * @description v1.0.67 Hover弹出层相关配置项
+   */
+  useHoverPanel?: boolean
+  /** 编辑态，展示Popup 面板 */
+  showEditPopupPanel?: boolean
+  popUpVisibleProps?: {
+    visible: boolean
+    key: string
+  }
+  /** Hover弹出层位置 */
+  popPlacement?: string
+  /** @description 1.0.67 动态禁用Hover面板表达式 */
+  disabledHoverScript?: string
 }
 
 export interface TreeData {

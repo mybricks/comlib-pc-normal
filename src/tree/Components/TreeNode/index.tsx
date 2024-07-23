@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tree } from 'antd';
+import { Tree, Popover } from 'antd';
 import { deepCopy } from '../../../utils';
 import { Data, TreeData } from '../../types';
 import { getDynamicProps, keyToString } from '../../utils';
@@ -32,16 +32,14 @@ const renderTreeNode = ({
   depth: number;
   parent: { key: string };
 }) => {
-  const { data } = props;
-  const { keyFieldName, childrenFieldName } = fieldNames;
-
+  const { data, slots, env } = props;
+  const { keyFieldName, childrenFieldName, titleFieldName } = fieldNames;
   const hasAddNode =
     data.addable &&
     (!data.maxDepth || depth < data.maxDepth) &&
     treeData.some((node) => filteredKeys.includes(node[keyFieldName]));
   const lastTreeNode = treeData[treeData.length - 1];
   const addNodeKey = `${parent[keyFieldName]}-${lastTreeNode?.[keyFieldName]}`;
-
   return (
     <>
       {treeData.map((item, inx) => {
@@ -65,6 +63,10 @@ const renderTreeNode = ({
         const checkable = dynamicProps.checkableFlag;
         const draggable = dynamicProps.draggableFlag;
         const allowDrop = dynamicProps.allowDropFlag;
+        const disableHoverPop = dynamicProps.disableHoverPopFlag || false;
+        let equalKey = data.popUpVisibleProps?.key === outputItem[keyFieldName];
+        const runtimeVisible =
+          env.runtime && data.popUpVisibleProps?.visible && equalKey ? { visible: true } : {};
 
         return (
           <TreeNode
@@ -75,7 +77,11 @@ const renderTreeNode = ({
             data-tree-node-id={item[keyFieldName]}
             data-draggable={draggable}
             data-allow-drop={allowDrop}
-            title={renderTitle(props, item, outputItem, depth === 0)}
+            data-disable-hover={disableHoverPop}
+            title={renderTitle(props, item, outputItem, depth === 0, {
+              disableHoverPop,
+              runtimeVisible
+            })}
             disableCheckbox={item.disableCheckbox}
             disabled={disabled}
             checkable={checkable}

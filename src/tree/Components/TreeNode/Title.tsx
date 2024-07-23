@@ -1,5 +1,5 @@
-import React, { CSSProperties, ReactNode } from 'react';
-import { Input, Image, Tooltip, TreeNodeProps } from 'antd';
+import React, { CSSProperties, ReactNode, useMemo } from 'react';
+import { Input, Image, Tooltip, TreeNodeProps, Popover, Spin } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { deepCopy } from '../../../utils';
@@ -14,10 +14,29 @@ import css from './style.less';
  * @param item 树节点数据
  * @returns JSX
  */
-export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot) => {
-  const { onError, outputs, data, env } = props;
+export const renderTitle = (
+  props: RuntimeParams<Data>,
+  item,
+  outputItem,
+  isRoot,
+  { disableHoverPop, runtimeVisible }
+) => {
+  const { onError, outputs, data, env, slots } = props;
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
+  const visibleEditProps = env.edit && data.showEditPopupPanel && isRoot ? { visible: true } : {};
 
+  const onMouseEnter = (e, item) => {
+    if (env.edit) {
+      return;
+    }
+    if (disableHoverPop !== true) {
+      data.popUpVisibleProps = {
+        key: outputItem[keyFieldName],
+        visible: true
+      };
+      slots['popContent']?.inputs['hoverNode']?.(item);
+    }
+  };
   /**
    * 计算图标动态显示表达式
    * @param item 节点数据
@@ -106,7 +125,13 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
       )}
     </div>
   );
-  const Title = data.titleEllipsis ? <Tooltip title={title}>{titleConent}</Tooltip> : titleConent;
+  // 开启hover 浮层，和标题超出省略互斥，这里额外处理一下
+  const Title =
+    data.titleEllipsis && !data.useHoverPanel ? (
+      <Tooltip title={title}>{titleConent}</Tooltip>
+    ) : (
+      titleConent
+    );
 
   /**编辑态 */
   const editInput = (
@@ -132,6 +157,38 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
       data.isEditing !== item[keyFieldName] &&
       data.useActions &&
       ActionBtns({ data, record: item, outputItem, env, outputs, onError });
+  if (!disableHoverPop) {
+    return (
+      <Popover
+        key={outputItem[keyFieldName]}
+        trigger={['hover']}
+        placement={data.popPlacement ?? 'top'}
+        defaultVisible={env.edit ? visibleEditProps.visible : runtimeVisible.visible}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          env.runtime ? triggerNode : env?.canvasElement || document.body
+        }
+        overlayStyle={{ minWidth: '300px' }}
+        {...(env.edit ? visibleEditProps : {})}
+        zIndex={10010}
+        // {...runtimeVisible}
+        content={slots['popContent']?.render({
+          key: outputItem[keyFieldName],
+          inputValues: {
+            hoverNode: item
+          }
+        })}
+      >
+        <div
+          className={`${css.wrapper} ${data.useCompactTheme ? css.singleCompact : ''}`}
+          onMouseEnter={(e) => onMouseEnter(e, item)}
+        >
+          {Title}
+          {editInput}
+          {actionBtns}
+        </div>
+      </Popover>
+    );
+  }
   return (
     <div className={`${css.wrapper} ${data.useCompactTheme ? css.singleCompact : ''}`}>
       {Title}

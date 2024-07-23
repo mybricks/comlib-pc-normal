@@ -1028,6 +1028,124 @@ export default {
           ]
         },
         {
+          title: 'hover自定义浮层配置',
+          items: [
+            {
+              title: '开启hover浮层',
+              description: '开启后，可在Hover节点弹出层交互区域接收hover节点信息',
+              type: 'switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !!data.useHoverPanel;
+                },
+                set({ data, slots }: EditorResult<Data>, value: boolean) {
+                  data.useHoverPanel = value;
+                  if (value) {
+                    if (!slots?.get('popContent')) {
+                      slots.add({
+                        id: 'popContent',
+                        title: 'hover节点弹出层',
+                        type: 'scope',
+                        inputs: [
+                          {
+                            id: 'hoverNode',
+                            title: '弹出层节点输入',
+                            schema: {
+                              type: 'any'
+                            }
+                          }
+                        ]
+                      });
+                    }
+                  }
+                  if (value === false) {
+                    if (slots?.get('popContent')) {
+                      slots.remove('popContent');
+                    }
+                  }
+                }
+              }
+            },
+            {
+              title: '展示气泡弹出层面板',
+              description: '仅在搭建时,开启后，进行配置',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useHoverPanel;
+              },
+              value: {
+                get({ data }) {
+                  return data.showEditPopupPanel || false;
+                },
+                set({ data, slot }: EditorResult<Data>, value: boolean) {
+                  data.showEditPopupPanel = value;
+                }
+              }
+            },
+            {
+              title: '方向',
+              type: 'select',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useHoverPanel;
+              },
+              options: [
+                {
+                  label: '正上方',
+                  value: 'top'
+                },
+                {
+                  label: '左上方',
+                  value: 'topLeft'
+                },
+                {
+                  label: '右上方',
+                  value: 'topRight'
+                },
+                {
+                  value: 'bottom',
+                  label: '正下方'
+                },
+                {
+                  value: 'bottomLeft',
+                  label: '左下方'
+                },
+                {
+                  value: 'bottomRight',
+                  label: '右下方'
+                }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.popPlacement || 'top';
+                },
+                set({ data }: EditorResult<Data>, val: string) {
+                  data.popPlacement = val;
+                }
+              }
+            },
+            {
+              title: '节点禁用Hover表达式',
+              description: `根据节点数据在运行时动态设置节点禁止Hover弹出层使用的表达式，支持JS表达式语法, 例：{node.disabled}`,
+              type: 'expression',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useHoverPanel;
+              },
+              options: {
+                placeholder: `例：{node.disabled} 节点disabled为true时禁用`,
+                suggestions
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disabledHoverScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.disabledHoverScript = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '节点图标',
           items: [
             {
