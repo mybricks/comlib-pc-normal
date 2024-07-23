@@ -595,26 +595,6 @@ export default function (props: RuntimeParams<Data>) {
     return filteredKeys.length === 0;
   }, [filteredKeys.length]);
 
-  const onMouseEnter = useCallback(
-    (info) => {
-      const { event, node } = info;
-      event.stopPropagation();
-      event.preventDefault();
-      if (env.edit) {
-        return false;
-      }
-      if (node['data-disable-hover'] !== true) {
-        const originNode = node['data-origin-node'];
-        data.popUpVisibleProps = {
-          key: originNode[keyFieldName],
-          visible: true
-        };
-        slots['popContent']?.inputs['hoverNode']?.(originNode);
-      }
-    },
-    [env.runtime]
-  );
-
   const onMouseLeave = (info) => {
     if (info.node.key === data.popUpVisibleProps?.key) {
       data.popUpVisibleProps = { key: '', visible: false };
@@ -649,7 +629,6 @@ export default function (props: RuntimeParams<Data>) {
         selectedKeys={selectedKeys}
         onSelect={onSelect}
         onDrop={onDrop}
-        // onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         blockNode
       >
