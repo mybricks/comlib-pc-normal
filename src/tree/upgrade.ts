@@ -4,7 +4,7 @@ import { refreshSchema } from './utils';
 import { descriptionUp } from '../form-coms/utils/descriptionUp';
 import { descriptionUpList } from './constants';
 
-export default function ({ data, style, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ data, style, input, output, slot }: UpgradeParams<Data>): boolean {
   const treeDataSchema = {
     title: '树组件数据',
     type: 'array',
@@ -592,5 +592,18 @@ export default function ({ data, style, input, output }: UpgradeParams<Data>): b
     input.get('setCheckStrictly').setRels(['setCheckStrictlyDone']);
   }
   //=========== 1.0.65 end ===============
+
+  /**
+   * @description v1.0.67 Hover 悬浮层支持
+   */
+  if(typeof data.useHoverPanel === 'undefined') {
+    data.useHoverPanel = false;
+    data.showEditPopupPanel = false;
+    data.popPlacement = 'top'
+  }
+
+
+  //=========== 1.0.67 end ===============
+  
   return true;
 }

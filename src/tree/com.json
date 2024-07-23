@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.66",
+  "version": "1.0.67",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -336,6 +336,18 @@
       "schema": {
         "type": "array",
         "description": "所有选中的节点的key",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "hover",
+      "title": "节点hover事件",
+      "desc": "节点Hover后，事件输出",
+      "schema": {
+        "type": "array",
+        "description": "当前Hover所在节点的key",
         "items": {
           "type": "string"
         }

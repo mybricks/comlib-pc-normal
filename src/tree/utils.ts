@@ -450,7 +450,8 @@ export const getDynamicProps = (
   disabledFlag: boolean,
   checkableFlag: boolean,
   draggableFlag: boolean,
-  allowDropFlag: boolean
+  allowDropFlag: boolean,
+  disableHoverPopFlag: boolean
 } => {
   const { data, onError } = props;
   const { titleFieldName } = fieldNames;
@@ -500,11 +501,22 @@ export const getDynamicProps = (
     }
   }
 
+  /**树节点动态禁用Hover 展示面板 表达式；未开启使用hover面板时，为true */
+  let disableHoverPopFlag = data.useHoverPanel ? false : true;
+  if (!!data.useHoverPanel && data.disabledHoverScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      disableHoverPopFlag = !!sandbox.executeWithTemplate(data.disabledHoverScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可Hover: ${error}`);
+    }
+  }
   return {
     disabledFlag,
     checkableFlag,
     draggableFlag,
-    allowDropFlag
+    allowDropFlag,
+    disableHoverPopFlag
   };
 };
 /** 

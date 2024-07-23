@@ -22,9 +22,10 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 
 import css from './style.less';
 import useParentHeight from './hooks/use-parent-height';
+import { edit } from 'src/form-coms/code/CodeLocal/ace-pkg/ace';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, style, inputs, outputs, onError, logger, title } = props;
+  const { env, data, style, inputs, outputs, onError, logger, title, slots } = props;
 
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
@@ -40,6 +41,8 @@ export default function (props: RuntimeParams<Data>) {
   const setTreeDataDone = useRef<null | ((arg: any) => any)>(null);
 
   const ref = useRef<HTMLDivElement>(null);
+
+  const treeRef = useRef(null);
 
   const [parentHeight] = useParentHeight(ref);
 
@@ -592,6 +595,12 @@ export default function (props: RuntimeParams<Data>) {
     return filteredKeys.length === 0;
   }, [filteredKeys.length]);
 
+  const onMouseLeave = (info) => {
+    if (info.node.key === data.popUpVisibleProps?.key) {
+      data.popUpVisibleProps = { key: '', visible: false };
+    }
+  };
+
   const treeWithHeight = (height?) => {
     return (
       <Tree
@@ -604,6 +613,7 @@ export default function (props: RuntimeParams<Data>) {
             : false
         }
         height={height}
+        ref={treeRef}
         allowDrop={allowDrop}
         loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
         loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
@@ -619,6 +629,7 @@ export default function (props: RuntimeParams<Data>) {
         selectedKeys={selectedKeys}
         onSelect={onSelect}
         onDrop={onDrop}
+        onMouseLeave={onMouseLeave}
         blockNode
       >
         {TreeNode({
