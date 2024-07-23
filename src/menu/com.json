@@ -1,7 +1,7 @@
 {
   "title": "导航菜单",
   "namespace": "mybricks.normal-pc.menu",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "为页面和功能提供导航的菜单列表",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -202,7 +202,9 @@
       "id": "getActiveItem",
       "title": "获取选中项",
       "desc": "获取选中菜单项",
-      "rels": ["getActiveItem"],
+      "rels": [
+        "getActiveItem"
+      ],
       "schema": {
         "type": "any"
       }
