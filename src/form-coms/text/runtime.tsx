@@ -28,6 +28,10 @@ export interface Data {
   innerIcon: string;
   customIcon: string;
 
+  preSrc: false | 'inner' | 'custom';
+  preInnerIcon: string;
+  preCustomIcon: string;
+
   isEditable: boolean;
 }
 
@@ -192,6 +196,14 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.innerIcon, data.customIcon]);
 
+  const renderPrefix = useCallback(() => {
+    if (data.preSrc === 'inner') {
+      return innerRender({ icon: data.preInnerIcon });
+    } else if (data.preSrc === 'custom' && data.preCustomIcon) {
+      return customRender(data.preCustomIcon);
+    }
+  }, [data.preInnerIcon, data.preCustomIcon]);
+
   let jsx = data.isEditable ? (
     <Input
       className={css.input}
@@ -208,6 +220,7 @@ export default function (props: RuntimeParams<Data>) {
       onBlur={onBlur}
       onPressEnter={onPressEnter}
       //size={'large'}
+      prefix={data.preSrc !== false ? renderPrefix() : void 0}
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
   ) : (

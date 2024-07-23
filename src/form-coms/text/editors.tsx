@@ -36,7 +36,54 @@ export default {
         }
       },
       {
-        title: '图标来源',
+        title: '前缀图标来源',
+        type: 'Radio',
+        options: [
+          { label: '无', value: false },
+          { label: '内置图标库', value: 'inner' },
+          { label: '自定义上传', value: 'custom' }
+        ],
+        value: {
+          get({ data }) {
+            return data.preSrc;
+          },
+          set({ data }, val: false | 'inner' | 'custom') {
+            data.preSrc = val;
+          }
+        }
+      },
+      {
+        title: '选择前缀图标',
+        type: 'icon',
+        ifVisible({ data }) {
+          return data.preSrc === 'inner';
+        },
+        value: {
+          get({ data }) {
+            return data.preInnerIcon;
+          },
+          set({ data }, val: string) {
+            data.preInnerIcon = val;
+          }
+        }
+      },
+      {
+        title: '前缀上传',
+        type: 'ImageSelector',
+        ifVisible({ data }) {
+          return data.preSrc === 'custom';
+        },
+        value: {
+          get({ data }) {
+            return data.preCustomIcon;
+          },
+          set({ data }, val: string) {
+            data.preCustomIcon = val;
+          }
+        }
+      },
+      {
+        title: '后缀图标来源',
         type: 'Radio',
         options: [
           { label: '无', value: false },
@@ -53,7 +100,7 @@ export default {
         }
       },
       {
-        title: '选择图标',
+        title: '选择后缀图标',
         type: 'icon',
         ifVisible({ data }) {
           return data.src === 'inner';
@@ -68,7 +115,7 @@ export default {
         }
       },
       {
-        title: '上传',
+        title: '后缀上传',
         type: 'ImageSelector',
         ifVisible({ data }) {
           return data.src === 'custom';
@@ -145,6 +192,16 @@ export default {
                   }
                 ],
                 target: '.ant-input-group-addon:last-child'
+              },
+              {
+                title: '前缀内置图标',
+                options: ['font'],
+                target: '.ant-input-prefix > .anticon'
+              },
+              {
+                title: '前缀自定义图标',
+                options: ['size'],
+                target: '.ant-input-prefix > .ant-image-img'
               },
               {
                 title: '后缀内置图标',
@@ -426,7 +483,9 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
+              return data.rules.length > 0
+                ? formatRegexRules(data.rules, FormatScene.Editor)
+                : LengthRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);
