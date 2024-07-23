@@ -17,5 +17,7 @@
   },
   "src": false,
   "innerIcon": "HomeOutlined",
-  "isEditable": true
+  "isEditable": true,
+  "preSrc": false,
+  "preInnerIcon": "HomeOutlined"
 }

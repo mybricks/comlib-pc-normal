@@ -10,7 +10,6 @@ let tempOptions: any = [],
   addOption,
   delOption;
 
-
 const contentValue = {
   get({ data }: EditorResult<Data>) {
     return data.content;
@@ -18,7 +17,7 @@ const contentValue = {
   set({ data }: EditorResult<Data>, value: string) {
     data.content = value;
   }
-}
+};
 
 const itemLabelValue = {
   get({ data, focusArea }: EditorResult<Data>) {
@@ -28,7 +27,7 @@ const itemLabelValue = {
     const res = get(data, focusArea, 'menuItem', 'obj');
     res.label = value;
   }
-}
+};
 
 //设置初始的options
 const initParams = (data: Data) => {
@@ -56,11 +55,11 @@ function get(data: Data, focusArea: any, dataset: string, val: any, cb?: any) {
 
 export default {
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-    if (toPin.id === "setDynamicOptions") {
+    if (toPin.id === 'setDynamicOptions') {
       let itemSchema = {};
       if (fromPin.schema.type === 'array') {
         itemSchema = fromPin.schema.items;
-        input.get("setDynamicOptions").setSchema(fromPin.schema);
+        input.get('setDynamicOptions').setSchema(fromPin.schema);
         slots.get('item').inputs.get('itemData').setSchema(itemSchema);
       }
     }
@@ -72,10 +71,10 @@ export default {
     options: ['width']
   },
   '.ant-space-item': {
-    "@dblclick": {
-      type: "text",
+    '@dblclick': {
+      type: 'text',
       value: contentValue
-    },
+    }
   },
   ':root': {
     style: [
@@ -90,7 +89,7 @@ export default {
       },
       {
         catelog: '默认',
-        options: [{ type: 'border'}],
+        options: [{ type: 'border' }],
         global: true,
         target({ id }) {
           return `.{id} .dropdown`;
@@ -121,6 +120,14 @@ export default {
         global: true,
         target({ id }) {
           return `.{id} .ant-dropdown-arrow:before`;
+        }
+      },
+      {
+        catelog: '默认',
+        options: [{ type: 'border' }],
+        global: true,
+        target({ id }) {
+          return `.{id} .ant-dropdown-arrow`;
         }
       },
       {
@@ -304,11 +311,11 @@ export default {
             set({ data, input, output }: EditorResult<Data>, val: boolean) {
               data.isDynamic = val;
               const schema = {
-                title: "设置选项",
-                type: "array",
+                title: '设置选项',
+                type: 'array',
                 items: {
-                  title: "列项数据",
-                  type: "object",
+                  title: '列项数据',
+                  type: 'object',
                   properties: {
                     value: {
                       type: 'any'
@@ -318,19 +325,18 @@ export default {
                     }
                   }
                 }
-              }
+              };
               if (val) {
-                !input.get("setDynamicOptions") && input.add("setDynamicOptions", "设置选项", schema);
-                !output.get("setDynamicOptionsDone") &&
-                  output.add("setDynamicOptionsDone", '设置选项完成', schema);
+                !input.get('setDynamicOptions') &&
+                  input.add('setDynamicOptions', '设置选项', schema);
+                !output.get('setDynamicOptionsDone') &&
+                  output.add('setDynamicOptionsDone', '设置选项完成', schema);
 
-                input.get("setDynamicOptions").setRels(["setDynamicOptionsDone"]);
+                input.get('setDynamicOptions').setRels(['setDynamicOptionsDone']);
               } else {
-                input.get("setDynamicOptions") && input.remove("setDynamicOptions");
-                output.get("setDynamicOptionsDone") && output.remove("setDynamicOptionsDone");
+                input.get('setDynamicOptions') && input.remove('setDynamicOptions');
+                output.get('setDynamicOptionsDone') && output.remove('setDynamicOptionsDone');
               }
-
-
             }
           }
         },
@@ -456,7 +462,7 @@ export default {
         }
       }
     ],
-    items: ({ }: EditorResult<Data>, cate1) => {
+    items: ({}: EditorResult<Data>, cate1) => {
       (cate1.title = '菜单项'),
         (cate1.items = [
           {

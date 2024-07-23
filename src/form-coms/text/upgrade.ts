@@ -247,5 +247,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   */
   descriptionUp(commonFormItemUpdateSchema, input, output);
   //=========== v1.3.20 end ===============
+
+  /**
+   * @description v1.2.22->v1.2.23 新增前缀图标, preSrc——图标来源，preInnerIcon——内置图标
+   */
+  if (typeof data.preSrc === 'undefined') {
+    data.preSrc = false;
+  }
+  if (typeof data.preInnerIcon === 'undefined') {
+    data.preInnerIcon = "HomeOutlined";
+  }
+
   return true;
 }
