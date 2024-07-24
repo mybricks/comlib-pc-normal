@@ -759,12 +759,19 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     properties: {}
   }
   if (!input.get(inputIds.setFieldsSource || !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone))) {
-    input.add(inputIds.setFieldsSource, '表单数据源选项输入', fieldSourceSchema);
+    input.add(inputIds.setFieldsSource, '设置数据源', fieldSourceSchema);
+  }
+  if(input.get(inputIds.setFieldsSource) && input.get(inputIds.setFieldsSource).title !== '设置数据源') {
+    input.get(inputIds.setFieldsSource)?.setTitle('设置数据源');
   }
 
   if(!output.get(outputIds.setFieldsSourceDone)) {
-    output.add(outputIds.setFieldsSourceDone, '设置表单数据源完成', fieldSourceSchema)
+    output.add(outputIds.setFieldsSourceDone, '设置数据源完成', fieldSourceSchema)
   }
+  if(output.get(outputIds.setFieldsSourceDone) && output.get(outputIds.setFieldsSourceDone).title !== '设置数据源完成') {
+    output.get(outputIds.setFieldsSourceDone).setTitle('设置数据源完成');
+  }
+
   if (output.get(outputIds.setFieldsSourceDone) &&
   input.get(inputIds.setFieldsSource) &&
   !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone)) {
@@ -774,9 +781,13 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   let contentSlot = slot.get('content')
   const hasFieldsSource = contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)
   if (!hasFieldsSource) {
-    contentSlot.inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', fieldSourceSchema)
-    // slot?.get('content')._inputs.add(slotInputIds.SET_FIELDS_SOURCE, '表单数据源选项输入', schema)
+    contentSlot.inputs.add(slotInputIds.SET_FIELDS_SOURCE, '设置数据源', fieldSourceSchema)
+    // slot?.get('content')._inputs.add(slotInputIds.SET_FIELDS_SOURCE, '设置数据源', schema)
   }
+  if(hasFieldsSource && contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE).title !== '设置数据源') {
+    contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE).setTitle('设置数据源')
+  }
+
 
   //=========== v1.4.59 end ===============
 
