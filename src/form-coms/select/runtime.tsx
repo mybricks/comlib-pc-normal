@@ -413,7 +413,7 @@ export default function Runtime({
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           maxTagCount={data.maxTagCount}
           dropdownClassName={id}
-          listHeight={Number(data.maxHeight)}
+          listHeight={data.maxHeight ? Number(data.maxHeight): void 0}
           placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}
           style= {{

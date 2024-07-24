@@ -339,7 +339,7 @@ export default {
         {
           title: '选择框最大高度',
           type: 'Text',
-          description: '选择框的最大高度，超出后垂直滚动。不设置或设置为0，表示适应内容高度。默认单位为像素（px）',
+          description: '选择框的最大高度，超出后垂直滚动。不设置表示默认配置，设置为0表示适应内容高度。默认单位为像素（px）',
           value: {
             get({ data }) {
               return data.maxHeight;
