@@ -423,7 +423,8 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
                     [InputIds.CurrentDate]: currentDate,
                     [InputIds.Today]: today
                   },
-                  key: currentDate.valueOf()
+                  key: currentDate.valueOf(),
+                  style: {alignItems: 'center'}
                 })
               : null}
           </div>
