@@ -18,24 +18,26 @@ interface ColumnRenderProps {
   outputs: any;
 }
 
+/* 递归查找列 */
+const findColumnByKey = (columns: Array<IColumn>, colKey: string) => {
+  for (const item of columns) {
+    if (item.key === colKey) {
+      return item;
+    }
+    if (Array.isArray(item.children) && item.children.length > 0) {
+      const child = findColumnByKey(item.children, colKey);
+      if (child) return child;
+    }
+  }
+  return null;
+};
+
 function ColumnRender(props: ColumnRenderProps) {
   const { colKey, record, index, env, data } = props;
 
   const columnItem = useMemo(() => {
-    return (
-      data.columns.find((item) => {
-        if (item.key === colKey) {
-          return true;
-        } else if (Array.isArray(item.children)) {
-          for (let i of item.children) {
-            if (i.key === colKey) {
-              return true;
-            }
-          }
-        }
-        return false;
-      }) || {}
-    );
+    // 根据key找到对应的column 是分组类型从children找
+    return findColumnByKey(data.columns, colKey);
   }, [data.columns, colKey]);
 
   const value = useMemo(() => {
@@ -60,7 +62,7 @@ function ColumnRender(props: ColumnRenderProps) {
     }
 
     // 如果是插槽，则不转成字符串
-    if (columnItem.contentType === ContentTypeEnum.SlotItem) {
+    if (columnItem?.contentType === ContentTypeEnum.SlotItem) {
       return oriValue;
     }
 
