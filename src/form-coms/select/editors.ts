@@ -368,6 +368,23 @@ export default {
           }
         },
         {
+          title: '弹出菜单挂载位置',
+          description: '预览态使用，调试态还是基于body',
+          type: 'select',
+          options: [
+            { label: '下拉框', value: 'current' },
+            { label: 'body元素', value: 'body' },
+          ],
+          value: {
+            get({ data }) {
+              return data.mount || `body`;
+            },
+            set({ data }, value: string) {
+              data.mount = value;
+            }
+          }
+        },
+        {
           title: '下拉框模式',
           type: 'select',
           description: '可设置下拉框的模式为多选或标签',

@@ -11,6 +11,7 @@
     "dropdownMatchSelectWidth": true,
     "size": "middle"
   },
+  "mount": "body",
   "validateTrigger": [
     "onChange"
   ],
