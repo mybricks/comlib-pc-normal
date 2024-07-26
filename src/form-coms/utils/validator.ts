@@ -243,7 +243,7 @@ export function validateFormItem({ value, model, env, rules }): Promise<Validate
               value,
               {
                 model,
-                i18nContent: env?.vars?.getI18nContent() || {},
+                i18nContent: env?.vars?.getI18nContent ? env?.vars?.getI18nContent?.() : {},
                 ...validateFn
               },
             ],
