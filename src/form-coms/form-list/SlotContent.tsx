@@ -48,19 +48,22 @@ const SlotContent = (
         // @ts-ignore
         field.name = name;
         let finItem = item;
+
         if (env.runtime) {
           const cached = listItemPropsStore?.[index]?.[item.name];
           if (cached && isObject(cached)) {
             finItem = listItemPropsStore?.[index]?.[item.name] as any;
           } else {
-            const { labelStyle, descriptionStyle, labelAlign, ...newFormItem } =
-              data.listItemProps?.[index]?.[item.name] || {};
-
-            finItem = { ...item, ...newFormItem, labelStyle, descriptionStyle, labelAlign };
-            if (!listItemPropsStore[index]) {
-              listItemPropsStore[key] = {};
-            }
-            listItemPropsStore[index][item.name] = finItem;
+            try {
+              const config = data.listItemProps?.[index]?.[item.name] || {};
+              if (Object.keys(config).length) {
+                finItem = { ...item, ...config };
+              }
+              if (!listItemPropsStore[index]) {
+                listItemPropsStore[index] = {};
+              }
+              listItemPropsStore[index][item.name] = finItem;
+            } catch (error) {}
           }
         }
         return isFormItem ? (
