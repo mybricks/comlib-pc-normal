@@ -398,6 +398,18 @@ export default function Runtime({
     );
   };
 
+  const getPopContainer = (triggerNode) => {
+    if (data.mount === undefined) {
+      data.mount = 'body';
+    }
+    // 预览态 和发布后 没有env.runtime.debug
+    if (env.runtime && !env.runtime.debug) {
+      return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
+    }
+    // 其他情况
+    return env?.canvasElement || document.body;
+  };
+
   return (
     <div className={`${css.select} ${color ? css.selectColor : ''}`} ref={ref} id="area">
       {data.isEditable ? (
@@ -410,13 +422,13 @@ export default function Runtime({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+          getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
           maxTagCount={data.maxTagCount}
           dropdownClassName={id}
-          listHeight={data.maxHeight ? Number(data.maxHeight): void 0}
+          listHeight={data.maxHeight ? Number(data.maxHeight) : void 0}
           placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}
-          style= {{
+          style={{
             color: color
           }}
           open={

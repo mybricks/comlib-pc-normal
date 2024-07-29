@@ -35,4 +35,6 @@ export interface Data {
   checkedFieldName: string;
   customField: boolean;
   placement: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+  /** 挂载点 */
+  mount?: string
 }

@@ -430,5 +430,11 @@ export default function ({
   };
   //=========== v1.1.23 end ===============
 
+  /**
+   * @description 1.1.30 增加挂载点
+   */
+  if( typeof data.mount === 'undefined') {
+    data.mount = 'body'
+  }
   return true;
 }
