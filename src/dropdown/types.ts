@@ -8,5 +8,6 @@ export interface Data {
     isChildCustom: boolean,
     isDynamic: boolean,
     dynamicOptions: any[],
-    eventBubble: boolean
+    eventBubble: boolean,
+    contentBubble: boolean
 }

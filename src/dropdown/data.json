@@ -7,5 +7,6 @@
   "trigger": "hover",
   "isChildCustom": false,
   "dynamicOptions": [],
-  "eventBubble": false
+  "eventBubble": false,
+  "contentBubble": false
 }

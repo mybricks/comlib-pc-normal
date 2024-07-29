@@ -210,6 +210,16 @@ export default function ({
   }
 
   //=========== v1.0.29 end ===============
+
+  /**
+   * @description v1.0.30 新增禁止提示内容冒泡开关
+  */
+
+  if(typeof data.contentBubble === 'undefined') {
+    data.contentBubble = false
+  }
+
+  //=========== v1.0.30 end ===============
   
   return true;
 }
