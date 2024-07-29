@@ -402,11 +402,11 @@ export default function Runtime({
     if (data.mount === undefined) {
       data.mount = 'body';
     }
-    // 预览态
+    // 预览态 和发布后 没有env.runtime.debug
     if (env.runtime && !env.runtime.debug) {
-      return data.mount === 'current' ? triggerNode : document.body;
+      return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
     }
-    // 调试态
+    // 其他情况
     return env?.canvasElement || document.body;
   };
 

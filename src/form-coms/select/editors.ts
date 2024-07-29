@@ -369,7 +369,7 @@ export default {
         },
         {
           title: '弹出菜单挂载位置',
-          description: '预览态使用，调试态还是基于body',
+          description: '可在预览态下看到效果，调试态基于画布元素',
           type: 'select',
           options: [
             { label: '下拉框', value: 'current' },
