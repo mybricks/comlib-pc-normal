@@ -12,6 +12,13 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   const rowKey = '_itemKey';
   const [visible, setVisible] = useState({});
 
+  //阻止冒泡函数
+  const onBubbleClick = (e)=>{
+    //e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }
+
   // 动态修改选项
   function updateObjectsInArray<T>(sourceArray: T[], updateArray: T[]): T[] {
     const keys = 'key';
@@ -84,21 +91,23 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
             {data.dynamicOptions &&
               data.dynamicOptions.map((option, index) => {
                 return (
-                  <Menu.Item
-                    data-menu-item={option[rowKey]}
-                    disabled={option.disabled}
-                    //style={{ color: option.disabled ? void 0 : option.iconColor }}
-                    key={index}
-                    onClick={() => onClick(option)}
-                  >
-                    {slots['item']?.render({
-                      inputValues: {
-                        itemData: option.value,
-                        index: index
-                      },
-                      key: option[rowKey]
-                    })}
+                  <div onClick={data.eventBubble ? onBubbleClick : void 0}>
+                    <Menu.Item
+                      data-menu-item={option[rowKey]}
+                      disabled={option.disabled}
+                      //style={{ color: option.disabled ? void 0 : option.iconColor }}
+                      key={index}
+                      onClick={() => onClick(option)}
+                    >
+                      {slots['item']?.render({
+                        inputValues: {
+                          itemData: option.value,
+                          index: index
+                        },
+                        key: option[rowKey]
+                      })}
                   </Menu.Item>
+                  </div>
                 );
               })}
           </Menu>
@@ -121,25 +130,27 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
           data.options.map((option, index) => {
             const Icon = Icons && Icons[option.icon as string]?.render();
             return (
-              <Menu.Item
-                data-menu-item={option.key}
-                disabled={option.disabled}
-                //style={{ color: option.disabled ? void 0 : option.iconColor }}
-                key={index}
-                onClick={() => onClick(option)}
-              >
-                <a target="_blank" href={option.value ? option.value : void 0}>
-                  <span
-                    style={{
-                      display: !option.useIcon ? 'none' : void 0,
-                      marginRight: '8px'
-                    }}
-                  >
-                    {Icon}
-                  </span>
-                  {env.i18n(option.label)}
-                </a>
-              </Menu.Item>
+              <div onClick={data.eventBubble ? onBubbleClick : void 0}>
+                <Menu.Item
+                  data-menu-item={option.key}
+                  disabled={option.disabled}
+                  //style={{ color: option.disabled ? void 0 : option.iconColor }}
+                  key={index}
+                  onClick={() => onClick(option)}
+                >
+                  <a target="_blank" href={option.value ? option.value : void 0}>
+                    <span
+                      style={{
+                        display: !option.useIcon ? 'none' : void 0,
+                        marginRight: '8px'
+                      }}
+                    >
+                      {Icon}
+                    </span>
+                    {env.i18n(option.label)}
+                  </a>
+                </Menu.Item>
+              </div>
             );
           })}
       </Menu>
