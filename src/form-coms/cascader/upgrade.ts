@@ -292,5 +292,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     // 全选某一级下，携带下一级子节点信息,默认为false
     data.isCheckAutoWithChildren = false;
   }
+
+  /**
+   * @description 1.1.17 增加挂载点
+   */
+  if( typeof data.mount === 'undefined') {
+    data.mount = 'body'
+  }
   return true;
 }

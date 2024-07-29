@@ -20,6 +20,7 @@ export interface Data {
   config: CascaderProps<any[]>;
   isEditable: boolean;
   fieldNames: FieldNames;
+  mount?: string;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -213,6 +214,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
     onValidateTrigger();
   };
 
+  const getPopContainer = (triggerNode) => {
+    if (data.mount === undefined) {
+      data.mount = 'body';
+    }
+    // 预览态 和发布后 没有env.runtime.debug
+    if (env.runtime && !env.runtime.debug) {
+      return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
+    }
+    // 其他情况
+    return env?.canvasElement || document.body;
+  };
+
   return (
     <div className={css.cascader}>
       {data.isEditable ? (
@@ -226,7 +239,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           onChange={onChange}
           open={env.design ? true : void 0}
           dropdownClassName={id}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+          getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
         />
       ) : Array.isArray(value) ? (
         value.join(',')
