@@ -200,6 +200,16 @@ export default function ({
       }
     });
   }
+
+  /**
+   * @description v1.0.29 新增禁止冒泡开关
+  */
+
+  if(typeof data.eventBubble === 'undefined') {
+    data.eventBubble = false
+  }
+
+  //=========== v1.0.29 end ===============
   
   return true;
 }
