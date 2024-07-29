@@ -3,6 +3,7 @@ import { RuleKeys } from "../utils/validator";
 import { getItemSchema } from "./schema";
 import { SizeEnum } from "../types";
 import { Data, LocationEnum, } from "./types";
+import { getDataItemFieldSchema } from "./schema";
 import { InputIds as SelfInputIds } from './constants';
 
 export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -292,5 +293,37 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     data.layoutType = 'horizontal';
   }
 
+  /**
+   *  @description v1.2.38 增加修改某一项
+   */
+  const fieldItemPropsSchema = getDataItemFieldSchema(data)
+  const modifySchema = {
+    type: "object",
+    properties: {
+      config: {
+        type: "object",
+        description: "列表这一项中表单项的配置",
+        properties: fieldItemPropsSchema.properties
+      },
+      index: {
+        type: "number",
+        description: "修改位置(index从0开始)"
+      }
+    }
+  }
+  if (!input.get(SelfInputIds.ModifyField)) {
+    input.add(SelfInputIds.ModifyField, '修改一项', modifySchema);
+  }
+  if (!output.get("modifyFieldDone")) {
+    output.add("modifyFieldDone", '修改一项', modifySchema);
+  }
+
+  if (output.get("modifyFieldDone") &&
+    input.get(SelfInputIds.ModifyField) &&
+    !input.get(SelfInputIds.ModifyField)?.rels?.includes("modifyFieldDone")) {
+    input.get(SelfInputIds.ModifyField).setRels(["modifyFieldDone"]);
+  }
+
+  //=========== v1.2.38 end ===============
   return true;
 }

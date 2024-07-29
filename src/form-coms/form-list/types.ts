@@ -193,6 +193,9 @@ export interface Data {
    * @description 表单布局类型
    */
   layoutType?: FormLayout
+
+  /** 列表项属性，通过修改某一项传进的数据 */
+  listItemProps?: Record<string, any>
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
@@ -220,6 +223,11 @@ export type ChildrenStore = {
   [key: number | string]: {
     [id: string]: FormControlInputType
   };
+}
+export type ListItemPropsStore = {
+  [key: number | string]: {
+    [name: string]: Partial<FormItems>
+  }
 }
 
 /** @description 按钮图标位置 */

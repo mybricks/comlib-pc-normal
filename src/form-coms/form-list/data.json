@@ -6,6 +6,7 @@
   "formItemColumn": 4,
   "fields": [],
   "listItemMargin": [],
+  "listItemProps": {},
   "MaxKey": -1,
   "slotStyle": {
     "display": "flex",

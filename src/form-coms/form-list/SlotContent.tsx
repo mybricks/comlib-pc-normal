@@ -1,9 +1,10 @@
 import React, { ReactElement, useEffect, useMemo } from 'react';
 import { Col, Form, FormListFieldData, Row } from 'antd';
 import { deepCopy } from '../../utils';
+import isObject from 'lodash/isObject';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
-import { ChildrenStore, Data } from './types';
+import { ChildrenStore, Data, ListItemPropsStore } from './types';
 import {
   changeValue,
   getFormItem,
@@ -16,6 +17,7 @@ import { inputIds } from '../form-container/constants';
 const SlotContent = (
   props: RuntimeParams<Data> & {
     childrenStore: ChildrenStore;
+    listItemPropsStore: ListItemPropsStore;
     actions: ReactElement;
     field: FormListFieldData;
     callbacks?: any;
@@ -28,6 +30,7 @@ const SlotContent = (
     actions,
     field,
     childrenStore,
+    listItemPropsStore = {},
     outputs,
     id,
     parentSlot,
@@ -39,13 +42,30 @@ const SlotContent = (
       itemWrap(com: { id; jsx; name }) {
         const { item, isFormItem } = getFormItem(data, com);
         const { key } = field;
+        let index = data.fields.findIndex((f) => f.key === key);
         // 因为name更新后不会重新渲染，所以这里根据key自己更新下name
         const name = data.fields.find((f) => f.key === key)?.name;
         // @ts-ignore
         field.name = name;
+        let finItem = item;
+        if (env.runtime) {
+          const cached = listItemPropsStore?.[index]?.[item.name];
+          if (cached && isObject(cached)) {
+            finItem = listItemPropsStore?.[index]?.[item.name] as any;
+          } else {
+            const { labelStyle, descriptionStyle, labelAlign, ...newFormItem } =
+              data.listItemProps?.[index]?.[item.name] || {};
 
+            finItem = { ...item, ...newFormItem, labelStyle, descriptionStyle, labelAlign };
+            if (!listItemPropsStore[index]) {
+              listItemPropsStore[key] = {};
+            }
+            listItemPropsStore[index][item.name] = finItem;
+            console.log('debug', finItem, index);
+          }
+        }
         return isFormItem ? (
-          <FormItem data={data} slots={slots} com={com} item={item} field={field} env={env} />
+          <FormItem data={data} slots={slots} com={com} item={finItem} field={field} env={env} />
         ) : (
           <>{com.jsx}</>
         );
