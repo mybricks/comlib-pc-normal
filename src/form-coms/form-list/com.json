@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-list",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.2.37",
+  "version": "1.2.38",
   "description": "可以动态增加、删除的组合表单项，数据格式为数组",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",
@@ -177,6 +177,27 @@
       },
       "rels": [
         "removeFieldDone"
+      ]
+    },
+    {
+      "id": "modifyField",
+      "title": "修改一项",
+      "desc": "如果不传递index,或者传递不合适的值，则不会执行",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "type": "object",
+            "description": "列表这一项中表单项的配置"
+          },
+          "index": {
+            "type": "number",
+            "description": "修改项位置(从0开始)"
+          }
+        }
+      },
+      "rels": [
+        "modifyFieldDone"
       ]
     }
   ],
@@ -390,6 +411,23 @@
           "index": {
             "type": "number",
             "description": "删除位置(从0开始)"
+          }
+        }
+      }
+    },
+    {
+      "id": "modifyFieldDone",
+      "title": "修改一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "type": "object",
+            "description": "列表这一项中表单项的配置"
+          },
+          "index": {
+            "type": "number",
+            "description": "修改位置(从0开始)"
           }
         }
       }

@@ -27,6 +27,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
   }, [env.edit]);
+
+  const listItemPropsStore = useMemo<ChildrenStore>(() => {
+    return {};
+  }, [env.edit]);
   // let initLength = useMemo(() => {
   //   return data.initLength;
   // }, [data.initLength]);
@@ -202,6 +206,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
       removeField({ ...props, childrenStore, field, fieldIndex });
       relOutputs['removeFieldDone'](val);
     });
+    // 修改一项
+    inputs[SelfInputIds.ModifyField]?.((val, relOutputs) => {
+      if (val.index !== undefined && data.fields.length > val.index) {
+        if (!data.listItemProps) {
+          data.listItemProps = {};
+        }
+        data.listItemProps[val.index] = val.config;
+        if (relOutputs['modifyFieldDone']) {
+          relOutputs['modifyFieldDone']?.(val);
+        }
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -331,6 +347,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               {...props}
               childrenStore={childrenStore}
               actions={actions}
+              listItemPropsStore={listItemPropsStore}
               field={field}
               callbacks={callbacks.current}
             />
