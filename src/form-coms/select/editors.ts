@@ -368,12 +368,12 @@ export default {
           }
         },
         {
-          title: '弹出菜单挂载位置',
+          title: '弹出菜单挂载点',
           description: '可在预览态下看到效果，调试态基于画布元素',
           type: 'select',
           options: [
-            { label: '下拉框', value: 'current' },
-            { label: 'body元素', value: 'body' },
+            { label: '触发节点', value: 'current' },
+            { label: 'Body元素', value: 'body' },
           ],
           value: {
             get({ data }) {

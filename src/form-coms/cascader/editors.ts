@@ -236,6 +236,23 @@ export default {
           }
         },
         {
+          title: '弹出菜单挂载点',
+          description: '可在预览态下看到效果，调试态基于画布元素',
+          type: 'select',
+          options: [
+            { label: '触发节点', value: 'current' },
+            { label: 'Body元素', value: 'body' },
+          ],
+          value: {
+            get({ data }) {
+              return data.mount || `body`;
+            },
+            set({ data }, value: string) {
+              data.mount = value;
+            }
+          }
+        },
+        {
           title: '显示清除图标',
           type: 'switch',
           description: '可以点击清除图标删除内容',
