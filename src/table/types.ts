@@ -4,7 +4,7 @@ import { Data as PaginationData } from './components/Paginator/constants';
 export enum ContentTypeEnum {
   Text = 'text',
   SlotItem = 'slotItem',
-  Group = 'group',
+  Group = 'group'
 }
 export enum AlignEnum {
   Left = 'left',
@@ -67,12 +67,12 @@ export interface IColumn {
   titleBgColor?: string;
   /** 表头字体色 */
   titleColor?: string;
-  headStyle: any;
-  contentStyle: any;
+  headStyle?: any;
+  contentStyle?: any;
   hasTip?: boolean;
   tip?: string;
   // 省略展示
-  ellipsis: any;
+  ellipsis?: any;
 
   sorter?: Sorter;
   filter?: Filter;
@@ -95,6 +95,8 @@ export interface IColumn {
   template?: string; // 选择哪个列作为模板
   enableOnCell?: boolean;
   onCellScript?: string;
+
+  isAutoWidth?: WidthTypeEnum.Auto | number;
 }
 
 export enum SizeEnum {
@@ -239,5 +241,7 @@ export interface Data {
   /** 表格数据懒加载 */
   lazyLoad: boolean;
   /** 表格筛选默认图标 */
-  filterIconDefault?: FilterIconEnum
+  filterIconDefault?: FilterIconEnum;
+
+  _inicCols: IColumn[];
 }
