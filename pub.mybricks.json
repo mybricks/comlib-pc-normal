@@ -96,12 +96,6 @@
       ]
     },
     {
-      "title": "领域模型",
-      "comAry": [
-        "./src/domain/domain-crud/com.json"
-      ]
-    },
-    {
       "title": "其它",
       "comAry": [
         "./src/bottom-bar/com.json",
