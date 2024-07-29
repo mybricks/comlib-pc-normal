@@ -95,7 +95,7 @@ const tableStyleEditor = {
       }
     },
     {
-      title: '开启斑马纹',
+      title: '斑马纹',
       type: 'Switch',
       description: '配置表格的单双行为不同样式',
       value: {

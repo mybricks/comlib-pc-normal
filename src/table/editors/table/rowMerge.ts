@@ -4,7 +4,7 @@ export default {
   title: '行合并操作',
   items: [
     {
-      title: '开启行合并设置',
+      title: '行合并',
       type: 'switch',
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
