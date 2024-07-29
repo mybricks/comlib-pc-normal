@@ -61,7 +61,6 @@ const SlotContent = (
               listItemPropsStore[key] = {};
             }
             listItemPropsStore[index][item.name] = finItem;
-            console.log('debug', finItem, index);
           }
         }
         return isFormItem ? (
