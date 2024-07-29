@@ -420,7 +420,22 @@ export default {
           }
         },
         {
-          title: '禁止冒泡',
+          title: '提示内容禁止冒泡',
+          description: '默认关闭，阻止提示内容的点击事件冒泡',
+          type:'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.trigger === 'click';
+          },
+          value: {
+            get({ data }) {
+              return data.contentBubble;
+            },
+           set({ data }, value: boolean) {
+              data.contentBubble = value;
+            }}
+        },
+        {
+          title: '选项禁止冒泡',
           description: '默认关闭，阻止选项的点击事件冒泡',
           type:'switch',
           value: {
