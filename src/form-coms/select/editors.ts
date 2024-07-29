@@ -372,8 +372,8 @@ export default {
           description: '可在预览态下看到效果，调试态基于画布元素',
           type: 'select',
           options: [
-            { label: '触发节点', value: 'current' },
             { label: 'Body元素', value: 'body' },
+            { label: '当前节点', value: 'current' }
           ],
           value: {
             get({ data }) {
