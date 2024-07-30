@@ -22,7 +22,7 @@ export default {
     style: [
       {
         title: '动态默认样式',
-        description: '开启后，可以通过逻辑连线修改默认样式',
+        description: '开启后，可以通过逻辑连线连接文本的输入项【设置默认样式】动态修改默认样式',
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
@@ -73,6 +73,7 @@ export default {
         {
           title: '点击事件',
           type: '_Event',
+          description: '点击文本时触发，触发【点击】输出项事件',
           options: {
             outputId: OutputIds.Click
           }
@@ -80,6 +81,7 @@ export default {
         {
           title: '点击输出内容',
           type: 'text',
+          description: '设置【点击】输出项事件输出的文本内容',
           options: {
             placeholder: '默认输出文本内容'
           },
@@ -97,6 +99,8 @@ export default {
         {
           title: '内容',
           type: 'textarea',
+          description:
+            '设置文本的默认内容，也可以通过逻辑连线连接文本的输入项【内容】动态修改文本的内容',
           options: {
             locale: true
           },
@@ -112,6 +116,7 @@ export default {
         {
           title: '文本溢出/省略',
           type: 'switch',
+          description: '设置文本溢出换行时是否省略溢出部分',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.isEllipsis;
@@ -127,6 +132,7 @@ export default {
         {
           title: '最大显示行数',
           type: 'InputNumber',
+          description: '设置文本的最大显示行数，开启【文本溢出/省略】配置项后才能配置',
           options: [{ min: 1, width: '100%' }],
           ifVisible({ data }: EditorResult<Data>) {
             return data.isEllipsis;
