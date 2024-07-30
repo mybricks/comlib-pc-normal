@@ -109,6 +109,7 @@ export default {
         {
           title: '默认状态',
           type: 'select',
+          description: '开关默认的状态，可以设置默认开启或者关闭',
           options: [
             {
               label: '开启',
@@ -130,7 +131,7 @@ export default {
         },
         {
           title: '开启值',
-          description: '开关开启时的value',
+          description: '开关开启时的value，可以设置为文本、数字、布尔等类型',
           type: 'valueSelect',
           options: ['text', 'number', 'boolean'],
           value: {
@@ -145,7 +146,7 @@ export default {
         },
         {
           title: '关闭值',
-          description: '开关关闭时的value',
+          description: '开关关闭时的value，可以设置为文本、数字、布尔等类型',
           type: 'valueSelect',
           options: ['text', 'number', 'boolean'],
           value: {
@@ -161,6 +162,7 @@ export default {
         {
           title: '文案',
           type: 'Map',
+          description: '设置开关打开和关闭时展示的文本',
           options: {
             notaddel: true,
             noteditkey: true,
@@ -249,6 +251,7 @@ export default {
         {
           title: '校验触发事件',
           type: '_event',
+          description: '自定义校验的触发事件，开启自定义校验后校验时会触发【触发校验】输出项事件',
           ifVisible({ data }: EditorResult<Data>) {
             const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
@@ -264,6 +267,8 @@ export default {
           items: [
             {
               title: '值初始化',
+              description:
+                '设置开关的初始值时触发，可以通过逻辑连线连接开关的输入项【设置初始值】触发【值初始化】输出项事件',
               type: '_event',
               options: {
                 outputId: 'onInitial'
@@ -271,6 +276,8 @@ export default {
             },
             {
               title: '值更新',
+              description:
+                '开关的值发生变化时触发，可以通过逻辑连线连接开关的输入项【设置设置数据】和用户点击开闭开关触发【值更新】输出项事件',
               type: '_event',
               options: {
                 outputId: 'onChange'
