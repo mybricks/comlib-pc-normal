@@ -3,7 +3,7 @@ import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
-import { InputIds, OutputIds, TimeDateLimitItem } from '../types';
+import { InputIds, OutputIds, TimeDateLimitItem, ValidateInfo } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
@@ -315,7 +315,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
+    inputs[InputIds.SetValidateInfo]((info: ValidateInfo, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
@@ -415,8 +415,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
             value={value}
             {...data.config}
             placeholder={[
-              env.i18n(data.config.placeholder[0]),
-              env.i18n(data.config.placeholder[1])
+              env.i18n(data.config.placeholder?.[0]),
+              env.i18n(data.config.placeholder?.[1])
             ]}
             ranges={data.useRanges ? rangeOptions : []}
             showTime={getShowTime()}

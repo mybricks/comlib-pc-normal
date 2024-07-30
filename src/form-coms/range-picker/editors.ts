@@ -7,21 +7,22 @@ import styleEditor from './styleEditor';
 
 export const refreshSchema = ({ data, input, output }: { data: Data; input: any; output: any }) => {
   const baseType = data.contentType === 'timeStamp' ? 'number' : 'string';
-  const newSchema = data.dateType === 'string'
-    ? {
-      type: 'string'
-    }
-    : {
-      type: 'tuple',
-      items: [
-        {
-          type: baseType
-        },
-        {
-          type: baseType
+  const newSchema =
+    data.dateType === 'string'
+      ? {
+          type: 'string'
         }
-      ]
-    };
+      : {
+          type: 'tuple',
+          items: [
+            {
+              type: baseType
+            },
+            {
+              type: baseType
+            }
+          ]
+        };
   input.get(InputIds.SetInitialValue).setSchema(newSchema);
   input.get(InputIds.SetValue).setSchema(newSchema);
   output.get(OutputIds.OnChange).setSchema(newSchema);
@@ -42,7 +43,6 @@ const emptyRules = [
   }
 ];
 
-
 export default {
   '@resize': {
     options: ['width']
@@ -50,13 +50,13 @@ export default {
   '@init': ({ style, data }) => {
     style.width = '100%';
     data.formatMap = {
-      "日期": encodeURIComponent("YYYY-MM-DD"),
-      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
-      "周": encodeURIComponent("YYYY-wo"),
-      "月份": encodeURIComponent("YYYY-MM"),
-      "季度": encodeURIComponent("YYYY-\\QQ"),
-      "年份": encodeURIComponent("YYYY")
-    }
+      日期: encodeURIComponent('YYYY-MM-DD'),
+      '日期+时间': encodeURIComponent('YYYY-MM-DD HH:mm:ss'),
+      周: encodeURIComponent('YYYY-wo'),
+      月份: encodeURIComponent('YYYY-MM'),
+      季度: encodeURIComponent('YYYY-\\QQ'),
+      年份: encodeURIComponent('YYYY')
+    };
   },
   ':root': {
     style: [
@@ -146,6 +146,7 @@ export default {
         {
           title: '日期选择类型',
           type: 'Select',
+          description: '设置日期选择类型，可选择的日期类型',
           options: [
             { label: '日期', value: 'date' },
             { label: '周', value: 'week' },
@@ -165,6 +166,7 @@ export default {
         {
           title: '时间选择',
           type: 'Switch',
+          description: '是否可以选择时间（时、分、秒）',
           value: {
             get({ data }) {
               return !!data.showTime;
@@ -177,6 +179,7 @@ export default {
         {
           title: '预设时间范围快捷选择',
           type: 'Switch',
+          description: '开启后可以配置预设时间范围快捷选择',
           value: {
             get({ data }) {
               return data.useRanges;
@@ -362,6 +365,7 @@ export default {
         {
           title: '校验触发事件',
           type: '_event',
+          description: '自定义校验的触发事件，开启自定义校验后校验时会触发【触发校验】输出项事件',
           ifVisible({ data }: EditorResult<Data>) {
             const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
@@ -389,39 +393,39 @@ export default {
                   if (data.formatMap && Object.keys(data.formatMap).length === 6) {
                     let newValueArr = Object.keys(data.formatMap).map((key, index) => {
                       return decodeURIComponent(data.formatMap[key]);
-                    })
+                    });
                     let newValue = {
-                      "日期": newValueArr[0],
-                      "日期+时间": newValueArr[1],
-                      "周": newValueArr[2],
-                      "月份": newValueArr[3],
-                      "季度": newValueArr[4],
-                      "年份": newValueArr[5]
-                    }
-                    return newValue
+                      日期: newValueArr[0],
+                      '日期+时间': newValueArr[1],
+                      周: newValueArr[2],
+                      月份: newValueArr[3],
+                      季度: newValueArr[4],
+                      年份: newValueArr[5]
+                    };
+                    return newValue;
                   } else {
                     return {
-                      "日期": "YYYY-MM-DD",
-                      "日期+时间": "YYYY-MM-DD HH:mm:ss",
-                      "周": "YYYY-wo",
-                      "月份": "YYYY-MM",
-                      "季度": "YYYY-\\QQ",
-                      "年份": "YYYY"
+                      日期: 'YYYY-MM-DD',
+                      '日期+时间': 'YYYY-MM-DD HH:mm:ss',
+                      周: 'YYYY-wo',
+                      月份: 'YYYY-MM',
+                      季度: 'YYYY-\\QQ',
+                      年份: 'YYYY'
                     };
                   }
                 },
                 set({ data }: EditorResult<Data>, value: any) {
                   let newValueArr = Object.keys(value).map((key, index) => {
                     return encodeURIComponent(value[key]);
-                  })
+                  });
                   let newValue = {
-                    "日期": newValueArr[0],
-                    "日期+时间": newValueArr[1],
-                    "周": newValueArr[2],
-                    "月份": newValueArr[3],
-                    "季度": newValueArr[4],
-                    "年份": newValueArr[5]
-                  }
+                    日期: newValueArr[0],
+                    '日期+时间': newValueArr[1],
+                    周: newValueArr[2],
+                    月份: newValueArr[3],
+                    季度: newValueArr[4],
+                    年份: newValueArr[5]
+                  };
                   data.formatMap = newValue;
                 }
               }
@@ -554,6 +558,8 @@ export default {
             {
               title: '值初始化',
               type: '_event',
+              description:
+                '设置日期范围选择框的初始值时触发，可以通过逻辑连线连接日期范围选择框的输入项【设置初始值】触发【值初始化】输出项事件',
               options: {
                 outputId: 'onInitial'
               }
@@ -561,6 +567,8 @@ export default {
             {
               title: '值更新',
               type: '_event',
+              description:
+                '日期范围选择框的值发生变化时触发，可以通过逻辑连线连接日期范围选择框的输入项【设置值】或用户选择日期触发【值更新】输出项事件',
               options: {
                 outputId: 'onChange'
               }
