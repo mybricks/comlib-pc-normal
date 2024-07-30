@@ -1,7 +1,13 @@
 import { Data, InputIds, OutputIds, SlotIds } from '../constants';
 import TabEditor from './tab';
 import { createItem, addEventIO } from './common';
-import { createStyleForDefault, createStyleForActive, createStyleForBar, setDynamicTabsIO, createFontStyleForActive } from './utils';
+import {
+  createStyleForDefault,
+  createStyleForActive,
+  createStyleForBar,
+  setDynamicTabsIO,
+  createFontStyleForActive
+} from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
 
 export const setSlotLayout = (slot, val) => {
@@ -28,12 +34,13 @@ export default {
     style.height = 'auto';
   },
   ':root': {
-    items({ }: EditorResult<Data>, cate1, cate2, cate3) {
+    items({}: EditorResult<Data>, cate1, cate2, cate3) {
       cate1.title = '常规';
       cate1.items = [
         {
           title: '插槽布局',
           type: 'layout',
+          description: '配置插槽内部的布局类型',
           ifVisible({ data }: EditorResult<Data>) {
             return !data.hideSlots;
           },
@@ -49,16 +56,17 @@ export default {
                 ...data.slotStyle,
                 ...val
               };
-              data.tabList.forEach(item => {
+              data.tabList.forEach((item) => {
                 const slotInstance = slots.get(item.id);
                 setSlotLayout(slotInstance, val);
-              })
+              });
             }
           }
         },
         {
           title: '添加标签页',
           type: 'Button',
+          description: '新增一个标签页，增加一个标签页插槽、标签页显示和隐藏输出',
           value: {
             set({ data, slots, output, env }: EditorResult<Data>) {
               const newItem = createItem(data);
@@ -98,9 +106,10 @@ export default {
         {
           title: '外观',
           type: 'Select',
+          description: '配置标签页的外观(基本样式)，包括卡片和简约类型',
           options: [
             { value: 'editable-card', label: '卡片' },
-            { value: 'line', label: '简约' },
+            { value: 'line', label: '简约' }
           ],
           value: {
             get({ data }: EditorResult<Data>) {
@@ -114,6 +123,7 @@ export default {
         {
           title: '尺寸',
           type: 'Select',
+          description: '标签页大小, 默认是中(middle)',
           options: [
             {
               label: '大',
@@ -140,6 +150,7 @@ export default {
         {
           title: '标签位置',
           type: 'Select',
+          description: '标签位置, 默认是上部(top)',
           options: [
             { label: '上', value: 'top' },
             { label: '左', value: 'left' },
@@ -158,6 +169,7 @@ export default {
         {
           title: '标签居中',
           type: 'Switch',
+          description: '标签页是否居中',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.centered;
@@ -170,6 +182,7 @@ export default {
         {
           title: '禁止点击切换',
           type: 'Switch',
+          description: '开启后，禁止点击切换标签页',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.prohibitClick;
@@ -182,6 +195,7 @@ export default {
         {
           title: '标签页隐藏时是否渲染',
           type: 'Switch',
+          description: '控制标签页隐藏时是否渲染',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.forceRender;
@@ -194,6 +208,8 @@ export default {
         {
           title: '动态设置显示tab',
           type: 'Switch',
+          description:
+            '开启后，可以通过逻辑连线连接标签页的输入项【设置显示tab】设置显示（激活）的标签页',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.useDynamicTab;
@@ -213,10 +229,10 @@ export default {
                   desc: '设置显示的标签页，下标从0开始'
                 });
                 output.add(OutputIds.SetShowTabComplete, '完成', { type: 'any' });
-                input.get(InputIds.SetShowTab).setRels([OutputIds.SetShowTabComplete])
+                input.get(InputIds.SetShowTab).setRels([OutputIds.SetShowTabComplete]);
               } else {
                 input.remove(InputIds.SetShowTab);
-                output.remove(OutputIds.SetShowTabComplete)
+                output.remove(OutputIds.SetShowTabComplete);
               }
               data.useDynamicTab = value;
             }
@@ -225,6 +241,7 @@ export default {
         {
           title: '隐藏插槽占位',
           type: 'Switch',
+          description: '是否隐藏插槽占位',
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.hideSlots;
@@ -237,21 +254,23 @@ export default {
         {
           title: '动态标签页',
           type: 'switch',
+          description: '开启后，可以通过逻辑连线连接标签页的输入项【设置标签页数据】动态设置标签页',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.dynamicTabs;
             },
             set(props: EditorResult<Data>, val: boolean) {
-              const { data } = props
-              data.dynamicTabs = val
-              data.hideSlots = val
-              setDynamicTabsIO(props)
+              const { data } = props;
+              data.dynamicTabs = val;
+              data.hideSlots = val;
+              setDynamicTabsIO(props);
             }
           }
         },
         {
           title: '可新增',
           type: 'switch',
+          description: '开启后，可以点击新增标签页',
           ifVisible({ data }: EditorResult<Data>) {
             return data.type === 'editable-card';
           },
@@ -260,13 +279,14 @@ export default {
               return !data.hideAdd;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.hideAdd = !val
+              data.hideAdd = !val;
             }
           }
         },
         {
           title: '可删除',
           type: 'switch',
+          description: '开启后，可以点击删除按钮删除标签页',
           ifVisible({ data }: EditorResult<Data>) {
             return data.type === 'editable-card';
           },
@@ -277,9 +297,9 @@ export default {
             set({ data }: EditorResult<Data>, val: boolean) {
               data.closable = val;
               data.tabList = data.tabList.map((tab) => {
-                tab.closable = val
-                return tab
-              })
+                tab.closable = val;
+                return tab;
+              });
             }
           }
         },
@@ -289,6 +309,7 @@ export default {
             {
               title: '左侧',
               type: 'Switch',
+              description: '开启后，左侧新增【左侧内容】插槽',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.useLeftExtra;
@@ -307,6 +328,7 @@ export default {
             {
               title: '右侧',
               type: 'Switch',
+              description: '开启后，右侧新增【右侧内容】插槽',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.useRigthExtra;
@@ -330,30 +352,33 @@ export default {
             {
               title: '标签页新增',
               type: '_Event',
+              description: '新增标签页时触发【标签页新增】输出项事件',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.type === 'editable-card';
               },
               options() {
                 return {
                   outputId: OutputIds.AddTab
-                }
+                };
               }
             },
             {
               title: '标签页删除',
               type: '_Event',
+              description: '删除标签页时触发【标签页删除】输出项事件',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.type === 'editable-card';
               },
               options() {
                 return {
                   outputId: OutputIds.RemoveTab
-                }
+                };
               }
             },
             {
               title: '标签页点击',
               type: '_Event',
+              description: '点击标签页时触发【标签页点击】输出项事件',
               options: () => {
                 return {
                   outputId: OutputIds.OnTabClick
@@ -411,7 +436,9 @@ export default {
             color: '#1890ff'
           },
           target: ({ id }: EditorResult<Data>) =>
-            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)} div.ant-tabs-tab-btn`
+            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(
+              id
+            )} div.ant-tabs-tab-btn`
         })
       },
       {

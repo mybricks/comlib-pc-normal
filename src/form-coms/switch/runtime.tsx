@@ -6,7 +6,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { StatusEnum } from './const';
-import { InputIds, OutputIds } from '../types';
+import { InputIds, OutputIds, ValidateInfo } from '../types';
 
 export interface Data {
   value: boolean | undefined;
@@ -110,7 +110,7 @@ export default function ({
 
   useEffect(() => {
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
+    inputs[InputIds.SetValidateInfo]((info: ValidateInfo, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);

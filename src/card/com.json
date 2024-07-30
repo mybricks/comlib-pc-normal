@@ -1,7 +1,7 @@
 {
   "title": "卡片",
   "namespace": "mybricks.normal-pc.card",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "卡片",
   "author": "HuangQiuyun",
   "author_name": "MyBricks",
@@ -22,7 +22,8 @@
       },
       "rels": [
         "setTitleDone"
-      ]
+      ],
+      "desc": "动态修改卡片的标题内容,并关联输出项【设置标题完成】"
     }
   ],
   "outputs": [
@@ -31,14 +32,16 @@
       "title": "设置标题完成",
       "schema": {
         "type": "string"
-      }
+      },
+      "desc": "设置标题完成并输出标题，关联输入项【标题】"
     }
   ],
   "slots": [
     {
       "id": "body",
       "title": "卡片内容容器",
-      "layout": "smart"
+      "layout": "smart",
+      "defer": true
     }
   ]
 }

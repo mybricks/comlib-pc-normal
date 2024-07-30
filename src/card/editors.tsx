@@ -4,11 +4,11 @@ import { uuid } from '../utils';
 import { getFilterSelector } from '../utils/cssSelector';
 import { message } from 'antd';
 
-let ItemsLength, addItem, delItem;
+let ItemsLength: number, addItem, delItem;
 
 const initItems = (data: Data, slot) => {
   ItemsLength = (data.items || []).length;
-  addItem = (item) => {
+  addItem = (item: Item) => {
     data.items.push(item);
     slot.add(item.key, item.name);
   };
@@ -123,6 +123,7 @@ export default {
     items: ({}: EditorResult<Data>, cate1, cate2) => {
       const eventItems = [
         Editor<Data>('点击', EditorType.Switch, 'useClick', {
+          description: '开启后可配置卡片的点击事件',
           value: {
             set({ data, output }: EditorResult<Data>, value: boolean) {
               const hasClickEvent = output.get(OutputIds.Click);
@@ -141,6 +142,7 @@ export default {
         }),
         {
           title: '触发数据',
+          description: '可以配置输出项【单击卡片】和【双击卡片】事件的输出数据',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.useClick;
           },
@@ -297,6 +299,7 @@ export default {
           ]
         },
         Editor<Data>('单击卡片', EditorType.Event, null, {
+          description: '单击卡片时触发，触发【单击卡片】输出项事件',
           options: () => {
             return {
               outputId: OutputIds.Click
@@ -307,6 +310,7 @@ export default {
           }
         }),
         Editor<Data>('双击卡片', EditorType.Event, null, {
+          description: '双击卡片时触发，触发【双击卡片】输出项事件',
           options: () => {
             return {
               outputId: OutputIds.DoubleClick
@@ -385,6 +389,7 @@ export default {
           title: '布局',
           type: 'layout',
           options: [],
+          description: '配置卡片的内部的布局类型',
           value: {
             get({ data, slots }: EditorResult<Data>) {
               const { slotStyle = {} } = data;
@@ -408,6 +413,7 @@ export default {
         {
           title: '标题内容',
           type: 'Text',
+          description: '卡片的标题内容',
           ifVisible({ data }: EditorResult<Data>) {
             return data.showTitle;
           },
@@ -423,6 +429,7 @@ export default {
         {
           title: '显示标题',
           type: 'Switch',
+          description: '是否显示卡片上半部的标题区',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.showTitle || true;
@@ -433,8 +440,9 @@ export default {
           }
         },
         {
-          title: '开启卡片右上角操作',
+          title: '开启卡片右上角操作区',
           type: 'Switch',
+          description: '是否开启卡片右上角操作区',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.useExtra;

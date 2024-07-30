@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -66,7 +66,8 @@
       },
       "rels": [
         "getTabsDone"
-      ]
+      ],
+      "desc": "获取当前所有的的标签页信息列表"
     }
   ],
   "outputs": [
@@ -97,7 +98,8 @@
             "description": "点击的标签页的下标index"
           }
         }
-      }
+      },
+      "desc": "输出点击的标签页信息"
     },
     {
       "id": "outActiveTab",
@@ -126,43 +128,49 @@
             "description": "点击的标签页的下标index"
           }
         }
-      }
+      },
+      "desc": "输出激活的标签页信息，关联输入项【获取激活tab项】"
     },
     {
       "id": "tab0_into",
       "title": "标签页1显示",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "标签页1显示事件"
     },
     {
       "id": "tab0_leave",
       "title": "标签页1隐藏",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "标签页1隐藏事件"
     },
     {
       "id": "previousComplete",
       "title": "完成",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "标签页跳转上一页完成，关联输入项【上一页】"
     },
     {
       "id": "nextComplete",
       "title": "完成",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "标签页跳转下一页完成，关联输入项【下一页】"
     },
     {
       "id": "activeComplete",
       "title": "完成",
       "schema": {
         "type": "any"
-      }
-    }, 
+      },
+      "desc": "激活标签页完成，关联输入项【激活tab项】"
+    },
     {
       "id": "addTab",
       "title": "标签页新增",
@@ -198,7 +206,8 @@
             }
           }
         }
-      }
+      },
+      "desc": "标签页新增"
     },
     {
       "id": "removeTab",
@@ -235,7 +244,8 @@
             }
           }
         }
-      }
+      },
+      "desc": "标签页删除"
     },
     {
       "id": "getTabsDone",
@@ -262,14 +272,16 @@
             }
           }
         }
-      }
+      },
+      "desc": "输出标签页数据，关联输入项【获取标签页列表】"
     }
   ],
   "slots": [
     {
       "id": "tab0",
       "title": "标签页1",
-      "layout": "smart"
+      "layout": "smart",
+      "defer": true
     }
   ]
 }

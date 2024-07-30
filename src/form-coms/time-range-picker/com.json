@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-range-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "时间范围选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -227,6 +227,7 @@
     {
       "id": "setValueDone",
       "title": "设置值完成",
+      "desc": "设置值时间完成，输出当前值",
       "schema": {
         "type": "array",
         "items": {
@@ -237,6 +238,7 @@
     {
       "id": "setInitialValueDone",
       "title": "设置初始值完成",
+      "desc": "设置初始值事件完成，输出初始值",
       "schema": {
         "type": "array",
         "items": {
@@ -247,6 +249,7 @@
     {
       "id": "resetValueDone",
       "title": "重置完成",
+      "desc": "重置完成事件输出",
       "schema": {
         "type": "any"
       }
@@ -254,6 +257,7 @@
     {
       "id": "setDisabledDone",
       "title": "禁用完成",
+      "desc": "禁用完成事件输出",
       "schema": {
         "type": "any"
       }
@@ -261,6 +265,7 @@
     {
       "id": "setEnabledDone",
       "title": "启用完成",
+      "desc": "启用完成事件输出",
       "schema": {
         "type": "any"
       }
@@ -268,6 +273,7 @@
     {
       "id": "isEnableDone",
       "title": "启用/禁用完成",
+      "desc": "启用/禁用完成事件输出",
       "schema": {
         "type": "boolean"
       }
@@ -275,6 +281,7 @@
     {
       "id": "isEditableDone",
       "title": "设置编辑/只读完成",
+      "desc": "设置编辑/只读完成事件输出",
       "schema": {
         "type": "boolean"
       }
@@ -282,6 +289,7 @@
     {
       "id": "setValidateInfoDone",
       "title": "设置校验状态完成",
+      "desc": "设置校验状态完成事件，输出校验结果",
       "schema": {
         "type": "object",
         "properties": {
