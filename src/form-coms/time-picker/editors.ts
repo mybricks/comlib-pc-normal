@@ -261,6 +261,7 @@ export default {
             {
               title: '禁用状态',
               type: 'switch',
+              description: '配置默认是否禁用状态',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return !!data.disabled;
@@ -278,6 +279,7 @@ export default {
             {
               title: '时间格式模版',
               type: 'select',
+              description: '配置输出数据的时间格式化模版，输出的数据会进行对应的格式化',
               options: {
                 options: [
                   { label: '时:分:秒', value: 'HH:mm:ss' },
@@ -307,6 +309,7 @@ export default {
             },
             {
               title: '自定义模版',
+              description: '自定义输出数据的时间格式，选中【时间格式模版】的自定义项后可配置',
               type: 'text',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.format === 'custom';
@@ -327,7 +330,7 @@ export default {
           items: [
             {
               title: '时',
-              description: '展示可选的小时',
+              description: '设置小时的步长，展示可选的小时',
               type: 'inputNumber',
               options: [{ width: 100, min: 1, max: 24 }],
               value: {
@@ -341,7 +344,7 @@ export default {
             },
             {
               title: '分',
-              description: '展示可选的分钟',
+              description: '设置分钟的步长，展示可选的分钟',
               type: 'inputNumber',
               options: [{ width: 100, min: 0, max: 60 }],
               value: {
@@ -355,7 +358,7 @@ export default {
             },
             {
               title: '秒',
-              description: '展示可选的秒',
+              description: '设置秒的步长，展示可选的秒',
               type: 'inputNumber',
               options: [{ width: 100, min: 0, max: 60 }],
               value: {
@@ -430,6 +433,8 @@ export default {
             {
               title: '校验触发事件',
               type: '_event',
+              description:
+                '自定义校验的触发事件，开启自定义校验后校验时会触发【触发校验】输出项事件',
               ifVisible({ data }: EditorResult<Data>) {
                 const customRule = (data.rules || defaultRules).find(
                   (i) => i.key === RuleKeys.CUSTOM_EVENT
@@ -448,6 +453,8 @@ export default {
             {
               title: '值初始化',
               type: '_event',
+              description:
+                '设置时间选择框的初始值时触发，可以通过逻辑连线连接时间选择框的输入项【设置初始值】触发【值初始化】输出项事件',
               options: {
                 outputId: 'onInitial'
               }
@@ -455,6 +462,8 @@ export default {
             {
               title: '值更新',
               type: '_Event',
+              description:
+                '时间选择框的值发生变化时触发，可以通过逻辑连线连接时间选择框的输入项【设置值】或用户选择时间触发【值更新】输出项事件',
               options: {
                 outputId: 'onChange'
               }

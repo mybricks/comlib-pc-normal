@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "时间选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -215,6 +215,7 @@
     {
       "id": "setValueDone",
       "title": "设置值完成",
+      "desc": "设置值事件完成输出",
       "schema": {
         "type": "number"
       }
@@ -222,6 +223,7 @@
     {
       "id": "setInitialValueDone",
       "title": "设置初始值完成",
+      "desc": "设置初始值事件完成输出",
       "schema": {
         "type": "number"
       }
@@ -229,6 +231,7 @@
     {
       "id": "resetValueDone",
       "title": "重置完成",
+      "desc": "重置事件完成输出",
       "schema": {
         "type": "any"
       }
@@ -236,6 +239,7 @@
     {
       "id": "setDisabledDone",
       "title": "禁用完成",
+      "desc": "禁用事件输出",
       "schema": {
         "type": "any"
       }
@@ -243,6 +247,7 @@
     {
       "id": "setEnabledDone",
       "title": "启用完成",
+      "desc": "启用事件完成输出",
       "schema": {
         "type": "any"
       }
@@ -250,6 +255,7 @@
     {
       "id": "isEnableDone",
       "title": "启用/禁用完成",
+      "desc": "启用/禁用完成事件完成输出",
       "schema": {
         "type": "boolean"
       }
@@ -257,6 +263,7 @@
     {
       "id": "isEditableDone",
       "title": "设置编辑/只读完成",
+      "desc": "设置编辑/只读完成事件完成输出",
       "schema": {
         "type": "boolean"
       }
@@ -264,6 +271,7 @@
     {
       "id": "setColorDone",
       "title": "设置字体颜色完成",
+      "desc": "设置字体颜色完成事件完成输出",
       "schema": {
         "type": "string"
       }
@@ -271,6 +279,7 @@
     {
       "id": "setValidateInfoDone",
       "title": "设置校验状态完成",
+      "desc": "设置校验状态完成事件完成输出",
       "schema": {
         "type": "object",
         "properties": {
