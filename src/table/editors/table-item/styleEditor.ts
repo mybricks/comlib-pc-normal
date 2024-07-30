@@ -20,7 +20,7 @@ const StyleEditor = [
   {
     title: '内容省略展示',
     type: 'Switch',
-    description: '内容超出宽度后文本是否自动省略、不换行、以省略号结尾',
+    description: '开启后，表格的单元格宽度不够时，内部文本内容可以自动省略、不换行、以省略号结尾',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       return getColumnItem(data, focusArea).contentType === ContentTypeEnum.Text;
@@ -39,6 +39,7 @@ const StyleEditor = [
   },
   {
     title: '适应剩余宽度',
+    description: "开启后，当前表格列将会填充剩余宽度",
     type: 'Switch',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;

@@ -75,6 +75,7 @@ const FilterEditor = {
   items: [
     {
       title: '使用筛选',
+      description: "开启后，可以对表格数据进行筛选设置。同时会开启表格输入项【获取筛选数据】【设置筛选数据】【设置筛选项】，用户可以通过逻辑连线实现对应筛选需求",
       type: 'Switch',
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
@@ -235,6 +236,7 @@ const FilterEditor = {
     },
     {
       title: '自定义筛选项',
+      description: '筛选采用【本地定义】方式后，可以设置键值对来自定义筛选项',
       type: 'Map',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;

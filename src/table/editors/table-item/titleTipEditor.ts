@@ -7,6 +7,7 @@ const TitleTipEditor = {
   items: [
     {
       title: '显示提示',
+      description: "开启后，支持配置表头提示文案，鼠标hover时可以显示自定义信息，用于添加对表格列的说明。",
       type: 'Switch',
       value: {
         get({ data, focusArea }: EditorResult<Data>) {

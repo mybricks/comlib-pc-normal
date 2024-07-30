@@ -8,7 +8,7 @@ const CellEditor = {
     {
       title: '单元格属性设置',
       type: 'switch',
-      description: '开启后可以根据数据动态设置单元格样式和其他属性',
+      description: '开启后，可以使用【单元格属性设置脚本】功能',
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
@@ -22,6 +22,7 @@ const CellEditor = {
     },
     {
       title: '单元格属性设置脚本',
+      description: '可以通过js脚本动态设置单元格的样式和其他属性',
       type: 'code',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         const item = getColumnItem(data, focusArea);

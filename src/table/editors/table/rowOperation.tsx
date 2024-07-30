@@ -7,6 +7,7 @@ export default {
   items: [
     {
       title: '行点击',
+      description: '开启后，可以响应行点击事件',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -25,6 +26,7 @@ export default {
     },
     {
       title: '行点击事件',
+      description: '在打开行点击开关后，可以在该事件内编排行点击逻辑',
       type: '_Event',
       ifVisible({ data }: EditorResult<Data>) {
         return data.enableRowClick;
@@ -37,6 +39,7 @@ export default {
     },
     {
       title: '单元格点击',
+      description: '开启后，可以响应表格的单元格点击事件',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -55,6 +58,7 @@ export default {
     },
     {
       title: '单元格点击事件',
+      description: '在打开单元格点击开关后，可以在该事件内编排单元格点击逻辑',
       type: '_Event',
       ifVisible({ data }: EditorResult<Data>) {
         return data.enableCellClick;
@@ -67,6 +71,7 @@ export default {
     },
     {
       title: '行双击',
+      description: '开启后，可以响应行双击事件',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -85,6 +90,7 @@ export default {
     },
     {
       title: '行双击事件',
+      description: '在打开行双击开关后，可以在该事件内编排行双击逻辑',
       type: '_Event',
       ifVisible({ data }: EditorResult<Data>) {
         return data.enableRowDoubleClick;
@@ -110,6 +116,7 @@ export default {
     },
     {
       title: '行属性设置脚本',
+      description: '在打开行属性设置开关后，可以通过js代码动态设置表格行的样式和其他属性',
       type: 'code',
       ifVisible({ data }: EditorResult<Data>) {
         return data.enableOnRow;
@@ -141,6 +148,7 @@ export default {
     },
     {
       title: '选中行高亮',
+      description: '开启后，可以通过逻辑连线连接输入项【设置选中行序号】，选中行会高亮，支持设置选中行的高亮颜色。',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -166,6 +174,7 @@ export default {
     },
     {
       title: '高亮颜色',
+      description: '在打开选中行高亮开关后，可以设置高亮的颜色',
       type: 'style',
       options: {
         plugins: ['bgcolor']

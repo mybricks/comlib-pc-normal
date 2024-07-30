@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.1.89",
+  "version": "1.1.90",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -79,7 +79,7 @@
     {
       "id": "getTableData",
       "title": "表格数据",
-      "desc": "获取表格数据，并输出内容",
+      "desc": "获取表格数据并输出",
       "schema": {
         "type": "array"
       }
@@ -123,6 +123,14 @@
       "schema": {
         "type": "string"
       }
+    }
+  ],
+  "slots": [
+    {
+      "id": "col",
+      "title": "列插槽",
+      "defer": true,
+      "description": "用于自定义列内容，例如嵌入工具条、文本等，列插槽是作用域插槽，可以提供获取当前行数据，修改行数据和上下移动当前行的编排能力"
     }
   ]
 }

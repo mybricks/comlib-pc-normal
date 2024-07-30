@@ -43,6 +43,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
   return [
     {
       title: '勾选',
+      description: '开启后，可以进行表格勾选相关的操作。同时可以通过逻辑连线连接输入项【获取勾选数据】和【清空勾选】',
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -77,7 +78,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
               input.remove(InputIds.GET_ROW_SELECTION);
             }
           }
-          updateSlot({data, slot})
+          updateSlot({ data, slot })
         }
       }
     },
@@ -89,6 +90,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
       items: [
         {
           title: '勾选类型',
+          description: '支持设置勾选类型为单选和批量选择，默认为批量选择',
           type: 'Select',
           options: [
             { label: '单选', value: RowSelectionTypeEnum.Radio },
@@ -106,6 +108,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '勾选限制',
+          description: '设置最多勾选几行数据，0表示不限制',
           type: 'inputnumber',
           options: [{ title: '最多', min: 0, width: '100%', placeholder: '0为不限制' }],
           ifVisible({ data }: EditorResult<Data>) {
@@ -122,6 +125,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: `行点击触发勾选`,
+          description: '开启后，通过点击表格行就可以触发勾选，不需要额外开启行点击事件',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
             return data.useRowSelection;
@@ -220,7 +224,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '动态设置勾选项',
-          description: '开启后，支持通过逻辑连线设置勾选项',
+          description: '开启后，可以通过逻辑连线连接输入项【设置勾选项】, 实现动态设置勾选项',
           type: 'Switch',
           value: {
             get({ data }: EditorResult<Data>) {

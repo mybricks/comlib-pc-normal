@@ -74,6 +74,7 @@ const SortEditor = {
     },
     {
       title: '排序方式',
+      description: "如果选择自定义方式，则可以使用排序事件，在排序事件内通过逻辑连线请求排序接口并将返回的数据设置到表格上。",
       type: 'Select',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;

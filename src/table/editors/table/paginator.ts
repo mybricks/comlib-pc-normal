@@ -18,6 +18,7 @@ export const PageSchema = {
 export default [
   {
     title: '分页模式',
+    description: "是否开启表格分页功能。开启后，设置表格数据源时需要包含分页信息",
     type: 'Switch',
     ifVisible({ data }: EditorResult<Data>) {
       return !data?.domainModel?.entity;

@@ -32,6 +32,7 @@ const EventEditor = [
   },
   {
     title: '排序事件',
+    description: '点击排序后触发该事件，入参为列id和order',
     type: '_Event',
     ifVisible({ data }: EditorResult<Data>) {
       return data.columns.some((item) => item.sorter?.enable);

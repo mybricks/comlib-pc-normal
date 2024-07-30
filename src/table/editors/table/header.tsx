@@ -42,7 +42,7 @@ const headerEditor = {
     },
     {
       title: '列设置按钮',
-      description: '开启后，支持在表格右上角显示列设置按钮，用于调整展示列',
+      description: '开启后，支持在表格右上角显示列设置按钮，可以在运行时调整展示列的顺序、固定和显隐',
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {

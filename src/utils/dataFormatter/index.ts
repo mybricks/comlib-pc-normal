@@ -85,6 +85,7 @@ const genRealFormatterInfos = (formatters: Params['formatters']) => {
 const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params['value']) => {
   return {
     title: '格式化类型',
+    description: "对数据进行自定义处理或格式转化，支持时间处理，枚举映射或自定义脚本",
     type: 'select',
     options: formatters.map((item) => ({
       label: item.label,

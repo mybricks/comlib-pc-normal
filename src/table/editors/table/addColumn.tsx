@@ -65,6 +65,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
       {
         title: '',
         type: 'array',
+        description: '手动添加表格列',
         options: {
           addText: '添加列',
           editable: true,

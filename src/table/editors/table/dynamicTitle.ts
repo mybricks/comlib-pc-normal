@@ -6,7 +6,8 @@ import { OutputIds } from '../../constants';
 const DynamicTitleEditor = [
   {
     title: '动态设置表头',
-    description: '开启后, 支持通过逻辑连线, 动态设置表格标题、字段和宽度',
+    description: `开启后, 原有的表格列不会被使用，可以通过逻辑连线连接表格的输入项【设置表头】, 重新设置当前表格的所有列，包括标题、字段和宽度等。
+此时可以使用模板列功能。功能描述如下：新传入的列中，如果设置了template字段，并且在原始列中有字段与该值一样的列，则将以对应列为模板创建新列进行复用`,
     type: 'switch',
     value: {
       get({ data }: EditorResult<Data>) {
@@ -29,7 +30,7 @@ const DynamicTitleEditor = [
   },
   {
     title: '动态修改列属性',
-    description: '开启后, 支持通过逻辑连线, 动态修改已有列的显隐、标题、字段和宽度',
+    description: '开启后, 可以通过逻辑连线连接表格的输入项【修改列属性】，支持动态修改已经存在的列的显隐、标题、字段和宽度',
     type: 'switch',
     value: {
       get({ data }: EditorResult<Data>) {
