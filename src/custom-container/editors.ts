@@ -39,6 +39,7 @@ export default {
         {
           title: '布局',
           type: 'layout',
+          description: '设置布局方式，包括智能布局、纵向排版、横向排版、自由布局',
           options: [],
           value: {
             get({ data, slots }: EditorResult<Data>) {

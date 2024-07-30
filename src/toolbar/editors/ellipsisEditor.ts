@@ -7,6 +7,7 @@ const ellipsisEditor = [
       {
         title: '省略',
         type: 'Switch',
+        description: '超出工具条长度的按钮，是否折叠成省略号',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.useEllipses;
@@ -19,6 +20,7 @@ const ellipsisEditor = [
       {
         title: '最大显示数量',
         type: 'InputNumber',
+        description: '工具条中最多显示的按钮数量，超出数量的按钮将折叠成省略号',
         options: [{ width: 100, min: 0 }],
         ifVisible({ data }: EditorResult<Data>) {
           return data.useEllipses;

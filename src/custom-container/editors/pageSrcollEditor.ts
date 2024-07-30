@@ -7,6 +7,7 @@ export const PageScrollEditor = [
       {
         title: '锚点滚动',
         type: 'Switch',
+        description: '是否使用锚点滚动',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.useSrcollIntoView;
@@ -43,6 +44,7 @@ export const PageScrollEditor = [
       {
         title: '动画',
         type: 'select',
+        description: '是否使用动画',
         options: [
           { label: '无', value: BehaviorEnum.Auto },
           { label: '有', value: BehaviorEnum.Smooth }
@@ -62,6 +64,7 @@ export const PageScrollEditor = [
       {
         title: '垂直位置',
         type: 'select',
+        description: '锚点滚动定位到目标元素的垂直位置',
         options: [
           { label: '顶部', value: PositionEnum.Start },
           { label: '居中', value: PositionEnum.Center },
@@ -83,6 +86,7 @@ export const PageScrollEditor = [
       {
         title: '水平位置',
         type: 'select',
+        description: '锚点滚动定位到目标元素的水平位置',
         options: [
           { label: '顶部', value: PositionEnum.Start },
           { label: '居中', value: PositionEnum.Center },

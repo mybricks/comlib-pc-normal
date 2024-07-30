@@ -4,6 +4,7 @@ const StyleEditor = [
   {
     title: '对齐方式',
     type: 'Select',
+    description: '设置按钮的对齐方式',
     options: [
       { value: AlignEnum.FlexStart, label: '居左' },
       { value: AlignEnum.Center, label: '居中' },
@@ -21,6 +22,7 @@ const StyleEditor = [
   {
     title: '间距',
     type: 'InputNumber',
+    description: '设置按钮之间的间距',
     options: [
       { title: '水平', min: 0, width: 100 },
       { title: '垂直', min: 0, width: 100 }

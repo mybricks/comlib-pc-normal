@@ -108,20 +108,22 @@ export default {
       {
         title: '作为热区使用',
         type: 'switch',
+        description:
+          '按钮作为热区使用时，按钮没有样式，但点击后会触发事件。在自由布局下可以覆盖到任意位置，使对应位置具有点击能力。',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.asMapArea;
           },
-          set({ data,style }: EditorResult<Data>, value: boolean) {
+          set({ data, style }: EditorResult<Data>, value: boolean) {
             // 防止宽高塌陷
-            if(value) {
-              if(style.heightAuto) {
-                style.heightAuto = undefined
-                style.height = 32
+            if (value) {
+              if (style.heightAuto) {
+                style.heightAuto = undefined;
+                style.height = 32;
               }
-              if(style.widthAuto) {
-                style.widthAuto = undefined
-                style.width = 65
+              if (style.widthAuto) {
+                style.widthAuto = undefined;
+                style.width = 65;
               }
             }
             data.asMapArea = value;
@@ -149,6 +151,7 @@ export default {
           {
             title: '类型',
             type: 'Select',
+            description: '触发按钮的单击|双击事件后，单击|双击事件输出项传出的数据类型',
             options: [
               { value: 'null', label: '无' },
               { value: 'number', label: '数字' },
