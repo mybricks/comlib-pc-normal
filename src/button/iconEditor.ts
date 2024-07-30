@@ -30,6 +30,7 @@ const IconEditor = [
       {
         title: '自定义',
         type: 'switch',
+        description: '是否使用自定义图标，开启后可以上传自定义图标',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.isCustom;
@@ -42,6 +43,7 @@ const IconEditor = [
       { 
         title: '图标库',
         type: 'Icon',
+        description: '选择图标',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.isCustom;
         },
@@ -57,6 +59,7 @@ const IconEditor = [
       {
         title: '上传',
         type: 'ImageSelector',
+        description: '上传自定义图标',
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.isCustom;
         },
@@ -72,6 +75,7 @@ const IconEditor = [
       {
         title: '尺寸',
         type: 'InputNumber',
+        description: '图标大小',
         options: [
           { title: '高度', min: 0, width: 100 },
           { title: '宽度', min: 0, width: 100 }
@@ -88,6 +92,7 @@ const IconEditor = [
       {
         title: '显示文字',
         type: 'Switch',
+        description: '是否显示按钮文字',
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.icon;
         },

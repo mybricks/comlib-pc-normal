@@ -6,6 +6,7 @@ export const BaseEditor = [
   {
     title: '显示冒号',
     type: 'Switch',
+    description: '开启后，描述列表的每一项都会显示冒号',
     value: {
       get({ data }: EditorResult<Data>) {
         return data.colon;
@@ -18,6 +19,7 @@ export const BaseEditor = [
   {
     title: '显示标题',
     type: 'Switch',
+    description: '开启后，描述列表会显示标题',
     value: {
       get({ data }: EditorResult<Data>) {
         return data.showTitle;
@@ -32,6 +34,7 @@ export const BaseEditor = [
   {
     title: '标题',
     type: 'text',
+    description: '描述列表的标题',
     options: {
       locale: true
     },
@@ -94,6 +97,7 @@ export const BaseEditor = [
   {
     title: '增加描述项',
     type: 'Button',
+    description: '点击增加描述项',
     value: {
       set({ data, input, output, slots }: EditorResult<Data>) {
         data.items.push(createItem({ data }));

@@ -6,6 +6,7 @@ const addEditor = [
   {
     title: '添加按钮',
     type: 'Button',
+    description: '点击后会新增一个按钮，并新增两个输出，一个是单击按钮时触发，另一个是双击按钮时触发',
     value: {
       set({ data, output, env }: EditorResult<Data>) {
         if (!data.btnList) {
@@ -31,6 +32,7 @@ const addEditor = [
   {
     title: '添加插槽',
     type: 'Button',
+    description: '点击后会新增一个插槽',
     value: {
       set({ data, slot }: EditorResult<Data>) {
         if (!data.btnList) {

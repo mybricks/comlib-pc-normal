@@ -143,6 +143,7 @@ export default {
         {
           title: '添加步骤',
           type: 'Button',
+          description: '点击按钮添加一个步骤',
           value: {
             set({ data, slots, output, input }: EditorResult<Data>) {
               const id = uuid();
@@ -164,6 +165,7 @@ export default {
         {
           title: '类型',
           type: 'Select',
+          description: '步骤条类型',
           options: [
             { label: '默认', value: 'default' },
             { label: '导航类型', value: 'navigation' },
@@ -181,6 +183,7 @@ export default {
         {
           title: '尺寸',
           type: 'Select',
+          description: '步骤条尺寸',
           options: [
             { label: '默认', value: 'default' },
             { label: '迷你', value: 'small' }
@@ -197,6 +200,7 @@ export default {
         {
           title: '方向',
           type: 'Select',
+          description: '步骤条方向',
           options: [
             { label: '水平', value: 'horizontal' },
             { label: '竖直', value: 'vertical' }
@@ -225,6 +229,7 @@ export default {
         {
           title: '点击切换',
           type: 'switch',
+          description: '点击步骤条切换步骤',
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.steps.canClick;
@@ -237,6 +242,7 @@ export default {
         {
           title: '操作栏',
           type: 'switch',
+          description: '是否显示操作栏',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.toolbar.showActions;
@@ -338,6 +344,7 @@ export default {
         {
           title: '隐藏插槽占位',
           type: 'Switch',
+          description: '隐藏步骤条的插槽，通常用于动态步骤条的场景',
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.hideSlots;
@@ -350,6 +357,7 @@ export default {
         {
           title: '动态步骤',
           type: 'switch',
+          description: '开启后，可以通过逻辑连线连接步骤条的输入项【设置步骤】，可以创建【步骤改变】的交互卡片',
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.dynamicSteps;
@@ -366,6 +374,7 @@ export default {
         {
           title: '步骤改变',
           type: '_Event',
+          description: '当步骤发生变化时触发',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.dynamicSteps;
           },
