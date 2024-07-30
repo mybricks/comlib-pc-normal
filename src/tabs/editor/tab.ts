@@ -12,6 +12,7 @@ export default {
         {
           title: '名称',
           type: 'Text',
+          description: '配置标签默认名称',
           options: {
             locale: true
           },
@@ -28,6 +29,7 @@ export default {
         {
           title: '显示icon',
           type: 'Switch',
+          description: '是否显示图标（icon)',
           value: {
             get({}: EditorResult<Data>) {
               return item?.showIcon;
@@ -60,6 +62,7 @@ export default {
         {
           title: '选择图标',
           type: 'icon',
+          description: '选择配置图标',
           ifVisible({}: EditorResult<Data>) {
             return !!item.isChoose;
           },
@@ -75,6 +78,7 @@ export default {
         {
           title: '文字提示',
           type: 'TextArea',
+          description: '配置标签页的文字提示',
           options: {
             placeholder: 'tab标题的文字提示，不填写则不显示',
             locale: true
@@ -91,6 +95,7 @@ export default {
         {
           title: '支持关闭',
           type: 'Switch',
+          description: '开启后，支持关闭标签页',
           ifVisible({ data }: EditorResult<Data>) {
             return data.type === 'editable-card';
           },
@@ -109,6 +114,7 @@ export default {
             {
               title: '显示',
               type: '_Event',
+              description: '标签页的显示事件',
               options: ({}: EditorResult<Data>) => {
                 const id = item?.id;
                 return {
@@ -119,6 +125,7 @@ export default {
             {
               title: '隐藏',
               type: '_Event',
+              description: '标签页的隐藏事件',
               options: ({}: EditorResult<Data>) => {
                 const id = item?.id;
                 return {
@@ -134,6 +141,7 @@ export default {
             {
               title: '前移',
               type: 'Button',
+              description: '向前移动该标签页',
               value: {
                 get({ focusArea }: EditorResult<Data>) {
                   return focusArea.index;
@@ -149,6 +157,7 @@ export default {
             {
               title: '后移',
               type: 'Button',
+              description: '向后移动该标签页',
               value: {
                 get({ focusArea }: EditorResult<Data>) {
                   return focusArea.index;
@@ -164,6 +173,7 @@ export default {
             {
               title: '删除',
               type: 'Button',
+              description: '删除该标签页',
               value: {
                 get({ focusArea }: EditorResult<Data>) {
                   return focusArea.index;
@@ -190,6 +200,7 @@ export default {
         {
           title: '支持动态通知显示',
           type: 'Switch',
+          description: '开启后，可以通过逻辑连线连接标签的输入项【设置标签页的通知数】动态显示通知',
           value: {
             get({}: EditorResult<Data>) {
               return !!item?.dynamic;
@@ -209,6 +220,7 @@ export default {
         {
           title: '通知类型',
           type: 'select',
+          description: '配置通知的展示类型，包括文本和状态点类型',
           options: [
             { label: '文本', value: 'text' },
             { label: '状态点', value: 'icon' }
@@ -228,6 +240,7 @@ export default {
         {
           title: '尺寸',
           type: 'select',
+          description: '配置标签页的尺寸，默认是常规类型',
           options: [
             { label: '常规', value: 'default' },
             { label: '迷你', value: 'small' }
@@ -290,6 +303,7 @@ export default {
             { label: '错误', value: 'error' },
             { label: '警告', value: 'warning' }
           ],
+          description: '设置状态点的类型, 有成功、进行中、默认、错误、警告等类型',
           ifVisible({}) {
             return !!item?.dynamic && item.infoType === 'icon';
           },

@@ -40,7 +40,8 @@
     {
       "id": "body",
       "title": "卡片内容容器",
-      "layout": "smart"
+      "layout": "smart",
+      "defer": true
     }
   ]
 }
