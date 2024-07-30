@@ -279,7 +279,7 @@ export default {
             {
               title: '时间格式模版',
               type: 'select',
-              description: '配置输出数据的时间格式化模版，输出的数据会进行对应的格式化',
+              description: '将输出(值变化事件和表单提交)的数据设置成所需要的格式',
               options: {
                 options: [
                   { label: '时:分:秒', value: 'HH:mm:ss' },

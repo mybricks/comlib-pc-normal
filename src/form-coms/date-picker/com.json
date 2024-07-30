@@ -256,6 +256,7 @@
     {
       "id": "setValueDone",
       "title": "设置值完成",
+      "desc": "设置初始值事件完成，输出当前设置的值",
       "schema": {
         "type": "string"
       }
@@ -263,6 +264,7 @@
     {
       "id": "setInitialValueDone",
       "title": "设置初始值完成",
+      "desc": "设置初始值事件完成，输出设置的初始值",
       "schema": {
         "type": "string"
       }
@@ -270,6 +272,7 @@
     {
       "id": "resetValueDone",
       "title": "重置完成",
+      "desc": "重置值事件完成",
       "schema": {
         "type": "any"
       }
@@ -277,6 +280,7 @@
     {
       "id": "setDisabledDone",
       "title": "禁用完成",
+      "desc": "禁用完成事件完成",
       "schema": {
         "type": "any"
       }
@@ -284,6 +288,7 @@
     {
       "id": "setEnabledDone",
       "title": "启用完成",
+      "desc": "启用完成事件完成",
       "schema": {
         "type": "any"
       }
@@ -291,6 +296,7 @@
     {
       "id": "isEnableDone",
       "title": "启用/禁用完成",
+      "desc": "启用/禁用事件完成",
       "schema": {
         "type": "boolean"
       }
@@ -298,6 +304,7 @@
     {
       "id": "isEditableDone",
       "title": "设置编辑/只读完成",
+      "desc": "设置编辑/只读事件完成",
       "schema": {
         "type": "boolean"
       }
@@ -305,6 +312,7 @@
     {
       "id": "setValidateInfoDone",
       "title": "设置校验状态完成",
+      "desc": "设置校验状态事件完成",
       "schema": {
         "type": "object",
         "properties": {
@@ -332,6 +340,7 @@
     {
       "id": "disabledDateDone",
       "title": "禁用特定日期完成",
+      "desc": "禁用特定日期事件完成",
       "schema": {
         "type": "any"
       }
@@ -339,6 +348,7 @@
     {
       "id": "setColorDone",
       "title": "设置字体颜色完成",
+      "desc": "设置字体颜色事件完成，输入字体颜色",
       "schema": {
         "type": "string"
       }
@@ -346,6 +356,7 @@
     {
       "id": "setDateTypeDone",
       "title": "设置日期选择类型完成",
+      "desc": "设置日期选择类型事件完成，输出日期选择类型",
       "schema": {
         "type": "enum",
         "items": [
@@ -375,6 +386,7 @@
     {
       "id": "onPanelChange",
       "title": "日期面板切换",
+      "desc": "日期面板切换时触发，输出日期选择框当前值和日期选择类型",
       "schema": {
         "type": "object",
         "properties": {

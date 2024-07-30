@@ -398,7 +398,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
           content = '',
           visible = true,
           style = {}
-        } = customExtraTextRef.current(currentDate, today);
+        } = customExtraTextRef.current(currentDate, today) || {};
         return (
           <div className="ant-picker-cell-inner">
             {currentDate.date()}
