@@ -209,7 +209,12 @@ const FormItem = (props) => {
           <JSXWrapper com={com} />
         </div>
         {item.slotAfter && (
-          <div className={classnames(css.formItemSlotAfter, env.edit && css.formItemSlotAfterEdit)}>
+          <div
+            className={classnames(
+              css.formItemSlotAfter,
+              env.edit && slots[item.slotAfter].size === 0 && css.formItemSlotAfterEdit
+            )}
+          >
             {<Form.Item noStyle>{slots[item.slotAfter]?.render({ scope: com.scope })}</Form.Item>}
           </div>
         )}
