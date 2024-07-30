@@ -169,7 +169,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
-          debounceValidateTrigger(parentSlot, { id, name: props.name, validateInfo: e });
+          // 校验子项的，在表单容器里面渲染error提示消息；不必通知出去
           console.log('校验失败', e);
         });
     });
