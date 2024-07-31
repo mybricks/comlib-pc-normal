@@ -697,6 +697,7 @@ export default {
     ]
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
+    ':slot': {},
     title: '表单项',
     style: [
       {
