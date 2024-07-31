@@ -50,21 +50,22 @@ const SlotContent = (
         let finItem = item;
 
         if (env.runtime) {
-          const cached = listItemPropsStore?.[index]?.[item.name];
-          if (cached && isObject(cached)) {
-            finItem = listItemPropsStore?.[index]?.[item.name] as any;
-          } else {
-            try {
-              const config = data.listItemProps?.[index]?.[item.name] || {};
-              if (Object.keys(config).length) {
-                finItem = { ...item, ...config };
-              }
+          try {
+            const config = data.listItemProps?.[index]?.[item.name] || {};
+            // 没有修改一项，不会走到下面的逻辑
+            if (Object.keys(config).length) {
+              finItem = {
+                ...item,
+                ...config,
+                validateStatus: item?.validateStatus,
+                help: item?.help
+              };
               if (!listItemPropsStore[index]) {
                 listItemPropsStore[index] = {};
               }
-              listItemPropsStore[index][item.name] = finItem;
-            } catch (error) {}
-          }
+              listItemPropsStore[index][item.name] = config;
+            }
+          } catch (error) {}
         }
         return isFormItem ? (
           <FormItem data={data} slots={slots} com={com} item={finItem} field={field} env={env} />
