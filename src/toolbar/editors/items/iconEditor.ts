@@ -5,6 +5,7 @@ const IconEditor = [
   {
     title: '图标',
     type: 'Switch',
+    description: '按钮是否使用图标',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -113,6 +114,7 @@ const IconEditor = [
       {
         title: '显示文字',
         type: 'Switch',
+        description: '按钮是否显示文字，关闭后按钮只显示图标',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const { item } = getBtnItemInfo(data, focusArea);

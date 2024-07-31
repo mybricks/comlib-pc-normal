@@ -109,7 +109,7 @@ export default {
         title: '作为热区使用',
         type: 'switch',
         description:
-          '按钮作为热区使用时，按钮没有样式，但点击后会触发事件。在自由布局下可以覆盖到任意位置，使对应位置具有点击能力。',
+          '按钮作为热区使用时，此组件变成透明的矩形选区，点击后会触发点击事件。在自由布局下可以覆盖到任意位置，使对应位置具有点击能力。一般用于给大图片的区域添加点击事件。',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.asMapArea;
