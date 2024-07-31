@@ -60,7 +60,6 @@ const SlotContent = (
                 validateStatus: item?.validateStatus,
                 help: item?.help
               };
-              console.log('fItem', finItem, item, config);
               if (!listItemPropsStore[index]) {
                 listItemPropsStore[index] = {};
               }
