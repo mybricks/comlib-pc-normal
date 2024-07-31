@@ -6,6 +6,7 @@ const DynamicEventEditor = [
   {
     title: '动态设置loading',
     type: 'Switch',
+    description: '是否动态设置按钮的loading状态，开启会增加开启loading和关闭loading的输入输出项',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -50,6 +51,7 @@ const DynamicEventEditor = [
   {
     title: '动态设置按钮名称',
     type: 'Switch',
+    description: '是否动态设置按钮的名称，开启会增加设置按钮名称的输入输出项',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -81,6 +83,7 @@ const DynamicEventEditor = [
   {
     title: '动态设置按钮样式',
     type: 'Switch',
+    description: '是否动态设置按钮的样式，开启会增加设置按钮样式的输入输出项',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -112,6 +115,7 @@ const DynamicEventEditor = [
   {
     title: '动态启用/禁用',
     type: 'Switch',
+    description: '是否动态启用/禁用按钮，开启会增加启用/禁用按钮的输入输出项',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -178,6 +182,7 @@ const DynamicEventEditor = [
   {
     title: '动态显示/隐藏',
     type: 'Switch',
+    description: '是否动态显示/隐藏按钮，开启会增加显示/隐藏按钮的输入输出项',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
