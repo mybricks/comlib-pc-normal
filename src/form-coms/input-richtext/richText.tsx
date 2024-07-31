@@ -77,9 +77,7 @@ export default function ({
       inputs,
       outputs,
       configs: {
-        setValue(val) {
-          changeValue(val);
-        },
+        noSetValue: true,
         setInitialValue(val) {
           changeValue(val);
         },
