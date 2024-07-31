@@ -7,6 +7,7 @@ interface FormItemInputsProps {
   inputs: any
   outputs: any
   configs?: {
+    noSetValue?: boolean
     setValue?: (val) => void
     setInitialValue?: (val) => void
     getValue?: (cb) => void
@@ -47,7 +48,7 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 设置值
      */
-    inputs[formItemInputIds.SET_VALUE] && inputs[formItemInputIds.SET_VALUE]((val, relOutputs) => {
+    !configs?.noSetValue && inputs[formItemInputIds.SET_VALUE] && inputs[formItemInputIds.SET_VALUE]((val, relOutputs) => {
       if (configs?.setValue) {
         configs.setValue(val);
         if(relOutputs['setValueDone']){
