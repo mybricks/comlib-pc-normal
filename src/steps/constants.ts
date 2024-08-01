@@ -45,6 +45,7 @@ interface Steps {
   type: 'default' | 'navigation' | 'dotted';
   showDesc: boolean;
   direction?: 'horizontal' | 'vertical';
+  labelPlacement?: 'horizontal' | 'vertical';
   canClick?: boolean;
 }
 

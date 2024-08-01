@@ -24,6 +24,8 @@ export default function ({
   const isMobile = checkIfMobile(env);
 
   const direction = isMobile ? 'vertical' : data.steps.direction || 'horizontal';
+  const labelPlacement = data.steps.labelPlacement || 'horizontal';
+
   useEffect(() => {
     if (runtime) {
       data.current = 0;
@@ -319,6 +321,7 @@ export default function ({
           type={type}
           progressDot={progressDot}
           direction={direction}
+          labelPlacement={labelPlacement}
           onChange={onChange()}
         >
           {stepAry.map((item, index) => {
