@@ -84,7 +84,6 @@ export default {
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
-      console.log('child', child, res);
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {
@@ -154,10 +153,10 @@ export default {
     const { id, name, title } = child;
     let formItemDel = data.items.find((item) => {
       if (item?.comName) {
-        return item.comName !== name;
+        return item.comName === name;
       }
 
-      return item.id !== id;
+      return item.id === id;
     });
     if (formItemDel) {
       refreshFieldSourceSchema(
