@@ -117,7 +117,7 @@ export default {
       {
         title: '自定义图标',
         type: 'switch',
-        description: '是否自定义上传图标，开启后可自定义配置',
+        description: '开启后，可自定义配置图标，默认关闭',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.hideIcon;
         },
@@ -133,7 +133,7 @@ export default {
       {
         title: '图标',
         type: 'Icon',
-        description: '文字列表-图标',
+        description: '文字列表-图标，自定义选择图标',
         ifVisible({ data }: EditorResult<Data>) {
           return data.isCustomIcon && data.config.listType === 'text' && !data.hideIcon;
         },
@@ -149,7 +149,7 @@ export default {
       {
         title: '图标',
         type: 'Icon',
-        description: '图片列表-图标',
+        description: '图片列表-图标，自定义选择图标',
         ifVisible({ data }: EditorResult<Data>) {
           return data.isCustomIcon && data.config.listType === 'picture' && !data.hideIcon;
         },
@@ -165,7 +165,7 @@ export default {
       {
         title: '图标',
         type: 'Icon',
-        description: '图片卡片列表-图标',
+        description: '图片卡片列表-图标，自定义选择图标',
         ifVisible({ data }: EditorResult<Data>) {
           return data.isCustomIcon && data.config.listType === 'picture-card' && !data.hideIcon;
         },
@@ -181,7 +181,7 @@ export default {
       {
         title: '图标',
         type: 'Icon',
-        description: '拖拽上传-图标',
+        description: '拖拽上传-图标，自定义选择图标',
         ifVisible({ data }: EditorResult<Data>) {
           return data.isCustomIcon && data.config.listType === 'dragger' && !data.hideIcon;
         },
@@ -330,6 +330,7 @@ export default {
           items: [
             {
               title: '上传文件Key',
+              description: "发到后台的文件参数名",
               type: 'Text',
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -342,6 +343,7 @@ export default {
             },
             {
               title: '上传按钮文案',
+              description: "上传按钮文案",
               type: 'Text',
               options: {
                 locale: true
@@ -355,21 +357,21 @@ export default {
                 }
               }
             },
-            {
-              title: '图标',
-              type: 'Icon',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.config.listType === 'dragger';
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config.uploadIcon || 'InboxOutlined';
-                },
-                set({ data }: EditorResult<Data>, value: string) {
-                  data.config.uploadIcon = value;
-                }
-              }
-            },
+            // {
+            //   title: '图标',
+            //   type: 'Icon',
+            //   ifVisible({ data }: EditorResult<Data>) {
+            //     return data.config.listType === 'dragger';
+            //   },
+            //   value: {
+            //     get({ data }: EditorResult<Data>) {
+            //       return data.config.uploadIcon || 'InboxOutlined';
+            //     },
+            //     set({ data }: EditorResult<Data>, value: string) {
+            //       data.config.uploadIcon = value;
+            //     }
+            //   }
+            // },
             {
               title: '上传文件限制类型',
               type: 'Select',
@@ -498,6 +500,7 @@ export default {
             {
               title: '开启自定义删除',
               type: 'Switch',
+              description: '开启后，新增文件删除事件，并可以通过逻辑连线连接上传的输入项【删除文件】，删除对应文件',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.config.useCustomRemove;
@@ -551,6 +554,7 @@ export default {
             {
               title: '开启多选',
               type: 'Switch',
+              description: '开启后支持多选文件，开启后按住ctrl可选择多个文件',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.config.multiple;
@@ -568,6 +572,7 @@ export default {
             {
               title: '开启预览',
               type: 'Switch',
+              description: '开启后，上传的图片文件支持预览',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.config.usePreview;
@@ -598,7 +603,7 @@ export default {
         },
         {
           title: '校验规则',
-          description: '提供快捷校验配置',
+          description: '作为表单项时，快捷校验配置',
           type: 'ArrayCheckbox',
           options: {
             checkField: 'status',
@@ -656,6 +661,7 @@ export default {
           items: [
             {
               title: '值初始化',
+              description: "设置上传组件初始值后，值初始化事件",
               type: '_event',
               options: {
                 outputId: 'onInitial'
@@ -663,6 +669,7 @@ export default {
             },
             {
               title: '上传完成后',
+              description: "文件上传完成后，上传完成事件",
               type: '_Event',
               options: {
                 outputId: 'uploadComplete'
@@ -673,6 +680,7 @@ export default {
                 return data.config.useCustomRemove;
               },
               title: '文件删除',
+              description: "文件删除事件",
               type: '_event',
               options: {
                 outputId: 'remove'
@@ -760,6 +768,7 @@ export default {
         {
           title: '上传文件点击',
           type: '_Event',
+          description: '开启后, 新增上传文件点击事件',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.fileClick;
           },

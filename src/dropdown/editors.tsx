@@ -206,7 +206,7 @@ export default {
         {
           title: '自定义',
           type: 'Switch',
-          description: '开启自定义后, 可自定义添加需要组件',
+          description: '开启后, 可在提示内容区自定义添加需要组件',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.isCustom;
@@ -232,6 +232,7 @@ export default {
         {
           title: '触发方式',
           type: 'Select',
+          description: '触发下拉的行为,有悬浮、点击两种',
           options: [
             {
               label: '悬浮',
@@ -255,7 +256,7 @@ export default {
         {
           title: '弹出位置',
           type: 'Select',
-          description: '选项弹出位置',
+          description: '选项弹出位置，包括左下方、中下方、右下方、左上方、中上方、右上方',
           options: [
             { label: '左下方', value: 'bottomLeft' },
             { label: '中下方', value: 'bottomCenter' },
@@ -285,7 +286,7 @@ export default {
         {
           title: '宽度',
           type: 'text',
-          description: '搜索框宽度,支持百分比和定宽',
+          description: '下拉区域宽度,支持百分比和定宽',
           value: {
             get({ data }: EditorResult<Data>) {
               return String(data.width);
@@ -303,7 +304,7 @@ export default {
         {
           title: '动态选项',
           type: 'switch',
-          description: '开启后，动态配置选项内容',
+          description: '开启后，可以通过逻辑连线连接下拉菜单的输入项【设置选项】，传入动态选项数据',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.isDynamic;
@@ -343,7 +344,7 @@ export default {
         {
           title: '选项配置',
           type: 'array',
-          description: '选项配置跳转链接，可不填',
+          description: '配置选项，跳转链接可不填',
           options: {
             getTitle: ({ label }) => {
               return env.i18n(label);
@@ -421,7 +422,7 @@ export default {
         },
         {
           title: '提示内容禁止冒泡',
-          description: '默认关闭，阻止提示内容的点击事件冒泡',
+          description: '触发方式为点击时，默认关闭，阻止提示内容的点击事件冒泡',
           type:'switch',
           ifVisible({ data }: EditorResult<Data>) {
             return data.trigger === 'click';
@@ -449,6 +450,7 @@ export default {
         {
           title: '点击',
           type: '_Event',
+          description: '选项点击事件',
           options: () => {
             return {
               outputId: 'onChange'

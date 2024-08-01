@@ -9,6 +9,7 @@ export const LayoutEditor = [
       {
         title: '布局类型',
         type: 'select',
+        description: '组件提供三种布局方式，包括横向、纵向、栅格布局',
         options: [
           { label: '横向布局', value: Layout.Horizontal },
           { label: '纵向布局', value: Layout.Vertical },
@@ -58,6 +59,7 @@ export const LayoutEditor = [
       {
         title: '列数',
         type: 'InputNumber',
+        description: '布局类型为栅格布局时，一行对应的列数',
         ifVisible({ data }: EditorResult<Data>) {
           return data.layout === Layout.Grid && !data.isResponsive;
         },
@@ -78,6 +80,7 @@ export const LayoutEditor = [
       {
         title: '移动端列数',
         type: 'InputNumber',
+        description: '移动端场景，布局类型为栅格布局且非响应式时，一行对应的列数',
         ifVisible({ data }: EditorResult<Data>) {
           return data.layout === Layout.Grid && !data.isResponsive;
         },
@@ -94,6 +97,7 @@ export const LayoutEditor = [
       {
         title: '可拖拽排序',
         type: 'switch',
+        description: '布局类型为栅格布局且非响应式时，且对应列数为1时，开启后，可拖拽排序，且新增【拖拽完成】事件',
         ifVisible({ data }: EditorResult<Data>) {
           const canSort = !!(
             data.layout === Layout.Grid &&
@@ -122,6 +126,7 @@ export const LayoutEditor = [
       {
         title: '响应式',
         type: 'switch',
+        description: '布局类型为栅格布局时，开启后，可响应式配置列数',
         ifVisible({ data }: EditorResult<Data>) {
           return data.layout === Layout.Grid;
         },
@@ -236,6 +241,7 @@ export const LayoutEditor = [
       {
         title: '列表项间隔',
         type: 'InputNumber',
+        description: '列表项横向和纵向的间距',
         options: [
           { min: 0, max: 1000, width: 100, title: '左右' },
           { min: 0, max: 1000, width: 100, title: '上下' }

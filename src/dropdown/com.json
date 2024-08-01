@@ -1,7 +1,7 @@
 {
   "title": "下拉菜单",
   "namespace": "mybricks.normal-pc.dropdown",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "下拉菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -68,12 +68,16 @@
   "slots": [
     {
       "id": "carrier",
+      "defer": true,
+      "description": "开启自定义内容开关后, 可自定义添加需要组件",
       "title": "添加组件"
     },
     {
       "id": "item",
       "capacity": 1,
       "title": "选项",
+      "defer": true,
+      "description": "选项作用域插槽，有当前项内容和当前项序号的输入",
       "type": "scope",
       "inputs": [
         {
