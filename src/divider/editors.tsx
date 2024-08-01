@@ -96,6 +96,9 @@ export default {
           {
             title: '标题',
             type: 'Text',
+            options: {
+              locale: true
+            },
             value: {
               get({ data }: EditorResult<DataType>) {
                 return data?.children;

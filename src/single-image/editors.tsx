@@ -44,6 +44,7 @@ export default {
           options: {
             locale: true
           },
+          description: '对图像的备用文本描述（alt），有利于搜索SEO',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.alt;
@@ -56,6 +57,8 @@ export default {
         {
           title: '图片地址',
           type: 'ImageSelector',
+          description:
+            '嵌入的图片资源的地址或路径，可以使用URL链接或者相对路径，需要确保资源能够正常访问，文件类型需要是jpg、png、base64字符串等图片格式',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.src;
@@ -68,6 +71,8 @@ export default {
         {
           title: '填充模式',
           type: 'Select',
+          description:
+            '指定图片的内容如何适应容器的高度与宽度，可以图片进行保留原始比例的裁剪、缩放或者直接进行拉伸等',
           options: [
             {
               label: '拉伸图片 (fill)',
@@ -98,6 +103,7 @@ export default {
         {
           title: '单击图片',
           type: '_Event',
+          description: '单击图片时触发【单击图片】输出项事件',
           options() {
             return {
               outputId: OutputIds.Click
@@ -136,6 +142,7 @@ export default {
             {
               title: '预览',
               type: 'Switch',
+              description: '开启后单击图像可以放大显示',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.usePreview;
@@ -177,6 +184,7 @@ export default {
             {
               title: '支持容错处理',
               type: 'Switch',
+              description: '开启后加载失败时显示配置的【容错图像占位符】',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.useFallback;
@@ -189,7 +197,7 @@ export default {
             {
               title: '容错图像占位符',
               type: 'ImageSelector',
-              description: '加载失败时，显示图像占位符（推荐使用base64字符串）',
+              description: '配置加载失败时的图像占位符可以使用图片资源地址（推荐使用base64字符串）',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.useFallback;
               },
