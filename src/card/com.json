@@ -1,7 +1,7 @@
 {
   "title": "卡片",
   "namespace": "mybricks.normal-pc.card",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "卡片",
   "author": "HuangQiuyun",
   "author_name": "MyBricks",
@@ -40,8 +40,7 @@
     {
       "id": "body",
       "title": "卡片内容容器",
-      "layout": "smart",
-      "defer": true
+      "layout": "smart"
     }
   ]
 }
