@@ -5,6 +5,7 @@ import { usePrevious } from '../../../utils/hooks';
 import debounce from 'lodash/debounce';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
+import classnames from 'classnames';
 
 interface FormItemProps {
   data: Data;
@@ -208,7 +209,12 @@ const FormItem = (props) => {
           <JSXWrapper com={com} />
         </div>
         {item.slotAfter && (
-          <div className={css.formItemSlotAfter}>
+          <div
+            className={classnames(
+              css.formItemSlotAfter,
+              env.edit && slots[item.slotAfter].size === 0 && css.formItemSlotAfterEmpty
+            )}
+          >
             {<Form.Item noStyle>{slots[item.slotAfter]?.render({ scope: com.scope })}</Form.Item>}
           </div>
         )}
