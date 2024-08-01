@@ -42,6 +42,7 @@ export default {
         {
           title: '自定义描述',
           type: 'switch',
+          description: '是否使用自定义描述，开启后描述将变成插槽，可自定义内容',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.steps.showDesc;
           },
@@ -84,6 +85,7 @@ export default {
         {
           title: '图标',
           type: 'switch',
+          description: '是否使用图标',
           value: {
             get({ data }: EditorResult<Data>) {
               return !!stepItem.useIcon;
