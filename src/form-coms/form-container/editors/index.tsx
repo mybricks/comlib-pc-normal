@@ -1351,6 +1351,7 @@ export default {
     }
   },
   '[data-form-actions-item]': {
+    title: '操作',
     '@dblclick': {
       type: 'text',
       value: {
@@ -1635,7 +1636,7 @@ export default {
           {
             title: '动态启用/禁用',
             description:
-              '开启后增加【启动-“${名称}”】、【禁用-“${名称}”】两个输入事件，支持在逻辑编排中对当前按钮进行控制',
+              '开启后增加【启动-${按钮标题}】、【禁用-${按钮标题}】两个输入事件，支持在逻辑编排中对当前按钮进行控制（${按钮标题} 为当前按钮的标题）',
             type: 'Switch',
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
@@ -1672,7 +1673,7 @@ export default {
           {
             title: '动态显示/隐藏',
             description:
-              '开启后增加【显示-“${名称}”】、【隐藏-“${名称}”】两个输入事件，支持在逻辑编排中对当前按钮进行控制',
+              '开启后增加【显示-${按钮标题}】、【隐藏-${按钮标题}】两个输入事件，支持在逻辑编排中对当前按钮进行控制（${按钮标题} 为当前按钮的标题）',
             type: 'Switch',
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
