@@ -63,6 +63,7 @@ const StyleEditor = [
   {
     title: '宽度(px)',
     type: 'Text',
+    description: "【适应剩余宽度】关闭时，可以在这里修改列的宽度",
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       const item = getColumnItem(data, focusArea);

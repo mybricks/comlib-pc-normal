@@ -5,7 +5,7 @@ import { Data } from '../../types';
 const RowKeyEditor = [
   {
     title: '行标识字段',
-    description: '勾选标识所对应的行数据，需要全局唯一',
+    description: '当表格数据太大导致卡顿时，可以通过添加【行标识字段】进行性能优化。该标识字段的值需要全局唯一。此外也可以当作设置勾选数据时的标识',
     type: 'editorRender',
     options: {
       render: Tree
