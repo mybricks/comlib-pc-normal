@@ -4,7 +4,12 @@ import { FormLayout } from 'antd/es/form/Form';
 import { ButtonType } from 'antd/es/button/button';
 import { actionsEditor } from './actions';
 import { inputIds, outputIds, commonDynamicItemSchema } from '../constants';
-import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
+import {
+  refreshSchema,
+  refreshParamsSchema,
+  refreshFormItemPropsSchema,
+  refreshFieldSourceSchema
+} from '../schema';
 import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
 import iconEditor from './iconEditor';
@@ -16,6 +21,19 @@ import { FieldBizType } from '../../../domain/domain-crud/constants';
 import DomainFieldEditor from './DomainFieldEditor';
 import { getBtnItemInfo } from '../../../toolbar/utils';
 
+// 判断是否有数据源输入
+function getChildDataSource(child: any) {
+  if (child.inputDefs?.length) {
+    let found = child.inputDefs.find(
+      (item) => item.title === '设置数据源' || item.id === 'setOptions'
+    );
+    if (found) {
+      return found.schema;
+    }
+    return undefined;
+  }
+  return undefined;
+}
 function getFormItemProp(
   { data, ...com }: { data: Data; id: string; name: string },
   name: keyof FormItems
@@ -66,6 +84,7 @@ export default {
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
+      console.log('child', child, res);
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {
@@ -108,6 +127,13 @@ export default {
             visible: true,
             hidden: false
           });
+          let fieldSourceSchema = getChildDataSource(child);
+          if (fieldSourceSchema) {
+            refreshFieldSourceSchema(
+              { data, inputs, outputs },
+              { type: 'add', fieldName: `表单项${nowC}`, schema: fieldSourceSchema }
+            );
+          }
         }
 
         refreshSchema({ data, inputs, outputs, slots });
@@ -126,7 +152,19 @@ export default {
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, child) {
     const { id, name, title } = child;
+    let formItemDel = data.items.find((item) => {
+      if (item?.comName) {
+        return item.comName !== name;
+      }
 
+      return item.id !== id;
+    });
+    if (formItemDel) {
+      refreshFieldSourceSchema(
+        { data, inputs, outputs },
+        { type: 'remove', fieldName: formItemDel.name }
+      );
+    }
     data.items = data.items.filter((item) => {
       if (item?.comName) {
         return item.comName !== name;
@@ -832,9 +870,14 @@ export default {
           },
           set({ id, data, name, input, output, slots }: EditorResult<Data>, val: string) {
             const { item } = getFormItem(data, { id, name });
+            const originName = item.name;
             const fieldName = setFieldName(item, data, val);
 
             if (fieldName) {
+              refreshFieldSourceSchema(
+                { data, inputs: input, outputs: output },
+                { type: 'update', fieldName: fieldName, originFieldName: originName }
+              );
               refreshSchema({ data, inputs: input, outputs: output, slots });
             }
 
