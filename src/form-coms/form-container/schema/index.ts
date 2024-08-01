@@ -137,7 +137,7 @@ export interface FieldSourceOptions {
   originFieldName?: string,
   schema?: any
 }
-function refreshFieldSourceSchema({ data, inputs, outputs}, options: FieldSourceOptions) {
+function refreshFieldSourceSchema({ data, inputs, outputs, slots }, options: FieldSourceOptions) {
   const { type, fieldName, originFieldName, schema} = options
   if(inputs.get(inputIds.setFieldsSource)) {
     let fieldSourceSchema = cloneDeep(inputs.get(inputIds.setFieldsSource).schema);
@@ -156,6 +156,10 @@ function refreshFieldSourceSchema({ data, inputs, outputs}, options: FieldSource
     inputs.get(inputIds.setFieldsSource).setSchema(fieldSourceSchema)
     if (outputs?.get(outputIds.setFieldsSourceDone)) {
       outputs?.get(outputIds.setFieldsSourceDone).setSchema(fieldSourceSchema);
+    }
+    const contentSlot = slots?.get('content')
+    if(contentSlot && contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)) {
+      contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE).setSchema(fieldSourceSchema)
     }
   }
 }

@@ -129,7 +129,7 @@ export default {
           let fieldSourceSchema = getChildDataSource(child);
           if (fieldSourceSchema) {
             refreshFieldSourceSchema(
-              { data, inputs, outputs },
+              { data, inputs, outputs, slots },
               { type: 'add', fieldName: `表单项${nowC}`, schema: fieldSourceSchema }
             );
           }
@@ -160,7 +160,7 @@ export default {
     });
     if (formItemDel) {
       refreshFieldSourceSchema(
-        { data, inputs, outputs },
+        { data, inputs, outputs, slots },
         { type: 'remove', fieldName: formItemDel.name }
       );
     }
@@ -875,7 +875,7 @@ export default {
 
             if (fieldName) {
               refreshFieldSourceSchema(
-                { data, inputs: input, outputs: output },
+                { data, inputs: input, outputs: output, slots },
                 { type: 'update', fieldName: fieldName, originFieldName: originName }
               );
               refreshSchema({ data, inputs: input, outputs: output, slots });
