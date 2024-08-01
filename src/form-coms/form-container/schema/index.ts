@@ -1,6 +1,7 @@
 import { outputIds, inputIds, slotInputIds, formItemPropsSchema, commonDynamicItemSchema } from '../constants'
 import { deepCopy } from '../../../utils'
 import { Data } from '../types'
+import cloneDeep from 'lodash/cloneDeep'
 
 function getSubmitSchema(data) {
   const properties = {}
@@ -130,4 +131,33 @@ function refreshFormItemPropsSchema({ data, inputs, outputs }) {
   }
 }
 
-export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema, refreshFormItemPropsSchema, getSubmitSchema }
+export interface FieldSourceOptions {
+  type: 'add' | 'remove' | 'update'
+  fieldName: string
+  originFieldName?: string,
+  schema?: any
+}
+function refreshFieldSourceSchema({ data, inputs, outputs}, options: FieldSourceOptions) {
+  const { type, fieldName, originFieldName, schema} = options
+  if(inputs.get(inputIds.setFieldsSource)) {
+    let fieldSourceSchema = cloneDeep(inputs.get(inputIds.setFieldsSource).schema);
+    if(options.type === 'add') {
+      fieldSourceSchema.properties[fieldName] = schema
+    }
+    if(options.type === 'remove') {
+      delete fieldSourceSchema.properties[fieldName]
+    }
+    if(options.type === 'update' && originFieldName) {
+      const originFieldSchema = fieldSourceSchema.properties[originFieldName]
+      delete fieldSourceSchema.properties[originFieldName]
+      fieldSourceSchema.properties[fieldName] = originFieldSchema
+
+    }
+    inputs.get(inputIds.setFieldsSource).setSchema(fieldSourceSchema)
+    if (outputs?.get(outputIds.setFieldsSourceDone)) {
+      outputs?.get(outputIds.setFieldsSourceDone).setSchema(fieldSourceSchema);
+    }
+  }
+}
+
+export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema, refreshFormItemPropsSchema, getSubmitSchema, refreshFieldSourceSchema }
