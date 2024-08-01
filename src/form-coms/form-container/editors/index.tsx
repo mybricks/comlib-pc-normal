@@ -454,7 +454,8 @@ export default {
             {
               title: '类型',
               type: 'Select',
-              description: '遵循Antd表单Layout字段特性，默认为 “水平”',
+              description:
+                '遵循Antd表单Layout字段特性，默认为 “水平”，水平布局：标题与表单项左右水平分布，标题可配置宽度、垂直布局：标题与表单项垂直上下分布，标题在上方，表单项在下方，标题宽度自适应、内联布局：标题与表单项左右水平分布，标题宽度自适应',
               options: [
                 { label: '水平', value: 'horizontal' },
                 { label: '垂直', value: 'vertical' },
@@ -1633,6 +1634,8 @@ export default {
         (cate2.items = [
           {
             title: '动态启用/禁用',
+            description:
+              '开启后增加【启动-“${名称}”】、【禁用-“${名称}”】两个输入事件，支持在逻辑编排中对当前按钮进行控制',
             type: 'Switch',
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
@@ -1668,6 +1671,8 @@ export default {
           },
           {
             title: '动态显示/隐藏',
+            description:
+              '开启后增加【显示-“${名称}”】、【隐藏-“${名称}”】两个输入事件，支持在逻辑编排中对当前按钮进行控制',
             type: 'Switch',
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
