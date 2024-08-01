@@ -5,7 +5,7 @@ export const StyleEditor = [
   // TODO 列超出策略调整
   {
     title: '所占列数',
-    description: '范围是1到该行剩余column数',
+    description: '范围是1到该行剩余column数，描述项所占的列数越多，减少所在行展示的描述项数量越少。',
     type: 'Slider',
     options({ data, focusArea }: EditorResult<Data>) {
       const max = data.column - getSpanCount({ data, focusArea });
@@ -14,7 +14,7 @@ export const StyleEditor = [
         min: 1,
         steps: 1,
         formatter: `/${max}`
-      }
+      };
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
