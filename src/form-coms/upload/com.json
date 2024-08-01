@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.50",
+  "version": "1.0.51",
   "description": "上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -460,11 +460,15 @@
   "slots": [
     {
       "id": "carrier",
+      "defer": true,
+      "description": "当上传列表类型为文字列表或者图片列表时, 开启自定义内容开关后, 可自定义添加需要组件",
       "title": "添加组件"
     },
     {
       "id": "customUpload",
       "title": "自定义上传",
+      "defer": true,
+      "description": "开启使用自定义上传开关后, 可将通过输入项【输出文件数据】输入的数据在作用域卡片处理，并将结果通过输出项【设置上传结果】输出",
       "type": "scope",
       "inputs": [
         {
