@@ -24,77 +24,61 @@
         "properties": {},
         "description": "表单容器的默认值"
       },
-      "desc": "给表单设置初始数据",
-      "rels": [
-        "setInitialValuesDone"
-      ]
+      "desc": "给表单设置初始数据，并触发表单容器【表单数据输入】作用域输入事件，以及内部表单项的【值初始化】事件",
+      "rels": ["setInitialValuesDone"]
     },
     {
       "id": "setFieldsValue",
-      "title": "设置表单数据（触发值变化）",
+      "title": "设置表单数据（触发值更新）",
       "schema": {
         "type": "object",
         "properties": {}
       },
-      "rels": [
-        "setFieldsValueDone"
-      ],
-      "desc": "给表单设置初始数据且触发表单项值变化输出"
+      "rels": ["setFieldsValueDone"],
+      "desc": "给表单设置初始数据，并触发表单容器【表单数据输入】作用域输入事件，以及内部表单项【值更新】输出事件"
     },
     {
       "id": "setFieldsSource",
       "title": "设置数据源",
       "schema": {
         "type": "object",
-        "description": "对象格式的数据，key为字段名，value要传入的选项数据",
+        "description": "key为表单项字段名，value为表单项数据源类型",
         "properties": {}
       },
-      "rels": [
-        "setFieldsSourceDone"
-      ],
-      "desc": "设置表单选项数据源数据时触发，给自定义表单项下的选项赋值;格式为{'fieldName(表单字段名)': '选项值'} 格式的数据"
+      "rels": ["setFieldsSourceDone"],
+      "desc": "设置各表格项数据源，并触发表单容器【设置数据源】作用域输入事件，数据源类型取决于具体某一个表单项的数据源输入类型"
     },
     {
       "id": "submit",
       "title": "提交表单",
-      "rels": [
-        "onFinish",
-        "onSubmitError"
-      ],
+      "rels": ["onFinish", "onSubmitError"],
       "schema": {
         "type": "any"
       },
-      "desc": "触发表单进行校验并且提交数据"
+      "desc": "触发表单进行校验，校验成功触发【提交数据输出】输出事件，校验失败触发【校验失败输出】输出事件"
     },
     {
       "id": "getFieldsValue",
       "title": "获取表单数据",
-      "rels": [
-        "returnValues"
-      ],
+      "rels": ["returnValues"],
       "schema": {
         "type": "any"
       },
-      "desc": "获取表单数据（不会触发校验）"
+      "desc": "不进行表单校验，直接触发【表单数据输出】输出事件"
     },
     {
       "id": "submitAndMerge",
       "title": "提交表单(合并输入项)",
-      "rels": [
-        "onMergeFinish",
-        "onSubmitError"
-      ],
+      "rels": ["onMergeFinish", "onSubmitError"],
       "schema": {
         "type": "object"
       },
-      "desc": "触发表单进行校验并且提交数据，同时透传输入的数据"
+      "desc": "接收对象结构参数输入，触发表单进行校验，校验成功触发【提交数据输出（合并输入项）】输出事件，校验失败触发【校验失败输出】输出事件"
     },
     {
       "id": "resetFields",
       "title": "重置表单",
-      "rels": [
-        "onResetFinish"
-      ],
+      "rels": ["onResetFinish"],
       "schema": {
         "type": "any"
       },
@@ -106,9 +90,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "setDisabledDone"
-      ],
+      "rels": ["setDisabledDone"],
       "desc": "禁用表单项及操作项"
     },
     {
@@ -117,21 +99,17 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "setEnabledDone"
-      ],
+      "rels": ["setEnabledDone"],
       "desc": "启用表单项及操作项"
     },
     {
       "id": "isEditable",
       "title": "设置编辑/只读",
-      "desc": "设置表单编辑/只读",
+      "desc": "设置表单编辑/只读状态",
       "schema": {
         "type": "boolean"
       },
-      "rels": [
-        "isEditableDone"
-      ]
+      "rels": ["isEditableDone"]
     },
     {
       "id": "validateFields",
@@ -142,9 +120,7 @@
           "type": "string"
         }
       },
-      "rels": [
-        "validateFieldsDone"
-      ],
+      "rels": ["validateFieldsDone"],
       "desc": "输入字段数组，触发指定的表单项校验"
     },
     {
@@ -154,9 +130,7 @@
         "type": "object",
         "properties": {}
       },
-      "rels": [
-        "setFormItemsPropsDone"
-      ],
+      "rels": ["setFormItemsPropsDone"],
       "desc": "动态配置表单项标题、提示语、必填样式等"
     }
   ],
@@ -164,7 +138,7 @@
     {
       "id": "onFinish",
       "title": "提交数据输出",
-      "desc": "输出所有字段的当前值",
+      "desc": "输出所有字段的当前值，默认空值也会提交输出，需要处理可在逻辑编排中完成",
       "schema": {
         "type": "object",
         "properties": {}
@@ -193,7 +167,7 @@
     {
       "id": "onMergeFinish",
       "title": "提交数据输出",
-      "desc": "输出表单数据(合并输入项)",
+      "desc": "输出所有字段的当前值，同时对输入的参数进行合并后一并输出，默认空值也会提交输出，需要处理可在逻辑编排中完成",
       "schema": {
         "type": "object",
         "properties": {}
@@ -366,9 +340,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValidate"
-      ]
+      "rels": ["returnValidate"]
     },
     {
       "id": "getValue",
@@ -376,9 +348,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValue"
-      ]
+      "rels": ["returnValue"]
     }
   ],
   "slots": [
@@ -444,8 +414,5 @@
       ]
     }
   ],
-  "schema": [
-    "mybricks.domain-pc.crud/query",
-    "*"
-  ]
+  "schema": ["mybricks.domain-pc.crud/query", "*"]
 }

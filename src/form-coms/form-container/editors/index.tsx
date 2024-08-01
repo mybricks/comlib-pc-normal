@@ -277,6 +277,8 @@ export default {
         {
           title: '类型',
           type: 'Select',
+          description:
+            '表单布局类型，默认为“普通表单”，遵循Antd表单Layout字段特性，支持“水平”、“垂直”、“内联”三种排版方式；“查询表单”布局，预设了支持表单项展开收起的布局方式',
           options: [
             { label: '普通表单', value: 'Form' },
             { label: '查询表单', value: 'QueryFilter' }
@@ -316,7 +318,7 @@ export default {
         {
           title: '提交隐藏表单项字段',
           type: 'Switch',
-          description: '提交时收集被隐藏的表单项字段',
+          description: '提交时收集被隐藏的表单项字段，默认不收集被隐藏的表单项字段',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.submitHiddenFields;
@@ -415,6 +417,7 @@ export default {
             {
               title: '类型',
               type: 'Select',
+              description: '遵循Antd表单Layout字段特性，默认为 “水平”',
               options: [
                 { label: '水平', value: 'horizontal' },
                 { label: '垂直', value: 'vertical' },
