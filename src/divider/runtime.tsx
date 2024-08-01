@@ -1,23 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { Divider } from 'antd';
 import { DataType } from './constants';
 
-export default function ({ data, slots }: RuntimeParams<DataType>) {
+export default function ({ data, slots, env }: RuntimeParams<DataType>) {
   const { type, dashed, style, orientation, children, orientationMargin, customizableTitle } = data;
-
-  const [renderedChildren, setRenderedChildren] = useState<React.ReactNode>(children);
-
-  const childrenRender = useCallback(() => {
-    if (customizableTitle) {
-      setRenderedChildren(slots['title']?.render());
-    } else {
-      setRenderedChildren(children);
-    }
-  }, [customizableTitle, children]);
-
-  useEffect(() => {
-    childrenRender();
-  }, [childrenRender]);
+  const childrenNode =
+    type === 'horizontal' && (customizableTitle ? slots['title']?.render() : env.i18n(children));
 
   return (
     <Divider
@@ -26,7 +14,7 @@ export default function ({ data, slots }: RuntimeParams<DataType>) {
       dashed={dashed}
       orientation={orientation}
       orientationMargin={orientationMargin}
-      children={type === 'horizontal' && renderedChildren}
+      children={childrenNode}
     />
   );
 }
