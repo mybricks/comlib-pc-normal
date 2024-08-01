@@ -215,6 +215,26 @@ export default {
           }
         },
         {
+          title: '标签放置位置',
+          type: 'Select',
+          description: '标签放置位置，选择水平标签会在数字图标右侧，选择竖直标签会在数字图标下方',
+          options: [
+            { label: '水平', value: 'horizontal' },
+            { label: '竖直', value: 'vertical' }
+          ],
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.steps.type !== 'dotted' && data.steps.direction !== 'vertical';
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.steps.labelPlacement || 'horizontal';
+            },
+            set({ data }: EditorResult<Data>, value: 'horizontal' | 'vertical') {
+              data.steps.labelPlacement = value;
+            }
+          }
+        },
+        {
           title: '描述',
           type: 'switch',
           value: {
@@ -357,7 +377,8 @@ export default {
         {
           title: '动态步骤',
           type: 'switch',
-          description: '开启后，可以通过逻辑连线连接步骤条的输入项【设置步骤】，可以创建【步骤改变】的交互卡片',
+          description:
+            '开启后，可以通过逻辑连线连接步骤条的输入项【设置步骤】，可以创建【步骤改变】的交互卡片',
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.dynamicSteps;
