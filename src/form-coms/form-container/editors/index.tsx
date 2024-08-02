@@ -526,10 +526,9 @@ export default {
             {
               title: '列间距',
               type: 'inputNumber',
-              options: [{ min: 0 }],
-              // ifVisible({ data }: EditorResult<Data>) {
-              //   return data.labelWidthType === 'px';
-              // },
+              description:
+                '每行多列布局下，每列表单项之间的距离；在表单项类型布局为水平或垂直下生效',
+              options: [{ min: 0, max: 240 }],
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.columnGap !== undefined ? [data.columnGap] : [0];
