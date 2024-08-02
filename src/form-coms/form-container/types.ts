@@ -190,6 +190,8 @@ export interface Data {
   expandText?: string
   /** 收起文案 */
   collapsedText?: string
+  /** 列间距 */
+  columnGap?: number
 }
 
 interface DomainModel {

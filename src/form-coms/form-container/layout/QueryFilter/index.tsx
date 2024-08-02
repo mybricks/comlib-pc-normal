@@ -8,6 +8,12 @@ import CollapseButton from './CollapseButton';
 import { outputIds } from '../../constants';
 import { getWhatToDoWithoutPermission } from '../../../../utils/permission';
 
+const getGapedAfterColFlex = (data) => {
+  let columnNum = data.enable24Grid ? 24 / (data.span || 8) : data.formItemColumn;
+  let gapWidthPerRow = (data.columnGap || 0) * (columnNum - 1);
+  return `0 0 calc((100% - ${gapWidthPerRow}px) / ${columnNum})`;
+};
+
 interface QueryFilterProps {
   data: Data;
   comAray: {
@@ -46,13 +52,27 @@ const QueryFilter = (props: QueryFilterProps) => {
 
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
 
+  // 查询表单，有列间距的条件: 每行列数> 1 & 列间距大于0
+  const hasGutter = useMemo(() => {
+    let columnNum = data.enable24Grid ? 24 / (data.span || 8) : data.formItemColumn;
+    const layout = data.config?.layout || data.layout;
+    if (!data.columnGap || layout === 'inline') {
+      return false;
+    }
+    return columnNum > 1 && data.columnGap > 1;
+  }, [data.formItemColumn, data.span, data.enable24Grid, data.columnGap]);
+
   const [span, colProps] = useMemo(() => {
     if (data.enable24Grid) {
       let spanVal = data.span || 8;
-      return [spanVal, { span: spanVal }];
+      return !hasGutter
+        ? [spanVal, { span: spanVal }]
+        : [spanVal, { flex: getGapedAfterColFlex(data) }];
     }
-    return [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }];
-  }, [data.formItemColumn, data.span, data.enable24Grid]);
+    return !hasGutter
+      ? [24 / data.formItemColumn, { flex: `0 1 ${100 / data.formItemColumn}%` }]
+      : [24 / data.formItemColumn, { flex: getGapedAfterColFlex(data) }];
+  }, [data.formItemColumn, data.span, data.enable24Grid, hasGutter]);
 
   const actionStyle: React.CSSProperties = {
     textAlign: 'right',
@@ -254,7 +274,10 @@ const QueryFilter = (props: QueryFilterProps) => {
   // 表单项总宽度超出一行时显示展开/收起按钮
   const showCollapseButton = (idx + 1) * span >= 24;
   return (
-    <div className={styles.slotInlineWrapper}>
+    <div
+      className={styles.slotInlineWrapper}
+      style={{ ...(hasGutter ? { columnGap: data.columnGap } : {}) }}
+    >
       {doms}
 
       {data.actions.visible && (

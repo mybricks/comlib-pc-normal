@@ -803,5 +803,13 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
   //  =========== v1.4.63 end ===============
 
+  /**
+   * @description v1.4.71 列间距
+   */
+  if(typeof data.columnGap === 'undefined') {
+    data.columnGap = 0;
+  }
+  //  =========== v1.4.71 end ===============
+
   return true;
 }
