@@ -5,6 +5,7 @@ import AddEditor from './addEditor';
 import EllipsisEditor from './ellipsisEditor';
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width', 'height']
   },
