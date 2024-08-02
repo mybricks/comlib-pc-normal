@@ -193,7 +193,7 @@ const SlotContent = (props) => {
           );
         } else {
           return (
-            <Row style={{ width: '100%' }}>
+            <Row style={{ width: '100%', columnGap: data.columnGap }} justify={'space-between'}>
               {isInlineModel && (
                 <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                   {jsx}

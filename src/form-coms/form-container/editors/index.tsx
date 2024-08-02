@@ -524,6 +524,22 @@ export default {
               }
             },
             {
+              title: '列间距',
+              type: 'inputNumber',
+              options: [{ min: 0 }],
+              // ifVisible({ data }: EditorResult<Data>) {
+              //   return data.labelWidthType === 'px';
+              // },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.columnGap !== undefined ? [data.columnGap] : [0];
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.columnGap = value[0];
+                }
+              }
+            },
+            {
               title: '表单项宽度',
               type: 'Slider',
               options: [
