@@ -33,6 +33,7 @@ function getChildDataSource(child: any) {
   }
   return undefined;
 }
+
 function getFormItemProp(
   { data, ...com }: { data: Data; id: string; name: string },
   name: keyof FormItems
@@ -45,6 +46,7 @@ function getFormItemProp(
     console.error(e);
   }
 }
+
 function setFormItemProps(
   { data, ...com }: { data: Data; id: string; name: string },
   name: keyof FormItems,
@@ -241,55 +243,49 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认',
-        catelog: '默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-form'
-      },
-      {
-        title: '表单项',
+        title: '表单',
         items: [
           {
-            title: '标题',
-            items: [
-              {
-                title: '内容',
-                catelog: '默认',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
-              },
-              {
-                title: '冒号',
-                catelog: '默认',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
-              },
-              {
-                title: '对齐方式',
-                catelog: '默认',
-                options: [
-                  {
-                    type: 'font',
-                    config: {
-                      disableFontFamily: true,
-                      disableColor: true,
-                      disableFontWeight: true,
-                      disableFontSize: true,
-                      disableLineHeight: true,
-                      disableLetterSpacing: true,
-                      disableWhiteSpace: true
-                    }
-                  }
-                ],
-                target: `.ant-form-item > div.ant-col.ant-form-item-label`
-              }
-            ]
+            title: '背景色',
+            catelog: '默认',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-form'
+          }
+        ]
+      },
+      {
+        title: '表单项标题',
+        items: [
+          {
+            title: '内容',
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
           },
           {
-            title: '提示语',
+            title: '冒号',
             catelog: '默认',
-            options: ['font'],
-            target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
+          },
+          {
+            title: '对齐方式',
+            catelog: '默认',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableFontFamily: true,
+                  disableColor: true,
+                  disableFontWeight: true,
+                  disableFontSize: true,
+                  disableLineHeight: true,
+                  disableLetterSpacing: true,
+                  disableWhiteSpace: true
+                }
+              }
+            ],
+            target: `.ant-form-item > div.ant-col.ant-form-item-label`
           },
           {
             title: '边距',
@@ -304,6 +300,17 @@ export default {
                 data?.domainModel?.entity?.fieldAry?.length > 0 && data?.domainModel?.isQuery
               );
             }
+          }
+        ]
+      },
+      {
+        title: '表单项提示语',
+        items: [
+          {
+            title: '字体',
+            catelog: '默认',
+            options: ['font'],
+            target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
           }
         ]
       },
