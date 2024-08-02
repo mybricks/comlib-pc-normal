@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.43",
+  "version": "1.0.44",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -20,9 +20,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "previousComplete"
-      ],
+      "rels": ["previousComplete"],
       "desc": "标签页上一页"
     },
     {
@@ -31,9 +29,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "nextComplete"
-      ],
+      "rels": ["nextComplete"],
       "desc": "标签页下一页"
     },
     {
@@ -42,17 +38,13 @@
       "schema": {
         "type": "number"
       },
-      "rels": [
-        "activeComplete"
-      ],
+      "rels": ["activeComplete"],
       "desc": "标签页下标，从0开始计数"
     },
     {
       "id": "outActiveTab",
       "title": "获取激活tab项",
-      "rels": [
-        "outActiveTab"
-      ],
+      "rels": ["outActiveTab"],
       "schema": {
         "type": "any"
       },
@@ -64,9 +56,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "getTabsDone"
-      ],
+      "rels": ["getTabsDone"],
       "desc": "获取当前所有的的标签页信息列表"
     }
   ],

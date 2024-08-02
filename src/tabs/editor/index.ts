@@ -34,7 +34,7 @@ export default {
     style.height = 'auto';
   },
   ':root': {
-    items({}: EditorResult<Data>, cate1, cate2, cate3) {
+    items({ }: EditorResult<Data>, cate1, cate2, cate3) {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -193,9 +193,9 @@ export default {
           }
         },
         {
-          title: '标签页隐藏时是否渲染',
+          title: '隐藏时是否渲染内容',
           type: 'Switch',
-          description: '控制标签页隐藏时是否渲染',
+          description: '标签页被隐藏时是否渲染 DOM 结构',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.forceRender;
