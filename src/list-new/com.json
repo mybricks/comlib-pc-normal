@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -182,7 +182,6 @@
       "id": "item",
       "capacity": 1,
       "title": "列表项",
-      "defer": true,
       "description": "列表项作用域插槽，有对应项内容和序号的输入",
       "type": "scope",
       "inputs": [
