@@ -18,7 +18,7 @@ export default {
       {
         items: [
           {
-            title: '按钮样式',
+            title: '按钮',
             catelog: '默认',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
@@ -27,7 +27,7 @@ export default {
             target: `.button`
           },
           {
-            title: '按钮样式',
+            title: '按钮',
             catelog: 'Hover',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea && data.type !== TypeEnum.Link;
@@ -37,7 +37,7 @@ export default {
             domTarget: '.button'
           },
           {
-            title: '按钮样式',
+            title: '按钮',
             catelog: '激活',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea && data.type !== TypeEnum.Link;
@@ -46,7 +46,7 @@ export default {
             target: [`button.ant-btn:not([disabled]):active`]
           },
           {
-            title: '激活',
+            title: '按钮',
             catelog: '激活',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea && data.type === TypeEnum.Link;
@@ -58,6 +58,7 @@ export default {
             ]
           },
           {
+            title: '按钮',
             catelog: '激活',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea && data.type === TypeEnum.Link;
@@ -66,7 +67,7 @@ export default {
             target: [`button.ant-btn:not([disabled]):active > span`]
           },
           {
-            title: '按钮样式',
+            title: '按钮',
             catelog: '禁用',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
