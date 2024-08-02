@@ -528,6 +528,9 @@ export default {
               type: 'inputNumber',
               description:
                 '每行多列布局下，每列表单项之间的距离；在表单项类型布局为水平或垂直下生效',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (data.config?.layout || data.layout) !== 'inline';
+              },
               options: [{ min: 0, max: 240 }],
               value: {
                 get({ data }: EditorResult<Data>) {
