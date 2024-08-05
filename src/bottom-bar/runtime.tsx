@@ -34,7 +34,7 @@ export interface Data {
 }
 
 export default function BottomBar({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef(null);
 
   if (env.runtime && inputs) {
@@ -132,6 +132,7 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
           )}
         </div>
       </div>,
+      // @ts-ignore
       document.getElementById(data.parentId)
     );
   }
