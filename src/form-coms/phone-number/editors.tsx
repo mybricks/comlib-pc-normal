@@ -62,6 +62,7 @@ export default {
       {
         items: [
           {
+            title: '边框',
             options: ['border'],
             target: '.ant-input-affix-wrapper'
           }
