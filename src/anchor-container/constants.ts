@@ -1,7 +1,8 @@
 
 export enum InputIds {
   DATA_SOURCE = 'dataSource',
-  LOADING = 'loading'
+  LOADING = 'loading',
+  SET_ACTIVE_ANCHOR = 'setActiveAnchor'
 }
 export enum OutputIds {
   GetDataSource = 'getdataSource'
@@ -36,4 +37,5 @@ export interface Data {
   //加载中文案
   loadingTip?: string;
   anchorPosition: AnchorPosition;
+  hideAnchorList?: boolean
 }

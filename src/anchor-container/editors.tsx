@@ -119,6 +119,40 @@ export default {
         }
       },
       {
+        title: '隐藏锚点选项',
+        type: 'Switch',
+        description: '开启后，可以通过,设置激活的锚点，进行跳转',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.hideAnchorList;
+          },
+          set({ data, input, output }: EditorResult<Data>, val: boolean) {
+            data.hideAnchorList = val;
+            const event1 = input.get('setActiveAnchor');
+            if (val) {
+              !event1 &&
+                input.add('setActiveAnchor', `设置激活锚点`, {
+                  type: 'object',
+                  properties: {
+                    index: {
+                      title: '锚点索引',
+                      type: 'number',
+                      description: '激活锚点的索引，从0开始'
+                    },
+                    title: {
+                      title: '锚点标题',
+                      type: 'string',
+                      description: '锚点标题内容'
+                    }
+                  }
+                });
+            } else {
+              event1 && input.remove('setActiveAnchor');
+            }
+          }
+        }
+      },
+      {
         title: '锚点链接位置',
         type: 'radio',
         options: [
