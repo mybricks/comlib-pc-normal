@@ -104,7 +104,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
 
   const ContentBox = useCallback(
     () => (
-      <Col span={20}>
+      <Col span={data.hideAnchorList ? 24 : 20}>
         {data.useDynamicData ? (
           <List
             loading={loading}
@@ -129,7 +129,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         )}
       </Col>
     ),
-    [data.useDynamicData, data.staticData, dataSource, loading]
+    [data.useDynamicData, data.staticData, dataSource, loading, data.hideAnchorList]
   );
 
   const AnchorBox = useCallback(
