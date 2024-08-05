@@ -1,4 +1,12 @@
-import { RuleKeys, defaultValidatorExample, emailValidator, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
+import {
+  RuleKeys,
+  defaultValidatorExample,
+  emailValidator,
+  showMessage,
+  getTitle,
+  formatRegexRules,
+  FormatScene
+} from '../utils/validator';
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { Data } from './runtime';
 
@@ -86,6 +94,7 @@ export default {
       {
         items: [
           {
+            title: '边框',
             options: ['border'],
             target: '.ant-input-affix-wrapper'
           }
@@ -284,7 +293,9 @@ export default {
                   }
                 },
                 ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.CODE_VALIDATOR || item.key === RuleKeys.Email_VALIDATOR;
+                  return (
+                    item.key === RuleKeys.CODE_VALIDATOR || item.key === RuleKeys.Email_VALIDATOR
+                  );
                 },
                 value: 'validateCode'
               }
