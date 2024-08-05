@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export interface Data {
     value: string | undefined;
     rules: any[];
@@ -5,4 +7,5 @@ export interface Data {
     childrenInputs: Record<string, any>;
     config: {};
     valueSchema: object;
+    slotStyle: CSSProperties
 }
