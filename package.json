@@ -22,9 +22,9 @@
   "author": "CheMingjun",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/visualbricks/comlib-pc-normal/issues"
+    "url": "https://github.com/mybricks/comlib-pc-normal/issues"
   },
-  "homepage": "https://github.com/visualbricks/comlib-pc-normal#readme",
+  "homepage": "https://github.com/mybricks/comlib-pc-normal#readme",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@mybricks/color-picker": "^1.0.7",

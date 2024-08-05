@@ -84,19 +84,17 @@ export default {
                 target: '.ant-radio-inner'
               },
               {
-                title: '整体',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.radio'
-              },
-              {
                 title: '选项',
                 options: [
                   { type: 'background', config: { disableBackgroundImage: true } },
                   'border'
                 ],
                 target: '.ant-space-item .ant-radio-wrapper'
+              },
+              {
+                title: '表单项',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.radio'
               }
             ]
           }),
@@ -134,7 +132,8 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
-                target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
+                target:
+                  '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
               },
               {
                 title: '选择框中心',
@@ -166,7 +165,8 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
-                target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
+                target:
+                  '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
               },
               {
                 title: '选择框中心',
@@ -182,9 +182,9 @@ export default {
                 target: '.ant-space-item .ant-radio-wrapper.ant-radio-wrapper-disabled'
               }
             ]
-          }),
+          })
         ]
-      },
+      }
     ],
     items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
@@ -210,7 +210,7 @@ export default {
           options: [
             { label: '无', value: false },
             { label: '第一项', value: 'first' },
-            { label: '默认选中项', value: 'defaultCheck' },
+            { label: '默认选中项', value: 'defaultCheck' }
           ],
           value: {
             get({ data }: EditorResult<Data>) {
@@ -479,7 +479,7 @@ export default {
           ]
         }
       ];
-    },
+    }
   },
   '.ant-radio-button-wrapper': {
     title: '单选按钮',
@@ -511,14 +511,14 @@ export default {
       type: 'text',
       value: {
         get({ data, focusArea }) {
-          if(!focusArea) return
-          const { item } = getBtnItemInfo(data, focusArea)
-          return item.label
+          if (!focusArea) return;
+          const { item } = getBtnItemInfo(data, focusArea);
+          return item.label;
         },
         set({ data, focusArea, input, output }, value) {
-          if(!focusArea) return
-          const { item } = getBtnItemInfo(data, focusArea)
-          item.label = value
+          if (!focusArea) return;
+          const { item } = getBtnItemInfo(data, focusArea);
+          item.label = value;
         }
       }
     },
@@ -531,17 +531,17 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
-            if(!focusArea) return
-            const { item } = getBtnItemInfo(data, focusArea)
-            return item.label
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            return item.label;
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
-            if(!focusArea) return
-            const { item } = getBtnItemInfo(data, focusArea)
-            item.label = val
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            item.label = val;
           }
         }
-      },
+      }
     ]
-  },
+  }
 };

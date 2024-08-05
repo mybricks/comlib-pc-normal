@@ -5,7 +5,6 @@ import { createrCatelogEditor } from '../utils';
 import { IconEditor } from './iconEditor';
 import { SizeEnum, SizeOptions } from '../types';
 
-
 export default {
   '@resize': {
     options: ['width']
@@ -48,14 +47,12 @@ export default {
                 target: '.ant-select-selector'
               },
               {
-                title: '输入框-提示内容',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                ],
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-select-selector .ant-select-selection-placeholder'
               },
               {
-                title: '输入框-清除图标',
+                title: '清除图标',
                 options: [
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
@@ -63,10 +60,8 @@ export default {
                 target: '.ant-select-allow-clear .ant-select-clear'
               },
               {
-                title: '输入框-下拉箭头/搜索图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                ],
+                title: '下拉箭头/搜索图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-select-show-arrow .ant-select-arrow'
               },
               {
@@ -80,9 +75,7 @@ export default {
               },
               {
                 title: '选中标签-删除按钮',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-select-selector .ant-select-selection-item-remove'
               },
               {
@@ -102,7 +95,7 @@ export default {
                 ],
                 global: true,
                 target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -111,14 +104,13 @@ export default {
               {
                 title: '输入框',
                 options: ['border'],
-                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+                target:
+                  'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
                 domTarget: 'div.ant-select-selector'
               },
               {
-                title: '输入框-清除图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                ],
+                title: '清除图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-select-allow-clear .ant-select-clear:hover'
               },
               {
@@ -139,7 +131,7 @@ export default {
                 ],
                 global: true,
                 target: `.{id} .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked:after`
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -148,9 +140,10 @@ export default {
               {
                 title: '输入框',
                 options: ['border', 'BoxShadow'],
-                target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+                target:
+                  'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
                 domTarget: 'div.ant-select-selector'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -164,7 +157,7 @@ export default {
                 ],
                 global: true,
                 target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected`
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -186,8 +179,8 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 global: true,
-                target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`,
-              },
+                target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -203,11 +196,10 @@ export default {
                 target: '.ant-select-disabled .ant-select-selector'
               },
               {
-                title: '输入框-提示内容',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                ],
-                target: '.ant-select-disabled .ant-select-selector .ant-select-selection-placeholder'
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target:
+                  '.ant-select-disabled .ant-select-selector .ant-select-selection-placeholder'
               },
               {
                 title: '选项',
@@ -225,8 +217,8 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 global: true,
-                target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked.ant-select-tree-checkbox-disabled .ant-select-tree-checkbox-inner`,
-              },
+                target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked.ant-select-tree-checkbox-disabled .ant-select-tree-checkbox-inner`
+              }
             ]
           })
         ]
@@ -236,9 +228,8 @@ export default {
       catalog[0].title = '常规';
       catalog[0].items = BasicEditors;
 
-      catalog[1].title = '高级'
+      catalog[1].title = '高级';
       catalog[1].items = AdvancedEditors(data);
-
     }
   }
-}
+};

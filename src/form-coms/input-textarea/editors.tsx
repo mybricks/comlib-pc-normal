@@ -41,14 +41,9 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-input'
-              },
-              {
-                title: '表单项背景色',
-                options: ['background'],
-                target: ['.ant-input']
               },
               {
                 title: '提示内容',
@@ -61,9 +56,14 @@ export default {
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                title: '边框',
+                options: ['border'],
                 target: '.ant-input'
+              },
+              {
+                title: '背景色',
+                options: ['background'],
+                target: ['.ant-input']
               },
               {
                 title: '字数',
@@ -76,18 +76,18 @@ export default {
             catelog: 'Hover',
             items: [
               {
-                title: '边框',
-                catelog: 'Hover',
-                options: ['border'],
-                target: '.ant-input:hover',
-                domTarget: '.ant-input'
-              },
-              {
                 title: '清除按钮',
                 catelog: 'Hover',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input:hover',
+                domTarget: '.ant-input'
               }
             ]
           }),
@@ -284,7 +284,9 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
+              return data.rules.length > 0
+                ? formatRegexRules(data.rules, FormatScene.Editor)
+                : LengthRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);

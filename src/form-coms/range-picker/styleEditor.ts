@@ -10,14 +10,14 @@ const styleEditor = [
             title: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-picker-input>input'
               },
               {
-                title: '表单项背景色',
-                options: ['background'],
-                target: '.ant-picker'
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
               },
               {
                 title: '日历图标',
@@ -33,24 +33,41 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-picker-input>input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker'
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
+                title: '背景色',
+                options: ['background'],
+                target: '.ant-picker'
+              },
+              {
+                title: '确认按钮',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'BoxShadow'
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-btn-primary`;
+                }
               },
               {
                 title: '日期-当前',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`;
                 }
               },
               {
+                title: '日期-当前',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
@@ -83,103 +100,87 @@ const styleEditor = [
               },
               {
                 title: '箭头',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-range-arrow:before`
+                  return `.{id} .ant-picker-range-arrow:before`;
                 }
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-panel-container`
+                  return `.{id} .ant-picker-panel-container`;
                 }
               },
               {
                 title: '顶部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header`
+                  return `.{id} .ant-picker-header`;
                 }
               },
               {
                 title: '中间日期操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-body`
+                  return `.{id} .ant-picker-body`;
                 }
               },
               {
                 title: '中间时间操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-time-panel>.ant-picker-content`
+                  return `.{id} .ant-picker-time-panel>.ant-picker-content`;
                 }
               },
               {
                 title: '底部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-footer`
+                  return `.{id} .ant-picker-footer`;
                 }
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button`
+                  return `.{id} .ant-picker-header-view button`;
                 }
-              },
-              {
-                title: '确认按钮',
-                options: [
-                  'border',
-                  { type: 'background', config: { disableBackgroundImage: true } },
-                  { type: 'font', config: { disableTextAlign: true } },
-                  'BoxShadow'
-                ],
-                global: true,
-                target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-btn-primary`;
-                }
-              },
+              }
             ]
           },
           {
             title: 'Hover',
             items: [
               {
-                title: '边框-hover',
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
               },
               {
-                title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle:hover',
-                domTarget: '.anticon-close-circle'
+                title: '确认按钮',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'border' },
+                  'BoxShadow'
+                ],
+                global: true,
+                target: `.{id}  .ant-btn:not([disabled]):hover`
               },
               {
                 title: '日期',
@@ -195,24 +196,11 @@ const styleEditor = [
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button:hover`
+                  return `.{id} .ant-picker-header-view button:hover`;
                 }
-              },
-              {
-                title: '确认按钮',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } },
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'border' },
-                  'BoxShadow'
-                ],
-                global: true,
-                target: `.{id}  .ant-btn:not([disabled]):hover`
               }
             ]
           },
@@ -228,12 +216,23 @@ const styleEditor = [
                 title: '边框底线',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-picker-range .ant-picker-active-bar'
-              },
+              }
             ]
           },
           {
             title: 'Select',
             items: [
+              {
+                title: '确认按钮',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'border' },
+                  'BoxShadow'
+                ],
+                global: true,
+                target: `.{id}  .ant-btn-primary:active`
+              },
               {
                 title: '日期-选中',
                 options: [
@@ -253,7 +252,10 @@ const styleEditor = [
               },
               {
                 title: '日期-选中区间',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return [
@@ -267,7 +269,9 @@ const styleEditor = [
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return [`.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`];
+                  return [
+                    `.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
+                  ];
                 }
               },
               {
@@ -281,18 +285,7 @@ const styleEditor = [
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`;
                 }
-              },
-              {
-                title: '确认按钮',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } },
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'border' },
-                  'BoxShadow'
-                ],
-                global: true,
-                target: `.{id}  .ant-btn-primary:active`
-              },
+              }
             ]
           },
           {
@@ -300,7 +293,10 @@ const styleEditor = [
             items: [
               {
                 title: '表单项',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker.ant-picker-disabled'
               },
               {
@@ -315,7 +311,7 @@ const styleEditor = [
                 target: `.{id}  .ant-btn-primary[disabled]`
               }
             ]
-          },
+          }
         ]
       },
       {
@@ -325,14 +321,14 @@ const styleEditor = [
             title: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-picker-input>input'
               },
               {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: '.ant-picker'
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
               },
               {
                 title: '日历图标',
@@ -348,24 +344,28 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-picker-input>input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker'
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-picker'
               },
               {
                 title: '日期-当前',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`;
                 }
               },
               {
+                title: '日期-当前',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
@@ -376,7 +376,10 @@ const styleEditor = [
                 title: '日期-周',
                 options: [
                   'border',
-                  { type: 'background', config: { disableBackgroundImage: true, useImportant: true } },
+                  {
+                    type: 'background',
+                    config: { disableBackgroundImage: true, useImportant: true }
+                  },
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
                 global: true,
@@ -386,70 +389,60 @@ const styleEditor = [
               },
               {
                 title: '箭头',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-range-arrow:before`
+                  return `.{id} .ant-picker-range-arrow:before`;
                 }
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-panel-container`
+                  return `.{id} .ant-picker-panel-container`;
                 }
               },
               {
                 title: '顶部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header`
+                  return `.{id} .ant-picker-header`;
                 }
               },
               {
                 title: '底部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-body`
+                  return `.{id} .ant-picker-body`;
                 }
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button`
+                  return `.{id} .ant-picker-header-view button`;
                 }
-              },
+              }
             ]
           },
           {
             title: 'Hover',
             items: [
               {
-                title: '边框-hover',
-                options: ['border'],
-                target: '.ant-picker:hover',
-                domTarget: '.ant-picker'
-              },
-              {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker:hover',
+                domTarget: '.ant-picker'
               },
               {
                 title: '选中日期区间',
@@ -476,17 +469,15 @@ const styleEditor = [
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-week-panel-row:hover td`
+                  return `.{id} .ant-picker-week-panel-row:hover td`;
                 }
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button:hover`
+                  return `.{id} .ant-picker-header-view button:hover`;
                 }
               }
             ]
@@ -503,7 +494,7 @@ const styleEditor = [
                 title: '边框底线',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-picker-range .ant-picker-active-bar'
-              },
+              }
             ]
           },
           {
@@ -523,9 +514,7 @@ const styleEditor = [
               },
               {
                 title: '周-选中',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return [`.{id} .ant-picker-week-panel-row-selected td.ant-picker-cell-week`];
@@ -538,11 +527,14 @@ const styleEditor = [
             items: [
               {
                 title: '表单项',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker.ant-picker-disabled'
               }
             ]
-          },
+          }
         ]
       },
       {
@@ -552,14 +544,14 @@ const styleEditor = [
             title: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-picker-input>input'
               },
               {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: '.ant-picker'
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
               },
               {
                 title: '日历图标',
@@ -575,18 +567,21 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-picker-input>input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker'
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-picker'
               },
               {
                 title: '日期-当前',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`;
@@ -609,70 +604,60 @@ const styleEditor = [
               },
               {
                 title: '箭头',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-range-arrow:before`
+                  return `.{id} .ant-picker-range-arrow:before`;
                 }
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-panel-container`
+                  return `.{id} .ant-picker-panel-container`;
                 }
               },
               {
                 title: '顶部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header`
+                  return `.{id} .ant-picker-header`;
                 }
               },
               {
                 title: '底部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-body`
+                  return `.{id} .ant-picker-body`;
                 }
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button`
+                  return `.{id} .ant-picker-header-view button`;
                 }
-              },
+              }
             ]
           },
           {
             title: 'Hover',
             items: [
               {
-                title: '边框-hover',
-                options: ['border'],
-                target: '.ant-picker:hover',
-                domTarget: '.ant-picker'
-              },
-              {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker:hover',
+                domTarget: '.ant-picker'
               },
               {
                 title: '月份',
@@ -690,12 +675,10 @@ const styleEditor = [
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button:hover`
+                  return `.{id} .ant-picker-header-view button:hover`;
                 }
               }
             ]
@@ -712,7 +695,7 @@ const styleEditor = [
                 title: '边框底线',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-picker-range .ant-picker-active-bar'
-              },
+              }
             ]
           },
           {
@@ -735,7 +718,10 @@ const styleEditor = [
               },
               {
                 title: '月-选中区间',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return [
@@ -749,7 +735,9 @@ const styleEditor = [
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return [`.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`];
+                  return [
+                    `.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
+                  ];
                 }
               }
             ]
@@ -759,11 +747,14 @@ const styleEditor = [
             items: [
               {
                 title: '表单项',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker.ant-picker-disabled'
               }
             ]
-          },
+          }
         ]
       },
       {
@@ -773,14 +764,14 @@ const styleEditor = [
             title: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-picker-input>input'
               },
               {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: '.ant-picker'
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
               },
               {
                 title: '日历图标',
@@ -796,14 +787,14 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-picker-input>input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker'
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-picker'
               },
               {
                 title: '季度',
@@ -822,70 +813,60 @@ const styleEditor = [
               },
               {
                 title: '箭头',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-range-arrow:before`
+                  return `.{id} .ant-picker-range-arrow:before`;
                 }
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-panel-container`
+                  return `.{id} .ant-picker-panel-container`;
                 }
               },
               {
                 title: '顶部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header`
+                  return `.{id} .ant-picker-header`;
                 }
               },
               {
                 title: '底部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-body`
+                  return `.{id} .ant-picker-body`;
                 }
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button`
+                  return `.{id} .ant-picker-header-view button`;
                 }
-              },
+              }
             ]
           },
           {
             title: 'Hover',
             items: [
               {
-                title: '边框-hover',
-                options: ['border'],
-                target: '.ant-picker:hover',
-                domTarget: '.ant-picker'
-              },
-              {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker:hover',
+                domTarget: '.ant-picker'
               },
               {
                 title: '季度',
@@ -903,12 +884,10 @@ const styleEditor = [
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button:hover`
+                  return `.{id} .ant-picker-header-view button:hover`;
                 }
               }
             ]
@@ -925,7 +904,7 @@ const styleEditor = [
                 title: '边框底线',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-picker-range .ant-picker-active-bar'
-              },
+              }
             ]
           },
           {
@@ -948,7 +927,10 @@ const styleEditor = [
               },
               {
                 title: '季度-选中区间',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return [
@@ -962,7 +944,9 @@ const styleEditor = [
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return [`.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`];
+                  return [
+                    `.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
+                  ];
                 }
               }
             ]
@@ -972,11 +956,14 @@ const styleEditor = [
             items: [
               {
                 title: '表单项',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker.ant-picker-disabled'
               }
             ]
-          },
+          }
         ]
       },
       {
@@ -986,14 +973,14 @@ const styleEditor = [
             title: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-picker-input>input'
               },
               {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: '.ant-picker'
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
               },
               {
                 title: '日历图标',
@@ -1009,14 +996,14 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-picker-input>input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker'
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-picker'
               },
               {
                 title: '年份',
@@ -1035,52 +1022,42 @@ const styleEditor = [
               },
               {
                 title: '箭头',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-range-arrow:before`
+                  return `.{id} .ant-picker-range-arrow:before`;
                 }
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-panel-container`
+                  return `.{id} .ant-picker-panel-container`;
                 }
               },
               {
                 title: '顶部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header`
+                  return `.{id} .ant-picker-header`;
                 }
               },
               {
                 title: '底部操作区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-body`
+                  return `.{id} .ant-picker-body`;
                 }
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button`
+                  return `.{id} .ant-picker-header-view button`;
                 }
               }
             ]
@@ -1089,16 +1066,16 @@ const styleEditor = [
             title: 'Hover',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker:hover',
-                domTarget: '.ant-picker'
-              },
-              {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-picker:hover',
+                domTarget: '.ant-picker'
               },
               {
                 title: '年份',
@@ -1116,12 +1093,10 @@ const styleEditor = [
               },
               {
                 title: '顶部操作日期',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-picker-header-view button:hover`
+                  return `.{id} .ant-picker-header-view button:hover`;
                 }
               }
             ]
@@ -1138,7 +1113,7 @@ const styleEditor = [
                 title: '边框底线',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-picker-range .ant-picker-active-bar'
-              },
+              }
             ]
           },
           {
@@ -1161,7 +1136,10 @@ const styleEditor = [
               },
               {
                 title: '年份-选中区间',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return [
@@ -1175,7 +1153,9 @@ const styleEditor = [
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return [`.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`];
+                  return [
+                    `.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
+                  ];
                 }
               }
             ]
@@ -1185,7 +1165,10 @@ const styleEditor = [
             items: [
               {
                 title: '表单项',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker.ant-picker-disabled'
               }
             ]
@@ -1193,7 +1176,7 @@ const styleEditor = [
         ]
       }
     ]
-  },
-]
+  }
+];
 
 export default styleEditor;

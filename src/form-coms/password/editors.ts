@@ -1,5 +1,12 @@
 import { Data } from './types';
-import { RuleKeys, LengthRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
+import {
+  RuleKeys,
+  LengthRules,
+  showMessage,
+  getTitle,
+  formatRegexRules,
+  FormatScene
+} from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 
@@ -8,7 +15,7 @@ export default {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
   ':root': {
     style: [
@@ -35,14 +42,9 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper'
-              },
-              {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target:  ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input'
               },
               {
                 title: '提示内容',
@@ -60,22 +62,20 @@ export default {
                 target: '.ant-input-password-icon.anticon'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
               }
             ]
           }),
           ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
-              {
-                title: 'Hover',
-                catelog: 'Hover',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-                domTarget: '.ant-input-affix-wrapper'
-              },
               {
                 title: '清除按钮',
                 catelog: 'Hover',
@@ -88,16 +88,24 @@ export default {
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-input-password-icon.anticon:hover'
               },
+              {
+                title: '边框',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
+              }
             ]
           }),
           ...createrCatelogEditor({
             catelog: 'Focus',
             items: [
               {
-                title: '激活',
-                options: ['border','BoxShadow'],
-                target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
-              },
+                title: '边框',
+                options: ['border', 'BoxShadow'],
+                target:
+                  'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -106,15 +114,16 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-                target: [
-                  '.ant-input-affix-wrapper-disabled'
-                ]
-              },
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-input-affix-wrapper-disabled']
+              }
             ]
-          }),
+          })
         ]
-      },
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...cate) => {
       cate[0].title = '配置';
@@ -167,7 +176,12 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.validateTrigger || [ ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter ];
+              return (
+                data.validateTrigger || [
+                  ValidateTriggerType.OnBlur,
+                  ValidateTriggerType.OnPressEnter
+                ]
+              );
             },
             set({ data }, value: string[]) {
               data.validateTrigger = value;
@@ -251,7 +265,9 @@ export default {
               },
               value: {
                 get({ data }) {
-                  return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
+                  return data.rules.length > 0
+                    ? formatRegexRules(data.rules, FormatScene.Editor)
+                    : LengthRules;
                 },
                 set({ data }, value: any) {
                   data.rules = formatRegexRules(value);

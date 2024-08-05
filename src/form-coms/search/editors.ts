@@ -1,4 +1,12 @@
-import { RuleKeys, defaultValidatorExample, LengthRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
+import {
+  RuleKeys,
+  defaultValidatorExample,
+  LengthRules,
+  showMessage,
+  getTitle,
+  formatRegexRules,
+  FormatScene
+} from '../utils/validator';
 import { Data, Options } from './runtime';
 import { uuid } from '../../utils';
 import { createrCatelogEditor } from '../utils';
@@ -57,14 +65,9 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper'
-              },
-              {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input'
               },
               {
                 title: '提示内容',
@@ -77,9 +80,14 @@ export default {
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
               },
               {
                 title: '前置标签',
@@ -97,41 +105,42 @@ export default {
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary)'
+                target:
+                  '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary)'
               },
               {
-                options: [
-                  'border',
-                ],
-                target: '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button'
+                title: '搜索标签边框',
+                options: ['border'],
+                target:
+                  '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button'
               },
               {
-                title: '搜索按钮',
+                title: '确认按钮',
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: '.ant-btn-primary '
-              },
+                target: '.ant-btn-primary'
+              }
             ]
           }),
           ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
               {
-                title: '边框',
-                catelog: 'Hover',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-                domTarget: '.ant-input-affix-wrapper'
-              },
-              {
                 title: '清除按钮',
                 catelog: 'Hover',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '边框',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
               },
               {
                 title: '搜索标签',
@@ -143,14 +152,14 @@ export default {
                 target: '.ant-btn:hover'
               },
               {
-                title: '搜索按钮',
+                title: '确认按钮',
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.ant-btn-primary:hover'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -178,14 +187,14 @@ export default {
                 target: ['.ant-btn:active']
               },
               {
-                title: '搜索按钮',
+                title: '确认按钮',
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.ant-btn-primary:active'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -210,14 +219,14 @@ export default {
                 target: '.ant-btn[disabled]'
               },
               {
-                title: '搜索按钮',
+                title: '确认按钮',
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.ant-btn-primary[disabled]'
-              },
+              }
             ]
           })
         ]
@@ -510,7 +519,9 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : LengthRules;
+              return data.rules.length > 0
+                ? formatRegexRules(data.rules, FormatScene.Editor)
+                : LengthRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);

@@ -70,7 +70,7 @@ export default {
                 target: '.ant-switch-handle:before'
               },
               {
-                title: '开关内文本',
+                title: '文案',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-switch-inner'
               }

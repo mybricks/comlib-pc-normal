@@ -18,9 +18,8 @@ const initParams = (data: Data) => {
   optionsLength = (data.staticOptions || []).length;
 };
 
-const refreshSchema = ({ input, output, data }: { input: any, output: any, data: Data }) => {
-  let setValueSchema,
-    returnValueSchema;
+const refreshSchema = ({ input, output, data }: { input: any; output: any; data: Data }) => {
+  let setValueSchema, returnValueSchema;
   if (data.outputValueType === 'value') {
     returnValueSchema = Schemas.String;
   } else if (data.outputValueType === 'option') {
@@ -30,7 +29,7 @@ const refreshSchema = ({ input, output, data }: { input: any, output: any, data:
         label: Schemas.String,
         value: Schemas.String,
         checked: Schemas.Boolean,
-        disabled: Schemas.Boolean,
+        disabled: Schemas.Boolean
       }
     };
   } else if (data.config.labelInValue) {
@@ -38,7 +37,7 @@ const refreshSchema = ({ input, output, data }: { input: any, output: any, data:
       type: 'object',
       properties: {
         label: Schemas.String,
-        value: Schemas.String,
+        value: Schemas.String
       }
     };
   }
@@ -71,45 +70,45 @@ const reFiledNameSchema = (data: Data, input, output) => {
   const trueCheckedFieldName = data.checkedFieldName || 'checked';
 
   const schema = {
-    type: "array",
+    type: 'array',
     items: {
-      type: "object",
+      type: 'object',
       properties: {
         [trueLabelFieldName]: {
-          title: "标签",
-          type: "string",
-          description: "标签"
+          title: '标签',
+          type: 'string',
+          description: '标签'
         },
         [trueValueFieldName]: {
-          title: "值",
-          type: "string",
-          description: "值"
+          title: '值',
+          type: 'string',
+          description: '值'
         },
         [trueDisabledFieldName]: {
-          title: "禁用",
-          type: "boolean",
-          description: "是否禁用"
+          title: '禁用',
+          type: 'boolean',
+          description: '是否禁用'
         },
         [trueCheckedFieldName]: {
-          title: "选中",
-          type: "boolean",
-          description: "是否选中"
+          title: '选中',
+          type: 'boolean',
+          description: '是否选中'
         }
       }
     }
   };
 
-  const setOptionsPin = input.get('setOptions')
-  const setOptionsDonePin = output.get('setOptionsDone')
+  const setOptionsPin = input.get('setOptions');
+  const setOptionsDonePin = output.get('setOptionsDone');
 
   if (setOptionsPin) {
-    setOptionsPin.setSchema(schema)
+    setOptionsPin.setSchema(schema);
   }
 
   if (setOptionsDonePin) {
-    setOptionsDonePin.setSchema(schema)
+    setOptionsDonePin.setSchema(schema);
   }
-}
+};
 
 export default {
   ':slot': {},
@@ -144,19 +143,19 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-select-selector'
-              },
-              {
-                title: '表单项背景色',
-                options: ['background'],
-                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-selection-item'
               },
               {
                 title: '提示内容',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-select-selection-placeholder'
+              },
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-select-selector'
               },
               {
                 title: '下拉图标',
@@ -169,9 +168,9 @@ export default {
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selection-item'
+                title: '背景色',
+                options: ['background'],
+                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
               },
               {
                 title: '标签',
@@ -187,9 +186,7 @@ export default {
               },
               {
                 title: '标签-关闭图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: ['.ant-select-multiple .ant-select-selection-item-remove']
               },
               {
@@ -200,27 +197,23 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} div.ant-select-item.ant-select-item-option`
+                  return `.{id} div.ant-select-item.ant-select-item-option`;
                 }
               },
               {
                 title: '下拉区域',
-                options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id}.ant-select-dropdown`
+                  return `.{id}.ant-select-dropdown`;
                 }
               },
               {
                 title: '空白描述',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-empty-description`
+                  return `.{id} .ant-empty-description`;
                 }
               }
             ]
@@ -229,9 +222,17 @@ export default {
             catelog: 'Hover',
             items: [
               {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
                 title: '边框',
                 options: ['border'],
-                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+                target:
+                  'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
                 domTarget: 'div.ant-select-selector'
               },
               {
@@ -242,21 +243,12 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
+                  return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`;
                 }
               },
               {
-                title: '清除按钮',
-                catelog: 'Hover',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle:hover',
-                domTarget: '.anticon-close-circle'
-              },
-              {
                 title: '标签-关闭图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } }
-                ],
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
               }
             ]
@@ -267,7 +259,8 @@ export default {
               {
                 title: '边框',
                 options: ['border', 'BoxShadow'],
-                target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+                target:
+                  'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
                 domTarget: 'div.ant-select-selector'
               },
               {
@@ -278,7 +271,7 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
+                  return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`;
                 }
               }
             ]
@@ -294,7 +287,7 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
+                  return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`;
                 }
               }
             ]
@@ -305,15 +298,18 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: [
                   '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'
                 ]
-              },
+              }
             ]
           })
         ]
-      },
+      }
     ],
     items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
@@ -339,7 +335,8 @@ export default {
         {
           title: '选择框最大高度',
           type: 'Text',
-          description: '选择框的最大高度，超出后垂直滚动。不设置表示默认配置，设置为0表示适应内容高度。默认单位为像素（px）',
+          description:
+            '选择框的最大高度，超出后垂直滚动。不设置表示默认配置，设置为0表示适应内容高度。默认单位为像素（px）',
           value: {
             get({ data }) {
               return data.maxHeight;
@@ -356,7 +353,7 @@ export default {
             { label: '左上方', value: 'topLeft' },
             { label: '右上方', value: 'topRight' },
             { label: '左下方', value: 'bottomLeft' },
-            { label: '右下方', value: 'bottomRight' },
+            { label: '右下方', value: 'bottomRight' }
           ],
           value: {
             get({ data }) {
@@ -391,7 +388,7 @@ export default {
           options: [
             { label: '默认', value: 'default' },
             { label: '多选', value: 'multiple' },
-            { label: '标签', value: 'tags' },
+            { label: '标签', value: 'tags' }
           ],
           value: {
             get({ data }) {
@@ -417,14 +414,14 @@ export default {
           type: 'switch',
           description: '开启后，在宽度不够时，自动省略显示选中的标签',
           ifVisible({ data }: EditorResult<Data>) {
-            return ['multiple', 'tags'].includes(data?.config?.mode || '')
+            return ['multiple', 'tags'].includes(data?.config?.mode || '');
           },
           value: {
             get({ data }) {
               return data.maxTagCount === 'responsive';
             },
             set({ data }, value: boolean) {
-              data.maxTagCount = (value ? 'responsive' : '');
+              data.maxTagCount = value ? 'responsive' : '';
             }
           }
         },
@@ -490,7 +487,7 @@ export default {
               const value = uuid('_', 2);
               const defaultOption = {
                 label: `选项${value}`,
-                value: `选项${value}`,
+                value: `选项${value}`
               };
               return defaultOption;
             },
@@ -536,7 +533,7 @@ export default {
                 data.value = initValue;
               } else {
                 if (data.value && initValue.length > 1) {
-                  data.value = initValue.find(item => item !== data.value);
+                  data.value = initValue.find((item) => item !== data.value);
                 } else {
                   data.value = initValue[0];
                 }
@@ -544,12 +541,12 @@ export default {
                 tempOptions = options;
                 const formItemVal: any = data.value;
                 // 更新选项
-                options = options.map(option => {
+                options = options.map((option) => {
                   const checked = formItemVal !== undefined && option.value === formItemVal;
                   return {
                     ...option,
                     checked
-                  }
+                  };
                 });
               }
               data.staticOptions = options;
@@ -563,19 +560,22 @@ export default {
           options: [
             { label: '选项值', value: 'value' },
             { label: '{选项标签, 选项值}', value: 'labelInValue' },
-            { label: '当前选项', value: 'option' },
+            { label: '当前选项', value: 'option' }
           ],
           description: '设置下拉框输出的数据内容',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.outputValueType;
             },
-            set({ data, input, output }: EditorResult<Data>, value: 'value' | 'labelInValue' | 'option') {
-              data.config.labelInValue = (value === 'labelInValue');
+            set(
+              { data, input, output }: EditorResult<Data>,
+              value: 'value' | 'labelInValue' | 'option'
+            ) {
+              data.config.labelInValue = value === 'labelInValue';
               data.outputValueType = value;
               refreshSchema({ input, output, data });
-            },
-          },
+            }
+          }
         },
         {
           title: '校验触发时机',
@@ -586,7 +586,7 @@ export default {
             multiple: true,
             options: [
               { label: '值变化', value: ValidateTriggerType.OnChange },
-              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur }
             ]
           },
           value: {
@@ -704,7 +704,7 @@ export default {
               }
             }
           ]
-        },
+        }
       ];
 
       catalog[1].items = [
@@ -716,10 +716,10 @@ export default {
               type: 'switch',
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.customField
+                  return data.customField;
                 },
                 set({ data, input, output }: EditorResult<Data>, value: boolean) {
-                  data.customField = value
+                  data.customField = value;
                 }
               }
             },
@@ -734,11 +734,11 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.labelFieldName
+                  return data.labelFieldName;
                 },
                 set({ data, input, output }: EditorResult<Data>, value: string) {
-                  data.labelFieldName = value
-                  reFiledNameSchema(data, input, output)
+                  data.labelFieldName = value;
+                  reFiledNameSchema(data, input, output);
                 }
               }
             },
@@ -753,11 +753,11 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.valueFieldName
+                  return data.valueFieldName;
                 },
                 set({ data, input, output }: EditorResult<Data>, value: string) {
-                  data.valueFieldName = value
-                  reFiledNameSchema(data, input, output)
+                  data.valueFieldName = value;
+                  reFiledNameSchema(data, input, output);
                 }
               }
             },
@@ -772,11 +772,11 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.disabledFieldName
+                  return data.disabledFieldName;
                 },
                 set({ data, input, output }: EditorResult<Data>, value: string) {
-                  data.disabledFieldName = value
-                  reFiledNameSchema(data, input, output)
+                  data.disabledFieldName = value;
+                  reFiledNameSchema(data, input, output);
                 }
               }
             },
@@ -791,14 +791,14 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.checkedFieldName
+                  return data.checkedFieldName;
                 },
                 set({ data, input, output }: EditorResult<Data>, value: string) {
-                  data.checkedFieldName = value
-                  reFiledNameSchema(data, input, output)
+                  data.checkedFieldName = value;
+                  reFiledNameSchema(data, input, output);
                 }
               }
-            },
+            }
           ]
         },
         {
@@ -813,7 +813,7 @@ export default {
               description: '开启后下拉框支持输入，可配置搜索规则',
               value: {
                 get({ data }) {
-                  return data.config.showSearch !== false
+                  return data.config.showSearch !== false;
                 },
                 set({ data }, value: boolean) {
                   data.config.showSearch = value;
@@ -825,7 +825,9 @@ export default {
         {
           title: '默认搜索配置',
           ifVisible({ data }) {
-            return ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false;
+            return (
+              ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false
+            );
           },
           items: [
             {
@@ -855,9 +857,7 @@ export default {
                 }
               ],
               ifVisible({ data }) {
-                return (
-                  data.config.filterOption !== false
-                );
+                return data.config.filterOption !== false;
               },
               value: {
                 get({ data }) {
@@ -873,13 +873,16 @@ export default {
         {
           title: '远程搜索',
           ifVisible({ data }) {
-            return ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false;
+            return (
+              ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false
+            );
           },
           items: [
             {
               title: '支持搜索动态获取选项',
               type: 'Switch',
-              description: '开启后配置接口，通过"search"参数动态返回{label, value}对象的列表作为下拉选项',
+              description:
+                '开启后配置接口，通过"search"参数动态返回{label, value}对象的列表作为下拉选项',
               value: {
                 get({ data }) {
                   return data.dropdownSearchOption;
@@ -894,22 +897,22 @@ export default {
                       properties: {
                         label: {
                           title: '标签',
-                          type: 'string',
+                          type: 'string'
                         },
                         value: {
                           title: '值',
-                          type: valueSchema?.type || 'string',
+                          type: valueSchema?.type || 'string'
                         },
                         disabled: {
                           title: '禁用',
-                          type: 'boolean',
+                          type: 'boolean'
                         },
                         checked: {
                           title: '选中',
-                          type: 'boolean',
-                        },
-                      },
-                    },
+                          type: 'boolean'
+                        }
+                      }
+                    }
                   };
                   if (data.dropdownSearchOption === true) {
                     output.add('remoteSearch', '远程搜索', { type: 'string' });
@@ -944,7 +947,7 @@ export default {
               options: {
                 outputId: 'remoteSearch'
               }
-            },
+            }
           ]
         },
         {
@@ -976,7 +979,7 @@ export default {
                               },
                               value: {
                                 type: 'any'
-                              },
+                              }
                             }
                           }
                         },
@@ -1000,7 +1003,7 @@ export default {
               title: '显示弹层(仅搭建态生效)',
               type: 'Switch',
               ifVisible({ data }: EditorResult<Data>) {
-                return !!data.slotAfterOption;;
+                return !!data.slotAfterOption;
               },
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -1010,10 +1013,10 @@ export default {
                   data.hidePopWhenEdit = !value;
                 }
               }
-            },
+            }
           ]
         }
       ];
     }
   }
-}
+};
