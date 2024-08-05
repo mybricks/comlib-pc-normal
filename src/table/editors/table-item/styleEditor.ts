@@ -39,7 +39,7 @@ const StyleEditor = [
   },
   {
     title: '适应剩余宽度',
-    description: "开启后，当前表格列将会填充剩余宽度",
+    description: "开启后，当前表格列将会填充剩余宽度。关闭时，可以手动设置列宽度，也可以在画布中拖动列的左右边框进行宽度调整",
     type: 'Switch',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;

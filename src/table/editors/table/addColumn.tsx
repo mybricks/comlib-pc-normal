@@ -156,7 +156,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             for (let item of val) {
               if (item.dataIndex === '') {
                 item.dataIndex = item.title;
-                message.warn(`字段不能为空！`);
+                message.warn(`表格列字段不能为空！`);
               }
             }
             const cols = val.map((item) => ({

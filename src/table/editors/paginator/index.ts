@@ -110,6 +110,7 @@ export default {
           items: [
             {
               title: '点击分页',
+              description: '开启分页后，点击分页会触发该事件，可以在这个事件内编排分页数据获取逻辑，更新表格数据',
               type: '_Event',
               options: () => {
                 return {

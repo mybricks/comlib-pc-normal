@@ -84,7 +84,7 @@ export default {
       outputs.add(PaginatorOutputIds.SetPageNumFinish, '设置页码完成', { type: 'number' });
       inputs.get(PaginatorInputIds.SetPageNum).setRels([PaginatorOutputIds.SetPageNumFinish]);
 
-      inputs.add(PaginatorInputIds.GetPageInfo, '获取分页数据', { type: 'any' });
+      inputs.add(PaginatorInputIds.GetPageInfo, '获取分页信息', { type: 'any' });
       outputs.add(PaginatorOutputIds.GetPageInfo, '分页数据', PageSchema);
       inputs.get(PaginatorInputIds.GetPageInfo).setRels([PaginatorOutputIds.GetPageInfo]);
 

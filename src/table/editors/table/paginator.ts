@@ -18,7 +18,15 @@ export const PageSchema = {
 export default [
   {
     title: '分页模式',
-    description: "是否开启表格分页功能。开启后，传给输入项【设置数据源】的数据除了包含表格的列表数据，还需要包含分页信息total, pageSize, pageNum",
+    description: `开启后，表格支持分页。输入项【设置数据源】的schema变成如下：
+{
+  dataSource: Array<any>,
+  total: number,
+  pageSize: number,
+  pageNum: number
+}
+，同时增加三个输入项【设置数据总数】，【设置当前页码】，【获取分页信息】用来设置或获取分页信息。
+如果需要实现分页获取数据功能，需要在区块【分页】的【点击分页】事件中编排获取数据逻辑实现。`,
     type: 'Switch',
     ifVisible({ data }: EditorResult<Data>) {
       return !data?.domainModel?.entity;
@@ -36,7 +44,7 @@ export default [
           input.add(InputIds.SetPageNum, '设置当前页码', { type: 'number' });
           output.add(OutputIds.SetPageNumFinish, '设置页码完成', { type: 'number' });
           input.get(InputIds.SetPageNum).setRels([OutputIds.SetPageNumFinish]);
-          input.add(InputIds.GetPageInfo, '获取分页数据', { type: 'any' });
+          input.add(InputIds.GetPageInfo, '获取分页信息', { type: 'any' });
           output.add(OutputIds.GetPageInfo, '分页数据', PageSchema);
           input.get(InputIds.GetPageInfo).setRels([OutputIds.GetPageInfo]);
           output.add(OutputIds.PageChange, '点击分页', PageSchema);

@@ -27,6 +27,7 @@ const tableStyleEditor = {
     },
     {
       title: '显示边框',
+      dscription: "开启后，显示表格边框，默认开启",
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -40,7 +41,7 @@ const tableStyleEditor = {
     {
       title: '固定表头',
       type: 'Switch',
-      description: '设置表头固定，只滚动数据行。必须同时设置【每一列的宽度】',
+      description: '开启后，表头固定，表格内容支持滚动。可以设置编辑项【可滚动最大高度】和【固定高度】来控制滚动',
       ifVisible({ style }: EditorResult<Data>) {
         return style.height === 'auto';
       },
@@ -66,6 +67,7 @@ const tableStyleEditor = {
     },
     {
       title: '可滚动最大高度',
+      description: "设置表格的可滚动最大高度，开启固定表头后生效",
       type: 'Text',
       ifVisible({ data, style }: EditorResult<Data>) {
         return data.fixedHeader && style.height === 'auto';
@@ -82,6 +84,7 @@ const tableStyleEditor = {
     {
       title: '固定高度',
       type: 'text',
+      description: "设置表格的固定高度，开启固定表头后生效",
       ifVisible({ data, style }: EditorResult<Data>) {
         return data.fixedHeader && style.height === 'auto';
       },
@@ -97,7 +100,7 @@ const tableStyleEditor = {
     {
       title: '斑马纹',
       type: 'Switch',
-      description: '配置表格的单双行为不同样式',
+      description: '开启后，可以设置表格的单双行采用不同样式',
       value: {
         get({ data }: EditorResult<Data>) {
           return data.enableStripe;
