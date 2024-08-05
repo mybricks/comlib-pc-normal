@@ -286,7 +286,8 @@ export default {
           },
           value: {
             get({}) {
-              return [item.offset[0], item.offset[1]] || [0, 0];
+              if (!item?.offset) return [0, 0];
+              return [item.offset[0], item.offset[1]];
             },
             set({}, value: number[]) {
               item.offset = value;
