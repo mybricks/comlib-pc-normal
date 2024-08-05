@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { List, Anchor, Col, Row } from 'antd';
 import classnames from 'classnames';
+import scrollTo from 'antd/es/_util/scrollTo';
+import getScroll from 'antd/es/_util/getScroll';
 import { Data, InputIds, OutputIds } from './constants';
 import { uuid } from '../utils';
 import css from './style.less';
@@ -45,7 +47,43 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
           relOutputs['setLoadingDone'](v);
         });
     }
+    inputs[InputIds.SET_ACTIVE_ANCHOR] &&
+      inputs[InputIds.SET_ACTIVE_ANCHOR]((val) => {
+        if (val.index === undefined && val.title === undefined) {
+          console.error('设置激活的锚点，参数需要有index和title 之一');
+          return;
+        }
+        if (val.index !== undefined) {
+          let maxIndex = data.useDynamicData ? data.dataSource.length : data.staticData.length;
+          if (val.index > maxIndex || val.index < 0) {
+            console.error('设置激活的锚点，index 超出范围');
+            return;
+          }
+        }
+        let anchorTarget;
+        if (data.useDynamicData) {
+          anchorTarget =
+            val.index === undefined
+              ? data.dataSource.findIndex((i) => i.item.title === val.title)
+              : data.dataSource[val.index];
+        } else {
+          anchorTarget =
+            val.index === undefined
+              ? data.staticData.findIndex((i) => i.title === val.title)
+              : data.staticData[val.index];
+        }
+        let anchorId = data.useDynamicData ? anchorTarget[rowKey] : anchorTarget.id;
+        innerScrollToAnchor(`mybricks-anchor-${anchorId}`);
+      });
   }, []);
+
+  const innerScrollToAnchor = (id: string) => {
+    const targetElement = document.getElementById(id);
+    if (!targetElement) {
+      return;
+    }
+    targetElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const ListItemRender = useCallback((itemProps) => {
     const { [rowKey]: key, index: index, item: item } = itemProps;
@@ -123,11 +161,20 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
   );
 
   const LeftContainer = useCallback(
-    () => (data.anchorPosition === 'left' ? <AnchorBox /> : <ContentBox />),
+    () =>
+      data.hideAnchorList ? (
+        <ContentBox />
+      ) : data.anchorPosition === 'left' ? (
+        <AnchorBox />
+      ) : (
+        <ContentBox />
+      ),
     [data.anchorPosition, AnchorBox, ContentBox]
   );
+  // 隐藏锚点列表时，左侧展示展示ContentBox，右侧不展示
   const RightContainer = useCallback(
-    () => (data.anchorPosition === 'left' ? <ContentBox /> : <AnchorBox />),
+    () =>
+      data.hideAnchorList ? <></> : data.anchorPosition === 'left' ? <ContentBox /> : <AnchorBox />,
     [data.anchorPosition, AnchorBox, ContentBox]
   );
 
