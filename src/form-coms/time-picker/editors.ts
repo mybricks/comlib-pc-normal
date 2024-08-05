@@ -44,17 +44,17 @@ export default {
                 target: 'input::placeholder'
               },
               {
+                title: '时间图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-clock-circle'
+              },
+              {
                 title: '清除按钮',
                 options: [
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.anticon-close-circle'
-              },
-              {
-                title: '时间图标',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-clock-circle'
               },
               {
                 title: '边框',
