@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.anchor-container",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "锚点容器",
   "author": "Mybricks",
   "author_name": "Mybricks",
