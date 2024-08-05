@@ -197,12 +197,14 @@ export default {
       {
         title: '背景',
         options: ['background', 'border'],
-        target: ({ id }: EditorResult<Data>) =>
-          [`.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`, `.ant-upload .ant-btn${getFilterSelector(id)}`]
+        target: ({ id }: EditorResult<Data>) => [
+          `.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`,
+          `.ant-upload .ant-btn${getFilterSelector(id)}`
+        ]
         //target: ['.ant-upload.ant-upload-select-picture-card', `.ant-upload .ant-btn`],
       },
       {
-        title: '图标样式配置',
+        title: '图标',
         options: ['font'],
         target: '.ant-btn .anticon',
         ifVisible({ data }: EditorResult<Data>) {
@@ -210,7 +212,7 @@ export default {
         }
       },
       {
-        title: '文案样式配置',
+        title: '文案',
         options: ['font'],
         target: ['.text'],
         ifVisible({ data }: EditorResult<Data>) {
@@ -218,7 +220,7 @@ export default {
         }
       },
       {
-        title: '图标样式配置',
+        title: '图标',
         options: ['font'],
         target: '.anticon',
         ifVisible({ data }: EditorResult<Data>) {
@@ -226,7 +228,7 @@ export default {
         }
       },
       {
-        title: '文案样式配置',
+        title: '文案',
         options: ['font'],
         target: '.ant-upload > div > div',
         ifVisible({ data }: EditorResult<Data>) {
@@ -234,7 +236,7 @@ export default {
         }
       },
       {
-        title: '图标样式配置',
+        title: '图标',
         options: ['font'],
         target: '.ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon',
         ifVisible({ data }: EditorResult<Data>) {
@@ -242,7 +244,7 @@ export default {
         }
       },
       {
-        title: '文案样式配置',
+        title: '文案',
         options: ['font'],
         target: '.ant-upload.ant-upload-drag p.ant-upload-text',
         ifVisible({ data }: EditorResult<Data>) {
@@ -330,7 +332,7 @@ export default {
           items: [
             {
               title: '上传文件Key',
-              description: "发到后台的文件参数名",
+              description: '发到后台的文件参数名',
               type: 'Text',
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -343,7 +345,7 @@ export default {
             },
             {
               title: '上传按钮文案',
-              description: "上传按钮文案",
+              description: '上传按钮文案',
               type: 'Text',
               options: {
                 locale: true
@@ -402,7 +404,7 @@ export default {
                   { label: 'Mp3音频文件', value: '.mp3' },
                   { label: 'Mp4视频文件', value: '.mp4' },
                   { label: 'Avi视频文件', value: '.avi' },
-                  { label: 'Mov视频文件', value: '.mov' },
+                  { label: 'Mov视频文件', value: '.mov' }
                 ],
                 multiple: true
               },
@@ -500,7 +502,8 @@ export default {
             {
               title: '开启自定义删除',
               type: 'Switch',
-              description: '开启后，新增文件删除事件，并可以通过逻辑连线连接上传的输入项【删除文件】，删除对应文件',
+              description:
+                '开启后，新增文件删除事件，并可以通过逻辑连线连接上传的输入项【删除文件】，删除对应文件',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.config.useCustomRemove;
@@ -661,7 +664,7 @@ export default {
           items: [
             {
               title: '值初始化',
-              description: "设置上传组件初始值后，值初始化事件",
+              description: '设置上传组件初始值后，值初始化事件',
               type: '_event',
               options: {
                 outputId: 'onInitial'
@@ -669,7 +672,7 @@ export default {
             },
             {
               title: '上传完成后',
-              description: "文件上传完成后，上传完成事件",
+              description: '文件上传完成后，上传完成事件',
               type: '_Event',
               options: {
                 outputId: 'uploadComplete'
@@ -680,7 +683,7 @@ export default {
                 return data.config.useCustomRemove;
               },
               title: '文件删除',
-              description: "文件删除事件",
+              description: '文件删除事件',
               type: '_event',
               options: {
                 outputId: 'remove'
