@@ -36,14 +36,9 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
-              },
-              {
-                title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-single.ant-select-show-arrow .ant-select-selection-item'
               },
               {
                 title: '提示内容',
@@ -51,19 +46,24 @@ export default {
                 target: '.ant-select-selection-placeholder'
               },
               {
-                title: '下拉图标',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-arrow'
-              },
-              {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle'
               },
               {
-                title: '文本内容',
+                title: '边框',
+                options: ['border'],
+                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
+              },
+              {
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+              },
+              {
+                title: '下拉图标',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-single.ant-select-show-arrow .ant-select-selection-item'
+                target: '.ant-select-arrow'
               },
               {
                 title: '标签',
@@ -115,6 +115,13 @@ export default {
             catelog: 'Hover',
             items: [
               {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
                 catelog: 'Hover',
                 title: '边框',
                 options: ['border'],
@@ -123,11 +130,9 @@ export default {
                 domTarget: 'div.ant-select-selector'
               },
               {
-                title: '清除按钮',
-                catelog: 'Hover',
+                title: '标签-关闭图标',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle:hover',
-                domTarget: '.anticon-close-circle'
+                target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
               },
               {
                 catelog: 'Hover',
@@ -152,11 +157,6 @@ export default {
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
                 }
-              },
-              {
-                title: '标签-关闭图标',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
               }
             ]
           }),
@@ -241,7 +241,7 @@ export default {
           type: 'select',
           options: [
             { label: 'Body元素', value: 'body' },
-            { label: '当前节点', value: 'current' },
+            { label: '当前节点', value: 'current' }
           ],
           value: {
             get({ data }) {
@@ -348,7 +348,8 @@ export default {
         {
           title: '输出选中节点及所有子节点的值',
           type: 'Switch',
-          description: '默认情况下，级联选择器选中父节点后，只会包含父节点的key；如果需要级联选择的值中包含所有子节点的值，类似于["父-key", "子节点-key"]的结构，可以勾选',
+          description:
+            '默认情况下，级联选择器选中父节点后，只会包含父节点的key；如果需要级联选择的值中包含所有子节点的值，类似于["父-key", "子节点-key"]的结构，可以勾选',
           ifVisible({ data }) {
             return data.isMultiple;
           },
