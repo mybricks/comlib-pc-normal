@@ -1,6 +1,14 @@
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { createrCatelogEditor } from '../utils';
-import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle, formatRegexRules, FormatScene } from '../utils/validator';
+import {
+  RuleKeys,
+  defaultValidatorExample,
+  ValueRules,
+  showMessage,
+  getTitle,
+  formatRegexRules,
+  FormatScene
+} from '../utils/validator';
 import { Data } from './runtime';
 
 export default {
@@ -35,13 +43,9 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-number'
-              },{
-                title: '背景色',
-                options: ['background'],
-                target: ['.ant-input-number']
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input-number-input'
               },
               {
                 title: '提示内容',
@@ -49,9 +53,14 @@ export default {
                 target: 'input::placeholder'
               },
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input-number-input'
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-number'
+              },
+              {
+                title: '背景色',
+                options: ['background'],
+                target: ['.ant-input-number']
               },
               {
                 title: '前置标签',
@@ -70,7 +79,7 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.ant-input-number-group-addon:last-child'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -89,8 +98,7 @@ export default {
             catelog: 'Focus',
             title: '边框',
             options: ['border', 'BoxShadow'],
-            target:
-              '.ant-input-number-focused:not(.ant-input-number-disabled).ant-input-number'
+            target: '.ant-input-number-focused:not(.ant-input-number-disabled).ant-input-number'
           },
           ...createrCatelogEditor({
             catelog: '禁用',
@@ -216,7 +224,7 @@ export default {
                   data.config.precision = value;
                 }
               }
-            },
+            }
           ]
         },
         {
@@ -404,7 +412,12 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.validateTrigger || [ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter];
+              return (
+                data.validateTrigger || [
+                  ValidateTriggerType.OnBlur,
+                  ValidateTriggerType.OnPressEnter
+                ]
+              );
             },
             set({ data }: EditorResult<Data>, value: string[]) {
               data.validateTrigger = value;
@@ -503,7 +516,9 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : ValueRules;
+              return data.rules.length > 0
+                ? formatRegexRules(data.rules, FormatScene.Editor)
+                : ValueRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);
