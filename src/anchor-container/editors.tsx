@@ -121,7 +121,7 @@ export default {
       {
         title: '隐藏锚点选项',
         type: 'Switch',
-        description: '开启后，可以通过,设置激活的锚点，进行跳转',
+        description: '开启后，可以通过，设置激活的锚点，进行跳转',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.hideAnchorList;
