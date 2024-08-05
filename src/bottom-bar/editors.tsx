@@ -146,6 +146,7 @@ export default {
     style.left = 0;
     style.bottom = 0;
     style.height = 64;
+    style.width = '100%';
     if (data.tools.length === 0) {
       addBtn({ data, output, input, text: '主按钮', btnType: 'primary' });
       addBtn({ data, output, input, text: '次按钮', btnType: 'default' });
