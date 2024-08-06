@@ -14,7 +14,7 @@
   "inputs": [
     {
       "id": "showMsg",
-      "title": "弹出提示",
+      "title": "弹出",
       "desc": "触发消息提示弹出",
       "schema": {
         "type": "follow"
@@ -27,7 +27,7 @@
   "outputs": [
     {
       "id": "showMsgDone",
-      "title": "弹出提示完成",
+      "title": "完成",
       "desc": "消息提示弹出完成",
       "schema": {
         "type": "follow"
