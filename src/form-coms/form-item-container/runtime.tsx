@@ -142,7 +142,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div style={data.slotStyle}>
+    <div>
       {slots[SlotIds.FormItem] &&
         slots[SlotIds.FormItem].render({
           wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[] = []) {
@@ -157,9 +157,12 @@ export default function (props: RuntimeParams<Data>) {
               }
             });
 
-            return <div style={data.slotStyle}>{comAray.map((com) => com.jsx)}</div>;
+            return (
+              <div style={{ height: style.height ?? '100%', ...(data.slotStyle ?? {}) }}>
+                {comAray.map((com) => com.jsx)}
+              </div>
+            );
           }
-          // style: data.slotStyle ?? {}
         })}
     </div>
   );

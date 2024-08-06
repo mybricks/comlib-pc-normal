@@ -3,6 +3,7 @@ import { InputIds, OutputIds } from '../types';
 import { SlotIds, SlotInputIds, SlotOutputIds } from './constants';
 import { Data } from './types';
 import { outputIds } from '../form-container/constants';
+
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
   if (val.position === 'smart') {
@@ -25,7 +26,7 @@ export default {
   },
   '@init': ({ style }) => {
     style.width = '100%';
-    // style.height = 'auto'
+    style.height = 'auto';
   },
   // '@inputUpdated'({ data, input, output, slots }: EditorResult<any>, updatePin) {
   //   if (updatePin.id === InputIds.SetInitialValue) {
