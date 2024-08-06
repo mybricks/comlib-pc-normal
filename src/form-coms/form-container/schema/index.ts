@@ -149,9 +149,11 @@ function refreshFieldSourceSchema({ data, inputs, outputs, slots }, options: Fie
     }
     if(options.type === 'update' && originFieldName) {
       const originFieldSchema = fieldSourceSchema.properties[originFieldName]
-      delete fieldSourceSchema.properties[originFieldName]
-      fieldSourceSchema.properties[fieldName] = originFieldSchema
-
+      // 更新的时候，fieldSourceSchema里存在数据源时，进行更新
+      if (originFieldSchema) {
+        delete fieldSourceSchema.properties[originFieldName]
+        fieldSourceSchema.properties[fieldName] = originFieldSchema
+      }
     }
     inputs.get(inputIds.setFieldsSource).setSchema(fieldSourceSchema)
     if (outputs?.get(outputIds.setFieldsSourceDone)) {
