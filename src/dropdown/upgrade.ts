@@ -1,6 +1,6 @@
 import { Data } from './types';
-import { uuid } from '../utils';
-import { InputIds } from './constants';
+import { uuid, addOutputAndRel } from '../utils';
+import { InputIds, OutputIds } from './constants';
 
 export default function ({ 
   data,
@@ -220,6 +220,41 @@ export default function ({
   }
 
   //=========== v1.0.30 end ===============
+
+  /**
+   * @description v1.0.30 输入项增加关联输出项
+  */
+  addOutputAndRel(output, input, InputIds.DynamicallyModifySubitems, {
+    id: OutputIds.DynamicallyModifySubitemsDone,
+    title: '设置子项属性完成',
+    description: '关联输入项【设置子项属性】',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          key: {
+            type: 'string',
+            description: '唯一标识 必需'
+          },
+          label: {
+            type: 'string',
+            description: '标签'
+          },
+          link: {
+            type: 'string',
+            description: '链接'
+          },
+          disabled: {
+            type: 'boolean',
+            description: '是否禁用'
+          }
+        }
+      }
+    }
+  });
+
+  //=========== v1.0.31 end ===============
   
   return true;
 }
