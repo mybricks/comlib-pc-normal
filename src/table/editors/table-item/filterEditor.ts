@@ -95,6 +95,11 @@ const FilterEditor = {
     {
       title: '隐藏筛选菜单',
       type: 'Switch',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item && item.filter?.enable;
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
