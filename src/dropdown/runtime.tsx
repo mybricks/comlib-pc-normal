@@ -3,8 +3,8 @@ import { Menu, Dropdown, Space, Empty } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Data } from './types';
 import * as Icons from '@ant-design/icons';
-import { uuid } from '../utils';
-import { InputIds } from './constants';
+import { uuid, handleOutputFn } from '../utils';
+import { InputIds, OutputIds } from './constants';
 
 export default function ({ data, env, style, inputs, outputs, slots, id }: RuntimeParams<Data>) {
   const { edit, runtime } = env;
@@ -13,11 +13,11 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   const [visible, setVisible] = useState({});
 
   //阻止冒泡函数
-  const onBubbleClick = (e)=>{
+  const onBubbleClick = (e) => {
     //e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-  }
+  };
 
   // 动态修改选项
   function updateObjectsInArray<T>(sourceArray: T[], updateArray: T[]): T[] {
@@ -62,13 +62,14 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
             }
           });
           data.dynamicOptions = ds;
-          relOutputs['setDynamicOptionsDone'](v);
+          relOutputs[OutputIds.SetDynamicOptionsDone](v);
         }
       });
-      inputs[InputIds.DynamicallyModifySubitems]((v: Data['options']) => {
+      inputs[InputIds.DynamicallyModifySubitems]((v: Data['options'], relOutputs) => {
         if (Array.isArray(v)) {
           if (!data.isDynamic) {
             const ds = updateObjectsInArray(data.options, v);
+            handleOutputFn(relOutputs, outputs, OutputIds.DynamicallyModifySubitemsDone, ds);
             data.options = ds;
           }
         }
@@ -106,7 +107,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
                         },
                         key: option[rowKey]
                       })}
-                  </Menu.Item>
+                    </Menu.Item>
                   </div>
                 );
               })}
@@ -187,7 +188,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   }, [env, data.isChildCustom, data.isDynamic]);
 
   return (
-    <div className="dropdown" onClick = {data.contentBubble ? onBubbleClick : void 0}>
+    <div className="dropdown" onClick={data.contentBubble ? onBubbleClick : void 0}>
       <Dropdown
         overlayClassName={id}
         overlay={data.isDynamic ? dynamicMenuRender({ data }) : menuRender({ data })}

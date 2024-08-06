@@ -178,3 +178,6 @@ export const setIfUndefined = <T>(value: T | undefined, defaultValue: T): T => {
 export function isBase64Image(url) {
   return url.startsWith('data:image/') && url.includes(';base64,');
 }
+
+export * from './upgrade';
+export * from './io';

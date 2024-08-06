@@ -31,9 +31,9 @@ export default function ({ input, output, slot, data, style }): boolean {
     input.get('closeLoading').setRels(['closeLoadingDone']);
   }
 
-  if(!style.height) {
-    style.height = 'fit-content'
-    style.heightAuto = true
+  if (!style.height) {
+    style.height = 'fit-content';
+    style.heightAuto = true;
   }
 
   return true;
