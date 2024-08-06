@@ -94,8 +94,8 @@
     },
     {
       "id": "dataSource",
-      "title": "数据源",
-      "desc": "获取表格数据源，并输出数据源内容",
+      "title": "完成",
+      "desc": "获取表格数据源后，并输出数据源内容",
       "schema": {
         "type": "array"
       }
