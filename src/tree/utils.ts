@@ -45,9 +45,9 @@ export const getFieldNames = ({
   data: Data;
   env: Env;
 }) => {
-  const keyFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
-  const titleFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Title : data.titleFieldName || DefaultFieldName.Title;
-  const childrenFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Children : data.childrenFieldName || DefaultFieldName.Children;
+  const keyFieldName = env?.edit && !data.useStaticData ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
+  const titleFieldName = env?.edit && !data.useStaticData ? DefaultFieldName.Title : data.titleFieldName || DefaultFieldName.Title;
+  const childrenFieldName = env?.edit && !data.useStaticData ? DefaultFieldName.Children : data.childrenFieldName || DefaultFieldName.Children;
   return {
     keyFieldName,
     titleFieldName,
