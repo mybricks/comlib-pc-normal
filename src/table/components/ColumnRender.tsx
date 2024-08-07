@@ -89,7 +89,7 @@ function ColumnRender(props: ColumnRenderProps) {
           </Tooltip>
         );
       } else {
-        return value;
+        return value || null;
       }
     case ContentTypeEnum.SlotItem:
       return (
@@ -112,7 +112,7 @@ function ColumnRender(props: ColumnRenderProps) {
         </TableContext.Consumer>
       );
     default:
-      return value;
+      return value || null;
   }
 }
 
