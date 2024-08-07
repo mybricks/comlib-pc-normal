@@ -41,35 +41,45 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input'
+                title: '输入框样式',
+                items: [
+                  {
+                    title: '文本内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-input'
+                  },
+                  {
+                    title: '背景色',
+                    options: ['background'],
+                    target: ['.ant-input']
+                  },
+                  {
+                    title: '提示内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: 'textarea.ant-input::placeholder'
+                  },
+                  {
+                    title: '边框',
+                    options: ['border'],
+                    target: '.ant-input'
+                  }
+                ]
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'textarea.ant-input::placeholder'
+                title: '其他样式',
+                items: [
+                  {
+                    title: '清除按钮',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.anticon-close-circle'
+                  },
+                  {
+                    title: '字数',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-input-textarea-show-count::after'
+                  }
+                ]
               },
-              {
-                title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle'
-              },
-              {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input'
-              },
-              {
-                title: '背景色',
-                options: ['background'],
-                target: ['.ant-input']
-              },
-              {
-                title: '字数',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input-textarea-show-count::after'
-              }
             ]
           }),
           ...createrCatelogEditor({

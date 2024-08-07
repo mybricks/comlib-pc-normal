@@ -43,42 +43,46 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input-number-input'
+                title: '输入框样式',
+                items: [  
+                  {
+                    title: '文本内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-input-number-input'
+                  },
+                  {
+                    title: '提示内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: 'input::placeholder'
+                  },
+                  {
+                    options: ['background', 'border'],
+                    target: ['.ant-input-number']
+                  }
+                ]
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
-              },
-              {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-number'
-              },
-              {
-                title: '背景色',
-                options: ['background'],
-                target: ['.ant-input-number']
-              },
-              {
-                title: '前置标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-input-number-group-addon:first-child'
-              },
-              {
-                title: '后置标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-input-number-group-addon:last-child'
+                title: '标签样式',
+                items: [
+                  {
+                    title: '前置标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-input-number-group-addon:first-child'
+                  },
+                  {
+                    title: '后置标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-input-number-group-addon:last-child'
+                  }
+                ]
               }
             ]
           }),

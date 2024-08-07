@@ -65,63 +65,73 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input'
+                title: '输入框样式',
+                items:[
+                  {
+                    title: '文本内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-input'
+                  },
+                  {
+                    title: '提示内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: 'input::placeholder'
+                  },
+                  {
+                    title: '背景色',
+                    options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                    target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+                  },
+                  {
+                    title: '边框',
+                    options: ['border'],
+                    target: '.ant-input-affix-wrapper'
+                  },
+                  {
+                    title: '清除按钮',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.anticon-close-circle'
+                  },
+                ]
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
-              },
-              {
-                title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle'
-              },
-              {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper'
-              },
-              {
-                title: '背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
-              },
-              {
-                title: '前置标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-input-group-addon:first-child'
-              },
-              {
-                title: '搜索标签',
-                options: [
-                  //'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target:
-                  '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary)'
-              },
-              {
-                title: '搜索标签边框',
-                options: ['border'],
-                target:
-                  '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button'
-              },
-              {
-                title: '确认按钮',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-btn-primary'
+                title: '标签及其他样式',
+                items: [
+                  {
+                    title: '前置标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-input-group-addon:first-child'
+                  },
+                  {
+                    title: '搜索标签',
+                    options: [
+                      //'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target:
+                      '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary)'
+                  },
+                  {
+                    title: '搜索标签边框',
+                    options: ['border'],
+                    target:
+                      '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button'
+                  },
+                  {
+                    title: '确认按钮',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-btn-primary'
+                  }
+                ]
               }
             ]
           }),
