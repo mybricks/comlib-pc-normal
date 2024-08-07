@@ -1,13 +1,13 @@
 {
   "name": "@mybricks/comlib-pc-normal",
-  "version": "1.8.66",
+  "version": "1.8.67",
   "description": "通用PC组件库",
   "main": "index.js",
   "scripts": {
     "start": "mybricks dev",
     "checkFile": "mybricks checkFile",
     "lint-staged": "npx lint-staged --allow-empty",
-    "cy:open": "npx cypress open --env check='__checkAll'",
+    "cy:open": "npx cypress open --env check='__checkAll' port=8080",
     "cy:run": "node cypress-test.js"
   },
   "pre-commit": [
