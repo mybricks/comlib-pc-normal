@@ -55,15 +55,23 @@ export default function (props: RuntimeParams<Data>) {
   const updateDefaultTreeData = useCallback(() => {
     let treeData: TreeData[] = data.treeData;
     const jsonString = decodeURIComponent(data.staticData);
-    try {
-      const jsonData = JSON.parse(jsonString);
-      treeData = jsonData;
-    } catch {
-      console.error('静态数据格式错误');
+    // 使用静态数据
+    if (data.useStaticData) {
+      try {
+        const jsonData = JSON.parse(jsonString);
+        treeData = jsonData;
+      } catch {
+        console.error('静态数据格式错误');
+      }
     }
     if (env.edit && data.useStaticData === false) {
       treeData = placeholderTreeData;
     } else if (env.runtime && data.useStaticData === false) {
+      if (JSON.stringify(data.treeData) !== JSON.stringify(placeholderTreeData)) {
+        // 兼容 卸载问题
+        return treeData;
+      }
+      // 这里之前应该是避免动态数据时，运行时一开始treeData 数据是搭建态的
       treeData = [];
     }
     return treeData;

@@ -102,27 +102,32 @@ export default {
               },
               {
                 title: '缩进样式',
-                options: [
+                items: [
                   {
-                    type: 'size',
-                    config: {
-                      disableWidth: true
-                    }
-                  }
-                ],
-                target: '.ant-tree .ant-tree-treenode .ant-tree-indent'
-              },
-              {
-                title: '缩进样式',
-                options: [
+                    title: '整体缩进',
+                    options: [
+                      {
+                        type: 'size',
+                        config: {
+                          disableHeight: true
+                        }
+                      }
+                    ],
+                    target: '.ant-tree-indent-unit'
+                  },
                   {
-                    type: 'size',
-                    config: {
-                      disableHeight: true
-                    }
+                    title: '层级缩进',
+                    options: [
+                      {
+                        type: 'size',
+                        config: {
+                          disableWidth: true
+                        }
+                      }
+                    ],
+                    target: '.ant-tree .ant-tree-treenode .ant-tree-indent'
                   }
-                ],
-                target: '.ant-tree-indent-unit'
+                ]
               },
               {
                 title: '展开收起图标',
@@ -150,60 +155,70 @@ export default {
               },
               {
                 title: '树节点公共样式',
-                options: ['padding'],
-                target: '.ant-tree-treenode'
-              },
-              {
-                title: '树节点公共样式',
-                options: [
+                items: [
                   {
-                    type: 'font',
-                    config: {
-                      disableTextAlign: true
-                    }
+                    title: '节点内容',
+                    options: [
+                      {
+                        type: 'font',
+                        config: {
+                          disableTextAlign: true
+                        }
+                      },
+                      'border',
+                      {
+                        type: 'background',
+                        config: {
+                          disableBackgroundImage: true
+                        }
+                      },
+                      {
+                        type: 'size',
+                        config: {
+                          disableWidth: true
+                        }
+                      }
+                    ],
+                    target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
                   },
-                  'border',
                   {
-                    type: 'background',
-                    config: {
-                      disableBackgroundImage: true
-                    }
+                    title: '节点标题样式',
+                    options: [
+                      {
+                        type: 'font',
+                        config: {
+                          disableTextAlign: true
+                        }
+                      }
+                    ],
+                    target:
+                      '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
                   },
                   {
-                    type: 'size',
-                    config: {
-                      disableWidth: true
-                    }
+                    title: '外边距',
+                    options: ['padding'],
+                    target: '.ant-tree-treenode'
                   }
-                ],
-                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
+                ]
               },
               {
-                title: '节点标题公共样式',
-                options: [
+                title: '空状态样式',
+                items: [
                   {
-                    type: 'font',
-                    config: {
-                      disableTextAlign: true
-                    }
+                    title: '图片',
+                    options: [
+                      'size',
+                      'border',
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: ['.ant-empty-image > svg', '.ant-empty-image > img']
+                  },
+                  {
+                    title: '文案',
+                    options: ['font'],
+                    target: [`.ant-empty-description`]
                   }
-                ],
-                target:
-                  '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
-              },
-              {
-                title: '空状态图片',
-                options: [
-                  'size',
-                  'border',
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: ['.ant-empty-image > svg', '.ant-empty-image > img']
-              },
-              {
-                title: '空状态文案',
-                options: ['font'],
-                target: [`.ant-empty-description`]
+                ]
               }
             ]
           }),
