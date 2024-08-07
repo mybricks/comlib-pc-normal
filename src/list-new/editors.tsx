@@ -33,7 +33,6 @@ export default {
       },
       {
         title: '列表项（运行时生效）',
-        catelog: '默认',
         options: [
           'border',
           'padding',
@@ -51,7 +50,8 @@ export default {
         {
           title: '获取列表数据',
           type: 'Switch',
-          description: '开启后，可以通过逻辑连线连接列表容器的输入项【获取列表数据】，对应关联输出项【数据输出】会输出列表数据',
+          description:
+            '开启后，可以通过逻辑连线连接列表容器的输入项【获取列表数据】，对应关联输出项【数据输出】会输出列表数据',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.useGetDataSource;
@@ -83,7 +83,8 @@ export default {
         {
           title: 'loading',
           type: 'Switch',
-          description: '开启后，可以通过逻辑连线连接列表容器的输入项【设置loading】，控制列表容器的loading状态',
+          description:
+            '开启后，可以通过逻辑连线连接列表容器的输入项【设置loading】，控制列表容器的loading状态',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.useLoading;

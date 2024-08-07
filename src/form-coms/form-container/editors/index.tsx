@@ -247,7 +247,6 @@ export default {
         items: [
           {
             title: '背景色',
-            catelog: '默认',
             options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-form'
           }
@@ -258,19 +257,16 @@ export default {
         items: [
           {
             title: '内容',
-            catelog: '默认',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
             target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
           },
           {
             title: '冒号',
-            catelog: '默认',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
             target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
           },
           {
             title: '对齐方式',
-            catelog: '默认',
             options: [
               {
                 type: 'font',
@@ -289,7 +285,6 @@ export default {
           },
           {
             title: '边距',
-            catelog: '默认',
             options: ['margin'],
             target: `.ant-col:not(:last-child) .ant-form-item`,
             ifVisible({ data }: EditorResult<Data>) {
@@ -308,7 +303,6 @@ export default {
         items: [
           {
             title: '字体',
-            catelog: '默认',
             options: ['font'],
             target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
           }
@@ -319,13 +313,11 @@ export default {
         items: [
           {
             title: '内边距',
-            catelog: '默认',
             options: ['padding'],
             target: `div.ant-col.formAction`
           },
           {
             title: '外边距',
-            catelog: '默认',
             options: ['margin'],
             target: `div.ant-col.formAction div.ant-row.ant-form-item`
           }
@@ -824,7 +816,7 @@ export default {
       },
       {
         title: '边距',
-        catelog: '默认',
+        //catelog: '默认',
         options: ['margin'],
         target: `div.ant-row.ant-form-item`,
         ifVisible({ comDef }) {
