@@ -65,7 +65,7 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '输入框样式',
+                title: '输入框',
                 items:[
                   {
                     title: '文本内容',
@@ -95,7 +95,7 @@ export default {
                 ]
               },
               {
-                title: '标签及其他样式',
+                title: '标签及其他',
                 items: [
                   {
                     title: '前置标签',
