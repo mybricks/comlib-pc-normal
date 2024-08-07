@@ -33,7 +33,6 @@ export default {
       },
       {
         title: '列表项（运行时生效）',
-        catelog: '默认',
         options: [
           'border',
           'padding',
