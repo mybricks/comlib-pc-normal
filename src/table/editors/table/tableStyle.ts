@@ -27,7 +27,7 @@ const tableStyleEditor = {
     },
     {
       title: '显示边框',
-      dscription: "开启后，显示表格边框，默认开启",
+      description: "开启后，显示表格边框，默认开启",
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {

@@ -1,6 +1,7 @@
 import { DefaultOnCellScript } from "../../constants";
 import { setCol } from '../../schema';
 import { getColumnItem } from "../../utils";
+import { Data } from '../../types';
 
 const CellEditor = {
   title: '单元格',
