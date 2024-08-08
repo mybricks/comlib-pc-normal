@@ -60,6 +60,8 @@ export interface IColumn {
 
   visible?: boolean;
   width?: number | WidthTypeEnum;
+  isAutoWidth?: WidthTypeEnum;
+  // 对齐方式
   align?: AlignEnum;
   /** 内容字体颜色 */
   contentColor?: string;
@@ -67,12 +69,12 @@ export interface IColumn {
   titleBgColor?: string;
   /** 表头字体色 */
   titleColor?: string;
-  headStyle: any;
-  contentStyle: any;
+  headStyle?: any;
+  contentStyle?: any;
   hasTip?: boolean;
   tip?: string;
   // 省略展示
-  ellipsis: any;
+  ellipsis?: any;
 
   sorter?: Sorter;
   filter?: Filter;
@@ -128,6 +130,7 @@ export interface Data {
 
   // 列配置
   columns: IColumn[];
+  _inicCols: IColumn[];
   // 是否显示表头
   showHeader?: boolean;
   //显示表格列筛选
