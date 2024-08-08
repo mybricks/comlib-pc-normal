@@ -57,13 +57,8 @@ export default {
                 target: '.anticon-close-circle'
               },
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
-              },
-              {
-                title: '背景色',
-                options: ['background'],
+                title: '选择框',
+                options: ['border', 'background'],
                 target: '.ant-picker'
               },
               {
@@ -118,7 +113,7 @@ export default {
                 domTarget: '.anticon-close-circle'
               },
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
@@ -167,7 +162,7 @@ export default {
             catelog: 'Focus',
             items: [
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border', 'BoxShadow'],
                 target: '.ant-picker-focused.ant-picker'
               }

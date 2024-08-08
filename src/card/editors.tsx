@@ -53,12 +53,12 @@ export default {
           `.card  .ant-card-head-title${getFilterSelector(id)}`
       },
       {
-        title: '卡片边框',
+        title: '边框',
         options: ['border'],
         target: ({ id }: EditorResult<Data>) => `.card > .ant-card${getFilterSelector(id)}`
       },
       {
-        title: '卡片背景',
+        title: '背景',
         options: ['background'],
         target: ({ id }: EditorResult<Data>) => `.card > .ant-card${getFilterSelector(id)}`
       },
