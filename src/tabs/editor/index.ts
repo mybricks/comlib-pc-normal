@@ -410,7 +410,7 @@ export default {
       },
       {
         catelog: '默认',
-        title: '标签外边距',
+        title: '外边距',
         options: ['margin'],
         target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
       },
@@ -435,6 +435,7 @@ export default {
           initValue: {
             color: '#1890ff'
           },
+          title: '标签文本',
           target: ({ id }: EditorResult<Data>) =>
             `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(
               id
@@ -444,6 +445,7 @@ export default {
       {
         catelog: '激活',
         ...createStyleForActive({
+          title: '标签',
           initValue: {
             color: '#1890ff'
           },

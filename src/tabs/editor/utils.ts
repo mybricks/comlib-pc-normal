@@ -14,8 +14,8 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
     '.root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab'
 });
 
-export const createFontStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
-  title: '标签',
+export const createFontStyleForActive = ({ initValue, target, title = '标签' }: StyleModeType<Data>) => ({
+  title,
   initValue,
   options: [
     { type: 'font', config: { disableTextAlign: true } },
@@ -23,7 +23,8 @@ export const createFontStyleForActive = ({ initValue, target }: StyleModeType<Da
   target,
 });
 
-export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
+export const createStyleForActive = ({ initValue, target, title }: StyleModeType<Data>) => ({
+  title,
   initValue,
   options: [
     'border',

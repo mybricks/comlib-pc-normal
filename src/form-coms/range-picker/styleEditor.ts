@@ -33,13 +33,8 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
-              },
-              {
-                title: '背景色',
-                options: ['background'],
+                title: '选择框',
+                options: ['border', 'background'],
                 target: '.ant-picker'
               },
               {
@@ -166,7 +161,7 @@ const styleEditor = [
                 domTarget: '.anticon-close-circle'
               },
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
@@ -208,7 +203,7 @@ const styleEditor = [
             title: 'Focus',
             items: [
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border', 'BoxShadow'],
                 target: ['.ant-picker-focused.ant-picker']
               },
@@ -344,13 +339,11 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
-              },
-              {
-                title: '背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                title: '选择框',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker'
               },
               {
@@ -439,7 +432,7 @@ const styleEditor = [
                 domTarget: '.anticon-close-circle'
               },
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
@@ -486,7 +479,7 @@ const styleEditor = [
             title: 'Focus',
             items: [
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border', 'BoxShadow'],
                 target: ['.ant-picker-focused.ant-picker']
               },
@@ -567,13 +560,11 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
-              },
-              {
-                title: '背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                title: '选择框',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker'
               },
               {
@@ -654,7 +645,7 @@ const styleEditor = [
                 domTarget: '.anticon-close-circle'
               },
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
@@ -687,7 +678,7 @@ const styleEditor = [
             title: 'Focus',
             items: [
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border', 'BoxShadow'],
                 target: ['.ant-picker-focused.ant-picker']
               },
@@ -787,13 +778,11 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
-              },
-              {
-                title: '背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                title: '选择框',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker'
               },
               {
@@ -863,7 +852,7 @@ const styleEditor = [
                 domTarget: '.anticon-close-circle'
               },
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
@@ -896,7 +885,7 @@ const styleEditor = [
             title: 'Focus',
             items: [
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border', 'BoxShadow'],
                 target: ['.ant-picker-focused.ant-picker']
               },
@@ -996,13 +985,11 @@ const styleEditor = [
                 target: '.anticon-close-circle'
               },
               {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-picker'
-              },
-              {
-                title: '背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                title: '选择框',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-picker'
               },
               {
@@ -1072,7 +1059,7 @@ const styleEditor = [
                 domTarget: '.anticon-close-circle'
               },
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border'],
                 target: '.ant-picker:hover',
                 domTarget: '.ant-picker'
@@ -1105,7 +1092,7 @@ const styleEditor = [
             title: 'Focus',
             items: [
               {
-                title: '边框',
+                title: '选择框',
                 options: ['border', 'BoxShadow'],
                 target: ['.ant-picker-focused.ant-picker']
               },
