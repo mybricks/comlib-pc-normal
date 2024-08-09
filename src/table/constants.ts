@@ -125,6 +125,31 @@ export const OutputIds = {
 
 export const DefaultRowKey = '_uuid';
 
+export const DefaultRowKeyKey = 'rowKey';
+
+export const ColorMap = {
+  number: {
+    color: '#4460B8',
+    text: '数字'
+  },
+  boolean: {
+    color: '#ff0000',
+    text: '布尔'
+  },
+  string: {
+    color: '#88a409',
+    text: '字符'
+  },
+  object: {
+    color: '#9727d0',
+    text: '对象'
+  },
+  array: {
+    color: '#ce980f',
+    text: '数组'
+  }
+};
+
 export const DefaultHeadStyle = { color: '#1f1f1f', background: '#f5f7f9' };
 export const DefaultContentStyle = { color: '#434343' };
 

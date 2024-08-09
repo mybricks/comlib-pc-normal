@@ -1,4 +1,4 @@
-import { InputIds, OutputIds, SlotIds } from './constants';
+import { InputIds, OutputIds, SlotIds, DefaultRowKeyKey } from './constants';
 import { ContentTypeEnum, Data, IColumn } from './types';
 import { setPath } from '../utils/path';
 import { getColumnItem, getColumnItemDataIndex } from './utils';
@@ -80,7 +80,10 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
         const schema = {
           type: 'string',
           title: item.title,
-          description: '表格列的字段名为:' + item.dataIndex,
+          description:
+            item.key === DefaultRowKeyKey
+              ? `行标识字段，值需要全局唯一`
+              : `表格列的字段名为: ${item.dataIndex}`,
           ...schemaObj[colDataIndex]
         };
         if (item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex) {
@@ -90,6 +93,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           item.children && setDataSchema(item.children);
           return;
         }
+        // TODO 使用id作为字段会导致schema覆盖
         setPath(dataSchema, colDataIndex, schema, true);
       });
     }

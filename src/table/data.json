@@ -1,7 +1,16 @@
 {
   "rowKey": "",
   "dataSource": [],
-  "columns": [],
+  "columns": [
+    {
+      "key": "rowKey",
+      "dataIndex": "_uuid",
+      "visible": false,
+      "title": "行标识",
+      "width": 0,
+      "contentType": "text"
+    }
+  ],
   "fixedHeader": false,
   "enableStripe": false,
   "headStyle": {
@@ -17,10 +26,7 @@
   "size": "middle",
   "useRowSelection": false,
   "enableRowClickSelection": false,
-  "rowSelectionPostion": [
-    "top",
-    "bottom"
-  ],
+  "rowSelectionPostion": ["top", "bottom"],
   "useLoading": true,
   "tableLayout": "fixed",
   "loadingTip": "",
@@ -39,12 +45,7 @@
     "align": "flex-end",
     "size": "default",
     "showSizeChanger": false,
-    "pageSizeOptions": [
-      "10",
-      "20",
-      "50",
-      "100"
-    ],
+    "pageSizeOptions": ["10", "20", "50", "100"],
     "showQuickJumper": false,
     "hideOnSinglePage": false,
     "useDynamicTitle": false
