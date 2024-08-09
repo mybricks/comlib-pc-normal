@@ -16,7 +16,7 @@ function getErrorMessage(url: string) {
   }
   if (iframeProtocol) {
     if (iframeProtocol !== currentProtocol && currentProtocol === 'https:') {
-      return `Mixed Content: The page at '${currentDomain}' was loaded over HTTPS, but requested an insecure frame ${url}'. This request has been blocked; the content must be served over HTTPS.`;
+      return `Mixed Content: The page at '${currentProtocol}//${currentDomain}' was loaded over HTTPS, but requested an insecure frame ${url}'. This request has been blocked; the content must be served over HTTPS.`;
     }
   }
   return '';
