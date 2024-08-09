@@ -294,7 +294,7 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot, e
   data.columns.forEach((col) => {
     const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
-      slot?.setTitle(col.slotId, `${env?.i18n ? env.i18n(col.title) : col.title}-列`);
+      slot?.setTitle(col.slotId, `${env && env?.i18n ? env.i18n(col.title) : col.title}-列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
         type: 'object',
         properties: dataSchema
@@ -358,7 +358,10 @@ export function getTableSchema({ data }) {
   return dataSchema;
 }
 
-export function setDataSchema({ data, output, input, slot, env }: EditorResult<Data>) {
+type setDataSchemaProps = Pick<EditorResult<Data>, 'data' | 'output' | 'input' | 'slot'> & {
+  env?: EditorResult<Data>['env'];
+};
+export function setDataSchema({ data, output, input, slot, env }: setDataSchemaProps) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
 

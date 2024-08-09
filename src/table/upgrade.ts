@@ -2,7 +2,7 @@ import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 import { ContentTypeEnum, IColumn, RowSelectionTypeEnum } from './types';
 import { DefaultOnRowScript, DefaultRowKeyKey, InputIds, OutputIds, SlotIds } from './constants';
-import { Schemas, upgradeSchema } from './schema';
+import { Schemas, setDataSchema, upgradeSchema } from './schema';
 import {
   OutputIds as PaginatorOutputIds,
   InputIds as PaginatorInputIds
@@ -336,15 +336,16 @@ export default function ({
   if (!data.columns.some((column) => column.key === DefaultRowKeyKey)) {
     const rowKeyColumn = {
       key: DefaultRowKeyKey,
-      dataIndex: data.rowKey || '_uuid',
+      dataIndex: data.rowKey || 'id',
       visible: false,
-      title: '行标识',
+      title: '唯一Key',
       width: 0,
       contentType: ContentTypeEnum.Text
     };
     data.columns.unshift(rowKeyColumn);
-    upgradeSchema({ data, output, input, slot });
   }
+  
+  setDataSchema({ data, output, input, slot });
 
   return true;
 }
