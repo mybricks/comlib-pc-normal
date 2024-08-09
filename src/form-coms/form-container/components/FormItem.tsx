@@ -149,7 +149,8 @@ const FormItem = (props) => {
       // data.layoutType === 'Form' ||
       env.edit ||
       dynamicStyle.labelAutoWrap === true ||
-      ellipseMode === 'wrap'
+      ellipseMode === 'wrap' ||
+      ellipseMode === 'default'
     ) {
       // 基础表单、编辑态、自动换行不做处理
       return;
