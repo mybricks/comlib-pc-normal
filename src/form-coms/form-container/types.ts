@@ -66,7 +66,7 @@ export interface FormItems {
   /** @description 标题插槽ID v1.4.44 */
   labelSlot?: string
   /** 单个表单项，过长配置 */
-  ellipseMode?: 'wrap' | 'ellipse'
+  ellipseMode?: 'wrap' | 'ellipse' | 'default'
 }
 
 export interface AdditionalItem {
@@ -180,7 +180,7 @@ export interface Data {
   */
   defaultCollapsed: boolean
 
-  ellipseMode?: 'wrap' | 'ellipse'
+  ellipseMode?: 'wrap' | 'ellipse' | 'default'
   /** 开启动态设置表单项 */
   useDynamicItems?: boolean
   /**  动态设置的依赖的原始模板表单项列表 */

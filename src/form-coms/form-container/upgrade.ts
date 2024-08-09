@@ -741,12 +741,12 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   //=========== v1.4.55 end ===============
 
     /**
-   * @description v1.4.59 feat 标题超长配置默认值
+   * @description v1.4.78 feat 标题超长配置默认值
    */
 
     if (typeof data.ellipseMode === 'undefined'){
-      // 标题超长默认 超长省略
-      data.ellipseMode = "ellipse"
+      // 标题超长配置: 默认
+      data.ellipseMode = "default"
     }
   
   //=========== v1.4.58 end ===============

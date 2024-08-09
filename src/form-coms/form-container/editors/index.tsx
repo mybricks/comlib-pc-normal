@@ -667,10 +667,11 @@ export default {
               type: 'Radio',
               options: [
                 { label: '超长省略', value: 'ellipse' },
-                { label: '自动换行', value: 'wrap' }
+                { label: '自动换行', value: 'wrap' },
+                { label: '默认', value: 'default' }
               ],
               value: {
-                set({ data }: EditorResult<Data>, value: 'ellipse' | 'wrap') {
+                set({ data }: EditorResult<Data>, value: 'ellipse' | 'wrap' | 'default') {
                   data.ellipseMode = value;
                 },
                 get({ data }: EditorResult<Data>) {
@@ -1260,10 +1261,11 @@ export default {
             type: 'Radio',
             options: [
               { label: '超长省略', value: 'ellipse' },
-              { label: '自动换行', value: 'wrap' }
+              { label: '自动换行', value: 'wrap' },
+              { label: '默认', value: 'default' }
             ],
             value: {
-              set({ id, name, data }: EditorResult<Data>, value: 'ellipse' | 'wrap') {
+              set({ id, name, data }: EditorResult<Data>, value: 'ellipse' | 'wrap' | 'default') {
                 setFormItemProps({ data, id, name }, 'ellipseMode', value);
               },
               get({ id, name, data }: EditorResult<Data>) {

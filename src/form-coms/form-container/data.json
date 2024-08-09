@@ -6,7 +6,7 @@
   "nameCount": 0,
   "formItemColumn": 1,
   "enable24Grid": true,
-  "ellipseMode": "ellipse",
+  "ellipseMode": "default",
   "expandText": "展开",
   "collapsedText": "收起",
   "actions": {
