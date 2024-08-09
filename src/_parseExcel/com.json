@@ -1,7 +1,7 @@
 {
   "title": "Excel解析",
   "namespace": "mybricks.normal-pc.parseExcel",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "rtType": "js",
   "description": "将excel文件解析成数据",
   "author": "wufan",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editor.ts",
+  "upgrade": "./upgrade.ts",
   "icon": "./icon.svg",
   "inputs": [
     {
@@ -20,9 +21,35 @@
       ],
       "schema": [
         {
-          "name": "dataSource",
           "title": "输入数据源",
-          "type": "array"
+          "name": "dataSource",
+          "type": "array",
+          "description": "每一项为文件类型的数据",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "excel文件名"
+              },
+              "uid": {
+                "type": "number",
+                "description": "文件唯一标识符"
+              },
+              "size": {
+                "type": "number",
+                "description": "文件大小"
+              },
+              "type": {
+                "type": "string",
+                "description": "文件类型"
+              },
+              "lastModified": {
+                "type": "number",
+                "description": "最后修改时间，时间戳"
+              }
+            }
+          }
         }
       ]
     }
