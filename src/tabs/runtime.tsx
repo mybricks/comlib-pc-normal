@@ -316,6 +316,15 @@ export default function ({
     );
   };
 
+  const tabBarExtraContent = (() => {
+    const res = {} as { left?: ReactNode; right?: ReactNode };
+    if (data.useLeftExtra && slots[SlotIds.LeftExtra]) res.left = slots[SlotIds.LeftExtra].render();
+    if (data.useRigthExtra && slots[SlotIds.RigthExtra])
+      res.right = slots[SlotIds.RigthExtra].render();
+    if (Object.keys(res).length === 0) return undefined;
+    return res;
+  })();
+
   return (
     <div className={`${css.tabbox} root`}>
       <Tabs
@@ -327,10 +336,7 @@ export default function ({
         size={data.size || 'middle'}
         hideAdd={data.hideAdd}
         onEdit={env.edit ? undefined : onEdit}
-        tabBarExtraContent={{
-          left: data.useLeftExtra && slots[SlotIds.LeftExtra]?.render(),
-          right: data.useRigthExtra && slots[SlotIds.RigthExtra]?.render()
-        }}
+        tabBarExtraContent={tabBarExtraContent}
       >
         {renderItems()}
       </Tabs>
