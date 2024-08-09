@@ -74,6 +74,12 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
   const dataSchema = {};
 
   const setDataSchema = (columns: IColumn[]) => {
+    let rowKeyDataIndex = '';
+    columns.forEach(({ key, dataIndex }) => {
+      if (key === DefaultRowKeyKey) {
+        rowKeyDataIndex = String(dataIndex);
+      }
+    });
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
         const colDataIndex = getColumnItemDataIndex(item);
@@ -81,7 +87,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           type: 'string',
           title: item.title,
           description:
-            item.key === DefaultRowKeyKey
+            !!rowKeyDataIndex && item?.dataIndex === rowKeyDataIndex
               ? `行标识字段，值需要全局唯一`
               : `表格列的字段名为: ${item.dataIndex}`,
           ...schemaObj[colDataIndex]
@@ -93,7 +99,6 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           item.children && setDataSchema(item.children);
           return;
         }
-        // TODO 使用id作为字段会导致schema覆盖
         setPath(dataSchema, colDataIndex, schema, true);
       });
     }
@@ -358,7 +363,7 @@ export function getTableSchema({ data }) {
   return dataSchema;
 }
 
-type setDataSchemaProps = Pick<EditorResult<Data>, 'data' | 'output' | 'input' | 'slot'> & {
+type setDataSchemaProps = EditorResult<Data> & {
   env?: EditorResult<Data>['env'];
 };
 export function setDataSchema({ data, output, input, slot, env }: setDataSchemaProps) {
