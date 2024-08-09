@@ -4,29 +4,8 @@ import { setDataSchema } from '../../schema';
 import { ContentTypeEnum, Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
 import { getNewColumn, setColumns } from '../../utils';
 import { message } from 'antd';
-
-const ColorMap = {
-  number: {
-    color: '#4460B8',
-    text: '数字'
-  },
-  boolean: {
-    color: '#ff0000',
-    text: '布尔'
-  },
-  string: {
-    color: '#88a409',
-    text: '字符'
-  },
-  object: {
-    color: '#9727d0',
-    text: '对象'
-  },
-  array: {
-    color: '#ce980f',
-    text: '数组'
-  }
-};
+import { DefaultRowKeyKey, ColorMap } from '../../constants';
+import RowKeyEditor from '../table/rowKey';
 
 const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
   return {
@@ -70,9 +49,16 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           addText: '添加列',
           editable: true,
           customOptRender: visibleOpt,
+          handleDelete: (item: IColumn) => item.key === DefaultRowKeyKey,
+          tagsRender: (item: IColumn) =>
+            item.key === DefaultRowKeyKey ? [{ color: '#fa6400', text: '唯一Key' }] : [],
           getTitle: (item: IColumn) => {
             const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
             const { color, text } = ColorMap[item.dataSchema?.type] || ColorMap.string;
+            // 唯一列title
+            if (item.key === DefaultRowKeyKey) {
+              return `${item.dataIndex}`;
+            }
             if (item.visible) {
               return (
                 <>
@@ -102,6 +88,9 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             {
               title: '列名',
               type: 'TextArea',
+              ifVisible(item: IColumn) {
+                return item.key !== DefaultRowKeyKey;
+              },
               options: {
                 locale: true,
                 autoSize: { minRows: 2, maxRows: 2 }
@@ -121,8 +110,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               type: 'switch',
               // 添加额外字段用来标记是否自动
               value: 'isAutoWidth',
-              ifVisible(item) {
-                return item.contentType !== ContentTypeEnum.Group;
+              ifVisible(item: IColumn) {
+                return item.contentType !== ContentTypeEnum.Group && item.key !== DefaultRowKeyKey;
               },
               options: {
                 type: 'number'
@@ -132,15 +121,18 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               title: '宽度',
               type: 'Text',
               value: 'width',
-              ifVisible(item) {
+              ifVisible(item: IColumn) {
                 return (
-                  item.contentType !== ContentTypeEnum.Group && item.width !== WidthTypeEnum.Auto
+                  item.contentType !== ContentTypeEnum.Group &&
+                  item.width !== WidthTypeEnum.Auto &&
+                  item.key !== DefaultRowKeyKey
                 );
               },
               options: {
                 type: 'number'
               }
             }
+            // ...RowKeyEditor
           ]
         },
         value: {
@@ -158,6 +150,10 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
                 item.dataIndex = item.title;
                 message.warn(`表格列字段不能为空！`);
               }
+
+              if (item.key === DefaultRowKeyKey) {
+                data.rowKey = String(item.dataIndex);
+              }
             }
             const cols = val.map((item) => ({
               ...item,
@@ -166,9 +162,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               //   : item.width === WidthTypeEnum.Auto
               //     ? 'auto'
               //     : Number(item.width),
-              width: item.isAutoWidth
-                ? WidthTypeEnum.Auto
-                : (Number(item.width) || 140),
+              width: item.isAutoWidth ? WidthTypeEnum.Auto : Number(item.width) || 140,
               isAutoWidth: undefined
             }));
             setColumns({ data, slot }, cols);

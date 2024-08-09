@@ -1,7 +1,7 @@
 import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 import { ContentTypeEnum, IColumn, RowSelectionTypeEnum } from './types';
-import { DefaultOnRowScript, InputIds, OutputIds, SlotIds } from './constants';
+import { DefaultOnRowScript, DefaultRowKeyKey, InputIds, OutputIds, SlotIds } from './constants';
 import { Schemas, upgradeSchema } from './schema';
 import {
   OutputIds as PaginatorOutputIds,
@@ -328,6 +328,22 @@ export default function ({
     if (slot.get(SlotIds.ROW_SELECTION_OPERATION)) {
       slot.remove(SlotIds.ROW_SELECTION_OPERATION);
     }
+  }
+
+  /**
+   * @description v1.1.95 -> v1.1.96 行标识字段优化
+   */
+  if (!data.columns.some((column) => column.key === DefaultRowKeyKey)) {
+    const rowKeyColumn = {
+      key: DefaultRowKeyKey,
+      dataIndex: data.rowKey || '_uuid',
+      visible: false,
+      title: '行标识',
+      width: 0,
+      contentType: ContentTypeEnum.Text
+    };
+    data.columns.unshift(rowKeyColumn);
+    upgradeSchema({ data, output, input, slot });
   }
 
   return true;
