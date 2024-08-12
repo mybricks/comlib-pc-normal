@@ -875,6 +875,9 @@ export default {
           ifVisible({ data }) {
             // 历史远程和默认都开启过, 以远程搜索为高优先级
             let flag = data.config.filterOption === true && data.dropdownSearchOption === true
+            if (flag) {
+              data.config.filterOption = false;
+            }
             return (
               ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false && (flag || data.config.filterOption !== true ) 
             );
