@@ -826,14 +826,14 @@ export default {
           title: '默认搜索配置',
           ifVisible({ data }) {
             return (
-              ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false
+              ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false && data.dropdownSearchOption !== true
             );
           },
           items: [
             {
               title: '搜索',
               type: 'Switch',
-              description: '开启后下拉框可以配置默认搜索规则',
+              description: '开启后下拉框可以配置默认搜索规则，与远程搜索的支持搜索动态获取选项互斥',
               value: {
                 get({ data }) {
                   return data.config.filterOption !== false;
@@ -873,8 +873,13 @@ export default {
         {
           title: '远程搜索',
           ifVisible({ data }) {
+            // 历史远程和默认都开启过, 以远程搜索为高优先级
+            let flag = data.config.filterOption === true && data.dropdownSearchOption === true
+            if (flag) {
+              data.config.filterOption = false;
+            }
             return (
-              ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false
+              ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false && (flag || data.config.filterOption !== true ) 
             );
           },
           items: [
@@ -914,6 +919,10 @@ export default {
                       }
                     }
                   };
+                  if (value) {
+                    // 开启后，默认搜索里的filterOption改为false
+                    data.config.filterOption = false;
+                  }
                   if (data.dropdownSearchOption === true) {
                     output.add('remoteSearch', '远程搜索', { type: 'string' });
                   } else {

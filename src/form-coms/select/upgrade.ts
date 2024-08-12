@@ -436,5 +436,13 @@ export default function ({
   if( typeof data.mount === 'undefined') {
     data.mount = 'body'
   }
+
+  /**
+   * @description 1.1.33 默认搜索和远程搜索 互斥
+   */
+  if(data.dropdownSearchOption === true && data.config.filterOption === true) {
+    // 默认过滤和远程过滤都开启时，以远程搜索为准，关闭默认搜索的过滤选项
+    data.config.filterOption = false
+  }
   return true;
 }
