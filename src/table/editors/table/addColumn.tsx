@@ -1,6 +1,6 @@
 import React from 'react';
 import visibleOpt from '../../../components/editorRender/visibleOpt';
-import { setDataSchema } from '../../schema';
+import { getTableSchema, setDataSchema } from '../../schema';
 import { ContentTypeEnum, Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
 import { getNewColumn, setColumns } from '../../utils';
 import { message } from 'antd';
@@ -101,6 +101,9 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               title: '字段',
               type: 'Text',
               value: 'dataIndex',
+              ifVisible(item: IColumn) {
+                return item.key !== DefaultRowKeyKey;
+              },
               options: {
                 placeholder: '不填默认使用 列名 作为字段'
               }
@@ -131,8 +134,11 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               options: {
                 type: 'number'
               }
+            },
+            {
+              ...RowKeyEditor[0],
+              value: 'rowKeyEditor'
             }
-            // ...RowKeyEditor
           ]
         },
         value: {
@@ -140,7 +146,18 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             return [
               ...data.columns.map((item) => ({
                 ...item,
-                isAutoWidth: item.width === WidthTypeEnum.Auto
+                isAutoWidth: item.width === WidthTypeEnum.Auto,
+                rowKeyEditor:
+                  item.key === DefaultRowKeyKey
+                    ? {
+                        value: data.rowKey || 'id',
+                        schema: {
+                          type: 'object',
+                          properties: getTableSchema({ data }) || {}
+                        },
+                        placeholder: '默认使用随机生成的内置标识'
+                      }
+                    : void 0
               }))
             ];
           },
@@ -151,8 +168,11 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
                 message.warn(`表格列字段不能为空！`);
               }
 
-              if (item.key === DefaultRowKeyKey) {
-                data.rowKey = String(item.dataIndex);
+              if (item.key === DefaultRowKeyKey && item?.rowKeyEditor) {
+                const rowKeyEditor = item.rowKeyEditor;
+                const value = typeof rowKeyEditor === 'object' ? rowKeyEditor.value : rowKeyEditor;
+                data.rowKey = String(value || 'id');
+                item.dataIndex = data.rowKey;
               }
             }
             const cols = val.map((item) => ({
