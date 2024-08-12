@@ -6,8 +6,8 @@
       "key": "rowKey",
       "dataIndex": "id",
       "visible": false,
-      "title": "唯一Key",
-      "width": 0,
+      "title": "ID",
+      "width": "auto",
       "contentType": "text"
     }
   ],

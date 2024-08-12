@@ -55,10 +55,6 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           getTitle: (item: IColumn) => {
             const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
             const { color, text } = ColorMap[item.dataSchema?.type] || ColorMap.string;
-            // 唯一列title
-            if (item.key === DefaultRowKeyKey) {
-              return `${item.dataIndex}`;
-            }
             if (item.visible) {
               return (
                 <>
@@ -88,9 +84,6 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             {
               title: '列名',
               type: 'TextArea',
-              ifVisible(item: IColumn) {
-                return item.key !== DefaultRowKeyKey;
-              },
               options: {
                 locale: true,
                 autoSize: { minRows: 2, maxRows: 2 }
@@ -109,12 +102,16 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               }
             },
             {
+              ...RowKeyEditor[0],
+              value: 'rowKeyEditor'
+            },
+            {
               title: '适应剩余宽度',
               type: 'switch',
               // 添加额外字段用来标记是否自动
               value: 'isAutoWidth',
               ifVisible(item: IColumn) {
-                return item.contentType !== ContentTypeEnum.Group && item.key !== DefaultRowKeyKey;
+                return item.contentType !== ContentTypeEnum.Group;
               },
               options: {
                 type: 'number'
@@ -126,18 +123,12 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               value: 'width',
               ifVisible(item: IColumn) {
                 return (
-                  item.contentType !== ContentTypeEnum.Group &&
-                  item.width !== WidthTypeEnum.Auto &&
-                  item.key !== DefaultRowKeyKey
+                  item.contentType !== ContentTypeEnum.Group && item.width !== WidthTypeEnum.Auto
                 );
               },
               options: {
                 type: 'number'
               }
-            },
-            {
-              ...RowKeyEditor[0],
-              value: 'rowKeyEditor'
             }
           ]
         },

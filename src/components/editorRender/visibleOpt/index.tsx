@@ -5,10 +5,7 @@ import { DefaultRowKeyKey } from '../../../table/constants';
 import css from './style.less';
 
 export default ({ item, index, setList }) => {
-  if (
-    [ContentTypeEnum.Group, ContentTypeEnum.SlotItem].includes(item.contentType) ||
-    item?.key === DefaultRowKeyKey
-  ) {
+  if ([ContentTypeEnum.Group, ContentTypeEnum.SlotItem].includes(item.contentType)) {
     return null;
   }
   return (

@@ -1171,7 +1171,7 @@ export default function (props: RuntimeParams<Data>) {
               selectedRows={selectedRows}
               selectedRowKeys={selectedRowKeys}
             />
-            {data.columns?.filter(({ key }) => key !== DefaultRowKeyKey)?.length ? (
+            {data.columns?.filter(({ visible }) => visible)?.length ? (
               <Table
                 className="mybricks-table"
                 style={{

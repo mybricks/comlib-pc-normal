@@ -11,7 +11,7 @@ import EventEditor from './table/event';
 import LoadingEditor from './table/loading';
 import { getRowSelectionEditor } from './table/rowSelection';
 import UsePaginatorEditor from './table/paginator';
-import RowKeyEditor from './table/rowKey';
+// import RowKeyEditor from './table/rowKey';
 import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
@@ -141,7 +141,7 @@ export default {
       cateAry[0].items = [
         getAddColumnEditor(props),
         ...UsePaginatorEditor,
-        ...RowKeyEditor,
+        // ...RowKeyEditor,
         ...LoadingEditor,
         ...emptyEditor
       ];

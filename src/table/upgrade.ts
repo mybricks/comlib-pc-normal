@@ -1,6 +1,6 @@
 import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
-import { ContentTypeEnum, IColumn, RowSelectionTypeEnum } from './types';
+import { ContentTypeEnum, IColumn, RowSelectionTypeEnum, WidthTypeEnum } from './types';
 import { DefaultOnRowScript, DefaultRowKeyKey, InputIds, OutputIds, SlotIds } from './constants';
 import { Schemas, setDataSchema, upgradeSchema } from './schema';
 import {
@@ -333,18 +333,29 @@ export default function ({
   /**
    * @description v1.1.95 -> v1.1.96 行标识字段优化
    */
-  if (!data.columns.some((column) => column.key === DefaultRowKeyKey)) {
-    const rowKeyColumn = {
-      key: DefaultRowKeyKey,
-      dataIndex: data.rowKey || 'id',
-      visible: false,
-      title: '唯一Key',
-      width: 0,
-      contentType: ContentTypeEnum.Text
-    };
+  const rowKeyColumn = {
+    key: DefaultRowKeyKey,
+    dataIndex: data.rowKey || 'id',
+    visible: false,
+    title: 'ID',
+    contentType: ContentTypeEnum.Text,
+    width: WidthTypeEnum.Auto
+  };
+  // 已经设置了唯一key
+  if (data.rowKey && data.columns.some((column) => column.dataIndex === data.rowKey)) {
+    for (let i = 0; i < data.columns.length; i++) {
+      if (data.columns[i].dataIndex === data.rowKey) {
+        data.columns[i] = {
+          ...rowKeyColumn,
+          ...data.columns[i],
+          key: DefaultRowKeyKey
+        };
+      }
+    }
+  } else {
     data.columns.unshift(rowKeyColumn);
   }
-  
+
   setDataSchema({ data, output, input, slot });
 
   return true;
