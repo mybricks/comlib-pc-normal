@@ -605,5 +605,17 @@ export default function ({ data, style, input, output, slot }: UpgradeParams<Dat
 
   //=========== 1.0.67 end ===============
   
+  /**
+   * @description v1.0.70 展开时异步加载 schema，增加isLeaf
+   */
+
+  if( data.useLoadData === true) {
+    let loadDataSchema = input.get(InputIds.SetLoadData).schema
+    if(!loadDataSchema?.properties?.isLeaf) {
+      refreshSchema({ data, input, output } as any)
+    }
+  }
+  //=========== 1.0.67 end ===============
+
   return true;
 }

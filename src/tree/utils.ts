@@ -547,6 +547,11 @@ export const refreshSchema = (props: EditorResult<Data>) => {
         title: '禁用勾选',
         type: 'boolean',
       },
+      isLeaf: {
+        title: '设置为叶子结点',
+        type: 'boolean',
+        description: "开启「展开时异步加载自节点」时，设置有效，为false时，会强制将节点作为父节点"
+      },
       [childrenFieldName]: {
         title: '子项',
         type: 'array',
