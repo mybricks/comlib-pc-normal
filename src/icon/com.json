@@ -1,7 +1,7 @@
 {
   "title": "图标",
   "namespace": "mybricks.normal-pc.icon",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "图标",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,19 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "inputs": [
+    {
+      "id": "setIcon",
+      "title": "设置图标",
+      "desc": "动态设置图标",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setIconDone"
+      ]
+    }
+  ],
   "outputs": [
     {
       "id": "click",
@@ -17,6 +30,14 @@
       "desc": "图标的点击后，事件输出",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "setIconDone",
+      "title": "设置图标完成",
+      "desc": "设置图标完成",
+      "schema": {
+        "type": "string"
       }
     }
   ]
