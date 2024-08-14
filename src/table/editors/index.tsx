@@ -1,4 +1,4 @@
-import { InputIds } from '../constants';
+import { DefaultRowKeyKey, InputIds } from '../constants';
 import { Data } from '../types';
 import { uuid } from '../../utils';
 import { setDataSchema } from '../schema';
@@ -11,7 +11,7 @@ import EventEditor from './table/event';
 import LoadingEditor from './table/loading';
 import { getRowSelectionEditor } from './table/rowSelection';
 import UsePaginatorEditor from './table/paginator';
-// import RowKeyEditor from './table/rowKey';
+import RowKeyEditor from './table/rowKey';
 import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
@@ -141,7 +141,12 @@ export default {
       cateAry[0].items = [
         getAddColumnEditor(props),
         ...UsePaginatorEditor,
-        // ...RowKeyEditor,
+        {
+          ...RowKeyEditor[0],
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.columns.some((column) => column.key === DefaultRowKeyKey);
+          }
+        },
         ...LoadingEditor,
         ...emptyEditor
       ];
