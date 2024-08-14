@@ -405,5 +405,15 @@ export default function ({
     setDeclaredStyle([`.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`, `.ant-upload .ant-btn${getFilterSelector(id)}`], contentCss, true);
   }
   //=========== 1.0.45 end ===============
+
+  /**
+   * @description v1.0.54 兼容历史com.json defer 初始化未添加「自定义上传」插槽的问题
+  */
+  
+  if (!slot?.get('customUpload')) {
+    slot.add('customUpload', '自定义上传')
+  }
+  //=========== 1.0.54 end ===============
+  
   return true;
 }
