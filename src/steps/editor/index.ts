@@ -32,7 +32,7 @@ export default {
               '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
           },
           {
-            title: '图标',
+            title: '步骤图标',
             catelog: '默认',
             options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon'
@@ -79,7 +79,7 @@ export default {
               '.ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
           },
           {
-            title: '图标',
+            title: '步骤图标',
             catelog: '完成态',
             options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: '.ant-steps-item-finish .ant-steps-item-icon'
@@ -123,7 +123,7 @@ export default {
               '.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-description'
           },
           {
-            title: '图标',
+            title: '步骤图标',
             catelog: '禁用态',
             options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
             target: ['.ant-steps-item-wait .ant-steps-item-icon']
@@ -143,7 +143,7 @@ export default {
         {
           title: '添加步骤',
           type: 'Button',
-          description: '点击按钮添加一个步骤',
+          description: '点击按钮添加一个步骤，新增【新步骤】插槽和输出项【步骤几下一步】',
           value: {
             set({ data, slots, output, input }: EditorResult<Data>) {
               const id = uuid();
@@ -237,6 +237,7 @@ export default {
         {
           title: '描述',
           type: 'switch',
+          description: '是否展示每个步骤的描述',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.steps.showDesc;

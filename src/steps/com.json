@@ -1,7 +1,7 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "步骤条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -17,7 +17,7 @@
     {
       "id": "nextStep",
       "title": "下一步",
-      "desc": "控制显示下一步按钮",
+      "desc": "跳转到下一步",
       "schema": {
         "type": "any"
       },
@@ -28,7 +28,7 @@
     {
       "id": "prevStep",
       "title": "上一步",
-      "desc": "控制显示上一步按钮",
+      "desc": "跳转到上一步",
       "schema": {
         "type": "any"
       },

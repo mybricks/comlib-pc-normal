@@ -18,7 +18,6 @@ export const removeEventIO = (output, id) => {
   output.remove(`${id}${LEAVE}`);
 };
 
-
 export const updateIOTitle = (output, id, title) => {
   output.setTitle(`${id}${INTO}`, `${title}显示`);
   output.setTitle(`${id}${LEAVE}`, `${title}隐藏`);
@@ -71,10 +70,10 @@ export const setDynamicStepsIO = (props: EditorResult<Data>, hasPower: boolean) 
     if (input.get('setSteps')) {
       input.remove('setSteps');
     }
-    if(output.get('setStepsDone')){
+    if (output.get('setStepsDone')) {
       output.remove('setStepsDone');
     }
-    if(output.get('onStepChange')){
+    if (output.get('onStepChange')) {
       output.remove('onStepChange');
     }
   }
