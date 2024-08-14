@@ -83,6 +83,7 @@ export default {
         {
           title: '对齐方式',
           type: 'Select',
+          description: '按钮组的对齐方式',
           options: [
             { label: '左对齐', value: 'flex-start' },
             { label: '居中', value: 'center' },
@@ -100,6 +101,7 @@ export default {
         {
           title: '置底',
           type: 'switch',
+          description: '操作栏是否置底',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.toolbar.showActions;
           },
@@ -115,6 +117,7 @@ export default {
         {
           title: '底部距离',
           type: 'inputNumber',
+          description: '操作栏置底后距离底部的距离',
           options: [{ min: 0, max: 100, width: 120 }],
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.toolbar.fixed;
@@ -132,7 +135,7 @@ export default {
     },
     style: [
       {
-        title: '样式',
+        title: '操作栏',
         options: [
           'padding',
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -200,6 +203,7 @@ export default {
         {
           title: '文案',
           type: 'Text',
+          description: '自定义操作按钮文案',
           options: {
             locale: true
           },
@@ -220,6 +224,8 @@ export default {
             {
               title: '点击',
               type: '_Event',
+              description:
+                '开启后可以配置当前自定义按钮的点击事件逻辑，如在第一步的下一步按钮的点击事件中可以连线到输入项【下一步】跳转到下一步，同样在第二步的上一步按钮的点击事件中可以连线到输入项【上一步】跳转到上一步，或者使用【跳转】输入项跳转到任意步',
               options: ({ data }) => {
                 return {
                   outputId: btn.value
@@ -231,6 +237,7 @@ export default {
         {
           title: '删除',
           type: 'Button',
+          description: '点击删除当前按钮，并移除对应输入输出项',
           value: {
             set({ data, output, focusArea }: EditorResult<Data>) {
               const index = data.toolbar.btns.findIndex((item) => item.value === btn.value);
@@ -252,6 +259,7 @@ export default {
       {
         title: '文案',
         type: 'Text',
+        description: '下一步按钮文案',
         options: {
           locale: true
         },
@@ -263,6 +271,8 @@ export default {
           {
             title: '点击',
             type: '_Event',
+            description:
+              '这一步骤的下一步按钮的点击事件，点击事件中可以连线到输入项【下一步】跳转到下一步，或者使用【跳转】输入项跳转到任意步',
             options: ({ data }) => {
               const id = data.stepAry[data.current]?.id;
               return {
@@ -287,6 +297,7 @@ export default {
         options: {
           locale: true
         },
+        description: '上一步按钮文案',
         value: createBtnValue('previous')
       }
     ]
@@ -312,6 +323,7 @@ export default {
           {
             title: '点击',
             type: '_Event',
+            description: '这一步的提交按钮的点击事件',
             options: ({ data }) => {
               return {
                 outputId: 'submit'
