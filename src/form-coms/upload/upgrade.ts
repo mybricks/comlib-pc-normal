@@ -412,8 +412,55 @@ export default function ({
   
   if (!slot?.get('customUpload')) {
     slot.add('customUpload', '自定义上传')
+    // slot.add({
+    //   id: "customUpload", 
+    //   title: "自定义上传",
+    //   "type": "scope",
+    //   "inputs": [
+    //     {
+    //       "id": "fileData",
+    //       "title": "输出文件数据",
+    //       "schema": {
+    //         "type": "object",
+    //         "description": "FormData格式的文件数据",
+    //         "properties": {}
+    //       }
+    //     }
+    //   ],
+    //   "outputs": [
+    //     {
+    //       "id": "setFileInfo",
+    //       "title": "设置上传结果",
+    //       "description": "设置文件地址和文件名",
+    //       "schema": {
+    //         "type": "object",
+    //         "properties": {
+    //           "name": {
+    //             "type": "string",
+    //             "description": "文件名"
+    //           },
+    //           "url": {
+    //             "type": "string",
+    //             "description": "文件地址"
+    //           },
+    //           "status": {
+    //             "type": "string",
+    //             "description": "文件上传状态"
+    //           },
+    //           "percent": {
+    //             "type": "number",
+    //             "description": "文件上传进度，百分比"
+    //           },
+    //           "response": {
+    //             "type": "string",
+    //             "description": "服务端响应内容"
+    //           }
+    //         }
+    //       }
+    //     }
+    //   ]});
   }
   //=========== 1.0.54 end ===============
-  
+
   return true;
 }
