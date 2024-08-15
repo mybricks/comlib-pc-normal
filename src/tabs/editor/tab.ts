@@ -17,7 +17,7 @@ export default {
             locale: true
           },
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return item?.name;
             },
             set({ input, output, slots, env }: EditorResult<Data>, title: string) {
@@ -31,10 +31,10 @@ export default {
           type: 'Switch',
           description: '是否显示图标（icon)',
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return item?.showIcon;
             },
-            set({}: EditorResult<Data>, value: boolean) {
+            set({ }: EditorResult<Data>, value: boolean) {
               item.showIcon = value;
               item.icon = 'BellOutlined';
             }
@@ -44,14 +44,14 @@ export default {
           title: '图标自定义',
           type: 'Switch',
           description: '可选择是否需要自定义图标',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return item.showIcon;
           },
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return item.isChoose;
             },
-            set({}: EditorResult<Data>, value: boolean) {
+            set({ }: EditorResult<Data>, value: boolean) {
               item.isChoose = value;
               if (!item.isChoose) {
                 item.icon = 'BellOutlined';
@@ -63,14 +63,14 @@ export default {
           title: '选择图标',
           type: 'icon',
           description: '选择配置图标',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return !!item.isChoose;
           },
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return item?.icon;
             },
-            set({}: EditorResult<Data>, value: string) {
+            set({ }: EditorResult<Data>, value: string) {
               item.icon = value;
             }
           }
@@ -84,10 +84,10 @@ export default {
             locale: true
           },
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return item?.tooltipText;
             },
-            set({}: EditorResult<Data>, value: string) {
+            set({ }: EditorResult<Data>, value: string) {
               item.tooltipText = value;
             }
           }
@@ -100,10 +100,10 @@ export default {
             return data.type === 'editable-card';
           },
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return item?.closable;
             },
-            set({}: EditorResult<Data>, value: boolean) {
+            set({ }: EditorResult<Data>, value: boolean) {
               item.closable = value;
             }
           }
@@ -115,7 +115,7 @@ export default {
               title: '显示',
               type: '_Event',
               description: '标签页的显示事件',
-              options: ({}: EditorResult<Data>) => {
+              options: ({ }: EditorResult<Data>) => {
                 const id = item?.id;
                 return {
                   outputId: `${id}_into`
@@ -126,7 +126,7 @@ export default {
               title: '隐藏',
               type: '_Event',
               description: '标签页的隐藏事件',
-              options: ({}: EditorResult<Data>) => {
+              options: ({ }: EditorResult<Data>) => {
                 const id = item?.id;
                 return {
                   outputId: `${id}_leave`
@@ -202,17 +202,22 @@ export default {
           type: 'Switch',
           description: '开启后，可以通过逻辑连线连接标签的输入项【设置标签页的通知数】动态显示通知',
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return !!item?.dynamic;
             },
-            set({ input, env }: EditorResult<Data>, value: boolean) {
+            set({ input, output, env }: EditorResult<Data>, value: boolean) {
               item.dynamic = value;
               if (value) {
                 input.add(item.key, `${env.i18n(item.name)}的通知数`, {
                   type: 'string'
                 });
+                output.add(`${item.key}Done`, '通知数', {
+                  type: 'string'
+                });
+                input.get(item.key).setRels([`${item.key}Done`]);
               } else {
                 input.remove(`${item.key}`);
+                output.remove(`${item.key}Done`);
               }
             }
           }
@@ -225,11 +230,11 @@ export default {
             { label: '文本', value: 'text' },
             { label: '状态点', value: 'icon' }
           ],
-          ifVisible({}) {
+          ifVisible({ }) {
             return !!item?.dynamic;
           },
           value: {
-            get({}) {
+            get({ }) {
               return item.infoType || 'text';
             },
             set({ data }, value: 'text' | 'icon') {
@@ -245,11 +250,11 @@ export default {
             { label: '常规', value: 'default' },
             { label: '迷你', value: 'small' }
           ],
-          ifVisible({}) {
+          ifVisible({ }) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({}) {
+            get({ }) {
               return item.size || 'default';
             },
             set({ data }, value: 'text' | 'icon') {
@@ -261,14 +266,14 @@ export default {
           title: '数值-0-状态点显示',
           description: '数值为0时, 状态点是否显示',
           type: 'switch',
-          ifVisible({}) {
+          ifVisible({ }) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({}) {
+            get({ }) {
               return item.showZero || false;
             },
-            set({}, value: number[]) {
+            set({ }, value: number[]) {
               item.showZero = value;
             }
           }
@@ -281,15 +286,15 @@ export default {
             { title: '纵向', min: -100, max: 100, width: 100 }
           ],
           description: '设置状态点的位置偏移, 横向和纵向',
-          ifVisible({}) {
+          ifVisible({ }) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({}) {
+            get({ }) {
               if (!item?.offset) return [0, 0];
               return [item.offset[0], item.offset[1]];
             },
-            set({}, value: number[]) {
+            set({ }, value: number[]) {
               item.offset = value;
             }
           }
@@ -305,11 +310,11 @@ export default {
             { label: '警告', value: 'warning' }
           ],
           description: '设置状态点的类型, 有成功、进行中、默认、错误、警告等类型',
-          ifVisible({}) {
+          ifVisible({ }) {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({}) {
+            get({ }) {
               return item.status || 'error';
             },
             set({ data }, value: 'success' | 'processing' | 'default' | 'error' | 'warning') {
@@ -325,10 +330,10 @@ export default {
               description: '权限信息配置',
               type: '_permission',
               value: {
-                get({}: EditorResult<Data>) {
+                get({ }: EditorResult<Data>) {
                   return item.permission;
                 },
-                set({}: EditorResult<Data>, value: ConfigPermission) {
+                set({ }: EditorResult<Data>, value: ConfigPermission) {
                   item.permission = value;
                   value.register?.();
                 }
