@@ -1,5 +1,5 @@
 import { isEmptyObject, differObject } from '../utils';
-import { Data } from './constants';
+import { Data, InputIds } from './constants';
 
 export default function ({ data, config, setDeclaredStyle, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -36,7 +36,7 @@ export default function ({ data, config, setDeclaredStyle, input, output }: Upgr
   if (styleConfig) {
     styleConfig.setBinding('data.legacyConfigStyle');
   }
-  
+
   /**
     * @description v1.0.13 -> v1.0.14, 增加设置内容完成rels
   */
@@ -55,5 +55,12 @@ export default function ({ data, config, setDeclaredStyle, input, output }: Upgr
   if (!output.get("click")) {
     output.add("click", '点击', { type: 'string' });
   }
+
+  if (input.get(InputIds.SetStyle) && !output.get(`${InputIds.SetStyle}Done`)) {
+    output.add(`${InputIds.SetStyle}Done`, '默认样式', { type: 'follow' });
+    input.get(InputIds.SetStyle).setRels([`${InputIds.SetStyle}Done`]);
+  }
+  // --------------- 1.0.22 end -----------------
+
   return true;
 }
