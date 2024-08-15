@@ -346,7 +346,7 @@ export default function ({
   }
 
   if (!data?.hasUpdateRowKey) {
-    data.hasUpdateRowKey = true;
+    data.hasUpdateRowKey = 0;
   }
 
   setDataSchema({ data, output, input, slot });

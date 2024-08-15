@@ -635,7 +635,7 @@ export default function (props: RuntimeParams<Data>) {
       let temp = [...dataSource] || [];
       // 是否前端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
-      const hasSetRowKey = !!env.runtime?.debug && !!data.rowKey;
+      const hasSetRowKey = !!env.runtime?.debug && !!data.rowKey && !!data?.hasUpdateRowKey;
       if (!usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds, rowKey, hasSetRowKey);
       } else if (usePagination && ds && typeof ds === 'object') {

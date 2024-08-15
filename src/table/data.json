@@ -65,5 +65,6 @@
   "enableOnRow": false,
   "onRowScript": "",
   "lazyLoad": false,
-  "filterIconDefault": "FilterFilled"
+  "filterIconDefault": "FilterFilled",
+  "hasUpdateRowKey": 1
 }
