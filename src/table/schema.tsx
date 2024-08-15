@@ -370,7 +370,6 @@ type setDataSchemaProps = Pick<EditorResult<Data>, 'data' | 'output' | 'input' |
 export function setDataSchema({ data, output, input, slot, env }: setDataSchemaProps) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
-  console.log('[38;2;255;0;255m [ dataSchema ]-375-「table/schema.tsx」 [0m', dataSchema);
 
   setDataSourceSchema(dataSchema, { data, output, input, slot });
   setOutputsSchema(dataSchema, { data, output, input, slot });
