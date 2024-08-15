@@ -636,8 +636,9 @@ export default function (props: RuntimeParams<Data>) {
       let temp = [...dataSource] || [];
       // 是否前端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
+      const hasSetRowKey = !!data.rowKey;
       if (!usePagination && Array.isArray(ds)) {
-        temp = formatDataSource(ds, rowKey);
+        temp = formatDataSource(ds, rowKey, hasSetRowKey);
       } else if (usePagination && ds && typeof ds === 'object') {
         /**
          * 分页特殊处理逻辑
@@ -649,11 +650,11 @@ export default function (props: RuntimeParams<Data>) {
          */
         const dsKey = Object.keys(ds);
         if (Array.isArray(ds?.dataSource)) {
-          temp = formatDataSource(ds?.dataSource, rowKey);
+          temp = formatDataSource(ds?.dataSource, rowKey, hasSetRowKey);
         } else {
           const arrayItemKey = dsKey.filter((key) => !!Array.isArray(ds[key]));
           if (arrayItemKey.length === 1) {
-            temp = formatDataSource(ds?.[arrayItemKey[0]], rowKey);
+            temp = formatDataSource(ds?.[arrayItemKey[0]], rowKey, hasSetRowKey);
           } else {
             console.error('[数据表格]：未传入列表数据', ds);
           }

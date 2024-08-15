@@ -42,7 +42,7 @@ export const getColumnItemInfo = (
 };
 
 export const getNewColumn = (data?: Data) => {
-  const title = data ? `列${data?.columns?.length + 1}` : '新增'
+  const title = data ? `列${data?.columns?.length + 1}` : '新增';
   const obj: IColumn = {
     title,
     dataIndex: title,
@@ -94,8 +94,12 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 };
 
 // 格式化表格数据
-export const formatDataSource = (dataSource, rowKey) => {
-  return dataSource.map(({ children, ...rest }) => {
+export const formatDataSource = (dataSource, rowKey: string, hasSetRowKey = true) => {
+  return dataSource.map(({ children, ...rest }, index) => {
+    // 设置了RowKey并且对应值没有值提示
+    if (hasSetRowKey && !rest?.[rowKey]) {
+      console.error(`第${index + 1}行数据ID列字段【${rowKey}】没有值`);
+    }
     if (children && children.length) {
       return {
         [rowKey]: uuid(),
@@ -240,12 +244,16 @@ export function getColumnItemDataIndex(item: IColumn) {
   return idx;
 }
 
-
 export const createStyleForTableContent = () => [
   {
     title: '表头',
     catelog: '默认',
-    options: ['font', 'border', 'padding', { type: 'background', config: { disableBackgroundImage: true } }],
+    options: [
+      'font',
+      'border',
+      'padding',
+      { type: 'background', config: { disableBackgroundImage: true } }
+    ],
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
@@ -257,7 +265,12 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['font', 'border', 'padding', { type: 'background', config: { disableBackgroundImage: true } }],
+    options: [
+      'font',
+      'border',
+      'padding',
+      { type: 'background', config: { disableBackgroundImage: true } }
+    ],
     target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
   },
   {
@@ -266,7 +279,11 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, 'opacity'],
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
     target: ({ id }) => `table`
   },
   {
@@ -275,7 +292,11 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, 'opacity'],
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
     target: ({ id }) => `table tr`
   },
   {
@@ -295,10 +316,10 @@ export const createStyleForTableContent = () => [
     },
     options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
     target: ({ id }) => {
-      return `table tbody tr td[data-focus-cell]${getFilterSelector(id)}`
+      return `table tbody tr td[data-focus-cell]${getFilterSelector(id)}`;
     }
-  },
-]
+  }
+];
 
 export const createStyleForColumnContent = ({ target, ...others }: StyleModeType<Data>) => ({
   title: '内容',
