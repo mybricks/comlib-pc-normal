@@ -97,8 +97,8 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 export const formatDataSource = (dataSource, rowKey: string, hasSetRowKey = true) => {
   return dataSource.map(({ children, ...rest }, index) => {
     // 设置了RowKey并且对应值没有值提示
-    if (hasSetRowKey && !rest?.[rowKey]) {
-      console.error(`第${index + 1}行数据ID列字段【${rowKey}】没有值`);
+    if (hasSetRowKey && typeof rest?.[rowKey] === 'undefined') {
+      console.error(`第${index + 1}行数据【唯一Key列】字段【${rowKey}】没有值`);
     }
     if (children && children.length) {
       return {

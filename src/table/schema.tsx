@@ -83,20 +83,20 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
         const colDataIndex = getColumnItemDataIndex(item);
+        const { title, dataIndex, contentType, children, keepDataIndex } = item;
         const schema = {
           type: 'string',
-          title: item.title,
-          description:
-            !!rowKeyDataIndex && item?.dataIndex === rowKeyDataIndex
-              ? `行标识字段，值需要全局唯一`
-              : `表格列的字段名为: ${item.dataIndex}`,
+          title,
+          description: `表格列的字段名为: ${dataIndex}${
+            !!rowKeyDataIndex && dataIndex === rowKeyDataIndex && '，行标识字段，值需要全局唯一'
+          }`,
           ...schemaObj[colDataIndex]
         };
-        if (item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex) {
+        if (contentType === ContentTypeEnum.SlotItem && !keepDataIndex) {
           return;
         }
-        if (item.contentType === ContentTypeEnum.Group) {
-          item.children && setDataSchema(item.children);
+        if (contentType === ContentTypeEnum.Group) {
+          children && setDataSchema(children);
           return;
         }
         setPath(dataSchema, colDataIndex, schema, true);
@@ -370,6 +370,7 @@ type setDataSchemaProps = Pick<EditorResult<Data>, 'data' | 'output' | 'input' |
 export function setDataSchema({ data, output, input, slot, env }: setDataSchemaProps) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
+  console.log('[38;2;255;0;255m [ dataSchema ]-375-「table/schema.tsx」 [0m', dataSchema);
 
   setDataSourceSchema(dataSchema, { data, output, input, slot });
   setOutputsSchema(dataSchema, { data, output, input, slot });
