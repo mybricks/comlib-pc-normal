@@ -58,6 +58,7 @@ export default function ({ data, config, setDeclaredStyle, input, output }: Upgr
 
   if (input.get(InputIds.SetStyle) && !output.get(`${InputIds.SetStyle}Done`)) {
     output.add(`${InputIds.SetStyle}Done`, '默认样式', { type: 'follow' });
+    // 老大，就是这里执行了，但是不生效 ↓↓↓
     input.get(InputIds.SetStyle).setRels([`${InputIds.SetStyle}Done`]);
   }
   // --------------- 1.0.22 end -----------------
