@@ -648,7 +648,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .then(() => {
         getValue()
           .then((values: any) => {
-            let res = { ...values, ...params };
+            let res = { ...params, ...values };
+
             if (
               data.domainModel?.entity?.fieldAry?.length > 0 &&
               data.domainModel?.isQuery &&
