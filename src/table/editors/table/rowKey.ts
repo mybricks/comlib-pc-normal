@@ -1,7 +1,6 @@
 import { getTableSchema } from '../../schema';
 import Tree from '../../../components/editorRender/fieldSelect';
-import { Data, IColumn } from '../../types';
-import { DefaultRowKeyKey } from '../../constants';
+import { Data } from '../../types';
 
 const RowKeyEditor = [
   {
@@ -9,8 +8,8 @@ const RowKeyEditor = [
     description:
       '当表格数据太大导致卡顿时，可以通过添加【行标识字段】进行性能优化。该标识字段的值需要全局唯一。此外也可以当作设置勾选数据时的标识',
     type: 'editorRender',
-    ifVisible(item: IColumn) {
-      return !item?.key || item?.key === DefaultRowKeyKey;
+    ifVisible({ data }: EditorResult<Data>) {
+      return !data?.hasUpdateRowKey;
     },
     options: {
       render: Tree

@@ -1,4 +1,4 @@
-import { DefaultRowKeyKey, InputIds } from '../constants';
+import { InputIds } from '../constants';
 import { Data } from '../types';
 import { uuid } from '../../utils';
 import { setDataSchema } from '../schema';
@@ -141,12 +141,7 @@ export default {
       cateAry[0].items = [
         getAddColumnEditor(props),
         ...UsePaginatorEditor,
-        {
-          ...RowKeyEditor[0],
-          ifVisible({ data }: EditorResult<Data>) {
-            return !data.columns.some((column) => column.key === DefaultRowKeyKey);
-          }
-        },
+        ...RowKeyEditor,
         ...LoadingEditor,
         ...emptyEditor
       ];

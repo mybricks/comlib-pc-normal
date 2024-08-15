@@ -11,8 +11,7 @@ import {
   SlotIds,
   TEMPLATE_RENDER_KEY,
   DefaultRowKey,
-  DefaultOnRowScript,
-  DefaultRowKeyKey
+  DefaultOnRowScript
 } from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -636,7 +635,7 @@ export default function (props: RuntimeParams<Data>) {
       let temp = [...dataSource] || [];
       // 是否前端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
-      const hasSetRowKey = !!data.rowKey;
+      const hasSetRowKey = !!env.runtime?.debug && !!data.rowKey;
       if (!usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds, rowKey, hasSetRowKey);
       } else if (usePagination && ds && typeof ds === 'object') {

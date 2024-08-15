@@ -1,4 +1,4 @@
-import { InputIds, OutputIds, SlotIds, DefaultRowKeyKey } from './constants';
+import { InputIds, OutputIds, SlotIds } from './constants';
 import { ContentTypeEnum, Data, IColumn } from './types';
 import { setPath } from '../utils/path';
 import { getColumnItem, getColumnItemDataIndex } from './utils';
@@ -75,8 +75,8 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
 
   const setDataSchema = (columns: IColumn[]) => {
     let rowKeyDataIndex = '';
-    columns.forEach(({ key, dataIndex }) => {
-      if (key === DefaultRowKeyKey) {
+    columns.forEach(({ key, dataIndex, isRowKey }) => {
+      if (isRowKey) {
         rowKeyDataIndex = String(dataIndex);
       }
     });

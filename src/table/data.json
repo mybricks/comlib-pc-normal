@@ -6,6 +6,7 @@
       "key": "rowKey",
       "dataIndex": "id",
       "visible": false,
+      "isRowKey": true,
       "title": "ID",
       "width": "auto",
       "contentType": "text"

@@ -4,6 +4,7 @@ import { ContentTypeEnum, Data, IColumn, SorterTypeEnum, WidthTypeEnum } from '.
 import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
+import { message } from 'antd';
 
 export const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -94,16 +95,15 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 };
 
 // 格式化表格数据
-export const formatDataSource = (dataSource, rowKey: string, hasSetRowKey = true) => {
+export const formatDataSource = (dataSource: IColumn[], rowKey: string, hasSetRowKey = true) => {
+  if (dataSource.some((item) => typeof item?.[rowKey] === 'undefined') && hasSetRowKey) {
+    message.warning('数据源中存在未设置唯一Key列的数据');
+  }
   return dataSource.map(({ children, ...rest }, index) => {
-    // 设置了RowKey并且对应值没有值提示
-    if (hasSetRowKey && typeof rest?.[rowKey] === 'undefined') {
-      console.error(`第${index + 1}行数据【唯一Key列】字段【${rowKey}】没有值`);
-    }
     if (children && children.length) {
       return {
         [rowKey]: uuid(),
-        children: formatDataSource(children, rowKey),
+        children: formatDataSource(children, rowKey, hasSetRowKey),
         ...rest
       };
     } else {

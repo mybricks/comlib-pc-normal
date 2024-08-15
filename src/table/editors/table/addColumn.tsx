@@ -1,11 +1,10 @@
 import React from 'react';
 import visibleOpt from '../../../components/editorRender/visibleOpt';
-import { getTableSchema, setDataSchema } from '../../schema';
+import { setDataSchema } from '../../schema';
 import { ContentTypeEnum, Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
 import { getNewColumn, setColumns } from '../../utils';
 import { message } from 'antd';
-import { DefaultRowKeyKey, ColorMap } from '../../constants';
-import RowKeyEditor from '../table/rowKey';
+import { ColorMap } from '../../constants';
 
 const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
   return {
@@ -49,9 +48,9 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           addText: '添加列',
           editable: true,
           customOptRender: visibleOpt,
-          handleDelete: (item: IColumn) => item.key === DefaultRowKeyKey,
+          handleDelete: (item: IColumn) => item?.isRowKey,
           tagsRender: (item: IColumn) =>
-            item.key === DefaultRowKeyKey ? [{ color: '#fa6400', text: '唯一Key' }] : [],
+            item?.isRowKey ? [{ color: '#fa6400', text: '唯一Key' }] : [],
           getTitle: (item: IColumn) => {
             const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
             const { color, text } = ColorMap[item.dataSchema?.type] || ColorMap.string;
@@ -94,16 +93,14 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               title: '字段',
               type: 'Text',
               value: 'dataIndex',
-              ifVisible(item: IColumn) {
-                return item.key !== DefaultRowKeyKey;
-              },
               options: {
                 placeholder: '不填默认使用 列名 作为字段'
               }
             },
             {
-              ...RowKeyEditor[0],
-              value: 'rowKeyEditor'
+              title: '设置为唯一key',
+              type: 'switch',
+              value: 'isRowKey'
             },
             {
               title: '适应剩余宽度',
@@ -137,35 +134,29 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             return [
               ...data.columns.map((item) => ({
                 ...item,
-                isAutoWidth: item.width === WidthTypeEnum.Auto,
-                rowKeyEditor:
-                  item.key === DefaultRowKeyKey
-                    ? {
-                        value: data.rowKey || 'id',
-                        schema: {
-                          type: 'object',
-                          properties: getTableSchema({ data }) || {}
-                        },
-                        placeholder: '默认使用随机生成的内置标识'
-                      }
-                    : void 0
+                isAutoWidth: item.width === WidthTypeEnum.Auto
               }))
             ];
           },
           set({ data, output, input, slot, ...res }: EditorResult<Data>, val: IColumn[]) {
+            let newRowKey = data?.rowKey;
             for (let item of val) {
               if (item.dataIndex === '') {
                 item.dataIndex = item.title;
                 message.warn(`表格列字段不能为空！`);
               }
 
-              if (item.key === DefaultRowKeyKey && item?.rowKeyEditor) {
-                const rowKeyEditor = item.rowKeyEditor;
-                const value = typeof rowKeyEditor === 'object' ? rowKeyEditor.value : rowKeyEditor;
-                data.rowKey = String(value || 'id');
-                item.dataIndex = data.rowKey;
+              // 保证每次只有一个isRowKey是true
+              if (item?.isRowKey && data.rowKey !== item.dataIndex) {
+                newRowKey = String(item.dataIndex);
+              } else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
+                newRowKey = '';
+                message.warn(`必须设置一个唯一key`);
               }
             }
+
+            data.rowKey = newRowKey;
+
             const cols = val.map((item) => ({
               ...item,
               // width: item.isAutoWidth
@@ -174,7 +165,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               //     ? 'auto'
               //     : Number(item.width),
               width: item.isAutoWidth ? WidthTypeEnum.Auto : Number(item.width) || 140,
-              isAutoWidth: undefined
+              isAutoWidth: undefined,
+              isRowKey: data?.rowKey && item?.dataIndex === data?.rowKey
             }));
             setColumns({ data, slot }, cols);
             setDataSchema({ data, output, input, slot, ...res });

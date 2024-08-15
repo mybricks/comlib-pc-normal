@@ -125,8 +125,6 @@ export const OutputIds = {
 
 export const DefaultRowKey = '_uuid';
 
-export const DefaultRowKeyKey = 'rowKey';
-
 export const ColorMap = {
   number: {
     color: '#4460B8',

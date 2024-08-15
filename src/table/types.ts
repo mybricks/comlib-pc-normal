@@ -98,7 +98,7 @@ export interface IColumn {
   enableOnCell?: boolean;
   onCellScript?: string;
 
-  rowKeyEditor?: any; // 行key编辑器相关
+  isRowKey?: boolean; // 是否是rowKey
 }
 
 export enum SizeEnum {
@@ -245,4 +245,7 @@ export interface Data {
   lazyLoad: boolean;
   /** 表格筛选默认图标 */
   filterIconDefault?: FilterIconEnum;
+
+  // 用于标记唯一key是否升级过了
+  hasUpdateRowKey?: boolean
 }
