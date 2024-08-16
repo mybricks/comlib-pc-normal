@@ -231,7 +231,7 @@ export function onValidateTrigger({ parentSlot, id, name }) {
  * 输出最新的value并触发校验
  * @param param0 
  */
-export function changeValue({ id, outputs, parentSlot, name, data }) {
+export function changeValue({ id, outputs, parentSlot, name, data, prevAction = '' }) {
   const { value } = data;
   if (data.userAction.type === 'init') {
     outputs[OutputIds.OnInitial](deepCopy(value));
@@ -239,7 +239,11 @@ export function changeValue({ id, outputs, parentSlot, name, data }) {
     outputs[OutputIds.OnChange](deepCopy(value));
   }
   onChangeForFc(parentSlot, { id, value, name });
-  onValidateTrigger({ parentSlot, id, name });
+  if(prevAction === 'add' || prevAction === 'remove') {
+    return
+  } else {
+    onValidateTrigger({ parentSlot, id, name });
+  }
 }
 
 /** 带防抖的值变化事件 */
@@ -292,7 +296,7 @@ export function setValuesForInput({
 }) {
   const { value: values, items: formItems } = data;
   const actionType = data.userAction.type;
-  data.userAction.type = '';
+  // data.userAction.type = '';
   new Promise((resolve, reject) => {
     const cb = () => {
       data.userAction.key = -1;
@@ -308,7 +312,9 @@ export function setValuesForInput({
     .then(v => {
       data.userAction.startIndex = -1;
     })
-    .catch(e => console.error(e));
+    .catch(e => console.error(e)).finally(() => {
+      data.userAction.type = '';
+    });
 };
 
 /**

@@ -134,7 +134,14 @@ const SlotContent = (
                 data.value = [temp || {}];
               }
               const cb = () => {
-                changeValue({ data, id, outputs, parentSlot, name: props.name });
+                changeValue({
+                  data,
+                  id,
+                  outputs,
+                  parentSlot,
+                  name: props.name,
+                  prevAction: actionType
+                });
                 data.userAction.index = -1;
                 data.userAction.key = -1;
                 // callback 里面把 data.userAction.startIndex重置
