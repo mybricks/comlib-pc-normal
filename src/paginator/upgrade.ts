@@ -33,5 +33,16 @@ export default function ({ input, output, slot, data }): boolean {
     input.get(InputIds.SetTotal).setRels([OutputIds.SetTotalDone]);
   }
 
+
+  if (input.get(InputIds.SetDisable) && !output.get(`${InputIds.SetDisable}Done`)) {
+    output.add(`${InputIds.SetDisable}Done`, '禁用完成', { type: 'follow' });
+    input.get(InputIds.SetDisable).setRels([`${InputIds.SetDisable}Done`]);
+  }
+  if (input.get(InputIds.SetEnable) && !output.get(`${InputIds.SetEnable}Done`)) {
+    output.add(`${InputIds.SetEnable}Done`, '启用完成', { type: 'follow' });
+    input.get(InputIds.SetEnable).setRels([`${InputIds.SetEnable}Done`]);
+  }
+  // ======================== 1.0.12 end ========================
+
   return true;
 }

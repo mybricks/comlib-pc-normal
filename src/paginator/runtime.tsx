@@ -46,12 +46,14 @@ export default (props: RuntimeParams<Data>) => {
       });
 
       inputs[InputIds.SetDisable] &&
-        inputs[InputIds.SetDisable](() => {
+        inputs[InputIds.SetDisable]((val, relOutputs) => {
           data.disabled = true;
+          relOutputs[`${InputIds.SetDisable}Done`](val);
         });
       inputs[InputIds.SetEnable] &&
-        inputs[InputIds.SetEnable](() => {
+        inputs[InputIds.SetEnable]((val, relOutputs) => {
           data.disabled = false;
+          relOutputs[`${InputIds.SetEnable}Done`](val);
         });
     }
   }, []);
