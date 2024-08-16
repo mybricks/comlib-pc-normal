@@ -102,6 +102,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               title: '设置为唯一key',
               type: 'switch',
               value: 'isRowKey',
+              description:
+                '当表格数据太大导致卡顿时，可以通过添加【行标识字段】进行性能优化。该标识字段的值需要全局唯一。此外也可以当作设置勾选数据时的标识',
               ifVisible() {
                 // 存量升级前不展示
                 return typeof data?.hasUpdateRowKey !== 'undefined';
@@ -155,7 +157,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               if (item?.isRowKey && data.rowKey !== item.dataIndex) {
                 newRowKey = String(item.dataIndex);
               } else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
-                // 关闭时不取消而是依旧选择上一个 TODO
+                // 关闭时不取消而是依旧选择上一个
                 item.key = uuid(); // 刷新防止不更新
                 message.warn(`必须设置一个唯一key`);
               }

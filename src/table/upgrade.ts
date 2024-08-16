@@ -336,7 +336,7 @@ export default function ({
   // 已经设置了唯一key
   if (data.rowKey && data.columns.some((column) => column.dataIndex === data.rowKey)) {
     for (let i = 0; i < data.columns.length; i++) {
-      if (data.columns[i].dataIndex === data.rowKey) {
+      if (data.columns[i].dataIndex === data?.rowKey && data?.rowKey) {
         data.columns[i] = {
           ...data.columns[i],
           isRowKey: true
@@ -345,7 +345,7 @@ export default function ({
     }
   }
 
-  if (!data?.hasUpdateRowKey) {
+  if (typeof data?.hasUpdateRowKey === 'undefined') {
     data.hasUpdateRowKey = 0;
   }
 
