@@ -740,15 +740,15 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
   //=========== v1.4.55 end ===============
 
-    /**
-   * @description v1.4.78 feat 标题超长配置默认值
-   */
+  /**
+ * @description v1.4.78 feat 标题超长配置默认值
+ */
 
-    if (typeof data.ellipseMode === 'undefined'){
-      // 标题超长配置: 默认
-      data.ellipseMode = "default"
-    }
-  
+  if (typeof data.ellipseMode === 'undefined') {
+    // 标题超长配置: 默认
+    data.ellipseMode = "default"
+  }
+
   //=========== v1.4.58 end ===============
   /**
    * @description v1.4.59 feat 数据源选项输入
@@ -761,30 +761,30 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   if (!input.get(inputIds.setFieldsSource || !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone))) {
     input.add(inputIds.setFieldsSource, '设置数据源', fieldSourceSchema);
   }
-  if(input.get(inputIds.setFieldsSource) && input.get(inputIds.setFieldsSource).title !== '设置数据源') {
+  if (input.get(inputIds.setFieldsSource) && input.get(inputIds.setFieldsSource).title !== '设置数据源') {
     input.get(inputIds.setFieldsSource)?.setTitle('设置数据源');
   }
 
-  if(!output.get(outputIds.setFieldsSourceDone)) {
+  if (!output.get(outputIds.setFieldsSourceDone)) {
     output.add(outputIds.setFieldsSourceDone, '设置数据源完成', fieldSourceSchema)
   }
-  if(output.get(outputIds.setFieldsSourceDone) && output.get(outputIds.setFieldsSourceDone).title !== '设置数据源完成') {
+  if (output.get(outputIds.setFieldsSourceDone) && output.get(outputIds.setFieldsSourceDone).title !== '设置数据源完成') {
     output.get(outputIds.setFieldsSourceDone).setTitle('设置数据源完成');
   }
 
   if (output.get(outputIds.setFieldsSourceDone) &&
-  input.get(inputIds.setFieldsSource) &&
-  !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone)) {
-  input.get(inputIds.setFieldsSource).setRels([outputIds.setFieldsSourceDone]);
-}
-    
+    input.get(inputIds.setFieldsSource) &&
+    !input.get(inputIds.setFieldsSource)?.rels?.includes(outputIds.setFieldsSourceDone)) {
+    input.get(inputIds.setFieldsSource).setRels([outputIds.setFieldsSourceDone]);
+  }
+
   let contentSlot = slot.get('content')
   const hasFieldsSource = contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE)
   if (!hasFieldsSource) {
     contentSlot.inputs.add(slotInputIds.SET_FIELDS_SOURCE, '设置数据源', fieldSourceSchema)
     // slot?.get('content')._inputs.add(slotInputIds.SET_FIELDS_SOURCE, '设置数据源', schema)
   }
-  if(hasFieldsSource && contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE).title !== '设置数据源') {
+  if (hasFieldsSource && contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE).title !== '设置数据源') {
     contentSlot.inputs.get(slotInputIds.SET_FIELDS_SOURCE).setTitle('设置数据源')
   }
 
@@ -806,10 +806,31 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   /**
    * @description v1.4.71 列间距
    */
-  if(typeof data.columnGap === 'undefined') {
+  if (typeof data.columnGap === 'undefined') {
     data.columnGap = 0;
   }
   //  =========== v1.4.71 end ===============
+
+  (data.actions.items || []).forEach((item) => {
+      const { key } = item;
+      if (input.get(`${inputIds.SetDisable}_${key}`) && !output.get(`${`${inputIds.SetDisable}_${key}`}Done`)) {
+      output.add(`${`${inputIds.SetDisable}_${key}`}Done`, '禁用完成', { type: 'follow' });
+      input.get(`${inputIds.SetDisable}_${key}`).setRels([`${`${inputIds.SetDisable}_${key}`}Done`]);
+    }
+    if (input.get(`${inputIds.SetEnable}_${key}`) && !output.get(`${`${inputIds.SetEnable}_${key}`}Done`)) {
+      output.add(`${`${inputIds.SetEnable}_${key}`}Done`, '启用完成', { type: 'follow' });
+      input.get(`${inputIds.SetEnable}_${key}`).setRels([`${`${inputIds.SetEnable}_${key}`}Done`]);
+    }
+    if (input.get(`${inputIds.SetShow}_${key}`) && !output.get(`${`${inputIds.SetShow}_${key}`}Done`)) {
+      output.add(`${`${inputIds.SetShow}_${key}`}Done`, '显示完成', { type: 'follow' });
+      input.get(`${inputIds.SetShow}_${key}`).setRels([`${`${inputIds.SetShow}_${key}`}Done`]);
+    }
+    if (input.get(`${inputIds.SetHidden}_${key}`) && !output.get(`${`${inputIds.SetHidden}_${key}`}Done`)) {
+      output.add(`${`${inputIds.SetHidden}_${key}`}Done`, '隐藏完成', { type: 'follow' });
+      input.get(`${inputIds.SetHidden}_${key}`).setRels([`${`${inputIds.SetHidden}_${key}`}Done`]);
+    }
+  });
+  //  =========== v1.4.79 end ===============
 
   return true;
 }
