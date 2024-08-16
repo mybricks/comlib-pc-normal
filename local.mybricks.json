@@ -1,6 +1,6 @@
 {
   "debugger": "pc-spa",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "componentType": "PC",
   "fileId": 7632,
   "commitInfo": "update",
@@ -98,7 +98,9 @@
     },
     {
       "title": "领域模型",
-      "comAry": ["./src/domain/domain-crud/com.json"]
+      "comAry": [
+        "./src/domain/domain-crud/com.json"
+      ]
     },
     {
       "title": "其它",
