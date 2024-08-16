@@ -1,8 +1,8 @@
 import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
-import { ContentTypeEnum, IColumn, RowSelectionTypeEnum } from './types';
+import { ContentTypeEnum, IColumn, RowSelectionTypeEnum, WidthTypeEnum } from './types';
 import { DefaultOnRowScript, InputIds, OutputIds, SlotIds } from './constants';
-import { Schemas, upgradeSchema } from './schema';
+import { Schemas, setDataSchema, upgradeSchema } from './schema';
 import {
   OutputIds as PaginatorOutputIds,
   InputIds as PaginatorInputIds
@@ -329,6 +329,27 @@ export default function ({
       slot.remove(SlotIds.ROW_SELECTION_OPERATION);
     }
   }
+
+  /**
+   * @description v1.1.95 -> v1.1.96 行标识字段优化
+   */
+  // 已经设置了唯一key
+  if (data.rowKey && data.columns.some((column) => column.dataIndex === data.rowKey)) {
+    for (let i = 0; i < data.columns.length; i++) {
+      if (data.columns[i].dataIndex === data?.rowKey && data?.rowKey) {
+        data.columns[i] = {
+          ...data.columns[i],
+          isRowKey: true
+        };
+      }
+    }
+  }
+
+  if (typeof data?.hasUpdateRowKey === 'undefined') {
+    data.hasUpdateRowKey = 0;
+  }
+
+  setDataSchema({ data, output, input, slot });
 
   return true;
 }

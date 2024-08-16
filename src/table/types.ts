@@ -4,7 +4,7 @@ import { Data as PaginationData } from './components/Paginator/constants';
 export enum ContentTypeEnum {
   Text = 'text',
   SlotItem = 'slotItem',
-  Group = 'group',
+  Group = 'group'
 }
 export enum AlignEnum {
   Left = 'left',
@@ -97,6 +97,8 @@ export interface IColumn {
   template?: string; // 选择哪个列作为模板
   enableOnCell?: boolean;
   onCellScript?: string;
+
+  isRowKey?: boolean; // 是否是rowKey
 }
 
 export enum SizeEnum {
@@ -242,5 +244,8 @@ export interface Data {
   /** 表格数据懒加载 */
   lazyLoad: boolean;
   /** 表格筛选默认图标 */
-  filterIconDefault?: FilterIconEnum
+  filterIconDefault?: FilterIconEnum;
+
+  // 用于标记唯一key是否升级过了和是否存量升级 undefined 没升级的存量 0 存量升级 1 新的场景
+  hasUpdateRowKey?: number;
 }

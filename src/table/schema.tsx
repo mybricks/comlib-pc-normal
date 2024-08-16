@@ -74,20 +74,29 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
   const dataSchema = {};
 
   const setDataSchema = (columns: IColumn[]) => {
+    let rowKeyDataIndex = '';
+    columns.forEach(({ key, dataIndex, isRowKey }) => {
+      if (isRowKey) {
+        rowKeyDataIndex = String(dataIndex);
+      }
+    });
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
         const colDataIndex = getColumnItemDataIndex(item);
+        const { title, dataIndex, contentType, children, keepDataIndex } = item;
         const schema = {
           type: 'string',
-          title: item.title,
-          description: '表格列的字段名为:' + item.dataIndex,
+          title,
+          description: `表格列的字段名为: ${dataIndex}${
+            !!rowKeyDataIndex && dataIndex === rowKeyDataIndex && '，行标识字段，值需要全局唯一'
+          }`,
           ...schemaObj[colDataIndex]
         };
-        if (item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex) {
+        if (contentType === ContentTypeEnum.SlotItem && !keepDataIndex) {
           return;
         }
-        if (item.contentType === ContentTypeEnum.Group) {
-          item.children && setDataSchema(item.children);
+        if (contentType === ContentTypeEnum.Group) {
+          children && setDataSchema(children);
           return;
         }
         setPath(dataSchema, colDataIndex, schema, true);
@@ -290,7 +299,7 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot, e
   data.columns.forEach((col) => {
     const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
-      slot?.setTitle(col.slotId, `${env?.i18n ? env.i18n(col.title) : col.title}-列`);
+      slot?.setTitle(col.slotId, `${env && env?.i18n ? env.i18n(col.title) : col.title}-列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
         type: 'object',
         properties: dataSchema
@@ -354,7 +363,11 @@ export function getTableSchema({ data }) {
   return dataSchema;
 }
 
-export function setDataSchema({ data, output, input, slot, env }: EditorResult<Data>) {
+type setDataSchemaProps = Pick<EditorResult<Data>, 'data' | 'output' | 'input' | 'slot'> & {
+  env?: EditorResult<Data>['env'];
+  focusArea?: EditorResult<Data>['focusArea'];
+};
+export function setDataSchema({ data, output, input, slot, env }: setDataSchemaProps) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
 

@@ -12,6 +12,7 @@ yarn.lock
 .idea/
 
 cypress/screenshots
+cypress/downloads
 cypress-visual-report
 cypress-visual-screenshots
 dist/

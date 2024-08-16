@@ -4,6 +4,7 @@ import { ContentTypeEnum, Data, IColumn, SorterTypeEnum, WidthTypeEnum } from '.
 import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
+import { message } from 'antd';
 
 export const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -42,7 +43,7 @@ export const getColumnItemInfo = (
 };
 
 export const getNewColumn = (data?: Data) => {
-  const title = data ? `列${data?.columns?.length + 1}` : '新增'
+  const title = data ? `列${data?.columns?.length + 1}` : '新增';
   const obj: IColumn = {
     title,
     dataIndex: title,
@@ -94,12 +95,15 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 };
 
 // 格式化表格数据
-export const formatDataSource = (dataSource, rowKey) => {
-  return dataSource.map(({ children, ...rest }) => {
+export const formatDataSource = (dataSource: IColumn[], rowKey: string, hasSetRowKey = true) => {
+  if (dataSource.some((item) => typeof item?.[rowKey] === 'undefined') && hasSetRowKey) {
+    message.warning('数据源中存在未设置唯一Key列的数据');
+  }
+  return dataSource.map(({ children, ...rest }, index) => {
     if (children && children.length) {
       return {
         [rowKey]: uuid(),
-        children: formatDataSource(children, rowKey),
+        children: formatDataSource(children, rowKey, hasSetRowKey),
         ...rest
       };
     } else {
@@ -240,12 +244,16 @@ export function getColumnItemDataIndex(item: IColumn) {
   return idx;
 }
 
-
 export const createStyleForTableContent = () => [
   {
     title: '表头',
     catelog: '默认',
-    options: ['font', 'border', 'padding', { type: 'background', config: { disableBackgroundImage: true } }],
+    options: [
+      'font',
+      'border',
+      'padding',
+      { type: 'background', config: { disableBackgroundImage: true } }
+    ],
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
@@ -257,7 +265,12 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['font', 'border', 'padding', { type: 'background', config: { disableBackgroundImage: true } }],
+    options: [
+      'font',
+      'border',
+      'padding',
+      { type: 'background', config: { disableBackgroundImage: true } }
+    ],
     target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
   },
   {
@@ -266,7 +279,11 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, 'opacity'],
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
     target: ({ id }) => `table`
   },
   {
@@ -275,7 +292,11 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, 'opacity'],
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
     target: ({ id }) => `table tr`
   },
   {
@@ -295,10 +316,10 @@ export const createStyleForTableContent = () => [
     },
     options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
     target: ({ id }) => {
-      return `table tbody tr td[data-focus-cell]${getFilterSelector(id)}`
+      return `table tbody tr td[data-focus-cell]${getFilterSelector(id)}`;
     }
-  },
-]
+  }
+];
 
 export const createStyleForColumnContent = ({ target, ...others }: StyleModeType<Data>) => ({
   title: '内容',
