@@ -25,8 +25,8 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
   const itemContent = env.edit
     ? env.i18n(item.content)
     : item.src === 1
-      ? env.i18n(item.content)
-      : '';
+    ? env.i18n(item.content)
+    : '';
   //文本、链接等点击事件
   const textClick = () => {
     if (item.click && !isSet && env.runtime) {
@@ -58,22 +58,22 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
         ? item.style.color
         : 'unset'
       : item.style && item.style.color
-        ? item.style.color
-        : void 0,
+      ? item.style.color
+      : void 0,
     fontSize: isUnity
       ? isSet && item.style.fontSize
         ? item.style.fontSize
         : 'unset'
       : isSet && item.style.fontSize
-        ? item.style.fontSize
-        : void 0,
+      ? item.style.fontSize
+      : void 0,
     fontWeight: isUnity
       ? isSet && item.style.fontWeight
         ? item.style.fontWeight
         : 'unset'
       : isSet && item.style.fontWeight
-        ? item.style.fontWeight
-        : void 0
+      ? item.style.fontWeight
+      : void 0
   };
   if (itemContent == null) return null;
   switch (item.type) {
@@ -92,7 +92,8 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
         >
           <Text
             style={{
-              cursor: item.click || isSet ? 'pointer' : 'unset', ...fontStyle,
+              cursor: item.click || isSet ? 'pointer' : 'unset',
+              ...fontStyle,
               //display: 'inline-block',
               wordBreak: 'break-word',
               ...item.style
@@ -257,15 +258,16 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
 
   useEffect(() => {
     data.itemList.forEach((item) => {
-      inputs[item.key]((ds: any) => {
+      inputs[item.key]((ds: any, relOutputs) => {
         item.src = 1;
         if (typeCheck(ds, ['string', 'number'])) {
           item.content = ds;
         } else {
           item.content = '';
         }
+        relOutputs[`${item.key}Done`](ds);
       });
-      inputs[item.key + '-extend']((ds: any) => {
+      inputs[item.key + '-extend']((ds: any, relOutputs) => {
         item.src = 1;
         if (typeCheck(ds, 'object')) {
           const { value, color } = ds;
@@ -288,6 +290,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         } else {
           item.content = '';
         }
+        relOutputs[`${item.key}-extendDone`](ds);
       });
 
       inputs[`${item.key}-append`]((ds: any) => {

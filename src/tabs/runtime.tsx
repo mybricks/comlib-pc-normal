@@ -131,7 +131,7 @@ export default function ({
       data.tabList.forEach((item) => {
         item.dynamic &&
           inputs[item.key] &&
-          inputs[item.key]((ds) => {
+          inputs[item.key]((ds, relOutputs) => {
             if (typeof ds === 'string' || typeof ds === 'number') {
               item.num = ds;
             } else {
@@ -140,6 +140,7 @@ export default function ({
               onError(errorMessage);
               logger.error(errorMessage);
             }
+            relOutputs[`${item.key}Done`](ds);
           });
       });
 

@@ -27,8 +27,9 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
       }
     });
     inputs[InputIds.SetStyle] &&
-      inputs[InputIds.SetStyle]((value: CSSProperties) => {
+      inputs[InputIds.SetStyle]((value: CSSProperties, relOutputs) => {
         setDynamicStyle(value);
+        relOutputs[`${InputIds.SetStyle}Done`](value);
       });
   }, []);
 
