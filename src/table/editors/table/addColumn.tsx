@@ -156,9 +156,11 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               // 保证每次只有一个isRowKey是true
               if (item?.isRowKey && data.rowKey !== item.dataIndex) {
                 newRowKey = String(item.dataIndex);
-              } else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
-                // 关闭时不取消而是依旧选择上一个
-                item.key = uuid(); // 刷新防止不更新
+              }
+              // 开启唯一key之后不能取消
+              else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
+                // @ts-ignore
+                item._renderKey = uuid(); // 新增一个随机的值renderKey刷新防止不更新
                 message.warn(`必须设置一个唯一key`);
               }
             }

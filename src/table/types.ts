@@ -247,5 +247,5 @@ export interface Data {
   filterIconDefault?: FilterIconEnum;
 
   // 用于标记唯一key是否升级过了和是否存量升级 undefined 没升级的存量 0 存量升级 1 新的场景
-  hasUpdateRowKey?: number
+  hasUpdateRowKey?: number;
 }
