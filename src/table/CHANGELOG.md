@@ -1,3 +1,10 @@
+## [1.1.97] - 2024-8-16
+
+### Feature
+
+- 修改table-body选择器，解决组件css统一修改ant前缀后无法选中问题
+- commit: 401fec2f5d88c7af3ee0400792f5cf3b0d86ef76
+
 ## [1.1.96] - 2024-8-15
 
 ### Feature
