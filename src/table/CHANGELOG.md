@@ -1,6 +1,12 @@
+## [1.1.96] - 2024-8-15
+
+### Feature
+
+- 表格唯一 key 展示、设置优化 (mr: https://github.com/mybricks/comlib-pc-normal/pull/1568)
+
 ## [1.1.95] - 2024-8-8
 
-### chore
+### Chore
 
 - 调整 types，去除类型报红 (commit: 4916fa1fdc7a1ae6414b2a2685f6f6b9a3eeadf2)
 
