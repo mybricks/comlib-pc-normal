@@ -38,23 +38,87 @@ export const addField = ({ data }: { data: Data }, options?) => {
   if (index < 0) {
     data.fields.push(newField);
   } else {
+    // 改变的fields字段名
+    let changedFieldName: number[] = [];
     const newFields: FormListFieldData[] = [];
     new Array(fields.length + 1).fill(null).forEach((_, inx) => {
       let newF = fields[inx > fieldName && inx > 0 ? inx - 1 : inx];
       if (inx === fieldName) {
         newF = newField;
+        changedFieldName.push(newF.name);
       }
       if (inx > fieldName) {
+        changedFieldName.push(newF.name);
         newF.name = newF.name + 1;
       }
       // 往指定index位置插入
       newFields.splice(newF.name, 0, newF);
       // newFields.push(newF);
     });
+    changeValidateStatusAfterAdd(data, changedFieldName);
     data.fields = newFields;
   }
 };
 
+function changeValidateStatusAfterAdd(data, changedFieldName) {
+  if (changedFieldName.length) {
+    data.items.forEach((item) => {
+      if (isObject(item.validateStatus) && Object.keys(item.validateStatus)?.length > 0) {
+        try {
+          // 添加的是中间某项，从最后一项开始，将原来这一项的更新校验信息设置为下一项的；从后往前处理
+          for (let i = changedFieldName.length - 1; i > 0; i--) {
+            let originIndex = changedFieldName[i];
+            if (item.validateStatus?.[originIndex]) {
+              // 原来这一项有校验信息，将校验信息设置到新的位置（后一行）
+              item.validateStatus[originIndex + 1] = item.validateStatus?.[originIndex];
+            } else {
+              // 没有校验信息，但是下一项有，删除原来位置的校验信息
+              item.validateStatus[originIndex + 1] && delete item.validateStatus[originIndex + 1];
+            }
+            if (item.help[originIndex]) {
+              item.help[originIndex + 1] = item.help?.[originIndex] as any;
+            } else {
+              item.help[originIndex + 1] && delete item.help[originIndex + 1];
+            }
+          }
+          // 删除 「添加位置」这一行的校验信息
+          item.validateStatus?.[changedFieldName[0]] &&
+            delete item.validateStatus[changedFieldName[0]];
+          item.help?.[changedFieldName[0]] && delete item.help[changedFieldName[0]];
+        } catch (error) {}
+      }
+    });
+  }
+}
+
+function changeValidateStatusAfterRemove(data, deleteIndex) {
+  const index = deleteIndex;
+  if (deleteIndex < 0) {
+    return;
+  }
+  data.items.forEach((item) => {
+    if (isObject(item.validateStatus) && Object.keys(item.validateStatus)?.length > 0) {
+      try {
+        // 删除的这项的索引位置 开始，更新校验信息为下一项的（从前往后处理）
+        for (let i = index; i < data.fields.length; i++) {
+          if (item.validateStatus?.[i + 1]) {
+            item.validateStatus[i] = item.validateStatus?.[i + 1];
+          } else {
+            item.validateStatus[i] && delete item.validateStatus[i];
+          }
+          if (item.help[i + 1]) {
+            item.help[i] = item.help?.[i + 1] as any;
+          } else {
+            item.help[i] && delete item.help[i];
+          }
+        }
+        // 删除后，field最后一项没了，删除最后一项的校验信息
+        item.validateStatus?.[data.fields.length] && delete item.validateStatus[data.fields.length];
+        item.help?.[data.fields.length] && delete item.help[data.fields.length];
+      } catch (error) {}
+    }
+  });
+}
 /** 删除一行 */
 export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
@@ -76,38 +140,7 @@ export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) =
   data.userAction.type = InputIds.SetInitialValue;
   // 从这个索引位置之后，重新设置初始值
   data.userAction.startIndex = index;
-  data.items.forEach((item) => {
-    if (isObject(item.validateStatus) && Object.keys(item.validateStatus)?.length > 0) {
-      try {
-        // 删除的是最后一项
-        if (index === fieldLength - 1) {
-          // 这一项如果有校验状态 和 帮助信息 ,删除一下历史的信息
-          item.validateStatus?.[index] && delete item.validateStatus[index];
-          item.help?.[index] && delete (item.help || {})[index];
-        } else {
-          // 删除的是中间某项，从中间这项的索引位置 开始，更新校验信息为下一项的
-          for (let i = index; i < data.fields.length; i++) {
-            if (item.validateStatus?.[i + 1]) {
-              item.validateStatus[i] = item.validateStatus?.[i + 1];
-            } else {
-              item.validateStatus[i] && delete item.validateStatus[i];
-            }
-            if (item.help[i + 1]) {
-              item.help[i] = item.help?.[i + 1] as any;
-            } else {
-              item.help[i] && delete item.help[i];
-            }
-          }
-          // 删除最后一项的校验信息
-          item.validateStatus?.[data.fields.length] &&
-            delete item.validateStatus[data.fields.length];
-          item.help?.[data.fields.length] && delete item.help[data.fields.length];
-          // debugger
-        }
-      } catch (error) {}
-    }
-  });
-
+  changeValidateStatusAfterRemove(data, index);
   // 如果索引是最后一项，将startIndex 设置为-1
   if (index === fieldLength - 1) {
     data.userAction.startIndex = -1;

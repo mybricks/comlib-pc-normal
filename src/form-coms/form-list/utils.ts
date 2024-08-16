@@ -312,7 +312,9 @@ export function setValuesForInput({
     .then(v => {
       data.userAction.startIndex = -1;
     })
-    .catch(e => console.error(e));
+    .catch(e => console.error(e)).finally(() => {
+      data.userAction.type = '';
+    });
 };
 
 /**
