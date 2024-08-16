@@ -175,9 +175,16 @@ export default function ({
 
   // @ts-expect-error
   if (data.slotStyle.position === 'smart') {
-  // @ts-expect-error
+    // @ts-expect-error
     data.slotStyle = { position: 'smart' }
   }
+  //=========== v1.0.37 end ===============
+
+  if (input.get(InputIds.ScrollIntoView) && !output.get(`${InputIds.ScrollIntoView}Done`)) {
+    output.add(`${InputIds.ScrollIntoView}Done`, '锚点滚动结束', { type: 'follow' });
+    input.get(InputIds.ScrollIntoView).setRels([`${InputIds.ScrollIntoView}Done`]);
+  }
+  //=========== v1.0.39 end ===============
 
   return true;
 }
