@@ -605,12 +605,17 @@ export default {
             get({ data }) {
               return data.customExtraText;
             },
-            set({ data, input }: EditorResult<Data>, value: boolean) {
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
               if (value) {
                 const hasEvent = input.get(InputIds.ConfigExtraText);
-                !hasEvent && input.add(InputIds.ConfigExtraText, `自定义日期文本`, { type: 'any' });
+                if (!hasEvent) {
+                  input.add(InputIds.ConfigExtraText, `自定义日期文本`, { type: 'any' });
+                  output.add(`${InputIds.ConfigExtraText}Done`, '完成', { type: 'any' });
+                  input.get(InputIds.ConfigExtraText).setRels([`${InputIds.ConfigExtraText}Done`]);
+                }
               } else {
                 input.remove(InputIds.ConfigExtraText);
+                output.remove(`${InputIds.ConfigExtraText}Done`);
               }
               data.customExtraText = value;
             }

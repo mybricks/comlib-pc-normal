@@ -2,6 +2,7 @@ import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
 import { inputIds, outputIds } from '../form-container/constants';
+import { InputIds as DatePickerInputIds } from './constant'
 
 export default function ({
   data,
@@ -334,7 +335,7 @@ export default function ({
   //=========== v1.1.15 end ===============
 
   /**
-   * @description v1.3.16 新增 编辑/可读输入
+   * @description v1.1.16 新增 编辑/可读输入
    */
   if (!output.get(outputIds.isEditableDone)) {
     output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
@@ -346,7 +347,13 @@ export default function ({
   if (typeof data.isEditable === 'undefined') {
     data.isEditable = true;
   }
-  //=========== v1.3.16 end ===============
+  //=========== v1.1.16 end ===============
 
+  if (input.get(DatePickerInputIds.ConfigExtraText) && !output.get(`${DatePickerInputIds.ConfigExtraText}Done`)) {
+    output.add(`${DatePickerInputIds.ConfigExtraText}Done`, '完成', { type: 'any' });
+    input.get(DatePickerInputIds.ConfigExtraText).setRels([`${DatePickerInputIds.ConfigExtraText}Done`]);
+  }
+  //=========== v1.1.35 end ===============
+  
   return true;
 }
