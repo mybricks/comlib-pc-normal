@@ -26,7 +26,7 @@ function useDemandDataSource<T>(dataSource: T, ref: React.RefObject<HTMLDivEleme
   }, [dataSource]);
 
   const isRenderFinish = (ds = demandDataSourceRef.current) => {
-    const bodyDiv = ref.current?.querySelector('.ant-table-body');
+    const bodyDiv = ref.current?.querySelector('.mybricks-table>div>div>div>div>div:nth-of-type(2)');
     if (!bodyDiv) return;
 
     // 是否渲染完成，即已经渲染出了所有行
@@ -58,7 +58,7 @@ function useDemandDataSource<T>(dataSource: T, ref: React.RefObject<HTMLDivEleme
 
     // 每隔 300ms 检查一次，判断是否需要加载新数据
     const interval = setInterval(() => {
-      const bodyDiv = ref.current?.querySelector('.ant-table-body');
+      const bodyDiv = ref.current?.querySelector('.mybricks-table>div>div>div>div>div:nth-of-type(2)');
       if (!bodyDiv) return;
 
       // 是否渲染完成，即已经渲染出了所有行
@@ -97,9 +97,9 @@ function useDemandDataSource<T>(dataSource: T, ref: React.RefObject<HTMLDivEleme
       }
     };
 
-    ref.current?.querySelector('.ant-table-body')?.addEventListener('scroll', scrollFn);
+    ref.current?.querySelector('.mybricks-table>div>div>div>div>div:nth-of-type(2)')?.addEventListener('scroll', scrollFn);
     return () => {
-      ref.current?.querySelector('.ant-table-body')?.removeEventListener('scroll', scrollFn);
+      ref.current?.querySelector('.mybricks-table>div>div>div>div>div:nth-of-type(2)')?.removeEventListener('scroll', scrollFn);
     };
   }, []);
 

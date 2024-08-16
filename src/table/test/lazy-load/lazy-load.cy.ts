@@ -7,9 +7,9 @@ describe('懒加载', () => {
   enhancedIt('基础能力检查', () => {
     dumpPreview(dump);
 
-    cy.get('div.ant-table-body').should('have.prop', 'scrollHeight', 940);
-    cy.get('div.ant-table-body').scrollTo('bottom')
-    cy.get('div.ant-table-body').should('have.prop', 'scrollHeight', 1880);
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').should('have.prop', 'scrollHeight', 940);
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').scrollTo('bottom')
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').should('have.prop', 'scrollHeight', 1880);
   });
 
   enhancedIt('搭配多选能力检查', () => {
@@ -17,10 +17,10 @@ describe('懒加载', () => {
 
     cy.get("th.ant-table-cell.ant-table-selection-column input").click()
 
-    cy.get('div.ant-table-body').should('have.prop', 'scrollHeight', 940);
-    cy.get('div.ant-table-body').scrollTo('bottom')
-    cy.get('div.ant-table-body').should('have.prop', 'scrollHeight', 1880);
-    cy.get('div.ant-table-body').scrollTo('bottom')
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').should('have.prop', 'scrollHeight', 940);
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').scrollTo('bottom')
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').should('have.prop', 'scrollHeight', 1880);
+    cy.get('div.mybricks-table>div>div>div>div>div:nth-of-type(2)').scrollTo('bottom')
 
     cy.compareSnapshot("数据表格_懒加载全选");
 

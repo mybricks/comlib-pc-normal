@@ -30,7 +30,7 @@ export default (props: Props) => {
     hideOnSinglePage
   } = data;
 
-  const target = containerRef?.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
+  const target = containerRef?.current?.querySelector?.(".mybricks-table>div>div>div>div>div:nth-of-type(2)") as HTMLDivElement;
 
   const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
