@@ -38,10 +38,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
     data.value = [];
     data.fields = [];
     data.MaxKey = -1;
+    clearValidateStatus();
     Object.keys(childrenStore).forEach((key) => {
       Reflect.deleteProperty(childrenStore, key);
     });
   }, []);
+
+  // 重置表单后，将data.items里面的validateStatus等校验信息清除；不然重设表单项值，下面会有默认的错误提示
+  const clearValidateStatus = () => {
+    data.items.forEach((item: any) => {
+      item.validateStatus = {} as any;
+      item.help = {} as any;
+    });
+  };
   useLayoutEffect(() => {
     data.userAction = {
       type: '',

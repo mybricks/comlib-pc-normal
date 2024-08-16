@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Form, Button, Image, Col, Space, FormListOperation, FormListFieldData } from 'antd';
 import * as Icons from '@ant-design/icons';
+import isObject from 'lodash/isObject';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { Action, Data, LocationEnum } from '../types';
 import { deepCopy, unitConversion } from '../../../utils';
@@ -75,12 +76,44 @@ export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) =
   data.userAction.type = InputIds.SetInitialValue;
   // 从这个索引位置之后，重新设置初始值
   data.userAction.startIndex = index;
+  data.items.forEach((item) => {
+    if (isObject(item.validateStatus) && Object.keys(item.validateStatus)?.length > 0) {
+      try {
+        // 删除的是最后一项
+        if (index === fieldLength - 1) {
+          // 这一项如果有校验状态 和 帮助信息 ,删除一下历史的信息
+          item.validateStatus?.[index] && delete item.validateStatus[index];
+          item.help?.[index] && delete (item.help || {})[index];
+        } else {
+          // 删除的是中间某项，从中间这项的索引位置 开始，更新校验信息为下一项的
+          for (let i = index; i < data.fields.length; i++) {
+            if (item.validateStatus?.[i + 1]) {
+              item.validateStatus[i] = item.validateStatus?.[i + 1];
+            } else {
+              item.validateStatus[i] && delete item.validateStatus[i];
+            }
+            if (item.help[i + 1]) {
+              item.help[i] = item.help?.[i + 1] as any;
+            } else {
+              item.help[i] && delete item.help[i];
+            }
+          }
+          // 删除最后一项的校验信息
+          item.validateStatus?.[data.fields.length] &&
+            delete item.validateStatus[data.fields.length];
+          item.help?.[data.fields.length] && delete item.help[data.fields.length];
+          // debugger
+        }
+      } catch (error) {}
+    }
+  });
+
   // 如果索引是最后一项，将startIndex 设置为-1
   if (index === fieldLength - 1) {
     data.userAction.startIndex = -1;
   }
 
-  changeValue({ data, id, outputs, parentSlot, name: props.name });
+  changeValue({ data, id, outputs, parentSlot, name: props.name, prevAction: 'remove' });
 };
 
 /**
