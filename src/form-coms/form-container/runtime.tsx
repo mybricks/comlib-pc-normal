@@ -333,20 +333,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
     (data.actions.items || []).forEach((item) => {
       const { key } = item;
       //禁用
-      inputs[`${inputIds.SetDisable}_${key}`]?.(() => {
+      inputs[`${inputIds.SetDisable}_${key}`]?.((val, relOutputs) => {
         item.disabled = true;
+        relOutputs[`${`${inputIds.SetDisable}_${key}`}Done`](val);
       });
       //启用
-      inputs[`${inputIds.SetEnable}_${key}`]?.(() => {
+      inputs[`${inputIds.SetEnable}_${key}`]?.((val, relOutputs) => {
         item.disabled = false;
+        relOutputs[`${`${inputIds.SetEnable}_${key}`}Done`](val);
       });
       //显示
-      inputs[`${inputIds.SetShow}_${key}`]?.(() => {
+      inputs[`${inputIds.SetShow}_${key}`]?.((val, relOutputs) => {
         item.visible = true;
+        relOutputs[`${`${inputIds.SetShow}_${key}`}Done`](val);
       });
       //隐藏
-      inputs[`${inputIds.SetHidden}_${key}`]?.(() => {
+      inputs[`${inputIds.SetHidden}_${key}`]?.((val, relOutputs) => {
         item.visible = false;
+        relOutputs[`${`${inputIds.SetHidden}_${key}`}Done`](val);
       });
     });
   }

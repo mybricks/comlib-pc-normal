@@ -12,13 +12,20 @@ export const PageScrollEditor = [
           get({ data }: EditorResult<Data>) {
             return data.useSrcollIntoView;
           },
-          set({ data, input }: EditorResult<Data>, value: boolean) {
+          set({ data, input, output }: EditorResult<Data>, value: boolean) {
             data.useSrcollIntoView = value;
             const isHas = input.get(InputIds.ScrollIntoView);
             if (value) {
-              !isHas && input.add(InputIds.ScrollIntoView, '锚点滚动', { type: 'any' });
+              if (!isHas) {
+                input.add(InputIds.ScrollIntoView, '锚点滚动', { type: 'any' });
+                output.add(`${InputIds.ScrollIntoView}Done`, '锚点滚动结束', { type: 'any' });
+                input.get(InputIds.ScrollIntoView).setRels([`${InputIds.ScrollIntoView}Done`]);
+              }
             } else {
-              isHas && input.remove(InputIds.ScrollIntoView);
+              if (isHas) {
+                input.remove(InputIds.ScrollIntoView);
+                output.remove(`${InputIds.ScrollIntoView}Done`);
+              }
             }
           }
         }

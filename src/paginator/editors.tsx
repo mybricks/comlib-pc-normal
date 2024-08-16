@@ -20,7 +20,7 @@ export default {
     options: ['width']
   },
   ':root': {
-    items: ({ }: EditorResult<Data>, cate1, cate2) => {
+    items: ({}: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -228,16 +228,30 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data.isDynamic;
             },
-            set({ data, input }: EditorResult<Data>, value: boolean) {
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
               data.isDynamic = value;
               const event1 = input.get(InputIds.SetDisable);
               const event2 = input.get(InputIds.SetDisable);
               if (value) {
-                !event1 && input.add(InputIds.SetDisable, '禁用', Schemas.Any);
-                !event2 && input.add(InputIds.SetEnable, '启用', Schemas.Any);
+                if (!event1) {
+                  input.add(InputIds.SetDisable, '禁用', Schemas.Any);
+                  output.add(`${InputIds.SetDisable}Done`, '禁用完成', { type: 'follow' });
+                  input.get(InputIds.SetDisable).setRels([`${InputIds.SetDisable}Done`]);
+                }
+                if (!event2) {
+                  input.add(InputIds.SetEnable, '启用', Schemas.Any);
+                  output.add(`${InputIds.SetEnable}Done`, '启用完成', { type: 'follow' });
+                  input.get(InputIds.SetEnable).setRels([`${InputIds.SetEnable}Done`]);
+                }
               } else {
-                event1 && input.remove(InputIds.SetDisable);
-                event2 && input.remove(InputIds.SetEnable);
+                if (event1) {
+                  input.remove(InputIds.SetDisable);
+                  output.remove(`${InputIds.SetDisable}Done`);
+                }
+                if (event2) {
+                  input.remove(InputIds.SetEnable);
+                  output.remove(`${InputIds.SetEnable}Done`);
+                }
               }
             }
           }

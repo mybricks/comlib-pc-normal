@@ -1680,7 +1680,7 @@ export default {
                   comId && data.actions.items.find((item) => item.key === comId)?.useDynamicDisabled
                 );
               },
-              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, output, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const comId = focusArea.dataset['formActionsItem'];
                 const item = data.actions.items.find((item) => item.key === comId);
@@ -1692,11 +1692,25 @@ export default {
                 const event2 = input.get(eventKey2);
                 const title = env.i18n(item?.title);
                 if (value) {
-                  !event1 && input.add(eventKey1, `启用-"${title}"`, { type: 'any' });
-                  !event2 && input.add(eventKey2, `禁用-"${title}"`, { type: 'any' });
+                  if (!event1) {
+                    input.add(eventKey1, `启用-"${title}"`, { type: 'any' });
+                    output.add(`${eventKey1}Done`, '启用完成', { type: 'any' });
+                    input.get(eventKey1).setRels([`${eventKey1}Done`]);
+                  }
+                  if (!event2) {
+                    input.add(eventKey2, `禁用-"${title}"`, { type: 'any' });
+                    output.add(`${eventKey2}Done`, '禁用完成', { type: 'any' });
+                    input.get(eventKey2).setRels([`${eventKey2}Done`]);
+                  }
                 } else {
-                  event1 && input.remove(eventKey1);
-                  event2 && input.remove(eventKey2);
+                  if (event1) {
+                    input.remove(eventKey1);
+                    output.remove(`${eventKey1}Done`);
+                  }
+                  if (event2) {
+                    input.remove(eventKey2);
+                    output.remove(`${eventKey2}Done`);
+                  }
                 }
                 if (item) {
                   item.useDynamicDisabled = value;
@@ -1717,7 +1731,7 @@ export default {
                   comId && data.actions.items.find((item) => item.key === comId)?.useDynamicHidden
                 );
               },
-              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, output, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const comId = focusArea.dataset['formActionsItem'];
                 const item = data.actions.items.find((item) => item.key === comId);
@@ -1729,11 +1743,25 @@ export default {
                 const event2 = input.get(eventKey2);
                 const title = env.i18n(item?.title);
                 if (value) {
-                  !event1 && input.add(eventKey1, `显示-"${title}"`, { type: 'any' });
-                  !event2 && input.add(eventKey2, `隐藏-"${title}"`, { type: 'any' });
+                  if (!event1) {
+                    input.add(eventKey1, `显示-"${title}"`, { type: 'any' });
+                    output.add(`${eventKey1}Done`, '显示完成', { type: 'any' });
+                    input.get(eventKey1).setRels([`${eventKey1}Done`]);
+                  }
+                  if (!event2) {
+                    input.add(eventKey2, `隐藏-"${title}"`, { type: 'any' });
+                    output.add(`${eventKey2}Done`, '隐藏完成', { type: 'any' });
+                    input.get(eventKey2).setRels([`${eventKey2}Done`]);
+                  }
                 } else {
-                  event1 && input.remove(eventKey1);
-                  event2 && input.remove(eventKey2);
+                  if (event1) {
+                    input.remove(eventKey1);
+                    output.remove(`${eventKey1}Done`);
+                  }
+                  if (event2) {
+                    input.remove(eventKey2);
+                    output.remove(`${eventKey2}Done`);
+                  }
                 }
                 if (item) {
                   item.useDynamicHidden = value;

@@ -28,13 +28,14 @@ export default function (props: RuntimeParams<Data>) {
 
     if (env.runtime) {
       if (useSrcollIntoView && inputs[InputIds.ScrollIntoView]) {
-        inputs[InputIds.ScrollIntoView](() => {
+        inputs[InputIds.ScrollIntoView]((val, relOutputs) => {
           if (ref.current?.scrollIntoView) {
             ref.current.scrollIntoView({
               behavior,
               block,
               inline
             });
+            relOutputs[`${InputIds.ScrollIntoView}Done`](val);
           }
         });
       }

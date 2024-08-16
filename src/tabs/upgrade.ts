@@ -168,5 +168,13 @@ export default function ({
   */
   descriptionUp(descriptionUpList, input, output);
   //=========== 1.0.38 end ===============
+
+  data.tabList.forEach(item => {
+    if (input.get(item.key) && !output.get(`${item.key}Done`)) {
+      output.add(`${item.key}Done`, '通知数', { type: 'follow' });
+      input.get(item.key).setRels([`${item.key}Done`]);
+    }
+  })
+  // =========== 1.0.49 end ===============
   return true;
 }

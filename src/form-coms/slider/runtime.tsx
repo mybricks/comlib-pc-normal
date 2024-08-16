@@ -117,6 +117,7 @@ export default function Runtime({
         if (val.max !== undefined) {
           data.config.max = val.max;
         }
+        relOutputs['setSliderRangeDone'](val);
       });
   }, []);
 

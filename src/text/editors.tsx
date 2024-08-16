@@ -28,12 +28,19 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.useDynamicStyle;
           },
-          set({ data, input }: EditorResult<Data>, value: boolean) {
+          set({ data, input, output }: EditorResult<Data>, value: boolean) {
             const event = input.get(InputIds.SetStyle);
             if (value) {
-              !event && input.add(InputIds.SetStyle, '设置默认样式', Schemas.Style);
+              if (!event) {
+                input.add(InputIds.SetStyle, '设置默认样式', Schemas.Style);
+                output.add(`${InputIds.SetStyle}Done`, '默认样式', { type: 'follow' });
+                input.get(InputIds.SetStyle).setRels([`${InputIds.SetStyle}Done`]);
+              }
             } else {
-              event && input.remove(InputIds.SetStyle);
+              if (event) {
+                input.remove(InputIds.SetStyle);
+                output.remove(`${InputIds.SetStyle}Done`);
+              }
             }
             data.useDynamicStyle = value;
           }

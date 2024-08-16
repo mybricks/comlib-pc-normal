@@ -342,11 +342,12 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
 
   useEffect(() => {
     if (data.customExtraText) {
-      inputs[InputIds.ConfigExtraText]((val) => {
+      inputs[InputIds.ConfigExtraText]((val, relOutputs) => {
         if (typeof val !== 'function') {
           throw new Error(`请输入有效的函数！`);
         }
         customExtraTextRef.current = val;
+        relOutputs[`${InputIds.ConfigExtraText}Done`](val);
       });
     }
   });

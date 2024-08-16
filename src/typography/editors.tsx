@@ -293,7 +293,7 @@ export default {
             if (!focusArea) return;
             return findEle({ data, focusArea }, 'textId').src === 1 ? false : true;
           },
-          set({ data, focusArea, input }, value) {
+          set({ data, focusArea, input, output }, value) {
             if (!focusArea) return;
             findEle({ data, focusArea }, 'textId').src = value ? 2 : 1;
             if (value) {
@@ -301,7 +301,14 @@ export default {
               data.items.forEach((item, idx) => {
                 if (item.src === 2) {
                   input.add(item.key, `修改元素${idx + 1}内容`, contentSchema);
+                  output.add(`${item.key}Done`, `元素${idx + 1}内容`, { type: 'follow' });
+                  input.get(item.key).setRels([`${item.key}Done`]);
+
                   input.add(item.key + '-extend', `修改元素${idx + 1}内容和颜色`, extendSchema);
+                  output.add(`${item.key + '-extend'}Done`, `元素${idx + 1}内容和颜色`, {
+                    type: 'follow'
+                  });
+                  input.get(item.key + '-extend').setRels([`${item.key + '-extend'}Done`]);
                 }
               });
             } else {
@@ -310,7 +317,9 @@ export default {
                 'textId'
               ).oldcontent;
               input.remove(findEle({ data, focusArea }, 'textId').key);
+              output.remove(`${findEle({ data, focusArea }, 'textId').key}Done`);
               input.remove(findEle({ data, focusArea }, 'textId').key + '-extend');
+              output.remove(`${findEle({ data, focusArea }, 'textId').key + '-extend'}Done`);
             }
           }
         }

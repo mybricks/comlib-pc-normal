@@ -195,5 +195,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.9 end ===============
 
+  if (!output.get("setSliderRangeDone")) {
+    output.add("setSliderRangeDone", "禁用特定日期完成", { type: "any" });
+  }
+  if (output.get("setSliderRangeDone") &&
+    input.get("setSliderRange") &&
+    !input.get("setSliderRange")?.rels?.includes("setSliderRangeDone")) {
+    input.get("setSliderRange").setRels(["setSliderRangeDone"]);
+  }
+  // =========== v1.1.12 end ===============
+
   return true;
 }

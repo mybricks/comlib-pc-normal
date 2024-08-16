@@ -16,6 +16,17 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
     if (typeof style.fontWeight === 'string') {
       style.fontWeight = fontWeightMap[style.fontWeight];
     }
+   
+    if (input.get(item.key) && !output.get(`${item.key}Done`)) {
+      output.add(`${item.key}Done`, '默认样式', { type: 'follow' });
+      input.get(item.key).setRels([`${item.key}Done`]);
+    }
+
+    if (input.get(item.key + '-extend') && !output.get(`${item.key + '-extend'}Done`)) {
+      output.add(`${item.key + '-extend'}Done`, '默认样式', { type: 'follow' });
+      input.get(item.key + '-extend').setRels([`${item.key + '-extend'}Done`]);
+    }
+    // ------------- 1.0.22 end -------------  
   });
 
   //1.0.3 -> 1.0.4 style升级，文本排版的边框和内容文字的颜色

@@ -1,5 +1,5 @@
 import { isEmptyObject, differObject } from '../utils';
-import { Data } from './constants';
+import { Data, InputIds } from './constants';
 
 export default function ({ data, config, setDeclaredStyle, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -55,5 +55,13 @@ export default function ({ data, config, setDeclaredStyle, input, output }: Upgr
   if (!output.get("click")) {
     output.add("click", '点击', { type: 'string' });
   }
+
+  if (input.get(InputIds.SetStyle) && !output.get(`${InputIds.SetStyle}Done`)) {
+    output.add(`${InputIds.SetStyle}Done`, '默认样式', { type: 'follow' });
+    // 老大，就是这里执行了，但是不生效 ↓↓↓
+    input.get(InputIds.SetStyle).setRels([`${InputIds.SetStyle}Done`]);
+  }
+  // --------------- 1.0.22 end -----------------
+  
   return true;
 }
