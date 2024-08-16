@@ -5,6 +5,7 @@ import { ContentTypeEnum, Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '
 import { getNewColumn, setColumns } from '../../utils';
 import { message } from 'antd';
 import { ColorMap } from '../../constants';
+import { uuid } from '../../../utils';
 
 const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
   return {
@@ -100,7 +101,11 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             {
               title: '设置为唯一key',
               type: 'switch',
-              value: 'isRowKey'
+              value: 'isRowKey',
+              ifVisible() {
+                // 存量升级前不展示
+                return typeof data?.hasUpdateRowKey !== 'undefined';
+              }
             },
             {
               title: '适应剩余宽度',
@@ -150,7 +155,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               if (item?.isRowKey && data.rowKey !== item.dataIndex) {
                 newRowKey = String(item.dataIndex);
               } else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
-                newRowKey = '';
+                // 关闭时不取消而是依旧选择上一个 TODO
+                item.key = uuid(); // 刷新防止不更新
                 message.warn(`必须设置一个唯一key`);
               }
             }
