@@ -51,11 +51,13 @@ export default function useUpload(inputs: any, outputs: any) {
   };
 
   useEffect(() => {
-    inputs['uploadResponse']?.((response: { url: string }) => {
+    inputs['uploadResponse']?.((response: { url: string }, relOutputs: any) => {
       resolvedRef.current && resolvedRef.current(response);
+      relOutputs[`${'uploadResponse'}Done`](response);
     });
-    inputs['uploadReject']?.((errMsg: string) => {
+    inputs['uploadReject']?.((errMsg: string, relOutputs: any) => {
       rejectedRef.current && rejectedRef.current(errMsg);
+      relOutputs[`${'uploadReject'}Done`](errMsg);
     });
   }, []);
 

@@ -185,5 +185,23 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     });
   }
 
+  if (input.get('uploadResponse') && !output.get(`${'uploadResponse'}Done`)) {
+    output.add(`${'uploadResponse'}Done`, '完成', {
+      type: 'object',
+      properties: {
+        url: {
+          title: 'url',
+          type: 'string'
+        }
+      }
+    });
+    input.get('uploadResponse').setRels([`${'uploadResponse'}Done`]);
+  }
+
+  if (input.get('uploadReject') && !output.get(`${'uploadReject'}Done`)) {
+    output.add(`${'uploadReject'}Done`, '完成', { type: 'string' });
+    input.get('uploadReject').setRels([`${'uploadReject'}Done`]);
+  }
+
   return true;
 }
