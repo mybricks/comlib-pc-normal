@@ -36,6 +36,62 @@ export default {
         items: [
           {
             catelog: '默认',
+            title: '颜色',
+            options: [
+              {
+                type: 'font', 
+                config: { 
+                  disableTextAlign: true, 
+                  disableFontFamily: true, 
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  //disableColor: true,
+                  //disableFontSize: true,
+                  disableLineHeight: true 
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
+            catelog: '默认',
+            title: '尺寸',
+            options: [
+              {
+                type: 'font', 
+                config: { 
+                  disableTextAlign: true, 
+                  disableFontFamily: true, 
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableColor: true,
+                  //disableFontSize: true,
+                  disableLineHeight: true 
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
+            catelog: '默认',
+            title: '行高',
+            options: [
+              {
+                type: 'font', 
+                config: { 
+                  disableTextAlign: true, 
+                  disableFontFamily: true, 
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableFontSize: true,
+                  //disableLineHeight: true 
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
+            catelog: '默认',
             title: '默认',
             options: [
               {
