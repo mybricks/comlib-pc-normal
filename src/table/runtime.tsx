@@ -1101,8 +1101,7 @@ export default function (props: RuntimeParams<Data>) {
   // 当数据发生变化时，重新设置所有行展开
   useEffect(() => {
     if (env.runtime) {
-      data.useExpand &&
-        data.defaultExpandAllRows &&
+      data.defaultExpandAllRows &&
         setExpandedRowKeys(realShowDataSource.map((item) => item[rowKey]));
     }
   }, [realShowDataSource, env.runtime, rowKey]);
@@ -1209,9 +1208,9 @@ export default function (props: RuntimeParams<Data>) {
                     : void 0
                 }
                 expandable={
-                  data.useExpand && slots[SlotIds.EXPAND_CONTENT]
+                  data.defaultExpandAllRows || (data.useExpand && slots[SlotIds.EXPAND_CONTENT])
                     ? {
-                      expandedRowRender: (record, index) => {
+                      expandedRowRender: data.useExpand ? (record, index) => {
                         const inputValues = {
                           [InputIds.EXP_COL_VALUES]: {
                             ...record
@@ -1228,7 +1227,7 @@ export default function (props: RuntimeParams<Data>) {
                           inputValues,
                           key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
                         });
-                      },
+                      } : undefined,
                       expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
                       onExpand: (expanded, record) => {
                         if (!env.runtime) return;
