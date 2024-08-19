@@ -48,7 +48,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         });
     }
     inputs[InputIds.SET_ACTIVE_ANCHOR] &&
-      inputs[InputIds.SET_ACTIVE_ANCHOR]((val) => {
+      inputs[InputIds.SET_ACTIVE_ANCHOR]((val, relOutputs) => {
         if (val.index === undefined && val.title === undefined) {
           console.error('设置激活的锚点，参数需要有index和title 之一');
           return;
@@ -74,6 +74,8 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         }
         let anchorId = data.useDynamicData ? anchorTarget[rowKey] : anchorTarget.id;
         innerScrollToAnchor(`mybricks-anchor-${anchorId}`);
+
+        relOutputs[`${InputIds.SET_ACTIVE_ANCHOR}Done`](val);
       });
   }, []);
 

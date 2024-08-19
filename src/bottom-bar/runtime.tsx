@@ -41,16 +41,19 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
     data.tools.forEach((item) => {
       const { id } = item;
       item.dynamicDisplay &&
-        inputs[`hidden${id}`](() => {
+        inputs[`hidden${id}`]((val, relOutputs) => {
           item.hidden = true;
+          relOutputs[`${`hidden${id}`}Done`](val);
         });
       item.dynamicDisplay &&
-        inputs[`display${id}`](() => {
+        inputs[`display${id}`]((val, relOutputs) => {
           item.hidden = false;
+          relOutputs[`${`display${id}`}Done`](val);
         });
       item.dynamicDisabled &&
-        inputs[`disable${id}`]((ds) => {
+        inputs[`disable${id}`]((ds, relOutputs) => {
           item.disabled = ds;
+          relOutputs[`${`disable${id}`}Done`](ds);
         });
     });
   }

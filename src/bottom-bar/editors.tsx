@@ -253,7 +253,7 @@ export default {
           get({ data, focusArea }: Result) {
             return get(data, focusArea, 'btnId', 'dynamicDisplay');
           },
-          set({ data, focusArea, input, env }: Result, value: boolean) {
+          set({ data, focusArea, input, output, env }: Result, value: boolean) {
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {
               // output.setTitle(data.tools[index].id, value);
               const schema = {
@@ -265,14 +265,25 @@ export default {
                   `显示${env.i18n(data.tools[index].title)}`,
                   schema
                 );
+                output.add(`${`display${data.tools[index].id}`}Done`, '完成', { type: 'any' });
+                input
+                  .get(`display${data.tools[index].id}`)
+                  .setRels([`${`display${data.tools[index].id}`}Done`]);
+
                 input.add(
                   `hidden${data.tools[index].id}`,
                   `隐藏${env.i18n(data.tools[index].title)}`,
                   schema
                 );
+                output.add(`${`hidden${data.tools[index].id}`}Done`, '完成', { type: 'any' });
+                input
+                  .get(`hidden${data.tools[index].id}`)
+                  .setRels([`${`hidden${data.tools[index].id}`}Done`]);
               } else {
                 input.remove(`display${data.tools[index].id}`);
+                output.remove(`${`display${data.tools[index].id}`}Done`);
                 input.remove(`hidden${data.tools[index].id}`);
+                output.remove(`${`hidden${data.tools[index].id}`}Done`);
               }
             });
             res.dynamicDisplay = value;
@@ -298,8 +309,13 @@ export default {
                   `控制禁用${env.i18n(data.tools[index].title)}`,
                   schema
                 );
+                output.add(`${`disable${data.tools[index].id}`}Done`, '完成', { type: 'any' });
+                input
+                  .get(`disable${data.tools[index].id}`)
+                  .setRels([`${`disable${data.tools[index].id}`}Done`]);
               } else {
                 input.remove(`disable${data.tools[index].id}`);
+                output.remove(`${`disable${data.tools[index].id}`}Done`);
               }
             });
             res.dynamicDisabled = value;

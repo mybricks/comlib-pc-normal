@@ -1,3 +1,9 @@
+## [1.2.0] - 2024-8-19
+
+### Feature
+
+- 补充动态输入项[开启 loading][关闭loading]的 rels 输出项 (commit: fde6b0cf2c35bc856e033a351910df1adb014a13)
+
 ## [1.1.99] - 2024-8-19
 
 ### fix

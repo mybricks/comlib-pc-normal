@@ -112,5 +112,12 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
   }
   descriptionUp([setDataSourceSchema, setDataDescSchema,], input, output);
   //=========== 1.0.25 end ===============
+
+  if (input.get(InputIds.SetTitle) && !output.get(`setTitleComplete`)) {
+    output.add(`setTitleComplete`, '完成', { type: 'any' });
+    input.get(InputIds.SetTitle).setRels([`setTitleComplete`]);
+  }
+  //=========== 1.0.32 end ===============
+
   return true;
 }

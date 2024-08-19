@@ -20,5 +20,26 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.anchorPosition = 'right';
   };
 
+
+  if (input.get('setActiveAnchor') && !output.get(`${'setActiveAnchor'}Done`)) {
+    output.add(`${'setActiveAnchor'}Done`, '完成', {
+      type: 'object',
+      properties: {
+        index: {
+          title: '锚点索引',
+          type: 'number',
+          description: '激活锚点的索引，从0开始'
+        },
+        title: {
+          title: '锚点标题',
+          type: 'string',
+          description: '锚点标题内容'
+        }
+      }
+    });
+    input.get('setActiveAnchor').setRels([`${'setActiveAnchor'}Done`]);
+  }
+  // -------------------- 1.0.11 end --------------------
+
   return true;
 }

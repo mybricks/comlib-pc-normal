@@ -130,7 +130,7 @@ export default {
             data.hideAnchorList = val;
             const event1 = input.get('setActiveAnchor');
             if (val) {
-              !event1 &&
+              if (!event1) {
                 input.add('setActiveAnchor', `设置激活锚点`, {
                   type: 'object',
                   properties: {
@@ -146,8 +146,28 @@ export default {
                     }
                   }
                 });
+                output.add(`${'setActiveAnchor'}Done`, '完成', {
+                  type: 'object',
+                  properties: {
+                    index: {
+                      title: '锚点索引',
+                      type: 'number',
+                      description: '激活锚点的索引，从0开始'
+                    },
+                    title: {
+                      title: '锚点标题',
+                      type: 'string',
+                      description: '锚点标题内容'
+                    }
+                  }
+                });
+                input.get('setActiveAnchor').setRels([`${'setActiveAnchor'}Done`]);
+              }
             } else {
-              event1 && input.remove('setActiveAnchor');
+              if (event1) {
+                input.remove('setActiveAnchor');
+                output.remove(`${'setActiveAnchor'}Done`);
+              }
             }
           }
         }

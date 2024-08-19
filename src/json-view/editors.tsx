@@ -77,7 +77,10 @@ export default {
             const dsInput = input.get(InputIds.SetJsonData);
             const dsOuput = output.get(OutputIds.JsonData);
             if (value === 'default') {
-              dsInput && input.remove(InputIds.SetJsonData);
+              if (dsInput) {
+                input.remove(InputIds.SetJsonData);
+                output.remove('setJsonDataDone');
+              }
               const jsonString = decodeURIComponent(data.json);
               try {
                 data.jsonObj = JSON.parse(jsonString);
@@ -94,6 +97,8 @@ export default {
                 input.add(InputIds.SetJsonData, '设置数据源', {
                   type: value
                 });
+                output.add('setJsonDataDone', '设置数据源完成', { type: 'any' });
+                input.get(InputIds.SetJsonData).setRels(['setJsonDataDone']);
               } else {
                 dsInput.setSchema({
                   type: value

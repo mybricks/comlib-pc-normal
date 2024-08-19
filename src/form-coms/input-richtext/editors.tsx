@@ -24,10 +24,24 @@ export default {
         }
       }
     });
+    output.add(`${'uploadResponse'}Done`, '完成', {
+      type: 'object',
+      properties: {
+        url: {
+          title: 'url',
+          type: 'string'
+        }
+      }
+    });
+    input.get('uploadResponse').setRels([`${'uploadResponse'}Done`]);
+
     input.add('uploadReject', '上传失败响应', {
       type: 'string',
       title: '上传失败信息'
     });
+    output.add(`${'uploadReject'}Done`, '完成', { type: 'string' });
+    input.get('uploadReject').setRels([`${'uploadReject'}Done`]);
+
     output.add('upload', '上传', {
       type: 'object',
       properties: {
@@ -104,7 +118,7 @@ export default {
             set({ data, input, output }, val: boolean) {
               data.customUpload = val;
               if (val) {
-                !input.get('uploadResponse') &&
+                if (!input.get('uploadResponse')) {
                   input.add('uploadResponse', '上传响应', {
                     type: 'object',
                     properties: {
@@ -114,11 +128,26 @@ export default {
                       }
                     }
                   });
-                !input.get('uploadReject') &&
+                  output.add(`${'uploadResponse'}Done`, '完成', {
+                    type: 'object',
+                    properties: {
+                      url: {
+                        title: 'url',
+                        type: 'string'
+                      }
+                    }
+                  });
+                  input.get('uploadResponse').setRels([`${'uploadResponse'}Done`]);
+                }
+
+                if (!input.get('uploadReject')) {
                   input.add('uploadReject', '上传失败响应', {
                     type: 'string',
                     title: '上传失败信息'
                   });
+                  output.add(`${'uploadReject'}Done`, '完成', { type: 'string' });
+                  input.get('uploadReject').setRels([`${'uploadReject'}Done`]);
+                }
 
                 output.add('upload', '上传', {
                   type: 'object',
@@ -139,7 +168,9 @@ export default {
                 });
               } else {
                 input.remove('uploadResponse');
+                output.remove(`${'uploadResponse'}Done`);
                 input.remove('uploadReject');
+                output.remove(`${'uploadReject'}Done`);
                 output.remove('upload');
               }
             }
@@ -237,7 +268,9 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? formatRegexRules(data.rules, FormatScene.Editor) : ExpRules;
+              return data.rules.length > 0
+                ? formatRegexRules(data.rules, FormatScene.Editor)
+                : ExpRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);
