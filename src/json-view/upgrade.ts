@@ -83,5 +83,11 @@ export default function ({
     data.copyStringWithQuotation = true;
   }
 
+  if (input.get(InputIds.SetJsonData) && !output.get('setJsonDataDone')) {
+    output.add('setJsonDataDone', '设置数据源完成', { type: 'any' });
+    input.get(InputIds.SetJsonData).setRels(['setJsonDataDone']);
+  }
+  // ------------------- 1.0.13 end -------------------
+
   return true;
 }
