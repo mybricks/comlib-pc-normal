@@ -35,7 +35,22 @@ export default {
       {
         items: [
           {
+            catelog: '默认',
             title: '默认',
+            options: [
+              {
+                type: 'font', 
+                config: { 
+                  disableTextAlign: true, 
+                  disableFontFamily: true, 
+                  disableFontWeight: true,
+                  disableLetterSpacing: true 
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
             catelog: '默认',
             options: [
               'border',
@@ -45,12 +60,22 @@ export default {
             target: `[data-item-type="icon"]`
           },
           {
-            catelog: '默认',
-            options: ['font'],
-            target: `.icon`
+            catelog: 'Hover',
+            title: 'Hover',
+            options: [
+              {
+                type: 'font', 
+                config: { 
+                  disableTextAlign: true, 
+                  disableFontFamily: true, 
+                  disableFontWeight: true,
+                  disableLetterSpacing: true 
+                }
+              }
+            ],
+            target: `.icon:hover`
           },
           {
-            title: 'Hover',
             catelog: 'Hover',
             options: [
               'border',
@@ -58,11 +83,6 @@ export default {
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
             target: '[data-item-type="icon"]:hover'
-          },
-          {
-            catelog: 'Hover',
-            options: ['font'],
-            target: `.icon:hover`
           }
         ]
       }
