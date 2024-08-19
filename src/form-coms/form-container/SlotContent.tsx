@@ -6,20 +6,9 @@ import InlineLayout from './layout/InlineLayout';
 import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
 import QueryFilter from './layout/QueryFilter';
-import { getFormItem, isDynamicChildrenStoreValid } from './utils';
+import { getFormItem, isDynamicChildrenStoreValid, getAfterGapColWidth } from './utils';
 import { checkIfMobile } from '../../utils';
 
-function getAfterGapColWidth({ data, item }, { index, hasGutter }) {
-  const { formItemColumn, columnGap } = data;
-  let span = 24 / formItemColumn;
-  // TODO：对于异常case: item.span 和 平均几列后的span不一样的情况， 可能这一个不同的span影响同一行其他表单项的宽度设置，，暂时不处理;
-  if (!hasGutter || span !== item.span) {
-    // 没有列间距
-    return `${(item.span * 100) / 24}%`;
-  }
-  let gapWidthPerRow = columnGap * (formItemColumn - 1);
-  return `calc((100% - ${gapWidthPerRow}px) / ${formItemColumn})`;
-}
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env, dynamicEnableOrDisabledRef } = props;
   const layoutType = data.layoutType;
@@ -90,34 +79,14 @@ const SlotContent = (props) => {
                 return;
               }
 
-              const { widthOption, span, width } = item;
-
-              // 表单项的处理
-              if (isFormItem) {
-                if (item.comName) {
-                  childrenInputs[com.name] = com.inputs;
-                } else {
-                  childrenInputs[com.id] = com.inputs;
-                }
-              }
-
-              if (typeof item?.visible !== 'undefined') {
-                item.visible = com.style.display !== 'none';
-              } else {
-                item['visible'] = true;
-              }
-
-              const flexBasis = isMobile
-                ? '100%'
-                : widthOption === 'px'
-                ? `${width}px`
-                : getAfterGapColWidth({ data, item }, { index: idx, hasGutter });
-
-              return (
-                <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
-                  {com.jsx}
-                </Col>
-              );
+              return getComOrItemJsx({
+                data,
+                item,
+                isFormItem,
+                com,
+                childrenInputs,
+                options: { isMobile, layout, index: idx }
+              });
             }
 
             console.error(com, comAray);
@@ -136,43 +105,14 @@ const SlotContent = (props) => {
                 return;
               }
 
-              const { widthOption, span, width } = item;
-              let id = com.name + '::' + item.id;
-              let comJSX = data.useDynamicItems ? com.getJsx({ index: iIdex, id: id }) : com;
-              // 表单项的处理
-              if (isFormItem) {
-                if (!data.useDynamicItems) {
-                  // 静态表单项，保留原处理逻辑
-                  if (item.comName) {
-                    childrenInputs[com.name] = com.inputs;
-                  } else {
-                    childrenInputs[com.id] = com.inputs;
-                  }
-                } else {
-                  // 动态设置表单项, 新的处理逻辑，使用item.name作为唯一key
-                  if (item.comName) {
-                    childrenInputs[item.name] = comJSX.inputs;
-                  }
-                }
-              }
-
-              if (typeof item?.visible !== 'undefined') {
-                item.visible = com.style.display !== 'none';
-              } else {
-                item['visible'] = true;
-              }
-
-              const flexBasis = isMobile
-                ? '100%'
-                : widthOption === 'px'
-                ? `${width}px`
-                : getAfterGapColWidth({ data, item }, { index: iIdex, hasGutter });
-
-              return (
-                <Col style={{ display: com.style.display, width: flexBasis }} key={subItem.id}>
-                  {comJSX.jsx}
-                </Col>
-              );
+              return getComOrItemJsx({
+                data,
+                item,
+                isFormItem,
+                com,
+                childrenInputs,
+                options: { isMobile, layout, index: iIdex }
+              });
             }
           });
         }
@@ -243,5 +183,58 @@ const SlotContent = (props) => {
 
   return content;
 };
+
+// 优化wrap 重复逻辑
+export function getComOrItemJsx({
+  data,
+  item,
+  isFormItem,
+  com,
+  childrenInputs,
+  options: { index, isMobile, layout }
+}) {
+  const { widthOption, span, width } = item;
+  // 普通表单，有列间距的条件: 不能是内联布局且每行列数> 1 & 列间距大于0
+  let hasGutter = layout !== 'inline' && data.formItemColumn > 1 && data.columnGap > 1;
+  let id = com.name + '::' + item.id;
+  let comJSX = data.useDynamicItems ? com.getJsx({ index, id: id }) : com;
+
+  if (isFormItem) {
+    if (!data.useDynamicItems) {
+      // 静态表单项，保留原处理逻辑
+      if (item.comName) {
+        childrenInputs[com.name] = com.inputs;
+      } else {
+        childrenInputs[com.id] = com.inputs;
+      }
+    } else {
+      // 动态设置表单项, 新的处理逻辑，使用item.name作为唯一key
+      if (item.comName) {
+        childrenInputs[item.name] = comJSX.inputs;
+      }
+    }
+  }
+
+  if (typeof item?.visible !== 'undefined') {
+    item.visible = com.style.display !== 'none';
+  } else {
+    item['visible'] = true;
+  }
+
+  const flexBasis = isMobile
+    ? '100%'
+    : widthOption === 'px'
+    ? `${width}px`
+    : getAfterGapColWidth({ data, item }, { index, hasGutter });
+
+  return (
+    <Col
+      style={{ display: com.style.display, width: flexBasis }}
+      key={data.useDynamicItems ? item.id : com.id}
+    >
+      {comJSX.jsx}
+    </Col>
+  );
+}
 
 export default SlotContent;
