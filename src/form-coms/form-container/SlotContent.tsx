@@ -198,18 +198,19 @@ export function getComOrItemJsx({
   let hasGutter = layout !== 'inline' && data.formItemColumn > 1 && data.columnGap > 1;
   let id = com.name + '::' + item.id;
   let comJSX = data.useDynamicItems ? com.getJsx({ index, id: id }) : com;
-  if (data.useDynamicItems) {
-    // 动态设置表单项, 新的处理逻辑，使用item.name作为唯一key
-    if (item.comName) {
-      childrenInputs[item.name] = comJSX.inputs;
-    }
-  } else {
-    // 表单项的处理
-    if (isFormItem) {
+
+  if (isFormItem) {
+    if (!data.useDynamicItems) {
+      // 静态表单项，保留原处理逻辑
       if (item.comName) {
         childrenInputs[com.name] = com.inputs;
       } else {
         childrenInputs[com.id] = com.inputs;
+      }
+    } else {
+      // 动态设置表单项, 新的处理逻辑，使用item.name作为唯一key
+      if (item.comName) {
+        childrenInputs[item.name] = comJSX.inputs;
       }
     }
   }
