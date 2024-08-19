@@ -117,3 +117,16 @@ export function setFormItemProps(
     console.error(e);
   }
 }
+
+/** 获取设置列间距后的宽度 */
+export function getAfterGapColWidth({ data, item }, { index, hasGutter }) {
+  const { formItemColumn, columnGap } = data;
+  let span = 24 / formItemColumn;
+  // TODO：对于异常case: item.span 和 平均几列后的span不一样的情况， 可能这一个不同的span影响同一行其他表单项的宽度设置，，暂时不处理;
+  if (!hasGutter || span !== item.span) {
+    // 没有列间距
+    return `${(item.span * 100) / 24}%`;
+  }
+  let gapWidthPerRow = columnGap * (formItemColumn - 1);
+  return `calc((100% - ${gapWidthPerRow}px) / ${formItemColumn})`;
+}
