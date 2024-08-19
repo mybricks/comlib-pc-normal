@@ -24,10 +24,16 @@ export const BaseEditor = [
       get({ data }: EditorResult<Data>) {
         return data.showTitle;
       },
-      set({ data, input }: EditorResult<Data>, value: boolean) {
+      set({ data, input, output }: EditorResult<Data>, value: boolean) {
         data.showTitle = value;
-        if (value) input.add(InputIds.SetTitle, '设置标题', { type: 'string' });
-        else input.remove(InputIds.SetTitle);
+        if (value) {
+          input.add(InputIds.SetTitle, '设置标题', { type: 'string' });
+          output.add("setTitleComplete", '完成', { type: 'any' });
+          input.get(InputIds.SetTitle).setRels(["setTitleComplete"]);
+        } else {
+          input.remove(InputIds.SetTitle);
+          output.remove("setTitleComplete");
+        }
       }
     }
   },
