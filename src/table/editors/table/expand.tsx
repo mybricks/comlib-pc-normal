@@ -47,10 +47,7 @@ const expandEditor = [
       {
         title: '默认展开',
         type: 'switch',
-        description: '开启后，默认展开每一行数据',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.useExpand;
-        },
+        description: '开启后，默认展开每一行数据, 支持自定义展开项和树形结构的默认展开',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.defaultExpandAllRows;
