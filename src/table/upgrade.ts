@@ -350,6 +350,17 @@ export default function ({
   }
 
   setDataSchema({ data, output, input, slot });
+  // --------------------- 1.1.96 end ---------------------
+
+  if (input.get(InputIds.END_LOADING) && !output.get(`${InputIds.END_LOADING}Done`)) {
+    output.add(InputIds.END_LOADING, '关闭loading后', { type: 'any' });
+    input.get(InputIds.END_LOADING).setRels([InputIds.END_LOADING]);
+  }
+  if (input.get(InputIds.START_LOADING) && !output.get(`${InputIds.START_LOADING}Done`)) {
+    output.add(InputIds.START_LOADING, '开启loading后', { type: 'any' });
+    input.get(InputIds.START_LOADING).setRels([InputIds.START_LOADING]);
+  }
+  // --------------------- 1.1.98 end ---------------------
 
   return true;
 }

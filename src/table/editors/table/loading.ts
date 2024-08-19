@@ -11,16 +11,30 @@ const LoadingEditor = [
       get({ data }: EditorResult<Data>) {
         return data.useLoading;
       },
-      set({ data, input }: EditorResult<Data>, value: boolean) {
+      set({ data, input, output }: EditorResult<Data>, value: boolean) {
         const event1 = input.get(InputIds.END_LOADING);
         const event2 = input.get(InputIds.START_LOADING);
 
         if (value) {
-          !event1 && input.add(InputIds.END_LOADING, '关闭loading', Schemas.Void);
-          !event2 && input.add(InputIds.START_LOADING, '开启loading', Schemas.Void);
+          if (!event1) {
+            input.add(InputIds.END_LOADING, '关闭loading', Schemas.Void);
+            output.add(InputIds.END_LOADING, '关闭loading后', { type: 'any' });
+            input.get(InputIds.END_LOADING).setRels([InputIds.END_LOADING]);
+          }
+          if (!event2) {
+            input.add(InputIds.START_LOADING, '开启loading', Schemas.Void);
+            output.add(InputIds.START_LOADING, '开启loading后', { type: 'any' });
+            input.get(InputIds.START_LOADING).setRels([InputIds.START_LOADING]);
+          }
         } else {
-          event1 && input.remove(InputIds.END_LOADING);
-          event2 && input.remove(InputIds.START_LOADING);
+          if (event1) {
+            input.remove(InputIds.END_LOADING);
+            output.remove(InputIds.END_LOADING);
+          }
+          if (event2) {
+            input.remove(InputIds.START_LOADING);
+            output.remove(InputIds.START_LOADING);
+          }
         }
 
         data.useLoading = value;
