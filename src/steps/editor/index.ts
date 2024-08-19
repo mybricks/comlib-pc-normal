@@ -13,6 +13,7 @@ export default {
   '@resize': {
     options: ['width']
   },
+  ':slot': {},
   ':root': {
     style: [
       {
