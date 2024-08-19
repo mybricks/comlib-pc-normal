@@ -70,3 +70,50 @@ export function isDynamicChildrenStoreValid(data, childrenStore): boolean {
   });
   return res;
 }
+
+// 判断是否有数据源输入
+export function getChildDataSource(child: any) {
+  if (child.inputDefs?.length) {
+    let found = child.inputDefs.find(
+      (item) => item.title === '设置数据源' || item.id === 'setOptions'
+    );
+    if (found) {
+      return found.schema;
+    }
+    return undefined;
+  }
+  return undefined;
+}
+
+/**
+ * 获取表单项属性
+ */
+export function getFormItemProp(
+  { data, ...com }: { data: Data; id: string; name: string },
+  name: keyof FormItems
+) {
+  try {
+    const { item } = getFormItem(data, { id: com.id, name: com.name });
+
+    return item?.[name];
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+/** 
+ * 设置表单项属性
+ */
+export function setFormItemProps(
+  { data, ...com }: { data: Data; id: string; name: string },
+  name: keyof FormItems,
+  value: any
+) {
+  try {
+    const { item } = getFormItem(data, { id: com.id, name: com.name }) || {};
+
+    item[name] = value;
+  } catch (e) {
+    console.error(e);
+  }
+}
