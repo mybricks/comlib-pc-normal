@@ -832,26 +832,35 @@ export default function (props: RuntimeParams<Data>) {
       if (data.lazyLoad) {
         // 当前页所有key数组
         const allPageKeys = Array.from(dataSourceKeysSet) || [];
-        if (info.type === 'all') {
-          // 全选逻辑 本次勾选的数据量大于切片数据量
-          if (SelectedRowKeys.length >= demandDataSource.length) {
-            SelectedRowKeys = Array.from(new Set([...selectedRowKeys, ...allPageKeys]));
-          }
-          // 取消全选 给出的SelectedRows全是undefined
-          if (SelectedRows.filter((row) => !!row).length === 0) {
-            SelectedRowKeys = selectedRowKeys.filter((item) => !allPageKeys.includes(item));
-          }
+
+        if (data.selectionType === RowSelectionTypeEnum.Radio) {
+          // 单选模式
+          SelectedRowKeys =
+            SelectedRowKeys.length > 0 ? [SelectedRowKeys[SelectedRowKeys.length - 1]] : [];
+          SelectedRows = SelectedRows.length > 0 ? [SelectedRows[SelectedRows.length - 1]] : [];
         } else {
-          // 通过比较前后长度判断是否是反选
-          const isInvert =
-            selectedRowKeys.filter((key) => SelectedRowKeys.includes(key)).length ===
-            SelectedRowKeys.length;
-          if (isInvert) {
-            // 找到取消选择的再过滤掉原数据
-            const allCancel = allPageKeys.filter((item) => !SelectedRowKeys.includes(item));
-            SelectedRowKeys = selectedRowKeys.filter((item) => !allCancel.includes(item));
+          // 多选模式
+          if (info.type === 'all') {
+            // 全选逻辑 本次勾选的数据量大于切片数据量
+            if (SelectedRowKeys.length >= demandDataSource.length) {
+              SelectedRowKeys = Array.from(new Set([...selectedRowKeys, ...allPageKeys]));
+            }
+            // 取消全选 给出的SelectedRows全是undefined
+            if (SelectedRows.filter((row) => !!row).length === 0) {
+              SelectedRowKeys = selectedRowKeys.filter((item) => !allPageKeys.includes(item));
+            }
           } else {
-            SelectedRowKeys = Array.from(new Set([...selectedRowKeys, ...SelectedRowKeys]));
+            // 通过比较前后长度判断是否是反选
+            const isInvert =
+              selectedRowKeys.filter((key) => SelectedRowKeys.includes(key)).length ===
+              SelectedRowKeys.length;
+            if (isInvert) {
+              // 找到取消选择的再过滤掉原数据
+              const allCancel = allPageKeys.filter((item) => !SelectedRowKeys.includes(item));
+              SelectedRowKeys = selectedRowKeys.filter((item) => !allCancel.includes(item));
+            } else {
+              SelectedRowKeys = Array.from(new Set([...selectedRowKeys, ...SelectedRowKeys]));
+            }
           }
         }
 
@@ -1025,10 +1034,10 @@ export default function (props: RuntimeParams<Data>) {
       }
     } else {
       // 单选的情况
-      if (selectedRowKeys.includes(_record)) {
-        newSelectedRows = [];
+      if (newSelectedRowKeys.includes(targetRowKeyVal)) {
+        newSelectedRowKeys = [];
       } else {
-        newSelectedRows = [_record];
+        newSelectedRowKeys = [targetRowKeyVal];
       }
     }
     newSelectedRows = mergeAndFilterRows(newSelectedRowKeys);
