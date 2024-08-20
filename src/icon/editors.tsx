@@ -93,22 +93,6 @@ export default {
           },
           {
             catelog: '默认',
-            title: '默认',
-            options: [
-              {
-                type: 'font',
-                config: {
-                  disableTextAlign: true,
-                  disableFontFamily: true,
-                  disableFontWeight: true,
-                  disableLetterSpacing: true
-                }
-              }
-            ],
-            target: `.icon`
-          },
-          {
-            catelog: '默认',
             options: [
               'border',
               'padding',
