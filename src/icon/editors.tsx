@@ -36,18 +36,18 @@ export default {
         items: [
           {
             catelog: '默认',
-            title: '颜色',
+            title: '尺寸',
             options: [
               {
-                type: 'font', 
-                config: { 
-                  disableTextAlign: true, 
-                  disableFontFamily: true, 
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
                   disableFontWeight: true,
                   disableLetterSpacing: true,
-                  //disableColor: true,
+                  disableColor: true,
                   //disableFontSize: true,
-                  disableLineHeight: true 
+                  disableLineHeight: true
                 }
               }
             ],
@@ -55,18 +55,18 @@ export default {
           },
           {
             catelog: '默认',
-            title: '尺寸',
+            title: '颜色',
             options: [
               {
-                type: 'font', 
-                config: { 
-                  disableTextAlign: true, 
-                  disableFontFamily: true, 
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
                   disableFontWeight: true,
                   disableLetterSpacing: true,
-                  disableColor: true,
-                  //disableFontSize: true,
-                  disableLineHeight: true 
+                  //disableColor: true,
+                  disableFontSize: true,
+                  disableLineHeight: true
                 }
               }
             ],
@@ -77,14 +77,15 @@ export default {
             title: '行高',
             options: [
               {
-                type: 'font', 
-                config: { 
-                  disableTextAlign: true, 
-                  disableFontFamily: true, 
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
                   disableFontWeight: true,
                   disableLetterSpacing: true,
                   disableFontSize: true,
-                  //disableLineHeight: true 
+                  disableColor: true
+                  //disableLineHeight: true
                 }
               }
             ],
@@ -95,12 +96,12 @@ export default {
             title: '默认',
             options: [
               {
-                type: 'font', 
-                config: { 
-                  disableTextAlign: true, 
-                  disableFontFamily: true, 
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
                   disableFontWeight: true,
-                  disableLetterSpacing: true 
+                  disableLetterSpacing: true
                 }
               }
             ],
@@ -117,15 +118,56 @@ export default {
           },
           {
             catelog: 'Hover',
-            title: 'Hover',
+            title: '尺寸',
             options: [
               {
-                type: 'font', 
-                config: { 
-                  disableTextAlign: true, 
-                  disableFontFamily: true, 
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
                   disableFontWeight: true,
-                  disableLetterSpacing: true 
+                  disableLetterSpacing: true,
+                  disableColor: true,
+                  //disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon:hover`
+          },
+          {
+            catelog: 'Hover',
+            title: '颜色',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  //disableColor: true,
+                  disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon:hover`
+          },
+          {
+            catelog: 'Hover',
+            title: '行高',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableFontSize: true,
+                  disableColor: true
+                  //disableLineHeight: true
                 }
               }
             ],
