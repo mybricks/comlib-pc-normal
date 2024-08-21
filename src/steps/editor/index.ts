@@ -4,14 +4,18 @@ import StepEditor from './step';
 import ActionEditor from './action';
 import { addSlot, addEventIO, setDynamicStepsIO } from './util';
 import visibleOpt from '../../components/editorRender/visibleOpt';
+import css from '../index.less';
 
 const DefaultSchema = {
   type: 'any'
 };
 
 export default {
+  '@init': ({ style }) => {
+    style.height = 'auto';
+  },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':slot': {},
   ':root': {
@@ -46,6 +50,12 @@ export default {
               return data.steps.direction === 'vertical';
             },
             target: '.ant-steps-item'
+          },
+          {
+            title: '内容',
+            catelog: '默认',
+            options: ['overflow'],
+            target: `.${css.stepsContent}`
           },
           {
             catelog: '完成态',

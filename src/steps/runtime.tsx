@@ -1,11 +1,13 @@
 import { Button, Steps } from 'antd';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import { Data, INTO, LEAVE, CLICK, StepItem } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
 import { checkIfMobile, uuid } from '../utils';
 import * as Icons from '@ant-design/icons';
+import useParentHeight from '../table/hooks/use-parent-height';
+import useElementHeight from '../table/hooks/use-element-height';
 
 const { Step } = Steps;
 
@@ -13,6 +15,7 @@ export default function ({
   env,
   data,
   slots,
+  style,
   outputs,
   inputs,
   logger,
@@ -25,6 +28,25 @@ export default function ({
 
   const direction = isMobile ? 'vertical' : data.steps.direction || 'horizontal';
   const labelPlacement = data.steps.labelPlacement || 'horizontal';
+
+  const isUseOldHeight =
+    style.height === 'fit-content' || style.height === 'auto' || style.height === undefined;
+  const isVertical = direction === 'vertical';
+
+  const ref = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  const [parentHeight] = useParentHeight(ref);
+  const [headerHeight] = useElementHeight(headerRef);
+  const [footerHeight] = useElementHeight(footerRef);
+
+  const contentHeight = useMemo(() => {
+    if (isUseOldHeight || isVertical) return void 0; // 已有和垂直的不做处理
+    const headerMargin = headerHeight === 0 ? 0 : 40; // 默认有40px的margin
+    const footerMargin = footerHeight === 0 ? 0 : 24; // 默认有24px的margin
+    return parentHeight - headerHeight - headerMargin - footerHeight - footerMargin;
+  }, [isUseOldHeight, isVertical, parentHeight, headerHeight, footerHeight]);
 
   useEffect(() => {
     if (runtime) {
@@ -155,11 +177,11 @@ export default function ({
     }
   };
 
-  const prev = useCallback((_, relOutputs) => {
+  const prev = useCallback((_, relOutputs?) => {
     if (runtime) {
       if (data.current > 0) {
         data.current -= 1;
-        relOutputs['prevStepComplete']();
+        relOutputs && relOutputs?.['prevStepComplete'] && relOutputs['prevStepComplete']();
       }
     }
   }, []);
@@ -277,6 +299,7 @@ export default function ({
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
+        ref={footerRef}
         className={`step-toolbar ${css.stepsAction} ${isMobile ? css.mobilebtns : ''} ${
           data.toolbar.fixed ? css['fixed-toolbar'] : ''
         }`}
@@ -309,60 +332,73 @@ export default function ({
   }, [data.dynamicSteps]);
 
   return (
-    <div className={css.stepbox}>
+    <div className={css.stepbox} ref={ref}>
       <div
-        className={`${direction === 'vertical' && css.verticalWrap} ${
-          isMobile ? css.mobileWrap : ''
-        }`}
+        className={classnames({
+          [css.verticalWrap]: direction === 'vertical',
+          [css.mobileWrap]: isMobile
+        })}
       >
-        <Steps
-          current={data.current}
-          size={isMobile ? 'small' : data.steps.size}
-          type={type}
-          progressDot={progressDot}
-          direction={direction}
-          labelPlacement={labelPlacement}
-          onChange={onChange()}
-        >
-          {stepAry.map((item, index) => {
-            const emptyNode = <div style={{ lineHeight: 32 }} />;
-            const stepProps = {
-              key: item.id,
-              title: !!item.title ? env.i18n(item.title) : emptyNode,
-              subTitle: !!item.subTitle ? env.i18n(item.subTitle) : emptyNode,
-              'data-item-type': 'step'
-            };
-            if (data.steps.showDesc) {
-              stepProps['description'] = !item.useCustomDesc
-                ? env.i18n(item.description)
-                : slots[`${item.id}_customDescSlot`]?.render();
-            }
-            if (env.edit || !!data.steps.canClick) {
-              stepProps['onStepClick'] = () => {
-                data.current = index;
-                outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);
+        <div ref={headerRef}>
+          <Steps
+            current={data.current}
+            size={isMobile ? 'small' : data.steps.size}
+            type={type}
+            progressDot={progressDot}
+            direction={direction}
+            labelPlacement={labelPlacement}
+            onChange={onChange()}
+          >
+            {stepAry.map((item, index) => {
+              const emptyNode = <div style={{ lineHeight: 32 }} />;
+              const stepProps = {
+                key: item.id,
+                title: !!item.title ? env.i18n(item.title) : emptyNode,
+                subTitle: !!item.subTitle ? env.i18n(item.subTitle) : emptyNode,
+                'data-item-type': 'step'
               };
-            }
-            if (item.useIcon) {
-              if (item.customIcon) {
-                const imageSize = {
-                  width: item.iconSize ? item.iconSize[1] : 'unset',
-                  height: item.iconSize ? item.iconSize[0] : 'unset'
-                };
-                stepProps['icon'] = <img {...imageSize} src={item.iconSrc} />;
-              } else if (item.icon) {
-                stepProps['icon'] = (
-                  <span style={{ fontSize: item.iconSize ? item.iconSize[1] : 'unset' }}>
-                    {Icons[item.icon]?.render()}
-                  </span>
-                );
+              if (data.steps.showDesc) {
+                stepProps['description'] = !item.useCustomDesc
+                  ? env.i18n(item.description)
+                  : slots[`${item.id}_customDescSlot`]?.render();
               }
-            }
-            return <Step {...stepProps} />;
-          })}
-        </Steps>
+              if (env.edit || !!data.steps.canClick) {
+                stepProps['onStepClick'] = () => {
+                  data.current = index;
+                  outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);
+                };
+              }
+              if (item.useIcon) {
+                if (item.customIcon) {
+                  const imageSize = {
+                    width: item.iconSize ? item.iconSize[1] : 'unset',
+                    height: item.iconSize ? item.iconSize[0] : 'unset'
+                  };
+                  stepProps['icon'] = <img {...imageSize} src={item.iconSrc} />;
+                } else if (item.icon) {
+                  stepProps['icon'] = (
+                    <span style={{ fontSize: item.iconSize ? item.iconSize[1] : 'unset' }}>
+                      {Icons[item.icon]?.render()}
+                    </span>
+                  );
+                }
+              }
+              return <Step {...stepProps} />;
+            })}
+          </Steps>
+        </div>
         {!data.hideSlots ? (
-          <div className={`${css.stepsContent} ${env.preview && css.preview}`}>
+          <div
+            className={classnames(
+              {
+                [css.preview]: env.preview
+              },
+              css.stepsContent
+            )}
+            style={{
+              height: contentHeight
+            }}
+          >
             <div className={css.content}>{renderSlots()}</div>
           </div>
         ) : null}

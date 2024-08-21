@@ -1,7 +1,7 @@
 import { Data, CLICK } from './constants';
 import { getButton } from './utils';
 
-export default function ({ input, output, data }: UpgradeParams<Data>): boolean {
+export default function ({ input, output, data, style }: UpgradeParams<Data>): boolean {
   if (!input.get('setHideSteps')) {
     input.add('setHideSteps', '设置隐藏步骤', { type: 'array', items: { type: 'number' } });
   }
@@ -130,6 +130,10 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
     submitBtn.label = data.toolbar.submitText;
   }
   //=========== v1.0.27 end ===============
+
+  if (style.height === void 0) {
+    style.height = 'auto';
+  }
 
   return true;
 }
