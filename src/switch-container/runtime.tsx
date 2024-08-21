@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Data, Status } from './type';
 import { InputIds, OutputIds } from './constants';
 
-export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, slots, style }: RuntimeParams<Data>) {
   const [value, setValue] = useState(data.useDefaultStatus ? data.statusList[0].value : null);
   const valueRef = useRef(value);
 
@@ -39,7 +39,9 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     return (
       <div
         style={{
-          display: 'flex'
+          display: 'flex',
+          height: '100%',
+          overflowY: 'hidden'
         }}
       >
         {data.statusList.map((status) => {
@@ -62,7 +64,11 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   return showStatus ? (
     <>
       {slots[showStatus.id]?.render({
-        key: showStatus.id
+        key: showStatus.id,
+        style: {
+          ...style,
+          ...(typeof style.height === 'number' ? { overflow: 'hidden' } : {})
+        }
       })}
     </>
   ) : null;
