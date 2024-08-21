@@ -35,7 +35,63 @@ export default {
       {
         items: [
           {
-            title: '默认',
+            catelog: '默认',
+            title: '尺寸',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableColor: true,
+                  //disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
+            catelog: '默认',
+            title: '颜色',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  //disableColor: true,
+                  disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
+            catelog: '默认',
+            title: '行高',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableFontSize: true,
+                  disableColor: true
+                  //disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon`
+          },
+          {
             catelog: '默认',
             options: [
               'border',
@@ -45,12 +101,63 @@ export default {
             target: `[data-item-type="icon"]`
           },
           {
-            catelog: '默认',
-            options: ['font'],
-            target: `.icon`
+            catelog: 'Hover',
+            title: '尺寸',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableColor: true,
+                  //disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon:hover`
           },
           {
-            title: 'Hover',
+            catelog: 'Hover',
+            title: '颜色',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  //disableColor: true,
+                  disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon:hover`
+          },
+          {
+            catelog: 'Hover',
+            title: '行高',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableFontSize: true,
+                  disableColor: true
+                  //disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon:hover`
+          },
+          {
             catelog: 'Hover',
             options: [
               'border',
@@ -58,11 +165,6 @@ export default {
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
             target: '[data-item-type="icon"]:hover'
-          },
-          {
-            catelog: 'Hover',
-            options: ['font'],
-            target: `.icon:hover`
           }
         ]
       }
