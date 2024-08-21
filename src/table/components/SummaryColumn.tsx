@@ -15,8 +15,16 @@ export default (slots, data: Data, summaryColumnData: string) => {
   const totalVisibleColumns = hasSelectionColumn ? visibleColumnCount + 1 : visibleColumnCount;
 
   // 根据可见列和勾选列重新计算跨列数
-  const SummaryColumnContentColSpan = Math.max(0, totalVisibleColumns - summaryCellTitleCol);
+  let SummaryColumnContentColSpan = Math.max(0, totalVisibleColumns - summaryCellTitleCol);
   let SummaryCellTitleColSpan = Math.min(Math.max(0, summaryCellTitleCol), totalVisibleColumns);
+
+  // 如果开启了勾选功能，则标题列多占一列
+  if (hasSelectionColumn) {
+    SummaryCellTitleColSpan += 1;
+  }
+  if (hasSelectionColumn) {
+    SummaryColumnContentColSpan -= 1;
+  }
 
   return (
     <Table.Summary>
