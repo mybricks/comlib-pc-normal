@@ -88,7 +88,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           type: 'string',
           title,
           description: `表格列的字段名为: ${dataIndex}${
-            !!rowKeyDataIndex && dataIndex === rowKeyDataIndex && '，行标识字段，值需要全局唯一'
+            !!rowKeyDataIndex && dataIndex === rowKeyDataIndex ? '，行标识字段，值需要全局唯一' : ''
           }`,
           ...schemaObj[colDataIndex]
         };
