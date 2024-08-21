@@ -1170,7 +1170,7 @@ export default function (props: RuntimeParams<Data>) {
         renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
       >
         <TableContext.Provider value={contextValue}>
-          <div className={css.table}>
+          <div className={`${css.table} ${scrollHeight ? css.scrollTable : ''}`}>
             <TableHeader
               headerRef={headerRef}
               env={env}
@@ -1221,38 +1221,38 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.defaultExpandAllRows || (data.useExpand && slots[SlotIds.EXPAND_CONTENT])
                     ? {
-                        expandedRowRender: data.useExpand
-                          ? (record, index) => {
-                              const inputValues = {
-                                [InputIds.EXP_COL_VALUES]: {
-                                  ...record
-                                },
-                                [InputIds.INDEX]: index
-                              };
-                              if (data.useExpand && data.expandDataIndex) {
-                                inputValues[InputIds.EXP_ROW_VALUES] = get(
-                                  record,
-                                  data.expandDataIndex
-                                );
-                              }
-                              return slots[SlotIds.EXPAND_CONTENT]?.render({
-                                inputValues,
-                                key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                              });
-                            }
-                          : undefined,
-                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                        onExpand: (expanded, record) => {
-                          if (!env.runtime) return;
-                          const key = record[rowKey];
-                          if (expanded && !expandedRowKeys.includes(key)) {
-                            setExpandedRowKeys([...expandedRowKeys, key]);
-                          } else if (!expanded && expandedRowKeys.includes(key)) {
-                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                            setExpandedRowKeys([...expandedRowKeys]);
+                      expandedRowRender: data.useExpand
+                        ? (record, index) => {
+                          const inputValues = {
+                            [InputIds.EXP_COL_VALUES]: {
+                              ...record
+                            },
+                            [InputIds.INDEX]: index
+                          };
+                          if (data.useExpand && data.expandDataIndex) {
+                            inputValues[InputIds.EXP_ROW_VALUES] = get(
+                              record,
+                              data.expandDataIndex
+                            );
                           }
+                          return slots[SlotIds.EXPAND_CONTENT]?.render({
+                            inputValues,
+                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                          });
+                        }
+                        : undefined,
+                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                      onExpand: (expanded, record) => {
+                        if (!env.runtime) return;
+                        const key = record[rowKey];
+                        if (expanded && !expandedRowKeys.includes(key)) {
+                          setExpandedRowKeys([...expandedRowKeys, key]);
+                        } else if (!expanded && expandedRowKeys.includes(key)) {
+                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                          setExpandedRowKeys([...expandedRowKeys]);
                         }
                       }
+                    }
                     : undefined
                 }
                 onChange={onChange}
