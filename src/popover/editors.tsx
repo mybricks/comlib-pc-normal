@@ -195,12 +195,28 @@ export default {
               value: 'rightBottom'
             },
             {
+              label: '左上角',
+              value: 'topLeft'
+            },
+            {
               label: '左',
               value: 'left'
             },
             {
+              label: '左下角',
+              value: 'bottomLeft'
+            },
+            {
+              label: '右上角',
+              value: 'topRight'
+            },
+            {
               label: '右',
               value: 'right'
+            },
+            {
+              label: '右下角',
+              value: 'bottomRight'
             }
           ],
           value: {
