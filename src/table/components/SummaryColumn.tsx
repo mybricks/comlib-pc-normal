@@ -21,9 +21,8 @@ export default (slots, data: Data, summaryColumnData: string) => {
   return (
     <Table.Summary>
       <Table.Summary.Row className="summaryRow" key={uuid()}>
-        {/* {hasSelectionColumn && <Table.Summary.Cell index={0} key={uuid()} />} */}
         <Table.Summary.Cell
-          index={hasSelectionColumn ? 1 : 0}
+          index={0}
           key={uuid()}
           className="summaryCellTitle"
           colSpan={SummaryCellTitleColSpan}
