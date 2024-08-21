@@ -34,8 +34,6 @@ export default function ({ env, data, inputs, outputs, slots, style }: RuntimePa
     return data._editSelectId_ === item.id || data._editSelectId_ === item._id;
   };
 
-  console.log('style', style);
-
   /** 搭建态 */
   if (env.edit) {
     return (
@@ -43,7 +41,7 @@ export default function ({ env, data, inputs, outputs, slots, style }: RuntimePa
         style={{
           display: 'flex',
           height: '100%',
-          overflowY: 'scroll'
+          overflowY: 'hidden'
         }}
       >
         {data.statusList.map((status) => {
@@ -51,9 +49,6 @@ export default function ({ env, data, inputs, outputs, slots, style }: RuntimePa
             <div
               style={{
                 flex: 'auto'
-                // height: '100%',
-                // overflowY: 'hidden'
-                // ... ( typeof style.height === 'number' ? { overflow: 'hidden'} : {} )
               }}
             >
               {slots[status.id]?.render()}
