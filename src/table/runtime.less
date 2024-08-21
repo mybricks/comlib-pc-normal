@@ -11,6 +11,26 @@
       box-sizing: border-box;
     }
 
+    .ant-table-body::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+
+    .ant-table-body::-webkit-scrollbar-thumb {
+      background: #bbb;
+      border-radius: 5px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .ant-table-body::-webkit-scrollbar-thumb:hover {
+      background: #777;
+      border-radius: 7px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
     // 表格的最后一个表头，resize拖拽条隐藏
     .ant-table-thead>tr:first-child>th:last-child>div[class*='resizer-r'] {
       display: none !important;
@@ -53,7 +73,7 @@
 .scrollTable {
   :global {
     colgroup col {
-      min-width: 15px;
+      min-width: 10px;
     }
   }
 }
