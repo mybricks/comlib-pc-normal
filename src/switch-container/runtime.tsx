@@ -62,14 +62,15 @@ export default function ({ env, data, inputs, outputs, slots, style }: RuntimePa
   /** 运行时 */
   const showStatus = data.statusList.find((i) => i.value === value);
   return showStatus ? (
-    <>
+    <div
+      style={{
+        height: style.height,
+        ...(typeof style.height === 'number' ? { overflow: 'hidden' } : {})
+      }}
+    >
       {slots[showStatus.id]?.render({
-        key: showStatus.id,
-        style: {
-          ...style,
-          ...(typeof style.height === 'number' ? { overflow: 'hidden' } : {})
-        }
+        key: showStatus.id
       })}
-    </>
+    </div>
   ) : null;
 }
