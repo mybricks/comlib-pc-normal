@@ -4,6 +4,10 @@
 
 - Schema 更新 (commit: e0e3e85c9bd2b6d2139665d56873dacac793013d)
 
+### Feature
+
+- 总结栏的 title 列在开启勾选时跨两列，确保宽度足够展示 title (commit: 6ccb94fb648722ef50585119e6b9b07e28183e4f)
+
 ## [1.2.3] - 2024-8-21
 
 ### Fix
