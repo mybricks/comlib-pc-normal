@@ -45,7 +45,6 @@ export default {
           description: '设置当前步骤的标题',
           value: {
             get({ }: EditorResult<Data>) {
-              console.log('标题', stepItem.title)
               return stepItem.title;
             },
             set({ }: EditorResult<Data>, values: string) {
