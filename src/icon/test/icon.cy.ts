@@ -1,4 +1,5 @@
 import dump_动态图标配置检查 from './case-动态图标配置检查/dump.json';
+import dump_样式配置检查 from './case-样式配置检查/dump.json';
 import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 describe('图标', () => {
@@ -11,5 +12,13 @@ describe('图标', () => {
 
     // 截图对比
     cy.compareSnapshot('图标_动态图标检查');
+  })
+
+  enhancedIt('样式配置检查', () => {
+    // 加载测试页面
+    dumpPreview(dump_样式配置检查);
+
+    // 截图对比
+    cy.compareSnapshot('图标_样式配置检查');
   })
 });

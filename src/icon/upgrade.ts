@@ -1,12 +1,18 @@
 import { Data } from './constants';
 
-export default function ({ data, setDeclaredStyle, output, input }: UpgradeParams<Data>): boolean {
+export default function ({ 
+  data, 
+  setDeclaredStyle, 
+  output, 
+  input, 
+  style,
+  getDeclaredStyle
+}: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.3 -> v1.0.4, 兼容图标颜色和尺寸
   */
-
   //兼容颜色和尺寸自定义情况
-  if(data.size !== '' && data.color !== ''){
+  if(data.size && data.color){
     setDeclaredStyle(`.icon`, { color: data.color, fontSize: data.size});
     data.color = '';
     data.size = '';
@@ -25,6 +31,13 @@ export default function ({ data, setDeclaredStyle, output, input }: UpgradeParam
     input.get("setIcon") &&
     !input.get("setIcon")?.rels?.includes("setIconDone")) {
     input.get("setIcon").setRels(["setIconDone"]);
+  }
+
+  /**
+    * @description v1.0.11 -> v1.0.12, 拖拽决定图标尺寸
+  */
+  if(getDeclaredStyle('.icon')['css']['fontSize']){
+    style.width = getDeclaredStyle('.icon')['css']['fontSize'];
   }
 
   return true;
