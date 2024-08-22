@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import * as Icons from '@ant-design/icons';
 import { Data, OutputIds } from './constants';
 import css from './runtime.less';
@@ -6,12 +6,14 @@ import css from './runtime.less';
 /**
  * @param icon 图标
  */
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
   const onClick = () => {
     if (env.runtime) {
       outputs[OutputIds.Click]();
     }
   };
+
+  const [fontSize, setFontSize] = useState(style.width);
 
   const btnItemR = useCallback(
     ({ icon }: { icon: any }) => {
@@ -39,6 +41,14 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     }
   }, []);
 
+  useEffect(()=>{
+    if(style.width === 'fit-content' ){
+      setFontSize(32)
+    }else if(style.width !== '100%'){
+      setFontSize(style.width)
+    }
+  },[data.styleWidth, style.width])
+
   return (
     <div
       className={`${css.icon} icon`}
@@ -46,7 +56,8 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
         cursor:
           outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
             ? 'pointer'
-            : undefined
+            : undefined,
+        fontSize: fontSize
       }}
       onClick={onClick}
       data-item-type="icon"
