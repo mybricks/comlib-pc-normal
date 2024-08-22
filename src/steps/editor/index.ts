@@ -152,28 +152,6 @@ export default {
       cate1.title = '常规';
       cate1.items = [
         {
-          title: '添加步骤',
-          type: 'Button',
-          description: '点击按钮添加一个步骤，新增【新步骤】插槽和输出项【步骤几下一步】',
-          value: {
-            set({ data, slots, output, input }: EditorResult<Data>) {
-              const id = uuid();
-              data.stepAry.push({
-                id,
-                title: '新步骤',
-                description: '新添加的步骤',
-                index: data.stepAry.length
-              });
-              addSlot(slots, id, `步骤${data.stepAry.length}`);
-              output.add(id, `步骤${data.stepAry.length}下一步`, DefaultSchema);
-              //添加事件i/0
-              addEventIO(output, id, `步骤${data.stepAry.length}`);
-              //设置跳转title
-              input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`);
-            }
-          }
-        },
-        {
           title: '类型',
           type: 'Select',
           description: '步骤条类型',
@@ -281,6 +259,28 @@ export default {
             },
             set({ data }: EditorResult<Data>, val: boolean) {
               data.toolbar.showActions = val;
+            }
+          }
+        },
+        {
+          title: '添加步骤',
+          type: 'Button',
+          description: '点击按钮添加一个步骤，新增【新步骤】插槽和输出项【步骤几下一步】',
+          value: {
+            set({ data, slots, output, input }: EditorResult<Data>) {
+              const id = uuid();
+              data.stepAry.push({
+                id,
+                title: '新步骤',
+                description: '新添加的步骤',
+                index: data.stepAry.length
+              });
+              addSlot(slots, id, `步骤${data.stepAry.length}`);
+              output.add(id, `步骤${data.stepAry.length}下一步`, DefaultSchema);
+              //添加事件i/0
+              addEventIO(output, id, `步骤${data.stepAry.length}`);
+              //设置跳转title
+              input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`);
             }
           }
         },

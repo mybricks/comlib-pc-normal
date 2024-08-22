@@ -1,14 +1,41 @@
 import { Data, INTO, LEAVE, CLICK } from '../constants';
 import { removeEventIO } from './util';
+import { setSlotLayout } from '../../utils/editorTools'
+
 export default {
   '[data-item-type="step"]': {
     title: '步骤',
     items({ data, focusArea, slot }: EditorResult<Data>, cate1) {
       if (!focusArea) return;
+
       const { index } = focusArea;
       const stepItem = data.stepAry[index];
+
       cate1.title = '常规';
       cate1.items = [
+        {
+          title: '插槽布局',
+          type: 'layout',
+          description: '配置插槽内部的布局类型',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.hideSlots;
+          },
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return stepItem?.slotLayuotStyle;
+            },
+            set({ slots, data }: EditorResult<Data>, val: any) {
+              if (!stepItem.slotLayuotStyle) {
+                stepItem.slotLayuotStyle = {};
+              }
+
+              stepItem.slotLayuotStyle = { ...val }
+
+              const slotInstance = slots.get(stepItem.id);
+              setSlotLayout(slotInstance, val);
+            }
+          }
+        },
         {
           title: '标题',
           type: 'Text',
@@ -17,10 +44,11 @@ export default {
           },
           description: '设置当前步骤的标题',
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
+              console.log('标题', stepItem.title)
               return stepItem.title;
             },
-            set({}: EditorResult<Data>, values: string) {
+            set({ }: EditorResult<Data>, values: string) {
               stepItem.title = values;
             }
           }
@@ -33,10 +61,10 @@ export default {
           },
           description: '设置当前步骤的子标题',
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return stepItem.subTitle ?? '';
             },
-            set({}: EditorResult<Data>, values: string) {
+            set({ }: EditorResult<Data>, values: string) {
               stepItem.subTitle = values;
             }
           }
@@ -49,7 +77,7 @@ export default {
             return !!data.steps.showDesc;
           },
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return !!stepItem.useCustomDesc;
             },
             set({ slots }: EditorResult<Data>, val: boolean) {
@@ -77,10 +105,10 @@ export default {
           },
           description: '设置当前步骤的描述信息',
           value: {
-            get({}: EditorResult<Data>) {
+            get({ }: EditorResult<Data>) {
               return stepItem.description;
             },
-            set({}: EditorResult<Data>, values: string) {
+            set({ }: EditorResult<Data>, values: string) {
               stepItem.description = values;
             }
           }

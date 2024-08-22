@@ -14,6 +14,7 @@ export interface StepItem {
   icon?: string;
   iconSrc?: string;
   iconSize?: [number, number];
+  slotLayuotStyle?: any
 }
 
 export type Btn = { label: string; value: string; visible: boolean };

@@ -146,26 +146,26 @@ export default function ({
     return content;
   };
 
-  const stepRenderHook = () => {
-    const currentStep = stepAry[data.current];
-    if (!currentStep?.render) {
-      const slotInputs = slots[stepAry[data.current].id].inputs;
-      slotInputs[`${stepAry[data.current].id}_render`] &&
-        slotInputs[`${stepAry[data.current].id}_render`]();
-    }
-  };
+  // const stepRenderHook = () => {
+  //   const currentStep = stepAry[data.current];
+  //   if (!currentStep?.render) {
+  //     const slotInputs = slots[stepAry[data.current].id].inputs;
+  //     slotInputs[`${stepAry[data.current].id}_render`] &&
+  //       slotInputs[`${stepAry[data.current].id}_render`]();
+  //   }
+  // };
 
-  const stepIntoHook = () => {
-    stepAry[data.current].render = true; //标记步骤渲染状态
-    const { id } = stepAry[data.current];
-    outputs[`${id}${INTO}`](getPreviousData());
-  };
+  // const stepIntoHook = () => {
+  //   stepAry[data.current].render = true; //标记步骤渲染状态
+  //   const { id } = stepAry[data.current];
+  //   outputs[`${id}${INTO}`](getPreviousData());
+  // };
 
-  const stepLeaveHook = () => {
-    if (preIndex === undefined) return Promise.resolve();
-    const { id } = stepAry[preIndex];
-    return Promise.all([outputs[`${id}${LEAVE}`]()]);
-  };
+  // const stepLeaveHook = () => {
+  //   if (preIndex === undefined) return Promise.resolve();
+  //   const { id } = stepAry[preIndex];
+  //   return Promise.all([outputs[`${id}${LEAVE}`]()]);
+  // };
 
   const getCurrentStep = (pre?): any => {
     return stepAry[data.current + (!!pre ? pre : 0)] || {};
@@ -202,21 +202,27 @@ export default function ({
   //计算所有slot，通过display:block|none实现显示隐藏，避免被卸载
   const renderSlots = () => {
     const rtn: any[] = [];
+
     if (!env.preview) {
       for (const id in slots) {
+        const stepItem = data.stepAry.find((item) => item.id === id);
+
         rtn.push(
           <div
             key={id}
             style={{
               display: `${getCurrentStep().id === id ? 'block' : 'none'}`,
-              height: '100%'
+              height: '100%',
+              minHeight:
+                env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : void 0
             }}
           >
-            {slots[id]?.render()}
+            {slots[id]?.render({ style: stepItem?.slotLayuotStyle })}
           </div>
         );
       }
     }
+
     return rtn;
   };
 
