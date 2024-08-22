@@ -2,7 +2,7 @@ import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
 import { DefaultFieldName, DefaultStaticData, InputIds, OutputIds, } from "./constants";
 import { ExpressionSandbox } from '../../package/com-utils';
-
+import set from 'lodash/set'
 /**
  * @description 将key格式化为字符串
  * @param key 原始的key
@@ -214,7 +214,38 @@ export const outputNodeValues = (
     });
   return flatten(result);
 };
-
+/**
+ * 查找newNodeData 在treeData中的访问路径
+ * @param treeData treeNodes 数据
+ * @param newNodeData 更新的节点数据
+ * @param pathSoFar 访问路径
+ * @returns 
+ */
+const findTargetNodeDataWithPath =  (
+  treeData: TreeData[],
+  newNodeData: TreeData,
+  pathSoFar: any[] = [],
+  { keyFieldName, childrenFieldName }: { keyFieldName: string; childrenFieldName: string }
+)  => {
+  let result: any = undefined
+  for(let i = 0, size = treeData.length; i < size; i++) {
+    const item = treeData[i]
+    const newPath = [...pathSoFar, i];
+    if(item[keyFieldName] === newNodeData[keyFieldName]) {
+      result = item
+      return { node: item, path: newPath }
+    } else if(item[childrenFieldName] && item[childrenFieldName].length) {
+      result = findTargetNodeDataWithPath(item[childrenFieldName], newNodeData, [...newPath, childrenFieldName], {
+        keyFieldName,
+        childrenFieldName
+      })
+      if( result.node) {
+        return result
+      }
+    }
+  }
+  return { node: undefined, path: [] }
+}
 /**
  * 根据keyFieldName设置节点数据
  * @param treeData treeNodes 数据
@@ -226,22 +257,18 @@ export const updateNodeData = (
   newNodeData: TreeData,
   { keyFieldName, childrenFieldName }: { keyFieldName: string; childrenFieldName: string }
 ) => {
-  treeData = treeData.map((item, index) => {
-    if (item[keyFieldName] === newNodeData[keyFieldName]) {
-      item = {
-        ...item,
-        ...newNodeData
-      };
-    } else if (item[childrenFieldName]) {
-      item[childrenFieldName] = updateNodeData(item[childrenFieldName], newNodeData, {
-        keyFieldName,
-        childrenFieldName
-      });
+  let result = [...treeData]
+  let targetNodeAndPath = findTargetNodeDataWithPath(treeData,
+    newNodeData,
+    [],
+    { keyFieldName, childrenFieldName })
+    // 这里不能直接改，不然影响 异步加载事件
+    if(targetNodeAndPath.node) {
+      set(result, targetNodeAndPath.path, {...targetNodeAndPath.node, ...newNodeData})
+      // 这里不能Object.assign 直接改这个节点，不然影响可能 异步加载事件 参数值
+      // Object.assign(targetNode, newNodeData)
     }
-    treeData[index] = item;
-    return item;
-  });
-  return treeData;
+  return result;
 };
 
 /**
