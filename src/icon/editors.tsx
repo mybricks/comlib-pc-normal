@@ -34,77 +34,72 @@ export default {
     style: [
       {
         items: [
-          // {
-          //   catelog: '默认',
-          //   title: '尺寸',
-          //   options: [
-          //     {
-          //       type: 'font',
-          //       config: {
-          //         disableTextAlign: true,
-          //         disableFontFamily: true,
-          //         disableFontWeight: true,
-          //         disableLetterSpacing: true,
-          //         disableColor: true,
-          //         //disableFontSize: true,
-          //         disableLineHeight: true
-          //       }
-          //     }
-          //   ],
-          //   target: `.icon`
-          // },
-          // {
-          //   catelog: '默认',
-          //   title: '颜色',
-          //   options: [
-          //     {
-          //       type: 'font',
-          //       config: {
-          //         disableTextAlign: true,
-          //         disableFontFamily: true,
-          //         disableFontWeight: true,
-          //         disableLetterSpacing: true,
-          //         //disableColor: true,
-          //         disableFontSize: true,
-          //         disableLineHeight: true
-          //       }
-          //     }
-          //   ],
-          //   target: `.icon`
-          // },
-          // {
-          //   catelog: '默认',
-          //   title: '行高',
-          //   options: [
-          //     {
-          //       type: 'font',
-          //       config: {
-          //         disableTextAlign: true,
-          //         disableFontFamily: true,
-          //         disableFontWeight: true,
-          //         disableLetterSpacing: true,
-          //         disableFontSize: true,
-          //         disableColor: true
-          //         //disableLineHeight: true
-          //       }
-          //     }
-          //   ],
-          //   target: `.icon`
-          // },
           {
             catelog: '默认',
+            title: '尺寸',
             options: [
-              'border',
-              'padding',
-              { type: 'background', config: { disableBackgroundImage: true } }
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  disableColor: true,
+                  //disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
             ],
-            target: `[data-item-type="icon"]`
-          },
-          {
-            catelog: '默认',
-            options: ['font'],
             target: `.icon`
           },
+          {
+            catelog: '默认',
+            title: '颜色',
+            options: [
+              {
+                type: 'font',
+                config: {
+                  disableTextAlign: true,
+                  disableFontFamily: true,
+                  disableFontWeight: true,
+                  disableLetterSpacing: true,
+                  //disableColor: true,
+                  disableFontSize: true,
+                  disableLineHeight: true
+                }
+              }
+            ],
+            target: `.icon`
+          }
+          // {
+          //   catelog: '默认',
+          //   title: '行高',
+          //   options: [
+          //     {
+          //       type: 'font',
+          //       config: {
+          //         disableTextAlign: true,
+          //         disableFontFamily: true,
+          //         disableFontWeight: true,
+          //         disableLetterSpacing: true,
+          //         disableFontSize: true,
+          //         disableColor: true
+          //         //disableLineHeight: true
+          //       }
+          //     }
+          //   ],
+          //   target: `.icon`
+          // },
+          // {
+          //   catelog: '默认',
+          //   options: [
+          //     'border',
+          //     'padding',
+          //     { type: 'background', config: { disableBackgroundImage: true } }
+          //   ],
+          //   target: `[data-item-type="icon"]`
+          // },
           // {
           //   catelog: 'Hover',
           //   title: '尺寸',
@@ -162,20 +157,15 @@ export default {
           //   ],
           //   target: `.icon:hover`
           // },
-          {
-            catelog: 'Hover',
-            options: [
-              'border',
-              'padding',
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            target: '[data-item-type="icon"]:hover'
-          },
-          {
-            catelog: 'Hover',
-            options: ['font'],
-            target: `.icon:hover`
-          }
+          // {
+          //   catelog: 'Hover',
+          //   options: [
+          //     'border',
+          //     'padding',
+          //     { type: 'background', config: { disableBackgroundImage: true } }
+          //   ],
+          //   target: '[data-item-type="icon"]:hover'
+          // }
         ]
       }
     ]
