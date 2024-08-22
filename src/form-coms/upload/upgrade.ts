@@ -405,5 +405,60 @@ export default function ({
     setDeclaredStyle([`.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`, `.ant-upload .ant-btn${getFilterSelector(id)}`], contentCss, true);
   }
   //=========== 1.0.45 end ===============
+
+  if (!data.rules) {
+    data.rules = [];
+  }
+
+  if (!input.get('setValidateInfo')) {
+    input.add('setValidateInfo', '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success'
+            },
+            {
+              type: 'string',
+              value: 'error'
+            }
+          ]
+        },
+        help: {
+          type: 'string'
+        }
+      }
+    });
+  }
+
+  if (!output.get('setValidateInfoDone')) {
+    output.add('setValidateInfoDone', '设置校验状态完成', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'string'
+        },
+        help: {
+          type: 'string'
+        }
+      }
+    });
+  }
+
+  if (input.get('setValidateInfo') && !input.get('setValidateInfo').rels?.includes('setValidateInfoDone')) {
+    input.get('setValidateInfo').setRels(['setValidateInfoDone']);
+  }
+
+  if (!output.get('onValidate')) {
+    output.add('onValidate', '校验触发', {
+      type: 'array'
+    });
+  }
+
+  //=========== v1.0.54 end ===============
+
   return true;
 }

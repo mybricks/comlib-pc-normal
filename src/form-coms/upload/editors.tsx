@@ -660,6 +660,16 @@ export default {
           }
         },
         {
+          title: '校验触发事件',
+          type: '_event',
+          options: {
+            outputId: 'onValidate'
+          },
+          ifVisible({ data }) {
+            return data.rules?.some((rule) => rule.key === RuleKeys.CUSTOM_EVENT && rule.status);
+          }
+        },
+        {
           title: '事件',
           items: [
             {
