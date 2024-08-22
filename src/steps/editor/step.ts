@@ -278,6 +278,42 @@ export default {
       ];
     }
   },
+  '[data-step-slot]': {
+    title: '内容区',
+    items({ data, focusArea, slot }: EditorResult<Data>, cate1) {
+      if (!focusArea) return;
+
+      const { index } = focusArea;
+      const stepItem = data.stepAry[index];
+
+      cate1.title = `${stepItem.title}内容区`;
+      cate1.items = [
+        {
+          title: '插槽布局',
+          type: 'layout',
+          description: '配置插槽内部的布局类型',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.hideSlots;
+          },
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return stepItem?.slotLayuotStyle;
+            },
+            set({ slots, data }: EditorResult<Data>, val: any) {
+              if (!stepItem.slotLayuotStyle) {
+                stepItem.slotLayuotStyle = {};
+              }
+
+              stepItem.slotLayuotStyle = { ...val }
+
+              const slotInstance = slots.get(stepItem.id);
+              setSlotLayout(slotInstance, val);
+            }
+          }
+        }
+      ]
+    }
+  },
   '.ant-steps-item-title': {
     '@dblclick': {
       type: 'text',

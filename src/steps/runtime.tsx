@@ -210,6 +210,7 @@ export default function ({
         rtn.push(
           <div
             key={id}
+            data-step-slot={id}
             style={{
               display: `${getCurrentStep().id === id ? 'block' : 'none'}`,
               height: '100%',
