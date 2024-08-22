@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -98,6 +98,35 @@
       },
       "rels": [
         "returnValidate"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
       ]
     },
     {
@@ -242,6 +271,13 @@
       }
     },
     {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
       "id": "returnValue",
       "title": "值输出",
       "desc": "获取上传表单项的值后，值输出",
@@ -373,6 +409,13 @@
             }
           }
         }
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "any"
       }
     },
     {

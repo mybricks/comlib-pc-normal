@@ -2,14 +2,13 @@ import { Button, Upload, message, Image, UploadFile } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
 import * as Icons from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import cls from 'classnames';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 import css from './runtime.less';
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import { OutputIds } from '../types';
+import { OutputIds, ValidateInfo } from '../types';
 
 interface UploadConfig {
   buttonText: string;
@@ -91,6 +90,8 @@ export default function ({
     multiple
   } = data.config;
 
+  const validateRelOutputRef = useRef<any>(null);
+
   useLayoutEffect(() => {
     // ≥ v1.0.34 设置上传结果
     slots['customUpload']?.outputs['setFileInfo']?.((file) => {
@@ -116,16 +117,29 @@ export default function ({
         value: fileListRef.current,
         model,
         env,
-        rules: data.rules
+        rules: data.rules || []
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
-          debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
+          const customRule = (data.rules || []).find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
+            outputs['onValidate'](fileListRef.current);
+          } else {
+            outputRels['returnValidate'](r);
+            debounceValidateTrigger(parentSlot, { id, name, validateInfo: r });
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
           debounceValidateTrigger(parentSlot, { id, name, validateInfo: e });
         });
+    });
+    inputs['setValidateInfo']?.((info: ValidateInfo, outputRels) => {
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
+        debounceValidateTrigger(parentSlot, { id, name, validateInfo: info });
+      }
     });
     inputs['getValue']?.((val, outputRels) => {
       outputRels['returnValue'](fileListRef.current);
