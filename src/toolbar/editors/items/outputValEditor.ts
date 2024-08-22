@@ -100,9 +100,12 @@ const OutputValEditor = [
               input.add(item.key, `设置${env.i18n(item.text)}输出数据`, {
                 type: 'follow'
               });
+              output.add(`${item.key}Done`, '完成', { type: 'any' });
+              input.get(item.key).setRels([`${item.key}Done`]);
             } else {
               if (input.get(item.key)) {
-                input.remove('external');
+                input.remove(`${item.key}`);
+                output.remove(`${item.key}Done`);
               }
             }
             item.dataType = value;

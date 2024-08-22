@@ -117,7 +117,7 @@ export default function ({
   /**
    * @description v1.0.24->1.0.25 新增开启loading、关闭loading、设置名称、设置样式、启用、禁用、显示、隐藏完成rels
   */
-  data.btnList.forEach((item)=>{
+  data.btnList.forEach((item) => {
     //1、开启loading 2、关闭loading
     const loadingOpenKey = `${InputIds.SetBtnOpenLoading}_${item.key}`;
     const loadingCloseKey = `${InputIds.SetBtnCloseLoading}_${item.key}`;
@@ -168,7 +168,7 @@ export default function ({
       !input.get(styleKey)?.rels?.includes(styleDoneKey)) {
       input.get(styleKey).setRels([styleDoneKey]);
     }
-  
+
     //5、启用 6、禁用
     const enableKey = `${InputIds.SetEnable}_${item.key}`;
     const DisableKey = `${InputIds.SetDisable}_${item.key}`;
@@ -200,7 +200,7 @@ export default function ({
 
     const visibleDoneKey = `${OutputIds.SetVisibleDone}_${item.key}`;
     const hiddenDoneKey = `${OutputIds.SetHiddenDone}_${item.key}`;
-    
+
     if (!output.get(visibleDoneKey)) {
       output.add(visibleDoneKey, `显示${item.text}完成`, Schemas.Any);
     }
@@ -219,9 +219,25 @@ export default function ({
       input.get(hiddenKey).setRels([hiddenDoneKey]);
     }
 
+
+    if (input.get(item.key) && !output.get(`${item.key}Done`)) {
+      output.add(`${item.key}Done`, '完成', { type: 'any' });
+      input.get(item.key).setRels([`${item.key}Done`]);
+    }
+    if (input.get(`${InputIds.SetHidden}_${item.key}`) && !output.get(`${OutputIds.SetHiddenDone}_${item.key}`)) {
+      output.add(`${OutputIds.SetHiddenDone}_${item.key}`, '完成', { type: 'any' });
+      input.get(`${InputIds.SetHidden}_${item.key}`).setRels([`${OutputIds.SetHiddenDone}_${item.key}`]);
+    }
+    if (input.get(`${InputIds.SetVisible}_${item.key}`) && !output.get(`${OutputIds.SetVisibleDone}_${item.key}`)) {
+      output.add(`${OutputIds.SetVisibleDone}_${item.key}`, '完成', { type: 'any' });
+      input.get(`${InputIds.SetVisible}_${item.key}`).setRels([`${OutputIds.SetVisibleDone}_${item.key}`]);
+    }
+    // ===== v1.0.39 end =====
   })
 
-  
+
+
+
 
   return true;
 }
