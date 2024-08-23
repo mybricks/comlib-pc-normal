@@ -35,25 +35,25 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
             relOutputs[`${OutputIds.SetBtnTextDone}_${key}`](val);
           }
         });
-        inputs[`${InputIds.SetDisable}_${key}`]?.((_, relOutputs) => {
+        inputs[`${InputIds.SetDisable}_${key}`]?.((val, relOutputs) => {
           item.disabled = true;
-          relOutputs[`${OutputIds.SetDisableDone}_${key}`]();
+          relOutputs[`${OutputIds.SetDisableDone}_${key}`](val);
         });
-        inputs[`${InputIds.SetEnable}_${key}`]?.((_, relOutputs) => {
+        inputs[`${InputIds.SetEnable}_${key}`]?.((val, relOutputs) => {
           item.disabled = false;
-          relOutputs[`${OutputIds.SetEnableDone}_${key}`]();
+          relOutputs[`${OutputIds.SetEnableDone}_${key}`](val);
         });
         // 动态隐藏按钮通过 style.display = 'none' 实现，防止出现初始化时先渲染后再隐藏的问题
-        inputs[`${InputIds.SetHidden}_${key}`]?.((_, relOutputs) => {
+        inputs[`${InputIds.SetHidden}_${key}`]?.((val, relOutputs) => {
           if (btn?.style) btn.style.display = 'none';
           item.hidden = true;
-          relOutputs[`${OutputIds.SetHiddenDone}_${key}`]();
+          relOutputs[`${OutputIds.SetHiddenDone}_${key}`](val);
         });
         // 动态显示按钮通过 style.display = 'block' 实现，防止出现初始化时先隐藏后再出现的问题
-        inputs[`${InputIds.SetVisible}_${key}`]?.((_, relOutputs) => {
+        inputs[`${InputIds.SetVisible}_${key}`]?.((val, relOutputs) => {
           if (btn?.style) btn.style.display = 'block';
           item.hidden = false;
-          relOutputs[`${OutputIds.SetVisibleDone}_${key}`]();
+          relOutputs[`${OutputIds.SetVisibleDone}_${key}`](val);
         });
         inputs[`${InputIds.SetBtnOpenLoading}_${key}`]?.((_, relOutputs) => {
           item.loading = true;
@@ -76,8 +76,9 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
         const { key } = item;
-        inputs[key]((ds: any) => {
+        inputs[key]((ds: any, relOutputs) => {
           item.inVal = ds;
+          relOutputs[`${key}Done`](ds);
         });
       });
     }
