@@ -224,7 +224,7 @@ export default {
         {
           title: '日期禁止选择',
           type: 'select',
-          description: '选中“无”时的默认限制：结束日期小于开始日期，开启配置后默认前后7天可选',
+          description: '选中“无”时的默认限制：开启配置后默认前后7天可选',
           options: [
             {
               label: '无',

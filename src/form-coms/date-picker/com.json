@@ -157,6 +157,17 @@
       ]
     },
     {
+      "id": "setDisabledDateRules",
+      "title": "设置禁用特定日期规则",
+      "desc": "设置不可选择的日期规则，类型：数组",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDateRulesDone"
+      ]
+    },
+    {
       "id": "setColor",
       "title": "设置字体颜色",
       "desc": "设置日期选择框里字体的颜色",
@@ -340,6 +351,14 @@
     {
       "id": "disabledDateDone",
       "title": "禁用特定日期完成",
+      "desc": "禁用特定日期事件完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDateRulesDone",
+      "title": "禁用特定日期规则完成",
       "desc": "禁用特定日期事件完成",
       "schema": {
         "type": "any"

@@ -9,7 +9,19 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { SlotIds, InputIds } from './constant';
+import {
+  formatParamsComVal,
+  formatGreaterOrLessCurrent,
+  formatInOrNotCurrent,
+  formatInOrNotParams,
+  formatEqualOtNotEqualParams,
+  formatBetweenParams,
+  formatRulesExpression
+} from './util';
 import { defaultDisabledDateRule, defaultDisabledTimeRule } from './editors';
+
+export const innerDateType = ['TODAY', 'QUARTER', 'MONTH', 'YEAR', 'WEEK'];
+const regStartMatch = /^(TODAY|YEAR|QUARTER|MONTH|WEEK)/;
 
 export type DisabledDateRule = {
   title: string;
@@ -37,6 +49,9 @@ export interface Data {
   useDisabledTime?: 'default' | 'static' | 'now';
   staticDisabledTime?: Array<DisabledDateRule>;
   hideDatePanel: boolean;
+  dynamicDisabledRules: Array<Array<any>>;
+  dynamicDisabledExpression: string;
+  disabledTimeRules: Array<DisabledDateRule>;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
   formatMap: {
     日期: string;
@@ -235,6 +250,85 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       forchUpdate((count) => count + 1);
       // forchUpdate(0);
       outputRels['disabledDateDone'](val);
+    });
+
+    inputs['setDisabledDateRules']?.((val, outputRels) => {
+      let TODAY = moment().endOf('day');
+      let YEAR = moment().year();
+      let MONTH = moment().endOf('month');
+      let QUARTER = moment().endOf('quarter');
+      let WEEK = moment().startOf('week');
+      data.dynamicDisabledRules = val;
+      data.dynamicDisabledExpression = formatRulesExpression(val, data.config.picker || 'date');
+      let LOGIC_SEPARATOR = '||';
+      data.disabledDate = (current) => {
+        let result = '';
+        const picker = data.config.picker || 'date';
+        // let regex =  /(TODAY)\s*([\+\-])\s*(\d+)/;//            /(TODAY)\s*([\+\-])\s*(\d+)/i
+        // console.log('picker', picker)
+        // for (let i = 0; i < val.length; i++) {
+        //   let [type, comVal] = val[i];
+
+        //   if (typeof comVal === 'string' && (innerDateType.includes(comVal) || regStartMatch.test(comVal))) {
+        //     comVal = formatParamsComVal(comVal, picker, { YEAR, TODAY, MONTH, QUARTER })
+        //   }else {
+        //     if(typeof comVal === 'string') {
+        //       comVal = formatParamsComVal(comVal, picker, { ignore: true, YEAR, TODAY, MONTH, QUARTER  })
+        //     }
+        //   }
+        //   let separator = i === 0 ? '' : LOGIC_SEPARATOR;
+        //   if (comVal)
+        //     switch (type) {
+        //       case '>':
+        //       case '<':
+        //       case '<=':
+        //       case '>=':
+        //       case '=':
+        //         result = result + separator + `${formatGreaterOrLessCurrent('current', picker)} ${type} ${comVal}`;
+        //         break;
+        //       // 日期在/不在某个区间
+        //       case 'in':
+        //       case 'notIn':
+        //         comVal = formatInOrNotParams(comVal, picker)
+        //         result =
+        //           result +
+        //           separator +
+        //           `(${type === 'in' ? '' : '!'}${JSON.stringify(
+        //             comVal
+        //           )}.includes(${formatInOrNotCurrent('current', picker)}))`;
+        //         break;
+        //       // 日期选择：处理周一-周五以及周六日这种; 季度选择：Q1,Q2
+        //       case 'equal':
+        //       case 'notEqual':
+        //         let formatted = formatEqualOtNotEqualParams(comVal, picker)
+        //         // 处理周六周日
+        //         result = result + separator + `${type === 'equal' ? '' : '!'}(${formatted})`;
+        //         break;
+        //       // 处理区间
+        //       case 'between':
+        //         const formattedBetween = formatBetweenParams(comVal, picker);
+        //         result =
+        //           result + separator + `${formattedBetween}`;
+        //         break;
+        //       default:
+        //         break;
+        //     }
+        // }
+        // result = 'current &&  (' + result + ')';
+        // console.log(
+        //   'reault',
+        //   result,
+        //   // current.endOf('day'),
+        //   // TODAY,
+        //   // eval(current && current.endOf('day') >= Number(TODAY + 1))
+        // );
+        // return eval(result);
+        return eval(data.dynamicDisabledExpression);
+      };
+      console.log('val ---', val);
+      forchUpdate((count) => count + 1);
+      // forchUpdate(0);
+      outputRels['setDisabledDateRulesDone'](val);
     });
 
     inputs['getValue']((val, outputRels) => {
