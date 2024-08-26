@@ -52,6 +52,9 @@ export const checkableTagSchema = {
 };
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     items({ data }: EditorResult<Data>, ...cate) {
       cate[0].title = '常规';
