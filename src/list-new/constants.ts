@@ -77,6 +77,9 @@ export interface Data {
   isCustomPoints: boolean;
   //断点配置
   customOptions: Option[];
+
+  //横向布局
+  horizonLayout: 'HorizontalLayout' | 'UniformLayout'
 }
 
 export const descriptionUpList = [

@@ -190,5 +190,13 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   */
   descriptionUp(descriptionUpList, input, output);
   //=========== 1.0.29 end ===============
+
+  /**
+   * @description v1.0.33 新增横向均匀分布
+  */
+  if (typeof data.horizonLayout === "undefined") {
+    data.horizonLayout = "HorizontalLayout"
+  }
+  //=========== 1.0.33 end ===============
   return true;
 }

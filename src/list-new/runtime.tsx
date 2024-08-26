@@ -231,6 +231,14 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
     return [overflowX, overflowY];
   }, [style.height, style.width]);
 
+  //横向均匀分布的style
+  const uniformStyle = 
+    data.layout === "horizontal" && !data.isAuto && data.horizonLayout === "UniformLayout" ? 
+    {
+      display: 'flex',
+      justifyContent: 'space-between'
+    } : {}
+
   return (
     <div
       className={classnames(
@@ -239,7 +247,8 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         'list-new__root'
       )}
       style={{
-        overflow: `${overflow[0]} ${overflow[1]}`
+        overflow: `${overflow[0]} ${overflow[1]}`,
+        ...uniformStyle,  
       }}
     >
       {ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns)}

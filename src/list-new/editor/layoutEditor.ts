@@ -41,11 +41,31 @@ export const LayoutEditor = [
         }
       },
       {
+        title: '横向布局',
+        type: 'select',
+        description: '横向布局提供两种类型，均匀排布和横向排布（超出内容时横向滚动）',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layout === Layout.Horizontal && !data.isAuto;
+        },
+        options: [
+          { label: '横向排布', value: 'HorizontalLayout' },
+          { label: '均匀排布', value: 'UniformLayout' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.horizonLayout;
+          },
+          set({ data }: EditorResult<Data>, val: 'HorizontalLayout' | 'UniformLayout') {
+            data.horizonLayout = val;
+          }
+        }
+      },
+      {
         title: '列表项宽度',
         type: 'text',
         description: '列表项的宽度，支持px, %及计算值',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === Layout.Horizontal && !data.isAuto || data.layout === Layout.Vertical;
+          return data.layout === Layout.Horizontal && data.horizonLayout !== 'UniformLayout' && !data.isAuto || data.layout === Layout.Vertical;
         },
         value: {
           get({ data }: EditorResult<Data>) {
