@@ -421,7 +421,7 @@ export default {
               title: '上传文件限制大小',
               type: 'Inputnumber',
               description: '允许上传的文件大小,0表示不限制',
-              options: [{ title: 'MB', min: 0, max: 50, width: 60 }],
+              options: [{ title: 'MB', min: 0, width: 60 }],
               value: {
                 get({ data }: EditorResult<Data>) {
                   return [data.config.fileSize];
