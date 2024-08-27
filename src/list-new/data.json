@@ -53,5 +53,6 @@
       "relation": "≥",
       "columns": 3
     }
-  ]
+  ],
+  "horizonLayout": "HorizontalLayout"
 }

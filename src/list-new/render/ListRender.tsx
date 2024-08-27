@@ -19,13 +19,19 @@ const ListRender = (
   columns
 ) => {
   // 无内容
-  if (slots['item'].size === 0) {
-    return slots['item']?.render();
-  }
+  // if (slots['item'].size === 0) {
+  //   return dataSource.map(()=>{
+  //     return slots['item']?.render({
+  //       style: data?.slotLayoutStyle
+  //     });
+  //   })
+
+  //   //return slots['item']?.render({style: data?.slotLayoutStyle});
+  // }
   // 非栅格布局编辑态
-  if (env.edit && !(data.layout === Layout.Grid && !data.isResponsive)) {
-    return EditRender(dataSource, data, slots, env);
-  }
+  // if (env.edit && !(data.layout === Layout.Grid && !data.isResponsive)) {
+  //   return EditRender(dataSource, data, slots, env);
+  // }
   // 响应式布局
   if (data.layout === Layout.Grid && data.isResponsive) {
     return ResponsiveRender(loading, data, dataSource, gutter, slots, env, columns);

@@ -1,8 +1,34 @@
 import { Layout } from './../constants';
 import { Data, OutputIds, Schemas, Option } from '../constants';
 import { unitConversion } from '../../utils';
+import { setSlotLayout } from '../../utils/editorTools'
 
 export const LayoutEditor = [
+  // {
+  //   title: '插槽布局',
+  //   items: [
+  //     {
+  //       title: '插槽布局',
+  //       type: 'layout',
+  //       description: '配置插槽内部的布局类型',
+  //       value: {
+  //         get({ data, focusArea }: EditorResult<Data>) {
+  //           return data?.slotLayoutStyle;
+  //         },
+  //         set({ slots, data }: EditorResult<Data>, val: any) {
+  //           if (data.slotLayoutStyle) {
+  //             data.slotLayoutStyle = {};
+  //           }
+
+  //           data.slotLayoutStyle = { ...val }
+
+  //           const slotInstance = slots.get("item");
+  //           setSlotLayout(slotInstance, val);
+  //         }
+  //       }
+  //     }
+  //   ]
+  // },
   {
     title: '布局',
     items: [
@@ -41,11 +67,31 @@ export const LayoutEditor = [
         }
       },
       {
+        title: '横向布局',
+        type: 'select',
+        description: '横向布局提供两种类型，均匀排布和横向排布（超出内容时横向滚动）',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layout === Layout.Horizontal && !data.isAuto;
+        },
+        options: [
+          { label: '横向排布', value: 'HorizontalLayout' },
+          { label: '均匀排布', value: 'UniformLayout' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.horizonLayout;
+          },
+          set({ data }: EditorResult<Data>, val: 'HorizontalLayout' | 'UniformLayout') {
+            data.horizonLayout = val;
+          }
+        }
+      },
+      {
         title: '列表项宽度',
         type: 'text',
         description: '列表项的宽度，支持px, %及计算值',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === Layout.Horizontal && !data.isAuto || data.layout === Layout.Vertical;
+          return data.layout === Layout.Horizontal && data.horizonLayout !== 'UniformLayout' && !data.isAuto || data.layout === Layout.Vertical;
         },
         value: {
           get({ data }: EditorResult<Data>) {

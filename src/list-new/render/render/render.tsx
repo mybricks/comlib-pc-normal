@@ -18,7 +18,11 @@ const AutoRender = (dataSource: any, data: Data, slots, env) => {
               itemData: item,
               index: index
             },
-            key: key
+            key: key,
+            style: {
+              minWidth: env.edit && slots['item'].size === 0 ? '80px' : void 0
+            }
+            //style: data?.slotLayoutStyle
           })}
         </div>
       ))}
@@ -44,7 +48,11 @@ const VerticalRender = (dataSource: any, data: Data, slots, env) => {
           itemData: item,
           index: index
         },
-        key: key
+        key: key,
+        // style: {
+        //   ...data?.slotLayoutStyle,
+        //   //minHeight: '30px'
+        // }
       })}
     </div>
   ));
@@ -89,7 +97,8 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots, env) => {
           itemData: item,
           index: index
         },
-        key: key
+        key: key,
+        //style: data?.slotLayoutStyle
       })}
     </div>
   ));

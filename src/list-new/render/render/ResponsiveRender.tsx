@@ -17,7 +17,10 @@ const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, s
             itemData: item,
             index: index
           },
-          key: key
+          key: key,
+          style: {
+            minWidth: env.edit && slots['item'].size === 0 ? '80px' : void 0
+          }
         })}
       </List.Item>
     );

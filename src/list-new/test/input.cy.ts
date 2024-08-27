@@ -1,4 +1,5 @@
 import toJSON from './toJSON.json';
+import dump_横向均匀分布检查 from './case-横向均匀分布检查/dump.json';
 import { toJSONPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 /**
@@ -47,5 +48,13 @@ describe('列表容器', () => {
     cy.contains('button', '下移').click();
     //判断位置是否合理变化
     cy.compareSnapshot('列表容器_位置移动检查');
+  });
+
+  enhancedIt('横向均匀分布检查', () => {
+    // 加载测试页面
+    toJSONPreview(dump_横向均匀分布检查);
+
+    // 截图对比
+    cy.compareSnapshot('列表容器_横向均匀分布检查');
   });
 });
