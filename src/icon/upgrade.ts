@@ -36,7 +36,7 @@ export default function ({
   /**
     * @description v1.0.11 -> v1.0.12, 拖拽决定图标尺寸
   */
-  if(getDeclaredStyle('.icon')['css']['fontSize']){
+  if(getDeclaredStyle('.icon')?.['css']?.['fontSize']){
     style.width = getDeclaredStyle('.icon')['css']['fontSize'];
   }
 
