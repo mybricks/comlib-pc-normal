@@ -79,7 +79,9 @@ export interface Data {
   customOptions: Option[];
 
   //横向布局
-  horizonLayout: 'HorizontalLayout' | 'UniformLayout'
+  horizonLayout: 'HorizontalLayout' | 'UniformLayout';
+  //插槽样式
+  //slotLayoutStyle: any;
 }
 
 export const descriptionUpList = [

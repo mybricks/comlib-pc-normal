@@ -15,6 +15,8 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   return _array;
 };
 
+const mockData = [ "id1", "id2", "id3", "id4", "id5"]
+
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {
   let { grid, useLoading, useGetDataSource } = data;
@@ -243,6 +245,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
     <div
       className={classnames(
         css.container,
+        env.edit && css.editContainer,
         data.layout === Layout.Horizontal && !data.isAuto && css.scrollContainer,
         'list-new__root'
       )}
@@ -251,7 +254,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         ...uniformStyle,  
       }}
     >
-      {ListRender(env, slots, data, dataSource, loading, gutter, onSortEnd, columns)}
+      {ListRender(env, slots, data, env.edit ? mockData : dataSource, loading, gutter, onSortEnd, columns)}
     </div>
   );
 };

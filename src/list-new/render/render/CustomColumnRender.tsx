@@ -26,6 +26,10 @@ const CustomColumnRender = (
             index: index
           },
           key: key
+          // style: {
+          //   ...data?.slotLayoutStyle,
+          //   minHeight: env.edit && data?.slotLayoutStyle.position === 'smart' ? '30px' : void 0
+          // }
         })}
       </List.Item>
     );
@@ -64,7 +68,8 @@ const CustomColumnRender = (
                   itemData: item,
                   index
                 },
-                key
+                key,
+                //style: data?.slotLayoutStyle
               })}
             </div>
           </SortableItem>
