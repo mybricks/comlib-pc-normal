@@ -89,6 +89,7 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots, env) => {
       className={`${css.scrollBox} list-new__item`}
       style={{
         width: data.itemWidth,
+        minWidth: env.edit && slots['item'].size === 0 && !data.itemWidth ? '80px' : void 0,
         margin: `0 ${number === dataSource?.length - 1 ? 0 : gutter[0]}px 0 0`
       }}
     >
