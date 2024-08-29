@@ -198,5 +198,13 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   descriptionUp(commonFormItemUpdateSchema, input, output);
   //=========== 1.1.14 end ===============
 
+  /**
+   * @description v1.1.20 新增 显示此刻控制
+   */
+  if(typeof data.showNow === 'undefined') {
+    data.showNow = true
+  }
+  //=========== 1.1.14 end ===============
+
   return true;
 }

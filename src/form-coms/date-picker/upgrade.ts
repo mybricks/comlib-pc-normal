@@ -355,5 +355,13 @@ export default function ({
   }
   //=========== v1.1.35 end ===============
   
+    /**
+   * @description v1.1.36 新增 显示此刻控制
+   */
+    if(typeof data.showNow === 'undefined') {
+      data.showNow = true
+    }
+    //=========== 1.1.36 end ===============
+  
   return true;
 }

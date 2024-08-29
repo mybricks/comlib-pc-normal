@@ -4,6 +4,7 @@
   "rules": [],
   "showTime": false,
   "useCustomDateCell": false,
+  "showNow": true,
   "contentType": "timeStamp",
   "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "config": {

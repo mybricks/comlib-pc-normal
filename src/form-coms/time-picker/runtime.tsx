@@ -189,6 +189,7 @@ export default function ({
             format={_format}
             disabled={disabled}
             allowClear
+            showNow={data.showNow}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
             popupClassName={id}

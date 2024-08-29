@@ -4,6 +4,7 @@
   "format": "timeStamp",
   "customFormat": "HH:mm:ss",
   "isEditable": true,
+  "showNow": true,
   "config": {
     "size": "middle"
   }
