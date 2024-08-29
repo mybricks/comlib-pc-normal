@@ -3,10 +3,11 @@
   "namespace": "test.test.test",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.1-beta.4",
+  "version": "1.0.0",
   "description": "test",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
