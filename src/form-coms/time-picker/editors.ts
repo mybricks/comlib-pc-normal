@@ -262,6 +262,19 @@ export default {
                   data.disabled = val;
                 }
               }
+            },
+            {
+              title: '显示此刻',
+              type: 'switch',
+              description: '配置面板是否展示“此刻”按钮',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !!data.showNow;
+                },
+                set({ data }: EditorResult<Data>, val: boolean) {
+                  data.showNow = val;
+                }
+              }
             }
           ]
         },

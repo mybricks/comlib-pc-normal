@@ -21,6 +21,7 @@ export interface Data {
   options: any[];
   rules: any[];
   showTime: Record<string, unknown> | boolean;
+  showNow?: boolean;
   contentType: string;
   formatter: string;
   useCustomDateCell: boolean;
@@ -627,6 +628,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
                 : undefined
             }
             showTime={getShowTime()}
+            showNow={data.showNow}
             onChange={onChange}
             onPanelChange={onPanelChange}
             disabledDate={data.disabledDate || disabledDateConfig}

@@ -190,6 +190,22 @@ export default {
           }
         },
         {
+          title: '显示此刻',
+          type: 'switch',
+          description: '当开启时间选择的时候，面板是否显示“此刻”按钮',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.showTime;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.showNow;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.showNow = val;
+            }
+          }
+        },
+        {
           title: '周号隐藏',
           type: 'Switch',
           description: '开启后，日期选择类型为周时，周号隐藏',
