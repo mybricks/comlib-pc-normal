@@ -199,34 +199,6 @@ export default function ({
     }
   };
 
-  //计算所有slot，通过display:block|none实现显示隐藏，避免被卸载
-  const renderSlots = () => {
-    const rtn: any[] = [];
-
-    if (!env.preview) {
-      for (const id in slots) {
-        const stepItem = data.stepAry.find((item) => item.id === id);
-
-        rtn.push(
-          <div
-            key={id}
-            data-step-slot={id}
-            style={{
-              display: `${getCurrentStep().id === id ? 'block' : 'none'}`,
-              height: '100%',
-              minHeight:
-                env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : void 0
-            }}
-          >
-            {slots[id]?.render({ style: stepItem?.slotLayuotStyle })}
-          </div>
-        );
-      }
-    }
-
-    return rtn;
-  };
-
   const renderButtons = () => {
     return data.toolbar.btns.map((btn) => {
       switch (btn.value) {
@@ -406,7 +378,9 @@ export default function ({
               height: contentHeight
             }}
           >
-            <div className={css.content}>{renderSlots()}</div>
+            <div className={css.content}>
+              <StepItems slots={slots} data={data} env={env} getCurrentStep={getCurrentStep} />
+            </div>
           </div>
         ) : null}
         {renderToolbar()}
@@ -414,3 +388,47 @@ export default function ({
     </div>
   );
 }
+
+const StepItems = ({
+  slots,
+  data,
+  env,
+  getCurrentStep
+}: {
+  data: Data;
+  slots;
+  env;
+  getCurrentStep;
+}) => {
+  const stepMap = useMemo(
+    () => new Map(data.stepAry.map((item) => [item.id, item])),
+    [data.stepAry]
+  );
+
+  const currentStepId = getCurrentStep().id;
+
+  const items = useMemo(() => {
+    return Object.keys(slots).map((id) => {
+      const stepItem = stepMap.get(id);
+      const isCurrentStep = currentStepId === id;
+      const heightStyle =
+        env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
+
+      return (
+        <div
+          key={id}
+          data-step-slot={id}
+          style={{
+            display: isCurrentStep ? 'block' : 'none',
+            height: '100%',
+            minHeight: heightStyle
+          }}
+        >
+          {slots[id]?.render({ style: stepItem?.slotLayuotStyle })}
+        </div>
+      );
+    });
+  }, [slots, stepMap, env.edit, currentStepId]);
+
+  return <>{items}</>;
+};
