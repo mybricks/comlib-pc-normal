@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.36",
+  "version": "1.1.37",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -172,7 +172,7 @@
               "properties": {
                 "value": {
                   "title": "比较值",
-                  "description": "可以是字符或者数组，例如 `TODAY`、`2024-07-17` 可用在>=; ['2024-07-16', '2024-07-28']可用在in、between；'Sat'、'Mon' 用在equal场景",
+                  "description": "可以是字符或者数组，例如 `TODAY`、`2024-07-17` 可用在>=; ['2024-07-16', '2024-07-28']可用在in、between；'Sat'、'Mon',  用在equal场景",
                   "type": "any"
                 },
                 "op":  {
@@ -199,6 +199,10 @@
                     {
                       "type": "string",
                       "value": "="
+                    },
+                    {
+                      "type": "string",
+                      "value": "!="
                     },
                     {
                       "type": "string",
@@ -245,7 +249,7 @@
           },
           "picker": {
             "type": "enum",
-            "description": "日期选择类型，非必填，不传时以组件配置的类型为准",
+            "description": "处理的日期选择类型，非必填，不传时以组件配置的类型为准",
             "items": [
               {
                 "type": "string",
@@ -266,6 +270,24 @@
               {
                 "type": "string",
                 "value": "year"
+              }
+            ]
+          },
+          "currentMode": {
+            "type": "enum",
+            "descriptions": "当前时间比较方式，不传递，则是默认；传递startOf、endOf分别表示日期开始时间、日期结束时间",
+            "items": [
+              {
+                "type": "string",
+                "value": "default"
+              },
+              {
+                "type": "string",
+                "value": "startOf"
+              },
+              {
+                "type": "string",
+                "value": "endOf"
               }
             ]
           }

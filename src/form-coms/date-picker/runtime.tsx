@@ -257,8 +257,9 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       const result = formatRulesExpression(val, pickerVal);
       data.dynamicDisabledExpression = result ? 'current &&  (' + result + ')' : 'current';
       // data.dynamicDisabledExpression = formatRulesExpression(val, data.config.picker || 'date');
-      console.log('dynamicDisabledExpression', val, data.dynamicDisabledExpression);
+      // console.log('dynamicDisabledExpression', val, data.dynamicDisabledExpression);
       data.disabledDate = (current) => {
+        // console.log('current', current.endOf('month'))
         return data.dynamicDisabledExpression && data.dynamicDisabledExpression !== 'current'
           ? eval(data.dynamicDisabledExpression)
           : false;

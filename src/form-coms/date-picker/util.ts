@@ -35,7 +35,6 @@ const currentMap = {
 // 匹配2024-YY-DD
 export const dateRegex = /^\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/;
 
-
 function getDateValType(value) {
   if (moment.isMoment(value)) {
     return 'moment'
@@ -55,6 +54,7 @@ function getDateValType(value) {
 export function formatRulesExpression(val: DisabledRulesValue, picker) {
   let result = '';
   let LOGIC_SEPARATOR = val.relation ?? '||'
+  // let currentMode = 
   for (let i = 0; i < val.rules.length; i++) {
     let { op: type, value: comVal } = val.rules[i];
     if (typeof comVal === 'string' && (innerDateType.includes(comVal) || regStartMatch.test(comVal))) {
@@ -70,12 +70,15 @@ export function formatRulesExpression(val: DisabledRulesValue, picker) {
         case '<=':
         case '>=':
         case '=':
-        case '!==':
-          result = result + separator + `${formatGreaterOrLessCurrent('current', picker)} ${type} ${comVal}`;
+        case '!=':
+          // comVal = formatSingleComVal(comVal, picker, picker === 'week' ? 'start' : 'default')
+          let actualType = type === '=' ? '===' : type === '!=' ? '!==' : type
+          result = result + separator + `${formatGreaterOrLessCurrent('current', picker, type)} ${actualType} ${comVal}`;
           break;
         // 日期在/不在某个区间
         case 'in':
         case 'notIn':
+          console.log('comVal', JSON.stringify(comVal))
           comVal = formatInOrNotParams(comVal, picker)
           result =
             result +
@@ -100,7 +103,6 @@ export function formatRulesExpression(val: DisabledRulesValue, picker) {
           let complexExpr = formatRulesExpression(val.rules[i].value, picker)
           if (complexExpr) {
             result = result + separator + '(' + complexExpr + ')'
-
           }
         default:
           break;
@@ -116,6 +118,9 @@ export function formatSingleComVal(comVal, picker, endOrStart) {
     if (picker === 'year') {
       return comVal.year()
     }
+    if(endOrStart === 'default') {
+      return comVal.valueOf();
+    }
     return endOrStart === 'start' ? comVal.startOf(mapPickerToEnd[picker]).valueOf() : comVal.endOf(mapPickerToEnd[picker]).valueOf()
   } else if (valueType === 'number') {
     return comVal
@@ -128,14 +133,15 @@ export function formatSingleComVal(comVal, picker, endOrStart) {
       comVal = Number(comVal)
       break;
     case 'week':
-      // week 支持2024-W32 和2024-11-12 这两种格式
+      // week 传入的字符串支持2024-W32 和2024-11-12 这两种格式
       let extraParams = dateRegex.test(comVal) ? ['YYYY-MM-DD'] : ['YYYY-[W]WW']
       comVal = moment(comVal, ...extraParams).startOf(mapPickerToEnd[picker]).valueOf()
       break;
     case 'date':
     case 'month':
     case 'quarter':
-      comVal = endOrStart === 'end' ? moment(comVal, ...extraArgs).endOf(mapPickerToEnd[picker]).valueOf() : moment(comVal, ...extraArgs).startOf(mapPickerToEnd[picker]).valueOf()
+      let date = moment(comVal, ...extraArgs)
+      comVal = endOrStart === 'default' ? date.valueOf() : endOrStart === 'end' ? date.endOf(mapPickerToEnd[picker]).valueOf() : date.startOf(mapPickerToEnd[picker]).valueOf()
       break;
     default:
       break;
@@ -169,12 +175,15 @@ function formatIncludeSpecialDate(comVal) {
 }
 
 // >, <. >=, <= 等场景 current取值
-export function formatGreaterOrLessCurrent(current, picker: 'date' | 'week' | 'month' | 'quarter' | 'year') {
+export function formatGreaterOrLessCurrent(current, picker: 'date' | 'week' | 'month' | 'quarter' | 'year', type) {
   if (picker === 'year') {
     return 'current.year()'
   }
   if (picker === 'week') {
     return "current.clone().startOf('week')"
+  }
+  if(type === '=' || type === '!==') {
+    return `current.endOf('${mapPickerToEnd[picker]}').valueOf()`
   }
   // if (['date', 'quarter', 'month'].includes(picker)) {
   //   return `current.endOf('${mapPickerToEnd[picker]}')`
@@ -200,21 +209,20 @@ export function formatInOrNotParams(comVal, picker: 'date' | 'week' | 'month' | 
   if (picker === 'year') {
     return comVal.map((item) => Number(moment(String(item)).format(pickToFormat[picker])));
   }
-  let extraArgs = picker === 'quarter' ? [pickToFormat.quarter] : []
   let res = comVal.map(item => {
-    return moment(formatSingleComVal(item, picker, 'start'), ...extraArgs).format(pickToFormat[picker])
+    return moment(formatSingleComVal(item, picker, 'start')).format(pickToFormat[picker])
   })
   return res
 }
 
-// equal, notEqual 只支持日期和季度选择
+// equal, notEqual 只支持日期和季度,月份选择
 export function formatEqualOtNotEqualParams(comVal, picker: 'date' | 'quarter' | 'month') {
   if (['date', 'quarter', 'month'].includes(picker)) {
     let formatted = comVal
       .map((item) => {
         let comPareValue =
           typeof item === 'number' ?
-            item : picker === 'quarter' ? QuarterEnumMap[item] : picker === 'date' ? WeekEnumMap[WeekDayEnum[item]] : '';
+            (item -1) : picker === 'quarter' ? QuarterEnumMap[item] : picker === 'date' ? WeekEnumMap[WeekDayEnum[item]] : '';
         return `${currentMap[picker]} === ${comPareValue}`;
       })
       .join(' || ');

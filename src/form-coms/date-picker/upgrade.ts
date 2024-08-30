@@ -1,7 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
-import { inputIds, outputIds } from '../form-container/constants';
+import { inputIds, outputIds, dateDisabledRulesSchema } from '../form-container/constants';
 import { InputIds as DatePickerInputIds } from './constant'
 
 export default function ({
@@ -363,5 +363,18 @@ export default function ({
     }
     //=========== 1.1.36 end ===============
   
+  /**
+   * @description v1.1.37 增加设置禁用特定日期规则
+   */
+
+  if (!output.get('setDisabledDateRulesDone')) {
+    output.add('setDisabledDateRulesDone', '禁用特定日期规则完成', { type: 'any' });
+  }
+  if(!input.get('setDisabledDateRules')) {
+    input.add('setDisabledDateRules', '设置禁用特定日期规则', dateDisabledRulesSchema)
+    input.get('setDisabledDateRules').setRels([`setDisabledDateRulesDone`]);
+
+  }
+  //=========== v1.1.37 end ===============
   return true;
 }
