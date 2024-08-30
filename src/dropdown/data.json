@@ -8,5 +8,6 @@
   "isChildCustom": false,
   "dynamicOptions": [],
   "eventBubble": false,
-  "contentBubble": false
+  "contentBubble": false,
+  "isItem": false
 }

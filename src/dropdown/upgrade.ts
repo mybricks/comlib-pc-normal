@@ -255,6 +255,16 @@ export default function ({
   });
 
   //=========== v1.0.31 end ===============
+
+  /**
+   * @description v1.0.34 新增完整子项开关
+  */
+
+  if(typeof data.isItem === 'undefined') {
+    data.isItem = false
+  }
+
+  //=========== v1.0.30 end ===============
   
   return true;
 }
