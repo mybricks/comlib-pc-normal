@@ -1,7 +1,7 @@
 {
   "title": "下拉菜单",
   "namespace": "mybricks.normal-pc.dropdown",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "下拉菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -14,7 +14,7 @@
     {
       "id": "dynamicallyModifySubitems",
       "title": "设置子项属性",
-      "desc": "动态设置子项属性",
+      "desc": "静态选项配置后，动态设置子项属性",
       "rels": [
         "dynamicallyModifySubitemsDone"
       ],

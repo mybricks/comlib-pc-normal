@@ -1,5 +1,6 @@
 import { Data } from './types';
 import { uuid } from '../utils';
+import { onClickSchema,  dynamicOnClickSchema } from './types'
 
 interface Result {
   data: Data;
@@ -55,7 +56,7 @@ function get(data: Data, focusArea: any, dataset: string, val: any, cb?: any) {
 
 export default {
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-    if (toPin.id === 'setDynamicOptions') {
+    if (toPin.id === 'setDynamicOptions' && data.isItem) {
       let itemSchema = {};
       if (fromPin.schema.type === 'array') {
         itemSchema = fromPin.schema.items;
@@ -300,47 +301,6 @@ export default {
             }
           }
         },
-        //选项的配置
-        {
-          title: '动态选项',
-          type: 'switch',
-          description: '开启后，可以通过逻辑连线连接下拉菜单的输入项【设置选项】，传入动态选项数据',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.isDynamic;
-            },
-            set({ data, input, output }: EditorResult<Data>, val: boolean) {
-              data.isDynamic = val;
-              const schema = {
-                title: '设置选项',
-                type: 'array',
-                items: {
-                  title: '列项数据',
-                  type: 'object',
-                  properties: {
-                    value: {
-                      type: 'any'
-                    },
-                    disabled: {
-                      type: 'boolean'
-                    }
-                  }
-                }
-              };
-              if (val) {
-                !input.get('setDynamicOptions') &&
-                  input.add('setDynamicOptions', '设置选项', schema);
-                !output.get('setDynamicOptionsDone') &&
-                  output.add('setDynamicOptionsDone', '设置选项完成', schema);
-
-                input.get('setDynamicOptions').setRels(['setDynamicOptionsDone']);
-              } else {
-                input.get('setDynamicOptions') && input.remove('setDynamicOptions');
-                output.get('setDynamicOptionsDone') && output.remove('setDynamicOptionsDone');
-              }
-            }
-          }
-        },
         {
           title: '选项配置',
           type: 'array',
@@ -421,33 +381,6 @@ export default {
           }
         },
         {
-          title: '提示内容禁止冒泡',
-          description: '触发方式为点击时，默认关闭，阻止提示内容的点击事件冒泡',
-          type:'switch',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.trigger === 'click';
-          },
-          value: {
-            get({ data }) {
-              return data.contentBubble;
-            },
-           set({ data }, value: boolean) {
-              data.contentBubble = value;
-            }}
-        },
-        {
-          title: '选项禁止冒泡',
-          description: '默认关闭，阻止选项的点击事件冒泡',
-          type:'switch',
-          value: {
-            get({ data }) {
-              return data.eventBubble;
-            },
-           set({ data }, value: boolean) {
-              data.eventBubble = value;
-            }}
-        },
-        {
           title: '点击',
           type: '_Event',
           description: '选项点击事件',
@@ -458,6 +391,106 @@ export default {
           }
         }
       ];
+      cate[1].title = '高级';
+      cate[1].items = [
+        {
+          title: '动态选项',
+          items:[
+            //选项的配置
+            {
+              title: '动态选项',
+              type: 'switch',
+              description: '开启后，可以通过逻辑连线连接下拉菜单的输入项【设置选项】，传入动态选项数据',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.isDynamic;
+                },
+                set({ data, input, output }: EditorResult<Data>, val: boolean) {
+                  data.isDynamic = val;
+                  const schema = {
+                    title: '设置选项',
+                    type: 'array',
+                    items: {
+                      title: '列项数据',
+                      type: 'object',
+                      properties: {
+                        value: {
+                          type: 'any'
+                        },
+                        disabled: {
+                          type: 'boolean'
+                        }
+                      }
+                    }
+                  };
+                  if (val) {
+                    !input.get('setDynamicOptions') &&
+                      input.add('setDynamicOptions', '设置选项', schema);
+                    !output.get('setDynamicOptionsDone') &&
+                      output.add('setDynamicOptionsDone', '设置选项完成', schema);
+
+                    input.get('setDynamicOptions').setRels(['setDynamicOptionsDone']);
+
+                    output.get("onChange")?.setSchema(dynamicOnClickSchema);
+                  } else {
+                    input.get('setDynamicOptions') && input.remove('setDynamicOptions');
+                    output.get('setDynamicOptionsDone') && output.remove('setDynamicOptionsDone');
+                    
+                    output.get("onChange")?.setSchema(onClickSchema);
+                  }
+                }
+              }
+            },
+            {
+              title: '完整子项',
+              type: 'switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.isDynamic;
+              },
+              description: '默认关闭, 作用域插槽内当前项为value字段, 打开后传递完整item',
+              value: {
+                get({ data }) {
+                  return data.isItem;
+                },
+              set({ data }, value: boolean) {
+                  data.isItem = value;
+                }}
+            }
+          ]
+        },
+        {
+          title: '冒泡',
+          items:[
+            {
+              title: '提示内容禁止冒泡',
+              description: '触发方式为点击时，默认关闭，阻止提示内容的点击事件冒泡',
+              type:'switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.trigger === 'click';
+              },
+              value: {
+                get({ data }) {
+                  return data.contentBubble;
+                },
+               set({ data }, value: boolean) {
+                  data.contentBubble = value;
+                }}
+            },
+            {
+              title: '选项禁止冒泡',
+              description: '默认关闭，阻止选项的点击事件冒泡',
+              type:'switch',
+              value: {
+                get({ data }) {
+                  return data.eventBubble;
+                },
+               set({ data }, value: boolean) {
+                  data.eventBubble = value;
+                }}
+            },
+          ]
+        }
+      ]
     }
   },
   '[data-menu-item]': {

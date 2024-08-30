@@ -46,16 +46,17 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
       inputs[InputIds.SetDynamicOptions]((v, relOutputs) => {
         if (Array.isArray(v)) {
           const ds = v.map((item, index) => {
-            if (item.value) {
+            if (data.isItem || !item.value) {
               return {
-                value: item.value,
-                disabled: item.disabled ? true : false,
+                value: item,
                 [rowKey]: uuid(),
+                disabled: item.disabled ? true : false,
                 index: index
               };
             } else {
               return {
-                value: item,
+                value: item.value,
+                disabled: item.disabled ? true : false,
                 [rowKey]: uuid(),
                 index: index
               };
@@ -98,7 +99,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
                       disabled={option.disabled}
                       //style={{ color: option.disabled ? void 0 : option.iconColor }}
                       key={index}
-                      onClick={() => onClick(option)}
+                      onClick={() => onClick({value: option.value, disabled: option.disabled})}
                     >
                       {slots['item']?.render({
                         inputValues: {
