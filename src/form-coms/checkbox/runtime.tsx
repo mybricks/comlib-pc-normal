@@ -161,6 +161,12 @@ export default function Runtime({
         data.config.options = [...ds];
         outputRels['setOptionsDone'](ds);
         let newValArray: any[] = [];
+        // 设置数据源时，里面如果value有undefined 的选项，renderError 为true
+        if (ds.every((opt) => opt.value !== undefined)) {
+          data.renderError = false;
+        } else {
+          data.renderError = true;
+        }
         let allCheckedArray = [];
         ds.map((item) => {
           const { checked, value } = item;
@@ -285,9 +291,9 @@ export default function Runtime({
     }
   }, [data.staticOptions, data.config.options, data.checkAll]);
 
-  if (data.renderError) {
-    return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
-  }
+  // if (data.renderError) {
+  //   return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
+  // }
 
   const checkboxStyle = {
     marginBottom: data.layout === 'vertical' ? '8px' : void 0
@@ -302,11 +308,11 @@ export default function Runtime({
     width: '16px'
   };
 
-  const onBubbleClick = (e)=>{
+  const onBubbleClick = (e) => {
     //e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-  }
+  };
 
   let options = env.edit ? data.staticOptions : data.config.options;
   let newOptions = options.map((opt) => {
@@ -334,22 +340,27 @@ export default function Runtime({
         </span>
       ));
     }
-    return !data.eventBubble ? newOptions.map((item) => <Checkbox {...item}>{item.label}</Checkbox>) : 
-    newOptions.map((item) => {
-      return (
-        <span onClick={onBubbleClick}>
-          <Checkbox 
-            value={item.value} 
-            checked={valueRef.current?.includes(item.value)}
-            disabled={item.disabled}
-            onClick={onBubbleClick}
-          >
-            {item.label}
-          </Checkbox>
-        </span>
-      )
-    });
+    return !data.eventBubble
+      ? newOptions.map((item) => <Checkbox {...item}>{item.label}</Checkbox>)
+      : newOptions.map((item) => {
+          return (
+            <span onClick={onBubbleClick}>
+              <Checkbox
+                value={item.value}
+                checked={valueRef.current?.includes(item.value)}
+                disabled={item.disabled}
+                onClick={onBubbleClick}
+              >
+                {item.label}
+              </Checkbox>
+            </span>
+          );
+        });
   }, [env.edit, newOptions, data.eventBubble]);
+
+  if (data.renderError) {
+    return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
+  }
 
   if (env.edit && data.staticOptions?.length === 0) {
     return <div className={css.suggestion}>在编辑栏中添加静态选项</div>;
@@ -378,7 +389,7 @@ export default function Runtime({
           style={checkboxGroup}
           // {...data.config}
           disabled={data.config.disabled}
-          options={env.edit ? undefined : (data.eventBubble ? undefined :newOptions)}
+          options={env.edit ? undefined : data.eventBubble ? undefined : newOptions}
           value={value}
           onChange={onChange}
         >
