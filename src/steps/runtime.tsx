@@ -286,7 +286,8 @@ export default function ({
         style={{
           justifyContent: data.toolbar.actionAlign,
           position: data.toolbar.fixed ? 'fixed' : 'static',
-          bottom: data.toolbar.bottom
+          bottom: data.toolbar.bottom,
+          ...(data.toolbar.fixed ? { zIndex: 1 } : {})
         }}
       >
         {renderButtons()}
