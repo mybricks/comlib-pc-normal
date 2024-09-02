@@ -43,7 +43,6 @@ export default function ({
   const [footerHeight] = useElementHeight(footerRef);
 
   const contentHeight = useMemo(() => {
-    console.log('contentHeight memo');
     if (isUseOldHeight || isVertical) return void 0; // 已有和垂直的不做处理
     const headerMargin = headerHeight === 0 ? 0 : 40; // 默认有40px的margin
     const footerMargin = footerHeight === 0 ? 0 : 24; // 默认有24px的margin
@@ -299,7 +298,6 @@ export default function ({
   };
 
   const { type, progressDot } = useMemo(() => {
-    console.log('type, progressDot');
     const type = data.steps.type as 'default' | 'navigation';
     const progressDot = data.steps.type === 'dotted';
     return { type, progressDot };
@@ -313,27 +311,6 @@ export default function ({
         }
       : void 0;
   }, [data.dynamicSteps]);
-
-  // const slotContentRender = useMemo(() => {
-  //   console.log('calc rerender slotContent')
-  //   return !data.hideSlots ? (
-  //     <div
-  //       className={classnames(
-  //         {
-  //           [css.preview]: env.preview
-  //         },
-  //         css.stepsContent
-  //       )}
-  //       style={{
-  //         height: contentHeight
-  //       }}
-  //     >
-  //       <div className={css.content}>
-  //         <StepItems slots={slots} data={data} env={env}  getCurrentStep={getCurrentStep}/>
-  //       </div>
-  //     </div>
-  //   ) : null
-  // }, [data.hideSlots, data.current])
 
   return (
     <div className={css.stepbox} ref={ref}>
@@ -391,7 +368,6 @@ export default function ({
             })}
           </Steps>
         </div>
-        {/* {slotContentRender} */}
         {!data.hideSlots ? (
           <div
             className={classnames(
@@ -426,24 +402,18 @@ const StepItems = ({
   env;
   getCurrentStep;
 }) => {
-  console.log('stepItems');
   const stepMap = useMemo(() => {
-    console.log('stepMap usemome');
     return new Map(data.stepAry.map((item) => [item.id, item]));
   }, [data.stepAry]);
 
   const currentStepId = getCurrentStep().id;
 
   const items = useMemo(() => {
-    if (env.edit) {
-      return <div></div>;
-    }
     return Object.keys(slots).map((id) => {
-      const stepItem = stepMap.get(id);
+      const stepItem = stepMap.get(id) ?? data.stepAry.find((item) => item.id === id);
       const isCurrentStep = currentStepId === id;
       const heightStyle =
         env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
-      console.log('stepItems item memo', isCurrentStep, slots, stepMap, env.edit, currentStepId);
       return (
         <div
           key={id}
@@ -460,14 +430,13 @@ const StepItems = ({
     });
   }, [slots, stepMap, env.edit, currentStepId]);
 
+  // 编辑态
   if (env.edit) {
     return Object.keys(slots).map((id) => {
-      const stepItem = stepMap.get(id);
+      const stepItem = stepMap.get(id) || data.stepAry.find((item) => item.id === id);
       const isCurrentStep = currentStepId === id;
       const heightStyle =
         env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
-      console.log('stepItems item env', isCurrentStep, slots, stepMap, env.edit, currentStepId);
-
       return (
         <div
           key={id}
@@ -489,27 +458,11 @@ const StepItems = ({
 
 const StepPerItem = memo(
   ({ stepItem, env, slots, isCurrentStep }: any) => {
-    const id = stepItem.id;
-    console.log('stepItem --- ', stepItem);
-    return slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id });
-
-    // return  (
-    //   <div
-    //     key={id}
-    //     data-step-slot={id}
-    //     style={{
-    //       display: isCurrentStep ? 'block' : 'none',
-    //       height: '100%',
-    //       minHeight: heightStyle
-    //     }}
-    //   >
-    //     {slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id})}
-    //   </div>
-    // )
+    const id = stepItem?.id;
+    return id && slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id });
   },
   (preValue: any, nextValue: any) => {
-    console.log('prev, next', preValue, nextValue);
-    if (preValue.stepItem.id === nextValue.stepItem.id) {
+    if (preValue.stepItem?.id === nextValue.stepItem?.id) {
       return true;
     }
   }
