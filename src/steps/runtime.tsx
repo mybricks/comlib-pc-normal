@@ -1,5 +1,5 @@
 import { Button, Steps } from 'antd';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, memo } from 'react';
 import classnames from 'classnames';
 import { Data, INTO, LEAVE, CLICK, StepItem } from './constants';
 import { usePrevious } from '../utils/hooks';
@@ -8,6 +8,7 @@ import { checkIfMobile, uuid } from '../utils';
 import * as Icons from '@ant-design/icons';
 import useParentHeight from '../table/hooks/use-parent-height';
 import useElementHeight from '../table/hooks/use-element-height';
+import step from './editor/step';
 
 const { Step } = Steps;
 
@@ -42,6 +43,7 @@ export default function ({
   const [footerHeight] = useElementHeight(footerRef);
 
   const contentHeight = useMemo(() => {
+    console.log('contentHeight memo');
     if (isUseOldHeight || isVertical) return void 0; // 已有和垂直的不做处理
     const headerMargin = headerHeight === 0 ? 0 : 40; // 默认有40px的margin
     const footerMargin = footerHeight === 0 ? 0 : 24; // 默认有24px的margin
@@ -297,6 +299,7 @@ export default function ({
   };
 
   const { type, progressDot } = useMemo(() => {
+    console.log('type, progressDot');
     const type = data.steps.type as 'default' | 'navigation';
     const progressDot = data.steps.type === 'dotted';
     return { type, progressDot };
@@ -310,6 +313,27 @@ export default function ({
         }
       : void 0;
   }, [data.dynamicSteps]);
+
+  // const slotContentRender = useMemo(() => {
+  //   console.log('calc rerender slotContent')
+  //   return !data.hideSlots ? (
+  //     <div
+  //       className={classnames(
+  //         {
+  //           [css.preview]: env.preview
+  //         },
+  //         css.stepsContent
+  //       )}
+  //       style={{
+  //         height: contentHeight
+  //       }}
+  //     >
+  //       <div className={css.content}>
+  //         <StepItems slots={slots} data={data} env={env}  getCurrentStep={getCurrentStep}/>
+  //       </div>
+  //     </div>
+  //   ) : null
+  // }, [data.hideSlots, data.current])
 
   return (
     <div className={css.stepbox} ref={ref}>
@@ -327,7 +351,7 @@ export default function ({
             progressDot={progressDot}
             direction={direction}
             labelPlacement={labelPlacement}
-            onChange={onChange()}
+            onChange={onChange}
           >
             {stepAry.map((item, index) => {
               const emptyNode = <div style={{ lineHeight: 32 }} />;
@@ -363,10 +387,11 @@ export default function ({
                   );
                 }
               }
-              return <Step {...stepProps} />;
+              return <Step wrapperStyle={{ transition: '' }} {...stepProps} />;
             })}
           </Steps>
         </div>
+        {/* {slotContentRender} */}
         {!data.hideSlots ? (
           <div
             className={classnames(
@@ -401,19 +426,47 @@ const StepItems = ({
   env;
   getCurrentStep;
 }) => {
-  const stepMap = useMemo(
-    () => new Map(data.stepAry.map((item) => [item.id, item])),
-    [data.stepAry]
-  );
+  console.log('stepItems');
+  const stepMap = useMemo(() => {
+    console.log('stepMap usemome');
+    return new Map(data.stepAry.map((item) => [item.id, item]));
+  }, [data.stepAry]);
 
   const currentStepId = getCurrentStep().id;
 
   const items = useMemo(() => {
+    if (env.edit) {
+      return <div></div>;
+    }
     return Object.keys(slots).map((id) => {
       const stepItem = stepMap.get(id);
       const isCurrentStep = currentStepId === id;
       const heightStyle =
         env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
+      console.log('stepItems item memo', isCurrentStep, slots, stepMap, env.edit, currentStepId);
+      return (
+        <div
+          key={id}
+          data-step-slot={id}
+          style={{
+            display: isCurrentStep ? 'block' : 'none',
+            height: '100%',
+            minHeight: heightStyle
+          }}
+        >
+          {slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: id })}
+        </div>
+      );
+    });
+  }, [slots, stepMap, env.edit, currentStepId]);
+
+  if (env.edit) {
+    return Object.keys(slots).map((id) => {
+      const stepItem = stepMap.get(id);
+      const isCurrentStep = currentStepId === id;
+      const heightStyle =
+        env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
+      console.log('stepItems item env', isCurrentStep, slots, stepMap, env.edit, currentStepId);
 
       return (
         <div
@@ -425,11 +478,39 @@ const StepItems = ({
             minHeight: heightStyle
           }}
         >
-          {slots[id]?.render({ style: stepItem?.slotLayuotStyle })}
+          <StepPerItem stepItem={stepItem} env={env} slots={slots} isCurrentStep={isCurrentStep} />
         </div>
       );
     });
-  }, [slots, stepMap, env.edit, currentStepId]);
+  }
 
   return <>{items}</>;
 };
+
+const StepPerItem = memo(
+  ({ stepItem, env, slots, isCurrentStep }: any) => {
+    const id = stepItem.id;
+    console.log('stepItem --- ', stepItem);
+    return slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id });
+
+    // return  (
+    //   <div
+    //     key={id}
+    //     data-step-slot={id}
+    //     style={{
+    //       display: isCurrentStep ? 'block' : 'none',
+    //       height: '100%',
+    //       minHeight: heightStyle
+    //     }}
+    //   >
+    //     {slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id})}
+    //   </div>
+    // )
+  },
+  (preValue: any, nextValue: any) => {
+    console.log('prev, next', preValue, nextValue);
+    if (preValue.stepItem.id === nextValue.stepItem.id) {
+      return true;
+    }
+  }
+);
