@@ -291,10 +291,10 @@ export default function ({
     return (
       <>
         {data.tabList.map((item) => {
-          const tabName = env.i18n(item.name);
           if (env.runtime && (!isHasPermission(item.permission) || !showTabs?.includes(item.id))) {
             return null;
           }
+
           return (
             <TabPane
               tab={<Tooltip title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}

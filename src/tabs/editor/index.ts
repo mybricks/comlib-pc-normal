@@ -9,21 +9,7 @@ import {
   createFontStyleForActive
 } from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
-
-export const setSlotLayout = (slot, val) => {
-  if (!slot) return;
-  if (val.position === 'smart') {
-    slot.setLayout('smart');
-  } else if (val.position === 'absolute') {
-    slot.setLayout(val.position);
-  } else if (val.display === 'flex') {
-    if (val.flexDirection === 'row') {
-      slot.setLayout('flex-row');
-    } else if (val.flexDirection === 'column') {
-      slot.setLayout('flex-column');
-    }
-  }
-};
+import { setSlotLayout } from '../../utils/editorTools'
 
 export default {
   ':slot': {},
@@ -52,10 +38,9 @@ export default {
               if (!data.slotStyle) {
                 data.slotStyle = {};
               }
-              data.slotStyle = {
-                ...data.slotStyle,
-                ...val
-              };
+
+              data.slotStyle = val
+
               data.tabList.forEach((item) => {
                 const slotInstance = slots.get(item.id);
                 setSlotLayout(slotInstance, val);

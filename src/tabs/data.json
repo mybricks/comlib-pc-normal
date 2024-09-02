@@ -6,24 +6,12 @@
       "id": "tab0",
       "infoType": "text",
       "size": "default",
-      "offset": [
-        0,
-        0
-      ],
+      "offset": [0, 0],
       "status": "error",
       "showZero": false
     }
   ],
-  "slotStyle": {
-    "display": "block",
-    "position": "smart",
-    "flexDirection": "column",
-    "alignItems": "flex-start",
-    "justifyContent": "flex-start",
-    "flexWrap": "nowrap",
-    "rowGap": 0,
-    "columnGap": 0
-  },
+  "slotStyle": {},
   "defaultActiveKey": "tab0",
   "type": "line",
   "size": "middle",
