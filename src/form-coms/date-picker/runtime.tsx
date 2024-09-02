@@ -231,7 +231,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
         });
     });
 
-    inputs['disabledDate']((val, outputRels) => {
+    inputs['disabledDate']?.((val, outputRels) => {
       if (typeof val === 'function') {
         data.disabledDate = val;
       } else {
