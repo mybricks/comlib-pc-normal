@@ -60,7 +60,18 @@ export function formatRulesExpression(val: DisabledRulesValue, picker) {
     if (typeof comVal === 'string' && (innerDateType.includes(comVal) || regStartMatch.test(comVal))) {
       comVal = formatIncludeSpecialDate(comVal)
     } else {
-      comVal = formatSingleComVal(comVal, picker, picker === 'week' ? 'start' : 'end')
+      let dateEnd = 'end'
+      if(picker === 'date') {
+        if(type === '<') {
+          dateEnd = 'start'
+        }
+        if(isMoment(comVal) && ['>', '<'].includes(type)) {
+          // 待验证
+          dateEnd = 'default'
+        }
+        console.log('comVal', comVal, isMoment(comVal))
+      }
+      comVal = formatSingleComVal(comVal, picker, picker === 'week' ? 'start' : dateEnd)
     }
     let separator = i === 0 ? '' : LOGIC_SEPARATOR;
     if (comVal)
@@ -71,7 +82,6 @@ export function formatRulesExpression(val: DisabledRulesValue, picker) {
         case '>=':
         case '=':
         case '!=':
-          // comVal = formatSingleComVal(comVal, picker, picker === 'week' ? 'start' : 'default')
           let actualType = type === '=' ? '===' : type === '!=' ? '!==' : type
           result = result + separator + `${formatGreaterOrLessCurrent('current', picker, type)} ${actualType} ${comVal}`;
           break;
@@ -182,7 +192,7 @@ export function formatGreaterOrLessCurrent(current, picker: 'date' | 'week' | 'm
   if (picker === 'week') {
     return "current.clone().startOf('week')"
   }
-  if(type === '=' || type === '!==') {
+  if(type === '=' || type === '!==' || type === '>=' || type === '<=') {
     return `current.endOf('${mapPickerToEnd[picker]}').valueOf()`
   }
   // if (['date', 'quarter', 'month'].includes(picker)) {

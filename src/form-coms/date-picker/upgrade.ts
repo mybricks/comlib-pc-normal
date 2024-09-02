@@ -73,9 +73,9 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
-  if (!input.get('disabledDate')) {
-    input.add('disabledDate', '禁用特定日期', { type: "any" });
-  }
+  // if (!input.get('disabledDate')) {
+  //   input.add('disabledDate', '禁用特定日期', { type: "any" });
+  // }
 
   if (!input.get(InputIds.SetColor)) {
     input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
@@ -261,14 +261,14 @@ export default function ({
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //8、禁用特定日期完成
-  if (!output.get("disabledDateDone")) {
-    output.add("disabledDateDone", "禁用特定日期完成", { type: "any" });
-  }
-  if (output.get("disabledDateDone") &&
-    input.get("disabledDate") &&
-    !input.get("disabledDate")?.rels?.includes("disabledDateDone")) {
-    input.get("disabledDate").setRels(["disabledDateDone"]);
-  }
+  // if (!output.get("disabledDateDone")) {
+  //   output.add("disabledDateDone", "禁用特定日期完成", { type: "any" });
+  // }
+  // if (output.get("disabledDateDone") &&
+  //   input.get("disabledDate") &&
+  //   !input.get("disabledDate")?.rels?.includes("disabledDateDone")) {
+  //   input.get("disabledDate").setRels(["disabledDateDone"]);
+  // }
   //9、设置字体颜色完成
   if (!output.get(outputIds.setColorDone)) {
     output.add(outputIds.setColorDone, '设置字体颜色完成', { type: "string" });

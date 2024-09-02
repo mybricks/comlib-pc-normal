@@ -146,17 +146,6 @@
       ]
     },
     {
-      "id": "disabledDate",
-      "title": "禁用特定日期",
-      "desc": "设置不可选择的日期，类型：(currentDate: moment) => boolean",
-      "schema": {
-        "type": "any"
-      },
-      "rels": [
-        "disabledDateDone"
-      ]
-    },
-    {
       "id": "setDisabledDateRules",
       "title": "设置禁用特定日期规则",
       "desc": "设置不可选择的日期规则",
@@ -476,14 +465,6 @@
             "description": "校验提示"
           }
         }
-      }
-    },
-    {
-      "id": "disabledDateDone",
-      "title": "禁用特定日期完成",
-      "desc": "禁用特定日期事件完成",
-      "schema": {
-        "type": "any"
       }
     },
     {

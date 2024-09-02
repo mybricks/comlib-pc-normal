@@ -243,11 +243,11 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
     });
 
     inputs['setDisabledDateRules']?.((val, outputRels) => {
-      let TODAY = moment().endOf('day');
+      let TODAY = moment().endOf('day').valueOf();
       let YEAR = moment().year();
-      let MONTH = moment().endOf('month');
-      let QUARTER = moment().endOf('quarter');
-      let WEEK = moment().startOf('week');
+      let MONTH = moment().endOf('month').valueOf();
+      let QUARTER = moment().endOf('quarter').valueOf();
+      let WEEK = moment().startOf('week').valueOf();
       data.dynamicDisabledRules = val;
       let pickerVal = data.config.picker || 'date';
       if (val.picker && ['date', 'week', 'month', 'quarter', 'year'].includes(val.picker)) {
@@ -257,9 +257,9 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       const result = formatRulesExpression(val, pickerVal);
       data.dynamicDisabledExpression = result ? 'current &&  (' + result + ')' : 'current';
       // data.dynamicDisabledExpression = formatRulesExpression(val, data.config.picker || 'date');
-      // console.log('dynamicDisabledExpression', val, data.dynamicDisabledExpression);
+      console.log('dynamicDisabledExpression', val, data.dynamicDisabledExpression);
       data.disabledDate = (current) => {
-        // console.log('current', current.endOf('month'))
+        // console.log('current', current.format('YYYY-MM-DD'), eval(data.dynamicDisabledExpression), TODAY)
         return data.dynamicDisabledExpression && data.dynamicDisabledExpression !== 'current'
           ? eval(data.dynamicDisabledExpression)
           : false;
