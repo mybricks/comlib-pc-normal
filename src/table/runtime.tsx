@@ -370,7 +370,7 @@ export default function (props: RuntimeParams<Data>) {
       return;
     }
 
-    if (target && data.fixedHeader && !!data.fixedHeight) {
+    if (target && data.fixedHeader && !!data.fixedHeight && runtime) {
       target.style.minHeight = typeof data.scroll.y === 'string' ? data.scroll.y : '';
     } else if (target) {
       target.style.minHeight = '';
@@ -1221,38 +1221,38 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.defaultExpandAllRows || (data.useExpand && slots[SlotIds.EXPAND_CONTENT])
                     ? {
-                      expandedRowRender: data.useExpand
-                        ? (record, index) => {
-                          const inputValues = {
-                            [InputIds.EXP_COL_VALUES]: {
-                              ...record
-                            },
-                            [InputIds.INDEX]: index
-                          };
-                          if (data.useExpand && data.expandDataIndex) {
-                            inputValues[InputIds.EXP_ROW_VALUES] = get(
-                              record,
-                              data.expandDataIndex
-                            );
+                        expandedRowRender: data.useExpand
+                          ? (record, index) => {
+                              const inputValues = {
+                                [InputIds.EXP_COL_VALUES]: {
+                                  ...record
+                                },
+                                [InputIds.INDEX]: index
+                              };
+                              if (data.useExpand && data.expandDataIndex) {
+                                inputValues[InputIds.EXP_ROW_VALUES] = get(
+                                  record,
+                                  data.expandDataIndex
+                                );
+                              }
+                              return slots[SlotIds.EXPAND_CONTENT]?.render({
+                                inputValues,
+                                key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                              });
+                            }
+                          : undefined,
+                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                        onExpand: (expanded, record) => {
+                          if (!env.runtime) return;
+                          const key = record[rowKey];
+                          if (expanded && !expandedRowKeys.includes(key)) {
+                            setExpandedRowKeys([...expandedRowKeys, key]);
+                          } else if (!expanded && expandedRowKeys.includes(key)) {
+                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                            setExpandedRowKeys([...expandedRowKeys]);
                           }
-                          return slots[SlotIds.EXPAND_CONTENT]?.render({
-                            inputValues,
-                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                          });
-                        }
-                        : undefined,
-                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                      onExpand: (expanded, record) => {
-                        if (!env.runtime) return;
-                        const key = record[rowKey];
-                        if (expanded && !expandedRowKeys.includes(key)) {
-                          setExpandedRowKeys([...expandedRowKeys, key]);
-                        } else if (!expanded && expandedRowKeys.includes(key)) {
-                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                          setExpandedRowKeys([...expandedRowKeys]);
                         }
                       }
-                    }
                     : undefined
                 }
                 onChange={onChange}
