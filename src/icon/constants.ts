@@ -3,6 +3,7 @@ export interface Data {
   icon?: string;
   color?: string;
   styleWidth?: number | string;
+  eventBubble: boolean
 }
 
 export const OutputIds = {

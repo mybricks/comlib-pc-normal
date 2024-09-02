@@ -7,6 +7,16 @@ import css from './runtime.less';
  * @param icon 图标
  */
 export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
+
+  const onBubbleClick = (e)=>{
+    //e.preventDefault();
+    if(env.runtime){
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+      outputs[OutputIds.Click]();
+    }
+  }
+  
   const onClick = () => {
     if (env.runtime) {
       outputs[OutputIds.Click]();
@@ -59,7 +69,7 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
             : undefined,
         fontSize: fontSize
       }}
-      onClick={onClick}
+      onClick={data.eventBubble ? onBubbleClick : onClick}
       data-item-type="icon"
     >
       {btnItemR({ icon: data.icon })}
