@@ -9,6 +9,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { SlotIds, InputIds } from './constant';
+import { formatRulesExpression, DisabledRulesValue } from './util';
 import { defaultDisabledDateRule, defaultDisabledTimeRule } from './editors';
 
 export type DisabledDateRule = {
@@ -17,6 +18,7 @@ export type DisabledDateRule = {
   offset: Array<number>;
   direction: 'before' | 'after';
 };
+
 export interface Data {
   options: any[];
   rules: any[];
@@ -37,6 +39,9 @@ export interface Data {
   useDisabledTime?: 'default' | 'static' | 'now';
   staticDisabledTime?: Array<DisabledDateRule>;
   hideDatePanel: boolean;
+  dynamicDisabledRules: DisabledRulesValue;
+  dynamicDisabledExpression: string;
+  disabledTimeRules: Array<DisabledDateRule>;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
   formatMap: {
     日期: string;
@@ -235,6 +240,32 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       forchUpdate((count) => count + 1);
       // forchUpdate(0);
       outputRels['disabledDateDone'](val);
+    });
+
+    inputs['setDisabledDateRules']?.((val, outputRels) => {
+      let TODAY = moment().endOf('day').valueOf();
+      let YEAR = moment().year();
+      let MONTH = moment().endOf('month').valueOf();
+      let QUARTER = moment().endOf('quarter').valueOf();
+      let WEEK = moment().startOf('week').valueOf();
+      data.dynamicDisabledRules = val;
+      let pickerVal = data.config.picker || 'date';
+      if (val.picker && ['date', 'week', 'month', 'quarter', 'year'].includes(val.picker)) {
+        // data.config.picker = val.picker
+        pickerVal = val.picker;
+      }
+      const result = formatRulesExpression(val, pickerVal);
+      data.dynamicDisabledExpression = result ? 'current &&  (' + result + ')' : 'current';
+      // data.dynamicDisabledExpression = formatRulesExpression(val, data.config.picker || 'date');
+      console.log('dynamicDisabledExpression', val, data.dynamicDisabledExpression);
+      data.disabledDate = (current) => {
+        // console.log('current', current.format('YYYY-MM-DD'), eval(data.dynamicDisabledExpression), TODAY)
+        return data.dynamicDisabledExpression && data.dynamicDisabledExpression !== 'current'
+          ? eval(data.dynamicDisabledExpression)
+          : false;
+      };
+      // forchUpdate((count) => count + 1);
+      outputRels['setDisabledDateRulesDone'](val);
     });
 
     inputs['getValue']((val, outputRels) => {

@@ -1,7 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
-import { inputIds, outputIds } from '../form-container/constants';
+import { inputIds, outputIds, dateDisabledRulesSchema } from '../form-container/constants';
 import { InputIds as DatePickerInputIds } from './constant'
 
 export default function ({
@@ -73,9 +73,9 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
-  if (!input.get('disabledDate')) {
-    input.add('disabledDate', '禁用特定日期', { type: "any" });
-  }
+  // if (!input.get('disabledDate')) {
+  //   input.add('disabledDate', '禁用特定日期', { type: "any" });
+  // }
 
   if (!input.get(InputIds.SetColor)) {
     input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
@@ -261,14 +261,14 @@ export default function ({
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //8、禁用特定日期完成
-  if (!output.get("disabledDateDone")) {
-    output.add("disabledDateDone", "禁用特定日期完成", { type: "any" });
-  }
-  if (output.get("disabledDateDone") &&
-    input.get("disabledDate") &&
-    !input.get("disabledDate")?.rels?.includes("disabledDateDone")) {
-    input.get("disabledDate").setRels(["disabledDateDone"]);
-  }
+  // if (!output.get("disabledDateDone")) {
+  //   output.add("disabledDateDone", "禁用特定日期完成", { type: "any" });
+  // }
+  // if (output.get("disabledDateDone") &&
+  //   input.get("disabledDate") &&
+  //   !input.get("disabledDate")?.rels?.includes("disabledDateDone")) {
+  //   input.get("disabledDate").setRels(["disabledDateDone"]);
+  // }
   //9、设置字体颜色完成
   if (!output.get(outputIds.setColorDone)) {
     output.add(outputIds.setColorDone, '设置字体颜色完成', { type: "string" });
@@ -363,5 +363,18 @@ export default function ({
     }
     //=========== 1.1.36 end ===============
   
+  /**
+   * @description v1.1.37 增加设置禁用特定日期规则
+   */
+
+  if (!output.get('setDisabledDateRulesDone')) {
+    output.add('setDisabledDateRulesDone', '禁用特定日期规则完成', { type: 'any' });
+  }
+  if(!input.get('setDisabledDateRules')) {
+    input.add('setDisabledDateRules', '设置禁用特定日期规则', dateDisabledRulesSchema)
+    input.get('setDisabledDateRules').setRels([`setDisabledDateRulesDone`]);
+
+  }
+  //=========== v1.1.37 end ===============
   return true;
 }
