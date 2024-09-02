@@ -40,5 +40,15 @@ export default function ({
     style.width = getDeclaredStyle('.icon')['css']['fontSize'];
   }
 
+  /**
+   * @description v1.0.13 新增禁止冒泡开关
+  */
+
+  if(typeof data.eventBubble === 'undefined') {
+    data.eventBubble = false
+  }
+
+  //=========== v1.0.13 end ===============
+
   return true;
 }
