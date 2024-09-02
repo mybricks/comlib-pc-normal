@@ -16,16 +16,24 @@ const CustomColumnRender = (
 ) => {
   let { grid } = data;
   const rowKey = '_itemKey';
-  const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
+  const ListItemRender = ({ [rowKey]: key, index: index, item: item },number) => {
     return (
-      <List.Item key={key} className={env.edit ? '' :'list-new__item'} style={{ overflowX: env.edit ? 'visible' : 'auto' }}>
+      <List.Item key={key} className={env.edit ? '' :'list-new__item'} 
+      style={{ 
+        overflowX: env.edit ? 'visible' : 'auto',
+        opacity: env.edit && index=== 0 ? 0.4 : void 0
+      }}>
         {/* 当前项数据和索引 */}
         {slots['item']?.render({
           inputValues: {
             itemData: item,
             index: index
           },
-          key: key
+          key: key,
+          style:{
+            opacity: number && env.edit !== 0 ? 0.4 : void 0,
+            filter: number && env.edit !== 0 ? 'blur(0.8px)': void 0
+          }
           // style: {
           //   ...data?.slotLayoutStyle,
           //   minHeight: env.edit && data?.slotLayoutStyle.position === 'smart' ? '30px' : void 0

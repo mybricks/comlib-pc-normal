@@ -8,7 +8,7 @@ import { SortableList, SortableItem } from './sort';
 const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, slots, env, columns) => {
   let { grid } = data;
   const rowKey = '_itemKey';
-  const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
+  const ListItemRender = ({ [rowKey]: key, index: index, item: item },number) => {
     return (
       <List.Item key={key} className='list-new__item' style={{ overflowX: 'auto' }}>
         {/* 当前项数据和索引 */}
@@ -19,7 +19,9 @@ const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, s
           },
           key: key,
           style: {
-            minWidth: env.edit && slots['item'].size === 0 ? '80px' : void 0
+            minWidth: env.edit && slots['item'].size === 0 ? '80px' : void 0,
+            opacity: number && env.edit !== 0 ? 0.4 : void 0,
+            filter: number && env.edit !== 0 ? 'blur(0.8px)': void 0
           }
         })}
       </List.Item>
