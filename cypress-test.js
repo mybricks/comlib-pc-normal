@@ -21,6 +21,7 @@ async function main() {
         .map((line) => line.trim().split(/\s+/)[1])
         .filter((filePath) => filePath.startsWith('src/'))
         .map((filePath) => filePath.match(/(src\/form-coms|src)\/(.*?)\//)[2])
+        .filter((filePath) => filePath?.includes('CHANGELOG.md'))
     )
   ];
 
