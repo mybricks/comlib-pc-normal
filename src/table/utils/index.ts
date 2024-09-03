@@ -292,7 +292,7 @@ export const createStyleForTableContent = () => [
       { type: 'background', config: { disableBackgroundImage: true } },
       'opacity'
     ],
-    target: ({ id }) => [`table`, `> ${getAntdTable()}`]
+    target: ({ id }) => `> ${getAntdTable()}`
   },
   {
     title: '表格行',

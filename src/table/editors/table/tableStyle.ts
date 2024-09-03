@@ -139,23 +139,23 @@ const tableStyleEditor = {
         }
       }
     },
-    {
-      title: '边框间距',
-      type: 'inputnumber',
-      description: '指定相邻单元格边框之间的距离',
-      options: [
-        { min: 0, max: 200, width: 60 },
-        { min: 0, max: 200, width: 60 }
-      ],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data?.borderSpacing || [0, 0];
-        },
-        set({ data, output, ...res }: EditorResult<Data>, value: Data['borderSpacing']) {
-          data.borderSpacing = value;
-        }
-      }
-    },
+    // {
+    //   title: '边框间距',
+    //   type: 'inputnumber',
+    //   description: '指定相邻单元格边框之间的距离',
+    //   options: [
+    //     { min: 0, max: 200, width: 60 },
+    //     { min: 0, max: 200, width: 60 }
+    //   ],
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data?.borderSpacing || [0, 0];
+    //     },
+    //     set({ data, output, ...res }: EditorResult<Data>, value: Data['borderSpacing']) {
+    //       data.borderSpacing = value;
+    //     }
+    //   }
+    // },
     {
       title: '表格样式控制',
       items: createStyleForTableContent()
