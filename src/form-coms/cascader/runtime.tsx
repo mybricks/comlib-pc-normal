@@ -9,6 +9,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { mockData } from './mockData';
 import { InputIds, OutputIds } from '../types';
+import { setDataForLoadData } from './utils';
 
 export interface Data {
   options: any[];
@@ -21,6 +22,8 @@ export interface Data {
   isEditable: boolean;
   fieldNames: FieldNames;
   mount?: string;
+  useLoadData: boolean;
+  loadDataOnce: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -31,6 +34,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const [value, setValue] = useState<Array<any>>();
+  const curNode = useRef({});
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
@@ -226,6 +230,34 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return env?.canvasElement || document.body;
   };
 
+
+  useEffect(() => {
+    inputs['setLoadData']((val, relOutputs) => {
+      if (!data.useLoadData) {
+        return;
+      }
+      const { node, resolve } = curNode.current as any;
+      const targetOption = node[node.length - 1];
+      if(Array.isArray(val)){
+        setOptions(setDataForLoadData(data, targetOption, options, val));
+        relOutputs['setLoadDataDone'](val);
+      }else{
+        logger.error('请设置数组类型子项数据');
+      }
+      resolve();
+    });
+  }, [options]);
+
+  const onLoadData = (node) => {
+    return new Promise((resolve) => {
+      curNode.current = {
+        node,
+        resolve
+      };
+      outputs['loadData'](node[node.length - 1]);
+    });
+  };
+
   return (
     <div className={css.cascader}>
       {data.isEditable ? (
@@ -240,6 +272,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           open={env.design ? true : void 0}
           dropdownClassName={id}
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
+          loadData={data.useLoadData ? onLoadData : undefined}
         />
       ) : Array.isArray(value) ? (
         value.join(',')
