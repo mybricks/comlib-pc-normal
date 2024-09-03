@@ -1,9 +1,12 @@
 import { Button, Steps } from 'antd';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, memo } from 'react';
 import classnames from 'classnames';
 import { Data, INTO, LEAVE, CLICK, StepItem } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
+
+import useElementWidth from '../form-coms/form-container/hooks/use-element-width';
+
 import { checkIfMobile, uuid } from '../utils';
 import * as Icons from '@ant-design/icons';
 import useParentHeight from '../table/hooks/use-parent-height';
@@ -38,6 +41,7 @@ export default function ({
   const footerRef = useRef<HTMLDivElement>(null);
 
   const [parentHeight] = useParentHeight(ref);
+  const [stepWidth] = useElementWidth(ref);
   const [headerHeight] = useElementHeight(headerRef);
   const [footerHeight] = useElementHeight(footerRef);
 
@@ -45,7 +49,15 @@ export default function ({
     if (isUseOldHeight || isVertical) return void 0; // 已有和垂直的不做处理
     const headerMargin = headerHeight === 0 ? 0 : 40; // 默认有40px的margin
     const footerMargin = footerHeight === 0 ? 0 : 24; // 默认有24px的margin
-    return parentHeight - headerHeight - headerMargin - footerHeight - footerMargin;
+    // 减去置底的距离
+    return (
+      parentHeight -
+      headerHeight -
+      headerMargin -
+      footerHeight -
+      footerMargin -
+      (data.toolbar.bottom || 0)
+    );
   }, [isUseOldHeight, isVertical, parentHeight, headerHeight, footerHeight]);
 
   useEffect(() => {
@@ -287,7 +299,8 @@ export default function ({
           justifyContent: data.toolbar.actionAlign,
           position: data.toolbar.fixed ? 'fixed' : 'static',
           bottom: data.toolbar.bottom,
-          ...(data.toolbar.fixed ? { zIndex: 1 } : {})
+          // fixed 布局下，fixed-toolbar中的width: 100% 是基于浏览器视口；这里改width为步骤条的宽度
+          ...(data.toolbar.fixed ? { zIndex: 1, width: stepWidth } : {})
         }}
       >
         {renderButtons()}
@@ -327,7 +340,7 @@ export default function ({
             progressDot={progressDot}
             direction={direction}
             labelPlacement={labelPlacement}
-            onChange={onChange()}
+            onChange={onChange}
           >
             {stepAry.map((item, index) => {
               const emptyNode = <div style={{ lineHeight: 32 }} />;
@@ -363,7 +376,7 @@ export default function ({
                   );
                 }
               }
-              return <Step {...stepProps} />;
+              return <Step wrapperStyle={{ transition: '' }} {...stepProps} />;
             })}
           </Steps>
         </div>
@@ -401,20 +414,18 @@ const StepItems = ({
   env;
   getCurrentStep;
 }) => {
-  const stepMap = useMemo(
-    () => new Map(data.stepAry.map((item) => [item.id, item])),
-    [data.stepAry]
-  );
+  const stepMap = useMemo(() => {
+    return new Map(data.stepAry.map((item) => [item.id, item]));
+  }, [data.stepAry]);
 
   const currentStepId = getCurrentStep().id;
 
   const items = useMemo(() => {
     return Object.keys(slots).map((id) => {
-      const stepItem = stepMap.get(id);
+      const stepItem = stepMap.get(id) ?? data.stepAry.find((item) => item.id === id);
       const isCurrentStep = currentStepId === id;
       const heightStyle =
         env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
-
       return (
         <div
           key={id}
@@ -425,11 +436,47 @@ const StepItems = ({
             minHeight: heightStyle
           }}
         >
-          {slots[id]?.render({ style: stepItem?.slotLayuotStyle })}
+          {slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: id })}
         </div>
       );
     });
   }, [slots, stepMap, env.edit, currentStepId]);
 
+  // 编辑态
+  if (env.edit) {
+    return Object.keys(slots).map((id) => {
+      const stepItem = stepMap.get(id) || data.stepAry.find((item) => item.id === id);
+      const isCurrentStep = currentStepId === id;
+      const heightStyle =
+        env.edit && stepItem?.slotLayuotStyle?.position === 'smart' ? '40px' : undefined;
+      return (
+        <div
+          key={id}
+          data-step-slot={id}
+          style={{
+            display: isCurrentStep ? 'block' : 'none',
+            height: '100%',
+            minHeight: heightStyle
+          }}
+        >
+          <StepPerItem stepItem={stepItem} env={env} slots={slots} isCurrentStep={isCurrentStep} />
+        </div>
+      );
+    });
+  }
+
   return <>{items}</>;
 };
+
+const StepPerItem = memo(
+  ({ stepItem, env, slots, isCurrentStep }: any) => {
+    const id = stepItem?.id;
+    return id && slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id });
+  },
+  (preValue: any, nextValue: any) => {
+    if (preValue.stepItem?.id === nextValue.stepItem?.id) {
+      return true;
+    }
+    return false;
+  }
+);
