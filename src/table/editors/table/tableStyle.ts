@@ -27,7 +27,7 @@ const tableStyleEditor = {
     },
     {
       title: '显示边框',
-      description: "开启后，显示表格边框，默认开启",
+      description: '开启后，显示表格边框，默认开启',
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -41,7 +41,8 @@ const tableStyleEditor = {
     {
       title: '固定表头',
       type: 'Switch',
-      description: '开启后，表头固定，表格内容支持滚动。可以设置编辑项【可滚动最大高度】和【固定高度】来控制滚动',
+      description:
+        '开启后，表头固定，表格内容支持滚动。可以设置编辑项【可滚动最大高度】和【固定高度】来控制滚动',
       ifVisible({ style }: EditorResult<Data>) {
         return style.height === 'auto';
       },
@@ -67,7 +68,7 @@ const tableStyleEditor = {
     },
     {
       title: '可滚动最大高度',
-      description: "设置表格的可滚动最大高度，开启固定表头后生效",
+      description: '设置表格的可滚动最大高度，开启固定表头后生效',
       type: 'Text',
       ifVisible({ data, style }: EditorResult<Data>) {
         return data.fixedHeader && style.height === 'auto';
@@ -84,7 +85,7 @@ const tableStyleEditor = {
     {
       title: '固定高度',
       type: 'text',
-      description: "设置表格的固定高度，开启固定表头后生效",
+      description: '设置表格的固定高度，开启固定表头后生效',
       ifVisible({ data, style }: EditorResult<Data>) {
         return data.fixedHeader && style.height === 'auto';
       },
@@ -135,6 +136,23 @@ const tableStyleEditor = {
         },
         set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
           data.enableCellFocus = value;
+        }
+      }
+    },
+    {
+      title: '边框间距',
+      type: 'inputnumber',
+      description: '指定相邻单元格边框之间的距离',
+      options: [
+        { min: 0, max: 200, width: 60 },
+        { min: 0, max: 200, width: 60 }
+      ],
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data?.borderSpacing || [0, 0];
+        },
+        set({ data, output, ...res }: EditorResult<Data>, value: Data['borderSpacing']) {
+          data.borderSpacing = value;
         }
       }
     },

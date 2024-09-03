@@ -247,7 +247,7 @@ export function getColumnItemDataIndex(item: IColumn) {
 
 // 处理表格嵌套表格的选择器
 export const getAntdTable = () =>
-  `> .${css.tableWarrper} > .${css.table} > .mybricks-table > div > div.ant-spin-container > div.ant-table`;
+  `.${css.tableWarrper} > .${css.table} > .mybricks-table > div > div.ant-spin-container > div.ant-table`;
 
 export const getTable = () =>
   `${getAntdTable()} > div.ant-table-container > div.ant-table-content > table`;
@@ -292,20 +292,7 @@ export const createStyleForTableContent = () => [
       { type: 'background', config: { disableBackgroundImage: true } },
       'opacity'
     ],
-    target: ({ id }) => `table`
-  },
-  {
-    title: '表格容器',
-    catelog: '默认',
-    ifVisible({ data }: EditorResult<Data>) {
-      return !!data.columns.length;
-    },
-    options: [
-      'border',
-      { type: 'background', config: { disableBackgroundImage: true } },
-      'opacity'
-    ],
-    target: ({ id }) => getAntdTable()
+    target: ({ id }) => [`table`, `> ${getAntdTable()}`]
   },
   {
     title: '表格行',
