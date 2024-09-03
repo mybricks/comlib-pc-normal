@@ -1,5 +1,6 @@
 import compareSnapshotCommand from 'cypress-image-diff-js/dist/command';
 import type { RecurseDefaults } from 'cypress-recurse';
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -19,11 +20,20 @@ declare global {
     }
   }
 }
+
 compareSnapshotCommand({
   failureThreshold: 0.00, // threshold for entire image
   failureThresholdType: 'percent', // percent of image or number of pixels
   customDiffConfig: { threshold: 0.1 }, // threshold for each pixel
   capture: 'viewport' // capture viewport in screenshot
+});
+
+Cypress.Commands.overwrite('compareSnapshot', (originalFn, _, name, retryOptions) => {
+  if (Cypress.env('DEBUG')) {
+    // @ts-ignore
+    name = `debug-${name}`;
+  }
+  return originalFn(_, name, retryOptions);
 });
 
 // @ts-ignore
