@@ -1,7 +1,8 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
-import { inputIds, outputIds, dateDisabledRulesSchema } from '../form-container/constants';
+import { inputIds, outputIds } from '../form-container/constants';
+import { dateDisabledRulesSchema } from './constant';
 import { InputIds as DatePickerInputIds } from './constant'
 
 export default function ({
