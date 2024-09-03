@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.19",
+  "version": "1.1.20",
   "description": "级联选择",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
@@ -142,6 +142,11 @@
               "description": "选项标签（一般展示）",
               "type": "string"
             },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点, 设置了异步加载时有效"
+            },
             "disabled": {
               "title": "禁用",
               "description": "选项禁用，true时禁用",
@@ -161,6 +166,44 @@
       },
       "rels": [
         "setOptionsDone"
+      ]
+    },
+    {
+      "id": "setLoadData",
+      "title": "设置异步加载数据",
+      "desc": "对级联选择设置异步加载数据，并触发设置异步加载数据完成事件",
+      "schema": {
+        "type": "object",
+        "description": "异步加载数据结构",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string",
+            "description": "选项的标签"
+          },
+          "value": {
+            "title": "值",
+            "type": "string",
+            "description": "选项的值"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean",
+            "description": "是否是叶子节点, 设置了异步加载时有效"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "description": "节点的子节点数组数据",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      },
+      "rels": [
+        "setLoadDataDone"
       ]
     },
     {
@@ -212,6 +255,25 @@
       }
     },
     {
+      "id": "loadData",
+      "title": "异步加载",
+      "desc": "级联选择的异步加载数据事件",
+      "schema": {
+        "type": "object",
+        "description":"异步加载数据，输出",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
       "id": "onValidate",
       "title": "校验触发",
       "desc": "级联选择触发校验时触发",
@@ -249,6 +311,42 @@
       "desc": "获取级联选择值后，值输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "setLoadDataDone",
+      "title": "设置异步加载数据完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string",
+              "description": "选项的标签"
+            },
+            "value": {
+              "title": "值",
+              "type": "string",
+              "description": "选项的值"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点, 设置了异步加载时有效"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "description": "节点的子节点数组数据",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
       }
     },
     {
@@ -326,6 +424,11 @@
               "title": "禁用",
               "description": "选项禁用，true为禁用",
               "type": "boolean"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点, 设置了异步加载时有效"
             },
             "children": {
               "title": "子项",

@@ -266,60 +266,6 @@ export default {
           }
         },
         {
-          title: '字段配置',
-          items: [
-            {
-              title: '名称字段 label',
-              type: 'Text',
-              options: {
-                placeholder: '默认值为 label'
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data?.fieldNames?.label;
-                },
-                set(props: EditorResult<Data>, label: string) {
-                  data.fieldNames.label = label;
-                  refreshSchema(props);
-                }
-              }
-            },
-            {
-              title: '值字段 value',
-              type: 'Text',
-              description: '所有项数据的值字段在整个数据源范围内不能重复',
-              options: {
-                placeholder: '数据的唯一标识字段，默认值为 value'
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data?.fieldNames?.value;
-                },
-                set(props: EditorResult<Data>, value: string) {
-                  data.fieldNames.value = value;
-                  refreshSchema(props);
-                }
-              }
-            },
-            {
-              title: '子项字段 children',
-              type: 'Text',
-              options: {
-                placeholder: '默认值为 children'
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data?.fieldNames?.children;
-                },
-                set(props: EditorResult<Data>, value: string) {
-                  data.fieldNames.children = value;
-                  refreshSchema(props);
-                }
-              }
-            }
-          ]
-        },
-        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',
@@ -536,6 +482,93 @@ export default {
           ]
         }
       ];
+
+      catalog[1].title = '高级';
+      catalog[1].items = [
+        {
+          title: '字段配置',
+          items: [
+            {
+              title: '名称字段 label',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 label'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.fieldNames?.label;
+                },
+                set(props: EditorResult<Data>, label: string) {
+                  data.fieldNames.label = label;
+                  refreshSchema(props);
+                }
+              }
+            },
+            {
+              title: '值字段 value',
+              type: 'Text',
+              description: '所有项数据的值字段在整个数据源范围内不能重复',
+              options: {
+                placeholder: '数据的唯一标识字段，默认值为 value'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.fieldNames?.value;
+                },
+                set(props: EditorResult<Data>, value: string) {
+                  data.fieldNames.value = value;
+                  refreshSchema(props);
+                }
+              }
+            },
+            {
+              title: '子项字段 children',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 children'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data?.fieldNames?.children;
+                },
+                set(props: EditorResult<Data>, value: string) {
+                  data.fieldNames.children = value;
+                  refreshSchema(props);
+                }
+              }
+            }
+          ]
+        },
+        {
+          title: '异步加载',
+          items: [
+            {
+              title: '异步加载',
+              type: 'Switch',
+              description: '开启后可配置子节点异步加载',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useLoadData;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.useLoadData = value;
+                }
+              }
+            },
+            {
+              title: '异步加载输出',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useLoadData
+              },
+              options: {
+                outputId: 'loadData'
+              }
+            }
+          ]
+        },
+        
+      ]
     }
   }
 };

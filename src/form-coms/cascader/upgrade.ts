@@ -299,5 +299,130 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if( typeof data.mount === 'undefined') {
     data.mount = 'body'
   }
+
+  /**
+   * @description 1.1.17 增加挂载点
+   */
+  if( typeof data.mount === 'undefined') {
+    data.mount = 'body'
+  }
+
+  /**
+   * @description 1.1.20 增加异步加载 改变设置数据源schema、增加设置异步加载数据、增加异步加载完成
+   */
+  if( typeof data.useLoadData === 'undefined') {
+    data.useLoadData = false
+  }
+  const dataSchema = {
+    title: "输入数据源数据",
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        value: {
+          title: "值",
+          description: "选项值",
+          type: "any"
+        },
+        label: {
+          title: "名称",
+          description: "选项标签（一般展示）",
+          type: "string"
+        },
+        isLeaf: {
+          title: "是否叶子节点",
+          type: "boolean",
+          description: "是否是叶子节点, 设置了 异步加载 时有效"
+        },
+        disabled: {
+          title: "禁用",
+          description: "选项禁用，true时禁用",
+          type: "boolean"
+        },
+        children: {
+          title: "子项",
+          description: "子项内容，逐级嵌套",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {}
+          }
+        }
+      }
+    }
+  };
+
+  if (input.get("setOptions")) {
+    input.get("setOptions").setSchema(dataSchema);
+  }
+  if (output.get("setOptionsDone")) {
+    output.get("setOptionsDone").setSchema(dataSchema);
+  }
+
+  const loadDataSchema = {
+    type: "object",
+    description: "异步加载数据，输出",
+    properties: {
+      label: {
+        title: "标签",
+        type: "string"
+      },
+      value: {
+        title: "值",
+        type: "string"
+      }
+    }
+  }
+
+  if (!output.get("loadData")) {
+    output.add("loadData", "异步加载", loadDataSchema);
+  }
+
+  const setLoadDataSchema = {
+    type: "object",
+    description: "异步加载数据结构",
+    properties: {
+      label: {
+        title: "标签",
+        type: "string",
+        description: "选项的标签"
+      },
+      value: {
+        title: "值",
+        type: "string",
+        description: "选项的值"
+      },
+      isLeaf: {
+        title: "是否叶子节点",
+        type: "boolean",
+        description: "是否是叶子节点, 设置了异步加载时有效"
+      },
+      children: {
+        title: "子项",
+        type: "array",
+        description: "节点的子节点数组数据",
+        items: {
+          type: "object",
+          properties: {}
+        }
+      }
+    }
+  }
+
+  if(!input.get("setLoadData")){
+    input.add("setLoadData", "设置异步加载数据", setLoadDataSchema);
+  }
+
+  if(!output.get("setLoadDataDone")){
+    output.add("setLoadDataDone", "设置异步加载数据完成", setLoadDataSchema);
+  }
+
+  if (
+    output.get("setLoadDataDone") &&
+    input.get("setLoadData") &&
+    !input.get("setLoadData")?.rels?.includes("setLoadDataDone")
+  ) {
+    input.get("setLoadData").setRels(["setLoadDataDone"]);
+  }
   return true;
 }
