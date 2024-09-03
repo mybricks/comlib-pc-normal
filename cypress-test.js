@@ -10,7 +10,7 @@ const glob = require('glob');
  */
 async function main() {
   // 执行git status命令获取修改过的文件列表
-  const gitStatusOutput = execSync('git status --porcelain', { encoding: 'utf-8' });
+  const gitStatusOutput = execSync('git diff --cached --name-status', { encoding: 'utf-8' });
 
   // 将输出拆分成行，并筛选出已修改的文件，然后再筛选出所有的组件
   const modifiedComponents = [
@@ -18,10 +18,10 @@ async function main() {
       gitStatusOutput
         .split('\n')
         .filter((line) => line.trim().startsWith('M') || line.trim().startsWith('A'))
+        .filter((filePath) => !filePath?.includes('CHANGELOG.md'))
         .map((line) => line.trim().split(/\s+/)[1])
         .filter((filePath) => filePath.startsWith('src/'))
         .map((filePath) => filePath.match(/(src\/form-coms|src)\/(.*?)\//)[2])
-        .filter((filePath) => filePath?.includes('CHANGELOG.md'))
     )
   ];
 
