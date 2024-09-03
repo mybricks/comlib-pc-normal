@@ -287,6 +287,19 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table`
   },
   {
+    title: '表格容器',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
+    target: ({ id }) => `.ant-table`
+  },
+  {
     title: '表格行',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
