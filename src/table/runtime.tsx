@@ -1159,12 +1159,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div
-      ref={ref}
-      style={{
-        position: 'relative'
-      }}
-    >
+    <div ref={ref} className={css.tableWarrper}>
       <ConfigProvider
         locale={env.vars?.locale}
         renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}

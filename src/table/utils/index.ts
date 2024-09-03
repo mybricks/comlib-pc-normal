@@ -5,6 +5,7 @@ import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
 import { message } from 'antd';
+import css from '../runtime.less';
 
 export const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -244,6 +245,13 @@ export function getColumnItemDataIndex(item: IColumn) {
   return idx;
 }
 
+// 处理表格嵌套表格的选择器
+export const getAntdTable = () =>
+  `> .${css.tableWarrper} > .${css.table} > .mybricks-table > div > div.ant-spin-container > div.ant-table`;
+
+export const getTable = () =>
+  `${getAntdTable()} > div.ant-table-container > div.ant-table-content > table`;
+
 export const createStyleForTableContent = () => [
   {
     title: '表头',
@@ -297,7 +305,7 @@ export const createStyleForTableContent = () => [
       { type: 'background', config: { disableBackgroundImage: true } },
       'opacity'
     ],
-    target: ({ id }) => `.ant-table`
+    target: ({ id }) => getAntdTable()
   },
   {
     title: '表格行',
