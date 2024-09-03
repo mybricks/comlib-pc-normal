@@ -101,7 +101,7 @@ export default {
         {
           title: '置底',
           type: 'switch',
-          description: '操作栏是否置底',
+          description: '操作栏是否置底，置底后，底部距离相对页面而不是步骤条组件',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.toolbar.showActions;
           },
