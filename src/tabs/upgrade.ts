@@ -1,5 +1,6 @@
 import { Data, InputIds, OutputIds } from './constants';
-import { setSlotLayout } from './editor';
+// import { setSlotLayout } from './editor';
+import { setSlotLayout } from '../utils/editorTools'
 import { descriptionUp } from '../form-coms/utils/descriptionUp';
 import { descriptionUpList } from './constants';
 
