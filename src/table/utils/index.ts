@@ -5,6 +5,7 @@ import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
 import { message } from 'antd';
+import css from '../runtime.less';
 
 export const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -244,7 +245,31 @@ export function getColumnItemDataIndex(item: IColumn) {
   return idx;
 }
 
+// 处理表格嵌套表格的选择器
+export const getAntdTable = () =>
+  `.${css.tableWarrper} > .${css.table} > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table`;
+
+export const getTable = () =>
+  `${getAntdTable()} > div.ant-table-container > div.ant-table-content > table`;
+
+// 表头和body分离时使用
+export const getTableBody = () =>
+  `${getAntdTable()} > div.ant-table-container > div.ant-table-body > table`;
+
 export const createStyleForTableContent = () => [
+  {
+    title: '表格',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
+    target: ({ id }) => `> ${getAntdTable()}`
+  },
   {
     title: '表头',
     catelog: '默认',
@@ -260,7 +285,33 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
   },
   {
-    title: '表格内容',
+    title: '表格体',
+    catelog: '默认',
+    ifVisible({ data, style }: EditorResult<Data>) {
+      return !!data.columns.length && style?.height !== 'auto';
+    },
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
+    target: ({ id }) => `> ${getTableBody()}`
+  },
+  {
+    title: '表格体',
+    catelog: '默认',
+    ifVisible({ data, style }: EditorResult<Data>) {
+      return !!data.columns.length && style?.height === 'auto';
+    },
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
+    target: ({ id }) => `> ${getTable()} > tbody`
+  },
+  {
+    title: '单元格',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
@@ -274,20 +325,7 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
   },
   {
-    title: '表格',
-    catelog: '默认',
-    ifVisible({ data }: EditorResult<Data>) {
-      return !!data.columns.length;
-    },
-    options: [
-      'border',
-      { type: 'background', config: { disableBackgroundImage: true } },
-      'opacity'
-    ],
-    target: ({ id }) => `table`
-  },
-  {
-    title: '表格行',
+    title: '行',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
@@ -300,16 +338,7 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table tr`
   },
   {
-    title: '行Hover',
-    catelog: 'Hover',
-    ifVisible({ data }: EditorResult<Data>) {
-      return !!data.columns.length;
-    },
-    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-    target: ({ id }) => `table tbody>tr:hover>td${getFilterSelector(id)}`
-  },
-  {
-    title: '选中单元格',
+    title: '单元格',
     catelog: '选中',
     ifVisible({ data }: EditorResult<Data>) {
       return data.enableCellFocus;
@@ -318,6 +347,15 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => {
       return `table tbody tr td[data-focus-cell]${getFilterSelector(id)}`;
     }
+  },
+  {
+    title: '行',
+    catelog: 'Hover',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    target: ({ id }) => `table tbody>tr:hover>td${getFilterSelector(id)}`
   }
 ];
 

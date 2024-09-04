@@ -5,6 +5,10 @@
 @fontSize: 14px;
 @fontSize2: 18px;
 
+.tableWarrper {
+  position: relative;
+}
+
 .table {
   :global {
     .ant-btn {
@@ -15,7 +19,6 @@
       width: 10px;
       height: 10px;
     }
-
 
     .ant-table-body::-webkit-scrollbar-thumb {
       background: #bbb;
@@ -32,7 +35,7 @@
     }
 
     // 表格的最后一个表头，resize拖拽条隐藏
-    .ant-table-thead>tr:first-child>th:last-child>div[class*='resizer-r'] {
+    .ant-table-thead > tr:first-child > th:last-child > div[class*='resizer-r'] {
       display: none !important;
     }
 

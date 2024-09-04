@@ -9,6 +9,7 @@ import {
 } from './components/Paginator/constants';
 import { Data } from './types';
 import { addFilterIO } from './editors/table-item/filterEditor';
+import { getAntdTable } from './utils';
 
 export default function ({
   data,
@@ -361,6 +362,19 @@ export default function ({
     input.get(InputIds.START_LOADING).setRels([InputIds.START_LOADING]);
   }
   // --------------------- 1.1.98 end ---------------------
+  type StyleTransferFunction = (prevSelector: string, currentSelector: string) => void;
+
+  const transferStyleBetweenSelectors: StyleTransferFunction = (prevSelector, currentSelector) => {
+    const preStyle = getDeclaredStyle(prevSelector);
+    let currentCss: React.CSSProperties = {};
+
+    if (preStyle) {
+      currentCss = { ...preStyle.css };
+      removeDeclaredStyle(prevSelector);
+      setDeclaredStyle(currentSelector, currentCss);
+    }
+  };
+  transferStyleBetweenSelectors('table', `> ${getAntdTable()}`);
 
   return true;
 }
