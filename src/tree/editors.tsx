@@ -144,7 +144,7 @@ export default {
                       disableFontSize: true,
                       disableFontFamily: true,
                       disableTextAlign: true,
-                      disableColor: true,
+                      // disableColor: true,
                       disableFontWeight: true,
                       disableLetterSpacing: true,
                       disableWhiteSpace: true
