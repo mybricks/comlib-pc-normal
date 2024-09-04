@@ -31,8 +31,8 @@ const CustomColumnRender = (
           },
           key: key,
           style:{
-            opacity: number && env.edit !== 0 ? 0.4 : void 0,
-            filter: number && env.edit !== 0 ? 'blur(0.8px)': void 0
+            opacity: env.edit && number !== 0 ? 0.4 : void 0,
+            filter: env.edit  && number !== 0 ? 'blur(0.8px)': void 0
           }
           // style: {
           //   ...data?.slotLayoutStyle,

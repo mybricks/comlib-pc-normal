@@ -20,8 +20,8 @@ const ResponsiveRender  = (loading:boolean, data:Data, dataSource:any, gutter, s
           key: key,
           style: {
             minWidth: env.edit && slots['item'].size === 0 ? '80px' : void 0,
-            opacity: number && env.edit !== 0 ? 0.4 : void 0,
-            filter: number && env.edit !== 0 ? 'blur(0.8px)': void 0
+            opacity: env.edit && number !== 0 ? 0.4 : void 0,
+            filter: env.edit  && number !== 0 ? 'blur(0.8px)': void 0
           }
         })}
       </List.Item>
