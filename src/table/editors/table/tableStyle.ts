@@ -142,11 +142,14 @@ const tableStyleEditor = {
     // {
     //   title: '边框间距',
     //   type: 'inputnumber',
-    //   description: '指定相邻单元格边框之间的距离',
+    //   description: '指定相邻单元格边框之间的距离，分别配置上下和左右',
     //   options: [
     //     { min: 0, max: 200, width: 60 },
     //     { min: 0, max: 200, width: 60 }
     //   ],
+    //   ifVisible({ data, style }: EditorResult<Data>) {
+    //     return !!data.columns.length && style?.height === 'auto';
+    //   },
     //   value: {
     //     get({ data }: EditorResult<Data>) {
     //       return data?.borderSpacing || [0, 0];

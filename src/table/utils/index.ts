@@ -247,10 +247,14 @@ export function getColumnItemDataIndex(item: IColumn) {
 
 // 处理表格嵌套表格的选择器
 export const getAntdTable = () =>
-  `.${css.tableWarrper} > .${css.table} > .mybricks-table > div > div.ant-spin-container > div.ant-table`;
+  `.${css.tableWarrper} > .${css.table} > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table`;
 
 export const getTable = () =>
   `${getAntdTable()} > div.ant-table-container > div.ant-table-content > table`;
+
+// 表头和body分离时使用
+export const getTableBody = () =>
+  `${getAntdTable()} > div.ant-table-container > div.ant-table-body > table`;
 
 export const createStyleForTableContent = () => [
   {
@@ -268,7 +272,7 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
   },
   {
-    title: '表格内容',
+    title: '单元格',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
@@ -295,7 +299,33 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `> ${getAntdTable()}`
   },
   {
-    title: '表格行',
+    title: '表格体',
+    catelog: '默认',
+    ifVisible({ data, style }: EditorResult<Data>) {
+      return !!data.columns.length && style?.height !== 'auto';
+    },
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
+    target: ({ id }) => `> ${getTableBody()}`
+  },
+  {
+    title: '表格体',
+    catelog: '默认',
+    ifVisible({ data, style }: EditorResult<Data>) {
+      return !!data.columns.length && style?.height === 'auto';
+    },
+    options: [
+      'border',
+      { type: 'background', config: { disableBackgroundImage: true } },
+      'opacity'
+    ],
+    target: ({ id }) => `> ${getTable()} > tbody`
+  },
+  {
+    title: '行',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;

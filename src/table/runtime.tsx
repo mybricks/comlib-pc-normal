@@ -83,15 +83,15 @@ export default function (props: RuntimeParams<Data>) {
   });
 
   // table标签borderSpacing配置
-  useEffect(() => {
-    const tableElement = ref.current && ref.current.querySelector(getTable());
-    const { borderSpacing } = data;
-    if (tableElement && borderSpacing) {
-      (
-        tableElement as HTMLTableElement
-      ).style.borderSpacing = `${borderSpacing[0]}px ${borderSpacing[1]}px`;
-    }
-  }, [data.borderSpacing]);
+  // useEffect(() => {
+  //   const tableElement = ref.current && ref.current.querySelector(getTable());
+  //   const { borderSpacing } = data;
+  //   if (tableElement && borderSpacing) {
+  //     (
+  //       tableElement as HTMLTableElement
+  //     ).style.borderSpacing = `${borderSpacing[0]}px ${borderSpacing[1]}px`;
+  //   }
+  // }, [data.borderSpacing]);
 
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
   const isUseOldHeight =

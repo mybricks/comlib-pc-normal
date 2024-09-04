@@ -3,7 +3,7 @@
 ### Fix
 
 - 兼容列超出时设置固定表头无法滚动，搭建态不设置 minHeight，防止高度超出没有滚动条 (commit: ef9e784d7bb4094c32902e3cc25e0bd92a48715b)
-- 增加表格外容器样式配置条 (commit: cc3c812c45d46b8d6a2ab1e102dac64ddbbb8a40)
+- 增加表格 tbody 配置，表格对应选择器为外层 antd-table (commit: cc3c812c45d46b8d6a2ab1e102dac64ddbbb8a40)
 
 ## [1.2.4] - 2024-8-21
 
