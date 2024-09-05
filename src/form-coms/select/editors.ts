@@ -143,91 +143,99 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selection-item'
-              },
-              {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selection-placeholder'
-              },
-              {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-select-selector'
-              },
-              {
-                title: '下拉图标',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-arrow'
-              },
-              {
-                title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle'
-              },
-              {
-                title: '背景色',
-                options: ['background'],
-                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
-              },
-              {
-                title: '标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: [
-                  '.ant-select-multiple .ant-select-selection-item',
-                  '.ant-select-multiple .ant-select-selection-item-remove'
+                title: '表单项',
+                items: [
+                  {
+                    title: '文本内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-select-selection-item'
+                  },
+                  {
+                    title: '提示内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-select-selection-placeholder'
+                  },
+                  {
+                    title: '边框',
+                    options: ['border'],
+                    target: '.ant-select-selector'
+                  },
+                  {
+                    title: '背景色',
+                    options: ['background'],
+                    target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+                  },
+                  {
+                    title: '下拉图标',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-select-arrow'
+                  },
+                  {
+                    title: '清除按钮',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.anticon-close-circle'
+                  },
                 ]
               },
               {
-                title: '标签-关闭图标',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: ['.ant-select-multiple .ant-select-selection-item-remove']
-              },
-              {
-                title: '选项',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                global: true,
-                target({ id }: EditorResult<Data>) {
-                  return `.{id} div.ant-select-item.ant-select-item-option`;
-                }
+                title: '标签',
+                items: [
+                  {
+                    title: '标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: [
+                      '.ant-select-multiple .ant-select-selection-item',
+                      '.ant-select-multiple .ant-select-selection-item-remove'
+                    ]
+                  },
+                  {
+                    title: '标签-关闭图标',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: ['.ant-select-multiple .ant-select-selection-item-remove']
+                  },
+                ]
               },
               {
                 title: '下拉区域',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                global: true,
-                target({ id }: EditorResult<Data>) {
-                  return `.{id}.ant-select-dropdown`;
-                }
+                items: [
+                  {
+                    title: '选项',
+                    options: [
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    global: true,
+                    target({ id }: EditorResult<Data>) {
+                      return `.{id} div.ant-select-item.ant-select-item-option`;
+                    }
+                  },
+                  {
+                    title: '下拉区背景',
+                    options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                    global: true,
+                    target({ id }: EditorResult<Data>) {
+                      return `.{id}.ant-select-dropdown`;
+                    }
+                  },
+                  {
+                    title: '空白描述',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    global: true,
+                    target({ id }: EditorResult<Data>) {
+                      return `.{id} .ant-empty-description`;
+                    }
+                  }
+                ]
               },
-              {
-                title: '空白描述',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                global: true,
-                target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-empty-description`;
-                }
-              }
             ]
           }),
           ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
-              {
-                title: '清除按钮',
-                catelog: 'Hover',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle:hover',
-                domTarget: '.anticon-close-circle'
-              },
               {
                 title: '边框',
                 options: ['border'],
@@ -245,6 +253,13 @@ export default {
                 target({ id }: EditorResult<Data>) {
                   return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`;
                 }
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
               },
               {
                 title: '标签-关闭图标',

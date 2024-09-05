@@ -83,117 +83,122 @@ export default {
   ':root': {
     style: [
       {
-        title: '上传列表类型',
-        type: 'Select',
-        description: '上传列表的内建样式',
-        options: [
-          { label: '文字列表', value: 'text' },
-          { label: '图片列表', value: 'picture' },
-          { label: '图片卡片列表', value: 'picture-card' },
-          { label: '拖拽上传', value: 'dragger' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.config.listType;
+        items: [
+          {
+            title: '上传列表类型',
+            type: 'Select',
+            description: '上传列表的内建样式',
+            options: [
+              { label: '文字列表', value: 'text' },
+              { label: '图片列表', value: 'picture' },
+              { label: '图片卡片列表', value: 'picture-card' },
+              { label: '拖拽上传', value: 'dragger' }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config.listType;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.config.listType = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.config.listType = value;
-          }
-        }
-      },
-      {
-        title: '隐藏图标',
-        type: 'switch',
-        description: '是否隐藏图标，默认不隐藏',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.hideIcon;
+          {
+            title: '隐藏图标',
+            type: 'switch',
+            description: '是否隐藏图标，默认不隐藏',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.hideIcon;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.hideIcon = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.hideIcon = value;
-          }
-        }
-      },
-      {
-        title: '自定义图标',
-        type: 'switch',
-        description: '开启后，可自定义配置图标，默认关闭',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.hideIcon;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.isCustomIcon;
+          {
+            title: '自定义图标',
+            type: 'switch',
+            description: '开启后，可自定义配置图标，默认关闭',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.hideIcon;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.isCustomIcon;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.isCustomIcon = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.isCustomIcon = value;
-          }
-        }
-      },
-      {
-        title: '图标',
-        type: 'Icon',
-        description: '文字列表-图标，自定义选择图标',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.isCustomIcon && data.config.listType === 'text' && !data.hideIcon;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.textIcon;
+          {
+            title: '图标',
+            type: 'Icon',
+            description: '文字列表-图标，自定义选择图标',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.isCustomIcon && data.config.listType === 'text' && !data.hideIcon;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.textIcon;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.textIcon = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.textIcon = value;
-          }
-        }
-      },
-      {
-        title: '图标',
-        type: 'Icon',
-        description: '图片列表-图标，自定义选择图标',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.isCustomIcon && data.config.listType === 'picture' && !data.hideIcon;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.picIcon;
+          {
+            title: '图标',
+            type: 'Icon',
+            description: '图片列表-图标，自定义选择图标',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.isCustomIcon && data.config.listType === 'picture' && !data.hideIcon;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.picIcon;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.picIcon = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.picIcon = value;
-          }
-        }
-      },
-      {
-        title: '图标',
-        type: 'Icon',
-        description: '图片卡片列表-图标，自定义选择图标',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.isCustomIcon && data.config.listType === 'picture-card' && !data.hideIcon;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.picCardIcon;
+          {
+            title: '图标',
+            type: 'Icon',
+            description: '图片卡片列表-图标，自定义选择图标',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.isCustomIcon && data.config.listType === 'picture-card' && !data.hideIcon;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.picCardIcon;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.picCardIcon = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.picCardIcon = value;
-          }
-        }
-      },
-      {
-        title: '图标',
-        type: 'Icon',
-        description: '拖拽上传-图标，自定义选择图标',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.isCustomIcon && data.config.listType === 'dragger' && !data.hideIcon;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.dragIcon;
+          {
+            title: '图标',
+            type: 'Icon',
+            description: '拖拽上传-图标，自定义选择图标',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.isCustomIcon && data.config.listType === 'dragger' && !data.hideIcon;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.dragIcon;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.dragIcon = value;
+              }
+            }
           },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.dragIcon = value;
-          }
-        }
+        ]
       },
+      uploadEditors,
       {
         title: '背景',
         options: ['background', 'border'],
@@ -250,8 +255,7 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.listType === 'dragger';
         }
-      },
-      uploadEditors
+      }
       /**
       {
         title: '默认样式',

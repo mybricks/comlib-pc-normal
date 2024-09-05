@@ -134,83 +134,98 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '文本内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-input'
-              },
-              {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'input::placeholder'
-              },
-              {
-                title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle'
-              },
-              {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper'
-              },
-              {
-                title: '背景色',
-                options: ['background'],
-                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
-              },
-              {
-                title: '前置标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } },
+                title: '表单项',
+                items: [
                   {
-                    type: 'size',
-                    config: {
-                      disableWidth: true,
-                      disableHeight: true,
-                      disableMinWidth: false
-                    }
-                  }
-                ],
-                target: '.ant-input-group-addon:first-child'
-              },
-              {
-                title: '后置标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } },
+                    title: '边框',
+                    options: ['border'],
+                    target: '.ant-input-affix-wrapper'
+                  },
                   {
-                    type: 'size',
-                    config: {
-                      disableWidth: true,
-                      disableHeight: true,
-                      disableMinWidth: false
-                    }
+                    title: '背景色',
+                    options: ['background'],
+                    target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+                  },
+                  {
+                    title: '文本内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-input'
+                  },
+                  {
+                    title: '提示内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: 'input::placeholder'
+                  },
+                  {
+                    title: '清除按钮',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.anticon-close-circle'
                   }
-                ],
-                target: '.ant-input-group-addon:last-child'
+                ]
               },
               {
-                title: '前缀内置图标',
-                options: ['font'],
-                target: '.ant-input-prefix > .anticon'
+                title: '标签',
+                items: [
+                  {
+                    title: '前置标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } },
+                      {
+                        type: 'size',
+                        config: {
+                          disableWidth: true,
+                          disableHeight: true,
+                          disableMinWidth: false
+                        }
+                      }
+                    ],
+                    target: '.ant-input-group-addon:first-child'
+                  },
+                  {
+                    title: '后置标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } },
+                      {
+                        type: 'size',
+                        config: {
+                          disableWidth: true,
+                          disableHeight: true,
+                          disableMinWidth: false
+                        }
+                      }
+                    ],
+                    target: '.ant-input-group-addon:last-child'
+                  },
+                ]
               },
               {
-                title: '前缀自定义图标',
-                options: ['size'],
-                target: '.ant-input-prefix > .ant-image-img'
-              },
-              {
-                title: '后缀内置图标',
-                options: ['font'],
-                target: '.anticon'
-              },
-              {
-                title: '后缀自定义图标',
-                options: ['size'],
-                target: '.ant-image-img'
+                title: '图标',
+                items: [
+                  {
+                    title: '前缀内置图标',
+                    options: ['font'],
+                    target: '.ant-input-prefix > .anticon'
+                  },
+                  {
+                    title: '前缀自定义图标',
+                    options: ['size'],
+                    target: '.ant-input-prefix > .ant-image-img'
+                  },
+                  {
+                    title: '后缀内置图标',
+                    options: ['font'],
+                    target: '.anticon'
+                  },
+                  {
+                    title: '后缀自定义图标',
+                    options: ['size'],
+                    target: '.ant-image-img'
+                  }
+                ]
               }
             ]
           }),

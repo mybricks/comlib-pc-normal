@@ -46,11 +46,6 @@ export default {
                 target: '.ant-select-selection-placeholder'
               },
               {
-                title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle'
-              },
-              {
                 title: '边框',
                 options: ['border'],
                 target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
@@ -59,6 +54,11 @@ export default {
                 title: '背景色',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle'
               },
               {
                 title: '下拉图标',
@@ -115,19 +115,19 @@ export default {
             catelog: 'Hover',
             items: [
               {
-                title: '清除按钮',
-                catelog: 'Hover',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle:hover',
-                domTarget: '.anticon-close-circle'
-              },
-              {
                 catelog: 'Hover',
                 title: '边框',
                 options: ['border'],
                 target:
                   'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
                 domTarget: 'div.ant-select-selector'
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
               },
               {
                 title: '标签-关闭图标',

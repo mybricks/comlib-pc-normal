@@ -267,14 +267,6 @@ export default {
         items: [
           ...catelogEditors('默认', [
             {
-              title: '页码',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.size !== SizeTypeEnum.Simple;
-              },
-              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-              target: `.ant-pagination-item`
-            },
-            {
               title: '页码字体',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.size === SizeTypeEnum.Simple;
@@ -292,6 +284,14 @@ export default {
                 color: '#000000'
               },
               target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
+            },
+            {
+              title: '页码',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item`
             },
             {
               title: '翻页按钮',
@@ -357,15 +357,6 @@ export default {
           ]),
           ...catelogEditors('Hover', [
             {
-              title: '页码',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.size !== SizeTypeEnum.Simple;
-              },
-              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-              target: `.ant-pagination-item:hover`,
-              domTarget: '.ant-pagination-item'
-            },
-            {
               title: '页码字体',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.size === SizeTypeEnum.Simple;
@@ -384,6 +375,15 @@ export default {
                 color: '#000000'
               },
               target: `.ant-pagination-item:hover a`,
+              domTarget: '.ant-pagination-item'
+            },
+            {
+              title: '页码',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item:hover`,
               domTarget: '.ant-pagination-item'
             },
             {
@@ -435,15 +435,6 @@ export default {
           ]),
           ...catelogEditors('激活', [
             {
-              title: '页码',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.size !== SizeTypeEnum.Simple;
-              },
-              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-              target: `.ant-pagination-item.ant-pagination-item-active`
-            },
-
-            {
               title: '页码字体',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.size !== SizeTypeEnum.Simple;
@@ -453,6 +444,14 @@ export default {
                 color: '#000000'
               },
               target: `.ant-pagination-item.ant-pagination-item-active a`
+            },
+            {
+              title: '页码',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item.ant-pagination-item-active`
             },
             {
               title: '条数选择',

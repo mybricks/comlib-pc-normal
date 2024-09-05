@@ -349,7 +349,7 @@ export default {
             }
           },
           {
-            title: '编辑器',
+            title: '边框',
             catelog: '默认',
             options: ['border'],
             target: '.tox-tinymce'
@@ -370,7 +370,7 @@ export default {
             target: '.tox .tox-tbtn:not(.tox-tbtn--disabled)'
           },
           {
-            title: '工具栏按钮',
+            title: '尺寸',
             catelog: '默认',
             options: ['size'],
             target: '.tox .tox-tbtn'
@@ -403,13 +403,13 @@ export default {
             target: '.tox .tox-tbtn.tox-tbtn--disabled'
           },
           {
-            title: '工具栏下拉按钮',
+            title: '下拉按钮尺寸',
             catelog: '默认',
             options: ['size'],
             target: '.tox .tox-tbtn.tox-tbtn--select:not(.tox-tbtn--bespoke)'
           },
           {
-            title: '工具栏长按钮',
+            title: '长按钮尺寸',
             catelog: '默认',
             options: ['size'],
             target: '.tox .tox-tbtn.tox-tbtn--select.tox-tbtn--bespoke'

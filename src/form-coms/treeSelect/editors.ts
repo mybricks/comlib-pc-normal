@@ -38,64 +38,79 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '输入框',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-select-selector'
+                title: '表单项',
+                items: [
+                  {
+                    title: '输入框',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-select-selector'
+                  },
+                  {
+                    title: '提示内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-select-selector .ant-select-selection-placeholder'
+                  },
+                  {
+                    title: '清除图标',
+                    options: [
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-select-allow-clear .ant-select-clear'
+                  },
+                  {
+                    title: '下拉箭头/搜索图标',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-select-show-arrow .ant-select-arrow'
+                  }
+                ]
               },
               {
-                title: '提示内容',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selector .ant-select-selection-placeholder'
+                title: '标签',
+                items: [
+                  {
+                    title: '选中标签',
+                    options: [
+                      'border',
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    target: '.ant-select-selector .ant-select-selection-item'
+                  },
+                  {
+                    title: '选中标签-删除按钮',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: '.ant-select-selector .ant-select-selection-item-remove'
+                  }
+                ]
               },
               {
-                title: '清除图标',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-select-allow-clear .ant-select-clear'
-              },
-              {
-                title: '下拉箭头/搜索图标',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-show-arrow .ant-select-arrow'
-              },
-              {
-                title: '选中标签',
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-select-selector .ant-select-selection-item'
-              },
-              {
-                title: '选中标签-删除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-select-selector .ant-select-selection-item-remove'
-              },
-              {
-                title: '选项',
-                options: [
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                global: true,
-                target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
-              },
-              {
-                title: '勾选框',
-                options: [
-                  'border',
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                global: true,
-                target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
-              }
+                title: '下拉区域',
+                items: [
+                  {
+                    title: '选项',
+                    options: [
+                      { type: 'font', config: { disableTextAlign: true } },
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    global: true,
+                    target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
+                  },
+                  {
+                    title: '勾选框',
+                    options: [
+                      'border',
+                      { type: 'background', config: { disableBackgroundImage: true } }
+                    ],
+                    global: true,
+                    target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
+                  }
+                ]
+              }  
             ]
           }),
           ...createrCatelogEditor({
@@ -124,7 +139,7 @@ export default {
                 domTarget: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
               },
               {
-                title: '勾选框选中',
+                title: '勾选框(选中)',
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }

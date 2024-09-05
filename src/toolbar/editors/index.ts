@@ -96,18 +96,19 @@ export default {
             target: `div.mybricks-toolbar`
           },
           {
-            options: ['size'],
-            catelog: '默认',
-            target({}) {
-              return `div[data-btn-idx]`;
-            }
-          },
-          {
             title: '按钮样式',
             catelog: '默认',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({}) {
               return `button`;
+            }
+          },
+          {
+            title: '按钮尺寸',
+            options: ['size'],
+            catelog: '默认',
+            target({}) {
+              return `div[data-btn-idx]`;
             }
           },
           {

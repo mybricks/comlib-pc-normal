@@ -28,17 +28,26 @@ export default {
   },
   ':root': {
     style: [
-      Editor<Data>('固定宽度', EditorType.Switch, 'openWidth'),
-      Editor<Data>('百分比宽度', EditorType.Number, 'percentWidth', {
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.openWidth;
-        }
-      }),
-      Editor<Data>('固定宽度', EditorType.Number, 'width', {
-        ifVisible({ data }: EditorResult<Data>) {
-          return !!data.openWidth;
-        }
-      }),
+      {
+        items: [
+          Editor<Data>('固定宽度', EditorType.Switch, 'openWidth'),
+          Editor<Data>('百分比宽度', EditorType.Number, 'percentWidth', {
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.openWidth;
+            }
+          }),
+          Editor<Data>('固定宽度', EditorType.Number, 'width', {
+            ifVisible({ data }: EditorResult<Data>) {
+              return !!data.openWidth;
+            }
+          }),
+        ]
+      },
+      {
+        title: '图标',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: '.ant-alert-icon'
+      },
       {
         title: '标题字体',
         options: ['font'],
@@ -90,11 +99,6 @@ export default {
         initValue: {
           fontSize: 16
         }
-      },
-      {
-        title: '图标',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-alert-icon'
       }
     ],
     items: ({ }: EditorResult<Data>, cate1, cate2) => {

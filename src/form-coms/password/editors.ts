@@ -47,6 +47,16 @@ export default {
                 target: '.ant-input'
               },
               {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+              },
+              {
                 title: '提示内容',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: 'input::placeholder'
@@ -60,22 +70,19 @@ export default {
                 title: '密码图标',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-input-password-icon.anticon'
-              },
-              {
-                title: '边框',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper'
-              },
-              {
-                title: '背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
               }
             ]
           }),
           ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
+              {
+                title: '边框',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
+              },
               {
                 title: '清除按钮',
                 catelog: 'Hover',
@@ -87,13 +94,6 @@ export default {
                 title: '密码图标',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-input-password-icon.anticon:hover'
-              },
-              {
-                title: '边框',
-                catelog: 'Hover',
-                options: ['border'],
-                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-                domTarget: '.ant-input-affix-wrapper'
               }
             ]
           }),

@@ -52,6 +52,7 @@ export default {
   ':root': {
     style: [
       {
+        title: '边框',
         options: ['border'],
         target: `:root`
       },
@@ -71,8 +72,8 @@ export default {
       {
         items: [
           {
-            title: '默认',
             catelog: '默认',
+            title: '字体',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
             ifVisible({ data }: EditorResult<Data>) {
               return data.isUnity;
@@ -80,8 +81,8 @@ export default {
             target: `:root`
           },
           {
-            title: 'Hover',
             catelog: 'Hover',
+            title: '字体',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
             ifVisible({ data }: EditorResult<Data>) {
               return data.isUnity;
