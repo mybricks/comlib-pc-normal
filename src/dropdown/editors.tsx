@@ -80,68 +80,78 @@ export default {
   ':root': {
     style: [
       {
-        title: '提示内容',
-        catelog: '默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        global: true,
-        target({ id }) {
-          return `.{id} .ant-dropdown-trigger`;
-        }
+        title: '展示区域',
+        items: [
+          {
+            title: '提示内容',
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            global: true,
+            target({ id }) {
+              return `.{id} .ant-dropdown-trigger`;
+            }
+          },
+          {
+            catelog: '默认',
+            options: [{ type: 'border' }],
+            global: true,
+            target({ id }) {
+              return `.{id} .dropdown`;
+            }
+          },
+          {
+            title: '提示内容箭头',
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            global: true,
+            target({ id }) {
+              return `.{id} .anticon-down`;
+            }
+          },
+        ]
       },
       {
-        catelog: '默认',
-        options: [{ type: 'border' }],
-        global: true,
-        target({ id }) {
-          return `.{id} .dropdown`;
-        }
-      },
-      {
-        title: '提示内容箭头',
-        catelog: '默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        global: true,
-        target({ id }) {
-          return `.{id} .anticon-down`;
-        }
-      },
-      {
-        title: '菜单',
-        catelog: '默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        global: true,
-        target({ id }) {
-          return `.{id} .ant-dropdown-menu`;
-        }
-      },
-      {
-        title: '箭头',
-        catelog: '默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        global: true,
-        target({ id }) {
-          return `.{id} .ant-dropdown-arrow:before`;
-        }
-      },
-      {
-        catelog: '默认',
-        options: [{ type: 'border' }],
-        global: true,
-        target({ id }) {
-          return `.{id} .ant-dropdown-arrow`;
-        }
-      },
-      {
-        title: '选项',
-        catelog: '默认',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target({ id }) {
-          return `.{id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
-        }
+        title: '下拉区域',
+        items: [
+          {
+            title: '菜单',
+            catelog: '默认',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            global: true,
+            target({ id }) {
+              return `.{id} .ant-dropdown-menu`;
+            }
+          },
+          {
+            title: '箭头',
+            catelog: '默认',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            global: true,
+            target({ id }) {
+              return `.{id} .ant-dropdown-arrow:before`;
+            }
+          },
+          {
+            catelog: '默认',
+            options: [{ type: 'border' }],
+            global: true,
+            target({ id }) {
+              return `.{id} .ant-dropdown-arrow`;
+            }
+          },
+          {
+            title: '选项',
+            catelog: '默认',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target({ id }) {
+              return `.{id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
+            }
+          },
+        ]
       },
       {
         title: '提示内容',

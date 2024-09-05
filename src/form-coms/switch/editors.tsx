@@ -46,6 +46,19 @@ export default {
             catelog: '默认',
             items: [
               {
+                title: '控件',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-switch-handle:before'
+              },
+              {
+                title: '文案',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-switch-inner'
+              },
+              {
                 title: '激活',
                 options: [
                   'border',
@@ -60,27 +73,14 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.ant-switch'
-              },
-              {
-                title: '控件',
-                options: [
-                  'border',
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: '.ant-switch-handle:before'
-              },
-              {
-                title: '文案',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.ant-switch-inner'
               }
             ]
           }),
           ...createrCatelogEditor({
             catelog: '禁用',
-            items: [
+            items: [  
               {
-                title: '禁用',
+                title: '透明度',
                 options: ['opacity'],
                 target: '.ant-switch-disabled'
               }

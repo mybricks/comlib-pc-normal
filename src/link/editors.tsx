@@ -21,14 +21,12 @@ export default {
       {
         items: [
           {
-            title: '默认',
             catelog: '默认',
             options: ['padding', 'border', 'background', 'font'],
             target: '.linkWrapper',
             initValue: { color: '#1890ff' }
           },
           {
-            title: '激活',
             catelog: '激活',
             options: ['padding', 'border', 'background', 'font'],
             target: '.linkWrapper:hover',

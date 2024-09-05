@@ -33,11 +33,6 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '选项标签',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
-              },
-              {
                 title: '选择框',
                 options: [
                   'border',
@@ -61,7 +56,12 @@ export default {
                   'border'
                 ],
                 target: '.ant-checkbox-group .ant-checkbox-group-item'
-              }
+              },
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
+              },
             ]
           }),
           ...createrCatelogEditor({
@@ -99,11 +99,6 @@ export default {
             catelog: '选中',
             items: [
               {
-                title: '选项标签',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked > span:nth-child(2)'
-              },
-              {
                 title: '选择框',
                 options: [
                   'border',
@@ -112,20 +107,6 @@ export default {
                   'opacity'
                 ],
                 target: '.ant-checkbox-checked .ant-checkbox-inner'
-              },
-              {
-                title: '选择框勾选符号',
-                options: [
-                  {
-                    type: 'border',
-                    config: {
-                      disableBorderWidth: true,
-                      disableBorderStyle: true,
-                      disableBorderRadius: true
-                    }
-                  }
-                ],
-                target: '.ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner:after'
               },
               {
                 title: '全选框',
@@ -142,26 +123,11 @@ export default {
                   'border'
                 ],
                 target: '.ant-checkbox-group .ant-checkbox-wrapper-checked'
-              }
-            ]
-          }),
-          ...createrCatelogEditor({
-            catelog: '禁用',
-            items: [
+              },
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target:
-                  'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
-              },
-              {
-                title: '选择框',
-                options: [
-                  { type: 'border', config: { useImportant: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } },
-                  'opacity'
-                ],
-                target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
+                target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked > span:nth-child(2)'
               },
               {
                 title: '选择框勾选符号',
@@ -175,7 +141,21 @@ export default {
                     }
                   }
                 ],
-                target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner:after'
+                target: '.ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner:after'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '选择框',
+                options: [
+                  { type: 'border', config: { useImportant: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'opacity'
+                ],
+                target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
               },
               {
                 title: '全选框',
@@ -192,7 +172,27 @@ export default {
                   'border'
                 ],
                 target: '.ant-checkbox-group>.ant-checkbox-wrapper-disabled'
-              }
+              },
+              {
+                title: '选择框勾选符号',
+                options: [
+                  {
+                    type: 'border',
+                    config: {
+                      disableBorderWidth: true,
+                      disableBorderStyle: true,
+                      disableBorderRadius: true
+                    }
+                  }
+                ],
+                target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner:after'
+              },
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target:
+                  'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
+              },
             ]
           })
         ]

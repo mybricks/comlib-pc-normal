@@ -175,27 +175,31 @@ export default {
   ':root': {
     style: [
       {
+        items: [
+          {
+            title: '列表项外边距',
+            type: 'inputNumber',
+            options: [
+              { min: 0, title: '上' },
+              { min: 0, title: '右' },
+              { min: 0, title: '下' },
+              { min: 0, title: '左' }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.listItemMargin;
+              },
+              set({ data }: EditorResult<Data>, value: number[]) {
+                data.listItemMargin = value;
+              }
+            }
+          }
+        ]
+      },
+      {
         title: '列表项',
         options: ['border', 'background', 'padding'],
         target: '.ant-row.form-list-item'
-      },
-      {
-        title: '列表项外边距',
-        type: 'inputNumber',
-        options: [
-          { min: 0, title: '上' },
-          { min: 0, title: '右' },
-          { min: 0, title: '下' },
-          { min: 0, title: '左' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.listItemMargin;
-          },
-          set({ data }: EditorResult<Data>, value: number[]) {
-            data.listItemMargin = value;
-          }
-        }
       }
     ],
     items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {

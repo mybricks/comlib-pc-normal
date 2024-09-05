@@ -101,7 +101,7 @@ export default {
     },
     style: [
       {
-        title: '容器',
+        title: '弹出层',
         options: [
           'font',
           'size',

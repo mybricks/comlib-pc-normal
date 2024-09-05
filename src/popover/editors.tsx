@@ -232,61 +232,73 @@ export default {
     },
     style: [
       {
-        title: '容器',
-        options: [
+        items: [
           {
-            type: 'background',
-            config: {
-              disableBackgroundImage: true
-            }
+            title: '弹出层',
+            options: [
+              {
+                type: 'background',
+                config: {
+                  disableBackgroundImage: true
+                }
+              },
+              'border',
+              'size'
+            ],
+            global: true,
+            target({ id }: EditorResult<Data>) {
+              return `.{id}.ant-popover .ant-popover-inner`;
+            },
+            domTarget: '.ant-popover .ant-popover-inner'
           },
-          'border',
-          'size'
-        ],
-        global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.{id}.ant-popover .ant-popover-inner`;
-        },
-        domTarget: '.ant-popover .ant-popover-inner'
-      },
-      {
-        title: '标题',
-        options: ['font', 'padding', 'border'],
-        global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.{id}.ant-popover .ant-popover-inner .ant-popover-title`;
-        },
-        domTarget: '.ant-popover .ant-popover-inner .ant-popover-title'
-      },
-      {
-        title: '内容',
-        options: ['font', 'padding'],
-        global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.{id}.ant-popover .ant-popover-inner .ant-popover-inner-content`;
-        },
-        domTarget: '.ant-popover .ant-popover-inner .ant-popover-inner-content'
-      },
-      {
-        title: '箭头',
-        options: [
           {
-            type: 'background',
-            config: {
-              disableBackgroundImage: true,
-              keyMap: {
-                backgroundColor: '--antd-arrow-background-color'
+            title: '箭头',
+            options: [
+              {
+                type: 'background',
+                config: {
+                  disableBackgroundImage: true,
+                  keyMap: {
+                    backgroundColor: '--antd-arrow-background-color'
+                  }
+                }
               }
+            ],
+            initValue: {
+              '--antd-arrow-background-color': '#ffffff'
+            },
+            global: true,
+            target({ id }: EditorResult<Data>) {
+              return `.{id}.ant-popover .ant-popover-arrow .ant-popover-arrow-content`;
             }
           }
-        ],
-        initValue: {
-          '--antd-arrow-background-color': '#ffffff'
-        },
-        global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.{id}.ant-popover .ant-popover-arrow .ant-popover-arrow-content`;
-        }
+        ]
+      },
+      {
+        items: [
+          {
+            title: '标题',
+            options: ['font', 'padding', 'border'],
+            global: true,
+            target({ id }: EditorResult<Data>) {
+              return `.{id}.ant-popover .ant-popover-inner .ant-popover-title`;
+            },
+            domTarget: '.ant-popover .ant-popover-inner .ant-popover-title'
+          }
+        ]
+      },
+      {
+        items: [
+          {
+            title: '内容',
+            options: ['font', 'padding'],
+            global: true,
+            target({ id }: EditorResult<Data>) {
+              return `.{id}.ant-popover .ant-popover-inner .ant-popover-inner-content`;
+            },
+            domTarget: '.ant-popover .ant-popover-inner .ant-popover-inner-content'
+          }
+        ]
       }
     ]
   }

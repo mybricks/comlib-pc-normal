@@ -46,14 +46,6 @@ const itemEditor = {
       {
         items: [
           {
-            options: ['size'],
-            catelog: '默认',
-            target({ focusArea }) {
-              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"]`;
-            }
-          },
-          {
-            title: '按钮样式',
             catelog: '默认',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({ focusArea }) {
@@ -61,7 +53,14 @@ const itemEditor = {
             }
           },
           {
-            title: '按钮样式',
+            title: '尺寸',
+            options: ['size'],
+            catelog: '默认',
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"]`;
+            }
+          },
+          {
             catelog: 'Hover',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({ focusArea }) {
@@ -69,7 +68,6 @@ const itemEditor = {
             }
           },
           {
-            title: '按钮样式',
             catelog: '激活',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({ focusArea }) {
@@ -77,7 +75,6 @@ const itemEditor = {
             }
           },
           {
-            title: '按钮样式',
             catelog: '禁用',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({ focusArea }) {
