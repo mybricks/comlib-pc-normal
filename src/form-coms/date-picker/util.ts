@@ -105,9 +105,10 @@ export function formatRulesExpression(val: DisabledRulesValue, picker) {
           break;
         // 处理区间
         case 'between':
+        case 'notBetween':
           const formattedBetween = formatBetweenParams(comVal, picker);
           result =
-            result + separator + `${formattedBetween}`;
+            result + separator + `${type === 'between' ? '' : '!'}(${formattedBetween})`;
           break;
         case 'complex':
           let complexExpr = formatRulesExpression(val.rules[i].value, picker)

@@ -9,6 +9,7 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
+import { DisabledRulesValue, formatRulesExpression } from '../date-picker/util';
 import { RangePickerProps } from 'antd/lib/date-picker';
 
 const { RangePicker } = DatePicker;
@@ -30,6 +31,8 @@ export interface Data {
   splitChart: string;
   emptyRules: any[];
   isEditable: boolean;
+  dynamicDisabledDateRules: DisabledRulesValue
+  dynamicDisabledDateExpression: string;
   formatMap: {
     日期: string;
     '日期+时间': string;
@@ -265,6 +268,32 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       }
       outputRels['returnValue'](transValue);
+    });
+
+    inputs['setDisabledDateRules']?.((val, outputRels) => {
+      let TODAY = moment().endOf('day').valueOf();
+      let YEAR = moment().year();
+      let MONTH = moment().endOf('month').valueOf();
+      let QUARTER = moment().endOf('quarter').valueOf();
+      let WEEK = moment().startOf('week').valueOf();
+      data.dynamicDisabledDateRules = val;
+      let pickerVal = data.config.picker || 'date';
+      if (val.picker && ['date', 'week', 'month', 'quarter', 'year'].includes(val.picker)) {
+        // data.config.picker = val.picker
+        pickerVal = val.picker;
+      }
+      const result = formatRulesExpression(val, pickerVal);
+      data.dynamicDisabledDateExpression = result ? 'current &&  (' + result + ')' : 'current';
+      // data.dynamicDisabledDateExpression = formatRulesExpression(val, data.config.picker || 'date');
+      console.log('dynamicDisabledDateExpression', val, data.dynamicDisabledDateExpression);
+      data.disabledDate = (current) => {
+        // console.log('current', current.format('YYYY-MM-DD'), eval(data.dynamicDisabledDateExpression), TODAY)
+        return data.dynamicDisabledDateExpression && data.dynamicDisabledDateExpression !== 'current'
+          ? eval(data.dynamicDisabledDateExpression)
+          : false;
+      };
+      // forchUpdate((count) => count + 1);
+      outputRels['setDisabledDateRulesDone'](val);
     });
   }, [value]);
 

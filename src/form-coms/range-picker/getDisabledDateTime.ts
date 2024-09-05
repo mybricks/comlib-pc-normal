@@ -49,6 +49,9 @@ export const getDisabledDateTime = ({ data, dates }: { data: Data, dates }) => {
 
     /** 日期禁用函数 */
     const disabledDate = (current) => {
+        if(data.dynamicDisabledDateExpression) {
+            return eval(data.dynamicDisabledDateExpression)
+        }
         // current: 所有日期
         let startBool = false,
             endBool = false;
