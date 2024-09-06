@@ -324,6 +324,11 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     input.get(SelfInputIds.ModifyField).setRels(["modifyFieldDone"]);
   }
 
+  if(typeof data.enableAddValidate === 'undefined') {
+    // 内网 默认升级上来的，添加和删除开启校验；对于外网这里不好区分，应该是设置为false
+    data.enableAddValidate = true
+  }
+
   //=========== v1.2.38 end ===============
   return true;
 }

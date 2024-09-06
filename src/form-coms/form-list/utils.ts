@@ -240,6 +240,9 @@ export function changeValue({ id, outputs, parentSlot, name, data, prevAction = 
   }
   onChangeForFc(parentSlot, { id, value, name });
   if(prevAction === 'add' || prevAction === 'remove') {
+    if(data.enableAddValidate === true) {
+      onValidateTrigger({ parentSlot, id, name });
+    }
     return
   } else {
     onValidateTrigger({ parentSlot, id, name });
