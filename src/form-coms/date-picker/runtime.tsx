@@ -257,7 +257,6 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       const result = formatRulesExpression(val, pickerVal);
       data.dynamicDisabledExpression = result ? 'current &&  (' + result + ')' : 'current';
       // data.dynamicDisabledExpression = formatRulesExpression(val, data.config.picker || 'date');
-      console.log('dynamicDisabledExpression', val, data.dynamicDisabledExpression);
       data.disabledDate = (current) => {
         // console.log('current', current.format('YYYY-MM-DD'), eval(data.dynamicDisabledExpression), TODAY)
         return data.dynamicDisabledExpression && data.dynamicDisabledExpression !== 'current'
@@ -663,6 +662,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             onChange={onChange}
             onPanelChange={onPanelChange}
             disabledDate={data.disabledDate || disabledDateConfig}
+            //@ts-ignore
             disabledTime={disabledDateTimeConfig}
             getPopupContainer={(triggerNode: HTMLElement) => {
               if (fullOpen) return wrapperRef.current;

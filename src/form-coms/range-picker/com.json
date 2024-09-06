@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.range-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "description": "日期范围选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_trwmiy.e7e7e1e9c31762da.png",
@@ -159,6 +159,147 @@
       },
       "rels": [
         "setValidateInfoDone"
+      ]
+    },
+    {
+      "id": "setDisabledDateRules",
+      "title": "设置禁用特定日期规则",
+      "desc": "设置不可选择的日期规则",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "rules": {
+            "type": "array",
+            "descriptions": "禁用规则",
+            "items": {
+              "type": "object",
+              "descriptions": "单条规则，数组内容，第一项为操作关系符号，如",
+              "properties": {
+                "value": {
+                  "title": "比较值",
+                  "description": "可以是字符或者数组，例如 `TODAY`、`2024-07-17` 可用在>=; ['2024-07-16', '2024-07-28']可用在in、between；'Sat'、'Mon',  用在equal场景",
+                  "type": "any"
+                },
+                "op":  {
+                  "type": "enum",
+                  "title": "比较符号",
+                  "description": "比较操作，例如，>、>=、<= 具体日期，以及in、notIn区间包含关系；equal、notEqual特定日期（周六日、季度一二）；between 日期区间；complex 用于复杂场景，value可取{relation: '&&', rules: []}",
+                  "items": [
+                    {
+                      "type": "string",
+                      "value": ">"
+                    },
+                    {
+                      "type": "string",
+                      "value": ">="
+                    },
+                    {
+                      "type": "string",
+                      "value": "<"
+                    },
+                    {
+                      "type": "string",
+                      "value": "<="
+                    },
+                    {
+                      "type": "string",
+                      "value": "="
+                    },
+                    {
+                      "type": "string",
+                      "value": "!="
+                    },
+                    {
+                      "type": "string",
+                      "value": "in"
+                    },
+                    {
+                      "type": "string",
+                      "value": "notIn"
+                    },
+                    {
+                      "type": "string",
+                      "value": "equal"
+                    },
+                    {
+                      "type": "string",
+                      "value": "notEqual"
+                    },
+                    {
+                      "type": "string",
+                      "value": "between"
+                    }, 
+                    {
+                      "type": "string",
+                      "value": "complex"
+                    }
+                  ]
+                }                   
+              }
+            } 
+          },
+          "relation": {
+            "type": "enum",
+            "descriptions": "禁用规则中, 多项规则间关系；支持 && 和 || ，不传时默认为||",
+            "items": [
+              {
+                "type": "string",
+                "value": "&&"
+              },
+              {
+                "type": "string",
+                "value": "||"
+              }
+            ]
+          },
+          "picker": {
+            "type": "enum",
+            "description": "处理的日期选择类型，非必填，不传时以组件配置的类型为准",
+            "items": [
+              {
+                "type": "string",
+                "value": "date"
+              },
+              {
+                "type": "string",
+                "value": "week"
+              },
+              {
+                "type": "string",
+                "value": "month"
+              },
+              {
+                "type": "string",
+                "value": "quarter"
+              },
+              {
+                "type": "string",
+                "value": "year"
+              }
+            ]
+          },
+          "currentMode": {
+            "type": "enum",
+            "descriptions": "当前时间比较方式，不传递，则是默认；传递startOf、endOf分别表示日期开始时间、日期结束时间",
+            "items": [
+              {
+                "type": "string",
+                "value": "default"
+              },
+              {
+                "type": "string",
+                "value": "startOf"
+              },
+              {
+                "type": "string",
+                "value": "endOf"
+              }
+            ]
+          }
+        }
+      },
+      "rels": [
+        "setDisabledDateRulesDone"
       ]
     }
   ],
@@ -346,6 +487,14 @@
             "description": "校验提示"
           }
         }
+      }
+    },
+    {
+      "id": "setDisabledDateRulesDone",
+      "title": "禁用特定日期规则完成",
+      "desc": "禁用特定日期事件完成",
+      "schema": {
+        "type": "any"
       }
     }
   ],
