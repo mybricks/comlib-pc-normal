@@ -405,6 +405,7 @@ export default {
         },
         {
           title: '开启添加/删除默认校验',
+          description: '开启后，在添加一项或删除操作时，不会校验；关闭时，在提交、输入校验、值更新等场景校验',
           type: 'switch',
           value: {
             get({ data }: EditorResult<Data>) {
