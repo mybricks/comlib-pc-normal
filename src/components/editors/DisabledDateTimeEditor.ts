@@ -138,7 +138,6 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
             },
             set({ data }, value: TimeDateLimitItem[]) {
                 data.staticDisabledDate = value;
-                console.log('staticDisabledDate', value)
             },
         },
     },

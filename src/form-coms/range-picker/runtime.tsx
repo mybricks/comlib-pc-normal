@@ -31,7 +31,7 @@ export interface Data {
   splitChart: string;
   emptyRules: any[];
   isEditable: boolean;
-  dynamicDisabledDateRules: DisabledRulesValue
+  dynamicDisabledDateRules: DisabledRulesValue;
   dynamicDisabledDateExpression: string;
   formatMap: {
     日期: string;
@@ -41,6 +41,7 @@ export interface Data {
     季度: string;
     年份: string;
   };
+  disabledDate: RangePickerProps['disabledDate'];
 }
 
 export const DateType = {
@@ -271,6 +272,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs['setDisabledDateRules']?.((val, outputRels) => {
+      console.log('[48;5;208m [ val ]-274-「range-picker/runtime.tsx」 [0m', val);
       let TODAY = moment().endOf('day').valueOf();
       let YEAR = moment().year();
       let MONTH = moment().endOf('month').valueOf();
@@ -285,10 +287,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const result = formatRulesExpression(val, pickerVal);
       data.dynamicDisabledDateExpression = result ? 'current &&  (' + result + ')' : 'current';
       // data.dynamicDisabledDateExpression = formatRulesExpression(val, data.config.picker || 'date');
-      console.log('dynamicDisabledDateExpression', val, data.dynamicDisabledDateExpression);
       data.disabledDate = (current) => {
         // console.log('current', current.format('YYYY-MM-DD'), eval(data.dynamicDisabledDateExpression), TODAY)
-        return data.dynamicDisabledDateExpression && data.dynamicDisabledDateExpression !== 'current'
+        return data.dynamicDisabledDateExpression &&
+          data.dynamicDisabledDateExpression !== 'current'
           ? eval(data.dynamicDisabledDateExpression)
           : false;
       };
@@ -448,6 +450,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               env.i18n(data.config.placeholder?.[1])
             ]}
             ranges={data.useRanges ? rangeOptions : []}
+            //@ts-ignore
             showTime={getShowTime()}
             onChange={onChange}
             onCalendarChange={(dates) => setDates(dates)}

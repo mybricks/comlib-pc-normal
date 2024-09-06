@@ -3,6 +3,7 @@ import { RuleKeys } from '../utils/validator';
 import { refreshSchema } from './editors';
 import { Data } from './runtime';
 import { inputIds, outputIds } from '../form-container/constants';
+import { dateDisabledRulesSchema } from '../date-picker/constant';
 
 export default function ({
   data,
@@ -327,6 +328,15 @@ export default function ({
   if (typeof data.config.allowClear === "undefined") {
     data.config.allowClear = true;
   };
+
+  if (!output.get('setDisabledDateRulesDone')) {
+    output.add('setDisabledDateRulesDone', '禁用特定日期规则完成', { type: 'any' });
+  }
+  if(!input.get('setDisabledDateRules')) {
+    input.add('setDisabledDateRules', '设置禁用特定日期规则', dateDisabledRulesSchema)
+    input.get('setDisabledDateRules').setRels([`setDisabledDateRulesDone`]);
+
+  }
 
   return true;
 }
