@@ -54,7 +54,6 @@ function getDateValType(value) {
 export function formatRulesExpression(val: DisabledRulesValue, picker) {
   let result = '';
   let LOGIC_SEPARATOR = val.relation ?? '||'
-  // let currentMode = 
   for (let i = 0; i < val.rules.length; i++) {
     let { op: type, value: comVal } = val.rules[i];
     if (typeof comVal === 'string' && (innerDateType.includes(comVal) || regStartMatch.test(comVal))) {
@@ -69,7 +68,6 @@ export function formatRulesExpression(val: DisabledRulesValue, picker) {
           // 待验证
           dateEnd = 'default'
         }
-        console.log('comVal', comVal, isMoment(comVal))
       }
       comVal = formatSingleComVal(comVal, picker, picker === 'week' ? 'start' : dateEnd)
     }

@@ -261,24 +261,6 @@
                 "value": "year"
               }
             ]
-          },
-          "currentMode": {
-            "type": "enum",
-            "descriptions": "当前时间比较方式，不传递，则是默认；传递startOf、endOf分别表示日期开始时间、日期结束时间",
-            "items": [
-              {
-                "type": "string",
-                "value": "default"
-              },
-              {
-                "type": "string",
-                "value": "startOf"
-              },
-              {
-                "type": "string",
-                "value": "endOf"
-              }
-            ]
           }
         }
       },
