@@ -141,6 +141,10 @@ export interface Data {
    */
   disabled: boolean
   /**
+   * 开启添加校验行为
+   */
+  enableAddValidate?: boolean
+  /**
    * @description 是否作为表单项
    */
   isFormItem: boolean

@@ -404,6 +404,18 @@ export default {
           }
         },
         {
+          title: '开启添加/删除默认校验',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.enableAddValidate;
+            },
+            set({ data }: EditorResult<Data>, val) {
+              data.enableAddValidate = val;
+            }
+          }
+        },
+        {
           title: '提交隐藏表单项',
           type: 'Switch',
           description: '提交时收集被隐藏的表单项字段并进行校验',
