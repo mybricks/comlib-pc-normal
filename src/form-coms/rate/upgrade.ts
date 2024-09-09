@@ -3,7 +3,7 @@ import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
 import { inputIds, outputIds } from '../form-container/constants';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const valueSchema = {
     "type": "number"
   }
@@ -161,6 +161,13 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.3 end ===============
+
+
+  //兼容之前评分的颜色
+  if(data.color !== ''){
+    setDeclaredStyle(['.ant-rate-star-full', '.ant-rate-star-half .ant-rate-star-first'], {color: data.color});
+    data.color = ''
+  }
 
   return true;
 }
