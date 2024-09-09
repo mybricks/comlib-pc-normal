@@ -832,5 +832,15 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   });
   //  =========== v1.4.79 end ===============
 
+  /**
+   * @description v1.4.82 列间距
+   */
+    if (typeof data.mobileConfig === 'undefined') {
+      data.mobileConfig = {
+        enableWidthAdaptive: true
+      };
+    }
+    //  =========== v1.4.82 end ===============
+
   return true;
 }

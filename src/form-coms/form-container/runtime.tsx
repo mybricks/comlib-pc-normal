@@ -16,6 +16,7 @@ import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import { refreshSchema } from './schema';
 import css from './styles.less';
+import classnames from 'classnames';
 import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 import { isArray } from 'lodash';
@@ -52,17 +53,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return {};
   }, [env.edit]);
 
-  useEffect(() => {
-    // 调试态，手动加antd表单项 换行相关样式
-    if (env.runtime && env.runtime.debug) {
-      if (wrapperWidth > 575) {
-        // wrapperRef.current?.classList.remove(css.minWrapSize);
-      } else {
-        // 先不加antd 换行样式，需要研究下代码，看什么情况下，antd会加换行样式
-        // wrapperRef.current?.classList.add(css.minWrapSize);
-      }
-    }
-  }, [env.runtime, wrapperWidth]);
+  const adaptiveMobile = useMemo(() => {
+    const layout = data.config?.layout || data.layout;
+    let isHor = layout === 'horizontal';
+    return isHor && data.mobileConfig?.enableWidthAdaptive !== false;
+  }, [data.layout, data.config.layout, data.mobileConfig?.enableWidthAdaptive]);
 
   useLayoutEffect(() => {
     if (env.runtime) {
@@ -704,7 +699,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   };
   return (
-    <div className={css.wrapper} ref={wrapperRef}>
+    <div
+      className={classnames(
+        css.wrapper,
+        !adaptiveMobile && wrapperWidth < 575 ? css.disableMobileWrapper : ''
+      )}
+      ref={wrapperRef}
+    >
       <Fragment>
         {!data.isFormItem ? (
           <Form

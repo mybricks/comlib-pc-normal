@@ -143,6 +143,10 @@ export interface Data {
    * 表单原生属性
    */
   config: FormProps
+  /**
+   * 移动端配置
+   */
+  mobileConfig: MobileFormConfig
 
   /**
    * 表单项可编辑/只读
@@ -206,6 +210,11 @@ interface QueryFieldRules {
   [field: string]: {
     operator: string
   }
+}
+
+interface MobileFormConfig {
+  /** 默认开启，小尺寸 antd 内置的表单项、标题 的换行样式生效 */
+  enableWidthAdaptive?: boolean
 }
 
 export interface FormControlProps {

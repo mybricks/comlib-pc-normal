@@ -167,3 +167,33 @@
   padding: 2px 10px;
   z-index: 10010;
 }
+
+.keepMobileWidth {
+  .ant-form .ant-form-item .ant-form-item-control {
+    flex: 1 1 0 !important;
+    max-width: 100%;
+  }
+  .ant-form-item .ant-form-item-label {
+    text-align: right;
+  }
+  .ant-form-item .ant-form-item-label > label::after {
+    display: block !important;
+  }
+
+  .ant-col-xs-24.ant-form-item-label > label::after {
+    display: block !important;
+  }
+}
+.disableMobileWrapper {
+  :global {
+    .keepMobileWidth();
+  }
+}
+
+@media (max-width: 575px) {
+  .disableMobileWrapper {
+    :global {
+      .keepMobileWidth();
+    }
+  }
+}

@@ -558,6 +558,31 @@ export default {
           ]
         },
         {
+          title: '移动端配置',
+          items: [
+            {
+              title: '宽度适配',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (data.config?.layout || data.layout) === 'horizontal';
+              },
+              type: 'Switch',
+              description:
+                '表单布局为水平下生效，默认开启，antd内置样式会使标题和表单项内容展示为两行；关闭后，水平模式下，展示成一行',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !!data.mobileConfig?.enableWidthAdaptive;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  if (data.mobileConfig === undefined) {
+                    data.mobileConfig = {};
+                  }
+                  data.mobileConfig.enableWidthAdaptive = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '标题',
           ifVisible({ data }: EditorResult<Data>) {
             return (data.config?.layout || data.layout) === 'horizontal';
