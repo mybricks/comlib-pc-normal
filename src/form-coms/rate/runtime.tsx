@@ -153,7 +153,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               : btnItemR({ icon: data.icon })
             : void 0
         }
-        style={{ color: data.color }}
+        className={css.rate}
       ></Rate>
     </div>
   );

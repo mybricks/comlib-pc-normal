@@ -3,7 +3,6 @@
   "choose": "font",
   "font": "A",
   "icon": "HomeOutlined",
-  "color": "#f66801",
   "rules": [],
   "config": {
     "count": 5,
