@@ -66,6 +66,9 @@
     "type": "",
     "queryFieldRules": {}
   },
+  "mobileConfig": {
+    "enableWidthAdaptive": true
+  },
   "defaultCollapsed": true,
   "columnGap": 0
 }
