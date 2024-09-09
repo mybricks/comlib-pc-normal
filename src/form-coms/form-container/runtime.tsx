@@ -702,7 +702,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <div
       className={classnames(
         css.wrapper,
-        !adaptiveMobile && wrapperWidth < 575 ? css.disableMobileWrapper : ''
+        !adaptiveMobile && wrapperWidth <= 575 ? css.disableMobileWrapper : ''
       )}
       ref={wrapperRef}
     >
