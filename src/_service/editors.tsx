@@ -19,7 +19,6 @@ export default {
 
       setDesc(`已选择：${data.connector.title}`);
     }
-
   },
   '@connectorRemoved': ({ data, input, output, setDesc, setAutoRun, isAutoRun }, { connector }) => {
     if (!data.connector) return;
@@ -31,7 +30,7 @@ export default {
       data.outputSchema = defaultSchema;
       data.mockOutputId = defaultOutputId;
 
-      output.get().forEach(o => {
+      output.get().forEach((o) => {
         if (o.id === 'then') {
           output.get(o.id).setSchema(defaultSchema);
         } else if (o.id !== 'catch') {
@@ -94,7 +93,7 @@ export default {
       options({ output }) {
         return {
           get options() {
-            return output.get().map(o => ({ label: o.title, value: o.id }));
+            return output.get().map((o) => ({ label: o.title, value: o.id }));
           }
         };
       },
@@ -112,6 +111,7 @@ export default {
     {
       title: '动态配置',
       type: 'switch',
+      description: '动态配置连接器',
       value: {
         get({ data }) {
           return data.showDynamicConfig;
@@ -155,7 +155,7 @@ function updateConnector({ input, output, data }, connector) {
     title: connector.title,
     type: connector.type,
     connectorName: connector.connectorName,
-    script: connector.script,
+    script: connector.script
   };
   updateIO({ input, output, data }, connector);
 }
@@ -171,12 +171,12 @@ function updateIO({ input, output, data }, connector) {
   }
 
   if (connector.markList?.length) {
-    output.get().forEach(o => {
+    output.get().forEach((o) => {
       if (o.id !== 'then' && o.id !== 'catch') {
         output.remove(o.id);
       }
     });
-    connector.markList?.forEach(mark => {
+    connector.markList?.forEach((mark) => {
       const schema = isValidSchema(mark.outputSchema) ? mark.outputSchema : defaultSchema;
 
       if (mark.id === 'default') {
@@ -193,9 +193,13 @@ function updateIO({ input, output, data }, connector) {
       }
     });
   } else {
-    output.get().forEach(o => {
+    output.get().forEach((o) => {
       if (o.id === 'then') {
-        output.get(o.id).setSchema(isValidSchema(connector.outputSchema) ? connector.outputSchema : defaultSchema);
+        output
+          .get(o.id)
+          .setSchema(
+            isValidSchema(connector.outputSchema) ? connector.outputSchema : defaultSchema
+          );
       } else if (o.id !== 'catch') {
         output.remove(o.id);
       }
@@ -204,7 +208,7 @@ function updateIO({ input, output, data }, connector) {
 
   /** 处理 Mock Schema */
   const allOutput = output.get();
-  const curOutput = allOutput.find(o => o.id === data.mockOutputId);
+  const curOutput = allOutput.find((o) => o.id === data.mockOutputId);
 
   if (curOutput) {
     data.outputSchema = output.get(curOutput.id).schema;
