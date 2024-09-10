@@ -92,6 +92,14 @@ export default function ({
 
   const validateRelOutputRef = useRef<any>(null);
 
+  const checkIsValidFileListVal = (val) => {
+    if (!Array.isArray(val)) {
+      return false;
+    } else {
+      return val.every((item) => item?.name !== undefined);
+    }
+  };
+
   useLayoutEffect(() => {
     // ≥ v1.0.34 设置上传结果
     slots['customUpload']?.outputs['setFileInfo']?.((file) => {
@@ -99,6 +107,9 @@ export default function ({
     });
 
     inputs['setValue']?.((val: UploadFile[], relOutputs) => {
+      if (!checkIsValidFileListVal(val)) {
+        return;
+      }
       changeFileList(val);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
@@ -106,6 +117,9 @@ export default function ({
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val, relOutputs) => {
+        if (!checkIsValidFileListVal(val)) {
+          return;
+        }
         changeFileList(val);
         if (relOutputs['setInitialValueDone']) {
           relOutputs['setInitialValueDone'](val);
@@ -204,6 +218,7 @@ export default function ({
 
   const changeFileList = useCallback((newFileList) => {
     fileListRef.current = newFileList || [];
+    console.log('changeFileList', fileListRef.current);
     setFileList(newFileList);
     onChangeForFc(parentSlot, { id, value: newFileList, name });
   }, []);
@@ -303,6 +318,7 @@ export default function ({
       fileList.forEach((file) => {
         formData.append(fileKey, file);
       });
+      console.log('customUpload --- ', fileListRef.current, fileList);
       changeFileList(onFormatFileList(fileList));
       // ≥ v1.0.34
       slots['customUpload']?.inputs['fileData'](formData);
