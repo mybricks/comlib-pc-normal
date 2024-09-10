@@ -218,7 +218,6 @@ export default function ({
 
   const changeFileList = useCallback((newFileList) => {
     fileListRef.current = newFileList || [];
-    console.log('changeFileList', fileListRef.current);
     setFileList(newFileList);
     onChangeForFc(parentSlot, { id, value: newFileList, name });
   }, []);
@@ -318,7 +317,6 @@ export default function ({
       fileList.forEach((file) => {
         formData.append(fileKey, file);
       });
-      console.log('customUpload --- ', fileListRef.current, fileList);
       changeFileList(onFormatFileList(fileList));
       // ≥ v1.0.34
       slots['customUpload']?.inputs['fileData'](formData);
