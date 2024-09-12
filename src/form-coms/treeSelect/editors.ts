@@ -96,7 +96,7 @@ export default {
                     options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                     global: true,
                     target({ id }: EditorResult<Data>) {
-                      return [`.{id} .ant-tree-select-dropdown`, '.{id} .ant-tree-select-dropdown .ant-select-tree'];
+                      return [`.{id}.ant-tree-select-dropdown`, '.{id} .ant-select-tree-list-holder'];
                     }
                   },
                   {
