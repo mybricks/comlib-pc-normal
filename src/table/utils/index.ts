@@ -247,7 +247,7 @@ export function getColumnItemDataIndex(item: IColumn) {
 
 // 处理表格嵌套表格的选择器
 export const getAntdTable = () =>
-  `.${css.tableWarrper} > .${css.table} > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table`;
+  `.tableWarrper > .table > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table`;
 
 export const getTable = () =>
   `${getAntdTable()} > div.ant-table-container > div.ant-table-content > table`;

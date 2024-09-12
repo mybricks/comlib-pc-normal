@@ -1171,13 +1171,13 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div ref={ref} className={css.tableWarrper}>
+    <div ref={ref} className={`${css.tableWarrper} tableWarrper`}>
       <ConfigProvider
         locale={env.vars?.locale}
         renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
       >
         <TableContext.Provider value={contextValue}>
-          <div className={`${css.table} ${scrollHeight ? css.scrollTable : ''}`}>
+          <div className={`${css.table} table ${scrollHeight ? css.scrollTable : ''}`}>
             <TableHeader
               headerRef={headerRef}
               env={env}
