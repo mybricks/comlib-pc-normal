@@ -109,7 +109,10 @@ const styleEditor = [
               },
               {
                 title: '顶部操作区域',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-header`;
@@ -121,6 +124,56 @@ const styleEditor = [
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-body`;
+                }
+              },
+              {
+                title: '星期',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-picker-content>thead>tr>th`;
+                }
+              },
+              {
+                title: '年份向前切换按钮',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                global: true,
+                target({ id }){
+                  return `.{id} .ant-picker-header-super-prev-btn`
+                }
+              },
+              {
+                title: '年份向后切换按钮',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                global: true,
+                target({ id }){
+                  return `.{id} .ant-picker-header-super-next-btn`
+                }
+              },
+              {
+                title: '月份向前切换按钮',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                global: true,
+                target({ id }){
+                  return `.{id} .ant-picker-header-prev-btn`
+                }
+              },
+              {
+                title: '月份向后切换按钮',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                global: true,
+                target({ id }){
+                  return `.{id} .ant-picker-header-next-btn`
                 }
               },
               {

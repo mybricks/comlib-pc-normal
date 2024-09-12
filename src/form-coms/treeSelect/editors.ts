@@ -92,6 +92,14 @@ export default {
                 title: '下拉区域',
                 items: [
                   {
+                    title: '下拉区背景',
+                    options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                    global: true,
+                    target({ id }: EditorResult<Data>) {
+                      return [`.{id} .ant-tree-select-dropdown`, '.{id} .ant-tree-select-dropdown .ant-select-tree'];
+                    }
+                  },
+                  {
                     title: '选项',
                     options: [
                       { type: 'font', config: { disableTextAlign: true } },
