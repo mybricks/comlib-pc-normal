@@ -195,7 +195,7 @@ export default {
                 data.dragIcon = value;
               }
             }
-          },
+          }
         ]
       },
       uploadEditors,
@@ -203,8 +203,8 @@ export default {
         title: '背景',
         options: ['background', 'border'],
         target: ({ id }: EditorResult<Data>) => [
-          `.ant-upload.ant-upload-select-picture-card${getFilterSelector(id)}`,
-          `.ant-upload .ant-btn${getFilterSelector(id)}`
+          `.ant-upload.ant-upload-select-picture-card`,
+          `.ant-upload .ant-btn`
         ]
         //target: ['.ant-upload.ant-upload-select-picture-card', `.ant-upload .ant-btn`],
       },
