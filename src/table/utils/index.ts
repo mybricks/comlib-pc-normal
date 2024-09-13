@@ -247,7 +247,7 @@ export function getColumnItemDataIndex(item: IColumn) {
 
 // 处理表格嵌套表格的选择器
 export const getAntdTable = () =>
-  `.${css.tableWarrper} > .${css.table} > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table`;
+  `.tableWarrper > .table > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table`;
 
 export const getTable = () =>
   `${getAntdTable()} > div.ant-table-container > div.ant-table-content > table`;
@@ -255,6 +255,15 @@ export const getTable = () =>
 // 表头和body分离时使用
 export const getTableBody = () =>
   `${getAntdTable()} > div.ant-table-container > div.ant-table-body > table`;
+
+export const oldGetAntdTable =
+  /^>\s*\.tableWarrper-\w+\s*>\s*\.table-\w+\s*>\s*\.mybricks-table\s*>\s*div\.ant-spin-nested-loading\s*>\s*div\.ant-spin-container\s*>\s*div\.ant-table$/;
+
+export const oldGetTable =
+  /^>\s*\.tableWarrper-\w+\s*>\s*\.table-\w+\s*>\s*\.mybricks-table\s*>\s*div\.ant-spin-nested-loading\s*>\s*div\.ant-spin-container\s*>\s*div\.ant-table\s*>\s*div\.ant-table-container\s*>\s*div\.ant-table-content\s*>\s*table\s*>\s*tbody/;
+
+export const oldGetTableBody =
+  /^>\s*\.tableWarrper-\w+\s*>\s*\.table-\w+\s*>\s*\.mybricks-table\s*>\s*div\.ant-spin-nested-loading\s*>\s*div\.ant-spin-container\s*>\s*div\.ant-table\s*>\s*div\.ant-table-container\s*>\s*div\.ant-table-body\s*>\s*table/;
 
 export const createStyleForTableContent = () => [
   {
