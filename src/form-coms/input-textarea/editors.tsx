@@ -51,7 +51,7 @@ export default {
                   {
                     title: '背景色',
                     options: ['background'],
-                    target: ['.ant-input']
+                    target: ['.ant-input', '.ant-input-affix-wrapper']
                   },
                   {
                     title: '提示内容',
@@ -79,7 +79,7 @@ export default {
                     target: '.ant-input-textarea-show-count::after'
                   }
                 ]
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
