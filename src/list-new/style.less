@@ -7,13 +7,16 @@
   width: inherit;
 }
 
-.editContainer{
-  // div:not(:first-child) {
-  //   opacity: 0.4;
-  //   filter: blur(0.8px);
-  // }
-  div:not(:first-child) * {
+.editContainer {
+  > div:first-child {
+    pointer-events: auto;
+  }
+
+  > div:not(:first-child) {
     pointer-events: none !important;
+    * {
+      pointer-events: none !important;
+    }
   }
 }
 

@@ -15,7 +15,7 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   return _array;
 };
 
-const mockData = [ "id1", "id2", "id3", "id4", "id5"]
+const mockData = ['id1', 'id2', 'id3', 'id4', 'id5'];
 
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {
@@ -234,12 +234,13 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
   }, [style.height, style.width]);
 
   //横向均匀分布的style
-  const uniformStyle = 
-    data.layout === "horizontal" && !data.isAuto && data.horizonLayout === "UniformLayout" ? 
-    {
-      display: 'flex',
-      justifyContent: 'space-between'
-    } : {}
+  const uniformStyle =
+    data.layout === 'horizontal' && !data.isAuto && data.horizonLayout === 'UniformLayout'
+      ? {
+          display: 'flex',
+          justifyContent: 'space-between'
+        }
+      : {};
 
   return (
     <div
@@ -251,10 +252,19 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
       )}
       style={{
         overflow: `${overflow[0]} ${overflow[1]}`,
-        ...uniformStyle,  
+        ...uniformStyle
       }}
     >
-      {ListRender(env, slots, data, env.edit ? mockData : dataSource, loading, gutter, onSortEnd, columns)}
+      {ListRender(
+        env,
+        slots,
+        data,
+        env.edit ? mockData : dataSource,
+        loading,
+        gutter,
+        onSortEnd,
+        columns
+      )}
     </div>
   );
 };
