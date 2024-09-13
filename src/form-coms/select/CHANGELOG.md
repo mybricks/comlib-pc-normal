@@ -1,3 +1,9 @@
+## [1.1.35] - 2024-9-13
+
+### fix
+
+- selected 下选中选项的样式 target 优先级 (commit: eac93a19661e13c2352a6e61e5c1f12e9e98ef24, 4f0a1be35096c6ef63a40ea718f1669a650f61d2)
+
 ## [1.1.34] - 2024-9-5
 
 ### Feature
