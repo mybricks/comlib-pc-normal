@@ -14,7 +14,6 @@ export default function ({
   removeDeclaredStyle,
   setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
-  console.log('id === upd === style', id, style)
   const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
 
   if (typeof data.config.showSearch === "undefined") {
