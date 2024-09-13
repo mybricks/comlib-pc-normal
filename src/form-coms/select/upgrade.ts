@@ -6,13 +6,14 @@ import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({
   data,
+  id,
+  style,
   input,
   output,
   getDeclaredStyle,
   removeDeclaredStyle,
   setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
-
   const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
 
   if (typeof data.config.showSearch === "undefined") {
@@ -444,5 +445,18 @@ export default function ({
     // 默认过滤和远程过滤都开启时，以远程搜索为准，关闭默认搜索的过滤选项
     data.config.filterOption = false
   }
+
+  /**
+  * @description v1.1.35  Select 状态下选中项 target 修改
+  */
+  const preSelectOptionStyle = getDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
+
+  if (preSelectOptionStyle) {
+    removeDeclaredStyle('div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
+    setDeclaredStyle('div.ant-select-item.ant-select-item-option.ant-select-item-option-selected:not(.ant-select-item-option-disabled)', preSelectOptionStyle.css);
+  }
+
+  //=========== v1.1.35 end ===============
+
   return true;
 }
