@@ -450,13 +450,16 @@ export default function ({
   /**
   * @description v1.1.35  Select 状态下选中项 target 修改
   */
-  const preSelectOptionStyle = getDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled');
+  const preSelectOptionStyle = getDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
 
   console.log('pre', preSelectOptionStyle)
   if (preSelectOptionStyle) {
-    removeDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled');
+    removeDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
     setDeclaredStyle('.{id} div.ant-select-item.ant-select-item-option.ant-select-item-option-selected:not(.ant-select-item-option-disabled)', preSelectOptionStyle.css);
   }
+
+  console.log('pre', preSelectOptionStyle, style)
+
   //=========== v1.1.35 end ===============
 
   return true;
