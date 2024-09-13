@@ -9,7 +9,14 @@ import {
 } from './components/Paginator/constants';
 import { Data } from './types';
 import { addFilterIO } from './editors/table-item/filterEditor';
-import { getAntdTable } from './utils';
+import {
+  getAntdTable,
+  getTable,
+  getTableBody,
+  oldGetAntdTable,
+  oldGetTable,
+  oldGetTableBody
+} from './utils';
 
 export default function ({
   data,
@@ -374,7 +381,16 @@ export default function ({
       setDeclaredStyle(currentSelector, currentCss);
     }
   };
+
+  const getPrevSelector = (reg: RegExp) => {
+    return (
+      style?.styleAry?.find((item) => item.selector && reg.test(item?.selector))?.selector || ''
+    );
+  };
   transferStyleBetweenSelectors('table', `> ${getAntdTable()}`);
+  transferStyleBetweenSelectors(getPrevSelector(oldGetAntdTable), `> ${getAntdTable()}`);
+  transferStyleBetweenSelectors(getPrevSelector(oldGetTable), `> ${getTable()} > tbody`);
+  transferStyleBetweenSelectors(getPrevSelector(oldGetTableBody), `> ${getTableBody()}`);
 
   return true;
 }
