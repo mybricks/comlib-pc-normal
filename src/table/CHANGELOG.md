@@ -1,9 +1,20 @@
+## [1.2.7] - 2024-9-13
+
+### Fix
+
+- 切换选择器，不使用编译后的 css，并兼容之前 (commit: 2f0d104b7136bdc7c74661d71a9f6a1d7c5ccef7)
+
+## [1.2.6] - 2024-9-4
+
+### Feature
+
+- 增加表格 tbody 配置，表格对应选择器为外层 antd-table (commit: cc3c812c45d46b8d6a2ab1e102dac64ddbbb8a40)
+
 ## [1.2.5] - 2024-9-2
 
 ### Fix
 
 - 兼容列超出时设置固定表头无法滚动，搭建态不设置 minHeight，防止高度超出没有滚动条 (commit: ef9e784d7bb4094c32902e3cc25e0bd92a48715b)
-- 增加表格 tbody 配置，表格对应选择器为外层 antd-table (commit: cc3c812c45d46b8d6a2ab1e102dac64ddbbb8a40)
 
 ## [1.2.4] - 2024-8-21
 
