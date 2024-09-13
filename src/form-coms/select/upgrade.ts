@@ -452,13 +452,10 @@ export default function ({
   */
   const preSelectOptionStyle = getDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
 
-  console.log('pre', preSelectOptionStyle)
   if (preSelectOptionStyle) {
-    removeDeclaredStyle('.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
-    setDeclaredStyle('.{id} div.ant-select-item.ant-select-item-option.ant-select-item-option-selected:not(.ant-select-item-option-disabled)', preSelectOptionStyle.css);
+    removeDeclaredStyle('div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)');
+    setDeclaredStyle('div.ant-select-item.ant-select-item-option.ant-select-item-option-selected:not(.ant-select-item-option-disabled)', preSelectOptionStyle.css);
   }
-
-  console.log('pre', preSelectOptionStyle, style)
 
   //=========== v1.1.35 end ===============
 
