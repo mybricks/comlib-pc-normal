@@ -221,14 +221,15 @@ export default function Runtime({
     return <div className={css.suggestion}>在编辑栏中添加静态选项</div>;
   }
 
+  // config里的options 设置了多语言label可能是对象
+  const { options, ...restConfig } = data.config;
+
   return data.enableButtonStyle ? (
     <div className="radio">
       {data.isEditable ? (
         <>
           <Radio.Group
-            {...data.config}
-            options={[]}
-            // config里的options 设置了多语言label可能是对象
+            {...restConfig}
             optionType={data.enableButtonStyle ? 'button' : 'default'}
             buttonStyle={data.buttonStyle}
             value={value}
