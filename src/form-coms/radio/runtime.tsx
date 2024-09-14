@@ -8,6 +8,7 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
 import { inputIds, outputIds } from '../form-container/constants';
+import { ValidateInfo } from '../types';
 
 export default function Runtime({
   env,
@@ -128,7 +129,7 @@ export default function Runtime({
       }
     });
     // 设置校验状态
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: ValidateInfo, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
@@ -225,7 +226,8 @@ export default function Runtime({
       {data.isEditable ? (
         <>
           <Radio.Group
-            {...data.config}
+            {...{ ...data.config, options: [] }}
+            // config里的options 设置了多语言label可能是对象
             optionType={data.enableButtonStyle ? 'button' : 'default'}
             buttonStyle={data.buttonStyle}
             value={value}
