@@ -294,6 +294,15 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
   },
   {
+    title: '表头滚动单元格',
+    catelog: '默认',
+    options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+    ifVisible({ data, style }: EditorResult<Data>) {
+      return !!data.columns.length && style?.height !== 'auto';
+    },
+    target: `table thead .ant-table-cell.ant-table-cell-scrollbar`
+  },
+  {
     title: '表格体',
     catelog: '默认',
     ifVisible({ data, style }: EditorResult<Data>) {
