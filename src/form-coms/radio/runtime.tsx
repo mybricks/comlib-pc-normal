@@ -226,7 +226,8 @@ export default function Runtime({
       {data.isEditable ? (
         <>
           <Radio.Group
-            {...{ ...data.config, options: [] }}
+            {...data.config}
+            options={[]}
             // config里的options 设置了多语言label可能是对象
             optionType={data.enableButtonStyle ? 'button' : 'default'}
             buttonStyle={data.buttonStyle}
