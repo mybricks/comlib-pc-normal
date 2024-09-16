@@ -18,12 +18,6 @@ export default ({ item, index, setList }) => {
           return copy;
         });
       }}
-      // 样式被隔离了，没生效
-      // className={css.wrap}
-      style={{
-        cursor: 'pointer',
-        padding: '0 2px'
-      }}
     >
       {item.visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
     </div>
