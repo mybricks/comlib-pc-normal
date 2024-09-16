@@ -51,7 +51,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           customOptRender: visibleOpt,
           handleDelete: (item: IColumn) => item?.isRowKey,
           tagsRender: (item: IColumn) =>
-            item?.isRowKey ? [{ color: '#fa6400', text: '唯一Key' }] : [],
+            item?.isRowKey ? [{ color: 'var(--mybricks-color-primary)', text: 'Key' }] : [],
           getTitle: (item: IColumn) => {
             const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
             const { color, text } = ColorMap[item.dataSchema?.type] || ColorMap.string;

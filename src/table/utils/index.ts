@@ -326,7 +326,18 @@ export const createStyleForTableContent = () => [
       { type: 'background', config: { disableBackgroundImage: true } },
       'opacity'
     ],
-    target: ({ id }) => `> ${getTable()} > tbody`
+    target: ({ id }) => `> ${getTable()} > tbody`,
+    // items:[
+    //   {
+    //     title:'aaa',
+    //     type:'switch',
+    //     value:{
+    //       get(){
+    //
+    //       }
+    //     }
+    //   }
+    // ]
   },
   {
     title: '单元格',

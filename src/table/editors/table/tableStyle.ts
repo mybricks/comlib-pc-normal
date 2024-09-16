@@ -160,7 +160,7 @@ const tableStyleEditor = {
     //   }
     // },
     {
-      title: '表格样式控制',
+      //title: '表格样式控制',
       items: createStyleForTableContent()
     }
   ]
