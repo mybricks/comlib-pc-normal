@@ -462,7 +462,6 @@ export default function ({
   */
     const preClearOptionStyle = getDeclaredStyle('.anticon-close-circle');
 
-    debugger
     if (preClearOptionStyle) {
       removeDeclaredStyle('.anticon-close-circle');
       setDeclaredStyle('.ant-select-allow-clear .ant-select-clear', preClearOptionStyle.css);
