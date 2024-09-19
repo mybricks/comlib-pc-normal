@@ -173,7 +173,8 @@ export default {
                   {
                     title: '清除按钮',
                     options: [{type: 'font', config: {disableTextAlign: true}}, 'background'],
-                    target: '.anticon-close-circle'
+                    // target: '.anticon-close-circle',
+                    target: '.ant-select-allow-clear .ant-select-clear'
                   },
                 ]
               },

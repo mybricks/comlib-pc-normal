@@ -15,7 +15,6 @@ export default function ({
   setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
-
   if (typeof data.config.showSearch === "undefined") {
     data.config.showSearch = true;
   };
@@ -458,5 +457,16 @@ export default function ({
 
   //=========== v1.1.35 end ===============
 
+    /**
+  * @description v1.1.37  Select 清除按钮target
+  */
+    const preClearOptionStyle = getDeclaredStyle('.anticon-close-circle');
+
+    if (preClearOptionStyle) {
+      removeDeclaredStyle('.anticon-close-circle');
+      setDeclaredStyle('.ant-select-allow-clear .ant-select-clear', preClearOptionStyle.css);
+    }
+  
+    //=========== v1.1.37 end ===============
   return true;
 }

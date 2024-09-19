@@ -109,6 +109,31 @@ export default {
                     target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
                   },
                   {
+                    title: '展开收起图标',
+                    options: [
+                      {
+                        type: 'size',
+                        config: {
+                          disableHeight: true
+                        }
+                      },
+                      {
+                        type: 'font',
+                        config: {
+                          disableFontSize: true,
+                          disableFontFamily: true,
+                          disableTextAlign: true,
+                          disableLineHeight: true,
+                          // disableColor: true,
+                          disableFontWeight: true,
+                          disableLetterSpacing: true,
+                          disableWhiteSpace: true
+                        }
+                      }
+                    ],
+                    target: '.ant-select-tree-switcher'
+                  },
+                  {
                     title: '勾选框',
                     options: [
                       'border',
