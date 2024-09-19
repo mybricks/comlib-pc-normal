@@ -30,7 +30,8 @@ export default (props: Props) => {
     hideOnSinglePage
   } = data;
 
-  const target = containerRef?.current?.querySelector?.(".mybricks-table>div>div>div>div>div:nth-of-type(2)") as HTMLDivElement;
+  // antd的类名会因为定制而变化，这里需要动态获取，同时考虑没有表头的情况
+  const target = containerRef?.current?.querySelector?.(".mybricks-table>div>div>div>div>div:nth-of-type(2)") || containerRef?.current?.querySelector?.(".mybricks-table>div>div>div>div>div")
 
   const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
