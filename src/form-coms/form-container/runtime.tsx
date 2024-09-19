@@ -56,6 +56,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const adaptiveMobile = useMemo(() => {
     const layout = data.config?.layout || data.layout;
     let isHor = layout === 'horizontal';
+    // 水平布局 且开启宽度适配
     return isHor && data.mobileConfig?.enableWidthAdaptive !== false;
   }, [data.layout, data.config.layout, data.mobileConfig?.enableWidthAdaptive]);
 
@@ -701,7 +702,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <div
       className={classnames(
         css.wrapper,
-        !adaptiveMobile && wrapperWidth <= 575 ? css.disableMobileWrapper : ''
+        adaptiveMobile && wrapperWidth <= 575 ? css.disableMobileWrapper : ''
       )}
       ref={wrapperRef}
     >
