@@ -648,7 +648,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
         getValue()
           .then((values: any) => {
             let res = { ...params, ...values };
-            debugger;
             if (
               data.domainModel?.entity?.fieldAry?.length > 0 &&
               data.domainModel?.isQuery &&
@@ -668,12 +667,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }
           })
           .catch((e) => {
-            debugger;
             console.log('收集表单项值失败', e);
           });
       })
       .catch((e) => {
-        debugger;
         const { validateStatus, ...other } = e;
         outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
