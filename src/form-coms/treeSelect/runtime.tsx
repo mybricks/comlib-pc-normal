@@ -57,6 +57,7 @@ export default function Runtime({
             {
               label: 'ddd',
               value: 'ddd',
+              expanded: true,
               children: []
             },
             {
@@ -299,10 +300,12 @@ export default function Runtime({
     const keys: React.Key[] = [];
     if (env.runtime) {
       traversalTree(data.options, fieldNames, (item) => {
-        const { [data.valueFieldName || 'value']: key, _depth } = item;
+        const { [data.valueFieldName || 'value']: key, expanded, _depth } = item;
         if (data.openDepth < 0) {
           keys.push(key);
         } else if (_depth < data.openDepth) {
+          keys.push(key);
+        } else if (expanded) {
           keys.push(key);
         }
       });
@@ -378,7 +381,7 @@ export default function Runtime({
           dropdownClassName={id}
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           notFoundContent={data.customOnSearch && fetching ? <Spin size="small" /> : void 0}
-          style= {{
+          style={{
             color: color
           }}
         >
