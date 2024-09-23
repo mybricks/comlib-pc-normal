@@ -622,6 +622,9 @@ export default function (props: RuntimeParams<Data>) {
         }
         height={height}
         ref={treeRef}
+        rootStyle={
+          !(style.height === 'fit-content' && !data.scrollHeight) ? { minHeight: '100%' } : {}
+        }
         allowDrop={allowDrop}
         loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
         loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
@@ -678,7 +681,7 @@ export default function (props: RuntimeParams<Data>) {
       ) : style.height === 'fit-content' && !data.scrollHeight ? (
         treeWithHeight()
       ) : (
-        <AutoSizer disableWidth>
+        <AutoSizer disableWidth style={{ minHeight: style.height }}>
           {({ height }) => {
             return treeWithHeight(height);
           }}

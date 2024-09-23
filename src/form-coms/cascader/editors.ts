@@ -57,8 +57,8 @@ export default {
               },
               {
                 title: '清除按钮',
-                options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: '.anticon-close-circle'
+                options: [{ type: 'font', config: { disableTextAlign: true } }, 'background'],
+                target: '.ant-select-allow-clear .ant-select-clear'
               },
               {
                 title: '下拉图标',
