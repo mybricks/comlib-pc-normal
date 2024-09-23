@@ -6,7 +6,14 @@ import { setIfUndefined } from '../../utils';
 import { descriptionUpList } from './constants'
 import { descriptionUp } from '../utils/descriptionUp'
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ 
+  data, 
+  input, 
+  output, 
+  style,
+  getDeclaredStyle,
+  removeDeclaredStyle,
+  setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const valueSchema = {
     type: 'array'
   };
@@ -424,5 +431,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   ) {
     input.get("setLoadData").setRels(["setLoadDataDone"]);
   }
+
+  /**
+  * @description v1.1.22  级联 清除按钮target
+  */
+  const preClearOptionStyle = getDeclaredStyle('.anticon-close-circle');
+  if (preClearOptionStyle) {
+    removeDeclaredStyle('.anticon-close-circle');
+    setDeclaredStyle('.ant-select-allow-clear .ant-select-clear', preClearOptionStyle.css);
+  }
+
+  //=========== v1.1.22 end ===============
   return true;
 }
