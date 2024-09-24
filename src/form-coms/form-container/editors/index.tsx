@@ -9,6 +9,7 @@ import actionItemEditor from './action-item';
 import formItemEditor from './form-item';
 import additionFormItemEditor from './form-addition-item';
 import { SizeOptions, SizeEnum } from '../../types';
+import { createrCatelogEditor } from '../../utils';
 
 export default {
   // '@init' ({ data, inputs, outputs, slots }) {
@@ -202,74 +203,118 @@ export default {
         ]
       },
       {
-        title: '表单项标题',
         items: [
-          {
-            title: '内容',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
-          },
-          {
-            title: '冒号',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
-          },
-          {
-            title: '对齐方式',
-            options: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
               {
-                type: 'font',
-                config: {
-                  disableFontFamily: true,
-                  disableColor: true,
-                  disableFontWeight: true,
-                  disableFontSize: true,
-                  disableLineHeight: true,
-                  disableLetterSpacing: true,
-                  disableWhiteSpace: true
-                }
+                title: '表单项标题',
+                catelog: '默认',
+                items: [
+                  {
+                    catelog: '默认',
+                    title: '内容',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+                  },
+                  {
+                    title: '冒号',
+                    catelog: '默认',
+                    options: [{ type: 'font', config: { disableTextAlign: true } }],
+                    target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
+                  },
+                  {
+                    title: '对齐方式',
+                    catelog: '默认',
+                    options: [
+                      {
+                        type: 'font',
+                        config: {
+                          disableFontFamily: true,
+                          disableColor: true,
+                          disableFontWeight: true,
+                          disableFontSize: true,
+                          disableLineHeight: true,
+                          disableLetterSpacing: true,
+                          disableWhiteSpace: true
+                        }
+                      }
+                    ],
+                    target: `.ant-form-item > div.ant-col.ant-form-item-label`
+                  },
+                  {
+                    title: '边距',
+                    catelog: '默认',
+                    options: ['margin'],
+                    target: `.ant-col:not(:last-child) .ant-form-item`,
+                    ifVisible({ data }: EditorResult<Data>) {
+                      /**
+                       * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+                       */
+                      return !(
+                        data?.domainModel?.entity?.fieldAry?.length > 0 &&
+                        data?.domainModel?.isQuery
+                      );
+                    }
+                  }
+                ]
+              },
+              {
+                title: '表单项提示语',
+                catelog: '默认',
+                items: [
+                  {
+                    catelog: '默认',
+                    title: '字体',
+                    options: ['font'],
+                    target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
+                  }
+                ]
+              },
+              {
+                title: '操作项',
+                catelog: '默认',
+                items: [
+                  {
+                    title: '内边距',
+                    catelog: '默认',
+                    options: ['padding'],
+                    target: `div.ant-col.formAction`
+                  },
+                  {
+                    title: '外边距',
+                    catelog: '默认',
+                    options: ['margin'],
+                    target: `div.ant-col.formAction div.ant-row.ant-form-item`
+                  }
+                ]
               }
-            ],
-            target: `.ant-form-item > div.ant-col.ant-form-item-label`
-          },
-          {
-            title: '边距',
-            options: ['margin'],
-            target: `.ant-col:not(:last-child) .ant-form-item`,
-            ifVisible({ data }: EditorResult<Data>) {
-              /**
-               * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
-               */
-              return !(
-                data?.domainModel?.entity?.fieldAry?.length > 0 && data?.domainModel?.isQuery
-              );
-            }
-          }
-        ]
-      },
-      {
-        title: '表单项提示语',
-        items: [
-          {
-            title: '字体',
-            options: ['font'],
-            target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
-          }
-        ]
-      },
-      {
-        title: '操作项',
-        items: [
-          {
-            title: '内边距',
-            options: ['padding'],
-            target: `div.ant-col.formAction`
-          },
-          {
-            title: '外边距',
-            options: ['margin'],
-            target: `div.ant-col.formAction div.ant-row.ant-form-item`
-          }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '移动端',
+            items: [
+              {
+                title: '移动端表单项标题',
+                catelog: '移动端',
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontFamily: true,
+                      disableColor: true,
+                      disableFontWeight: true,
+                      disableFontSize: true,
+                      disableLineHeight: true,
+                      disableLetterSpacing: true,
+                      disableWhiteSpace: true
+                    }
+                  }
+                ],
+                target: `.mobileWarrper .ant-form-item > div.ant-col.ant-form-item-label`
+              }
+            ]
+          })
         ]
       }
     ],
