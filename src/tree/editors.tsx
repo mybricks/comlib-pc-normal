@@ -524,6 +524,18 @@ export default {
               }
             },
             {
+              title: "禁用取消选中",
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disableCancelSelect;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.disableCancelSelect = value;
+                }
+              }
+            },
+            {
               title: '数据变化',
               type: '_Event',
               options: () => {

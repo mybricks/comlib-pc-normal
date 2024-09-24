@@ -452,13 +452,18 @@ export default function (props: RuntimeParams<Data>) {
 
   /**
    * 选择事件处理
-   * @param selectedKeys
+   * @param keys
    * @param node TreeNode 的 props
    */
-  const onSelect = (selectedKeys: React.Key[], { node, selected }) => {
+  const onSelect = (keys: React.Key[], { node, selected }) => {
+    // 禁止取消选中，则将空值重置为当前选中值
+    if (data.disableCancelSelect && !keys.length) {
+      keys = selectedKeys;
+    }
+
     const selectedValues = outputNodeValues(
       data.treeData,
-      selectedKeys,
+      keys,
       { keyFieldName, childrenFieldName },
       data.valueType
     );
@@ -470,7 +475,7 @@ export default function (props: RuntimeParams<Data>) {
         setExpandedKeys(expandedKeys.filter((key) => key !== node[keyFieldName]));
       }
     }
-    setSelectedKeys([...selectedKeys]);
+    setSelectedKeys([...keys]);
     setSelectedValues([...selectedValues]);
     outputs[OutputIds.OnNodeClick](selectedValues);
   };
