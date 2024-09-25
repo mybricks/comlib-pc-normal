@@ -87,7 +87,10 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
 
   //选择图标样式
   const chooseIcon = ({ icon }) => {
-    const Icon = Icons && Icons[icon as string]?.render();
+    let Icon = Icons && Icons[icon as string]?.render();
+    Icon = typeof Icon === 'undefined' ?
+      <div style={{ display: 'contents', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: icon }} /> :
+      Icons && Icons[icon as string]?.render();
     return <>{Icon}</>;
   };
 
