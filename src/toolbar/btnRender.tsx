@@ -7,7 +7,10 @@ import css from './style.less';
 export const renderBtnContext = (item: BtnItem) => {
   const { useIcon, icon, iconLocation, iconDistance, text, showText, src, contentSize, isCustom } =
     item;
-  const Icon = Icons && Icons[icon as string]?.render();
+  let Icon = Icons && Icons[icon as string]?.render();
+  Icon = typeof Icon === 'undefined' ? 
+        <div style={{display: 'flex', alignItems: 'center'}} dangerouslySetInnerHTML={{ __html: icon }} /> : 
+        Icons && Icons[icon as string]?.render();
   //自定义图标
   const CustomIcon = <span style={{ fontSize: contentSize[0] }}>{Icon}</span>;
   //自定义图片
