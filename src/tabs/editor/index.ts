@@ -289,6 +289,19 @@ export default {
           }
         },
         {
+          title: "不展示「更多」按钮",
+          description: "开启后，当标签项较多时，支持滚动，但不展示「更多」按钮",
+          type: "Switch",
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.hideMoreIcon;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.hideMoreIcon = value;
+            }
+          }
+        },
+        {
           title: '额外内容',
           items: [
             {
@@ -326,6 +339,26 @@ export default {
                   } else {
                     hasSlot && slot.remove(SlotIds.RigthExtra);
                   }
+                }
+              }
+            },
+            {
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useRigthExtra;
+              },
+              title: "右侧额外内容位置",
+              type: "radio",
+              description: "如果「标签位置」为左、右时，则浮动方向对应为上浮动，下浮动",
+              options: [
+                { label: "左浮动", value: "left" },
+                { label: "右浮动", value: "right" },
+              ],
+              value: {
+                get({ data }) {
+                  return data.rightExtraPosition || "right";
+                },
+                set({ data }, value) {
+                  data.rightExtraPosition = value;
                 }
               }
             }

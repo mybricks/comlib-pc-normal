@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, ReactNode } from 'react';
+import React, { useCallback, useEffect, useState, ReactNode, useMemo } from 'react';
 import classnames from 'classnames';
 import { Tabs, Tooltip, Badge } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds, TabItem } from './constants';
@@ -6,6 +6,7 @@ import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { usePrevious } from '../utils/hooks';
 import { getWhatToDoWithoutPermission } from '../utils/permission';
+import cx from 'classnames';
 
 const { TabPane } = Tabs;
 
@@ -326,8 +327,20 @@ export default function ({
     return res;
   })();
 
+  const hideMoreIcon = useMemo(() => {
+    if (data.hideMoreIcon) {
+      return {
+        moreIcon: null
+      };
+    } else {
+      return {};
+    }
+  }, [data.hideMoreIcon]);
+
   return (
-    <div className={`${css.tabbox} root`}>
+    <div className={cx([css.tabbox, 'root', {
+      [css.rightExtraFloatLeft]: data.useRigthExtra && data.rightExtraPosition === "left"
+    }])}>
       <Tabs
         activeKey={data.defaultActiveKey}
         type={data.type}
@@ -338,6 +351,7 @@ export default function ({
         hideAdd={data.hideAdd}
         onEdit={env.edit ? undefined : onEdit}
         tabBarExtraContent={tabBarExtraContent}
+        {...hideMoreIcon}
       >
         {renderItems()}
       </Tabs>
