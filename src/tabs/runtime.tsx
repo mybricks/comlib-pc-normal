@@ -255,11 +255,17 @@ export default function ({
         outputs[OutputIds.AddTab](data.tabList);
       },
       remove(key: string) {
-        data.tabList = data.tabList.filter((i) => i.key != key);
+        let index = data.tabList.findIndex((i) => i.key == key);
+        if (index == -1) return;
+
+        let item = data.tabList.splice(index, 1);
+
+        // 如果删除为当前激活tab，则激活下一个tab
         if (data.defaultActiveKey === key && data.tabList.length) {
-          data.defaultActiveKey = data.tabList[data.tabList.length].key + '';
+          let activeIndex = Math.min(index, data.tabList.length - 1);
+          data.defaultActiveKey = data.tabList[activeIndex].key + '';
         }
-        outputs[OutputIds.RemoveTab](data.tabList);
+        outputs[OutputIds.RemoveTab](item[0]);
       }
     };
     actionMap[action](targetKey);
@@ -328,10 +334,16 @@ export default function ({
   })();
 
   return (
-    <div className={cx([css.tabbox, 'root', {
-      [css.hideMoreIcon]: data.hideMoreIcon,
-      [css.rightExtraFloatLeft]: data.useRigthExtra && data.rightExtraPosition === "left"
-    }])}>
+    <div
+      className={cx([
+        css.tabbox,
+        'root',
+        {
+          [css.hideMoreIcon]: data.hideMoreIcon,
+          [css.rightExtraFloatLeft]: data.useRigthExtra && data.rightExtraPosition === 'left'
+        }
+      ])}
+    >
       <Tabs
         activeKey={data.defaultActiveKey}
         type={data.type}
