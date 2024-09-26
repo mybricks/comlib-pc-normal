@@ -166,8 +166,8 @@ export default {
           title: '行数限制',
           type: 'Inputnumber',
           options: [
-            { title: '最小', min: 3, width: 100 },
-            { title: '最大', min: 6, width: 100 }
+            { title: '最小', min: 1, width: 100 },
+            { title: '最大', min: 3, width: 100 }
           ],
           description: '行数限制',
           value: {
