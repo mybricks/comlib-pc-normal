@@ -265,6 +265,7 @@ export default function ({
           let activeIndex = Math.min(index, data.tabList.length - 1);
           data.defaultActiveKey = data.tabList[activeIndex].key + '';
         }
+
         outputs[OutputIds.RemoveTab](item[0]);
       }
     };
