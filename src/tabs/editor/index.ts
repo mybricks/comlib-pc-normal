@@ -289,6 +289,26 @@ export default {
           }
         },
         {
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.type === 'editable-card' && data.closable;
+          },
+          title: '点击删除按钮时',
+          type: "radio",
+          description: "如选择自定义删除，需要手动处理删除逻辑",
+          options: [
+            { label: "直接删除", value: false },
+            { label: "自定义", value: true },
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useCustomClose ?? false;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.useCustomClose = value;
+            }
+          }
+        },
+        {
           title: "不展示「更多」按钮",
           description: "开启后，当标签项较多时，支持滚动，但不展示「更多」按钮",
           type: "Switch",

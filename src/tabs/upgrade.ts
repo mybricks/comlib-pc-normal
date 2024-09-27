@@ -188,5 +188,29 @@ export default function ({
   //   }
   // })
   // =========== 1.0.49 end ===============
+
+  /**
+  * @description v1.0.55 feat: 增加删除标签页输入项
+  */
+  const removeTab = input.get("removeTab");
+  if (!removeTab) {
+    input.add("removeTab", '删除标签页', {
+      "type": "object",
+      "properties": {
+        "key": {
+          "title": "标签页 key",
+          "type": "string",
+          "description": "标签页的 key"
+        },
+        "index": {
+          "title": "标签页下标",
+          "type": "number",
+          "description": "标签页的下标"
+        }
+      }
+    });
+  }
+  // =========== 1.0.55 end ===============
+
   return true;
 }

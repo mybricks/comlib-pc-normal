@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -58,6 +58,26 @@
       },
       "rels": ["getTabsDone"],
       "desc": "获取当前所有的的标签页信息列表"
+    },
+    {
+      "title": "删除标签页",
+      "description": "删除指定标签页，key 或 index 二选一",
+      "id": "removeTab",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "title": "标签页 key",
+            "type": "string",
+            "description": "标签页的 key"
+          },
+          "index": {
+            "title": "标签页下标",
+            "type": "number",
+            "description": "标签页的下标"
+          }
+        }
+      }
     }
   ],
   "outputs": [

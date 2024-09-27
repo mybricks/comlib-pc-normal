@@ -7,6 +7,7 @@ import * as Icons from '@ant-design/icons';
 import { usePrevious } from '../utils/hooks';
 import { getWhatToDoWithoutPermission } from '../utils/permission';
 import cx from 'classnames';
+import { isNumber } from '../utils/types';
 
 const { TabPane } = Tabs;
 
@@ -202,6 +203,28 @@ export default function ({
       inputs[InputIds.GetTabs]!((_, relOutputs) => {
         relOutputs[OutputIds.GetTabsDone](data.tabList);
       });
+
+      inputs['removeTab']?.((val) => {
+        let index;
+
+        if (val.key) {
+          index = findIndexByKey(val.key);
+        } else if (val.index) {
+          index = val.index;
+        }
+
+        if (!isNumber(index) || index < 0 || index >= data.tabList.length) {
+          return;
+        }
+
+        let item = data.tabList.splice(index, 1)[0];
+
+        // 如果删除为当前激活tab，则激活下一个tab
+        if (data.defaultActiveKey === item.key && data.tabList.length) {
+          let activeIndex = Math.min(index, data.tabList.length - 1);
+          data.defaultActiveKey = data.tabList[activeIndex].key + '';
+        }
+      });
     }
   }, [showTabs]);
 
@@ -258,15 +281,19 @@ export default function ({
         let index = data.tabList.findIndex((i) => i.key == key);
         if (index == -1) return;
 
-        let item = data.tabList.splice(index, 1);
-
-        // 如果删除为当前激活tab，则激活下一个tab
-        if (data.defaultActiveKey === key && data.tabList.length) {
-          let activeIndex = Math.min(index, data.tabList.length - 1);
-          data.defaultActiveKey = data.tabList[activeIndex].key + '';
+        if (data.useCustomClose) {
+          // 自定义
+          outputs[OutputIds.RemoveTab](data.tabList[index]);
+        } else {
+          // 直接删除
+          let item = data.tabList.splice(index, 1);
+          // 如果删除为当前激活tab，则激活下一个tab
+          if (data.defaultActiveKey === key && data.tabList.length) {
+            let activeIndex = Math.min(index, data.tabList.length - 1);
+            data.defaultActiveKey = data.tabList[activeIndex].key + '';
+          }
+          outputs[OutputIds.RemoveTab](item[0]);
         }
-
-        outputs[OutputIds.RemoveTab](item[0]);
       }
     };
     actionMap[action](targetKey);
