@@ -23,7 +23,22 @@ export default {
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
             },
-            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            options: [
+              {
+                type: 'size',
+                config: {
+                  disableWidth: true,
+                  disableHeight: true,
+                  disableMinWidth: false
+                }
+              },
+              'border',
+              { 
+                type: 'font',
+                config: { disableTextAlign: true }
+              },
+              'background'
+            ],
             target: `.button`
           },
           {
