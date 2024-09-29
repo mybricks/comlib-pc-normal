@@ -3,7 +3,8 @@ export const OutputIds = {
 };
 export const InputIds = {
   SetImgSrc: 'setImgSrc',
-  SetPreviewImgSrc: 'setPreviewImgSrc'
+  SetPreviewImgSrc: 'setPreviewImgSrc',
+  GetImgSrc: 'getImgSrc'
 };
 
 export type ObjectFit = 'fill' | 'contain' | 'cover' | 'none';

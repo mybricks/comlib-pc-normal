@@ -37,6 +37,12 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
     }
   }, []);
 
+  useEffect(()=>{
+    inputs[InputIds.GetImgSrc]((val, relOutputs) => {
+      relOutputs['getImgSrcDone'](data.src);
+  });
+  },[data.src])
+
   const onClick = useCallback(() => {
     outputs[OutputIds.Click]();
   }, []);

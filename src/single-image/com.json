@@ -1,7 +1,7 @@
 {
   "title": "图片",
   "namespace": "mybricks.normal-pc.single-image",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "可预览的单图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -16,12 +16,21 @@
   "inputs": [
     {
       "id": "setImgSrc",
-      "title": "图片地址",
+      "title": "设置图片",
       "desc": "设置图片资源链接",
       "schema": {
         "type": "string"
       },
       "rels": ["setImgSrcDone"]
+    },
+    {
+      "id": "getImgSrc",
+      "title": "获取图片",
+      "desc": "获取图片资源链接",
+      "schema": {
+        "type": "string"
+      },
+      "rels": ["getImgSrcDone"]
     }
   ],
   "outputs": [
@@ -36,6 +45,14 @@
     {
       "id": "setImgSrcDone",
       "title": "图片设置地址后，触发设置地址完成事件",
+      "desc": "",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "getImgSrcDone",
+      "title": "获取到的图片地址",
       "desc": "",
       "schema": {
         "type": "string"
