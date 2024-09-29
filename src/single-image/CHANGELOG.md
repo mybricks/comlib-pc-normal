@@ -2,4 +2,4 @@
 
 ### feature
 
-- 增加获取当前图片链接的input (commit: )
+- 增加获取当前图片链接的input (commit: 79036b0cffdc4ade8b497b072c19313471df01f2 )
