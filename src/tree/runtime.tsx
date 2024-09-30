@@ -44,6 +44,8 @@ export default function (props: RuntimeParams<Data>) {
 
   const treeRef = useRef(null);
 
+  const needForceUpdate = useRef(true); // 默认需要强制更新
+
   const [parentHeight] = useParentHeight(ref);
 
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
@@ -87,9 +89,9 @@ export default function (props: RuntimeParams<Data>) {
   const updateExpandedKeys = useCallback(() => {
     const keys: React.Key[] = [];
     treeKeys.current.map((i) => {
-      if (data.openDepth < 0) {
+      if (data.openDepth < 0 && i.children?.length) {
         keys.push(i.key);
-      } else if (i.depth < data.openDepth) {
+      } else if (i.depth < data.openDepth && i.children?.length) {
         keys.push(i.key);
       }
     });
@@ -114,12 +116,18 @@ export default function (props: RuntimeParams<Data>) {
       titleFieldName,
       childrenFieldName
     });
-    clearCheckedKeys();
-    updateExpandedKeys();
+
+    if (needForceUpdate.current) {
+      clearCheckedKeys();
+      updateExpandedKeys();
+    }
+
     if (setTreeDataDone?.current) {
       setTreeDataDone.current(data.treeData);
       setTreeDataDone.current = null;
     }
+
+    needForceUpdate.current = false;
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -197,32 +205,33 @@ export default function (props: RuntimeParams<Data>) {
         });
 
       // 设置数据源
-      inputs['treeData'] &&
-        inputs['treeData']((value: TreeData[], relOutputs) => {
-          if (value && Array.isArray(value)) {
-            data.treeData = [...value];
-          } else {
-            data.treeData = [];
-          }
-          setTreeDataDone.current = relOutputs['setTreeDataDone'];
-          outputs[OutputIds.OnChange](deepCopy(data.treeData));
-        });
+      inputs['treeData']?.((value: TreeData[], relOutputs) => {
+        needForceUpdate.current = true;
+
+        if (value && Array.isArray(value)) {
+          data.treeData = [...value];
+        } else {
+          data.treeData = [];
+        }
+        setTreeDataDone.current = relOutputs['setTreeDataDone'];
+        outputs[OutputIds.OnChange](deepCopy(data.treeData));
+      });
 
       // 更新节点数据
-      inputs['nodeData'] &&
-        inputs['nodeData']((nodeData: TreeData, relOutputs) => {
-          if (typeCheck(nodeData, 'OBJECT')) {
-            data.treeData = [
-              ...updateNodeData(data.treeData, nodeData, { keyFieldName, childrenFieldName })
-            ];
-            outputs[OutputIds.OnChange](deepCopy(data.treeData));
+      inputs['nodeData']?.((nodeData: TreeData, relOutputs) => {
+        if (typeCheck(nodeData, 'OBJECT')) {
+          data.treeData = [
+            ...updateNodeData(data.treeData, nodeData, { keyFieldName, childrenFieldName })
+          ];
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
 
-            setExpandedKeys(
-              [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
-            );
-            relOutputs['setNodeDataDone'](nodeData);
-          }
-        });
+          setExpandedKeys([...data.expandedKeys]);
+          // setExpandedKeys(
+          //   [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
+          // );
+          relOutputs['setNodeDataDone'](nodeData);
+        }
+      });
 
       // 设置异步加载数据
       inputs['setLoadData'] &&
@@ -387,7 +396,7 @@ export default function (props: RuntimeParams<Data>) {
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
     }
-  }, []);
+  }, [expandedKeys]);
 
   useEffect(() => {
     const resultKeys =
@@ -445,6 +454,7 @@ export default function (props: RuntimeParams<Data>) {
    * @param expandedKeys
    */
   const onExpand = useCallback((expandedKeys: React.Key[]) => {
+    console.log('onExpand', expandedKeys);
     data.expandedKeys = [...expandedKeys];
     setExpandedKeys([...expandedKeys]);
     setAutoExpandParent(false);
@@ -613,6 +623,8 @@ export default function (props: RuntimeParams<Data>) {
       data.popUpVisibleProps = { key: '', visible: false };
     }
   };
+
+  console.warn('expandedKeys', expandedKeys);
 
   const treeWithHeight = (height?) => {
     return (

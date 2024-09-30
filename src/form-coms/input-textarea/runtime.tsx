@@ -150,6 +150,7 @@ export default function ({
 
   const onChange = useCallback((e) => {
     const val = e.target.value;
+    console.warn('onChange', val);
     changeValue(val);
     outputs['onChange'](val);
   }, []);
