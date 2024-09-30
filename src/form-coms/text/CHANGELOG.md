@@ -2,7 +2,7 @@
 
 ### Feature
 
-- 前置图标兼容iconfont，且支持大小和间距调整 (commit: )
+- 前置图标兼容iconfont，且支持大小和间距调整 (commit: eaaa3d3fc79ff8376f075fbd9716e23ec7d2737f)
 - 
 ## [1.3.26] - 2024-9-5
 
