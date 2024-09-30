@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.74",
+  "version": "1.0.75",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -61,7 +61,6 @@
           "title": {
             "type": "string",
             "description": "树节点的标题"
-
           },
           "children": {
             "title": "子项",
