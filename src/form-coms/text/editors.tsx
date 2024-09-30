@@ -82,6 +82,45 @@ export default {
         }
       },
       {
+        title: '尺寸',
+        type: 'InputNumber',
+        ifVisible({ data }) {
+          return !!data.preSrc;
+        },
+        description: '图标大小',
+        options: [
+          { title: '高度', min: 0, width: 100 },
+          { title: '宽度', min: 0, width: 100 }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.contentSize || [14, 14];
+          },
+          set({ data }: EditorResult<Data>, value: [number, number]) {
+            data.contentSize = value;
+          }
+        }
+      },
+      {
+        title: '间距',
+        type: 'InputNumber',
+        ifVisible({ data }) {
+          return !!data.preSrc;
+        },
+        description: '图标距离输入框的间距大小',
+        options: [
+          { title: '间距', min: 0},
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.iconGap || [0];
+          },
+          set({ data }: EditorResult<Data>, value: [number, number]) {
+            data.iconGap = value;
+          }
+        }
+      },
+      {
         title: '后缀图标来源',
         type: 'Radio',
         options: [

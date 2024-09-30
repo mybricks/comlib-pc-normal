@@ -33,6 +33,8 @@ export interface Data {
   preCustomIcon: string;
 
   isEditable: boolean;
+  contentSize: number[];
+  iconGap: number[]
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -176,14 +178,18 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   const innerRender = ({ icon }: { icon: ReactNode }) => {
-    const Icon = Icons && Icons[icon as string]?.render();
-    return <>{Icon}</>;
+    let Icon = Icons && Icons[icon as string]?.render();
+    Icon = typeof Icon === 'undefined' ?
+        <div style={{ display: 'flex', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: icon }} /> :
+        Icons && Icons[icon as string]?.render();
+
+    return <div style={{ fontSize: data.contentSize?.[0] || 14 ,marginRight:data.iconGap?.[0] || 0}}>{Icon}</div>;
   };
 
   const customRender = (src) => {
     return (
-      <div className={css.customIcon}>
-        <Image src={src} preview={false} alt={' '} />
+      <div style={{marginRight:data.iconGap?.[0] || 0}}>
+        <Image width={data.contentSize?.[1] || 14} height={data.contentSize?.[0] || 14} src={src} preview={false} alt={' '} />
       </div>
     );
   };
@@ -202,7 +208,7 @@ export default function (props: RuntimeParams<Data>) {
     } else if (data.preSrc === 'custom' && data.preCustomIcon) {
       return customRender(data.preCustomIcon);
     }
-  }, [data.preInnerIcon, data.preCustomIcon]);
+  }, [data.preInnerIcon, data.preCustomIcon,data.preSrc]);
 
   let jsx = data.isEditable ? (
     <Input

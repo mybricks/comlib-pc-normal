@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Input, InputProps, Select } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -7,6 +7,8 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
 import { i18nFn } from '../../utils';
+import { iconRenderCtx } from './iconRender';
+
 export interface Data {
   options: any[];
   rules: any[];
@@ -17,6 +19,11 @@ export interface Data {
   selectWidth: string;
   staticOptions: Options[];
   initValue: string;
+  useIcon: boolean;
+  isCustom: boolean;
+  icon: string;
+  src: string;
+  contentSize: number[];
 }
 
 export interface Options {
@@ -190,6 +197,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             onChange={changeSelectValue}
           ></Select>
           <Search
+          prefix={iconRenderCtx(data)}
             style={{
               width: `calc(100% - ${data.selectWidth})`
             }}
@@ -210,6 +218,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return !data.isSelect ? (
     <div>
       <Search
+        prefix={iconRenderCtx(data)}
         onChange={onChange}
         onSearch={onSearch}
         onBlur={onBlur}
