@@ -65,12 +65,12 @@ const formItemEditor = {
           {
             title: '字体',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+            target: [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`]
           },
           {
             title: '冒号',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`
+            target: [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label:after`]
           },
           {
             title: '对齐方式',
@@ -88,7 +88,7 @@ const formItemEditor = {
                 }
               }
             ],
-            target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`
+            target: [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`]
           }
         ]
       },
@@ -96,14 +96,14 @@ const formItemEditor = {
         title: '提示语',
         options: ['font'],
         target: ({ comId, comName, ...arg }) => {
-          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
+          return [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-control .formItemDesc`];
         }
       },
       {
         title: '边距',
         //catelog: '默认',
         options: ['margin'],
-        target: `div.ant-row.ant-form-item`,
+        target: [`div.ant-row.ant-form-item`, `div.ant-row.ant-form-item-row`],
         ifVisible({ comDef }) {
           const { data } = comDef;
           /**

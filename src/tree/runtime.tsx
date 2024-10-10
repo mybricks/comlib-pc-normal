@@ -23,6 +23,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import css from './style.less';
 import useParentHeight from './hooks/use-parent-height';
 import { edit } from 'src/form-coms/code/CodeLocal/ace-pkg/ace';
+import cx from 'classnames';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, style, inputs, outputs, onError, logger, title, slots } = props;
@@ -208,6 +209,8 @@ export default function (props: RuntimeParams<Data>) {
       inputs['treeData']?.((value: TreeData[], relOutputs) => {
         needForceUpdate.current = true;
 
+        setTreeLoadKeys([]); // 刷新组件加载状态
+
         if (value && Array.isArray(value)) {
           data.treeData = [...value];
         } else {
@@ -239,10 +242,10 @@ export default function (props: RuntimeParams<Data>) {
           if (typeCheck(nodeData, 'OBJECT')) {
             const { node, resolve } = curentLoadNode.current as any;
             const newNodeData = {
+              ...nodeData,
               [keyFieldName]: node[keyFieldName],
-              ...nodeData
             };
-            updateNodeData(data.treeData, newNodeData, { keyFieldName, childrenFieldName });
+            data.treeData = updateNodeData(data.treeData, newNodeData, { keyFieldName, childrenFieldName });
             resolve();
             /** 更新treeKeys一维数组 */
             treeKeys.current = [];
@@ -624,8 +627,6 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
-  console.warn('expandedKeys', expandedKeys);
-
   const treeWithHeight = (height?) => {
     return (
       <Tree
@@ -676,9 +677,11 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <div
       ref={ref}
-      className={`${isEmpty ? css.emptyWrapper : ''} ${
-        data.useCompactTheme ? css.singleCompact : ''
-      }`}
+      className={cx({
+        [css.emptyWrapper]: isEmpty,
+        [css.singleCompact]: data.useCompactTheme,
+        [css.myTree]: true
+      })}
       style={{
         maxHeight: isEmpty
           ? void 0
