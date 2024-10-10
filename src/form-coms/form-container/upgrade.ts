@@ -6,7 +6,7 @@ import pick from 'lodash/pick'
 import uniq from 'lodash/uniq'
 import { isEmptyObject, unitConversion } from '../../utils';
 
-export default function ({ data, input, output, slot, children, setDeclaredStyle, style }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children, setDeclaredStyle, removeDeclaredStyle, style }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -842,5 +842,22 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     }
     //  =========== v1.4.82 end ===============
 
+  /**
+   * @description v1.4.86 列间距
+   */
+  const margin1486Old = style.styleAry?.find?.(({ selector }) => selector === ".ant-col:not(:last-child) .ant-form-item")
+
+  if (margin1486Old) {
+    const margin1486New = style.styleAry?.find?.(({ selector }) => selector === ".ant-col:not(.formAction) .ant-form-item")
+    // 有老的
+    if (!margin1486New) {
+      // 没有新的把老的写到新的
+      setDeclaredStyle(".ant-col:not(.formAction) .ant-form-item", margin1486Old.css)
+    }
+    // 清除老的
+    removeDeclaredStyle(".ant-col:not(:last-child) .ant-form-item")
+  }
+
+  //  =========== v1.4.86 end ===============
   return true;
 }
