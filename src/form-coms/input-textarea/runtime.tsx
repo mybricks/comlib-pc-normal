@@ -37,6 +37,7 @@ export default function ({
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+  const [placeholder,setPlaceholder] = useState(data.config.placeholder)
 
   useFormItemInputs(
     {
@@ -136,6 +137,14 @@ export default function ({
     });
   }, []);
 
+  useEffect(() => {
+    //设置占位符
+    inputs["setPlaceholder"]((value,relOutputs)=>{
+      setPlaceholder(value);
+      relOutputs['setPlaceholderDone'](value)
+    })
+  })
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
   };
@@ -192,7 +201,7 @@ export default function ({
       <Input.TextArea
         ref={inputRef}
         {...data.config}
-        placeholder={env.i18n(data.config.placeholder)}
+        placeholder={env.i18n(placeholder)}
         value={value}
         readOnly={!!edit}
         {...sizeConfig}

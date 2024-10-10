@@ -246,7 +246,7 @@ export default {
                     title: '边距',
                     catelog: '默认',
                     options: ['margin'],
-                    target: `.ant-col:not(:last-child) .ant-form-item`,
+                    target: `.ant-col:not(.formAction) .ant-form-item`,
                     ifVisible({ data }: EditorResult<Data>) {
                       /**
                        * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
