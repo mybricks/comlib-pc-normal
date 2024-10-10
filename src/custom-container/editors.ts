@@ -26,8 +26,21 @@ const setSlotLayout = (slot, val) => {
 
 export default {
   ':slot': {},
-  '@init'({ style }: EditorResult<Data>) {
+  '@init'({ style, data, slot }: EditorResult<Data>) {
     style.height = 'auto';
+
+    if (window._disableSmartLayout) {
+      data.slotStyle = {
+        alignItems: 'flex-start',
+        columnGap: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        justifyContent: 'flex-start',
+        position: 'inherit',
+        rowGap: 0
+      };
+    }
   },
   '@resize': {
     options: ['width', 'height']
@@ -44,16 +57,21 @@ export default {
           value: {
             get({ data, slots }: EditorResult<Data>) {
               const { slotStyle = {} } = data;
+              const slotInstance = slots.get('content');
+              setSlotLayout(slotInstance, slotStyle);
               return slotStyle;
             },
             set({ data, slots }: EditorResult<Data>, val: any) {
-              data.slotStyle = val
+              console.log('set', val);
+              data.slotStyle = val;
               const slotInstance = slots.get('content');
               setSlotLayout(slotInstance, val);
             }
           }
         },
-        ...EventEditor, ...AutoScrollEditor, ...PageScrollEditor
+        ...EventEditor,
+        ...AutoScrollEditor,
+        ...PageScrollEditor
       ];
 
       // cate2.title = '交互';
@@ -71,13 +89,13 @@ export default {
         items: [
           {
             title: '默认',
-            catelog: "默认",
+            catelog: '默认',
             options: ['padding', 'border', 'background', 'overflow', 'BoxShadow'],
             target: ({ id }: EditorResult<Data>) => `> .root`
           },
           {
             title: 'Hover',
-            catelog: "Hover",
+            catelog: 'Hover',
             options: ['padding', 'border', 'background', 'BoxShadow'],
             target: ({ id }: EditorResult<Data>) => `> .root:hover`,
             domTarget: '.root'

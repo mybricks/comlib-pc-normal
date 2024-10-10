@@ -38,8 +38,21 @@ const setSlotLayout = (slot, val) => {
 
 export default {
   ':slot': {},
-  '@init'({ style }: EditorResult<Data>) {
+  '@init'({ style, data }: EditorResult<Data>) {
     style.height = 'auto';
+
+    if (window._disableSmartLayout) {
+      data.slotStyle = {
+        alignItems: 'flex-start',
+        columnGap: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        justifyContent: 'flex-start',
+        position: 'inherit',
+        rowGap: 0
+      };
+    }
   },
   '@resize': {
     options: ['width', 'height']
