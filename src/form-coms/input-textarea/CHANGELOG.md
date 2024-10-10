@@ -2,7 +2,7 @@
 
 ### Feature
 
-- 支持动态设置placeholder内容 (commit: )
+- 支持动态设置placeholder内容 (commit: 9819b8815868e765f2633c14ffbebf05588c3bd8)
 
 ## [1.1.22] - 2024-9-26
 
