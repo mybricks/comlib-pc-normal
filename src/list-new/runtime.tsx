@@ -78,10 +78,9 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
   }, []);
   //获取数据源
   useEffect(() => {
-    if (env.runtime && useGetDataSource && inputs[InputIds.GetDataSource]) {
+    if (env.runtime) {
       inputs[InputIds.GetDataSource]((val, relOutputs) => {
-        const outputFn = relOutputs?.[InputIds.GetDataSource] || outputs[InputIds.GetDataSource];
-        outputFn(dataSource.map(({ item }) => item));
+        relOutputs?.["getdataSourceDone"](dataSource);
       });
     }
   }, [dataSource]);

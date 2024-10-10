@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -28,6 +28,19 @@
       },
       "rels": [
         "setDataSourceDone"
+      ]
+    },
+    {
+      "id": "getdataSource",
+      "title": "获取数据源",
+      "desc": "获取列表容器的数据源",
+      "schema": {
+        "title": "列表数据",
+        "type": "any",
+        "description": "列表容器的数据源，数组格式"
+      },
+      "rels": [
+        "getdataSourceDone"
       ]
     },
     {
@@ -111,6 +124,18 @@
     {
       "id": "setDataSourceDone",
       "title": "设置数据源完成",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "getdataSourceDone",
+      "title": "获取数据源完成",
       "schema": {
         "title": "列表数据",
         "type": "array",
