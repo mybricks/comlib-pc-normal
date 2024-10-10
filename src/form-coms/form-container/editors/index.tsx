@@ -215,13 +215,13 @@ export default {
                     catelog: '默认',
                     title: '内容',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
-                    target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+                    target: [`.ant-form-item > div.ant-col.ant-form-item-label > label > label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`]
                   },
                   {
                     title: '冒号',
                     catelog: '默认',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
-                    target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
+                    target: [`.ant-form-item > div.ant-col.ant-form-item-label > label:after`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label:after`]
                   },
                   {
                     title: '对齐方式',
@@ -240,7 +240,7 @@ export default {
                         }
                       }
                     ],
-                    target: `.ant-form-item > div.ant-col.ant-form-item-label`
+                    target: [`.ant-form-item > div.ant-col.ant-form-item-label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`]
                   },
                   {
                     title: '边距',
@@ -267,7 +267,7 @@ export default {
                     catelog: '默认',
                     title: '字体',
                     options: ['font'],
-                    target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
+                    target: [`.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-control .formItemDesc`]
                   }
                 ]
               },
@@ -285,7 +285,7 @@ export default {
                     title: '外边距',
                     catelog: '默认',
                     options: ['margin'],
-                    target: `div.ant-col.formAction div.ant-row.ant-form-item`
+                    target: [`div.ant-col.formAction div.ant-row.ant-form-item`, `div.ant-col.formAction div.ant-form-item`]
                   }
                 ]
               }
