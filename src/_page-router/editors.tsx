@@ -30,7 +30,8 @@ export default {
         // { label: TypeEnumMap[TypeEnum.OPENWINDOW], value: TypeEnum.OPENWINDOW },
         { label: TypeEnumMap[TypeEnum.BACK], value: TypeEnum.BACK },
         { label: TypeEnumMap[TypeEnum.FORWARD], value: TypeEnum.FORWARD },
-        { label: TypeEnumMap[TypeEnum.RELOAD], value: TypeEnum.RELOAD }
+        { label: TypeEnumMap[TypeEnum.RELOAD], value: TypeEnum.RELOAD },
+        { label: TypeEnumMap[TypeEnum.FORCERELOAD], value: TypeEnum.FORCERELOAD }
       ],
       value: {
         get({ data }: EditorResult<Data>) {

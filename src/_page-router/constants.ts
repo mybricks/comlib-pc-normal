@@ -2,16 +2,19 @@
 export enum TypeEnum {
   PUSHSTATE = 'pushState',
   RELOAD = 'reload',
+  FORCERELOAD = 'forcedReload',
   // REPLACESTATE = 'replaceState',
   BACK = 'back',
   FORWARD = 'forward',
   REDIRECT = 'redirect',
   OPENTAB = 'openTab',
   OPENWINDOW = 'openWindow'
+
 }
 export const TypeEnumMap = {
   [TypeEnum.PUSHSTATE]: '路由跳转',
   [TypeEnum.RELOAD]: '刷新',
+  [TypeEnum.FORCERELOAD]: '强制刷新',
   [TypeEnum.BACK]: '返回',
   [TypeEnum.FORWARD]: '前进',
   [TypeEnum.REDIRECT]: '重定向',

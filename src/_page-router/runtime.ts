@@ -56,6 +56,10 @@ const DebugActions = {
     message.info(`location.reload`);
     console.log(`location.reload`);
   },
+  forcedReload: () => {
+    message.info(`location.reload(true)`);
+    console.log(`location.reload(true)`);
+  },
   redirect: (val) => {
     const { url } = getHistoryParams(val);
     message.info(`redirect: ${url}`);
@@ -112,6 +116,9 @@ const RuntimeActions = {
   },
   reload: () => {
     location.reload();
+  },
+  forcedReload: () => {
+    location.reload(true);
   },
   redirect: (val) => {
     const { url } = getHistoryParams(val);
