@@ -843,7 +843,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     //  =========== v1.4.82 end ===============
 
   /**
-   * @description v1.4.86 列间距
+   * @description v1.4.86
    */
   const margin1486Old = style.styleAry?.find?.(({ selector }) => selector === ".ant-col:not(:last-child) .ant-form-item")
 
