@@ -21,6 +21,7 @@ const SlotContent = (
     actions: ReactElement;
     field: FormListFieldData;
     callbacks?: any;
+    suffixKey?: number;
   }
 ) => {
   const {
@@ -35,7 +36,8 @@ const SlotContent = (
     id,
     parentSlot,
     logger,
-    callbacks
+    callbacks,
+    suffixKey
   } = props;
   const content = useMemo(() => {
     return slots[SlotIds.FormItems]?.render({
@@ -179,9 +181,9 @@ const SlotContent = (
       },
       inputValues: { ...field },
       style: data.slotStyle,
-      key: field.key
+      key: suffixKey ? `${field.key}-${suffixKey}` : field.key
     });
-  }, [data.slotStyle, field.name, field.key]);
+  }, [data.slotStyle, field.name, field.key, suffixKey]);
   /**
    * , [data.slotStyle, data.value?.[field.name], field.name, field.key]);
    */

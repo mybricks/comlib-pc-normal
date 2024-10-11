@@ -24,6 +24,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOutputRef = useRef<any>(null);
   const callbacks = useRef<any>({});
 
+  const keyRef = useRef<number>(1);
+
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
   }, [env.edit]);
@@ -61,6 +63,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
     // 设置值
     inputs[InputIds.SetValue]((value, outputRels) => {
+      keyRef.current = keyRef.current + 1
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         resetForm();
         data.value = value;
@@ -79,6 +82,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 设置初始值
     inputs[InputIds.SetInitialValue]((value, outputRels) => {
+      keyRef.current = keyRef.current + 1
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         resetForm();
         data.value = value;
@@ -358,6 +362,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               actions={actions}
               listItemPropsStore={listItemPropsStore}
               field={field}
+              suffixKey={keyRef.current}
               callbacks={callbacks.current}
             />
           </div>
