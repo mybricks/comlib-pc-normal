@@ -590,10 +590,17 @@ export default function (props: RuntimeParams<Data>) {
     const dropPosition = info.dropPosition;
     // 放置在子级
     if (dropPosition === 0) {
-      return true;
-    } else {
       return info.dropNode['data-allow-drop'];
+    } else {
+      return true;
     }
+    // if (dropPosition === 0) {
+    //   console.log(1)
+    //   return true;
+    // } else {
+    //   console.log(2)
+    //   return info.dropNode['data-allow-drop'];
+    // }
   };
 
   /**
