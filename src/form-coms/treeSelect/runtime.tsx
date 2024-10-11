@@ -150,8 +150,8 @@ export default function Runtime({
     inputs['setOptions']((ds, outputRels) => {
       if (Array.isArray(ds)) {
         data.options = ds;
-        outputRels['setOptionsDone'](ds);
         setExpandedKeys(getDefaultExpandKeys());
+        outputRels['setOptionsDone'](ds);
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
@@ -232,13 +232,11 @@ export default function Runtime({
       if (!data.useLoadData) {
         return;
       }
-
       const { node, resolve } = curNode.current as any;
-
       data.options = setTreeDataForLoadData(data, node, data.options, val);
-      relOutputs['setLoadDataDone'](val);
-      setTreeLoadKeys(uniq([...treeLoadedKeys, node.key]));
       resolve();
+      setTreeLoadKeys(uniq([...treeLoadedKeys, `${node.key}`]));
+      relOutputs['setLoadDataDone'](val);
     });
   }, []);
 
@@ -267,6 +265,13 @@ export default function Runtime({
   }, []);
 
   const onLoadData = (node) => {
+    console.log('node', node);
+
+    if (treeLoadedKeys.includes(node.key)) {
+      console.warn('节点已加载过数据');
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
       curNode.current = {
         node,
