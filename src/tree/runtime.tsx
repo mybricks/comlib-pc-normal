@@ -210,6 +210,7 @@ export default function (props: RuntimeParams<Data>) {
         needForceUpdate.current = true;
 
         setTreeLoadKeys([]); // 刷新组件加载状态
+        setExpandedKeys([]); // 设置数据源，清除展开状态
 
         if (value && Array.isArray(value)) {
           data.treeData = [...value];
@@ -457,7 +458,6 @@ export default function (props: RuntimeParams<Data>) {
    * @param expandedKeys
    */
   const onExpand = useCallback((expandedKeys: React.Key[]) => {
-    console.log('onExpand', expandedKeys);
     data.expandedKeys = [...expandedKeys];
     setExpandedKeys([...expandedKeys]);
     setAutoExpandParent(false);
