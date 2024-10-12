@@ -238,7 +238,7 @@ export default function Runtime({
       setTreeLoadKeys(uniq([...treeLoadedKeys, `${node.key}`]));
       relOutputs['setLoadDataDone'](val);
     });
-  }, []);
+  }, [treeLoadedKeys]);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
@@ -264,26 +264,26 @@ export default function Runtime({
     outputs[OutputIds.OnInitial](value);
   }, []);
 
-  const onLoadData = (node) => {
-    console.log('node', node);
+  const onLoadData = useCallback(
+    (node) => {
+      if (treeLoadedKeys.includes(node.key)) {
+        return Promise.resolve();
+      }
 
-    if (treeLoadedKeys.includes(node.key)) {
-      console.warn('节点已加载过数据');
-      return Promise.resolve();
-    }
+      return new Promise((resolve) => {
+        curNode.current = {
+          node,
+          resolve
+        };
 
-    return new Promise((resolve) => {
-      curNode.current = {
-        node,
-        resolve
-      };
-
-      outputs['loadData']({
-        ...node,
-        [data.labelFieldName || 'label']: node.title
+        outputs['loadData']({
+          ...node,
+          [data.labelFieldName || 'label']: node.title
+        });
       });
-    });
-  };
+    },
+    [treeLoadedKeys]
+  );
 
   /** 搜索事件 */
   const onSearch = (e) => {
@@ -319,9 +319,12 @@ export default function Runtime({
   }, []);
 
   /** 展开事件 */
-  const onExpand: TreeSelectProps['onTreeExpand'] = useCallback((keys) => {
-    setExpandedKeys([...expandedKeys, ...keys]);
-  }, []);
+  const onExpand: TreeSelectProps['onTreeExpand'] = useCallback(
+    (keys) => {
+      setExpandedKeys([...expandedKeys, ...keys]);
+    },
+    [expandedKeys]
+  );
 
   /**
    * 树节点遍历渲染
