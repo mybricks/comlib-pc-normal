@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.search",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "搜索框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bacj7f.ea2507b099403a42.png",
@@ -102,6 +102,15 @@
       "rels": [
         "isEnableDone"
       ]
+    },
+    {
+      "id": "setAutoFocus",
+      "title": "设置聚焦状态",
+      "desc": "true:聚焦 false:不聚焦",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": ["setAutoFocusDone"]
     },
     {
       "id": "setValidateInfo",
@@ -243,6 +252,13 @@
     {
       "id": "isEnableDone",
       "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setAutoFocusDone",
+      "title": "设置聚焦状态完成",
       "schema": {
         "type": "boolean"
       }

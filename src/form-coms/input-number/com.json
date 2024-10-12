@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-number",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.23",
+  "version": "1.1.24",
   "description": "数字输入框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_964wc2.74b91913b3df146c.png",
@@ -115,6 +115,15 @@
       ]
     },
     {
+      "id": "setAutoFocus",
+      "title": "设置聚焦状态",
+      "desc": "true:聚焦 false:不聚焦",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": ["setAutoFocusDone"]
+    },
+    {
       "id": "setValidateInfo",
       "title": "设置校验状态",
       "desc": "设置表单项的校验状态和校验失败提示文案",
@@ -153,6 +162,13 @@
       "desc": "数字输入框值初始化时触发，输出数字输入框初始值",
       "schema": {
         "type": "number"
+      }
+    },
+    {
+      "id": "setAutoFocusDone",
+      "title": "设置聚焦状态完成",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

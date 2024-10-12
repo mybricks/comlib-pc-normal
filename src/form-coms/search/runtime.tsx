@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Input, InputProps, Select } from 'antd';
+import { Input, InputProps, Select, InputRef } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
@@ -40,6 +40,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [context, setContext] = useState<any>();
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+  const inputRef = useRef<InputRef>(null);
+  const [autoFocus, setAutoFocus] = useState(false);
 
   useEffect(() => {
     if (data.isenterButton && data.enterButton !== '') {
@@ -131,6 +133,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
+  useEffect(() => {
+    inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
+      setAutoFocus(!!flag);
+      !!flag ? inputRef.current?.focus() : null;
+      relOutputs['setAutoFocusDone'](!!flag);
+    });
+  }, [])
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
@@ -197,7 +207,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             onChange={changeSelectValue}
           ></Select>
           <Search
-          prefix={iconRenderCtx(data)}
+            prefix={iconRenderCtx(data)}
             style={{
               width: `calc(100% - ${data.selectWidth})`
             }}
@@ -218,11 +228,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return !data.isSelect ? (
     <div>
       <Search
+        ref={inputRef}
         prefix={iconRenderCtx(data)}
         onChange={onChange}
         onSearch={onSearch}
         onBlur={onBlur}
         value={value}
+        autoFocus={autoFocus}
         enterButton={data.isenterButton ? env.i18n(context) : void 0}
         {...data.config}
         placeholder={env.i18n(data.config.placeholder)}

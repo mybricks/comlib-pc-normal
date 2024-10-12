@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-textarea",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.23",
+  "version": "1.1.24",
   "description": "文本域",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_44zp5y.91531f9e6ba88161.png",
@@ -123,6 +123,15 @@
       ]
     },
     {
+      "id": "setAutoFocus",
+      "title": "设置聚焦状态",
+      "desc": "true:聚焦 false:不聚焦",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": ["setAutoFocusDone"]
+    },
+    {
       "id": "setColor",
       "title": "设置字体颜色",
       "desc": "设置文本域里字体的颜色",
@@ -191,6 +200,13 @@
       "desc": "值更新后，事件输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "setAutoFocusDone",
+      "title": "设置聚焦状态完成",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

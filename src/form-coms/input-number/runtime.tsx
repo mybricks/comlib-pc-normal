@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { InputNumber, InputNumberProps } from 'antd';
+import { InputNumber, InputNumberProps,InputRef } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -30,7 +30,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<string | number>();
   const validateRelOutputRef = useRef<any>(null);
+  const inputRef = useRef<InputRef>(null);
   const valueRef = useRef<any>();
+  const [autoFocus, setAutoFocus] = useState(false);
 
   useFormItemInputs(
     {
@@ -112,6 +114,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         relOutputs['setValidateInfoDone'](info);
         debounceValidateTrigger(parentSlot, { id: props.id, name: props.name, validateInfo: info });
       }
+    });
+
+    // 设置自动聚集
+    inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
+      setAutoFocus(!!flag);
+      !!flag ? inputRef.current?.focus() : null;
+      relOutputs['setAutoFocusDone'](!!flag);
     });
   }, []);
 
@@ -204,6 +213,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return data.isEditable ? (
     <div className={css.inputNumber}>
       <InputNumber<string | number>
+        ref={inputRef}
         value={value}
         {...data.config}
         {...NumberProps}
@@ -212,6 +222,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         placeholder={env.i18n(data.config.placeholder)}
         addonBefore={env.i18n(data.config.addonBefore)}
         addonAfter={env.i18n(data.config.addonAfter)}
+        autoFocus={autoFocus}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}

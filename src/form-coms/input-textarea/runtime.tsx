@@ -38,6 +38,7 @@ export default function ({
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
   const [placeholder,setPlaceholder] = useState(data.config.placeholder)
+  const [autoFocus, setAutoFocus] = useState(false);
 
   useFormItemInputs(
     {
@@ -137,6 +138,15 @@ export default function ({
     });
   }, []);
 
+  useEffect(()=>{
+    //设置是否默认聚焦
+    inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
+      setAutoFocus(!!flag);
+      !!flag ? inputRef.current?.focus() : null;
+      relOutputs['setAutoFocusDone'](!!flag);
+    });
+  },[])
+
   useEffect(() => {
     //设置占位符
     inputs["setPlaceholder"]((value,relOutputs)=>{
@@ -201,6 +211,7 @@ export default function ({
       <Input.TextArea
         ref={inputRef}
         {...data.config}
+        autoFocus={autoFocus}
         placeholder={env.i18n(placeholder)}
         value={value}
         readOnly={!!edit}
