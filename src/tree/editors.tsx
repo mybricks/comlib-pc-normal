@@ -191,8 +191,7 @@ export default {
                         }
                       }
                     ],
-                    target:
-                      '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
+                    target: '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
                   },
                   {
                     title: '外边距',
@@ -306,7 +305,34 @@ export default {
                   'div.ant-tree-treenode.ant-tree-treenode-checkbox-checked > span.ant-tree-node-content-wrapper'
               }
             ]
-          })
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Disable',
+            items: [
+              {
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  }
+                ],
+                target:
+                  'div.ant-tree-treenode.ant-tree-treenode-disabled > span.ant-tree-node-content-wrapper > .ant-tree-title .title'
+              },
+              {
+                title: '树节点公共样式',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target:
+                  'div.ant-tree-treenode.ant-tree-treenode-disabled > span.ant-tree-node-content-wrapper'
+              }
+            ]
+          }),
         ]
       }
     ],
@@ -1396,26 +1422,26 @@ export default {
       ];
     }
   },
-  '[data-tree-node-id]': {
-    title: '树节点配置项',
-    style: [
-      {
-        title: '当前节点样式',
-        options: [
-          {
-            type: 'font',
-            config: {
-              disableTextAlign: true
-            }
-          }
-        ],
-        target: ({ focusArea, data }: EditorResult<Data>) => {
-          return `div.ant-tree-treenode[data-tree-node-id="${focusArea.dataset.treeNodeId}"] > span.ant-tree-node-content-wrapper > .ant-tree-title .title `;
-        }
-      }
-    ],
-    items: []
-  },
+  // '[data-tree-node-id]': {
+  //   title: '树节点配置项',
+  //   style: [
+  //     {
+  //       title: '当前节点样式',
+  //       options: [
+  //         {
+  //           type: 'font',
+  //           config: {
+  //             disableTextAlign: true
+  //           }
+  //         }
+  //       ],
+  //       target: ({ focusArea, data }: EditorResult<Data>) => {
+  //         return `div.ant-tree-treenode[data-tree-node-id="${focusArea.dataset.treeNodeId}"] > span.ant-tree-node-content-wrapper > .ant-tree-title .title `;
+  //       }
+  //     }
+  //   ],
+  //   items: []
+  // },
   '[data-action-btns]': actionBtnsEditor,
   '[data-btn-id]': {
     title: '操作',
