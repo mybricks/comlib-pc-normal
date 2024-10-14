@@ -7,21 +7,19 @@ import css from './runtime.less';
  * @param icon 图标
  */
 export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
+  
+  const onClick = useCallback((e) => {
+    if (!env.runtime) {
+      return;
+    }
 
-  const onBubbleClick = (e)=>{
-    //e.preventDefault();
-    if(env.runtime){
+    if (outputs[OutputIds.Click].getConnections().length) {
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
-      outputs[OutputIds.Click]();
     }
-  }
-  
-  const onClick = () => {
-    if (env.runtime) {
-      outputs[OutputIds.Click]();
-    }
-  };
+
+    outputs[OutputIds.Click]();
+  }, []);
 
   const [fontSize, setFontSize] = useState(style.width);
 
@@ -39,25 +37,25 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
 
   useEffect(() => {
     if (env.runtime) {
-      inputs["setIcon"]?.((val, relOutputs) => {
-        var pattern = new RegExp("[A-Za-z]+");
+      inputs['setIcon']?.((val, relOutputs) => {
+        var pattern = new RegExp('[A-Za-z]+');
         if (typeof val === 'string' && pattern.test(val)) {
           data.icon = val.replace(val[0], val[0].toUpperCase());
           relOutputs['setIconDone'](val);
-        }  else {
+        } else {
           console.error(`输入的图标不正确`);
         }
       });
     }
   }, []);
 
-  useEffect(()=>{
-    if(style.width === 'fit-content' ){
-      setFontSize(32)
-    }else if(style.width !== '100%'){
-      setFontSize(style.width)
+  useEffect(() => {
+    if (style.width === 'fit-content') {
+      setFontSize(32);
+    } else if (style.width !== '100%') {
+      setFontSize(style.width);
     }
-  },[data.styleWidth, style.width])
+  }, [data.styleWidth, style.width]);
 
   return (
     <div
@@ -69,7 +67,7 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
             : undefined,
         fontSize: fontSize
       }}
-      onClick={data.eventBubble ? onBubbleClick : onClick}
+      onClick={onClick}
       data-item-type="icon"
     >
       {btnItemR({ icon: data.icon })}

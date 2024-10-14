@@ -47,18 +47,30 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       });
   }, []);
 
-  const onClick = useCallback(() => {
-    if (env.runtime) {
-      const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
-      outputs[OutputIds.Click](outputVal);
+  const onClick = useCallback((e) => {
+    if (!env.runtime) {
+      return;
     }
+
+    if (outputs[OutputIds.Click].getConnections().length) {
+      e.stopPropagation();
+    }
+
+    const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
+    outputs[OutputIds.Click](outputVal);
   }, []);
 
-  const onDoubleClick = useCallback(() => {
-    if (env.runtime) {
-      const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
-      outputs[OutputIds.DbClick](outputVal);
+  const onDoubleClick = useCallback((e) => {
+    if (!env.runtime) {
+      return;
     }
+
+    if (outputs[OutputIds.DbClick].getConnections().length) {
+      e.stopPropagation();
+    }
+    
+    const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
+    outputs[OutputIds.DbClick](outputVal);
   }, []);
 
   if (data.asMapArea) {
