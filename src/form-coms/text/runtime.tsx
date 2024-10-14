@@ -43,7 +43,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const inputRef = useRef<InputRef>(null);
   const validateRelOutputRef = useRef<any>(null);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<string | null>(null);
   const [autoFocus, setAutoFocus] = useState(false);
   const valueRef = useRef<any>();
 
@@ -226,6 +226,11 @@ export default function (props: RuntimeParams<Data>) {
       onBlur={onBlur}
       onPressEnter={onPressEnter}
       //size={'large'}
+      showCount={data.config.showCount ? {
+        formatter: ({ count, maxLength}) => {
+          const effectiveMaxLength = maxLength ?? -1;
+          return effectiveMaxLength > 0 ? `${value?.length || 0} / ${maxLength}` : `${value?.length || 0}`}
+      } : void 0}
       prefix={data.preSrc !== false ? renderPrefix() : void 0}
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
