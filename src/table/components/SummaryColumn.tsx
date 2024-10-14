@@ -28,10 +28,9 @@ export default (slots, data: Data, summaryColumnData: string) => {
 
   return (
     <Table.Summary>
-      <Table.Summary.Row className="summaryRow" key={uuid()}>
+      <Table.Summary.Row className="summaryRow">
         <Table.Summary.Cell
           index={0}
-          key={uuid()}
           className="summaryCellTitle"
           colSpan={SummaryCellTitleColSpan}
         >
@@ -39,14 +38,13 @@ export default (slots, data: Data, summaryColumnData: string) => {
         </Table.Summary.Cell>
         <Table.Summary.Cell
           index={hasSelectionColumn ? 2 : 1}
-          key={uuid()}
           className={summaryColumnContentType === 'text' ? 'summaryCellContent' : ''}
           colSpan={SummaryColumnContentColSpan}
         >
           {summaryColumnContentType === 'slotItem'
             ? slots['summaryColumn'] &&
               slots['summaryColumn']?.render({
-                key: `summaryColumn-${uuid()}`
+                // key: `summaryColumn-${uuid()}`
               })
             : summaryColumnData}
         </Table.Summary.Cell>
