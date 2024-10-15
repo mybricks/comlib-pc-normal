@@ -4,7 +4,7 @@ import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, slots, inputs, outputs, style } = props;
+  const { id, env, data, slots, inputs, outputs, style } = props;
   const {
     useSrcollIntoView,
     behavior,
@@ -181,34 +181,36 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div
-      id={data?.id}
-      ref={ref}
-      className={`${css.container} root`}
-      style={{
-        position: useFixed ? 'fixed' : 'static',
-        cursor: outputs[OutputIds.Click].getConnections().length ? 'pointer' : '',
-        ...legacyStyle,
-        ...dynamicStyle
-      }}
-      onClick={() => {
-        outputs[OutputIds.Click]?.();
-      }}
-      onMouseEnter={() => {
-        outputs[OutputIds.MouseEnter]?.();
-      }}
-      onMouseLeave={() => {
-        outputs[OutputIds.MouseLeave]?.();
-      }}
-    >
-      {data.isAutoScroll
-        ? scrollRender()
-        : slots[SlotIds.Content]?.render({
-            style:
-              env.edit && data.slotStyle?.position === 'smart'
-                ? { ...data.slotStyle, minHeight: 30 }
-                : data.slotStyle
-          })}
+    <div className={css.wrap}>
+      <div
+        id={data?.id}
+        ref={ref}
+        className={`${css.container} root`}
+        style={{
+          position: useFixed ? 'fixed' : 'static',
+          cursor: outputs[OutputIds.Click].getConnections().length ? 'pointer' : '',
+          ...legacyStyle,
+          ...dynamicStyle
+        }}
+        onClick={() => {
+          outputs[OutputIds.Click]?.();
+        }}
+        onMouseEnter={() => {
+          outputs[OutputIds.MouseEnter]?.();
+        }}
+        onMouseLeave={() => {
+          outputs[OutputIds.MouseLeave]?.();
+        }}
+      >
+        {data.isAutoScroll
+          ? scrollRender()
+          : slots[SlotIds.Content]?.render({
+              style:
+                env.edit && data.slotStyle?.position === 'smart'
+                  ? { ...data.slotStyle, minHeight: 30 }
+                  : data.slotStyle
+            })}
+      </div>
     </div>
   );
 }
