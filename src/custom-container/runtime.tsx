@@ -181,36 +181,34 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div className={css.wrap}>
-      <div
-        id={data?.id}
-        ref={ref}
-        className={`${css.container} root`}
-        style={{
-          position: useFixed ? 'fixed' : 'static',
-          cursor: outputs[OutputIds.Click].getConnections().length ? 'pointer' : '',
-          ...legacyStyle,
-          ...dynamicStyle
-        }}
-        onClick={() => {
-          outputs[OutputIds.Click]?.();
-        }}
-        onMouseEnter={() => {
-          outputs[OutputIds.MouseEnter]?.();
-        }}
-        onMouseLeave={() => {
-          outputs[OutputIds.MouseLeave]?.();
-        }}
-      >
-        {data.isAutoScroll
-          ? scrollRender()
-          : slots[SlotIds.Content]?.render({
-              style:
-                env.edit && data.slotStyle?.position === 'smart'
-                  ? { ...data.slotStyle, minHeight: 30 }
-                  : data.slotStyle
-            })}
-      </div>
+    <div
+      id={data?.id}
+      ref={ref}
+      className={`${css.container} root`}
+      style={{
+        position: useFixed ? 'fixed' : 'static',
+        cursor: outputs[OutputIds.Click].getConnections().length ? 'pointer' : '',
+        ...legacyStyle,
+        ...dynamicStyle
+      }}
+      onClick={() => {
+        outputs[OutputIds.Click]?.();
+      }}
+      onMouseEnter={() => {
+        outputs[OutputIds.MouseEnter]?.();
+      }}
+      onMouseLeave={() => {
+        outputs[OutputIds.MouseLeave]?.();
+      }}
+    >
+      {data.isAutoScroll
+        ? scrollRender()
+        : slots[SlotIds.Content]?.render({
+            style:
+              env.edit && data.slotStyle?.position === 'smart'
+                ? { ...data.slotStyle, minHeight: 30 }
+                : data.slotStyle
+          })}
     </div>
   );
 }
