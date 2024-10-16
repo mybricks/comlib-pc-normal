@@ -191,7 +191,8 @@ export default {
                         }
                       }
                     ],
-                    target: '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
+                    target:
+                      '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
                   },
                   {
                     title: '外边距',
@@ -332,7 +333,7 @@ export default {
                   'div.ant-tree-treenode.ant-tree-treenode-disabled > span.ant-tree-node-content-wrapper'
               }
             ]
-          }),
+          })
         ]
       }
     ],
@@ -550,7 +551,7 @@ export default {
               }
             },
             {
-              title: "禁用取消选中",
+              title: '禁用取消选中',
               type: 'Switch',
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -1385,6 +1386,23 @@ export default {
                   } else {
                     input.remove('addTips');
                   }
+                }
+              }
+            },
+            {
+              title: '节点下可添加节点表达式',
+              description: `根据节点的数据在运行时动态设置节点下可否添加的表达式，支持JS表达式语法, 例：{node.depth !== 0}`,
+              type: 'expression',
+              options: {
+                placeholder: `例：{node.depth !== 0} 节点深度为0时禁用`,
+                suggestions
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disabledAddScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.disabledAddScript = value;
                 }
               }
             },

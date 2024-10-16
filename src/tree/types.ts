@@ -98,6 +98,8 @@ export interface Data {
   editInline?: boolean;
   /** @description 1.0.45 动态禁用表达式 */
   disabledScript?: string;
+  /** 动态可添加表达式 */
+  disabledAddScript?: string
   /** 动态可勾选表达式 */
   checkableScript?: string;
   /** 拖拽 */

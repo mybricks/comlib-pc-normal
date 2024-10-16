@@ -2,7 +2,7 @@ import React from 'react';
 import { Tree, Popover } from 'antd';
 import { deepCopy } from '../../../utils';
 import { Data, TreeData } from '../../types';
-import { getDynamicProps, keyToString } from '../../utils';
+import { getDynamicProps, keyToString, getAddedProps } from '../../utils';
 import { renderAddTitle } from './AddTitle';
 import { renderTitle } from './Title';
 const { TreeNode } = Tree;
@@ -34,12 +34,14 @@ const renderTreeNode = ({
 }) => {
   const { data, slots, env } = props;
   const { keyFieldName, childrenFieldName, titleFieldName } = fieldNames;
+  const addAble = getAddedProps({ props, fieldNames, context: { ...parent, depth } as any });
   const hasAddNode =
     data.addable &&
     (!data.maxDepth || depth < data.maxDepth) &&
-    treeData.some((node) => filteredKeys.includes(node[keyFieldName]));
+    treeData.some((node) => filteredKeys.includes(node[keyFieldName]) && addAble);
   const lastTreeNode = treeData[treeData.length - 1];
   const addNodeKey = `${parent[keyFieldName]}-${lastTreeNode?.[keyFieldName]}`;
+
   return (
     <>
       {treeData.map((item, inx) => {

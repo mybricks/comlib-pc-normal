@@ -546,6 +546,36 @@ export const getDynamicProps = (
     disableHoverPopFlag
   };
 };
+
+export const getAddedProps = ( {
+  context,
+  props,
+  fieldNames
+}
+  : {
+    context: TreeData,
+    props: RuntimeParams<Data>,
+    fieldNames: { keyFieldName: string, titleFieldName: string, childrenFieldName: string }
+  },
+) => {
+  const { data, onError } = props;
+  const { titleFieldName } = fieldNames;
+  let sandbox: ExpressionSandbox | undefined
+  // disabledAddScript
+
+    /**树节点动态可添加表达式 */
+    let addableFlag = true;
+    if (data.addable === true && data.disabledAddScript) {
+      if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        addableFlag = !!sandbox.executeWithTemplate(data.disabledAddScript);
+      } catch (error: any) {
+        onError?.(`树组件[${context[titleFieldName]}]节点可拖拽: ${error}`);
+      }
+    }
+    console.log('addable Flag', context, addableFlag, data.disabledAddScript)
+    return addableFlag
+}
 /** 
  * 更新schema
  */
