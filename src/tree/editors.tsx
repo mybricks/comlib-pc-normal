@@ -191,7 +191,8 @@ export default {
                         }
                       }
                     ],
-                    target: '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
+                    target:
+                      '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
                   },
                   {
                     title: '外边距',
@@ -332,7 +333,7 @@ export default {
                   'div.ant-tree-treenode.ant-tree-treenode-disabled > span.ant-tree-node-content-wrapper'
               }
             ]
-          }),
+          })
         ]
       }
     ],
@@ -550,7 +551,7 @@ export default {
               }
             },
             {
-              title: "禁用取消选中",
+              title: '禁用取消选中',
               type: 'Switch',
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -1067,6 +1068,15 @@ export default {
                 set({ data }: EditorResult<Data>, value: string) {
                   data.dropScopeMessage = value;
                 }
+              }
+            },
+            {
+              title: '拖拽释放前',
+              type: '_Event',
+              options: () => {
+                return {
+                  outputId: 'beforeDrop'
+                };
               }
             },
             {

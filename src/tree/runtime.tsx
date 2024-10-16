@@ -40,6 +40,7 @@ export default function (props: RuntimeParams<Data>) {
   const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
   const setTreeDataDone = useRef<null | ((arg: any) => any)>(null);
+  const onDropDone = useRef<null | ((arg: any) => any)>(null);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -244,9 +245,12 @@ export default function (props: RuntimeParams<Data>) {
             const { node, resolve } = curentLoadNode.current as any;
             const newNodeData = {
               ...nodeData,
-              [keyFieldName]: node[keyFieldName],
+              [keyFieldName]: node[keyFieldName]
             };
-            data.treeData = updateNodeData(data.treeData, newNodeData, { keyFieldName, childrenFieldName });
+            data.treeData = updateNodeData(data.treeData, newNodeData, {
+              keyFieldName,
+              childrenFieldName
+            });
             resolve();
             /** 更新treeKeys一维数组 */
             treeKeys.current = [];
@@ -399,6 +403,43 @@ export default function (props: RuntimeParams<Data>) {
           }
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
+
+      /** @description 1.0.80 删除节点 */
+      inputs['removeNode']?.((value, relOutputs) => {
+        if (typeCheck(value, 'OBJECT')) {
+          data.treeData = filterTree(data.treeData, keyFieldName, value, childrenFieldName);
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
+          relOutputs['removeNodeDone']('done');
+        }
+
+        function filterTree(
+          treeData: TreeNode[],
+          keyFieldName: string,
+          value: any,
+          childrenFieldName: string
+        ): TreeNode[] {
+          return treeData
+            .map((node) => {
+              if (node[childrenFieldName]) {
+                node[childrenFieldName] = filterTree(
+                  node[childrenFieldName],
+                  keyFieldName,
+                  value,
+                  childrenFieldName
+                );
+              }
+              return node;
+            })
+            .filter((node) => node[keyFieldName] !== value[keyFieldName]);
+        }
+      });
+
+      /** @description 1.0.81 是否允许拖拽释放 */
+      inputs['beforeDropNext']?.((value, relOutputs) => {
+        try {
+          onDropDone?.current?.resolve?.(value);
+        } catch (e) {}
+      });
     }
   }, [expandedKeys]);
 
@@ -497,7 +538,24 @@ export default function (props: RuntimeParams<Data>) {
    * onDrop事件处理
    * 注: node TreeNode 的props
    */
-  const onDrop: TreeProps['onDrop'] = (info) => {
+  const onDrop: TreeProps['onDrop'] = async (info) => {
+    // 创建了「拖拽释放前」事件，并且有连线
+    if (outputs['beforeDrop'].getConnections().length) {
+      // 创建异步任务
+      outputs['beforeDrop'](info);
+      console.log(1);
+      let result = await new Promise((resolve) => {
+        onDropDone.current = {
+          resolve
+        };
+      });
+
+      // 拒绝
+      if (!result) {
+        return;
+      }
+    }
+
     /**
      * info.node: 落下的节点信息
      * info.dragNode: 拖拽的节点信息

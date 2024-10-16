@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.79",
+  "version": "1.0.81",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -58,14 +58,18 @@
       "schema": {
         "type": "object",
         "properties": {
+          "key": {
+            "type": "string",
+            "description": "树节点的标识字段，如配置过标识字段，请将 key 字段改为对应字段"
+          },
           "title": {
             "type": "string",
-            "description": "树节点的标题"
+            "description": "树节点的标题，如配置过标题字段，请将 title 字段改为对应字段"
           },
           "children": {
-            "title": "子项",
+            "title": "子节点字段",
             "type": "array",
-            "description": "树节点的子项",
+            "description": "树节点的子节点字段，如配置过子节点字段，请将 children 字段改为对应字段",
             "items": {
               "type": "object"
             }
@@ -234,6 +238,28 @@
       "rels": [
         "setCheckStrictlyDone"
       ]
+    },
+    {
+      "id": "removeNode",
+      "title": "删除节点",
+      "desc": "删除节点，如果有子节点，子节点也会被删除",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "树节点的标识字段，如配置过标识字段，请将 key 字段改为对应字段"
+          }
+        }
+      }
+    },
+    {
+      "id": "beforeDropNext",
+      "title": "是否允许拖拽释放",
+      "desc": "拖拽释放前，是否允许拖拽释放，true 将允许拖拽释放，false 将禁止拖拽释放",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [
@@ -447,6 +473,28 @@
             "title": "禁用勾选",
             "type": "boolean",
             "description": "节点是否禁用勾选"
+          }
+        }
+      }
+    },
+    {
+      "id": "beforeDrop",
+      "title": "拖拽释放前",
+      "desc": "拖拽释放前，输出拖拽相关节点信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "node": {
+            "type": "object",
+            "description": "落下的节点信息"
+          },
+          "dragNode": {
+            "type": "object",
+            "description": "拖拽的节点信息"
+          },
+          "dropPosition": {
+            "type": "string",
+            "description": "拖拽的位置"
           }
         }
       }

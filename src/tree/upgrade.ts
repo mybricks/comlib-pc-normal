@@ -596,26 +596,71 @@ export default function ({ data, style, input, output, slot }: UpgradeParams<Dat
   /**
    * @description v1.0.67 Hover 悬浮层支持
    */
-  if(typeof data.useHoverPanel === 'undefined') {
+  if (typeof data.useHoverPanel === 'undefined') {
     data.useHoverPanel = false;
     data.showEditPopupPanel = false;
-    data.popPlacement = 'top'
+    data.popPlacement = 'top';
   }
 
-
   //=========== 1.0.67 end ===============
-  
+
   /**
    * @description v1.0.70 展开时异步加载 schema，增加isLeaf
    */
 
-  if( data.useLoadData === true) {
-    let loadDataSchema = input.get(InputIds.SetLoadData).schema
-    if(!loadDataSchema?.properties?.isLeaf) {
-      refreshSchema({ data, input, output } as any)
+  if (data.useLoadData === true) {
+    let loadDataSchema = input.get(InputIds.SetLoadData).schema;
+    if (!loadDataSchema?.properties?.isLeaf) {
+      refreshSchema({ data, input, output } as any);
     }
   }
   //=========== 1.0.67 end ===============
+
+  /**
+   * @description v1.0.80 增加删除节点
+   */
+  if (!input.get('removeNode')) {
+    input.add('removeNode', '删除节点', {
+      type: 'object',
+      properties: {
+        key: {
+          type: 'string',
+          description: '树节点的标识字段，如配置过标识字段，请将 key 字段改为对应字段'
+        }
+      }
+    });
+  }
+  //=========== 1.0.80 end ===============
+
+  /**
+   * @description v1.0.81 拖拽释放前
+   */
+  if (!output.get('beforeDrop')) {
+    output.add('beforeDrop', '拖拽释放前', {
+      type: 'object',
+      properties: {
+        node: {
+          type: 'object',
+          description: '落下的节点信息'
+        },
+        dragNode: {
+          type: 'object',
+          description: '拖拽的节点信息'
+        },
+        dropPosition: {
+          type: 'string',
+          description: '拖拽的位置'
+        }
+      }
+    });
+  }
+
+  if (!input.get('beforeDropNext')) {
+    input.add('beforeDropNext', '是否允许拖拽释放', {
+      type: 'boolean'
+    });
+  }
+  //=========== 1.0.81 end ===============
 
   return true;
 }
