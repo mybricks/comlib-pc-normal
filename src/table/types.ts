@@ -170,7 +170,7 @@ export interface Data {
   isDisabledScript?: string;
   // 使用动态设置勾选项
   useSetSelectedRowKeys?: boolean;
-
+  rowSelectionMessage?: string;
   // 排序参数
   sortParams?: {
     id?: string;

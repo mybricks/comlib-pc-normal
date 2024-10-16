@@ -392,5 +392,8 @@ export default function ({
   transferStyleBetweenSelectors(getPrevSelector(oldGetTable), `> ${getTable()} > tbody`);
   transferStyleBetweenSelectors(getPrevSelector(oldGetTableBody), `> ${getTableBody()}`);
 
+  if (!data?.rowSelectionMessage) {
+    data.rowSelectionMessage = '已选中 {count} 项'
+  }
   return true;
 }

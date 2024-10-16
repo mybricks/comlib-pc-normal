@@ -124,6 +124,25 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
           }
         },
         {
+          title: '勾选文案',
+          type: 'text',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.selectionType !== RowSelectionTypeEnum.Radio;
+          },
+          options: {
+            locale: true,
+            placeholder: `例：已选中 {count} 项, 注意 {count}必填，代表勾选数量`,
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.rowSelectionMessage;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.rowSelectionMessage = value;
+            }
+          }
+        },
+        {
           title: `行点击触发勾选`,
           description: '开启后，通过点击表格行就可以触发勾选，不需要额外开启行点击事件',
           type: 'Switch',
