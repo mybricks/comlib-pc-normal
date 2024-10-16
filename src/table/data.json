@@ -27,7 +27,11 @@
   "size": "middle",
   "useRowSelection": false,
   "enableRowClickSelection": false,
-  "rowSelectionPostion": ["top", "bottom"],
+  "rowSelectionMessage": "已选中 { count } 项",
+  "rowSelectionPostion": [
+    "top",
+    "bottom"
+  ],
   "useLoading": true,
   "tableLayout": "fixed",
   "loadingTip": "",
@@ -46,7 +50,12 @@
     "align": "flex-end",
     "size": "default",
     "showSizeChanger": false,
-    "pageSizeOptions": ["10", "20", "50", "100"],
+    "pageSizeOptions": [
+      "10",
+      "20",
+      "50",
+      "100"
+    ],
     "showQuickJumper": false,
     "hideOnSinglePage": false,
     "useDynamicTitle": false

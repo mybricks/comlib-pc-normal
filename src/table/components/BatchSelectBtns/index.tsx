@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { Data, RowSelectionTypeEnum } from '../../types';
 import { InputIds, SlotIds } from '../../constants';
 import css from './style.less';
+import FormatMessage from '../../../utils/FormateMessage';
 
 interface Props {
   env: Env;
@@ -33,19 +34,26 @@ export default (props: Props): JSX.Element | null => {
               key: `${SlotIds.ROW_SELECTION_OPERATION}-${JSON.stringify(selectedRowKeys)}`
             })}
           </div>
+
+
           <div className={css.selectedInfo}>
-            已选中
-            <span style={{ marginLeft: 2 }}>{selectedRowKeys.length}</span>
-            <span
-              className={css.blue}
-              style={{
-                marginLeft: 2,
-                marginRight: data.rowSelectionLimit ? 0 : 2
+            <FormatMessage
+              message={env.i18n(data.rowSelectionMessage || '已选中 { count } 项')}
+              replaceMap={{
+                count: <>
+                  <span style={{ marginLeft: 2 }}>{selectedRowKeys.length}</span>
+                  <span
+                    className={css.blue}
+                    style={{
+                      marginLeft: 2,
+                      marginRight: data.rowSelectionLimit ? 0 : 2
+                    }}
+                  >
+                    {data.rowSelectionLimit ? `/${data.rowSelectionLimit}` : ''}
+                  </span>
+                </>
               }}
-            >
-              {data.rowSelectionLimit ? `/${data.rowSelectionLimit}` : ''}
-            </span>
-            项
+            />
           </div>
         </div>
       </div>
