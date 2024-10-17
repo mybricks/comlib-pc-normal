@@ -12,9 +12,9 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
     title: '列',
     items: [
       {
-        title: '显示列头',
+        title: '显示列名',
         type: 'switch',
-        description: '关闭后，不显示列标题行',
+        description: '控制是否显示每列的列名，关闭后，只显示表格内容区域',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.showHeader === false ? false : true;

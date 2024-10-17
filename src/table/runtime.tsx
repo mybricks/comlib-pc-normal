@@ -1170,6 +1170,18 @@ export default function (props: RuntimeParams<Data>) {
     );
   };
 
+  const noHeadLable = () => {
+    return (
+      <div className={css.noHeaderTable}>
+        <div className={css.infoLabel} style={{ top: 0, left: 0 }}>
+          列名运行时不展示
+        </div>
+        <div className={css.infoLabel} style={{ top: 0, right: 0 }}>
+          列名运行时不展示
+        </div>
+      </div>
+    );
+  };
   return (
     <div ref={ref} className={`${css.tableWarrper} tableWarrper`}>
       <ConfigProvider
@@ -1190,7 +1202,7 @@ export default function (props: RuntimeParams<Data>) {
             />
             {data.columns?.filter(({ visible }) => visible)?.length ? (
               <Table
-                className="mybricks-table"
+                className={data.showHeader === false ? `mybricks-table ${css.noHeaderTable}` : "mybricks-table"}
                 style={{
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
@@ -1228,38 +1240,38 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.defaultExpandAllRows || (data.useExpand && slots[SlotIds.EXPAND_CONTENT])
                     ? {
-                        expandedRowRender: data.useExpand
-                          ? (record, index) => {
-                              const inputValues = {
-                                [InputIds.EXP_COL_VALUES]: {
-                                  ...record
-                                },
-                                [InputIds.INDEX]: index
-                              };
-                              if (data.useExpand && data.expandDataIndex) {
-                                inputValues[InputIds.EXP_ROW_VALUES] = get(
-                                  record,
-                                  data.expandDataIndex
-                                );
-                              }
-                              return slots[SlotIds.EXPAND_CONTENT]?.render({
-                                inputValues,
-                                key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                              });
-                            }
-                          : undefined,
-                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                        onExpand: (expanded, record) => {
-                          if (!env.runtime) return;
-                          const key = record[rowKey];
-                          if (expanded && !expandedRowKeys.includes(key)) {
-                            setExpandedRowKeys([...expandedRowKeys, key]);
-                          } else if (!expanded && expandedRowKeys.includes(key)) {
-                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                            setExpandedRowKeys([...expandedRowKeys]);
+                      expandedRowRender: data.useExpand
+                        ? (record, index) => {
+                          const inputValues = {
+                            [InputIds.EXP_COL_VALUES]: {
+                              ...record
+                            },
+                            [InputIds.INDEX]: index
+                          };
+                          if (data.useExpand && data.expandDataIndex) {
+                            inputValues[InputIds.EXP_ROW_VALUES] = get(
+                              record,
+                              data.expandDataIndex
+                            );
                           }
+                          return slots[SlotIds.EXPAND_CONTENT]?.render({
+                            inputValues,
+                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                          });
+                        }
+                        : undefined,
+                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                      onExpand: (expanded, record) => {
+                        if (!env.runtime) return;
+                        const key = record[rowKey];
+                        if (expanded && !expandedRowKeys.includes(key)) {
+                          setExpandedRowKeys([...expandedRowKeys, key]);
+                        } else if (!expanded && expandedRowKeys.includes(key)) {
+                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                          setExpandedRowKeys([...expandedRowKeys]);
                         }
                       }
+                    }
                     : undefined
                 }
                 onChange={onChange}
@@ -1290,6 +1302,7 @@ export default function (props: RuntimeParams<Data>) {
         </TableContext.Provider>
       </ConfigProvider>
       {data.useDynamicTitle && !env.runtime && templateLable()}
+      {data.showHeader === false && !env.runtime && noHeadLable()}
     </div>
   );
 }

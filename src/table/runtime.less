@@ -9,6 +9,14 @@
   position: relative;
 }
 
+.noHeaderTable {
+  :global {
+    .ant-table-thead {
+      opacity: 0.2;
+    }
+  }
+}
+
 .table {
   :global {
     .ant-btn {
@@ -35,7 +43,7 @@
     }
 
     // 表格的最后一个表头，resize拖拽条隐藏
-    .ant-table-thead > tr:first-child > th:last-child > div[class*='resizer-r'] {
+    .ant-table-thead>tr:first-child>th:last-child>div[class*='resizer-r'] {
       display: none !important;
     }
 
