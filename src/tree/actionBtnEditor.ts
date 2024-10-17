@@ -78,10 +78,7 @@ export const addBtn = ({ data, output }: { data: Data; output: any }) => {
     type: 'link',
     iconConfig: {
       src: false,
-      size: [
-        14,
-        14
-      ],
+      size: [14, 14],
       gutter: 8
     }
   };
@@ -151,7 +148,7 @@ export const actionBtnsEditor = {
   }
 };
 
-export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
+export const actionBtnEditor = (btn: ActionBtn, data: Data, output) => [
   {
     title: '操作',
     items: [
@@ -159,11 +156,12 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
         title: '名称',
         type: 'Text',
         value: {
-          get({ }: EditorResult<Data>) {
+          get({}: EditorResult<Data>) {
             return btn.title;
           },
-          set({ }: EditorResult<Data>, value: string) {
+          set({}: EditorResult<Data>, value: string) {
             btn.title = value;
+            // output.setTitle(btn.id, `${value}`);
           }
         }
       },
@@ -182,7 +180,7 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
             }
           ]
         },
-        ifVisible({ }: EditorResult<Data>) {
+        ifVisible({}: EditorResult<Data>) {
           return btn.id === 'delete';
         },
         value: {
@@ -197,7 +195,7 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
       {
         title: '行内编辑',
         type: 'switch',
-        ifVisible({ }: EditorResult<Data>) {
+        ifVisible({}: EditorResult<Data>) {
           return btn.id === 'modify';
         },
         value: {
@@ -212,7 +210,7 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
       {
         title: '删除',
         type: 'Button',
-        ifVisible({ }: EditorResult<Data>) {
+        ifVisible({}: EditorResult<Data>) {
           return ![MODIFY_BTN_ID, DELETE_BTN_ID].includes(btn.id);
         },
         value: {
@@ -225,14 +223,14 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
       {
         title: '隐藏',
         type: 'Switch',
-        ifVisible({ }: EditorResult<Data>) {
+        ifVisible({}: EditorResult<Data>) {
           return [MODIFY_BTN_ID, DELETE_BTN_ID].includes(btn.id);
         },
         value: {
-          get({ }: EditorResult<Data>) {
+          get({}: EditorResult<Data>) {
             return btn.hidden;
           },
-          set({ }: EditorResult<Data>, value: boolean) {
+          set({}: EditorResult<Data>, value: boolean) {
             btn.hidden = value;
           }
         }
@@ -265,7 +263,7 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
       },
       {
         title: '事件',
-        ifVisible({ }: EditorResult<Data>) {
+        ifVisible({}: EditorResult<Data>) {
           return !!btn.id;
         },
         items: [
@@ -295,14 +293,14 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
           suggestions: getNodeSuggestions(data)
         },
         value: {
-          get({ }: EditorResult<Data>) {
+          get({}: EditorResult<Data>) {
             return btn.displayScript;
           },
-          set({ }: EditorResult<Data>, value: string) {
+          set({}: EditorResult<Data>, value: string) {
             btn.displayScript = value;
           }
         }
-      },
+      }
     ]
   },
   {
@@ -321,10 +319,10 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
           ];
         },
         value: {
-          get({ }: EditorResult<Data>) {
+          get({}: EditorResult<Data>) {
             return btn.type;
           },
-          set({ }: EditorResult<Data>, value) {
+          set({}: EditorResult<Data>, value) {
             btn.type = value;
           }
         }
@@ -333,14 +331,13 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
         title: '危险按钮',
         type: 'Switch',
         value: {
-          get({ }: EditorResult<Data>) {
+          get({}: EditorResult<Data>) {
             return btn.danger || false;
           },
-          set({ }: EditorResult<Data>, value) {
+          set({}: EditorResult<Data>, value) {
             btn.danger = value;
           }
         }
-      
       },
       {
         title: '图标配置',
@@ -354,10 +351,10 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
               { label: '自定义上传', value: 'custom' }
             ],
             value: {
-              get({ }: EditorResult<Data>) {
+              get({}: EditorResult<Data>) {
                 return btn.iconConfig?.src || false;
               },
-              set({ }: EditorResult<Data>, value: IconSrcType) {
+              set({}: EditorResult<Data>, value: IconSrcType) {
                 btn.iconConfig.src = value;
               }
             }
@@ -365,14 +362,14 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
           {
             title: '图标库',
             type: 'Icon',
-            ifVisible({ }: EditorResult<Data>) {
+            ifVisible({}: EditorResult<Data>) {
               return btn.iconConfig?.src === 'inner';
             },
             value: {
-              get({ }: EditorResult<Data>) {
+              get({}: EditorResult<Data>) {
                 return btn.iconConfig?.innerIcon || 'EditOutlined';
               },
-              set({ }: EditorResult<Data>, value: string) {
+              set({}: EditorResult<Data>, value: string) {
                 btn.iconConfig.innerIcon = value;
               }
             }
@@ -380,14 +377,14 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
           {
             title: '上传',
             type: 'ImageSelector',
-            ifVisible({ }: EditorResult<Data>) {
+            ifVisible({}: EditorResult<Data>) {
               return btn.iconConfig?.src === 'custom';
             },
             value: {
-              get({ }: EditorResult<Data>) {
+              get({}: EditorResult<Data>) {
                 return btn.iconConfig?.customIcon;
               },
-              set({ }: EditorResult<Data>, value: string) {
+              set({}: EditorResult<Data>, value: string) {
                 btn.iconConfig.customIcon = value;
               }
             }
@@ -399,14 +396,14 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
               { title: '高度', min: 0, width: 100 },
               { title: '宽度', min: 0, width: 100 }
             ],
-            ifVisible({ }: EditorResult<Data>) {
+            ifVisible({}: EditorResult<Data>) {
               return !!btn.iconConfig?.src;
             },
             value: {
-              get({ }: EditorResult<Data>) {
+              get({}: EditorResult<Data>) {
                 return btn.iconConfig?.size || [14, 14];
               },
-              set({ }: EditorResult<Data>, value: [number, number]) {
+              set({}: EditorResult<Data>, value: [number, number]) {
                 btn.iconConfig.size = value;
               }
             }
@@ -416,22 +413,22 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
             type: 'Inputnumber',
             options: [{ min: 0, max: 1000, width: 200 }],
             description: '图标与文字间的距离',
-            ifVisible({ }: EditorResult<Data>) {
+            ifVisible({}: EditorResult<Data>) {
               return !!btn.iconConfig?.src;
             },
             value: {
-              get({ }: EditorResult<Data>) {
+              get({}: EditorResult<Data>) {
                 return [btn.iconConfig?.gutter || 8];
               },
-              set({ }: EditorResult<Data>, value: number[]) {
+              set({}: EditorResult<Data>, value: number[]) {
                 btn.iconConfig.gutter = value[0];
               }
             }
-          },
+          }
         ]
-      },
+      }
     ]
-  },
+  }
 ];
 
 export const styleEditor = [
@@ -571,7 +568,7 @@ export const styleEditor = [
             btn.iconConfig.gutter = value[0];
           }
         }
-      },
+      }
     ]
   }
-]
+];

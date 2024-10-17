@@ -64,6 +64,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
+          console.warn(valueRef.current);
+          console.warn(valueRef.current);
           output(valueRef.current);
         },
         resetValue() {
@@ -146,8 +148,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const changeValue = useCallback((value) => {
-    setValue(value);
     valueRef.current = value;
+    setValue(value);
     if (data.isSelect) {
       onChangeForFc(parentSlot, { id: id, name: name, value: [data.initValue, value] });
     } else {
@@ -177,6 +179,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   //搜索
   const onSearch = useCallback((value) => {
+    valueRef.current = value;
     onValidateTrigger();
     if (data.isSelect) {
       outputs['onSearch']([data.initValue, value]);

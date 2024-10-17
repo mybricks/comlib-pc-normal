@@ -1507,10 +1507,10 @@ export default {
         ]
       }
     ],
-    items: ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
       if (!focusArea) return;
       const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
-      const cates = actionBtnEditor(btn, data);
+      const cates = actionBtnEditor(btn, data, output);
       cate1.title = cates[0].title;
       cate1.items = cates[0].items;
       cate2.title = cates[1].title;
