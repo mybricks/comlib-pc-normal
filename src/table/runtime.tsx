@@ -68,6 +68,8 @@ export default function (props: RuntimeParams<Data>) {
   const realShowDataSource =
     data.usePagination && data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
   const [summaryColumnData, setSummaryColumnData] = useState<string>('');
+  // 全局禁用勾选
+  const [disabledRowSelection, setDisabledRowSelection] = useState(false);
 
   const rowKey = data.rowKey || DefaultRowKey;
 
@@ -528,6 +530,14 @@ export default function (props: RuntimeParams<Data>) {
             }, 200);
           });
       }
+      // 动态设置禁用勾选
+      if (data.useSetDisabledRowSelection) {
+        inputs[InputIds.SET_DISABLED_ROW_SELECTION] && 
+          inputs[InputIds.SET_DISABLED_ROW_SELECTION]((val: any, relOutputs: any) => {
+            setDisabledRowSelection(!!val);
+            handleOutputFn(relOutputs, OutputIds.SET_DISABLED_ROW_SELECTION, val);
+          })
+      }
       // 设置选中行序号
       if (data.enableRowFocus) {
         inputs[InputIds.SET_FOCUS_ROW] &&
@@ -953,6 +963,9 @@ export default function (props: RuntimeParams<Data>) {
         : RowSelectionTypeEnum.Checkbox,
     getCheckboxProps: (record) => {
       if (edit) {
+        return { disabled: true } as any;
+      }
+      if (disabledRowSelection) {
         return { disabled: true } as any;
       }
       const targetRowKeyVal = record[rowKey];

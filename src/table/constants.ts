@@ -18,6 +18,10 @@ export const InputIds = {
   CLEAR_ROW_SELECTION: 'clearRowSelection',
   // 设置勾选项
   SET_ROW_SELECTION: 'setRowSelectedKeys',
+
+  // 设置禁用勾选
+  SET_DISABLED_ROW_SELECTION: 'setDisabledRowSelection',
+
   // 设置选中行
   SET_FOCUS_ROW: 'setFocusRow',
 
@@ -116,6 +120,7 @@ export const OutputIds = {
   SET_SHOW_COLUMNS: 'showColumns',
   SET_SHOW_TitleS: 'showTitles',
   SET_ROW_SELECTION: 'setRowSelectedKeys',
+  SET_DISABLED_ROW_SELECTION: 'setDisabledRowSelection',
   SET_FOCUS_ROW: 'setFocusRow',
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',

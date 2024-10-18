@@ -263,6 +263,27 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
           }
         },
         {
+          title: '动态设置禁用勾选',
+          description: '开启后，可以通过逻辑连线连接输入项目【设置禁用勾选】，实现动态设置禁用勾选',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useSetDisabledRowSelection;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
+              data.useSetDisabledRowSelection = value;
+              if (value) {
+                input.add(InputIds.SET_DISABLED_ROW_SELECTION, '设置禁用勾选', Schemas.SET_DISABLED_ROW_SELECTION);
+                output.add(OutputIds.SET_DISABLED_ROW_SELECTION, '禁用勾选', Schemas.SET_DISABLED_ROW_SELECTION);
+                input.get(InputIds.SET_DISABLED_ROW_SELECTION).setRels([OutputIds.SET_DISABLED_ROW_SELECTION]);
+              } else {
+                input.remove(InputIds.SET_DISABLED_ROW_SELECTION);
+                output.remove(InputIds.SET_DISABLED_ROW_SELECTION);
+              }
+            }
+          }
+        },
+        {
           title: '勾选事件',
           type: '_Event',
           options: () => {

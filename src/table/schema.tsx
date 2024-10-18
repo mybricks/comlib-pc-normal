@@ -422,6 +422,9 @@ export const Schemas = {
       type: 'string'
     }
   },
+  SET_DISABLED_ROW_SELECTION: {
+    type: 'boolean'
+  },
   SET_FOCUS_ROW: {
     title: '选中行序号',
     type: 'number'
