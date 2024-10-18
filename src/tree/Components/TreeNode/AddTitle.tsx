@@ -65,6 +65,7 @@ export const renderAddTitle = (
               : (item.parent[childrenFieldName] = [node]);
             data.treeData = [...data.treeData];
           }
+
           if (data.defaultExpandAll) {
             data.expandedKeys.push(item[keyFieldName]);
             setExpandedKeys([...data.expandedKeys]);

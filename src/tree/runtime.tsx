@@ -36,6 +36,7 @@ export default function (props: RuntimeParams<Data>) {
   const [selectedValues, setSelectedValues] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
+  const [_treeKeys, _setTreeKeys] = useState<{ key: string; title: string; depth: number }[]>([]);
 
   const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
@@ -101,6 +102,7 @@ export default function (props: RuntimeParams<Data>) {
     data.expandedKeys = strKeys;
     setExpandedKeys(strKeys);
   }, []);
+
   useEffect(() => {
     data.treeData = updateDefaultTreeData();
   }, [data.useStaticData, data.staticData]);
@@ -118,6 +120,7 @@ export default function (props: RuntimeParams<Data>) {
       titleFieldName,
       childrenFieldName
     });
+    _setTreeKeys([...treeKeys.current]);
 
     if (needForceUpdate.current) {
       clearCheckedKeys();
@@ -259,6 +262,7 @@ export default function (props: RuntimeParams<Data>) {
               titleFieldName,
               childrenFieldName
             });
+            _setTreeKeys([...treeKeys.current]);
             setTreeLoadKeys(uniq([...treeLoadedKeys, keyToString(node[keyFieldName])]));
             relOutputs[OutputIds.SetLoadDataDone](nodeData);
             outputs[OutputIds.OnChange](deepCopy(data.treeData));
@@ -680,7 +684,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const filteredKeys = useMemo(() => {
     return data.filterValue ? filter() : treeKeys.current.map((i) => i.key);
-  }, [data.filterValue, treeKeys.current]);
+  }, [data.filterValue, treeKeys.current, _treeKeys]);
 
   const isEmpty = useMemo(() => {
     return filteredKeys.length === 0;
