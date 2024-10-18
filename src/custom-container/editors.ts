@@ -71,7 +71,7 @@ export default {
         },
         ...EventEditor,
         ...AutoScrollEditor,
-        ...PageScrollEditor
+        ...PageScrollEditor,
       ];
 
       // cate2.title = '交互';

@@ -24,6 +24,20 @@ export const EventEditor = [
         options: {
           outputId: OutputIds.MouseLeave
         }
+      },
+      {
+        title: '当滚动到顶部',
+        type: '_Event',
+        options: {
+          outputId: 'scrollTop'
+        }
+      },
+      {
+        title: '当滚动到底部',
+        type: '_Event',
+        options: {
+          outputId: 'scrollBottom'
+        }
       }
     ]
   }

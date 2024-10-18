@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 // import { useResizeObserver } from '../hooks/useResizeObserver';
 import css from './style.less';
@@ -97,6 +97,17 @@ export default function (props: RuntimeParams<Data>) {
       maxWidth
     };
   }, [dynamicStyle, legacyStyle, data.slotStyle]);
+
+  const onScroll = useCallback(() => {
+    // 当滚动到顶部 / 底部 的时候，触发事件
+    if (ref.current) {
+      if (ref.current.scrollTop === 0) {
+        outputs["scrollTop"]?.();
+      } else if (ref.current.scrollHeight - ref.current.scrollTop === ref.current.clientHeight) {
+        outputs["scrollBottom"]?.();
+      }
+    }
+  }, []);
 
   // useResizeObserver(ref, (entries) => {
   //   if (!ref.current) return;
@@ -200,6 +211,7 @@ export default function (props: RuntimeParams<Data>) {
       onMouseLeave={() => {
         outputs[OutputIds.MouseLeave]?.();
       }}
+      onScroll={onScroll}
     >
       {data.isAutoScroll
         ? scrollRender()

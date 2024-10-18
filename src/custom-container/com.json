@@ -1,7 +1,7 @@
 {
   "title": "自定义容器",
   "namespace": "mybricks.normal-pc.custom-container",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "自定义容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -84,6 +84,22 @@
       "id": "scrollComplete",
       "title": "完成",
       "desc": "滚动完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "scrollTop",
+      "title": "滚动到顶部",
+      "desc": "滚动事件",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "scrollBottom",
+      "title": "滚动到底部",
+      "desc": "滚动事件",
       "schema": {
         "type": "any"
       }

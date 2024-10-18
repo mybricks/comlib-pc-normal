@@ -186,5 +186,14 @@ export default function ({
   }
   //=========== v1.0.39 end ===============
 
+  if (!output.get("scrollTop")) {
+    output.add("scrollTop", '滚动到顶部', { type: 'any' });
+  }
+
+  if (!output.get("scrollBottom")) {
+    output.add("scrollBottom", '滚动到底部', { type: 'any' });
+  }
+  //=========== v1.0.43 end ===============
+
   return true;
 }
