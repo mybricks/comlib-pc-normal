@@ -358,7 +358,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   /**
    * @description v1.2.20 新增description
   */
-  descriptionUp([...descriptionUpList, ...commonFormItemUpdateSchema], input, output);
+  // 不要更新，导致 schema 异常
+  // descriptionUp([...descriptionUpList, ...commonFormItemUpdateSchema], input, output);
   //=========== 1.2.20 end ===============
   return true;
 }

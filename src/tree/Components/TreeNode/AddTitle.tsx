@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { deepCopy } from '../../../utils';
 import { Data } from '../../types';
 import { Input } from 'antd';
@@ -31,6 +31,31 @@ export const renderAddTitle = (
       display: data.isAdding === item[keyFieldName] ? 'block' : 'none',
       marginLeft: data.checkable ? '20px' : void 0
     };
+
+  const onComfirm = ({ target }) => {
+    data.isAdding = '';
+    const node = {
+      title: target.value,
+      key: item[keyFieldName]
+    };
+    // 添加
+    if (isRoot) {
+      data.treeData = [...data.treeData, node];
+    } else {
+      Array.isArray(item.parent?.[childrenFieldName])
+        ? item.parent?.[childrenFieldName].push(node)
+        : (item.parent[childrenFieldName] = [node]);
+      data.treeData = [...data.treeData];
+    }
+
+    if (data.defaultExpandAll) {
+      data.expandedKeys.push(item[keyFieldName]);
+      setExpandedKeys([...data.expandedKeys]);
+    }
+    outputs[OutputIds.AddNodeDone]({ node, parent: item.parent });
+    outputs[OutputIds.OnChange](deepCopy(data.treeData));
+  };
+
   return (
     <span
       style={{ cursor: 'pointer' }}
@@ -50,29 +75,7 @@ export const renderAddTitle = (
         style={inputStyle}
         bordered={false}
         size="small"
-        onPressEnter={({ target }) => {
-          data.isAdding = '';
-          const node = {
-            title: target.value,
-            key: item[keyFieldName]
-          };
-          // 添加
-          if (isRoot) {
-            data.treeData = [...data.treeData, node];
-          } else {
-            Array.isArray(item.parent?.[childrenFieldName])
-              ? item.parent?.[childrenFieldName].push(node)
-              : (item.parent[childrenFieldName] = [node]);
-            data.treeData = [...data.treeData];
-          }
-
-          if (data.defaultExpandAll) {
-            data.expandedKeys.push(item[keyFieldName]);
-            setExpandedKeys([...data.expandedKeys]);
-          }
-          outputs[OutputIds.AddNodeDone]({ node, parent: item.parent });
-          outputs[OutputIds.OnChange](deepCopy(data.treeData));
-        }}
+        onPressEnter={onComfirm}
         placeholder={item.placeholder}
       />
     </span>
