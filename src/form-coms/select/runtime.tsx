@@ -312,14 +312,14 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value == undefined) {
-      setValue('');
+      value = data.config.mode === "default" ? "" : [];
     }
     setValue(value);
     valueRef.current = value;
     const outputValue = getOutputValue(data, env, value);
     onChangeForFc(parentSlot, { id: id, value: outputValue, name });
     return outputValue;
-  }, []);
+  }, [data.config.mode]);
 
   const onChange = useCallback((val) => {
     const outputValue = changeValue(val);
