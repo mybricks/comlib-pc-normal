@@ -266,6 +266,8 @@ export default function Runtime({
 
   const onLoadData = useCallback(
     (node) => {
+      console.warn('onLoadData', node);
+
       if (treeLoadedKeys.includes(node.key)) {
         return Promise.resolve();
       }
@@ -321,9 +323,22 @@ export default function Runtime({
   /** 展开事件 */
   const onExpand: TreeSelectProps['onTreeExpand'] = useCallback(
     (keys) => {
-      setExpandedKeys([...expandedKeys, ...keys]);
+      if (keys?.length > expandedKeys?.length && data.useLoadData) {
+        const key = keys[keys.length - 1];
+
+        let node;
+        traversalTree(data.options, fieldNames, (item) => {
+          if (item[data.valueFieldName || 'value'] === key) {
+            node = item;
+          }
+        });
+
+        onLoadData(node);
+      }
+
+      setExpandedKeys([...keys]);
     },
-    [expandedKeys]
+    [expandedKeys, data.useLoadData, data.options]
   );
 
   /**
