@@ -150,7 +150,10 @@ export default function Runtime({
     inputs['setOptions']((ds, outputRels) => {
       if (Array.isArray(ds)) {
         data.options = ds;
+        
+        setTreeLoadKeys([]);
         setExpandedKeys(getDefaultExpandKeys());
+
         outputRels['setOptionsDone'](ds);
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
@@ -266,8 +269,6 @@ export default function Runtime({
 
   const onLoadData = useCallback(
     (node) => {
-      console.warn('onLoadData', node);
-
       if (treeLoadedKeys.includes(node.key)) {
         return Promise.resolve();
       }
