@@ -609,6 +609,7 @@ export default function (props: RuntimeParams<Data>) {
           dropNode.children.unshift(dragNode);
         } else {
           dropNode.children = [dragNode];
+          dropNode.isLeaf = false;
         }
         break;
 
