@@ -192,7 +192,7 @@ export default function ActionBtns({
           }}
           icon={getNodeIcon(btn)}
         >
-          {env.i18n(title)}
+          {(btn.showText || btn.showText === undefined) && env.i18n(title)}
         </Button>
       );
     };
