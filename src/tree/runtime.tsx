@@ -33,7 +33,8 @@ export default function (props: RuntimeParams<Data>) {
     data.defaultExpandAll ? data.expandedKeys : []
   );
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const [selectedValues, setSelectedValues] = useState<React.Key[]>([]);
+  // const [selectedValues, setSelectedValues] = useState<React.Key[]>([]);
+  const selectedValuesRef = useRef<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [_treeKeys, _setTreeKeys] = useState<{ key: string; title: string; depth: number }[]>([]);
@@ -299,7 +300,9 @@ export default function (props: RuntimeParams<Data>) {
             { keyFieldName, childrenFieldName },
             data.valueType
           );
-          setSelectedValues([...selectedValues]);
+
+          selectedValuesRef.current = selectedValues;
+          // setSelectedValues([...selectedValues]);
           outputs[OutputIds.OnNodeClick](selectedValues);
         });
 
@@ -470,9 +473,9 @@ export default function (props: RuntimeParams<Data>) {
     /** @description 1.0.62 获取选中节点数据 */
     inputs[InputIds.GetSelectedKeys] &&
       inputs[InputIds.GetSelectedKeys]((_, relOutput) => {
-        relOutput[OutputIds.ReturnSelectedKeys](selectedValues);
+        relOutput[OutputIds.ReturnSelectedKeys](selectedValuesRef.current);
       });
-  }, [selectedValues]);
+  }, []);
 
   /**
    * 勾选事件处理
@@ -535,7 +538,8 @@ export default function (props: RuntimeParams<Data>) {
       }
     }
     setSelectedKeys([...keys]);
-    setSelectedValues([...selectedValues]);
+    selectedValuesRef.current = selectedValues;
+    // setSelectedValues([...selectedValues]);
     outputs[OutputIds.OnNodeClick](selectedValues);
   };
 
