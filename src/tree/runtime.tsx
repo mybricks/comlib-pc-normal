@@ -263,6 +263,7 @@ export default function (props: RuntimeParams<Data>) {
               childrenFieldName
             });
             _setTreeKeys([...treeKeys.current]);
+
             setTreeLoadKeys(uniq([...treeLoadedKeys, keyToString(node[keyFieldName])]));
             relOutputs[OutputIds.SetLoadDataDone](nodeData);
             outputs[OutputIds.OnChange](deepCopy(data.treeData));
@@ -445,7 +446,7 @@ export default function (props: RuntimeParams<Data>) {
         } catch (e) {}
       });
     }
-  }, [expandedKeys]);
+  }, [expandedKeys, treeLoadedKeys]);
 
   useEffect(() => {
     const resultKeys =

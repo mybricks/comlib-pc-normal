@@ -75,7 +75,7 @@ export default function ActionBtns({
       data.isEditing = record[keyFieldName];
     } else {
       if (id === DELETE_BTN_ID) {
-        data.treeData = deleteNode(treeData, record[keyFieldName]).filter(
+        data.treeData = deleteNode(deepCopy(treeData), record[keyFieldName]).filter(
           (def) => !!def
         ) as TreeData[];
         outputs[OutputIds.OnChange](deepCopy(data.treeData));
