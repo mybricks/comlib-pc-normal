@@ -81,11 +81,6 @@ export default ({
   focusCellinfo,
   filterIconDefault
 }: Props) => {
-  useEffect(() => {
-    for (let c of data.columns) {
-      c.isDragging = false
-    }
-  }, [])
   const isDragging = env.runtime ? false : checkIsDragging(data);
 
   const renderTtl = (cItem: IColumn) => {
