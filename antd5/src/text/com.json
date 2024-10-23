@@ -1,0 +1,45 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.text",
+  "title": "文本",
+  "version": "1.0.22",
+  "description": "文本",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/text/icon.svg",
+  "data": "../../../src/text/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/text/editors.tsx",
+  "upgrade": "../../../src/text/upgrade.ts",
+  "ai": "../../../src/text/ai.ts",
+  "inputs": [
+    {
+      "id": "content",
+      "title": "内容",
+      "desc": "设置文本内容，并关联设置内容完成输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setContentDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setContentDone",
+      "title": "设置内容完成",
+      "desc": "文本内容设置完成，并输出内容",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "click",
+      "title": "点击",
+      "desc": "文本内容点击，输出文本内容",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

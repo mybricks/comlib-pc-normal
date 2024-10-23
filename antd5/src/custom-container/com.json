@@ -1,0 +1,108 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.custom-container",
+  "title": "自定义容器",
+  "version": "1.0.43",
+  "description": "自定义容器",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/custom-container/icon.svg",
+  "data": "../../../src/custom-container/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/custom-container/editors.ts",
+  "upgrade": "../../../src/custom-container/upgrade.ts",
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容",
+      "layout": "smart"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "setStyle",
+      "title": "动态设置样式",
+      "desc": "动态设置自定义容器的样式",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "background": {
+            "type": "string",
+            "description": "背景色"
+          }
+        }
+      },
+      "rels": [
+        "setStyleComplete"
+      ]
+    },
+    {
+      "id": "scrollTo",
+      "title": "滚动到",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "scrollComplete"
+      ],
+      "desc": "使得自定义容器内部滚动到指定位置,传递非数字滚动到底部"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "desc": "点击事件",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "mouseEnter",
+      "title": "鼠标移入",
+      "desc": "鼠标移入事件",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "mouseLeave",
+      "title": "鼠标移出",
+      "desc": "鼠标移出事件",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setStyleComplete",
+      "title": "完成",
+      "desc": "动态设置样式完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "scrollComplete",
+      "title": "完成",
+      "desc": "滚动完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "scrollTop",
+      "title": "滚动到顶部",
+      "desc": "滚动事件",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "scrollBottom",
+      "title": "滚动到底部",
+      "desc": "滚动事件",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

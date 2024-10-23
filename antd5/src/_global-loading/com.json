@@ -1,0 +1,37 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.global-loading",
+  "title": "全局Loading",
+  "version": "1.0.6",
+  "rtType": "js",
+  "description": "../../../src/_global-loading",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_global-loading/icon.svg",
+  "data": "../../../src/_global-loading/data.json",
+  "runtime": "../../../src/_global-loading/runtime.ts",
+  "editors": "../../../src/_global-loading/editors.tsx",
+  "upgrade": "../../../src/_global-loading/upgrade.ts",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "打开",
+      "desc": "开启全局loading",
+      "rels": [
+        "finish"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "desc": "全局loading完成",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.richtext",
+  "title": "富文本输入",
+  "visibility": false,
+  "version": "1.0.2",
+  "description": "富文本输入",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/richtext/icon.svg",
+  "data": "../../../src/richtext/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/richtext/editors.tsx",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "设置数据源",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "submit",
+      "title": "提交",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "done",
+      "title": "编辑完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "submit",
+      "title": "数据提交",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "数据变更",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": []
+}

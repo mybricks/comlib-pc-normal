@@ -1,0 +1,38 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.props",
+  "title": "主应用参数",
+  "version": "1.0.2",
+  "rtType": "js-autorun",
+  "description": "获取主应用参数",
+  "author": "YanWenJun",
+  "author_name": "YanWenJun",
+  "icon": "../../../src/_props/icon.svg",
+  "data": "../../../src/_props/data.json",
+  "runtime": "../../../src/_props/runtime.ts",
+  "editors": "../../../src/_props/editors.tsx",
+  "inputs": [
+    {
+      "id": "getProps",
+      "title": "获取主应用参数",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "propsData"
+      ],
+      "desc": "触发获取主应用参数"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "propsData",
+      "title": "主应用参数",
+      "desc": "获取主应用参数完成",
+      "schema": {
+        "type": "object"
+      },
+      "editable": true
+    }
+  ],
+  "slots": []
+}

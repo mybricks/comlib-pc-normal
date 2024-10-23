@@ -1,0 +1,37 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.muilt-inputJs",
+  "title": "JS计算",
+  "visibility": false,
+  "version": "1.0.2",
+  "description": "JS计算",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_muilt-inputJs/icon.svg",
+  "runtime": "../../../src/_muilt-inputJs/runtime.ts",
+  "editors": "../../../src/_muilt-inputJs/editors.ts",
+  "ai": "../../../src/_muilt-inputJs/ai.ts",
+  "rtType": "js-autorun",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "inputValue0",
+          "title": "参数0",
+          "type": "follow"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output0",
+      "title": "输出项0",
+      "schema": {
+        "type": "number"
+      },
+      "editable": true
+    }
+  ]
+}

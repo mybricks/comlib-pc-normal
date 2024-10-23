@@ -1,0 +1,132 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.dropdown",
+  "title": "下拉菜单",
+  "version": "1.0.35",
+  "description": "下拉菜单",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/dropdown/icon.svg",
+  "data": "../../../src/dropdown/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/dropdown/editors.tsx",
+  "upgrade": "../../../src/dropdown/upgrade.ts",
+  "inputs": [
+    {
+      "id": "dynamicallyModifySubitems",
+      "title": "设置子项属性",
+      "desc": "静态选项配置后，动态设置子项属性",
+      "rels": [
+        "dynamicallyModifySubitemsDone"
+      ],
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "唯一标识 必需"
+            },
+            "label": {
+              "type": "string",
+              "description": "标签"
+            },
+            "link": {
+              "type": "string",
+              "description": "链接"
+            },
+            "disabled": {
+              "type": "boolean",
+              "description": "是否禁用"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onChange",
+      "title": "点击",
+      "desc": "下拉菜单点击触发",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "点击项标签"
+          },
+          "link": {
+            "type": "string",
+            "description": "点击项链接"
+          },
+          "key": {
+            "type": "string",
+            "description": "点击项唯一标识"
+          }
+        }
+      }
+    },
+    {
+      "id": "dynamicallyModifySubitemsDone",
+      "title": "设置子项属性完成",
+      "desc": "关联输入项【设置子项属性】",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "唯一标识 必需"
+            },
+            "label": {
+              "type": "string",
+              "description": "标签"
+            },
+            "link": {
+              "type": "string",
+              "description": "链接"
+            },
+            "disabled": {
+              "type": "boolean",
+              "description": "是否禁用"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "description": "开启自定义内容开关后, 可自定义添加需要组件",
+      "title": "添加组件"
+    },
+    {
+      "id": "item",
+      "capacity": 1,
+      "title": "选项",
+      "description": "选项作用域插槽，有当前项内容和当前项序号的输入",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "itemData",
+          "title": "当前项",
+          "desc": "当前项展示内容",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "index",
+          "title": "当前项序号",
+          "desc": "当前项展示的序号",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
+    }
+  ]
+}

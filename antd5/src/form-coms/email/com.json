@@ -1,0 +1,269 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.form-email",
+  "title": "邮箱",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.1.14",
+  "description": "邮箱",
+  "icon": "../../../../src/form-coms/email/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-aff3c239-e76c-492b-959e-98ab33d5e889.png",
+  "data": "../../../../src/form-coms/email/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/form-coms/email/editors.tsx",
+  "upgrade": "../../../../src/form-coms/email/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置邮箱的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setValueDone"
+      ]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置邮箱的初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发邮箱的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取邮箱的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空邮箱的值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "resetValueDone"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "desc": "禁用邮箱，阻止用户输入",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "desc": "启用邮箱，允许用户输入",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "desc": "根据输入值控制邮箱启用/禁用，true-启用，false-禁用",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEnableDone"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置邮箱的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "description": "校验状态",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string",
+            "description": "校验提示"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "desc": "邮箱值初始化时触发，输出邮箱初始值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "desc": "邮箱值更新时触发，输出邮箱当前值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onBlur",
+      "title": "失去焦点",
+      "desc": "邮箱失去焦点时触发，输出邮箱当前值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "输出邮箱校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "string",
+            "description": "校验状态"
+          },
+          "help": {
+            "type": "string",
+            "description": "校验提示"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "desc": "输出邮箱当前值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "desc": "邮箱校验时触发，输出邮箱当前值",
+      "schema": {
+        "title": "当前值",
+        "type": "string"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "description": "校验状态",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string",
+            "description": "校验提示"
+          }
+        }
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

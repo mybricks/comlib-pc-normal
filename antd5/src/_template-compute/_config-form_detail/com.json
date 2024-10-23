@@ -1,0 +1,85 @@
+{
+  "namespace": "mybricks.comlib-template-compute.antd5._config_form_detail",
+  "title": "配置描述列表",
+  "version": "1.0.2",
+  "description": "配置描述列表",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../../src/_template-compute/_config-form_detail/icon.svg",
+  "data": "../../../../src/_template-compute/_config-form_detail/data.json",
+  "runtime": "../../../../src/_template-compute/_config-form_detail/index.ts",
+  "editors": "../../../../src/_template-compute/_config-form_detail/editor.ts",
+  "upgrade": "../../../../src/_template-compute/_config-form_detail/upgrade.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "setFormDetail",
+      "title": "描述列表配置",
+      "desc": "配置描述列表的描述项和标题",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "itemData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "字段名"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "默认值"
+                },
+                "label": {
+                  "type": "string",
+                  "description": "标签名称"
+                },
+                "labelDesc": {
+                  "type": "string",
+                  "description": "描述项的标签说明信息、提示"
+                },
+                "showLabel": {
+                  "type": "boolean",
+                  "description": "是否展示标签"
+                },
+                "visible": {
+                  "type": "boolean",
+                  "description": "描述项是否可见"
+                },
+                "span": {
+                  "type": "number",
+                  "description": "范围是 1 到该行剩余column数"
+                }
+              }
+            }
+          },
+          "title": {
+            "type": "string",
+            "description": "标题"
+          },
+          "showTitle": {
+            "type": "boolean",
+            "description": "展示标题"
+          },
+          "column": {
+            "type": "number",
+            "description": "描述列表的列数"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onComplete",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

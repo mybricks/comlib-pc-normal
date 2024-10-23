@@ -1,0 +1,502 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.form-list",
+  "title": "动态表单项",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "version": "1.2.45",
+  "description": "可以动态增加、删除的组合表单项，数据格式为数组",
+  "icon": "../../../../src/form-coms/form-list/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",
+  "data": "../../../../src/form-coms/form-list/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/form-coms/form-list/editors/index.ts",
+  "upgrade": "../../../../src/form-coms/form-list/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置表单项的值，用于校验和提交，并触发值变化事件输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "rels": [
+        "setValueDone"
+      ]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置表单项的初始值，用于校验和提交，并触发初始化事件输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "rels": [
+        "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发表单项的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取表单项的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空表单项的值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "resetValueDone"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "desc": "禁用动态表单项，阻止用户交互",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "desc": "启用动态表单项，允许用户交互",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "desc": "根据输入值控制动态表单项启用/禁用，true-启用，false-禁用",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEnableDone"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "description": "校验状态",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string",
+            "description": "校验提示"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
+    },
+    {
+      "id": "addField",
+      "title": "添加一项",
+      "desc": "默认在末尾添加一项, 支持指定位置(从0开始)和默认值",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "指定添加位置(从0开始)"
+          },
+          "value": {
+            "type": "object",
+            "description": "新增项的初始值"
+          }
+        }
+      },
+      "rels": [
+        "addFieldDone"
+      ]
+    },
+    {
+      "id": "removeField",
+      "title": "删除一项",
+      "desc": "默认删除最后一项, 支持指定key或位置(从0开始)删除",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "number",
+            "description": "待删除项的标识"
+          },
+          "index": {
+            "type": "number",
+            "description": "指定删除位置(从0开始)"
+          }
+        }
+      },
+      "rels": [
+        "removeFieldDone"
+      ]
+    },
+    {
+      "id": "modifyField",
+      "title": "修改一项",
+      "desc": "如果不传递index,或者传递不合适的值，则不会执行",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "type": "object",
+            "description": "列表这一项中表单项的配置"
+          },
+          "index": {
+            "type": "number",
+            "description": "修改项位置(从0开始)"
+          }
+        }
+      },
+      "rels": [
+        "modifyFieldDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "desc": "动态表单项值初始化时触发，输出动态表单项初始值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "desc": "动态表单项值更新时触发，输出动态表单项当前值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "输出动态表单项校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string",
+            "description": "校验状态"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string",
+            "description": "校验提示"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "desc": "输出动态表单项当前值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "desc": "动态表单项校验时触发，输出动态表单项当前值",
+      "schema": {
+        "title": "当前值",
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "id": "add",
+      "title": "点击添加",
+      "desc": "添加表单项时触发，输出新增项信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "nextIndex": {
+            "title": "新增项索引",
+            "type": "number",
+            "description": "新增项索引"
+          },
+          "nextKey": {
+            "title": "新增项标识",
+            "type": "number",
+            "description": "新增项标识"
+          }
+        }
+      }
+    },
+    {
+      "id": "remove",
+      "title": "点击删除",
+      "desc": "删除表单项时触发，输出删除项信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "当前项数据",
+            "type": "object",
+            "description": "当前项数据"
+          },
+          "index": {
+            "title": "当前项索引",
+            "type": "number",
+            "description": "当前项索引"
+          },
+          "key": {
+            "title": "当前项标识",
+            "type": "number",
+            "description": "当前项标识"
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验结果完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "description": "校验状态",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string",
+            "description": "校验提示"
+          }
+        }
+      }
+    },
+    {
+      "id": "addFieldDone",
+      "title": "添加一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "添加位置(从0开始)"
+          },
+          "value": {
+            "type": "object",
+            "description": "新增项的初始值"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeFieldDone",
+      "title": "删除一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "number",
+            "description": "删除项的标识"
+          },
+          "index": {
+            "type": "number",
+            "description": "删除位置(从0开始)"
+          }
+        }
+      }
+    },
+    {
+      "id": "modifyFieldDone",
+      "title": "修改一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "type": "object",
+            "description": "列表这一项中表单项的配置"
+          },
+          "index": {
+            "type": "number",
+            "description": "修改位置(从0开始)"
+          }
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "formItems",
+      "title": "列表项",
+      "schema": [
+        "mybricks.normal-pc.form-container/form-item",
+        "mybricks.normal-pc.form-container/form-addition-container"
+      ],
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "name",
+          "title": "当前项索引",
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "id": "key",
+          "title": "当前项标识",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "_inputs": [
+        {
+          "id": "validateTrigger",
+          "title": "触发校验",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID",
+                "description": "组件ID"
+              }
+            }
+          }
+        },
+        {
+          "id": "onChange",
+          "title": "表单项值变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID",
+                "description": "组件ID"
+              },
+              "value": {
+                "type": "any",
+                "title": "组件值",
+                "description": "组件值"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

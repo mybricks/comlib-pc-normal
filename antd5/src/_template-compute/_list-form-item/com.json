@@ -1,0 +1,43 @@
+{
+  "namespace": "mybricks.comlib-template-compute.antd5._list-form-item",
+  "title": "获取表单项列表",
+  "version": "1.0.2",
+  "description": "输出所有可用的表单项信息列表",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../../src/_template-compute/_list-form-item/icon.png",
+  "data": "../../../../src/_template-compute/_list-form-item/data.json",
+  "runtime": "../../../../src/_template-compute/_list-form-item/index.ts",
+  "editors": "../../../../src/_template-compute/_list-form-item/editor.ts",
+  "upgrade": "../../../../src/_template-compute/_list-form-item/upgrade.ts",
+  "rtType": "js-autorun",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "start",
+      "title": "获取"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "formItemList",
+      "title": "表单项信息列表",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "表单项名称"
+            },
+            "value": {
+              "type": "string",
+              "description": "表单项唯一标识"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

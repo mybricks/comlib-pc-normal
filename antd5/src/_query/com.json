@@ -1,0 +1,38 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.query",
+  "title": "路由参数",
+  "version": "1.0.3",
+  "rtType": "js-autorun",
+  "description": "路由参数",
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "docs": "../../../src/_query",
+  "icon": "../../../src/_query/icon.svg",
+  "data": "../../../src/_query/data.json",
+  "runtime": "../../../src/_query/runtime.ts",
+  "editors": "../../../src/_query/editor.ts",
+  "inputs": [
+    {
+      "id": "getQuery",
+      "title": "获取路由参数",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "queryData"
+      ],
+      "desc": "获取路由参数"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "queryData",
+      "title": "路由参数",
+      "desc": "获取路由参数完成",
+      "schema": {
+        "type": "object"
+      },
+      "editable": true
+    }
+  ]
+}

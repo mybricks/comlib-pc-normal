@@ -1,0 +1,33 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.page-router",
+  "title": "跳转到...",
+  "version": "1.0.8",
+  "rtType": "js",
+  "description": "路由切换",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_page-router/icon.svg",
+  "data": "../../../src/_page-router/data.json",
+  "runtime": "../../../src/_page-router/runtime.ts",
+  "editors": "../../../src/_page-router/editors.tsx",
+  "upgrade": "../../../src/_page-router/upgrade.ts",
+  "inputs": [
+    {
+      "id": "routerAction",
+      "desc": "触发路由切换",
+      "title": "路由切换",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "routerActionDone",
+      "title": "路由切换完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

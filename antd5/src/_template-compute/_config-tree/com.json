@@ -1,0 +1,50 @@
+{
+  "namespace": "mybricks.comlib-template-compute.antd5._config_tree",
+  "title": "配置树",
+  "version": "1.0.0",
+  "description": "配置树状图",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../../src/_template-compute/_config-tree/icon.svg",
+  "data": "../../../../src/_template-compute/_config-tree/data.json",
+  "runtime": "../../../../src/_template-compute/_config-tree/index.ts",
+  "editors": "../../../../src/_template-compute/_config-tree/editor.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "setFieldName",
+      "title": "配置字段",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "titleFieldName": {
+            "title": "标题字段",
+            "type": "string",
+            "description": "标题字段"
+          },
+          "keyFieldName": {
+            "title": "标识字段",
+            "type": "string",
+            "description": "节点的唯一标识，默认值为 key"
+          },
+          "childrenFieldName": {
+            "title": "子节点字段",
+            "type": "string",
+            "description": "子节点字段, 默认值为 children "
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onComplete",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

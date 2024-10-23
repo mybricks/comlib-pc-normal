@@ -1,0 +1,36 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.get-storage",
+  "title": "获取Storage数据",
+  "version": "1.0.4",
+  "rtType": "js-autorun",
+  "description": "获取Storage数据",
+  "docs": "../../../src/_get-storage",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_get-storage/icon.svg",
+  "data": "../../../src/_get-storage/data.json",
+  "runtime": "../../../src/_get-storage/runtime.ts",
+  "editors": "../../../src/_get-storage/editors.ts",
+  "inputs": [
+    {
+      "id": "inputContext",
+      "desc": "从localStorage或sessionStorage中取值",
+      "title": "开始",
+      "schema": {
+        "type": "any"
+      },
+      "editable": false
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output0",
+      "title": "key0",
+      "desc": "获取数据对应key的值",
+      "schema": {
+        "type": "any"
+      },
+      "editable": true
+    }
+  ]
+}

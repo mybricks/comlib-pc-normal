@@ -1,0 +1,24 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.carousel",
+  "title": "轮播图",
+  "author": "wufan",
+  "author_name": "吴凡",
+  "version": "0.0.1",
+  "description": "轮播图",
+  "icon": "../../../src/carousel/icon.png",
+  "data": "../../../src/carousel/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/carousel/editors.tsx",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "title": "轮播图1",
+      "id": "slot1"
+    },
+    {
+      "title": "轮播图2",
+      "id": "slot2"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "name": "通用PC组件库(antd5)",
+  "namespace": "mybricks.normal-pc.antd5",
+  "commitInfo": "update",
+  "version": "1.0.0",
+  "comAry": [
+    {
+      "title": "基础",
+      "comAry": [
+        "antd5/src/text/com.json",
+        "antd5/src/link/com.json",
+        "antd5/src/typography/com.json",
+        "antd5/src/richtext-preview/com.json",
+        "antd5/src/single-image/com.json",
+        "antd5/src/toolbar/com.json",
+        "antd5/src/button/com.json",
+        "antd5/src/icon/com.json",
+        "antd5/src/richtext/com.json",
+        "antd5/src/tagList/com.json"
+      ]
+    },
+    {
+      "title": "排版布局",
+      "comAry": [
+        "antd5/src/grid/com.json",
+        "antd5/src/card/com.json",
+        "antd5/src/tabs/com.json",
+        "antd5/src/list/com.json",
+        "antd5/src/list-new/com.json",
+        "antd5/src/collapse/com.json",
+        "antd5/src/custom-container/com.json",
+        "antd5/src/switch-container/com.json",
+        "antd5/src/popover/com.json",
+        "antd5/src/dialog/com.json",
+        "antd5/src/drawer/com.json",
+        "antd5/src/popconfirm/com.json",
+        "antd5/src/divider/com.json"
+      ]
+    },
+    {
+      "title": "导航",
+      "comAry": [
+        "antd5/src/breadcrumb/com.json",
+        "antd5/src/paginator/com.json",
+        "antd5/src/menu/com.json",
+        "antd5/src/steps/com.json"
+      ]
+    },
+    {
+      "title": "表单",
+      "comAry": [
+        "antd5/src/form-coms/form-container/com.json",
+        "antd5/src/form-coms/text/com.json",
+        "antd5/src/form-coms/input-number/com.json",
+        "antd5/src/form-coms/input-textarea/com.json",
+        "antd5/src/form-coms/auto-complete/com.json",
+        "antd5/src/form-coms/search/com.json",
+        "antd5/src/form-coms/radio/com.json",
+        "antd5/src/form-coms/select/com.json",
+        "antd5/src/form-coms/checkbox/com.json",
+        "antd5/src/form-coms/cascader/com.json",
+        "antd5/src/form-coms/treeSelect/com.json",
+        "antd5/src/form-coms/date-picker/com.json",
+        "antd5/src/form-coms/date-picker-full-open/com.json",
+        "antd5/src/form-coms/range-picker/com.json",
+        "antd5/src/form-coms/time-picker/com.json",
+        "antd5/src/form-coms/time-range-picker/com.json",
+        "antd5/src/form-coms/switch/com.json",
+        "antd5/src/form-coms/transfer/com.json",
+        "antd5/src/form-coms/upload/com.json",
+        "antd5/src/form-coms/slider/com.json",
+        "antd5/src/form-coms/rate/com.json",
+        "antd5/src/form-coms/email/com.json",
+        "antd5/src/form-coms/password/com.json",
+        "antd5/src/form-coms/phone-number/com.json",
+        "antd5/src/form-coms/color/com.json",
+        "antd5/src/form-coms/code/com.json",
+        "antd5/src/form-coms/input-richtext/com.json",
+        "antd5/src/form-coms/form-list/com.json",
+        "antd5/src/form-coms/form-item-container/com.json",
+        "antd5/src/form-coms/addition-container/com.json"
+      ]
+    },
+    {
+      "title": "数据展示",
+      "comAry": [
+        "antd5/src/table/com.json",
+        "antd5/src/form-detail/com.json",
+        "antd5/src/json-view/com.json",
+        "antd5/src/tree/com.json",
+        "antd5/src/timeline/com.json",
+        "antd5/src/calendar/com.json",
+        "antd5/src/progress/com.json",
+        "antd5/src/anchor-container/com.json"
+      ]
+    },
+    {
+      "title": "其它",
+      "comAry": [
+        "antd5/src/bottom-bar/com.json",
+        "antd5/src/alert/com.json",
+        "antd5/src/iframe/com.json",
+        "antd5/src/qr-code/com.json",
+        "antd5/src/result/com.json",
+        "antd5/src/spin/com.json",
+        "antd5/src/tooltip/com.json",
+        "antd5/src/dropdown/com.json",
+        "antd5/src/sort-bar/com.json",
+        "antd5/src/video/com.json",
+        "antd5/src/print/com.json",
+        "antd5/src/silent-print/com.json",
+        "antd5/src/carousel/com.json"
+      ]
+    },
+    "antd5/src/_muilt-inputJs/com.json",
+    "antd5/src/_code-segment/com.json",
+    "antd5/src/_confirm/com.json",
+    "antd5/src/_message/com.json",
+    "antd5/src/_service/com.json",
+    "antd5/src/_page-router/com.json",
+    "antd5/src/_global-loading/com.json",
+    "antd5/src/_props/com.json",
+    "antd5/src/_custom-methods/com.json",
+    "antd5/src/_env-var/com.json",
+    "antd5/src/_i18n-content/com.json",
+    "antd5/src/_array-merge/com.json",
+    "antd5/src/_query/com.json",
+    "antd5/src/_events/com.json",
+    "antd5/src/_notification/com.json",
+    "antd5/src/_websocket/com.json",
+    "antd5/src/_pick/com.json",
+    "antd5/src/_excel/com.json",
+    "antd5/src/_parseExcel/com.json",
+    "antd5/src/_pinyin/com.json",
+    "antd5/src/_post-message/com.json",
+    "antd5/src/_get-storage/com.json",
+    "antd5/src/_set-storage/com.json",
+    "antd5/src/_receive-message/com.json",
+    "antd5/src/_countdown/com.json",
+    "antd5/src/_template-compute/_config-form/com.json",
+    "antd5/src/_template-compute/_config-table/com.json",
+    "antd5/src/_template-compute/_config-toolbar/com.json",
+    "antd5/src/_template-compute/_list-form-item/com.json",
+    "antd5/src/_template-compute/_edit-form-container/com.json",
+    "antd5/src/_template-compute/_config-form_detail/com.json",
+    "antd5/src/_template-compute/_config-tree/com.json"
+  ],
+  "externals": [
+    {
+      "name": "@ant-design/cssinjs",
+      "library": "antdCssinjs",
+      "urls": [
+        "public/antd/cssinjs.min.js"
+      ]
+    },
+    {
+      "name": "dayjs",
+      "library": "dayjs",
+      "version": "1.11.13",
+      "urls": [
+        "public/dayjs/dayjs@1.11.13.min.js",
+        "public/dayjs/locale/zh-cn.min.js"
+      ]
+    },
+    {
+      "name": "@ant-design/icons",
+      "library": "icons",
+      "urls": [
+        "public/ant-design-icons@4.7.0.min.js"
+      ]
+    },
+    {
+      "name": "antd",
+      "library": "antd_5_21_4",
+      "version": "5.21.4",
+      "urls": [
+        "public/antd/antd@5.21.4.min.js",
+        "public/antd/locale/zh_CN.js"
+      ]
+    }
+  ],
+  "tags": "react",
+  "webpackConfig": "./webpack.config.antd5.js"
+}

@@ -1,0 +1,36 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.set-storage",
+  "title": "设置Storage数据",
+  "version": "1.0.2",
+  "rtType": "js",
+  "description": "设置storage数据",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_set-storage/icon.svg",
+  "data": "../../../src/_set-storage/data.json",
+  "runtime": "../../../src/_set-storage/runtime.tsx",
+  "editors": "../../../src/_set-storage/editors.tsx",
+  "inputs": [
+    {
+      "id": "setData",
+      "title": "保存数据",
+      "desc": "将数据保存到localStorage或sessionStorage中",
+      "schema": {
+        "type": "follow"
+      },
+      "rels": [
+        "setDataDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setDataDone",
+      "title": "保存数据完成",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,24 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.timeline",
+  "title": "时间轴",
+  "version": "1.0.10",
+  "description": "时间轴",
+  "author": "MyBricks",
+  "author_name": "tangxiaoxin",
+  "icon": "../../../src/timeline/icon.svg",
+  "data": "../../../src/timeline/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/timeline/editors/index.ts",
+  "upgrade": "../../../src/timeline/upgrade.ts",
+  "outputs": [
+    {
+      "id": "itemClick",
+      "title": "单击节点",
+      "desc": "点击时间轴节点，输出点击的节点信息",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,71 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.drawer",
+  "title": "抽屉",
+  "enable": true,
+  "visibility": false,
+  "version": "1.0.6",
+  "description": "抽屉从父窗体边缘滑入，覆盖住部分父窗体内容。用户在抽屉内操作时不必离开当前任务，操作完成后，可以平滑地回到原任务。",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "../../../src/drawer/icon.svg",
+  "data": "../../../src/drawer/data.json",
+  "runtime": "../../../src/drawer/runtime.tsx",
+  "editors": "../../../src/drawer/editors.tsx",
+  "inputs": [
+    {
+      "id": "close",
+      "title": "关闭",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "open",
+      "title": "打开",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "content",
+      "title": "抽屉容器",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "dataSource",
+          "title": "输入数据",
+          "schema": {
+            "type": "any"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "ok",
+          "title": "确认",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "cancel",
+          "title": "取消",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ]
+    }
+  ],
+  "rtType": "popup"
+}

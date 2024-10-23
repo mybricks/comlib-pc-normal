@@ -1,0 +1,35 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.iframe",
+  "title": "iFrame",
+  "version": "1.0.4",
+  "description": "iframe容器",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/iframe/icon.png",
+  "data": "../../../src/iframe/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/iframe/editors.ts",
+  "upgrade": "../../../src/iframe/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setUrl",
+      "title": "输入链接",
+      "desc": "输入iframe的链接",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setUrlDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setUrlDone",
+      "title": "输入链接完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

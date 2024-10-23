@@ -1,0 +1,14 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.breadcrumb",
+  "title": "面包屑",
+  "version": "1.0.4",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "description": "面包屑",
+  "icon": "../../../src/breadcrumb/icon.svg",
+  "data": "../../../src/breadcrumb/data.json",
+  "upgrade": "../../../src/breadcrumb/upgrade.ts",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/breadcrumb/editors.tsx",
+  "outputs": []
+}

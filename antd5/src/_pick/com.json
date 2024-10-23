@@ -1,0 +1,25 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.pick",
+  "title": "对象取值",
+  "version": "1.0.7",
+  "description": "对象取值",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_pick/icon.svg",
+  "runtime": "../../../src/_pick/runtime.ts",
+  "editors": "../../../src/_pick/editors.ts",
+  "upgrade": "../../../src/_pick/upgrade.ts",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "inputContext",
+      "title": "输入项",
+      "desc": "传入对象",
+      "schema": {
+        "type": "follow"
+      },
+      "editable": true
+    }
+  ],
+  "outputs": []
+}

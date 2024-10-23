@@ -1,0 +1,63 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.single-image",
+  "title": "图片",
+  "version": "1.0.15",
+  "description": "可预览的单图",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/single-image/icon.svg",
+  "data": "../../../src/single-image/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/single-image/editors.tsx",
+  "upgrade": "../../../src/single-image/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setImgSrc",
+      "title": "设置图片",
+      "desc": "设置图片资源链接",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setImgSrcDone"
+      ]
+    },
+    {
+      "id": "getImgSrc",
+      "title": "获取图片",
+      "desc": "获取图片资源链接",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "getImgSrcDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击图片",
+      "desc": "点击图片事件输出",
+      "scheme": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setImgSrcDone",
+      "title": "图片设置地址后，触发设置地址完成事件",
+      "desc": "",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "getImgSrcDone",
+      "title": "获取到的图片地址",
+      "desc": "",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

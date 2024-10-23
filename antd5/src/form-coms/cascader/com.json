@@ -1,0 +1,473 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.cascader",
+  "title": "级联选择",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.1.22",
+  "description": "级联选择",
+  "icon": "../../../../src/form-coms/cascader/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
+  "data": "../../../../src/form-coms/cascader/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/form-coms/cascader/editors.ts",
+  "upgrade": "../../../../src/form-coms/cascader/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置级联选择的选中项，并触发值更新事件输出",
+      "schema": {
+        "type": "array",
+        "description": "设置对应选中项的值",
+        "items": {
+          "type": "any"
+        }
+      },
+      "rels": [
+        "setValueDone"
+      ]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置级联选择的初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "array",
+        "description": "设置对应选中项的初始值",
+        "items": {
+          "type": "any"
+        }
+      },
+      "rels": [
+        "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发级联选择的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取级联选择的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空级联选择的值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "resetValueDone"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "desc": "设置级联选择禁用，不能选择",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "desc": "设置级联选择启用，能选择",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "desc": "根据输入值决定级联选择启用/禁用，true-启用，false-禁用",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEnableDone"
+      ]
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
+      ]
+    },
+    {
+      "id": "setOptions",
+      "title": "设置数据源",
+      "desc": "设置级联选择的下拉选项列表；可通过逻辑连线级联选择的输入项「设置数据源」，去传入选项列表",
+      "schema": {
+        "title": "输入数据源数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "title": "值",
+              "description": "选项值",
+              "type": "any"
+            },
+            "label": {
+              "title": "名称",
+              "description": "选项标签（一般展示）",
+              "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点, 设置了异步加载时有效"
+            },
+            "disabled": {
+              "title": "禁用",
+              "description": "选项禁用，true时禁用",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "description": "子项内容，逐级嵌套",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      },
+      "rels": [
+        "setOptionsDone"
+      ]
+    },
+    {
+      "id": "setLoadData",
+      "title": "设置异步加载数据",
+      "desc": "对级联选择设置异步加载数据，并触发设置异步加载数据完成事件",
+      "schema": {
+        "type": "object",
+        "description": "异步加载数据结构",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string",
+            "description": "选项的标签"
+          },
+          "value": {
+            "title": "值",
+            "type": "string",
+            "description": "选项的值"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean",
+            "description": "是否是叶子节点, 设置了异步加载时有效"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "description": "节点的子节点数组数据",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      },
+      "rels": [
+        "setLoadDataDone"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "descriptions": "校验状态，成功/失败",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "desc": "级联选择值初始化时触发",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "desc": "级联选择值更新时触发",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "loadData",
+      "title": "异步加载",
+      "desc": "级联选择的异步加载数据事件",
+      "schema": {
+        "type": "object",
+        "description": "异步加载数据，输出",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "desc": "级联选择触发校验时触发",
+      "schema": {
+        "title": "当前值",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "级联选择输出校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "description": "校验状态，成功/失败",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "description": "帮助提示文案",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "desc": "获取级联选择值后，值输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setLoadDataDone",
+      "title": "设置异步加载数据完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string",
+              "description": "选项的标签"
+            },
+            "value": {
+              "title": "值",
+              "type": "string",
+              "description": "选项的值"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点, 设置了异步加载时有效"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "description": "节点的子节点数组数据",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setOptionsDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "值",
+            "description": "选项值",
+            "type": "any"
+          },
+          "label": {
+            "title": "名称",
+            "description": "选项标签（一般展示）",
+            "type": "string"
+          },
+          "disabled": {
+            "title": "禁用",
+            "description": "选项禁用，true为禁用",
+            "type": "boolean"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean",
+            "description": "是否是叶子节点, 设置了异步加载时有效"
+          },
+          "children": {
+            "title": "子项",
+            "description": "子项内容，逐级嵌套",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "descriptions": "校验状态，成功/失败",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

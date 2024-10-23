@@ -1,0 +1,448 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.form-container",
+  "title": "表单容器",
+  "author": "ZhuPengqiang",
+  "author_name": "朱鹏强",
+  "version": "1.4.86",
+  "description": "表单容器",
+  "icon": "../../../../src/form-coms/form-container/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
+  "data": "../../../../src/form-coms/form-container/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/form-coms/form-container/editors/index.tsx",
+  "upgrade": "../../../../src/form-coms/form-container/upgrade.ts",
+  "ai": "../../../../src/form-coms/form-container/ai.ts",
+  "inputs": [
+    {
+      "id": "setInitialValues",
+      "title": "设置表单数据",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "description": "表单容器的默认值"
+      },
+      "desc": "给表单设置初始数据，并触发表单容器【表单数据输入】作用域输入事件，以及内部表单项的【值初始化】事件",
+      "rels": [
+        "setInitialValuesDone"
+      ]
+    },
+    {
+      "id": "setFieldsValue",
+      "title": "设置表单数据（触发值更新）",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "rels": [
+        "setFieldsValueDone"
+      ],
+      "desc": "给表单设置初始数据，并触发表单容器【表单数据输入】作用域输入事件，以及内部表单项【值更新】输出事件"
+    },
+    {
+      "id": "setFieldsSource",
+      "title": "设置数据源",
+      "schema": {
+        "type": "object",
+        "description": "key为表单项字段名，value为表单项数据源类型",
+        "properties": {}
+      },
+      "rels": [
+        "setFieldsSourceDone"
+      ],
+      "desc": "设置各表格项数据源，并触发表单容器【设置数据源】作用域输入事件，数据源类型取决于具体某一个表单项的数据源输入类型"
+    },
+    {
+      "id": "submit",
+      "title": "提交表单",
+      "rels": [
+        "onFinish",
+        "onSubmitError"
+      ],
+      "schema": {
+        "type": "any"
+      },
+      "desc": "触发表单进行校验，校验成功触发【提交数据输出】输出事件，校验失败触发【校验失败输出】输出事件"
+    },
+    {
+      "id": "getFieldsValue",
+      "title": "获取表单数据",
+      "rels": [
+        "returnValues"
+      ],
+      "schema": {
+        "type": "any"
+      },
+      "desc": "不进行表单校验，直接触发【表单数据输出】输出事件"
+    },
+    {
+      "id": "submitAndMerge",
+      "title": "提交表单(合并输入项)",
+      "rels": [
+        "onMergeFinish",
+        "onSubmitError"
+      ],
+      "schema": {
+        "type": "object"
+      },
+      "desc": "接收对象结构参数输入，触发表单进行校验，校验成功触发【提交数据输出（合并输入项）】输出事件，校验失败触发【校验失败输出】输出事件"
+    },
+    {
+      "id": "resetFields",
+      "title": "重置表单",
+      "rels": [
+        "onResetFinish"
+      ],
+      "schema": {
+        "type": "any"
+      },
+      "desc": "触发表单所有字段进行重置"
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ],
+      "desc": "禁用表单项及操作项"
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setEnabledDone"
+      ],
+      "desc": "启用表单项及操作项"
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单编辑/只读状态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
+      ]
+    },
+    {
+      "id": "validateFields",
+      "title": "校验表单项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "rels": [
+        "validateFieldsDone"
+      ],
+      "desc": "输入字段数组，触发指定的表单项校验"
+    },
+    {
+      "id": "setFormItemsProps",
+      "title": "设置表单项配置",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "rels": [
+        "setFormItemsPropsDone"
+      ],
+      "desc": "动态配置表单项标题、提示语、必填样式等"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onFinish",
+      "title": "提交数据输出",
+      "desc": "输出所有字段的当前值，默认空值也会提交输出，需要处理可在逻辑编排中完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onSubmitError",
+      "title": "校验失败输出",
+      "desc": "输出校验失败信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "字段名",
+            "type": "string",
+            "description": "字段名"
+          },
+          "help": {
+            "title": "校验信息",
+            "type": "string",
+            "description": "校验信息"
+          }
+        }
+      }
+    },
+    {
+      "id": "onMergeFinish",
+      "title": "提交数据输出",
+      "desc": "输出所有字段的当前值，同时对输入的参数进行合并后一并输出，默认空值也会提交输出，需要处理可在逻辑编排中完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onValuesChange",
+      "title": "字段值更新输出",
+      "desc": "当表单中任意字段的值被更新时触发，输出已更新字段的当前值以及所有字段的当前值",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "changedValues": {
+            "type": "object",
+            "description": "已更新字段的当前值",
+            "properties": {}
+          },
+          "allValues": {
+            "type": "object",
+            "description": "所有字段的当前值",
+            "properties": {}
+          }
+        }
+      }
+    },
+    {
+      "id": "onResetFinish",
+      "title": "重置完成",
+      "desc": "成功重置表单时触发",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "输出表单校验结果",
+      "schema": {
+        "type": "boolean",
+        "description": "布尔类型的校验结果"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "desc": "输出所有字段的当前值",
+      "schema": {
+        "type": "object",
+        "description": "输出表单所有项的值，格式为对象",
+        "properties": {}
+      }
+    },
+    {
+      "id": "returnValues",
+      "title": "表单数据输出",
+      "desc": "输出所有字段的当前值",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onClickSubmit",
+      "title": "提交",
+      "desc": "提交表单时触发，输出所有字段的当前值",
+      "schema": {
+        "type": "object",
+        "description": "表单容器提交事件输出",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onClickCancel",
+      "title": "取消",
+      "desc": "取消表单时触发",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setInitialValuesDone",
+      "title": "设置表单数据完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "setFieldsValueDone",
+      "title": "设置表单数据（触发值变化）完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "setFieldsSourceDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "设置禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "设置启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "desc": "设置表单编辑/只读完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "validateFieldsDone",
+      "title": "校验表单项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "description": "校验状态",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "setFormItemsPropsDone",
+      "title": "设置表单项配置完成",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "_inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "表单容器",
+      "schema": [
+        "mybricks.normal-pc.form-container/form-item",
+        "mybricks.normal-pc.form-container/form-addition-container"
+      ],
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "setFieldsValue",
+          "title": "表单数据输入",
+          "description": "设置表单数据时触发，输出所有字段的当前值",
+          "schema": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        {
+          "id": "setFieldsSource",
+          "title": "设置数据源",
+          "description": "设置表单选项数据源数据时触发，给组件的选项赋值",
+          "schema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "_inputs": [
+        {
+          "id": "validateTrigger",
+          "title": "触发校验",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              }
+            }
+          }
+        },
+        {
+          "id": "onChange",
+          "title": "表单项值变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              },
+              "value": {
+                "type": "any",
+                "title": "组件值"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "schema": [
+    "mybricks.domain-pc.crud/query",
+    "*"
+  ]
+}

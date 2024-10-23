@@ -1,0 +1,300 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.tabs",
+  "title": "标签页",
+  "version": "1.0.55",
+  "description": "标签页组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/tabs/icon.svg",
+  "data": "../../../src/tabs/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/tabs/editor/index.ts",
+  "upgrade": "../../../src/tabs/upgrade.ts",
+  "inputs": [
+    {
+      "id": "previous",
+      "title": "上一页",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "previousComplete"
+      ],
+      "desc": "标签页上一页"
+    },
+    {
+      "id": "next",
+      "title": "下一页",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "nextComplete"
+      ],
+      "desc": "标签页下一页"
+    },
+    {
+      "id": "active",
+      "title": "激活tab项",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "activeComplete"
+      ],
+      "desc": "标签页下标，从0开始计数"
+    },
+    {
+      "id": "outActiveTab",
+      "title": "获取激活tab项",
+      "rels": [
+        "outActiveTab"
+      ],
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取当前显示的标签页信息"
+    },
+    {
+      "id": "getTabs",
+      "title": "获取标签页列表",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getTabsDone"
+      ],
+      "desc": "获取当前所有的的标签页信息列表"
+    },
+    {
+      "title": "删除标签页",
+      "description": "删除指定标签页，key 或 index 二选一",
+      "id": "removeTab",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "title": "标签页 key",
+            "type": "string",
+            "description": "标签页的 key"
+          },
+          "index": {
+            "title": "标签页下标",
+            "type": "number",
+            "description": "标签页的下标"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "tabClick",
+      "title": "标签页点击",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string",
+            "description": "点击的标签页的id"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string",
+            "description": "点击的标签页的标题"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string",
+            "description": "点击的标签页的key"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number",
+            "description": "点击的标签页的下标index"
+          }
+        }
+      },
+      "desc": "输出点击的标签页信息"
+    },
+    {
+      "id": "outActiveTab",
+      "title": "激活tab项输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string",
+            "description": "点击的标签页的id"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string",
+            "description": "点击的标签页的标题"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string",
+            "description": "点击的标签页的key"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number",
+            "description": "点击的标签页的下标index"
+          }
+        }
+      },
+      "desc": "输出激活的标签页信息，关联输入项【获取激活tab项】"
+    },
+    {
+      "id": "tab0_into",
+      "title": "标签页1显示",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "标签页1显示事件"
+    },
+    {
+      "id": "tab0_leave",
+      "title": "标签页1隐藏",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "标签页1隐藏事件"
+    },
+    {
+      "id": "previousComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "标签页跳转上一页完成，关联输入项【上一页】"
+    },
+    {
+      "id": "nextComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "标签页跳转下一页完成，关联输入项【下一页】"
+    },
+    {
+      "id": "activeComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "激活标签页完成，关联输入项【激活tab项】"
+    },
+    {
+      "id": "addTab",
+      "title": "标签页新增",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "标签页id",
+              "type": "string",
+              "description": "标签页的id"
+            },
+            "name": {
+              "title": "标签页标题",
+              "type": "string",
+              "description": "标签页的标题"
+            },
+            "key": {
+              "title": "标签页key",
+              "type": "string",
+              "description": "标签页的key"
+            },
+            "index": {
+              "title": "下标",
+              "type": "number",
+              "description": "标签页的下标index"
+            },
+            "closable": {
+              "title": "可关闭",
+              "type": "boolean",
+              "description": "标签页是否可关闭"
+            }
+          }
+        }
+      },
+      "desc": "标签页新增"
+    },
+    {
+      "id": "removeTab",
+      "title": "标签页删除",
+      "description": "被删除标签页信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string",
+            "description": "标签页的id"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string",
+            "description": "标签页的标题"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string",
+            "description": "标签页的key"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number",
+            "description": "标签页的下标index"
+          },
+          "closable": {
+            "title": "可关闭",
+            "type": "boolean",
+            "description": "标签页是否可关闭"
+          }
+        }
+      },
+      "desc": "标签页删除"
+    },
+    {
+      "id": "getTabsDone",
+      "title": "标签页数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "标签页id",
+              "type": "string",
+              "description": "标签页id"
+            },
+            "name": {
+              "title": "标签页标题",
+              "type": "string",
+              "description": "标签页标题"
+            },
+            "key": {
+              "title": "标签页key",
+              "type": "string",
+              "description": "标签页key"
+            }
+          }
+        }
+      },
+      "desc": "输出标签页数据，关联输入项【获取标签页列表】"
+    }
+  ],
+  "slots": [
+    {
+      "id": "tab0",
+      "title": "标签页1"
+    }
+  ]
+}

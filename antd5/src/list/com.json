@@ -1,0 +1,53 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.list",
+  "title": "列表容器",
+  "enable": true,
+  "visibility": false,
+  "version": "1.0.1",
+  "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/list/icon.png",
+  "data": "../../../src/list/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/list/editors.tsx",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "设置数据源",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "any"
+        }
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "item",
+      "capacity": 1,
+      "title": "列表项",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "itemData",
+          "title": "当前项",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "index",
+          "title": "当前项序号",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
+    }
+  ]
+}

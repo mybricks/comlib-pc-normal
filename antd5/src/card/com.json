@@ -1,0 +1,43 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.card",
+  "title": "卡片",
+  "version": "1.0.28",
+  "description": "卡片",
+  "author": "HuangQiuyun",
+  "author_name": "MyBricks",
+  "icon": "../../../src/card/icon.svg",
+  "data": "../../../src/card/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/card/editors.tsx",
+  "upgrade": "../../../src/card/upgrade.ts",
+  "inputs": [
+    {
+      "id": "title",
+      "title": "标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setTitleDone"
+      ],
+      "desc": "动态修改卡片的标题内容,并关联输出项【设置标题完成】"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setTitleDone",
+      "title": "设置标题完成",
+      "schema": {
+        "type": "string"
+      },
+      "desc": "设置标题完成并输出标题，关联输入项【标题】"
+    }
+  ],
+  "slots": [
+    {
+      "id": "body",
+      "title": "卡片内容容器",
+      "layout": "smart"
+    }
+  ]
+}

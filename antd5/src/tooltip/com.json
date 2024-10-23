@@ -1,0 +1,42 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.tooltip",
+  "title": "文字提示",
+  "version": "1.0.15",
+  "description": "文本提示组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/tooltip/icon.png",
+  "data": "../../../src/tooltip/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/tooltip/editors.tsx",
+  "upgrade": "../../../src/tooltip/upgrade.ts",
+  "inputs": [
+    {
+      "id": "content",
+      "title": "动态提示",
+      "desc": "动态设置提示内容，并关联动态提示设置完成输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "contentComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "contentComplete",
+      "desc": "动态提示设置完成输出",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
+    }
+  ]
+}

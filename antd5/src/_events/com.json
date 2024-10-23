@@ -1,0 +1,38 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.events",
+  "title": "应用事件",
+  "version": "1.0.1",
+  "rtType": "js",
+  "description": "路由参数",
+  "author": "GodStream",
+  "author_name": "GodStream",
+  "docs": "../../../src/_events",
+  "icon": "../../../src/_events/icon.svg",
+  "data": "../../../src/_events/data.json",
+  "runtime": "../../../src/_events/runtime.ts",
+  "editors": "../../../src/_events/editor.ts",
+  "upgrade": "../../../src/_events/upgrade.ts",
+  "inputs": [
+    {
+      "id": "run",
+      "title": "触发事件",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "触发应用事件",
+      "rels": [
+        "runDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "runDone",
+      "title": "触发事件完成",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "触发应用事件完成"
+    }
+  ]
+}

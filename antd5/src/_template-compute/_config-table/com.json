@@ -1,0 +1,118 @@
+{
+  "namespace": "mybricks.comlib-template-compute.antd5._config_table",
+  "title": "配置表格",
+  "version": "1.0.8",
+  "description": "配置表格",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../../src/_template-compute/_config-table/icon.png",
+  "data": "../../../../src/_template-compute/_config-table/data.json",
+  "runtime": "../../../../src/_template-compute/_config-table/index.ts",
+  "editors": "../../../../src/_template-compute/_config-table/editor.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "setColumn",
+      "title": "配置",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "description": "列配置,可以整体输入表格数据、列前添加、列后添加",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "列标题，必填"
+                },
+                "dataIndex": {
+                  "type": "string",
+                  "description": "列字段，必填"
+                },
+                "width": {
+                  "type": "number",
+                  "description": "列宽度，可选"
+                },
+                "visible": {
+                  "type": "boolean",
+                  "description": "是否显示，可选"
+                },
+                "template": {
+                  "type": "string",
+                  "description": "指定模板列，可选"
+                },
+                "sorter": {
+                  "type": "object",
+                  "description": "排序配置，可选",
+                  "properties": {
+                    "enable": {
+                      "type": "boolean",
+                      "description": "是否开启排序，可选"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "排序类型，可选"
+                    }
+                  }
+                },
+                "filter": {
+                  "type": "object",
+                  "description": "筛选配置，可选",
+                  "properties": {
+                    "enable": {
+                      "type": "boolean",
+                      "description": "是否开启筛选，可选"
+                    },
+                    "filterSource": {
+                      "type": "string",
+                      "description": "筛选项来源，可选"
+                    },
+                    "filterType": {
+                      "type": "string",
+                      "description": "筛选方式，可选"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "usePagination": {
+            "type": "boolean",
+            "description": "是否开启分页, 可选"
+          },
+          "paginationConfig": {
+            "type": "object",
+            "description": "分页配置，可选",
+            "properties": {
+              "defaultPageSize": {
+                "type": "number",
+                "description": "默认每页显示条数，可选"
+              },
+              "showSizeChanger": {
+                "type": "boolean",
+                "description": "是否开启分页条数选择功能，可选"
+              },
+              "pageSizeOptions": {
+                "type": "array",
+                "description": "配置可选条数，可选"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onComplete",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

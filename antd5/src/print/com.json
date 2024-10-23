@@ -1,0 +1,38 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.print",
+  "title": "打印",
+  "visibility": false,
+  "version": "1.0.9",
+  "description": "可用于打印组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/print/icon.svg",
+  "data": "../../../src/print/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/print/editors.tsx",
+  "upgrade": "../../../src/print/upgrade.ts",
+  "inputs": [
+    {
+      "id": "startPrint",
+      "title": "开始打印",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "afterPrint"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "afterPrint",
+      "title": "打印后"
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.table",
+  "title": "数据表格",
+  "version": "1.2.14",
+  "description": "数据表格",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/table/icon.png",
+  "data": "../../../src/table/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/table/editors/index.tsx",
+  "ai": "../../../src/table/ai.ts",
+  "upgrade": "../../../src/table/upgrade.ts",
+  "schema": [
+    "mybricks.domain-pc.crud/table",
+    "*"
+  ],
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "设置数据源",
+      "schema": {
+        "type": "array"
+      },
+      "rels": [
+        "dataSource"
+      ],
+      "desc": "设置表格数据"
+    },
+    {
+      "id": "getTableData",
+      "title": "获取表格数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getTableData"
+      ],
+      "desc": "获取表格数据并输出"
+    },
+    {
+      "id": "startLoading",
+      "title": "开启loading",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "startLoading"
+      ],
+      "desc": "设置表格为loading状态"
+    },
+    {
+      "id": "endLoading",
+      "title": "关闭loading",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "endLoading"
+      ],
+      "desc": "关闭表格loading状态"
+    },
+    {
+      "id": "setSize",
+      "title": "设置布局风格",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setSizeDone"
+      ],
+      "desc": "有三种布局风格: large | middle | small"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "getTableData",
+      "title": "表格数据",
+      "desc": "获取表格数据并输出",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "columnsChange",
+      "title": "列结构变化",
+      "desc": "表格的列数据变化，触发列结构变化输出",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "dataSource",
+      "title": "完成",
+      "desc": "获取表格数据源后，并输出数据源内容",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "startLoading",
+      "title": "开启loading后",
+      "desc": "设置表格的Loading状态，并输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "endLoading",
+      "title": "关闭loading后",
+      "desc": "关闭表格的Loading状态，并输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setSizeDone",
+      "title": "设置布局风格完成",
+      "desc": "设置表格的布局风格，并输出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "col",
+      "title": "列插槽",
+      "defer": true,
+      "description": "用于自定义列内容，例如嵌入工具条、文本等，列插槽是作用域插槽，可以提供获取当前行数据，修改行数据和上下移动当前行的编排能力"
+    }
+  ]
+}

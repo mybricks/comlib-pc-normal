@@ -1,0 +1,51 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.alert",
+  "title": "警告提示",
+  "version": "1.0.13",
+  "description": "警告提示",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/alert/icon.svg",
+  "data": "../../../src/alert/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/alert/editors.ts",
+  "upgrade": "../../../src/alert/upgrade.ts",
+  "inputs": [
+    {
+      "id": "inputInfo",
+      "title": "信息",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setInputInfoDone"
+      ]
+    },
+    {
+      "id": "description",
+      "title": "辅助介绍文案",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setDescriptionDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setInputInfoDone",
+      "title": "设置信息完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setDescriptionDone",
+      "title": "设置辅助介绍文案完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}
