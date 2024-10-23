@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import { Row, Table, Tooltip } from 'antd';
 import { FilterFilled, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
@@ -81,7 +81,13 @@ export default ({
   focusCellinfo,
   filterIconDefault
 }: Props) => {
+  useEffect(() => {
+    for (let c of data.columns) {
+      c.isDragging = false
+    }
+  }, [])
   const isDragging = env.runtime ? false : checkIsDragging(data);
+
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
