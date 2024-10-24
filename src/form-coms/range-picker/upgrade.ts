@@ -5,20 +5,16 @@ import { Data } from './runtime';
 import { inputIds, outputIds } from '../form-container/constants';
 import { dateDisabledRulesSchema } from '../date-picker/constant';
 
-export default function ({
-  data,
-  input,
-  output
-}: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   //1.0.0 ->1.0.1，1.0.3->1.0.4
   //增加data.contentType, "timeStamp",
   //增加data.formatter, "YYYY-MM-DD HH:mm:ss 星期dd",
-  if (typeof data.contentType === "undefined") {
-    data.contentType = "timeStamp";
-  };
-  if (typeof data.formatter === "undefined") {
-    data.formatter = "YYYY-MM-DD HH:mm:ss 星期dd";
-  };
+  if (typeof data.contentType === 'undefined') {
+    data.contentType = 'timeStamp';
+  }
+  if (typeof data.formatter === 'undefined') {
+    data.formatter = 'YYYY-MM-DD HH:mm:ss 星期dd';
+  }
 
   //1.0.1 ->1.0.2
   const setValueSchema = {
@@ -26,10 +22,10 @@ export default function ({
     items: {
       type: 'string'
     }
-  }
+  };
   const valueChangeSchema = {
     type: 'string'
-  }
+  };
   if (!input.get('setInitialValue')) {
     input.add('setInitialValue', '设置初始值', setValueSchema);
   }
@@ -86,19 +82,19 @@ export default function ({
   /**
    * @description v1.0.11 增加 预设时间范围快捷选择 配置项
    */
-  if (typeof data.useRanges === "undefined") {
+  if (typeof data.useRanges === 'undefined') {
     data.useRanges = false;
-  };
-  if (typeof data.ranges === "undefined") {
+  }
+  if (typeof data.ranges === 'undefined') {
     data.ranges = [
-      { title: "今天", type: "day", numList: [0, 0] },
-      { title: "昨天", type: "day", numList: [1, -1] },
-      { title: "明天", type: "day", numList: [-1, 1] },
-      { title: "前后七天", type: "day", numList: [7, 7] },
-      { title: "本周", type: "week", numList: [0, 0] },
-      { title: "本月", type: "month", numList: [0, 0] }
+      { title: '今天', type: 'day', numList: [0, 0] },
+      { title: '昨天', type: 'day', numList: [1, -1] },
+      { title: '明天', type: 'day', numList: [-1, 1] },
+      { title: '前后七天', type: 'day', numList: [7, 7] },
+      { title: '本周', type: 'week', numList: [0, 0] },
+      { title: '本月', type: 'month', numList: [0, 0] }
     ];
-  };
+  }
 
   /**
    * @description v1.0.13 fix: refreshSchema
@@ -110,23 +106,23 @@ export default function ({
   /**
    * @description v1.0.16->1.0.17 增加 输出类型 配置项
    */
-  if (typeof data.dateType === "undefined") {
+  if (typeof data.dateType === 'undefined') {
     data.dateType = 'array';
   }
-  if (typeof data.splitChart === "undefined") {
+  if (typeof data.splitChart === 'undefined') {
     data.splitChart = '-';
   }
 
   /**
    * @description v1.0.18->1.0.19 增加 allowEmpty, 允许起始项部分为空
-  */
-  if (typeof data.emptyRules === "undefined") {
+   */
+  if (typeof data.emptyRules === 'undefined') {
     data.emptyRules = [];
   }
 
   /**
-  * @description v1.1.0 新增自定义校验事件
-  */
+   * @description v1.1.0 新增自定义校验事件
+   */
 
   if (!input.get(InputIds.SetValidateInfo)) {
     input.add(InputIds.SetValidateInfo, '设置校验状态', {
@@ -137,48 +133,47 @@ export default function ({
           items: [
             {
               type: 'string',
-              value: 'success',
+              value: 'success'
             },
             {
               type: 'string',
-              value: 'error',
-            },
-          ],
+              value: 'error'
+            }
+          ]
         },
         help: {
-          type: 'string',
-        },
-      },
+          type: 'string'
+        }
+      }
     });
   }
   const baseType = data.contentType === 'timeStamp' ? 'number' : 'string';
-  const valueSchema = data.dateType === 'string'
-    ? {
-      type: 'string'
-    }
-    : {
-      type: 'tuple',
-      items: [
-        {
-          type: baseType
-        },
-        {
-          type: baseType
+  const valueSchema =
+    data.dateType === 'string'
+      ? {
+          type: 'string'
         }
-      ]
-    };
+      : {
+          type: 'tuple',
+          items: [
+            {
+              type: baseType
+            },
+            {
+              type: baseType
+            }
+          ]
+        };
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', valueSchema);
   }
-  const customRule = data.rules?.find(
-    (i) => i.key === RuleKeys.CUSTOM_EVENT
-  );
+  const customRule = data.rules?.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
   if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,
       visible: true,
-      title: '自定义校验',
+      title: '自定义校验'
     });
   }
   //=========== v1.1.0 end ===============
@@ -188,7 +183,7 @@ export default function ({
    */
   if (!input.get(inputIds.IsEnable)) {
     input.add(inputIds.IsEnable, '启用/禁用', {
-      type: "boolean"
+      type: 'boolean'
     });
   }
   //=========== v1.1.2 end ===============
@@ -198,97 +193,111 @@ export default function ({
    */
   //1、设置值
   const initValueSchema = {
-    "type": "tuple",
-    "items": [
+    type: 'tuple',
+    items: [
       {
-        "type": "number"
+        type: 'number'
       },
       {
-        "type": "number"
+        type: 'number'
       }
     ]
   };
   if (!output.get(outputIds.setValueDone)) {
     output.add(outputIds.setValueDone, '设置值完成', initValueSchema);
   }
-  if (output.get(outputIds.setValueDone) &&
+  if (
+    output.get(outputIds.setValueDone) &&
     input.get(inputIds.setValue) &&
-    !input.get(inputIds.setValue)?.rels?.includes(outputIds.setValueDone)) {
+    !input.get(inputIds.setValue)?.rels?.includes(outputIds.setValueDone)
+  ) {
     input.get(inputIds.setValue).setRels([outputIds.setValueDone]);
   }
   //2、设置初始值
   if (!output.get(outputIds.setInitialValueDone)) {
     output.add(outputIds.setInitialValueDone, '设置初始值完成', initValueSchema);
   }
-  if (output.get(outputIds.setInitialValueDone) &&
+  if (
+    output.get(outputIds.setInitialValueDone) &&
     input.get(inputIds.setInitialValue) &&
-    !input.get(inputIds.setInitialValue)?.rels?.includes(outputIds.setInitialValueDone)) {
+    !input.get(inputIds.setInitialValue)?.rels?.includes(outputIds.setInitialValueDone)
+  ) {
     input.get(inputIds.setInitialValue).setRels([outputIds.setInitialValueDone]);
   }
   //3、重置值
   if (!output.get(outputIds.resetValueDone)) {
-    output.add(outputIds.resetValueDone, '重置完成', { type: "any" });
+    output.add(outputIds.resetValueDone, '重置完成', { type: 'any' });
   }
-  if (output.get(outputIds.resetValueDone) &&
+  if (
+    output.get(outputIds.resetValueDone) &&
     input.get(inputIds.resetValue) &&
-    !input.get(inputIds.resetValue)?.rels?.includes(outputIds.resetValueDone)) {
+    !input.get(inputIds.resetValue)?.rels?.includes(outputIds.resetValueDone)
+  ) {
     input.get(inputIds.resetValue).setRels([outputIds.resetValueDone]);
   }
   //4、设置禁用
   if (!output.get(outputIds.setDisabledDone)) {
-    output.add(outputIds.setDisabledDone, '禁用完成', { type: "any" });
+    output.add(outputIds.setDisabledDone, '禁用完成', { type: 'any' });
   }
-  if (output.get(outputIds.setDisabledDone) &&
+  if (
+    output.get(outputIds.setDisabledDone) &&
     input.get(inputIds.SET_DISABLED) &&
-    !input.get(inputIds.SET_DISABLED)?.rels?.includes(outputIds.setDisabledDone)) {
+    !input.get(inputIds.SET_DISABLED)?.rels?.includes(outputIds.setDisabledDone)
+  ) {
     input.get(inputIds.SET_DISABLED).setRels([outputIds.setDisabledDone]);
   }
   //5、设置启用
   if (!output.get(outputIds.setEnabledDone)) {
-    output.add(outputIds.setEnabledDone, '启用完成', { type: "any" });
+    output.add(outputIds.setEnabledDone, '启用完成', { type: 'any' });
   }
-  if (output.get(outputIds.setEnabledDone) &&
+  if (
+    output.get(outputIds.setEnabledDone) &&
     input.get(inputIds.SET_ENABLED) &&
-    !input.get(inputIds.SET_ENABLED)?.rels?.includes(outputIds.setEnabledDone)) {
+    !input.get(inputIds.SET_ENABLED)?.rels?.includes(outputIds.setEnabledDone)
+  ) {
     input.get(inputIds.SET_ENABLED).setRels([outputIds.setEnabledDone]);
   }
   //6、启用/禁用isEnable
   if (!output.get(outputIds.isEnableDone)) {
-    output.add(outputIds.isEnableDone, '启用/禁用完成', { type: "boolean" });
+    output.add(outputIds.isEnableDone, '启用/禁用完成', { type: 'boolean' });
   }
-  if (output.get(outputIds.isEnableDone) &&
+  if (
+    output.get(outputIds.isEnableDone) &&
     input.get(inputIds.IsEnable) &&
-    !input.get(inputIds.IsEnable)?.rels?.includes(outputIds.isEnableDone)) {
+    !input.get(inputIds.IsEnable)?.rels?.includes(outputIds.isEnableDone)
+  ) {
     input.get(inputIds.IsEnable).setRels([outputIds.isEnableDone]);
   }
   //7、设置校验状态
   const infoSchema = {
-    "type": "object",
-    "properties": {
-      "validateStatus": {
-        "type": "enum",
-        "items": [
+    type: 'object',
+    properties: {
+      validateStatus: {
+        type: 'enum',
+        items: [
           {
-            "type": "string",
-            "value": "success"
+            type: 'string',
+            value: 'success'
           },
           {
-            "type": "string",
-            "value": "error"
+            type: 'string',
+            value: 'error'
           }
         ]
       },
-      "help": {
-        "type": "string"
+      help: {
+        type: 'string'
       }
     }
-  }
+  };
   if (!output.get(outputIds.setValidateInfoDone)) {
     output.add(outputIds.setValidateInfoDone, '设置校验状态完成', infoSchema);
   }
-  if (output.get(outputIds.setValidateInfoDone) &&
+  if (
+    output.get(outputIds.setValidateInfoDone) &&
     input.get(inputIds.SET_VALIDATE_INFO) &&
-    !input.get(inputIds.SET_VALIDATE_INFO)?.rels?.includes(outputIds.setValidateInfoDone)) {
+    !input.get(inputIds.SET_VALIDATE_INFO)?.rels?.includes(outputIds.setValidateInfoDone)
+  ) {
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.4 end ===============
@@ -311,31 +320,80 @@ export default function ({
   /**
    * @description v1.1.11 => v1.1.12 升级，新增 formatMap 字段
    */
-  if (typeof data.formatMap === "undefined") {
+  if (typeof data.formatMap === 'undefined') {
     data.formatMap = {
-      "日期": encodeURIComponent("YYYY-MM-DD"),
-      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
-      "周": encodeURIComponent("YYYY-wo"),
-      "月份": encodeURIComponent("YYYY-MM"),
-      "季度": encodeURIComponent("YYYY-\\QQ"),
-      "年份": encodeURIComponent("YYYY")
-    }
+      日期: encodeURIComponent('YYYY-MM-DD'),
+      '日期+时间': encodeURIComponent('YYYY-MM-DD HH:mm:ss'),
+      周: encodeURIComponent('YYYY-wo'),
+      月份: encodeURIComponent('YYYY-MM'),
+      季度: encodeURIComponent('YYYY-\\QQ'),
+      年份: encodeURIComponent('YYYY')
+    };
   }
 
   /**
    * @description v1.1.14->1.1.15 新增 显示清除图标
    */
-  if (typeof data.config.allowClear === "undefined") {
+  if (typeof data.config.allowClear === 'undefined') {
     data.config.allowClear = true;
-  };
+  }
 
   if (!output.get('setDisabledDateRulesDone')) {
     output.add('setDisabledDateRulesDone', '禁用特定日期规则完成', { type: 'any' });
   }
-  if(!input.get('setDisabledDateRules')) {
-    input.add('setDisabledDateRules', '设置禁用特定日期规则', dateDisabledRulesSchema)
+  if (!input.get('setDisabledDateRules')) {
+    input.add('setDisabledDateRules', '设置禁用特定日期规则', dateDisabledRulesSchema);
     input.get('setDisabledDateRules').setRels([`setDisabledDateRulesDone`]);
+  }
 
+  /**
+   * @description v1.1.25 新增 待选日期发生变化
+   */
+  if (!output.get('onCalendarChange')) {
+    output.add('onCalendarChange', '待选日期发生变化', {
+      type: 'tuple',
+      items: [
+        {
+          type: 'number'
+        },
+        {
+          type: 'number'
+        }
+      ]
+    });
+  }
+
+  /**
+   * @description v1.1.28 新增 设置可选日期范围
+   */
+
+  if (!output.get('setAllowDateDone')) {
+    output.add('setAllowDateDone', '设置可选日期范围完成', {
+      type: 'any'
+    });
+  }
+
+  if (!input.get('setAllowDate')) {
+    input.add('setAllowDate', '设置可选日期范围', {
+      type: 'tuple',
+      items: [
+        {
+          type: 'number'
+        },
+        {
+          type: 'number'
+        }
+      ]
+    });
+
+    input.get('setAllowDate').setRels(['setAllowDateDone']);
+  }
+
+  /**
+   * @description v1.1.29 新增 日历面板显示
+   */
+  if (!output.get('onOpen')) {
+    output.add('onOpen', '弹出日历时', { type: 'any' });
   }
 
   return true;

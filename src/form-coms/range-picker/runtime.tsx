@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -11,6 +11,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { DisabledRulesValue, formatRulesExpression } from '../date-picker/util';
 import { RangePickerProps } from 'antd/lib/date-picker';
+import { isFloat64Array } from 'util/types';
 
 const { RangePicker } = DatePicker;
 
@@ -78,9 +79,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const validateRelOutputRef = useRef<any>(null);
-  const rangeOptions = formatRangeOptions(data.ranges || [], env);
+  const [rangeOptions, setRangeOptions] = useState(formatRangeOptions(data.ranges || [], env));
   const valueRef = useRef<any>();
   const [type, setType] = useState<string>('date');
+  const [allowDate, setAllowDate] = useState<any>(null);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -357,6 +359,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         });
       }
     });
+
+    // 设置可选日期范围
+    inputs['setAllowDate']((val, relOutputs) => {
+      if (!Array.isArray(val)) {
+        return;
+      }
+      console.log('setAllowDate', val);
+      setAllowDate(val);
+      relOutputs['setAllowDateDone']();
+    });
   }, []);
 
   //值展示类型
@@ -400,6 +412,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     onValidateTrigger();
   };
 
+  const onCalendarChange = useCallback((dates) => {
+    setDates(dates);
+    let result = (dates || []).map((item) => {
+      return item ? item.valueOf() : null;
+    });
+    outputs['onCalendarChange'](result);
+  }, []);
+
   const getShowTime = () => {
     if (!data.showTime || typeof data.showTime === 'boolean') {
       return data.showTime;
@@ -414,9 +434,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
   // 获得禁用日期时间
   const disabledDateTime = getDisabledDateTime({ data, dates });
 
+  const dynamicAllowDate = allowDate
+    ? {
+        disabledDate: (current) => {
+          // console.log("disabledDate", current.valueOf(), allowDate);
+          current = current.valueOf();
+          if (allowDate[0] && current < allowDate[0]) {
+            return true;
+          }
+          if (allowDate[1] && current > allowDate[1]) {
+            return true;
+          }
+          return false;
+        }
+      }
+    : {};
+
   const onOpenChange = (open: boolean) => {
     if (open) {
       setDates([null, null]);
+      outputs['onOpen']();
     } else {
       setDates(null);
     }
@@ -453,7 +490,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             //@ts-ignore
             showTime={getShowTime()}
             onChange={onChange}
-            onCalendarChange={(dates) => setDates(dates)}
+            onCalendarChange={onCalendarChange}
             onOpenChange={onOpenChange}
             allowEmpty={emptyArr}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
@@ -465,6 +502,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }
             dropdownClassName={`${id} ${css.rangePicker}`}
             {...disabledDateTime}
+            {...dynamicAllowDate}
           />
         </div>
       ) : (

@@ -572,6 +572,23 @@ export default {
               options: {
                 outputId: 'onChange'
               }
+            },
+            {
+              title: '待选日期发生变化',
+              type: '_event',
+              description:
+                '日期范围选择框的待选日期发生变化时触发，可以通过逻辑连线连接日期范围选择框的输入项【设置待选日期】触发【待选日期发生变化】输出项事件',
+              options: {
+                outputId: 'onCalendarChange'
+              }
+            },
+            {
+              title: '弹出日历时',
+              type: '_event',
+              description: '日期选择框打开时触发',
+              options: {
+                outputId: 'onOpen'
+              }
             }
           ]
         }
