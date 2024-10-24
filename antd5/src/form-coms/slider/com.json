@@ -1,0 +1,303 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.slider",
+  "title": "滑动输入条",
+  "version": "1.1.12",
+  "description": "滑动输入条",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "../../../../src/form-coms/slider/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_37f9sr.72675c597ee8dcc7.png",
+  "data": "../../../../src/form-coms/slider/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/form-coms/slider/editors.ts",
+  "upgrade": "../../../../src/form-coms/slider/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置滑动输入条的值，并触发值变化事件输出",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "setValueDone"
+      ]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置滑动输入条的初始值，并触发值初始化事件输出",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发滑动输入条的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取滑动输入条的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "setSliderRange",
+      "title": "动态设置范围",
+      "desc": "动态设置滑动输入条的范围",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "min": {
+            "description": "范围的最小值",
+            "type": "number"
+          },
+          "max": {
+            "description": "范围的最大值",
+            "type": "number"
+          }
+        }
+      },
+      "rels": [
+        "setSliderRangeDone"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空滑动输入条的值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "resetValueDone"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "desc": "禁用滑动输入条，并触发禁用完成事件输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "desc": "启用滑动输入条，并触发启用完成事件输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "desc": "对滑动输入条进行启用/禁用状态设置，并触发启用/禁用完成事件",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEnableDone"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "description": "校验状态，成功/失败",
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "description": "帮助提示信息",
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "desc": "滑动输入条的值初始化事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "desc": "滑动输入条的值更新事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "desc": "滑动输入条校验触发事件输出",
+      "schema": {
+        "title": "当前值",
+        "type": "number"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "滑动输入条输出校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string",
+            "description": "校验状态，成功/失败"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string",
+            "description": "帮助提示信息"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "desc": "获取滑动输入条的值后，值输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setSliderRangeDone",
+      "title": "动态设置范围完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "min": {
+            "description": "范围的最小值",
+            "type": "number"
+          },
+          "max": {
+            "description": "范围的最大值",
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "desc": "设置滑动输入条的值后，触发设置值完成输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "desc": "设置滑动条初始取值后，触发设置初始值完成输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "description": "校验状态，成功/失败",
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "description": "帮助提示信息",
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

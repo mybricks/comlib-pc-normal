@@ -1,0 +1,48 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.notification",
+  "title": "通知提醒",
+  "version": "1.0.2",
+  "description": "在系统四个角显示通知提醒信息",
+  "author": "mybricks",
+  "author_name": "MyBricks",
+  "rtType": "js",
+  "icon": "../../../src/_notification/icon.svg",
+  "data": "../../../src/_notification/data.json",
+  "runtime": "../../../src/_notification/runtime.tsx",
+  "editors": "../../../src/_notification/editors.tsx",
+  "upgrade": "../../../src/_notification/upgrade.ts",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "弹出",
+      "desc": "通知提醒弹出时触发",
+      "rels": [
+        "close"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "通知提醒标题"
+          },
+          "content": {
+            "type": "string",
+            "description": "通知提醒内容"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "close",
+      "title": "关闭",
+      "desc": "关闭通知提醒时触发",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

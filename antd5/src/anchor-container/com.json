@@ -1,0 +1,45 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.anchor-container",
+  "title": "锚点容器",
+  "enable": true,
+  "visibility": true,
+  "version": "1.0.11",
+  "description": "锚点容器",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "icon": "../../../src/anchor-container/icon.svg",
+  "data": "../../../src/anchor-container/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/anchor-container/editors.tsx",
+  "upgrade": "../../../src/anchor-container/upgrade.ts",
+  "slots": [
+    {
+      "id": "item",
+      "capacity": 1,
+      "title": "列表项",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "itemData",
+          "title": "当前项",
+          "desc": "当前项展示内容",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "index",
+          "title": "当前项序号",
+          "desc": "当前项展示的序号",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    {
+      "id": "XsbYMT",
+      "title": "锚点1目标"
+    }
+  ]
+}

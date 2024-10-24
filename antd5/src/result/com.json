@@ -1,0 +1,74 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.result",
+  "title": "结果页",
+  "version": "1.0.4",
+  "description": "结果页",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/result/icon.svg",
+  "data": "../../../src/result/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/result/editors.tsx",
+  "upgrade": "../../../src/result/upgrade.ts",
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setTitleDone"
+      ]
+    },
+    {
+      "id": "subTitle",
+      "title": "修改副标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setSubTitleDone"
+      ]
+    },
+    {
+      "id": "status",
+      "title": "修改状态",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setStatusDone"
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "id": "extra",
+      "title": "操作区"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setTitleDone",
+      "title": "修改标题完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setSubTitleDone",
+      "title": "修改副标题完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setStatusDone",
+      "title": "修改状态完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.tagList",
+  "title": "标签列表",
+  "author": "tangxiaoxin",
+  "author_name": "唐小新",
+  "version": "1.0.20",
+  "description": "组件描述",
+  "docs": "组件使用说明文档链接",
+  "icon": "../../../src/tagList/icon.svg",
+  "runtime": "./runtime.tsx",
+  "data": "../../../src/tagList/data.json",
+  "editors": "../../../src/tagList/editor",
+  "upgrade": "../../../src/tagList/upgrade.ts",
+  "inputs": [
+    {
+      "id": "getTags",
+      "title": "获取标签列表",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取标签列表数据",
+      "rels": [
+        "outputTags"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputTags",
+      "title": "输出标签列表",
+      "desc": "获取标签列表后，输出数据内容",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "icon": {
+              "title": "图标",
+              "type": "string",
+              "description": "标签的图标"
+            },
+            "content": {
+              "title": "标签内容",
+              "type": "string",
+              "description": "标签的内容"
+            },
+            "color": {
+              "title": "背景颜色",
+              "type": "string",
+              "description": "标签的背景颜色"
+            },
+            "closable": {
+              "title": "是否可关闭",
+              "type": "boolean",
+              "description": "标签是否可关闭"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "slots": []
+}

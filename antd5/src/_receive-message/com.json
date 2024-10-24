@@ -1,0 +1,23 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.receive-message",
+  "title": "postMessage获取",
+  "version": "1.0.1",
+  "rtType": "js-autorun",
+  "description": "父子(iframe)页面数据获取",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/_receive-message/icon.svg",
+  "runtime": "../../../src/_receive-message/runtime.ts",
+  "inputs": [],
+  "outputs": [
+    {
+      "id": "getData",
+      "title": "获取数据",
+      "desc": "获取父或子页面传递过来的数据",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": []
+}

@@ -1,19 +1,16 @@
 {
+  "namespace": "mybricks.normal-pc.antd5.table",
   "title": "数据表格",
-  "namespace": "mybricks.normal-pc.table",
-  "version": "1.2.16",
+  "version": "1.2.14",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "icon": "./icon.png",
-  "data": "./data.json",
+  "icon": "../../../src/table/icon.png",
+  "data": "../../../src/table/data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors/index.tsx",
-  "ai": "./ai.ts",
-  "upgrade": "./upgrade.ts",
-  "target": {
-    "toReact": "./toReact.ts"
-  },
+  "editors": "../../../src/table/editors/index.tsx",
+  "ai": "../../../src/table/ai.ts",
+  "upgrade": "../../../src/table/upgrade.ts",
   "schema": [
     "mybricks.domain-pc.crud/table",
     "*"

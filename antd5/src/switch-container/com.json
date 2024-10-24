@@ -1,0 +1,69 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.switch-container",
+  "title": "状态容器",
+  "version": "1.0.8",
+  "description": "根据状态值渲染不同内容的容器，方便实现多状态切换",
+  "author": "zhulin",
+  "author_name": "../../../src/switch-container",
+  "icon": "../../../src/switch-container/icon.svg",
+  "data": "../../../src/switch-container/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/switch-container/editors.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置状态",
+      "desc": "设置状态容器的状态，并触发设置状态完成输出,状态的值来自右侧配置的状态列表中的某一状态的值",
+      "rels": [
+        "setValueDone"
+      ],
+      "schema": {
+        "type": "any",
+        "description": "要设置的状态的值，来自于用户配置的状态列表某一项的值，设置后，容器实现多状态切换"
+      }
+    },
+    {
+      "id": "getValue",
+      "title": "获取状态",
+      "desc": "获取状态容器当前的状态",
+      "rels": [
+        "returnValue"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setValueDone",
+      "title": "设置状态完成,并输出状态",
+      "desc": "",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "当前状态",
+      "desc": "获取状态后，返回当前状态的值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "状态更新",
+      "decs": "状态容器的状态更新时触发，并输出当前状态容器的状态",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "status1",
+      "title": "状态1"
+    }
+  ]
+}

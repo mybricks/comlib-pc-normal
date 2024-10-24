@@ -1,0 +1,21 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.collapse",
+  "title": "折叠面板",
+  "version": "1.0.8",
+  "description": "折叠面板",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/collapse/icon.svg",
+  "data": "../../../src/collapse/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/collapse/editors.tsx",
+  "upgrade": "../../../src/collapse/upgrade.ts",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

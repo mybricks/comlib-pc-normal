@@ -1,0 +1,81 @@
+{
+  "namespace": "mybricks.comlib-template-compute.antd5._config_toolbar",
+  "title": "配置工具条",
+  "version": "1.0.5",
+  "description": "配置工具条",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../../src/_template-compute/_config-toolbar/icon.png",
+  "data": "../../../../src/_template-compute/_config-toolbar/data.json",
+  "runtime": "../../../../src/_template-compute/_config-toolbar/index.ts",
+  "editors": "../../../../src/_template-compute/_config-toolbar/editor.ts",
+  "upgrade": "../../../../src/_template-compute/_config-toolbar/upgrade.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "creator",
+      "title": "开始",
+      "schema": [
+        {
+          "name": "toolbarData",
+          "title": "配置工具条",
+          "description": "工具条配置,可以整体输入工具条数据、工具条前添加、工具条后添加",
+          "type": "object",
+          "properties": {
+            "btnList": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "唯一标识，必填"
+                  },
+                  "text": {
+                    "type": "string",
+                    "description": "按钮文案，必填"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "按钮类型，可选"
+                  },
+                  "shape": {
+                    "type": "string",
+                    "description": "按钮形状，可选"
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "按钮尺寸，可选"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "按钮图标，可选"
+                  },
+                  "disabled": {
+                    "type": "boolean",
+                    "description": "是否禁用，可选"
+                  },
+                  "hidden": {
+                    "type": "boolean",
+                    "description": "是否隐藏，可选"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onComplete",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

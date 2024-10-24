@@ -1,0 +1,161 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.steps",
+  "title": "步骤条",
+  "version": "1.1.5",
+  "description": "步骤条",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/steps/icon.svg",
+  "data": "../../../src/steps/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/steps/editor",
+  "upgrade": "../../../src/steps/upgrade.ts",
+  "inputs": [
+    {
+      "id": "nextStep",
+      "title": "下一步",
+      "desc": "跳转到下一步",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "nextStepComplete"
+      ]
+    },
+    {
+      "id": "prevStep",
+      "title": "上一步",
+      "desc": "跳转到上一步",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "prevStepComplete"
+      ]
+    },
+    {
+      "id": "jumpTo",
+      "title": "跳转（0～0）",
+      "desc": "跳转到某一步骤",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "jumpToComplete"
+      ]
+    },
+    {
+      "id": "getIndex",
+      "title": "获取当前步骤",
+      "desc": "步骤从0开始计数，获取当前所在的步骤",
+      "rels": [
+        "getIndex"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setHideSteps",
+      "title": "设置隐藏步骤",
+      "desc": "步骤从0开始计数，设置隐藏步骤",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "rels": [
+        "setHideStepsComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "submit",
+      "title": "数据提交",
+      "desc": "提交步骤条数据",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "step0",
+      "title": "步骤1下一步",
+      "desc": "步骤1点击下一步的输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "getIndex",
+      "title": "当前步骤",
+      "desc": "获取当前步骤后输出步骤index",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "step0_into",
+      "title": "步骤1显示",
+      "dec": "显示步骤1的内容",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "step0_leave",
+      "title": "步骤1隐藏",
+      "dec": "离开步骤1",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "step0_click",
+      "title": "步骤1点击时",
+      "desc": "点击步骤1",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "nextStepComplete",
+      "title": "完成",
+      "desc": "进入下一步后的完成输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "prevStepComplete",
+      "title": "完成",
+      "desc": "进入上一步后的完成输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "jumpToComplete",
+      "title": "完成",
+      "desc": "跳转某一步骤后，跳转完成输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setHideStepsComplete",
+      "title": "完成",
+      "desc": "隐藏步骤条后，完成输出",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "step0",
+      "title": "步骤1"
+    }
+  ]
+}

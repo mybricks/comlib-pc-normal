@@ -1,0 +1,38 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.message",
+  "title": "消息提示",
+  "version": "1.0.5",
+  "rtType": "js",
+  "description": "消息提示",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/_message/icon.svg",
+  "data": "../../../src/_message/data.json",
+  "runtime": "../../../src/_message/runtime.tsx",
+  "editors": "../../../src/_message/editors.tsx",
+  "upgrade": "../../../src/_message/upgrade.ts",
+  "inputs": [
+    {
+      "id": "showMsg",
+      "title": "弹出",
+      "desc": "触发消息提示弹出",
+      "schema": {
+        "type": "follow"
+      },
+      "rels": [
+        "showMsgDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "showMsgDone",
+      "title": "完成",
+      "desc": "消息提示弹出完成",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

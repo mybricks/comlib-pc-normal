@@ -1,0 +1,51 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.calendar",
+  "title": "日历",
+  "version": "1.0.7",
+  "description": "日历",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/calendar/icon.svg",
+  "data": "../../../src/calendar/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/calendar/editors.tsx",
+  "upgrade": "../../../src/calendar/upgrade.ts",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "设置数据源",
+      "schema": {
+        "type": "object"
+      },
+      "rels": [
+        "setDataSourceDone"
+      ]
+    },
+    {
+      "id": "currentDate",
+      "title": "设置当前日期",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "setCurrentDateDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setDataSourceDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "setCurrentDateDone",
+      "title": "设置当前日期完成",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ]
+}

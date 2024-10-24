@@ -1,0 +1,44 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.array-merge",
+  "title": "数组合并",
+  "version": "1.0.1",
+  "description": "数组合并",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_array-merge/icon.svg",
+  "runtime": "../../../src/_array-merge/runtime.ts",
+  "editors": "../../../src/_array-merge/editors.ts",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "inputValue0",
+          "title": "参数0",
+          "type": "follow"
+        },
+        {
+          "name": "inputValue1",
+          "title": "参数1",
+          "type": "follow"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "desc": "多输入合并为数组后的输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      },
+      "editable": true
+    }
+  ]
+}

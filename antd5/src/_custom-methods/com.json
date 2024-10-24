@@ -1,0 +1,48 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.custom-methods",
+  "title": "主应用函数",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "调用主应用函数",
+  "author": "jidan.wd",
+  "author_name": "jidan.wd",
+  "icon": "../../../src/_custom-methods/icon.svg",
+  "data": "../../../src/_custom-methods/data.json",
+  "runtime": "../../../src/_custom-methods/runtime.ts",
+  "editors": "../../../src/_custom-methods/editors.tsx",
+  "inputs": [
+    {
+      "id": "emit",
+      "title": "调用",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "result",
+        "error"
+      ],
+      "desc": "返回值"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "result",
+      "title": "返回值",
+      "desc": "调用主应用函数得到的返回值",
+      "schema": {
+        "type": "any"
+      },
+      "editable": true
+    },
+    {
+      "id": "error",
+      "title": "执行报错",
+      "desc": "调用主应用函数出现报错信息",
+      "schema": {
+        "type": "any"
+      },
+      "editable": true
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,34 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.env-var",
+  "title": "环境变量",
+  "version": "1.0.1",
+  "rtType": "js-autorun",
+  "description": "环境变量",
+  "author": "liuzhigang",
+  "author_name": "liuzhigang",
+  "docs": "../../../src/_env-var",
+  "icon": "../../../src/_env-var/icon.svg",
+  "data": "../../../src/_env-var/data.json",
+  "runtime": "../../../src/_env-var/runtime.ts",
+  "editors": "../../../src/_env-var/editor.ts",
+  "inputs": [
+    {
+      "id": "getEnv",
+      "title": "获取",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取环境变量"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputEnv",
+      "title": "输出",
+      "desc": "获取环境变量输出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

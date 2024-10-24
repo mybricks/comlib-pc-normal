@@ -1,0 +1,57 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.popover",
+  "title": "气泡",
+  "version": "1.0.19",
+  "description": "气泡",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/popover/icon.png",
+  "data": "../../../src/popover/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/popover/editors.tsx",
+  "upgrade": "../../../src/popover/upgrade.ts",
+  "inputs": [
+    {
+      "id": "_title",
+      "title": "动态标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "_titleComplete"
+      ]
+    },
+    {
+      "id": "content",
+      "title": "动态内容",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "contentComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "_titleComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "contentComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
+    }
+  ]
+}

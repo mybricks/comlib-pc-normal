@@ -1,0 +1,37 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.post-message",
+  "title": "postMessage发送",
+  "version": "1.0.2",
+  "rtType": "js",
+  "description": "向父子(iframe)页面发送消息",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/_post-message/icon.svg",
+  "data": "../../../src/_post-message/data.json",
+  "runtime": "../../../src/_post-message/runtime.ts",
+  "editors": "../../../src/_post-message/editors.ts",
+  "upgrade": "../../../src/_post-message/upgrade.ts",
+  "inputs": [
+    {
+      "id": "post",
+      "title": "数据传递",
+      "desc": "向子(iframe)或者父页面传递数据",
+      "schema": {
+        "type": "follow"
+      },
+      "rels": [
+        "postDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "postDone",
+      "title": "数据传递完成",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

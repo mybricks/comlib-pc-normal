@@ -1,0 +1,310 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.time-picker",
+  "title": "时间选择框",
+  "author": "tangxiaoxin",
+  "author_name": "唐小新",
+  "version": "1.1.20",
+  "description": "时间选择框",
+  "docs": "组件使用说明文档链接",
+  "icon": "../../../../src/form-coms/time-picker/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_jesr5m.5979400761c62cb9.png",
+  "runtime": "./runtime.tsx",
+  "data": "../../../../src/form-coms/time-picker/data.json",
+  "editors": "../../../../src/form-coms/time-picker/editors.ts",
+  "upgrade": "../../../../src/form-coms/time-picker/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "number"
+      },
+      "desc": "设置时间",
+      "rels": [
+        "setValueDone"
+      ]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "schema": {
+        "type": "number"
+      },
+      "desc": "设置时间选择框初始值",
+      "rels": [
+        "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ],
+      "desc": "获取时间"
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "重置时间",
+      "rels": [
+        "resetValueDone"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发时间选择框的校验检查,并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "禁用时间选择框,并触发禁用完成事件输出",
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用,并触发启用完成事件输出",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "启用时间选择框",
+      "rels": [
+        "setEnabledDone"
+      ]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "desc": "对时间选择框进行启用/禁用状态设置,并触发启用/禁用完成事件",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEnableDone"
+      ]
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
+      ]
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置时间选择框里字体的颜色",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setColorDone"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "description": "校验状态，成功/失败",
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "description": "帮助提示信息",
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "desc": "时间选择框的值初始化事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "desc": "时间选择框的校验触发事件输出",
+      "schema": {
+        "title": "当前值",
+        "type": "number"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "数据输出",
+      "desc": "获取时间选择框的值后,值输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "时间选择框的输出校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string",
+            "description": "校验状态，成功/失败"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string",
+            "description": "帮助提示信息"
+          }
+        }
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "desc": "时间选择框的值更新事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "desc": "设置值事件完成输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "desc": "设置初始值事件完成输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "desc": "重置事件完成输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "desc": "禁用事件输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "desc": "启用事件完成输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "desc": "启用/禁用完成事件完成输出",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "desc": "设置编辑/只读完成事件完成输出",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "desc": "设置字体颜色完成事件完成输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "desc": "设置校验状态完成事件完成输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "description": "校验状态，成功/失败",
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "description": "帮助提示信息",
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "slots": [],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

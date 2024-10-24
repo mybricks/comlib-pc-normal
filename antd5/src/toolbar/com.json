@@ -1,0 +1,39 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.toolbar",
+  "title": "工具条",
+  "version": "1.0.41",
+  "description": "工具条",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/toolbar/icon.png",
+  "data": "../../../src/toolbar/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/toolbar/editors/index.ts",
+  "upgrade": "../../../src/toolbar/upgrade.ts",
+  "inputs": [],
+  "outputs": [
+    {
+      "id": "btn0",
+      "title": "单击按钮0",
+      "desc": "单击按钮后，事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "doubleClick_btn0",
+      "title": "双击按钮0",
+      "desc": "双击按钮后，事件输出",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "随机ID",
+      "defer": true,
+      "description": "工具条按钮插槽，可自定义按钮内容"
+    }
+  ]
+}

@@ -1,0 +1,493 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.treeSelect",
+  "title": "树形选择",
+  "version": "1.2.35",
+  "description": "树形选择结构的下拉框",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "../../../../src/form-coms/treeSelect/icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_7xd3f2.315b881e6dc8013d.png",
+  "data": "../../../../src/form-coms/treeSelect/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/form-coms/treeSelect/editors.ts",
+  "upgrade": "../../../../src/form-coms/treeSelect/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置树选择的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setValueDone"
+      ]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置树选择的初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发树选择的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取树选择的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空树选择的值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "resetValueDone"
+      ]
+    },
+    {
+      "id": "setOptions",
+      "title": "设置数据源",
+      "desc": "设置树选择的下拉选项列表",
+      "schema": {
+        "type": "array",
+        "description": "树形选择结构的下拉框列表数据",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string",
+              "description": "选项的标签"
+            },
+            "value": {
+              "title": "值",
+              "type": "string",
+              "description": "选项的值"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点"
+            },
+            "expanded": {
+              "title": "是否展开",
+              "type": "boolean",
+              "description": "是否展开"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "description": "节点的子节点数组数据",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      },
+      "rels": [
+        "setOptionsDone"
+      ]
+    },
+    {
+      "id": "setLoadData",
+      "title": "设置异步加载数据",
+      "desc": "对树形选择设置异步加载数据，并触发设置异步加载数据完成事件",
+      "schema": {
+        "type": "object",
+        "description": "异步加载数据结构",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string",
+            "description": "选项的标签"
+          },
+          "value": {
+            "title": "值",
+            "type": "string",
+            "description": "选项的值"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean",
+            "description": "是否是叶子节点"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "description": "节点的子节点数组数据",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      },
+      "rels": [
+        "setLoadDataDone"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "desc": "禁用树形选择,并触发禁用完成事件输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "desc": "启用树形选择，并触发启用完成事件输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "desc": "对树形选择进行启用/禁用状态设置，并触发启用/禁用完成事件",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEnableDone"
+      ]
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
+      ]
+    },
+    {
+      "id": "setLoading",
+      "title": "设置加载中状态",
+      "desc": "设置树形选择为加载中状态，并触发设置加载中状态完成事件",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setLoadingDone"
+      ]
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置下拉框里字体的颜色",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setColorDone"
+      ]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "description": "校验状态，成功/失败",
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "description": "帮助提示信息",
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "desc": "树形选择的值初始化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "desc": "树形选择的值更新事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "desc": "树形选择的校验触发事件输出",
+      "schema": {
+        "title": "当前值",
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "desc": "树形选择输出校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string",
+            "description": "校验状态，成功/失败"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string",
+            "description": "帮助提示信息"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "desc": "获取树形选择的值后，值输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "loadData",
+      "title": "异步加载",
+      "desc": "树形选择的异步加载数据事件",
+      "schema": {
+        "type": "object",
+        "description": "异步加载数据，输出",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setOptionsDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "description": "设置数据源完成后，输出数据源数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string",
+              "description": "选项的标签"
+            },
+            "value": {
+              "title": "值",
+              "type": "string",
+              "description": "选项的值"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "description": "节点的子节点数组数据",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setLoadDataDone",
+      "title": "设置异步加载数据完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string",
+              "description": "选项的标签"
+            },
+            "value": {
+              "title": "值",
+              "type": "string",
+              "description": "选项的值"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean",
+              "description": "是否是叶子节点"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "description": "节点的子节点数组数据",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setLoadingDone",
+      "title": "设置加载中状态完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "description": "校验状态，成功/失败",
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "description": "帮助提示信息",
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

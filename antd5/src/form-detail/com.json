@@ -1,0 +1,105 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.form-detail",
+  "title": "描述列表",
+  "version": "1.0.32",
+  "description": "描述列表",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/form-detail/icon.svg",
+  "data": "../../../src/form-detail/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/form-detail/editors.tsx",
+  "upgrade": "../../../src/form-detail/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setTitle",
+      "title": "设置标题",
+      "desc": "设置描述列表的标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setTitleComplete"
+      ]
+    },
+    {
+      "id": "setDataSource",
+      "title": "设置数据源",
+      "desc": "设置描述列表的数据源",
+      "schema": {
+        "type": "object",
+        "description": "描述列表的数据源数据，对象类型，格式为{fieldName: 'value'}",
+        "properties": {
+          "field1": {
+            "description": "字段名为field1 的描述项",
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setDataSourceComplete"
+      ]
+    },
+    {
+      "id": "setDataDesc",
+      "title": "设置数据源描述",
+      "desc": "描述列表的数据源数据，对象类型，格式为{fieldName: 'value'}, fieldName为字段名",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "field1": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "描述项的标签名"
+              },
+              "labelDesc": {
+                "type": "string",
+                "description": "描述项的标签说明信息、提示"
+              },
+              "showLabel": {
+                "type": "boolean",
+                "description": "是否展示标签"
+              },
+              "visible": {
+                "type": "boolean",
+                "description": "描述项是否可见"
+              }
+            }
+          }
+        }
+      },
+      "rels": [
+        "setDataDescComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setTitleComplete",
+      "desc": "设置描述列表的标题完成后，输出",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDataSourceComplete",
+      "desc": "设置描述列表的数据源完成输出",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDataDescComplete",
+      "desc": "设置描述列表的数据源描述完成输出",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": []
+}

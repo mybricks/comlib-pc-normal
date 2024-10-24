@@ -1,0 +1,165 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.dialog",
+  "title": "对话框",
+  "visibility": false,
+  "version": "1.1.12",
+  "description": "对话框",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "../../../src/dialog/icon.svg",
+  "data": "../../../src/dialog/data.json",
+  "runtime": "../../../src/dialog/runtime.tsx",
+  "editors": "../../../src/dialog/editors.ts",
+  "upgrade": "../../../src/dialog/upgrade.ts",
+  "ai": "../../../src/dialog/ai.ts",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "打开",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "close",
+      "title": "关闭",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "hiddenok",
+      "title": "隐藏-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "showok",
+      "title": "显示-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "disableok",
+      "title": "禁用-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enableok",
+      "title": "启用-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "hiddencancelBtn",
+      "title": "隐藏-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "showcancelBtn",
+      "title": "显示-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "disablecancelBtn",
+      "title": "禁用-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enablecancelBtn",
+      "title": "启用-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancelBtn",
+      "title": "取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "okClick",
+      "title": "点击确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancelBtnClick",
+      "title": "点击取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "afterClose",
+      "title": "关闭回调",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "container",
+      "title": "对话框容器",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "dataSource",
+          "title": "输入数据",
+          "schema": {
+            "type": "follow"
+          },
+          "editable": true
+        }
+      ],
+      "outputs": [
+        {
+          "id": "cancelBtn",
+          "title": "取消",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "ok",
+          "title": "确认",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ]
+    }
+  ],
+  "rtType": "popup"
+}

@@ -532,7 +532,7 @@ export default function (props: RuntimeParams<Data>) {
       }
       // 动态设置禁用勾选
       if (data.useSetDisabledRowSelection) {
-        inputs[InputIds.SET_DISABLED_ROW_SELECTION] && 
+        inputs[InputIds.SET_DISABLED_ROW_SELECTION] &&
           inputs[InputIds.SET_DISABLED_ROW_SELECTION]((val: any, relOutputs: any) => {
             setDisabledRowSelection(!!val);
             handleOutputFn(relOutputs, OutputIds.SET_DISABLED_ROW_SELECTION, val);
@@ -798,6 +798,15 @@ export default function (props: RuntimeParams<Data>) {
     },
     [dataSource]
   );
+
+  // 重置dragging变量
+  useEffect(() => {
+    for (let c of data.columns) {
+      if (typeof c?.isDragging === 'boolean') {
+        c.isDragging = false
+      }
+    }
+  }, [])
 
   const renderColumns = () => {
     return ColumnsTitleRender({

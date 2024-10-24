@@ -1,0 +1,45 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.service",
+  "title": "服务接口",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.7",
+  "description": "服务接口",
+  "runtime": "../../../src/_service/runtime.ts",
+  "editors": "../../../src/_service/editors.tsx",
+  "data": "../../../src/_service/data.json",
+  "icon": "../../../src/_service/icon.svg",
+  "rtType": "js-autorun",
+  "inputs": [
+    {
+      "id": "call",
+      "rels": [
+        "then",
+        "catch"
+      ],
+      "title": "调用",
+      "desc": "调用对应服务接口",
+      "schema": {
+        "type": "object"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "then",
+      "title": "结果",
+      "desc": "成功时，接口返回信息",
+      "schema": {
+        "type": "unknown"
+      }
+    },
+    {
+      "id": "catch",
+      "title": "发生错误",
+      "desc": "发生错误时，接口返回信息",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

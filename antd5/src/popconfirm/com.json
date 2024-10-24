@@ -1,0 +1,54 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.popconfirm",
+  "title": "气泡确认框",
+  "version": "1.0.6",
+  "description": "气泡确认框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/popconfirm/icon.png",
+  "data": "../../../src/popconfirm/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/popconfirm/editor.ts",
+  "upgrade": "../../../src/popconfirm/upgrade.ts",
+  "inputs": [
+    {
+      "id": "title",
+      "title": "标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "titleComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onOk",
+      "title": "点击确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "onCancel",
+      "title": "点击取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setTitleComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "拖拽组件到这里"
+    }
+  ]
+}

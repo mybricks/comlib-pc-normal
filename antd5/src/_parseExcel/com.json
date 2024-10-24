@@ -1,0 +1,105 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.parseExcel",
+  "title": "Excel解析",
+  "version": "0.0.5",
+  "rtType": "js",
+  "description": "将excel文件解析成数据",
+  "author": "wufan",
+  "author_name": "吴凡",
+  "data": "../../../src/_parseExcel/data.json",
+  "runtime": "../../../src/_parseExcel/runtime.ts",
+  "editors": "../../../src/_parseExcel/editor.ts",
+  "upgrade": "../../../src/_parseExcel/upgrade.ts",
+  "icon": "../../../src/_parseExcel/icon.svg",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "desc": "需要解析的excel文件数据，格式为数组",
+      "rels": [
+        "parseComplete"
+      ],
+      "schema": [
+        {
+          "title": "输入数据源",
+          "name": "dataSource",
+          "type": "array",
+          "description": "每一项为文件类型的数据",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "excel文件名"
+              },
+              "uid": {
+                "type": "number",
+                "description": "文件唯一标识符"
+              },
+              "size": {
+                "type": "number",
+                "description": "文件大小"
+              },
+              "type": {
+                "type": "string",
+                "description": "文件类型"
+              },
+              "lastModified": {
+                "type": "number",
+                "description": "最后修改时间，时间戳"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "parseComplete",
+      "title": "解析完成",
+      "desc": "解析Excel文件完成后, 输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "filename": {
+              "type": "string",
+              "description": "文件名"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sheetName": {
+                    "type": "string",
+                    "description": "工作表名"
+                  },
+                  "headers": {
+                    "type": "array",
+                    "description": "表头内容数组，设置标题行序号>0 时，会有输出"
+                  },
+                  "fields": {
+                    "type": "array",
+                    "description": "字段名内容数组，excel字段行序号>0 时，会有正确输出"
+                  },
+                  "json": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

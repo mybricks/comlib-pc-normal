@@ -1,0 +1,57 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.spin",
+  "title": "加载中",
+  "version": "1.0.7",
+  "description": "用于页面和区块的加载中状态",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/spin/icon.png",
+  "data": "../../../src/spin/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/spin/editors.tsx",
+  "upgrade": "../../../src/spin/upgrade.ts",
+  "inputs": [
+    {
+      "id": "openLoading",
+      "title": "开始加载",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "openLoadingDone"
+      ]
+    },
+    {
+      "id": "closeLoading",
+      "title": "结束加载",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "closeLoadingDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "openLoadingDone",
+      "title": "开始加载后",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "closeLoadingDone",
+      "title": "结束加载后",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

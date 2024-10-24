@@ -1,0 +1,232 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.list-new",
+  "title": "列表容器",
+  "enable": true,
+  "visibility": true,
+  "version": "1.0.38",
+  "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/list-new/icon.png",
+  "data": "../../../src/list-new/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/list-new/editors.tsx",
+  "upgrade": "../../../src/list-new/upgrade.ts",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "设置数据源",
+      "desc": "设置列表容器数据源，数据结构要求是数组",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "description": "列表容器的数据源，数组格式",
+        "items": {
+          "title": "列项数据",
+          "type": "any"
+        }
+      },
+      "rels": [
+        "setDataSourceDone"
+      ]
+    },
+    {
+      "id": "getdataSource",
+      "title": "获取数据源",
+      "desc": "获取列表容器的数据源",
+      "schema": {
+        "title": "列表数据",
+        "type": "any",
+        "description": "列表容器的数据源，数组格式"
+      },
+      "rels": [
+        "getdataSourceDone"
+      ]
+    },
+    {
+      "id": "addItem",
+      "title": "添加一项",
+      "desc": "默认在末尾添加一项, 支持指定index(合理范围内)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "添加项要放在原数据中的索引"
+          },
+          "value": {
+            "type": "any",
+            "description": "添加项的数据内容"
+          }
+        }
+      },
+      "rels": [
+        "addItemDone"
+      ]
+    },
+    {
+      "id": "removeItem",
+      "title": "删除一项",
+      "desc": "默认在末尾删除一项, 支持指定位置(合理范围内)",
+      "schema": {
+        "type": "number",
+        "description": "删除项在原数据源中的索引"
+      },
+      "rels": [
+        "removeItemDone"
+      ]
+    },
+    {
+      "id": "changeItem",
+      "title": "修改一项(根据index)",
+      "desc": "根据index, 将对应value改为指定值",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "修改项要放在原数据中的索引"
+          },
+          "value": {
+            "type": "any",
+            "description": "被修改项的新值"
+          }
+        }
+      },
+      "rels": [
+        "changeItemDone"
+      ]
+    },
+    {
+      "id": "moveUp",
+      "title": "上移",
+      "desc": "将指定位置的内容上移",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "moveUpDone"
+      ]
+    },
+    {
+      "id": "moveDown",
+      "title": "下移",
+      "desc": "将指定位置的内容下移",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "moveDownDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setDataSourceDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "getdataSourceDone",
+      "title": "获取数据源完成",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "addItemDone",
+      "title": "添加一项完成",
+      "desc": "列表的添加一项输入，触发添加一项完成事件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeItemDone",
+      "title": "删除一项完成",
+      "desc": "列表的删除一项输入，触发删除一项完成完成事件",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "changeItemDone",
+      "title": "修改一项(根据index)完成",
+      "desc": "列表的修改一项输入，触发修改一项完成完成事件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    {
+      "id": "moveUpDone",
+      "title": "上移完成",
+      "desc": "列表的指定位置上移输入，触发上移完成事件",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "moveDownDone",
+      "title": "下移完成",
+      "desc": "列表的指定位置下移输入，触发下移完成事件",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "item",
+      "capacity": 1,
+      "title": "列表项",
+      "description": "列表项作用域插槽，有对应项内容和序号的输入",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "itemData",
+          "title": "当前项",
+          "desc": "当前项展示内容",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "index",
+          "title": "当前项序号",
+          "desc": "当前项展示的序号",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
+    }
+  ]
+}

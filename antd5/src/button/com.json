@@ -1,0 +1,88 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.custom-button",
+  "title": "按钮",
+  "version": "1.0.36",
+  "description": "按钮",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/button/icon.svg",
+  "data": "../../../src/button/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/button/editor/index.tsx",
+  "upgrade": "../../../src/button/upgrade.ts",
+  "ai": "../../../src/button/ai.ts",
+  "inputs": [
+    {
+      "id": "dynamicTitle",
+      "title": "设置标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setDynamicTitleDone"
+      ]
+    },
+    {
+      "id": "dynamicDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setDynamicDisabledDone"
+      ]
+    },
+    {
+      "id": "setDynamicStyle",
+      "title": "设置动态样式",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "background": {
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setDynamicStyleDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "dbClick",
+      "title": "双击",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setDynamicTitleDone",
+      "title": "设置标题完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setDynamicDisabledDone",
+      "title": "设置禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setDynamicStyle",
+      "title": "设置动态样式完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

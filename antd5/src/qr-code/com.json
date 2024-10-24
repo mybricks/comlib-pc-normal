@@ -1,0 +1,60 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.qr-code",
+  "title": "二维码",
+  "version": "1.0.2",
+  "description": "二维码",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/qr-code/icon.png",
+  "data": "../../../src/qr-code/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/qr-code/editors.ts",
+  "upgrade": "../../../src/qr-code/upgrade.ts",
+  "inputs": [
+    {
+      "id": "link",
+      "title": "URL",
+      "schema": {
+        "type": "string"
+      },
+      "desc": "链接地址",
+      "rels": [
+        "setLinkComplete"
+      ]
+    },
+    {
+      "id": "download",
+      "title": "下载二维码",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "下载二维码图片",
+      "rels": [
+        "downloadComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setLinkComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "downloadComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

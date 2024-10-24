@@ -1,0 +1,72 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.json-view",
+  "title": "JSON展示",
+  "version": "1.0.13",
+  "description": "展示JSON数据",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/json-view/icon.svg",
+  "data": "../../../src/json-view/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/json-view/editors.tsx",
+  "upgrade": "../../../src/json-view/upgrade.ts",
+  "inputs": [
+    {
+      "id": "jsonData",
+      "title": "设置数据源",
+      "schema": {
+        "type": "object"
+      },
+      "rels": [
+        "setJsonDataDone"
+      ]
+    },
+    {
+      "id": "getJsonData",
+      "title": "输出数据",
+      "desc": "输出设置的JSON数据源",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "jsonData"
+      ]
+    },
+    {
+      "id": "setExpandDepth",
+      "title": "设置展开深度",
+      "desc": "接收≥-1的数字 -1表示全部展开, 0表示全部折叠",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "setExpandDepthDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "jsonData",
+      "title": "数据输出",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "setJsonDataDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "setExpandDepthDone",
+      "title": "设置展开深度完成",
+      "desc": "接收≥-1的数字 -1表示全部展开, 0表示全部折叠",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ],
+  "slots": []
+}

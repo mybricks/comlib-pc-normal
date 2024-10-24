@@ -1,0 +1,68 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.tips",
+  "title": "确认提示",
+  "version": "1.0.13",
+  "rtType": "js",
+  "description": "确认提示对话框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_confirm/icon.svg",
+  "data": "../../../src/_confirm/data.json",
+  "runtime": "../../../src/_confirm/runtime.ts",
+  "editors": "../../../src/_confirm/editors.ts",
+  "upgrade": "../../../src/_confirm/upgrade.ts",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "弹出",
+      "rels": [
+        "ok",
+        "cancel"
+      ],
+      "desc": "触发确认提示弹出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "标题文案"
+          },
+          "content": {
+            "type": "string",
+            "description": "内容文案"
+          },
+          "cancelText": {
+            "type": "string",
+            "description": "取消按钮文案"
+          },
+          "okText": {
+            "type": "string",
+            "description": "确认按钮文案"
+          },
+          "outputValue": {
+            "type": "any",
+            "description": "输出值内容"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确认",
+      "desc": "点击确认后，输出内容",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancel",
+      "title": "取消",
+      "desc": "点击取消后，输出内容",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}
