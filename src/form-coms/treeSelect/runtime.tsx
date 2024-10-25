@@ -235,7 +235,10 @@ export default function Runtime({
       if (!data.useLoadData) {
         return;
       }
-      const { node, resolve } = curNode.current as any;
+
+      let myCurNode = curNode.current[val[data.valueFieldName]] as any;
+      const { node, resolve } = myCurNode as any;
+      // const { node, resolve } = curNode.current as any;
       data.options = setTreeDataForLoadData(data, node, data.options, val);
       resolve();
       setTreeLoadKeys(uniq([...treeLoadedKeys, `${node.key}`]));
@@ -274,7 +277,12 @@ export default function Runtime({
       }
 
       return new Promise((resolve) => {
-        curNode.current = {
+        // curNode.current = {
+        //   node,
+        //   resolve
+        // };
+
+        curNode.current[node.key] = {
           node,
           resolve
         };

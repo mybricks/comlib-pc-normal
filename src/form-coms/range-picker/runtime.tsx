@@ -83,6 +83,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const valueRef = useRef<any>();
   const [type, setType] = useState<string>('date');
   const [allowDate, setAllowDate] = useState<any>(null);
+  const currentValueRef = useRef<any>(null);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -412,13 +413,30 @@ export default function Runtime(props: RuntimeParams<Data>) {
     onValidateTrigger();
   };
 
-  const onCalendarChange = useCallback((dates) => {
-    setDates(dates);
-    let result = (dates || []).map((item) => {
-      return item ? item.valueOf() : null;
-    });
-    outputs['onCalendarChange'](result);
-  }, []);
+  const onCalendarChange = useCallback(
+    (val) => {
+      let _val = (val || []).map((item) => {
+        return item ? item.valueOf() : null;
+      });
+
+      let result = [null, null];
+
+      if (_val[0] !== currentValueRef.current[0]) {
+        result[0] = _val[0];
+      }
+
+      if (_val[1] !== currentValueRef.current[1]) {
+        result[1] = _val[1];
+      }
+
+      setDates(val);
+      // 输出的时候，只输出当前变化的这一项
+      if (result.filter((item) => item !== null).length === 1) {
+        outputs['onCalendarChange'](result);
+      }
+    },
+    [value]
+  );
 
   const getShowTime = () => {
     if (!data.showTime || typeof data.showTime === 'boolean') {
@@ -452,6 +470,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const onOpenChange = (open: boolean) => {
     if (open) {
+      currentValueRef.current = [
+        value?.[0] ? value[0].valueOf() : null,
+        value?.[1] ? value[1].valueOf() : null
+      ];
       setDates([null, null]);
       outputs['onOpen']();
     } else {

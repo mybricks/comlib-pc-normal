@@ -245,7 +245,9 @@ export default function (props: RuntimeParams<Data>) {
       inputs['setLoadData'] &&
         inputs['setLoadData']((nodeData: TreeData, relOutputs) => {
           if (typeCheck(nodeData, 'OBJECT')) {
-            const { node, resolve } = curentLoadNode.current as any;
+            let myCurentLoadNode = curentLoadNode.current[nodeData[keyFieldName]] as any;
+            const { node, resolve } = myCurentLoadNode as any;
+            // const { node, resolve } = curentLoadNode.current as any;
             const newNodeData = {
               ...nodeData,
               [keyFieldName]: node[keyFieldName]
@@ -677,10 +679,16 @@ export default function (props: RuntimeParams<Data>) {
     }
     const originNode = node['data-origin-node'];
     return new Promise((resolve) => {
-      curentLoadNode.current = {
+      // curentLoadNode.current = {
+      //   node: originNode,
+      //   resolve
+      // };
+
+      curentLoadNode.current[node[keyFieldName]] = {
         node: originNode,
         resolve
       };
+
       outputs['loadData'](originNode);
     });
   };
