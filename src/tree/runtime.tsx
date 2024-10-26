@@ -125,6 +125,10 @@ export default function (props: RuntimeParams<Data>) {
     if (needForceUpdate.current) {
       clearCheckedKeys();
       updateExpandedKeys();
+
+      // 如果 data.treeData 的数据包含了 children，并且 chilren 不为数组，那么这个父节点需要记录到 treeLoadedKeys 中
+      let _treeLoadedKeys = getTreeLoadedKeys(data.treeData, []);
+      setTreeLoadKeys(_treeLoadedKeys);
     }
 
     if (setTreeDataDone?.current) {
@@ -133,6 +137,17 @@ export default function (props: RuntimeParams<Data>) {
     }
 
     needForceUpdate.current = false;
+
+    function getTreeLoadedKeys(treeData: TreeData[], keys: React.Key[]) {
+      treeData.forEach((node) => {
+        if (node.children && Array.isArray(node.children) && node.children.length) {
+          keys.push(node[keyFieldName]);
+          getTreeLoadedKeys(node.children, keys);
+        }
+      });
+      return keys;
+    }
+
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点

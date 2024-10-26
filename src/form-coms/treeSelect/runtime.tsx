@@ -150,8 +150,9 @@ export default function Runtime({
     inputs['setOptions']((ds, outputRels) => {
       if (Array.isArray(ds)) {
         data.options = ds;
-        
-        setTreeLoadKeys([]);
+
+        let _treeLoadedKeys = getTreeLoadedKeys(ds, []);
+        setTreeLoadKeys(_treeLoadedKeys);
         setExpandedKeys(getDefaultExpandKeys());
 
         outputRels['setOptionsDone'](ds);
@@ -159,6 +160,16 @@ export default function Runtime({
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
       setFetching(false);
+
+      function getTreeLoadedKeys(treeData: TreeData[], keys: React.Key[]) {
+        treeData.forEach((node) => {
+          if (node.children && Array.isArray(node.children) && node.children.length) {
+            keys.push(node[data.valueFieldName || 'value']);
+            getTreeLoadedKeys(node.children, keys);
+          }
+        });
+        return keys;
+      }
     });
 
     inputs['setLoading']((val: boolean, outputRels) => {
