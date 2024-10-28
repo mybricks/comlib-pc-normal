@@ -41,7 +41,7 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
             //任务id匹配或者不使用节流
             outputs[val?.__OUTPUT_ID__ ?? 'then'](val?.__ORIGIN_RESPONSE__ ?? val);
           } else {
-            console.log('task id not match');
+            // noop
           }
         })
         .catch((err) => {
@@ -49,7 +49,7 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
             //任务id匹配或者不使用节流
             outputs['catch'](err);
           } else {
-            console.log('task id not match');
+            // noop
           }
         });
     } catch (ex: any) {
