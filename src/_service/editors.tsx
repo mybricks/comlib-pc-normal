@@ -75,6 +75,20 @@ export default {
       }
     },
     {
+      title: '输出节流',
+      description:
+        '开启后，如果上一次请求结果未返回前再次调用接口，则会取消上一次请求，只保留最后一次请求结果',
+      type: 'switch',
+      value: {
+        get({ data }) {
+          return data.useThrottle;
+        },
+        set({ data }, use: boolean) {
+          data.useThrottle = use;
+        }
+      }
+    },
+    {
       title: '数据模拟（调试时）',
       type: 'switch',
       value: {
