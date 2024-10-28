@@ -84,10 +84,13 @@ function ColumnRender(props: ColumnRenderProps) {
     case ContentTypeEnum.Text:
       if (columnItem.ellipsis && String(value)?.trim()?.length > 0) {
         return (
-          <Tooltip placement="topLeft" title={value}>
-            <span className={css.ellipsisWrap}>{value}</span>
-          </Tooltip>
+          <span className={css.ellipsisWrap} title={value}>{value}</span>
         );
+        // return (
+        //   <Tooltip placement="topLeft" title={value}>
+        //     <span className={css.ellipsisWrap}>{value}</span>
+        //   </Tooltip>
+        // );
       } else {
         return value ?? null;
       }
