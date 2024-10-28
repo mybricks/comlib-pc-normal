@@ -287,14 +287,10 @@ export default function Runtime({
 
   const onLoadData = useCallback(
     (node) => {
-      console.warn('onLoadData', node);
-
       if (treeLoadedKeys.includes(node.key)) {
         setTreeLoadKeys(uniq([...treeLoadedKeysRef.current, `${node.key}`]));
         return Promise.resolve();
       }
-
-      console.warn('output', node._depth);
 
       treeLoadedKeysRef.current = uniq([...treeLoadedKeysRef.current, `${node.key}`]);
       // setTreeLoadKeys(uniq([...treeLoadedKeysRef.current, `${node.key}`]));
