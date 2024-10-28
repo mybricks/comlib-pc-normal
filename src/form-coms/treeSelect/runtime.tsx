@@ -32,6 +32,7 @@ export default function Runtime({
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
+  const treeLoadedKeysRef = useRef<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
     label: 'label',
@@ -152,7 +153,9 @@ export default function Runtime({
         data.options = ds;
 
         let _treeLoadedKeys = getTreeLoadedKeys(ds, []);
+        treeLoadedKeysRef.current = _treeLoadedKeys;
         setTreeLoadKeys(_treeLoadedKeys);
+
         setExpandedKeys(getDefaultExpandKeys());
 
         outputRels['setOptionsDone'](ds);
@@ -252,6 +255,7 @@ export default function Runtime({
       // const { node, resolve } = curNode.current as any;
       data.options = setTreeDataForLoadData(data, node, data.options, val);
       resolve();
+      treeLoadedKeysRef.current = uniq([...treeLoadedKeys, `${node.key}`]);
       setTreeLoadKeys(uniq([...treeLoadedKeys, `${node.key}`]));
       relOutputs['setLoadDataDone'](val);
     });
@@ -283,9 +287,17 @@ export default function Runtime({
 
   const onLoadData = useCallback(
     (node) => {
+      console.warn('onLoadData', node);
+
       if (treeLoadedKeys.includes(node.key)) {
+        setTreeLoadKeys(uniq([...treeLoadedKeysRef.current, `${node.key}`]));
         return Promise.resolve();
       }
+
+      console.warn('output', node._depth);
+
+      treeLoadedKeysRef.current = uniq([...treeLoadedKeysRef.current, `${node.key}`]);
+      // setTreeLoadKeys(uniq([...treeLoadedKeysRef.current, `${node.key}`]));
 
       return new Promise((resolve) => {
         // curNode.current = {
@@ -293,10 +305,19 @@ export default function Runtime({
         //   resolve
         // };
 
+        if (node.children && node.children.length > 0) {
+          resolve();
+          return;
+        }
+
         curNode.current[node.key] = {
           node,
           resolve
         };
+
+        if (!node._depth) {
+          return;
+        }
 
         outputs['loadData']({
           ...node,
