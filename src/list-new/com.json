@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -26,9 +26,7 @@
           "type": "any"
         }
       },
-      "rels": [
-        "setDataSourceDone"
-      ]
+      "rels": ["setDataSourceDone"]
     },
     {
       "id": "getdataSource",
@@ -39,9 +37,7 @@
         "type": "any",
         "description": "列表容器的数据源，数组格式"
       },
-      "rels": [
-        "getdataSourceDone"
-      ]
+      "rels": ["getdataSourceDone"]
     },
     {
       "id": "addItem",
@@ -60,9 +56,7 @@
           }
         }
       },
-      "rels": [
-        "addItemDone"
-      ]
+      "rels": ["addItemDone"]
     },
     {
       "id": "removeItem",
@@ -72,9 +66,7 @@
         "type": "number",
         "description": "删除项在原数据源中的索引"
       },
-      "rels": [
-        "removeItemDone"
-      ]
+      "rels": ["removeItemDone"]
     },
     {
       "id": "changeItem",
@@ -93,9 +85,7 @@
           }
         }
       },
-      "rels": [
-        "changeItemDone"
-      ]
+      "rels": ["changeItemDone"]
     },
     {
       "id": "moveUp",
@@ -104,9 +94,7 @@
       "schema": {
         "type": "number"
       },
-      "rels": [
-        "moveUpDone"
-      ]
+      "rels": ["moveUpDone"]
     },
     {
       "id": "moveDown",
@@ -115,9 +103,7 @@
       "schema": {
         "type": "number"
       },
-      "rels": [
-        "moveDownDone"
-      ]
+      "rels": ["moveDownDone"]
     }
   ],
   "outputs": [

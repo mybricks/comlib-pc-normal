@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState, useRef } from 'react';
 import { Data, InputIds, Layout, OutputIds } from './constants';
 import { checkIfMobile, uuid } from '../utils';
 import debounce from 'lodash/debounce';
@@ -21,6 +21,7 @@ const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {
   let { grid, useLoading, useGetDataSource } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
+  const datasourceRef = useRef([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   const isMobile = checkIfMobile(env);
@@ -45,13 +46,16 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         };
       });
       setDataSource(data.dataSource);
+      datasourceRef.current = data.dataSource;
     }
   }, []);
 
   //设置数据源输入及loading状态设置
   useEffect(() => {
     if (env.edit) {
-      setDataSource([{ id: 1, [rowKey]: uuid() }]);
+      let mock = [{ id: 1, [rowKey]: uuid() }];
+      setDataSource(mock);
+      datasourceRef.current = mock;
     }
 
     if (env.runtime) {
@@ -64,6 +68,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
           }));
           data.dataSource = ds;
           setDataSource(ds);
+          datasourceRef.current = ds;
           relOutputs['setDataSourceDone'](ds);
         }
         setLoading(false);
@@ -80,10 +85,10 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.GetDataSource]((val, relOutputs) => {
-        relOutputs?.["getdataSourceDone"](dataSource);
+        relOutputs?.[OutputIds.GetDataSource](datasourceRef.current);
       });
     }
-  }, [dataSource]);
+  }, []);
   //添加一项
   useEffect(() => {
     if (env.runtime) {
@@ -96,6 +101,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
 
         data.dataSource = newDataSource;
         setDataSource(newDataSource);
+        datasourceRef.current = newDataSource;
         relOutputs['addItemDone'](v);
       });
     }
@@ -112,6 +118,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
 
         data.dataSource = newDataSource;
         setDataSource(newDataSource);
+        datasourceRef.current = newDataSource;
         relOutputs['removeItemDone'](v);
       });
     }
@@ -130,6 +137,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
             newDataSource = changeItem(newDataSource, v, data.rowKey);
             data.dataSource = newDataSource;
             setDataSource(newDataSource);
+            datasourceRef.current = newDataSource;
             relOutputs['changeItemDone'](v);
           } else {
             logger.error('未指定value（改动值）');
@@ -151,6 +159,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
           newDataSource = upMove(newDataSource, v);
           data.dataSource = newDataSource;
           setDataSource(newDataSource);
+          datasourceRef.current = newDataSource;
           relOutputs['moveUpDone'](v);
         } else {
           logger.error('指定index不在合理范围内');
@@ -169,6 +178,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
           newDataSource = downMove(newDataSource, v);
           data.dataSource = newDataSource;
           setDataSource(newDataSource);
+          datasourceRef.current = newDataSource;
           relOutputs['moveDownDone'](v);
         } else {
           logger.error('指定index不在合理范围内');
@@ -199,7 +209,9 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
   }, []);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setDataSource(arrayMove(dataSource, oldIndex, newIndex));
+    let newDataSource = arrayMove(dataSource, oldIndex, newIndex);
+    setDataSource(newDataSource);
+    datasourceRef.current = newDataSource;
     if (data.canSort) {
       outputs[OutputIds.SortComplete](arrayMove(dataSource, oldIndex, newIndex));
     }
