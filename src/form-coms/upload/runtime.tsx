@@ -6,6 +6,7 @@ import { RuleKeys, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import cls from 'classnames';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { slotInputIds } from '../form-container/constants';
 
 import css from './runtime.less';
 import { OutputIds, ValidateInfo } from '../types';
@@ -104,6 +105,7 @@ export default function ({
     // ≥ v1.0.34 设置上传结果
     slots['customUpload']?.outputs['setFileInfo']?.((file) => {
       onUploadComplete(file);
+      parentSlot?._inputs[slotInputIds.VALIDATE_TRIGGER]?.({ id: id, name: name });
     });
 
     inputs['setValue']?.((val: UploadFile[], relOutputs) => {

@@ -62,8 +62,7 @@ export default {
       {
         title: '标题',
         options: ['font'],
-        target: ({ id }: EditorResult<Data>) =>
-          `.card  .ant-card-head-title${getFilterSelector(id)}`
+        target: ({ id }: EditorResult<Data>) => `.card .ant-card-head-title${getFilterSelector(id)}`
       },
       {
         title: '边框',
