@@ -16,7 +16,7 @@ const editAnchorData = [
   { [rowKey]: 3, item: { title: '锚点3' } }
 ];
 
-export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Data>) => {
+export default ({id, data, inputs, slots, env, outputs, logger }: RuntimeParams<Data>) => {
   let { useLoading } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
@@ -73,7 +73,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
               : data.staticData[val.index];
         }
         let anchorId = data.useDynamicData ? anchorTarget[rowKey] : anchorTarget.id;
-        innerScrollToAnchor(`mybricks-anchor-${anchorId}`);
+        innerScrollToAnchor(`mybricks-anchor-${id}-${anchorId}`);
 
         relOutputs[`${InputIds.SET_ACTIVE_ANCHOR}Done`](val);
       });
@@ -91,7 +91,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     const { [rowKey]: key, index: index, item: item } = itemProps;
 
     return (
-      <List.Item key={key} id={`mybricks-anchor-${key}`}>
+      <List.Item key={key} id={`mybricks-anchor-${id}-${key}`}>
         {/* 当前项数据和索引 */}
         {slots['item']?.render({
           inputValues: {
@@ -124,7 +124,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
           />
         ) : (
           data.staticData.map((item, index) => (
-            <div key={item.id} id={`mybricks-anchor-${item.id}`}>
+            <div key={item.id} id={`mybricks-anchor-${id}-${item.id}`}>
               {slots[item.id]?.render({ key: item.id })}
             </div>
           ))
@@ -149,12 +149,12 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
               : dataSource.map((i) => (
                   <Link
                     key={i[rowKey]}
-                    href={`#mybricks-anchor-${i[rowKey]}`}
+                    href={`#mybricks-anchor-${id}-${i[rowKey]}`}
                     title={i.item.title}
                   />
                 ))
             : data.staticData.map((i) => (
-                <Link key={i.id} href={`#mybricks-anchor-${i.id}`} title={i.title} />
+                <Link key={i.id} href={`#mybricks-anchor-${id}-${i.id}`} title={i.title} />
               ))}
         </Anchor>
       </Col>
