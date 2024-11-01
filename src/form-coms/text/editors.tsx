@@ -304,7 +304,7 @@ export default {
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: ['.ant-input-affix-wrapper-disabled']
+                target: ['.ant-input-affix-wrapper-disabled', '.ant-input-affix-wrapper-disabled .ant-input[disabled]']
               }
             ]
           })
