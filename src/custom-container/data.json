@@ -7,5 +7,6 @@
   "legacyStyle": {},
   "isAutoScroll": false,
   "direction": "vertical",
-  "scrollTime": 2000
+  "scrollTime": 2000,
+  "eventBubble": false
 }

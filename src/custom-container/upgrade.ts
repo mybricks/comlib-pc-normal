@@ -195,5 +195,15 @@ export default function ({
   }
   //=========== v1.0.43 end ===============
 
+  /**
+   * @description v1.0.44 新增禁止冒泡开关
+  */
+
+  if(typeof data.eventBubble === 'undefined') {
+    data.eventBubble = false
+  }
+
+  //=========== v1.0.44 end ===============
+
   return true;
 }

@@ -69,6 +69,22 @@ export default {
             }
           }
         },
+        {
+          items: [
+            {
+              title: '禁止冒泡',
+              description: '默认关闭，阻止多选框的点击事件冒泡',
+              type:'switch',
+              value: {
+                get({ data }) {
+                  return data.eventBubble;
+                },
+                set({ data }, value: boolean) {
+                  data.eventBubble = value;
+                }}
+            }
+          ]
+        },
         ...EventEditor,
         ...AutoScrollEditor,
         ...PageScrollEditor,
