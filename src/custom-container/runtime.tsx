@@ -191,6 +191,12 @@ export default function (props: RuntimeParams<Data>) {
     );
   };
 
+  const onBubbleClick = (e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    outputs[OutputIds.Click]?.();
+  };
+
   return (
     <div
       id={data?.id}
@@ -202,7 +208,7 @@ export default function (props: RuntimeParams<Data>) {
         ...legacyStyle,
         ...dynamicStyle
       }}
-      onClick={() => {
+      onClick={data.eventBubble ? onBubbleClick : () => {
         outputs[OutputIds.Click]?.();
       }}
       onMouseEnter={() => {

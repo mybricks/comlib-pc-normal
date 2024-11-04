@@ -58,4 +58,6 @@ export interface Data {
   isAutoScroll: boolean;
   direction: 'horizontal'|'vertical';
   scrollTime: number;
+
+  eventBubble: boolean
 }
