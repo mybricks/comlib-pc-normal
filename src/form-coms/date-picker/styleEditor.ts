@@ -331,7 +331,7 @@ const styleEditor = [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: '.ant-picker.ant-picker-disabled'
+                target: ['.ant-picker.ant-picker-disabled', '.ant-picker.ant-picker-disabled input[disabled]']
               },
               {
                 title: '确认按钮',
