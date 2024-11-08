@@ -361,6 +361,13 @@ export default function ({
     return res;
   })();
 
+  const AddIcon = () => {
+    if (data.useAddIcon && slots[SlotIds.AddIcon]) {
+      return slots[SlotIds.AddIcon].render();
+    }
+    return undefined;
+  }
+
   return (
     <div
       className={cx([
@@ -379,6 +386,7 @@ export default function ({
         tabPosition={data.tabPosition}
         onChange={handleClickItem}
         size={data.size || 'middle'}
+        addIcon={data.useAddIcon ? <AddIcon /> : undefined}
         hideAdd={data.hideAdd}
         onEdit={env.edit ? undefined : onEdit}
         tabBarExtraContent={tabBarExtraContent}

@@ -57,6 +57,7 @@ export interface Data {
 
   useLeftExtra?: boolean;
   useRigthExtra?: boolean;
+  useAddIcon?: boolean;
   // 是否动态设置显示tab
   useDynamicTab?: boolean;
   /** @description 1.0.14 隐藏时渲染 */
@@ -80,7 +81,8 @@ export interface Data {
 
 export enum SlotIds {
   LeftExtra = 'leftExtra',
-  RigthExtra = 'rigthExtra'
+  RigthExtra = 'rigthExtra',
+  AddIcon = 'addIcon',
 }
 
 export enum InputIds {

@@ -269,6 +269,28 @@ export default {
           }
         },
         {
+          title: '新增插槽',
+          type: 'switch',
+          description: '开启后，可以通过插槽配置新增按钮',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.type === 'editable-card' && !data.hideAdd;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useAddIcon;
+            },
+            set({ data, slot }: EditorResult<Data>, val: boolean) {
+              data.useAddIcon = val;
+              const hasSlot = slot.get(SlotIds.AddIcon);
+              if (val) {
+                !hasSlot && slot.add(SlotIds.AddIcon, '新增按钮');
+              } else {
+                hasSlot && slot.remove(SlotIds.AddIcon);
+              }
+            }
+          }
+        },
+        {
           title: '可删除',
           type: 'switch',
           description: '开启后，可以点击删除按钮删除标签页',

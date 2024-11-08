@@ -1,3 +1,10 @@
+## [1.0.56] - 2024-11-8
+
+### Feat
+
+- 新增按钮增加插槽配置（commit: f0c70d4bce6bf41b93bf864d6d1349bd26dd2dc0
+- 标签样式调整（commit: f0c70d4bce6bf41b93bf864d6d1349bd26dd2dc0
+
 ## [1.0.51] - 2024-9-4
 
 ### Fix
