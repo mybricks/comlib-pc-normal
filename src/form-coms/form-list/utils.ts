@@ -175,7 +175,9 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       Object.keys(childrenStore).forEach((key) => {
         if (!childrenStore[key]) return;
 
-        data.items.forEach((item) => {
+        data.items.filter((item) => {
+          return childrenStore[key][item.comName]
+        }).forEach((item) => {
           const { id, name, comName, label } = item;
           const { index, inputs, visible } = childrenStore[key][comName];
           if (!allValues[index]) {
