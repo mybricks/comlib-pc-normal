@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.comlib-template-compute.antd5._list-form-item",
+  "namespace": "mybricks.comlib-template-compute._list-form-item",
   "title": "获取表单项列表",
   "version": "1.0.2",
   "description": "输出所有可用的表单项信息列表",

@@ -64,6 +64,11 @@ export default function MyComponent({
       footer={!useFooter ? null : undefined}
       closable={closable}
       getContainer={!(edit || runtime.debug) ? () => env?.canvasElement || document.body : false}
+      styles={{
+        content: {
+          paddingTop: 36
+        }
+      }}
     >
       {data.useTop && slots?.[SlotIds.TOP_WORKSPACE] && (
         <div>{slots?.[SlotIds.TOP_WORKSPACE]?.render()}</div>

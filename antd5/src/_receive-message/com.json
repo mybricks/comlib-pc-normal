@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.receive-message",
+  "namespace": "mybricks.normal-pc.receive-message",
   "title": "postMessage获取",
   "version": "1.0.1",
   "rtType": "js-autorun",

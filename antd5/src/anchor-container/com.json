@@ -1,9 +1,9 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.anchor-container",
+  "namespace": "mybricks.normal-pc.anchor-container",
   "title": "锚点容器",
   "enable": true,
   "visibility": true,
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "锚点容器",
   "author": "Mybricks",
   "author_name": "Mybricks",

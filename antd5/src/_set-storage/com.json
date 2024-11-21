@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.set-storage",
+  "namespace": "mybricks.normal-pc.set-storage",
   "title": "设置Storage数据",
   "version": "1.0.2",
   "rtType": "js",

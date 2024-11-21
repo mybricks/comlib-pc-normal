@@ -1,6 +1,10 @@
 {
-  "name": "通用PC组件库(antd5)",
-  "namespace": "mybricks.normal-pc.antd5",
+  "previous": {
+    "name": "通用PC组件库(antd5)",
+    "namespace": "mybricks.normal-pc.antd5"
+  },
+  "name": "通用PC组件库",
+  "namespace": "@mybricks/comlib-pc-normal",
   "commitInfo": "update",
   "version": "1.0.0",
   "comAry": [
@@ -151,6 +155,15 @@
       "library": "antdCssinjs",
       "urls": [
         "public/antd/cssinjs.min.js"
+      ]
+    },
+    {
+      "name": "moment",
+      "library": "dayjs",
+      "version": "1.11.13",
+      "urls": [
+        "public/dayjs/dayjs@1.11.13.min.js",
+        "public/dayjs/locale/zh-cn.min.js"
       ]
     },
     {

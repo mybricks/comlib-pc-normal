@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.get-storage",
+  "namespace": "mybricks.normal-pc.get-storage",
   "title": "获取Storage数据",
   "version": "1.0.4",
   "rtType": "js-autorun",

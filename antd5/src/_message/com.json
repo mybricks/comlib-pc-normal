@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.message",
+  "namespace": "mybricks.normal-pc.message",
   "title": "消息提示",
   "version": "1.0.5",
   "rtType": "js",
