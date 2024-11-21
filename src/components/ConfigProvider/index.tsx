@@ -19,6 +19,9 @@ const LocaleProvider = ({
   if (window.moment) {
     window.moment.locale(locale as string);
   }
+  if (window.dayjs) {
+    window.dayjs.locale(locale);
+  }
   const antdLocaleKey = useMemo(() => {
     const localeArr = locale.split('-');
     if (localeArr.length <= 1) {
