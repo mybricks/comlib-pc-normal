@@ -179,22 +179,22 @@ export default function Runtime({
         const newOptions = data.customField
           ? ds.map((item) => {
               return {
-                ...(item[fieldNames.value]
+                ...(fieldNames.value in item
                   ? {
                       value: item[fieldNames.value]
                     }
                   : {}),
-                ...(item[fieldNames.label]
+                ...(fieldNames.label in item
                   ? {
                       label: item[fieldNames.label]
                     }
                   : {}),
-                ...(item[fieldNames.disabled]
+                ...(fieldNames.disabled in item
                   ? {
                       disabled: item[fieldNames.disabled]
                     }
                   : {}),
-                ...(item[fieldNames.checked]
+                ...(fieldNames.checked in item
                   ? {
                       checked: item[fieldNames.checked]
                     }
