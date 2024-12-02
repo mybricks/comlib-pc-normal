@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.post-message",
+  "namespace": "mybricks.normal-pc.post-message",
   "title": "postMessage发送",
   "version": "1.0.2",
   "rtType": "js",

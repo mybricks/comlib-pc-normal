@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.antd5.bottom-bar",
+  "namespace": "mybricks.bottom-bar",
   "title": "置底工具栏",
   "enable": true,
   "version": "1.0.7",

@@ -1,9 +1,9 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.service",
+  "namespace": "mybricks.normal-pc.service",
   "title": "服务接口",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "服务接口",
   "runtime": "../../../src/_service/runtime.ts",
   "editors": "../../../src/_service/editors.tsx",

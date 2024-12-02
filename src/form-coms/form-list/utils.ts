@@ -175,7 +175,9 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       Object.keys(childrenStore).forEach((key) => {
         if (!childrenStore[key]) return;
 
-        data.items.forEach((item) => {
+        data.items.filter((item) => {
+          return childrenStore[key][item.comName]
+        }).forEach((item) => {
           const { id, name, comName, label } = item;
           const { index, inputs, visible } = childrenStore[key][comName];
           if (!allValues[index]) {
@@ -347,8 +349,11 @@ export function setValuesOfChild({
     && data.disabled) {
     extraAction = InputIds.SetDisabled;
   }
-  const names = data.items.map(item => item.name);
+
   if (key !== undefined) {
+    const names = data.items.filter((item) => {
+      return childrenStore[key][item.comName]
+    }).map(item => item.name);
     names.forEach((name, inx) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
       const isLast = (inx === names.length - 1);

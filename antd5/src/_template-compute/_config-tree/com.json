@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.comlib-template-compute.antd5._config_tree",
+  "namespace": "mybricks.comlib-template-compute._config_tree",
   "title": "配置树",
   "version": "1.0.0",
   "description": "配置树状图",

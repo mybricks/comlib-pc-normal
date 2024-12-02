@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.form-addition-container",
+  "namespace": "mybricks.normal-pc.form-addition-container",
   "title": "自定义内容项",
   "version": "1.0.0",
   "description": "添加一些非表单项的展示内容",

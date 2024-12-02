@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.events",
+  "namespace": "mybricks.normal-pc.events",
   "title": "应用事件",
   "version": "1.0.1",
   "rtType": "js",

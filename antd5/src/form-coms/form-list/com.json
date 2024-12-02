@@ -1,9 +1,9 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.form-list",
+  "namespace": "mybricks.normal-pc.form-list",
   "title": "动态表单项",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.2.45",
+  "version": "1.2.47",
   "description": "可以动态增加、删除的组合表单项，数据格式为数组",
   "icon": "../../../../src/form-coms/form-list/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",

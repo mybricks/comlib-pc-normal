@@ -268,7 +268,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.fields.forEach((field) => {
         const { name, key } = field;
         const fieldFormItems = childrenStore[key];
-        const fieldPromise = data.items.map((item) => {
+        const fieldPromise = data.items.filter((item) => {
+          return fieldFormItems[item.comName]
+        }).map((item) => {
           const { index, inputs, visible } = fieldFormItems[item.comName];
           if (!data.submitHiddenFields && !visible) {
             // 隐藏的表单项，不再校验
@@ -303,7 +305,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         values[name] = {};
       }
       const fieldFormItems = childrenStore[key];
-      data.items.map((item) => {
+      data.items.filter((item) => {
+        return fieldFormItems[item.comName]
+      }).map((item) => {
         const { visible } = fieldFormItems[item.comName];
         if (data.submitHiddenFields || visible) {
           values[name][item.name] = data.value?.[name]?.[item.name];

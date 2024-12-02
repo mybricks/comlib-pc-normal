@@ -53,7 +53,8 @@ const TraversalComAry = (comAry, antd5ComAry) => {
       const split = namespace.split(".");
       split.splice(split.length - 1, 0, "antd5");
       const antd5Json = {
-        namespace: split.join(".")
+        // namespace: split.join(".")
+        namespace
       }
       const isUi = !json.rtType; // 没有rtType是ui组件;
       Object.entries(other).forEach(([key, value]) => {
@@ -64,19 +65,24 @@ const TraversalComAry = (comAry, antd5ComAry) => {
               if (key === "runtime") {
                 if (isUi) {
                   antd5Json[key] = "./runtime.tsx";
+                  // createFileWithDirs(path.resolve(antd5JsonPath, "../runtime.tsx"), `
+                  //   import React, { useRef } from "react";
+                  //   import { StyleProvider } from "@ant-design/cssinjs";
+                  //   import Runtime from "${getRelativePath(antd5JsonPath, filePath)}";
+
+                  //   export default function (props) {
+                  //     const container = useRef((props.env.edit || props.env.runtime.debug) ? document.querySelector("#_mybricks-geo-webview_")!.shadowRoot : null);
+                  //     return (
+                  //       <StyleProvider container={container.current!} hashPriority="high">
+                  //         <Runtime {...props} />
+                  //       </StyleProvider>
+                  //     )
+                  //   }
+                  // `);
                   createFileWithDirs(path.resolve(antd5JsonPath, "../runtime.tsx"), `
-                    import React, { useRef } from "react";
-                    import { StyleProvider } from "@ant-design/cssinjs";
                     import Runtime from "${getRelativePath(antd5JsonPath, filePath)}";
 
-                    export default function (props) {
-                      const container = useRef((props.env.edit || props.env.runtime.debug) ? document.querySelector("#_mybricks-geo-webview_")!.shadowRoot : null);
-                      return (
-                        <StyleProvider container={container.current!} hashPriority="high">
-                          <Runtime {...props} />
-                        </StyleProvider>
-                      )
-                    }
+                    export default Runtime
                   `);
                 } else {
                   antd5Json[key] = getRelativePath(antd5JsonPath, filePath);

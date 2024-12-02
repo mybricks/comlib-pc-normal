@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.props",
+  "namespace": "mybricks.normal-pc.props",
   "title": "主应用参数",
   "version": "1.0.2",
   "rtType": "js-autorun",

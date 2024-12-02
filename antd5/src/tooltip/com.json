@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.tooltip",
+  "namespace": "mybricks.normal-pc.tooltip",
   "title": "文字提示",
   "version": "1.0.15",
   "description": "文本提示组件",
