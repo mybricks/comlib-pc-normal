@@ -357,7 +357,7 @@ export function setValuesOfChild({
     names.forEach((name, inx) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
       const isLast = (inx === names.length - 1);
-      if (item) {
+      if (item && (name in value)) {
         const { inputs, index } = childrenStore[key][item.comName];
         inputs[inputId] && inputs[inputId](deepCopy(value[name]))
         [inputDoneId]?.(val => {
