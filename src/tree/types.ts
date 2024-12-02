@@ -41,6 +41,14 @@ export interface IconType {
   displayExpression?: string
 }
 
+export interface ColorType {
+  title: string,
+  color: string,
+  displayRule: 'default' | 'dynamic',
+  displayExpression?: string
+}
+
+
 export interface Data {
   jsonData: string;
   isEditing: string;
@@ -84,6 +92,8 @@ export interface Data {
   } & DropDownProps;
   /** 节点icon配置 */
   icons: IconType[];
+  /** 节点颜色配置 */
+  colors: ColorType[];
   /**
    * @deprecated 于版本 1.0.18 被弃用
    */
