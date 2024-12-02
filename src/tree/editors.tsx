@@ -9,7 +9,8 @@ import {
   DELETE_BTN_ID,
   IconSrcType,
   IconType,
-  ValueType
+  ValueType,
+  ColorType
 } from './types';
 import { DefaultFieldName, InputIds, OutputIds } from './constants';
 import {
@@ -1308,6 +1309,71 @@ export default {
                 },
                 set({ data }: EditorResult<Data>, val: Array<IconType>) {
                   data.icons = val;
+                }
+              }
+            }
+          ]
+        },
+        {
+          title: '节点颜色',
+          items: [
+            {
+              type: 'array',
+              description: `节点颜色显示表达式约定以“node”开头, node表示当前节点, 如{node.isLeaf}: 当前节点为叶子节点时显示`,
+              options: {
+                addText: '添加颜色配置',
+                editable: true,
+                getTitle(item) {
+                  return `${item.title} ${item.displayExpression}`;
+                },
+                onAdd(): ColorType {
+                  return {
+                    title: '节点颜色',
+                    color: '#000000',
+                    displayRule: 'default',
+                    displayExpression: ''
+                  };
+                },
+                items: [
+                  {
+                    title: '名称',
+                    type: 'text',
+                    value: 'title'
+                  },
+                  {
+                    title: '颜色',
+                    type: 'colorPicker',
+                    value: 'color'
+                  },
+                  {
+                    title: '应用节点',
+                    type: 'Radio',
+                    options: [
+                      { label: '所有节点', value: 'default' },
+                      { label: '自定义节点', value: 'dynamic' }
+                    ],
+                    value: 'displayRule'
+                  },
+                  {
+                    title: '动态显示表达式',
+                    type: 'expression',
+                    options: {
+                      suggestions,
+                      placeholder: `例：{node.isLeaf} 图标应用在叶子节点上`
+                    },
+                    ifVisible(item: any) {
+                      return item.displayRule === 'dynamic';
+                    },
+                    value: 'displayExpression'
+                  }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [...(data.colors || [])];
+                },
+                set({ data }: EditorResult<Data>, val: Array<ColorType>) {
+                  data.colors = val;
                 }
               }
             }

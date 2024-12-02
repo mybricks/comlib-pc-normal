@@ -3,7 +3,7 @@ import { Input, Image, Tooltip, TreeNodeProps, Popover, Spin } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { deepCopy } from '../../../utils';
-import { Data, IconType, MODIFY_BTN_ID } from '../../types';
+import { ColorType, Data, IconType, MODIFY_BTN_ID } from '../../types';
 import { InputIds, OutputIds } from '../../constants';
 import { getFieldNames } from '../../utils';
 import ActionBtns from './ActionBtn';
@@ -38,22 +38,22 @@ export const renderTitle = (
     }
   };
   /**
-   * 计算图标动态显示表达式
+   * 计算动态显示表达式
    * @param item 节点数据
-   * @param icon 图标数据
+   * @param icon 动态数据数据
    */
-  const getDynamicDisplay = (item: TreeNodeProps, icon: IconType): boolean => {
+  const getDynamicDisplay = (item: TreeNodeProps, data: IconType | ColorType): boolean => {
     let dynamicDisplay = true;
 
-    if (icon.displayRule === 'dynamic' && icon.displayExpression) {
+    if (data.displayRule === 'dynamic' && data.displayExpression) {
       const context = {
         ...item
       };
       const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
       try {
-        dynamicDisplay = sandbox.executeWithTemplate(icon.displayExpression);
+        dynamicDisplay = sandbox.executeWithTemplate(data.displayExpression);
       } catch (error: any) {
-        onError?.(`树[${icon.title}]图标: ${error}`);
+        onError?.(`树[${data.title}]: ${error}`);
       }
     }
     return dynamicDisplay;
@@ -91,9 +91,21 @@ export const renderTitle = (
     return Icon;
   };
 
+  /**
+   * 树节点颜色渲染
+   * @param item 节点数据
+   * @returns Object
+   */
+  const getNodeColor = (item) => {
+    const colors = data.colors?.find((i) => getDynamicDisplay(item, i));
+    const color = colors?.color
+    return color ? { color } : {};
+  };
+
   const title = env.i18n(item[titleFieldName] || '');
 
   const Icon = getNodeIcon(outputItem);
+  const colorObj = getNodeColor(outputItem);
 
   // 搜索
   const index = title?.indexOf(data.searchValue);
@@ -180,6 +192,7 @@ export const renderTitle = (
       >
         <div
           className={`${css.wrapper} ${data.useCompactTheme ? css.singleCompact : ''}`}
+          style={colorObj}
           onMouseEnter={(e) => onMouseEnter(e, item)}
         >
           {Title}
@@ -190,7 +203,7 @@ export const renderTitle = (
     );
   }
   return (
-    <div className={`${css.wrapper} ${data.useCompactTheme ? css.singleCompact : ''}`}>
+    <div className={`${css.wrapper} ${data.useCompactTheme ? css.singleCompact : ''}`} style={colorObj}>
       {Title}
       {editInput}
       {actionBtns}
