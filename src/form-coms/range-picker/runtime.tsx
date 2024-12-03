@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { DatePicker } from 'antd';
+import { DatePicker, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -300,6 +300,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
       // forchUpdate((count) => count + 1);
       outputRels['setDisabledDateRulesDone'](val);
     });
+
+    //设置日期选择类型
+    inputs['setDateType']((val, outputRels) => {
+      const dateType = ['date', 'week', 'month', 'quarter', 'year'];
+      if (dateType.includes(val)) {
+        data.config.picker = val;
+        outputRels['setDateTypeDone'](val);
+      } else {
+        message.error('日期类型不正确');
+      }
+    });
+
   }, [value]);
 
   useEffect(() => {

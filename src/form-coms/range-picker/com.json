@@ -320,6 +320,39 @@
       "rels": [
         "setDisabledDateRulesDone"
       ]
+    },
+    {
+      "id": "setDateType",
+      "title": "设置日期选择类型",
+      "desc": "设置日期选择类型",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "date"
+          },
+          {
+            "type": "string",
+            "value": "week"
+          },
+          {
+            "type": "string",
+            "value": "month"
+          },
+          {
+            "type": "string",
+            "value": "quarter"
+          },
+          {
+            "type": "string",
+            "value": "year"
+          }
+        ]
+      },
+      "rels": [
+        "setDateTypeDone"
+      ]
     }
   ],
   "outputs": [
@@ -546,6 +579,36 @@
       "desc": "日期范围选择框弹出日历时触发",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "setDateTypeDone",
+      "title": "设置日期选择类型完成",
+      "desc": "设置日期选择类型事件完成，输出日期选择类型",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "date"
+          },
+          {
+            "type": "string",
+            "value": "week"
+          },
+          {
+            "type": "string",
+            "value": "month"
+          },
+          {
+            "type": "string",
+            "value": "quarter"
+          },
+          {
+            "type": "string",
+            "value": "year"
+          }
+        ]
       }
     }
   ],
