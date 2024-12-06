@@ -167,13 +167,6 @@ const SlotContent = (
                 cb();
               }
               break;
-            case 'setInitialValue':
-              if (data.userAction.startIndex === -1) {
-                // data.userAction.type = '';
-                data.userAction.key = -1;
-              }
-              setValuesForInput({ data, childrenStore });
-              break;
             default:
               setValuesForInput({ data, childrenStore });
           }
