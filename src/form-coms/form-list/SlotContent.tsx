@@ -169,7 +169,7 @@ const SlotContent = (
               break;
             case 'setInitialValue':
               if (data.userAction.startIndex === -1) {
-                data.userAction.type = '';
+                // data.userAction.type = '';
                 data.userAction.key = -1;
               }
               setValuesForInput({ data, childrenStore });
