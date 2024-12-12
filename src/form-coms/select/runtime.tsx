@@ -312,7 +312,10 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value == undefined) {
-      value = data.config.mode === "default" ? "" : [];
+      if (data.config.mode !== "default") {
+        // 模式为多选和标签时，默认值为空数组
+        value = []
+      }
     }
     setValue(value);
     valueRef.current = value;
