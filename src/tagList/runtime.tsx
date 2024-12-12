@@ -95,7 +95,7 @@ const DefaultTag = ({
 
   const handleInputConfirm = (e) => {
     const inputValue = e.target.value;
-    if (!!inputValue) {
+    if (!!inputValue && inputVisible) {
       if (!!tags.find((tag) => tag.content === inputValue)) {
         message.warn('标签已存在');
         return;
