@@ -70,6 +70,7 @@ const DefaultTag = ({
     }
   } = data;
   const [inputVisible, setInputVisible] = useState(false);
+  const [hasTriggered, setHasTriggered] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const onTagClose = (index: number, tag: TagType) => {
     if (env.edit) return;
@@ -94,10 +95,13 @@ const DefaultTag = ({
   }, [inputVisible]);
 
   const handleInputConfirm = (e) => {
+    if (hasTriggered) return;
+    setHasTriggered(true);
     const inputValue = e.target.value;
-    if (!!inputValue && inputVisible) {
+    if (!!inputValue) {
       if (!!tags.find((tag) => tag.content === inputValue)) {
         message.warn('标签已存在');
+        setHasTriggered(false); // 处理完后释放
         return;
       }
       const newTag = createTag(inputValue);
@@ -105,6 +109,7 @@ const DefaultTag = ({
       outputs['onChange']({ changed: { ...newTag, index: data.tags.length }, allTag: data.tags });
     }
     setInputVisible(false);
+    setTimeout(() => setHasTriggered(false), 100);
   };
 
   const appendJsx = useMemo(() => {
@@ -116,7 +121,7 @@ const DefaultTag = ({
           type="text"
           size="small"
           style={{ width: 80 }}
-          onBlur={handleInputConfirm}
+          onBlur={(e) => !hasTriggered && handleInputConfirm(e)}
           onPressEnter={handleInputConfirm}
         />
       );
