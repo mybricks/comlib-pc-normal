@@ -112,7 +112,17 @@ export default {
               {
                 title: "展开图标",
                 options: [
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontFamily: true,
+                      disableTextAlign: true,
+                      disableFontWeight: true,
+                      disableLineHeight: true,
+                      disableLetterSpacing: true,
+                      disableFontSize: true
+                    }
+                  },
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
