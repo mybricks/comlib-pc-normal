@@ -108,6 +108,16 @@ export default {
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-inner`;
                 }
+              },
+              {
+                title: "展开图标",
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-menu-item-expand-icon`;
+                }
               }
             ]
           }),
