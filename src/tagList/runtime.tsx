@@ -69,8 +69,10 @@ const DefaultTag = ({
       icon: 'PlusOutlined'
     }
   } = data;
+  const status = useRef({
+    inputVisible: false,
+  });
   const [inputVisible, setInputVisible] = useState(false);
-  const [hasTriggered, setHasTriggered] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const onTagClose = (index: number, tag: TagType) => {
     if (env.edit) return;
@@ -86,6 +88,7 @@ const DefaultTag = ({
   const showInput = () => {
     if (env.edit) return;
     setInputVisible(true);
+    status.current.inputVisible = true;
   };
 
   useEffect(() => {
@@ -95,21 +98,18 @@ const DefaultTag = ({
   }, [inputVisible]);
 
   const handleInputConfirm = (e) => {
-    if (hasTriggered) return;
-    setHasTriggered(true);
     const inputValue = e.target.value;
-    if (!!inputValue) {
+    if (!!inputValue && status.current.inputVisible) {
       if (!!tags.find((tag) => tag.content === inputValue)) {
         message.warn('标签已存在');
-        setHasTriggered(false); // 处理完后释放
         return;
       }
       const newTag = createTag(inputValue);
       data.tags.push(newTag);
       outputs['onChange']({ changed: { ...newTag, index: data.tags.length }, allTag: data.tags });
     }
+    status.current.inputVisible = false;
     setInputVisible(false);
-    setTimeout(() => setHasTriggered(false), 100);
   };
 
   const appendJsx = useMemo(() => {
@@ -121,7 +121,7 @@ const DefaultTag = ({
           type="text"
           size="small"
           style={{ width: 80 }}
-          onBlur={(e) => !hasTriggered && handleInputConfirm(e)}
+          onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}
         />
       );
