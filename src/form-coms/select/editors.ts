@@ -148,7 +148,7 @@ export default {
                   {
                     title: '文本内容',
                     options: [{type: 'font', config: {disableTextAlign: true}}],
-                    target: '.ant-select-selection-item'
+                    target: ['.ant-select-selection-item', '.ant-select-selection-search-input']
                   },
                   {
                     title: '提示内容',
