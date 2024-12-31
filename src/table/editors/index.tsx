@@ -20,6 +20,7 @@ import SummaryColumn from './table/summaryColumn';
 import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
+import rowExpandEditor from "./rowExpand";
 import { emptyEditor, emptyStyleEditor } from './table/empty';
 import { getColumnsSchema } from '../utils';
 import {
@@ -170,5 +171,6 @@ export default {
   ...columnEditor,
   ...PaginatorEditor,
   ...SummaryColumnEditor,
-  ...rowSelectEditor
+  ...rowSelectEditor,
+  ...rowExpandEditor
 };
