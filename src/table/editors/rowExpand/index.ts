@@ -12,8 +12,7 @@ const rowExpandEditor = {
           {
             type: 'border',
             config: {
-              disableBorderWidth: true,
-              disableBorderRadius: true
+              disableBorderWidth: true
             }
           },
           {
