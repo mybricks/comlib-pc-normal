@@ -6,6 +6,12 @@ const rowExpandEditor = {
     title: "展开栏",
     style: [
       {
+        title: '表头',
+        catelog: '默认',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: `table thead.ant-table-thead tr th.ant-table-cell.ant-table-row-expand-icon-cell`,
+      },
+      {
         title: '展开框',
         catelog: '默认',
         options: [
