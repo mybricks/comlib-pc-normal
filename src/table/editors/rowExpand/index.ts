@@ -12,6 +12,12 @@ const rowExpandEditor = {
         target: `table thead.ant-table-thead tr th.ant-table-cell.ant-table-row-expand-icon-cell`,
       },
       {
+        title: '内容',
+        catelog: '默认',
+        options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: `table .ant-table-tbody tr .ant-table-cell.ant-table-row-expand-icon-cell`,
+      },
+      {
         title: '展开框',
         catelog: '默认',
         options: [
