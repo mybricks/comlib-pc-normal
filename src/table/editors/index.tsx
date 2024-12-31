@@ -21,6 +21,7 @@ import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
 import rowExpandEditor from "./rowExpand";
+import rowTreeEditor from "./rowTree";
 import { emptyEditor, emptyStyleEditor } from './table/empty';
 import { getColumnsSchema } from '../utils';
 import {
@@ -166,7 +167,7 @@ export default {
         ...getRowSelectionEditor(props)
       ];
     },
-    style: [...TableStyleEditor.items, emptyStyleEditor]
+    style: [...TableStyleEditor.items, emptyStyleEditor, rowTreeEditor]
   },
   ...columnEditor,
   ...PaginatorEditor,
