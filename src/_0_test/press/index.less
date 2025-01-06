@@ -1,0 +1,51 @@
+// @keyframes bounce {
+//   0%, 100% {
+//       transform: translateY(0);
+//   }
+//   50% {
+//       transform: translateY(-30px);
+//   }
+// }
+
+// .bounce {
+//   display: inline-block;
+//   background-color: #3498db;
+//   color: white;
+//   padding: 20px;
+//   border-radius: 5px;
+//   animation: bounce 1s ease infinite;
+// }
+
+.box {
+  width: 100px;
+  height: 100px;
+  background-color: #3498db;
+  //transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+// .box:hover {
+//   transform: scale(1.2); /* 放大效果 */
+//   background-color: #2ecc71; /* 颜色变化 */
+// }
+
+.box:hover {
+  animation: 3s rainbow ease;
+}
+
+@keyframes rainbow {
+  0% {
+    background-color: #db3434;
+  }
+  25% {
+    background-color: #f1c40f;
+  }
+  50% {
+    background-color: #2ecc71;
+  }
+  75% {
+    background-color: #3498db;
+  }
+  100% {
+    background-color: #9534db;
+  }
+}

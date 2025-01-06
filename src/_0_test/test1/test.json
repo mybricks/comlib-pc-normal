@@ -1,0 +1,2312 @@
+{
+  "id": "439:78572",
+  "raw": {
+      "nodeId": "439:78572",
+      "nodeName": "feed",
+      "nodeType": "FRAME",
+      "absoluteBoundingBox": {
+          "x": -16075,
+          "y": -10849,
+          "width": 191,
+          "height": 321
+      }
+  },
+  "nodeType": "view",
+  "name": "feed",
+  "uniqueStyleName": "content-feed",
+  "boundingRect": {
+      "x": -16075,
+      "y": -10849,
+      "width": 191,
+      "height": 321,
+      "top": -10849,
+      "left": -16075,
+      "bottom": -10528,
+      "right": -15884
+  },
+  "styles": {
+      "boxSizing": "border-box",
+      "zIndex": 1,
+      "height": "321px",
+      "width": "191px",
+      "borderTopLeftRadius": "4px",
+      "borderTopRightRadius": "4px",
+      "borderBottomRightRadius": "4px",
+      "borderBottomLeftRadius": "4px",
+      "background": "#ffffff",
+      "position": "relative"
+  },
+  "styleIds": {},
+  "zIndex": 1,
+  "children": [
+      {
+          "id": "439:78573",
+          "raw": {
+              "nodeId": "439:78573",
+              "nodeName": "Rectangle 34624767",
+              "nodeType": "VECTOR",
+              "absoluteBoundingBox": {
+                  "x": -16075,
+                  "y": -10849,
+                  "width": 191,
+                  "height": 191
+              }
+          },
+          "nodeType": "image",
+          "name": "Rectangle 34624767",
+          "uniqueStyleName": "feed-vector",
+          "boundingRect": {
+              "x": -16075,
+              "y": -10849,
+              "width": 191,
+              "height": 191,
+              "top": -10849,
+              "left": -16075,
+              "bottom": -10658,
+              "right": -15884
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 1,
+              "position": "absolute",
+              "left": "0%",
+              "width": "100%",
+              "top": "0px",
+              "height": "191px"
+          },
+          "styleIds": {},
+          "zIndex": 1,
+          "children": [],
+          "imageId": "346247672x.png"
+      },
+      {
+          "id": "439:78574",
+          "raw": {
+              "nodeId": "439:78574",
+              "nodeName": "尔木萄眉笔细头持久不脱色",
+              "nodeType": "RECTANGLE",
+              "absoluteBoundingBox": {
+                  "x": -16075,
+                  "y": -10849,
+                  "width": 191,
+                  "height": 191
+              }
+          },
+          "nodeType": "image",
+          "name": "尔木萄眉笔细头持久不脱色",
+          "uniqueStyleName": "feed-secondary",
+          "boundingRect": {
+              "x": -16075,
+              "y": -10849,
+              "width": 191,
+              "height": 191,
+              "top": -10849,
+              "left": -16075,
+              "bottom": -10658,
+              "right": -15884
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 2,
+              "position": "absolute",
+              "left": "0px",
+              "right": "auto",
+              "width": "191px",
+              "top": "0px",
+              "height": "191px",
+              "borderTopLeftRadius": "4px",
+              "borderTopRightRadius": "4px",
+              "background": "#0000000a"
+          },
+          "styleIds": {},
+          "zIndex": 2,
+          "children": [],
+          "imageId": "er-mu-tao-mei-bi-xi-tou-chi-ji2x.png"
+      },
+      {
+          "id": "439:78575",
+          "raw": {
+              "nodeId": "439:78575",
+              "nodeName": "Rectangle 51527",
+              "nodeType": "RECTANGLE",
+              "absoluteBoundingBox": {
+                  "x": -16075,
+                  "y": -10849,
+                  "width": 191,
+                  "height": 191
+              }
+          },
+          "nodeType": "image",
+          "name": "Rectangle 51527",
+          "uniqueStyleName": "feed-rectangle",
+          "boundingRect": {
+              "x": -16075,
+              "y": -10849,
+              "width": 191,
+              "height": 191,
+              "top": -10849,
+              "left": -16075,
+              "bottom": -10658,
+              "right": -15884
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 3,
+              "position": "absolute",
+              "left": "0px",
+              "right": "auto",
+              "width": "191px",
+              "top": "0px",
+              "height": "191px",
+              "borderTopLeftRadius": "4px",
+              "borderTopRightRadius": "4px"
+          },
+          "styleIds": {},
+          "zIndex": 3,
+          "children": [],
+          "imageId": "515272x.png"
+      },
+      {
+          "id": "439:78576",
+          "raw": {
+              "nodeId": "439:78576",
+              "nodeName": "Kim 2024-11-17 114234 1",
+              "nodeType": "RECTANGLE",
+              "absoluteBoundingBox": {
+                  "x": -16075,
+                  "y": -10849,
+                  "width": 191,
+                  "height": 191
+              }
+          },
+          "nodeType": "image",
+          "name": "Kim 2024-11-17 114234 1",
+          "uniqueStyleName": "feed-kim",
+          "boundingRect": {
+              "x": -16075,
+              "y": -10849,
+              "width": 191,
+              "height": 191,
+              "top": -10849,
+              "left": -16075,
+              "bottom": -10658,
+              "right": -15884
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 4,
+              "position": "absolute",
+              "left": "0px",
+              "right": "auto",
+              "width": "191px",
+              "top": "0px",
+              "height": "191px",
+              "borderTopLeftRadius": "4px",
+              "borderTopRightRadius": "4px"
+          },
+          "styleIds": {},
+          "zIndex": 4,
+          "children": [],
+          "imageId": "kim2x.png"
+      },
+      {
+          "id": "439:78577",
+          "raw": {
+              "nodeId": "439:78577",
+              "nodeName": "Frame 1912054250",
+              "nodeType": "FRAME",
+              "absoluteBoundingBox": {
+                  "x": -16067,
+                  "y": -10560,
+                  "width": 175,
+                  "height": 24
+              }
+          },
+          "nodeType": "view",
+          "name": "Frame 1912054250",
+          "uniqueStyleName": "content-frame",
+          "boundingRect": {
+              "x": -16067,
+              "y": -10560,
+              "width": 175,
+              "height": 24,
+              "top": -10560,
+              "left": -16067,
+              "bottom": -10536,
+              "right": -15892
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 5,
+              "position": "absolute",
+              "left": "4.19%",
+              "width": "175px",
+              "top": "90.03%",
+              "height": "fit-content",
+              "display": "flex",
+              "flexDirection": "column",
+              "alignItems": "flex-start",
+              "gap": "8px"
+          },
+          "styleIds": {},
+          "zIndex": 5,
+          "children": [
+              {
+                  "id": "439:78579",
+                  "raw": {
+                      "nodeId": "439:78579",
+                      "nodeName": "Frame 1912054249",
+                      "nodeType": "FRAME",
+                      "absoluteBoundingBox": {
+                          "x": -16067,
+                          "y": -10552,
+                          "width": 175,
+                          "height": 16
+                      }
+                  },
+                  "nodeType": "view",
+                  "name": "Frame 1912054249",
+                  "uniqueStyleName": "content-frame-layer1",
+                  "boundingRect": {
+                      "x": -16067,
+                      "y": -10552,
+                      "width": 175,
+                      "height": 16,
+                      "top": -10552,
+                      "left": -16067,
+                      "bottom": -10536,
+                      "right": -15892
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 2,
+                      "flexBasis": "16px",
+                      "width": "fit-content",
+                      "height": "fit-content",
+                      "display": "flex",
+                      "alignItems": "center",
+                      "gap": "46.5px"
+                  },
+                  "styleIds": {},
+                  "zIndex": 2,
+                  "children": [
+                      {
+                          "id": "439:78580",
+                          "raw": {
+                              "nodeId": "439:78580",
+                              "nodeName": "Frame 1312320608",
+                              "nodeType": "FRAME",
+                              "absoluteBoundingBox": {
+                                  "x": -16067,
+                                  "y": -10552,
+                                  "width": 118.5,
+                                  "height": 16
+                              }
+                          },
+                          "nodeType": "view",
+                          "name": "Frame 1312320608",
+                          "uniqueStyleName": "content-frame-layer2",
+                          "boundingRect": {
+                              "x": -16067,
+                              "y": -10552,
+                              "width": 118.5,
+                              "height": 16,
+                              "top": -10552,
+                              "left": -16067,
+                              "bottom": -10536,
+                              "right": -15948.5
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 1,
+                              "flexBasis": "118.5px",
+                              "width": "fit-content",
+                              "height": "fit-content",
+                              "display": "flex",
+                              "alignItems": "center",
+                              "gap": "2px"
+                          },
+                          "styleIds": {},
+                          "zIndex": 1,
+                          "children": [
+                              {
+                                  "id": "439:78581",
+                                  "raw": {
+                                      "nodeId": "439:78581",
+                                      "nodeName": "90天降价10%",
+                                      "nodeType": "TEXT",
+                                      "absoluteBoundingBox": {
+                                          "x": -16067,
+                                          "y": -10552,
+                                          "width": 84,
+                                          "height": 16
+                                      }
+                                  },
+                                  "nodeType": "text",
+                                  "name": "90天降价10%",
+                                  "uniqueStyleName": "content-feature-a",
+                                  "boundingRect": {
+                                      "x": -16067,
+                                      "y": -10552,
+                                      "width": 84,
+                                      "height": 16,
+                                      "top": -10552,
+                                      "left": -16067,
+                                      "bottom": -10536,
+                                      "right": -15983
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 1,
+                                      "width": "84px",
+                                      "height": "16px",
+                                      "verticalAlign": "top",
+                                      "fontSize": "12px",
+                                      "lineHeight": "16px",
+                                      "fontFamily": "PingFang SC",
+                                      "color": "#b67b1f"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 1,
+                                  "characters": "内蒙古鲜羊肉榜",
+                                  "children": []
+                              },
+                              {
+                                  "id": "439:78582",
+                                  "raw": {
+                                      "nodeId": "439:78582",
+                                      "nodeName": "Ellipse 316",
+                                      "nodeType": "ELLIPSE",
+                                      "absoluteBoundingBox": {
+                                          "x": -15981,
+                                          "y": -10544.75,
+                                          "width": 1.5,
+                                          "height": 1.5
+                                      }
+                                  },
+                                  "nodeType": "image",
+                                  "name": "Ellipse 316",
+                                  "uniqueStyleName": "content-ellipse",
+                                  "boundingRect": {
+                                      "x": -15981,
+                                      "y": -10544.75,
+                                      "width": 1.5,
+                                      "height": 1.5,
+                                      "top": -10544.75,
+                                      "left": -15981,
+                                      "bottom": -10543.25,
+                                      "right": -15979.5
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 2,
+                                      "flexBasis": "1.5px",
+                                      "width": "1.5px",
+                                      "height": "1.5px"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 2,
+                                  "children": [],
+                                  "imageId": "3162x.png"
+                              },
+                              {
+                                  "id": "439:78583",
+                                  "raw": {
+                                      "nodeId": "439:78583",
+                                      "nodeName": "90天降价10%",
+                                      "nodeType": "TEXT",
+                                      "absoluteBoundingBox": {
+                                          "x": -15977.5,
+                                          "y": -10552,
+                                          "width": 29,
+                                          "height": 16
+                                      }
+                                  },
+                                  "nodeType": "text",
+                                  "name": "90天降价10%",
+                                  "uniqueStyleName": "content-feature-b",
+                                  "boundingRect": {
+                                      "x": -15977.5,
+                                      "y": -10552,
+                                      "width": 29,
+                                      "height": 16,
+                                      "top": -10552,
+                                      "left": -15977.5,
+                                      "bottom": -10536,
+                                      "right": -15948.5
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 3,
+                                      "width": "29px",
+                                      "height": "16px",
+                                      "verticalAlign": "top",
+                                      "fontSize": "12px",
+                                      "lineHeight": "16px",
+                                      "fontFamily": "PingFang SC",
+                                      "color": "#b67b1f"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 3,
+                                  "characters": "第1名",
+                                  "children": []
+                              }
+                          ]
+                      },
+                      {
+                          "id": "439:78584",
+                          "raw": {
+                              "nodeId": "439:78584",
+                              "nodeName": "00050%",
+                              "nodeType": "INSTANCE",
+                              "absoluteBoundingBox": {
+                                  "x": -15902,
+                                  "y": -10549,
+                                  "width": 10,
+                                  "height": 10
+                              }
+                          },
+                          "nodeType": "view",
+                          "name": "00050%",
+                          "uniqueStyleName": "content-instance",
+                          "boundingRect": {
+                              "x": -15902,
+                              "y": -10549,
+                              "width": 10,
+                              "height": 10,
+                              "top": -10549,
+                              "left": -15902,
+                              "bottom": -10539,
+                              "right": -15892
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 1,
+                              "flexBasis": "10px",
+                              "width": "10px",
+                              "height": "10px",
+                              "borderTopLeftRadius": "12px",
+                              "borderTopRightRadius": "12px",
+                              "borderBottomRightRadius": "12px",
+                              "borderBottomLeftRadius": "12px",
+                              "position": "relative"
+                          },
+                          "styleIds": {},
+                          "zIndex": 2,
+                          "children": [
+                              {
+                                  "id": "I439:78584;72:14162;72:14150",
+                                  "raw": {
+                                      "nodeId": "I439:78584;72:14162;72:14150",
+                                      "nodeName": "Group",
+                                      "nodeType": "GROUP",
+                                      "absoluteBoundingBox": {
+                                          "x": -15902,
+                                          "y": -10549,
+                                          "width": 10,
+                                          "height": 10
+                                      }
+                                  },
+                                  "nodeType": "view",
+                                  "name": "Group",
+                                  "uniqueStyleName": "content-group",
+                                  "boundingRect": {
+                                      "x": -15902,
+                                      "y": -10549,
+                                      "width": 10,
+                                      "height": 10,
+                                      "top": -10549,
+                                      "left": -15902,
+                                      "bottom": -10539,
+                                      "right": -15892
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 1,
+                                      "position": "absolute",
+                                      "left": "0%",
+                                      "width": "100%",
+                                      "top": "0%",
+                                      "height": "100%",
+                                      "background": "url(undefined) no-repeat"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 1,
+                                  "children": [
+                                      {
+                                          "id": "I439:78584;72:14162;72:14153",
+                                          "raw": {
+                                              "nodeId": "I439:78584;72:14162;72:14153",
+                                              "nodeName": "Group",
+                                              "nodeType": "GROUP",
+                                              "absoluteBoundingBox": {
+                                                  "x": -15897.728515625,
+                                                  "y": -10547.783203125,
+                                                  "width": 4.372956275939941,
+                                                  "height": 7.567399501800537
+                                              }
+                                          },
+                                          "nodeType": "image",
+                                          "name": "Group",
+                                          "uniqueStyleName": "group-feature-c",
+                                          "boundingRect": {
+                                              "x": -15897.728515625,
+                                              "y": -10547.783203125,
+                                              "width": 4.372956275939941,
+                                              "height": 7.567399501800537,
+                                              "top": -10547.783203125,
+                                              "left": -15897.728515625,
+                                              "bottom": -10540.2158036232,
+                                              "right": -15893.35555934906
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 2,
+                                              "position": "absolute",
+                                              "left": "42.71%",
+                                              "width": "43.73%",
+                                              "top": "12.17%",
+                                              "height": "75.67%"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 2,
+                                          "children": [],
+                                          "imageId": "group2x.png"
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "439:78585",
+          "raw": {
+              "nodeId": "439:78585",
+              "nodeName": "Frame 1312320587",
+              "nodeType": "FRAME",
+              "absoluteBoundingBox": {
+                  "x": -16067,
+                  "y": -10588,
+                  "width": 166,
+                  "height": 22
+              }
+          },
+          "nodeType": "view",
+          "name": "Frame 1312320587",
+          "uniqueStyleName": "content-frame-secondary",
+          "boundingRect": {
+              "x": -16067,
+              "y": -10588,
+              "width": 166,
+              "height": 22,
+              "top": -10588,
+              "left": -16067,
+              "bottom": -10566,
+              "right": -15901
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "overflow": "hidden",
+              "zIndex": 6,
+              "position": "absolute",
+              "left": "4.19%",
+              "width": "86.91%",
+              "top": "81.31%",
+              "height": "6.85%"
+          },
+          "styleIds": {},
+          "zIndex": 6,
+          "children": [
+              {
+                  "id": "439:78586",
+                  "raw": {
+                      "nodeId": "439:78586",
+                      "nodeName": "Frame 1912054239",
+                      "nodeType": "FRAME",
+                      "absoluteBoundingBox": {
+                          "x": -16067,
+                          "y": -10588,
+                          "width": 149,
+                          "height": 22
+                      }
+                  },
+                  "nodeType": "view",
+                  "name": "Frame 1912054239",
+                  "uniqueStyleName": "content-frame-layer1-secondary",
+                  "boundingRect": {
+                      "x": -16067,
+                      "y": -10588,
+                      "width": 149,
+                      "height": 22,
+                      "top": -10588,
+                      "left": -16067,
+                      "bottom": -10566,
+                      "right": -15918
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 1,
+                      "position": "absolute",
+                      "left": "0px",
+                      "right": "auto",
+                      "width": "fit-content",
+                      "top": "0px",
+                      "height": "fit-content",
+                      "display": "flex",
+                      "alignItems": "flex-end",
+                      "gap": "4px"
+                  },
+                  "styleIds": {},
+                  "zIndex": 1,
+                  "children": [
+                      {
+                          "id": "439:78587",
+                          "raw": {
+                              "nodeId": "439:78587",
+                              "nodeName": "Frame 1912054238",
+                              "nodeType": "FRAME",
+                              "absoluteBoundingBox": {
+                                  "x": -16067,
+                                  "y": -10588,
+                                  "width": 88,
+                                  "height": 22
+                              }
+                          },
+                          "nodeType": "view",
+                          "name": "Frame 1912054238",
+                          "uniqueStyleName": "content-frame-layer2-secondary",
+                          "boundingRect": {
+                              "x": -16067,
+                              "y": -10588,
+                              "width": 88,
+                              "height": 22,
+                              "top": -10588,
+                              "left": -16067,
+                              "bottom": -10566,
+                              "right": -15979
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 1,
+                              "flexBasis": "88px",
+                              "width": "fit-content",
+                              "height": "fit-content",
+                              "display": "flex",
+                              "alignItems": "flex-start"
+                          },
+                          "styleIds": {},
+                          "zIndex": 1,
+                          "children": [
+                              {
+                                  "id": "439:78588",
+                                  "raw": {
+                                      "nodeId": "439:78588",
+                                      "nodeName": "Frame 1912054237",
+                                      "nodeType": "FRAME",
+                                      "absoluteBoundingBox": {
+                                          "x": -16067,
+                                          "y": -10588,
+                                          "width": 74,
+                                          "height": 22
+                                      }
+                                  },
+                                  "nodeType": "view",
+                                  "name": "Frame 1912054237",
+                                  "uniqueStyleName": "content-frame-layer3-secondary",
+                                  "boundingRect": {
+                                      "x": -16067,
+                                      "y": -10588,
+                                      "width": 74,
+                                      "height": 22,
+                                      "top": -10588,
+                                      "left": -16067,
+                                      "bottom": -10566,
+                                      "right": -15993
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 1,
+                                      "flexBasis": "74px",
+                                      "width": "fit-content",
+                                      "height": "fit-content",
+                                      "display": "flex",
+                                      "alignItems": "center",
+                                      "gap": "1px"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 1,
+                                  "children": [
+                                      {
+                                          "id": "439:78589",
+                                          "raw": {
+                                              "nodeId": "439:78589",
+                                              "nodeName": "Frame 1912054236",
+                                              "nodeType": "FRAME",
+                                              "absoluteBoundingBox": {
+                                                  "x": -16067,
+                                                  "y": -10587,
+                                                  "width": 48,
+                                                  "height": 20
+                                              }
+                                          },
+                                          "nodeType": "view",
+                                          "name": "Frame 1912054236",
+                                          "uniqueStyleName": "content-frame-layer4-secondary",
+                                          "boundingRect": {
+                                              "x": -16067,
+                                              "y": -10587,
+                                              "width": 48,
+                                              "height": 20,
+                                              "top": -10587,
+                                              "left": -16067,
+                                              "bottom": -10567,
+                                              "right": -16019
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 1,
+                                              "flexBasis": "48px",
+                                              "width": "fit-content",
+                                              "height": "fit-content",
+                                              "display": "flex",
+                                              "alignItems": "flex-end",
+                                              "gap": "2px"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 1,
+                                          "children": [
+                                              {
+                                                  "id": "439:78590",
+                                                  "raw": {
+                                                      "nodeId": "439:78590",
+                                                      "nodeName": "已售25",
+                                                      "nodeType": "TEXT",
+                                                      "absoluteBoundingBox": {
+                                                          "x": -16067,
+                                                          "y": -10584,
+                                                          "width": 36,
+                                                          "height": 17
+                                                      }
+                                                  },
+                                                  "nodeType": "text",
+                                                  "name": "已售25",
+                                                  "uniqueStyleName": "feature-primary",
+                                                  "boundingRect": {
+                                                      "x": -16067,
+                                                      "y": -10584,
+                                                      "width": 36,
+                                                      "height": 17,
+                                                      "top": -10584,
+                                                      "left": -16067,
+                                                      "bottom": -10567,
+                                                      "right": -16031
+                                                  },
+                                                  "styles": {
+                                                      "boxSizing": "border-box",
+                                                      "zIndex": 1,
+                                                      "width": "36px",
+                                                      "height": "17px",
+                                                      "verticalAlign": "top",
+                                                      "fontSize": "12px",
+                                                      "lineHeight": "17px",
+                                                      "fontFamily": "PingFang SC",
+                                                      "color": "#fe354d"
+                                                  },
+                                                  "styleIds": {},
+                                                  "zIndex": 1,
+                                                  "characters": "券后价",
+                                                  "children": []
+                                              },
+                                              {
+                                                  "id": "439:78591",
+                                                  "raw": {
+                                                      "nodeId": "439:78591",
+                                                      "nodeName": "Frame 1312320609",
+                                                      "nodeType": "FRAME",
+                                                      "absoluteBoundingBox": {
+                                                          "x": -16029,
+                                                          "y": -10587,
+                                                          "width": 10,
+                                                          "height": 20
+                                                      }
+                                                  },
+                                                  "nodeType": "view",
+                                                  "name": "Frame 1312320609",
+                                                  "uniqueStyleName": "content-frame-detail",
+                                                  "boundingRect": {
+                                                      "x": -16029,
+                                                      "y": -10587,
+                                                      "width": 10,
+                                                      "height": 20,
+                                                      "top": -10587,
+                                                      "left": -16029,
+                                                      "bottom": -10567,
+                                                      "right": -16019
+                                                  },
+                                                  "styles": {
+                                                      "boxSizing": "border-box",
+                                                      "zIndex": 2,
+                                                      "flexBasis": "10px",
+                                                      "width": "10px",
+                                                      "height": "fit-content",
+                                                      "display": "flex",
+                                                      "flexDirection": "column",
+                                                      "alignItems": "flex-start",
+                                                      "paddingTop": "4px",
+                                                      "gap": "10px"
+                                                  },
+                                                  "styleIds": {},
+                                                  "zIndex": 2,
+                                                  "children": [
+                                                      {
+                                                          "id": "439:78592",
+                                                          "raw": {
+                                                              "nodeId": "439:78592",
+                                                              "nodeName": "￥",
+                                                              "nodeType": "TEXT",
+                                                              "absoluteBoundingBox": {
+                                                                  "x": -16029,
+                                                                  "y": -10583,
+                                                                  "width": 10,
+                                                                  "height": 16
+                                                              }
+                                                          },
+                                                          "nodeType": "text",
+                                                          "name": "￥",
+                                                          "uniqueStyleName": "frame-detail-text",
+                                                          "boundingRect": {
+                                                              "x": -16029,
+                                                              "y": -10583,
+                                                              "width": 10,
+                                                              "height": 16,
+                                                              "top": -10583,
+                                                              "left": -16029,
+                                                              "bottom": -10567,
+                                                              "right": -16019
+                                                          },
+                                                          "styles": {
+                                                              "boxSizing": "border-box",
+                                                              "zIndex": 1,
+                                                              "width": "10px",
+                                                              "height": "16px",
+                                                              "textAlign": "center",
+                                                              "verticalAlign": "top",
+                                                              "fontSize": "14px",
+                                                              "lineHeight": "16px",
+                                                              "fontFamily": "SF Pro Text",
+                                                              "fontWeight": 500,
+                                                              "letterSpacing": "-1px",
+                                                              "color": "#fe354d"
+                                                          },
+                                                          "styleIds": {},
+                                                          "zIndex": 1,
+                                                          "characters": "￥",
+                                                          "children": []
+                                                      }
+                                                  ]
+                                              }
+                                          ]
+                                      },
+                                      {
+                                          "id": "439:78593",
+                                          "raw": {
+                                              "nodeId": "439:78593",
+                                              "nodeName": "Frame 1312320799",
+                                              "nodeType": "FRAME",
+                                              "absoluteBoundingBox": {
+                                                  "x": -16018,
+                                                  "y": -10588,
+                                                  "width": 25,
+                                                  "height": 22
+                                              }
+                                          },
+                                          "nodeType": "view",
+                                          "name": "Frame 1312320799",
+                                          "uniqueStyleName": "content-frame-layer5-secondary",
+                                          "boundingRect": {
+                                              "x": -16018,
+                                              "y": -10588,
+                                              "width": 25,
+                                              "height": 22,
+                                              "top": -10588,
+                                              "left": -16018,
+                                              "bottom": -10566,
+                                              "right": -15993
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 2,
+                                              "flexBasis": "25px",
+                                              "width": "25px",
+                                              "height": "22px",
+                                              "position": "relative"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 2,
+                                          "children": [
+                                              {
+                                                  "id": "439:78594",
+                                                  "raw": {
+                                                      "nodeId": "439:78594",
+                                                      "nodeName": "页面大标题、大数字、结果等信息等",
+                                                      "nodeType": "TEXT",
+                                                      "absoluteBoundingBox": {
+                                                          "x": -16018,
+                                                          "y": -10588,
+                                                          "width": 26,
+                                                          "height": 22
+                                                      }
+                                                  },
+                                                  "nodeType": "text",
+                                                  "name": "页面大标题、大数字、结果等信息等",
+                                                  "uniqueStyleName": "layout-primary",
+                                                  "boundingRect": {
+                                                      "x": -16018,
+                                                      "y": -10588,
+                                                      "width": 26,
+                                                      "height": 22,
+                                                      "top": -10588,
+                                                      "left": -16018,
+                                                      "bottom": -10566,
+                                                      "right": -15992
+                                                  },
+                                                  "styles": {
+                                                      "boxSizing": "border-box",
+                                                      "zIndex": 1,
+                                                      "position": "absolute",
+                                                      "left": "0px",
+                                                      "right": "auto",
+                                                      "width": "26px",
+                                                      "top": "0px",
+                                                      "height": "22px",
+                                                      "verticalAlign": "top",
+                                                      "fontSize": "20px",
+                                                      "lineHeight": "22px",
+                                                      "fontFamily": "SF Pro Text",
+                                                      "fontWeight": 500,
+                                                      "letterSpacing": "-1px",
+                                                      "color": "#fe354d"
+                                                  },
+                                                  "styleIds": {},
+                                                  "zIndex": 1,
+                                                  "characters": "98",
+                                                  "children": []
+                                              }
+                                          ]
+                                      }
+                                  ]
+                              },
+                              {
+                                  "id": "439:78595",
+                                  "raw": {
+                                      "nodeId": "439:78595",
+                                      "nodeName": "Frame 1312320608",
+                                      "nodeType": "FRAME",
+                                      "absoluteBoundingBox": {
+                                          "x": -15993,
+                                          "y": -10588,
+                                          "width": 4,
+                                          "height": 19
+                                      }
+                                  },
+                                  "nodeType": "view",
+                                  "name": "Frame 1312320608",
+                                  "uniqueStyleName": "content-frame-layer6-secondary",
+                                  "boundingRect": {
+                                      "x": -15993,
+                                      "y": -10588,
+                                      "width": 4,
+                                      "height": 19,
+                                      "top": -10588,
+                                      "left": -15993,
+                                      "bottom": -10569,
+                                      "right": -15989
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 2,
+                                      "flexBasis": "4px",
+                                      "width": "4px",
+                                      "height": "19px",
+                                      "position": "relative"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 2,
+                                  "children": [
+                                      {
+                                          "id": "439:78596",
+                                          "raw": {
+                                              "nodeId": "439:78596",
+                                              "nodeName": "页面大标题、大数字、结果等信息等",
+                                              "nodeType": "TEXT",
+                                              "absoluteBoundingBox": {
+                                                  "x": -15993,
+                                                  "y": -10581,
+                                                  "width": 4,
+                                                  "height": 12
+                                              }
+                                          },
+                                          "nodeType": "text",
+                                          "name": "页面大标题、大数字、结果等信息等",
+                                          "uniqueStyleName": "layout-secondary",
+                                          "boundingRect": {
+                                              "x": -15993,
+                                              "y": -10581,
+                                              "width": 4,
+                                              "height": 12,
+                                              "top": -10581,
+                                              "left": -15993,
+                                              "bottom": -10569,
+                                              "right": -15989
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 1,
+                                              "position": "absolute",
+                                              "left": "0px",
+                                              "right": "auto",
+                                              "width": "4px",
+                                              "top": "7px",
+                                              "height": "12px",
+                                              "verticalAlign": "top",
+                                              "fontSize": "14px",
+                                              "lineHeight": "12px",
+                                              "fontFamily": "SF Pro Text",
+                                              "fontWeight": 500,
+                                              "color": "#fe354d"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 1,
+                                          "characters": ".",
+                                          "children": []
+                                      }
+                                  ]
+                              },
+                              {
+                                  "id": "439:78597",
+                                  "raw": {
+                                      "nodeId": "439:78597",
+                                      "nodeName": "Frame 1312320609",
+                                      "nodeType": "FRAME",
+                                      "absoluteBoundingBox": {
+                                          "x": -15989,
+                                          "y": -10588,
+                                          "width": 10,
+                                          "height": 19
+                                      }
+                                  },
+                                  "nodeType": "view",
+                                  "name": "Frame 1312320609",
+                                  "uniqueStyleName": "content-frame-layer7-secondary",
+                                  "boundingRect": {
+                                      "x": -15989,
+                                      "y": -10588,
+                                      "width": 10,
+                                      "height": 19,
+                                      "top": -10588,
+                                      "left": -15989,
+                                      "bottom": -10569,
+                                      "right": -15979
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 3,
+                                      "flexBasis": "10px",
+                                      "width": "10px",
+                                      "height": "19px",
+                                      "position": "relative"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 3,
+                                  "children": [
+                                      {
+                                          "id": "439:78598",
+                                          "raw": {
+                                              "nodeId": "439:78598",
+                                              "nodeName": "页面大标题、大数字、结果等信息等",
+                                              "nodeType": "TEXT",
+                                              "absoluteBoundingBox": {
+                                                  "x": -15989,
+                                                  "y": -10581,
+                                                  "width": 10,
+                                                  "height": 12
+                                              }
+                                          },
+                                          "nodeType": "text",
+                                          "name": "页面大标题、大数字、结果等信息等",
+                                          "uniqueStyleName": "layout-tertiary",
+                                          "boundingRect": {
+                                              "x": -15989,
+                                              "y": -10581,
+                                              "width": 10,
+                                              "height": 12,
+                                              "top": -10581,
+                                              "left": -15989,
+                                              "bottom": -10569,
+                                              "right": -15979
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 1,
+                                              "position": "absolute",
+                                              "left": "0px",
+                                              "right": "auto",
+                                              "width": "10px",
+                                              "top": "7px",
+                                              "height": "12px",
+                                              "verticalAlign": "top",
+                                              "fontSize": "14px",
+                                              "lineHeight": "12px",
+                                              "fontFamily": "SF Pro Text",
+                                              "fontWeight": 500,
+                                              "letterSpacing": "-1px",
+                                              "color": "#fe354d"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 1,
+                                          "characters": "8",
+                                          "children": []
+                                      }
+                                  ]
+                              }
+                          ]
+                      },
+                      {
+                          "id": "439:78599",
+                          "raw": {
+                              "nodeId": "439:78599",
+                              "nodeName": "已售25",
+                              "nodeType": "TEXT",
+                              "absoluteBoundingBox": {
+                                  "x": -15975,
+                                  "y": -10583,
+                                  "width": 57,
+                                  "height": 17
+                              }
+                          },
+                          "nodeType": "text",
+                          "name": "已售25",
+                          "uniqueStyleName": "feature-secondary",
+                          "boundingRect": {
+                              "x": -15975,
+                              "y": -10583,
+                              "width": 57,
+                              "height": 17,
+                              "top": -10583,
+                              "left": -15975,
+                              "bottom": -10566,
+                              "right": -15918
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 2,
+                              "width": "57px",
+                              "height": "17px",
+                              "verticalAlign": "top",
+                              "fontSize": "12px",
+                              "lineHeight": "17px",
+                              "fontFamily": "PingFang SC",
+                              "color": "#737373"
+                          },
+                          "styleIds": {},
+                          "zIndex": 2,
+                          "characters": "已售372件",
+                          "children": []
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "439:78600",
+          "raw": {
+              "nodeId": "439:78600",
+              "nodeName": "Frame 1912054235",
+              "nodeType": "FRAME",
+              "absoluteBoundingBox": {
+                  "x": -16067,
+                  "y": -10610,
+                  "width": 112,
+                  "height": 16
+              }
+          },
+          "nodeType": "view",
+          "name": "Frame 1912054235",
+          "uniqueStyleName": "content-section-alternative",
+          "boundingRect": {
+              "x": -16067,
+              "y": -10610,
+              "width": 112,
+              "height": 16,
+              "top": -10610,
+              "left": -16067,
+              "bottom": -10594,
+              "right": -15955
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 7,
+              "position": "absolute",
+              "left": "4.19%",
+              "width": "fit-content",
+              "top": "74.45%",
+              "height": "fit-content",
+              "display": "flex",
+              "alignItems": "flex-start",
+              "gap": "4px"
+          },
+          "styleIds": {},
+          "zIndex": 7,
+          "children": [
+              {
+                  "id": "439:78601",
+                  "raw": {
+                      "nodeId": "439:78601",
+                      "nodeName": "已售25",
+                      "nodeType": "TEXT",
+                      "absoluteBoundingBox": {
+                          "x": -16067,
+                          "y": -10610,
+                          "width": 60,
+                          "height": 16
+                      }
+                  },
+                  "nodeType": "text",
+                  "name": "已售25",
+                  "uniqueStyleName": "section-feature-primary",
+                  "boundingRect": {
+                      "x": -16067,
+                      "y": -10610,
+                      "width": 60,
+                      "height": 16,
+                      "top": -10610,
+                      "left": -16067,
+                      "bottom": -10594,
+                      "right": -16007
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 1,
+                      "width": "60px",
+                      "height": "16px",
+                      "verticalAlign": "top",
+                      "fontSize": "12px",
+                      "lineHeight": "16px",
+                      "fontFamily": "PingFang SC",
+                      "color": "#fe354d"
+                  },
+                  "styleIds": {},
+                  "zIndex": 1,
+                  "characters": "满200减20",
+                  "children": []
+              },
+              {
+                  "id": "439:78602",
+                  "raw": {
+                      "nodeId": "439:78602",
+                      "nodeName": "已售25",
+                      "nodeType": "TEXT",
+                      "absoluteBoundingBox": {
+                          "x": -16003,
+                          "y": -10610,
+                          "width": 48,
+                          "height": 16
+                      }
+                  },
+                  "nodeType": "text",
+                  "name": "已售25",
+                  "uniqueStyleName": "section-feature-secondary",
+                  "boundingRect": {
+                      "x": -16003,
+                      "y": -10610,
+                      "width": 48,
+                      "height": 16,
+                      "top": -10610,
+                      "left": -16003,
+                      "bottom": -10594,
+                      "right": -15955
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 2,
+                      "width": "48px",
+                      "height": "16px",
+                      "verticalAlign": "top",
+                      "fontSize": "12px",
+                      "lineHeight": "16px",
+                      "fontFamily": "PingFang SC",
+                      "color": "#737373"
+                  },
+                  "styleIds": {},
+                  "zIndex": 2,
+                  "characters": "假一赔九",
+                  "children": []
+              }
+          ]
+      },
+      {
+          "id": "439:78603",
+          "raw": {
+              "nodeId": "439:78603",
+              "nodeName": "Frame 1312320796",
+              "nodeType": "FRAME",
+              "absoluteBoundingBox": {
+                  "x": -16067,
+                  "y": -10650,
+                  "width": 175,
+                  "height": 16
+              }
+          },
+          "nodeType": "view",
+          "name": "Frame 1312320796",
+          "uniqueStyleName": "content-frame-simple",
+          "boundingRect": {
+              "x": -16067,
+              "y": -10650,
+              "width": 175,
+              "height": 16,
+              "top": -10650,
+              "left": -16067,
+              "bottom": -10634,
+              "right": -15892
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 8,
+              "position": "absolute",
+              "left": "4.19%",
+              "width": "91.62%",
+              "top": "61.99%",
+              "height": "4.98%"
+          },
+          "styleIds": {},
+          "zIndex": 8,
+          "children": []
+      },
+      {
+          "id": "439:78604",
+          "raw": {
+              "nodeId": "439:78604",
+              "nodeName": "INSIS FEMME泡泡袖立领A摆衬衫",
+              "nodeType": "TEXT",
+              "absoluteBoundingBox": {
+                  "x": -16067,
+                  "y": -10632,
+                  "width": 175,
+                  "height": 16
+              }
+          },
+          "nodeType": "text",
+          "name": "INSIS FEMME泡泡袖立领A摆衬衫",
+          "uniqueStyleName": "brand-insis-femme",
+          "boundingRect": {
+              "x": -16067,
+              "y": -10632,
+              "width": 175,
+              "height": 16,
+              "top": -10632,
+              "left": -16067,
+              "bottom": -10616,
+              "right": -15892
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 9,
+              "position": "absolute",
+              "left": "8px",
+              "right": "auto",
+              "width": "175px",
+              "top": "217px",
+              "height": "16px",
+              "display": "flex",
+              "alignItems": "center",
+              "verticalAlign": "middle",
+              "fontSize": "14px",
+              "lineHeight": "16px",
+              "fontFamily": "PingFang SC",
+              "color": "#000000"
+          },
+          "styleIds": {},
+          "zIndex": 9,
+          "characters": "g单果100g",
+          "children": []
+      },
+      {
+          "id": "439:78605",
+          "raw": {
+              "nodeId": "439:78605",
+              "nodeName": "Frame 1912054251",
+              "nodeType": "FRAME",
+              "absoluteBoundingBox": {
+                  "x": -16067,
+                  "y": -10650,
+                  "width": 175,
+                  "height": 16
+              }
+          },
+          "nodeType": "view",
+          "name": "Frame 1912054251",
+          "uniqueStyleName": "brand-frame",
+          "boundingRect": {
+              "x": -16067,
+              "y": -10650,
+              "width": 175,
+              "height": 16,
+              "top": -10650,
+              "left": -16067,
+              "bottom": -10634,
+              "right": -15892
+          },
+          "styles": {
+              "boxSizing": "border-box",
+              "zIndex": 1,
+              "position": "absolute",
+              "left": "4.19%",
+              "width": "91.62%",
+              "top": "61.99%",
+              "height": "4.98%",
+              "display": "flex",
+              "alignItems": "flex-start",
+              "gap": "4px",
+              "flexDirection": "row"
+          },
+          "styleIds": {},
+          "zIndex": 10,
+          "children": [
+              {
+                  "id": "439:78626",
+                  "raw": {
+                      "nodeId": "439:78626",
+                      "nodeName": "tag",
+                      "nodeType": "INSTANCE",
+                      "absoluteBoundingBox": {
+                          "x": -16067,
+                          "y": -10650,
+                          "width": 55,
+                          "height": 16
+                      }
+                  },
+                  "nodeType": "view",
+                  "name": "tag",
+                  "uniqueStyleName": "brand-tag",
+                  "boundingRect": {
+                      "x": -16067,
+                      "y": -10650,
+                      "width": 55,
+                      "height": 16,
+                      "top": -10650,
+                      "left": -16067,
+                      "bottom": -10634,
+                      "right": -16012
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 3,
+                      "position": "absolute",
+                      "left": "0px",
+                      "right": "auto",
+                      "width": "55px",
+                      "top": "0px",
+                      "height": "16px",
+                      "borderTopLeftRadius": "2px",
+                      "borderTopRightRadius": "2px",
+                      "borderBottomRightRadius": "2px",
+                      "borderBottomLeftRadius": "2px"
+                  },
+                  "styleIds": {},
+                  "zIndex": 2,
+                  "children": [
+                      {
+                          "id": "I439:78626;398:58337",
+                          "raw": {
+                              "nodeId": "I439:78626;398:58337",
+                              "nodeName": "Rectangle 279334297",
+                              "nodeType": "VECTOR",
+                              "absoluteBoundingBox": {
+                                  "x": -16066.857421875,
+                                  "y": -10650,
+                                  "width": 54,
+                                  "height": 16
+                              }
+                          },
+                          "nodeType": "image",
+                          "name": "Rectangle 279334297",
+                          "uniqueStyleName": "tag-vector-a",
+                          "boundingRect": {
+                              "x": -16066.857421875,
+                              "y": -10650,
+                              "width": 54,
+                              "height": 16,
+                              "top": -10650,
+                              "left": -16066.857421875,
+                              "bottom": -10634,
+                              "right": -16012.857421875
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 1,
+                              "position": "absolute",
+                              "left": "0.142578125px",
+                              "right": "auto",
+                              "width": "54px",
+                              "top": "0px",
+                              "height": "16px"
+                          },
+                          "styleIds": {},
+                          "zIndex": 1,
+                          "children": [],
+                          "imageId": "2793342972x.png"
+                      },
+                      {
+                          "id": "I439:78626;398:58338",
+                          "raw": {
+                              "nodeId": "I439:78626;398:58338",
+                              "nodeName": "低价特卖",
+                              "nodeType": "GROUP",
+                              "absoluteBoundingBox": {
+                                  "x": -16063.6572265625,
+                                  "y": -10647.2998046875,
+                                  "width": 47.434288024902344,
+                                  "height": 10.697474479675293
+                              }
+                          },
+                          "nodeType": "image",
+                          "name": "低价特卖",
+                          "uniqueStyleName": "tag-feature-a",
+                          "boundingRect": {
+                              "x": -16063.6572265625,
+                              "y": -10647.2998046875,
+                              "width": 47.434288024902344,
+                              "height": 10.697474479675293,
+                              "top": -10647.2998046875,
+                              "left": -16063.6572265625,
+                              "bottom": -10636.602330207825,
+                              "right": -16016.222938537598
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 2,
+                              "position": "absolute",
+                              "left": "3.3427734375px",
+                              "right": "auto",
+                              "width": "47.43px",
+                              "top": "2.7001953125px",
+                              "height": "10.7px"
+                          },
+                          "styleIds": {},
+                          "zIndex": 2,
+                          "children": [],
+                          "imageId": "di-jia-te-mai2x.png"
+                      },
+                      {
+                          "id": "I439:78626;398:58351",
+                          "raw": {
+                              "nodeId": "I439:78626;398:58351",
+                              "nodeName": "Group 2036093299",
+                              "nodeType": "GROUP",
+                              "absoluteBoundingBox": {
+                                  "x": -16066.857421875,
+                                  "y": -10650,
+                                  "width": 55,
+                                  "height": 16
+                              }
+                          },
+                          "nodeType": "image",
+                          "name": "Group 2036093299",
+                          "uniqueStyleName": "tag-element-a",
+                          "boundingRect": {
+                              "x": -16066.857421875,
+                              "y": -10650,
+                              "width": 55,
+                              "height": 16,
+                              "top": -10650,
+                              "left": -16066.857421875,
+                              "bottom": -10634,
+                              "right": -16011.857421875
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 1,
+                              "position": "absolute",
+                              "left": "0px",
+                              "right": "auto",
+                              "width": "55px",
+                              "top": "0px",
+                              "height": "16px"
+                          },
+                          "styleIds": {},
+                          "zIndex": 1,
+                          "children": [],
+                          "imageId": "203609329912x.png"
+                      },
+                      {
+                          "id": "I439:78626;398:58353",
+                          "raw": {
+                              "nodeId": "I439:78626;398:58353",
+                              "nodeName": "Group 2036093301",
+                              "nodeType": "GROUP",
+                              "absoluteBoundingBox": {
+                                  "x": -16062.857421875,
+                                  "y": -10647.2646484375,
+                                  "width": 47,
+                                  "height": 11.030030250549316
+                              }
+                          },
+                          "nodeType": "view",
+                          "name": "Group 2036093301",
+                          "uniqueStyleName": "tag-element-b",
+                          "boundingRect": {
+                              "x": -16062.857421875,
+                              "y": -10647.2646484375,
+                              "width": 47,
+                              "height": 11.030030250549316,
+                              "top": -10647.2646484375,
+                              "left": -16062.857421875,
+                              "bottom": -10636.23461818695,
+                              "right": -16015.857421875
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 2,
+                              "position": "absolute",
+                              "left": "4px",
+                              "right": "auto",
+                              "width": "47px",
+                              "top": "2.7353515625px",
+                              "height": "11.03px"
+                          },
+                          "styleIds": {},
+                          "zIndex": 2,
+                          "children": [
+                              {
+                                  "id": "I439:78626;398:58354",
+                                  "raw": {
+                                      "nodeId": "I439:78626;398:58354",
+                                      "nodeName": "Vector",
+                                      "nodeType": "VECTOR",
+                                      "absoluteBoundingBox": {
+                                          "x": -16062.857421875,
+                                          "y": -10647.2646484375,
+                                          "width": 11.9285888671875,
+                                          "height": 10.734334945678711
+                                      }
+                                  },
+                                  "nodeType": "image",
+                                  "name": "Vector",
+                                  "uniqueStyleName": "element-vector-b",
+                                  "boundingRect": {
+                                      "x": -16062.857421875,
+                                      "y": -10647.2646484375,
+                                      "width": 11.9285888671875,
+                                      "height": 10.734334945678711,
+                                      "top": -10647.2646484375,
+                                      "left": -16062.857421875,
+                                      "bottom": -10636.530313491821,
+                                      "right": -16050.928833007812
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 1,
+                                      "position": "absolute",
+                                      "left": "0%",
+                                      "width": "25.38%",
+                                      "top": "0%",
+                                      "height": "97.32%"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 1,
+                                  "children": [],
+                                  "imageId": "vector12x.png"
+                              },
+                              {
+                                  "id": "I439:78626;398:58355",
+                                  "raw": {
+                                      "nodeId": "I439:78626;398:58355",
+                                      "nodeName": "Group 2036093303",
+                                      "nodeType": "GROUP",
+                                      "absoluteBoundingBox": {
+                                          "x": -16050.2255859375,
+                                          "y": -10647.2646484375,
+                                          "width": 34.36821746826172,
+                                          "height": 11.030030250549316
+                                      }
+                                  },
+                                  "nodeType": "image",
+                                  "name": "Group 2036093303",
+                                  "uniqueStyleName": "tag-element-c",
+                                  "boundingRect": {
+                                      "x": -16050.2255859375,
+                                      "y": -10647.2646484375,
+                                      "width": 34.36821746826172,
+                                      "height": 11.030030250549316,
+                                      "top": -10647.2646484375,
+                                      "left": -16050.2255859375,
+                                      "bottom": -10636.23461818695,
+                                      "right": -16015.857368469238
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 2,
+                                      "position": "absolute",
+                                      "left": "12.6318359375px",
+                                      "right": "auto",
+                                      "width": "34.37px",
+                                      "top": "0px",
+                                      "height": "11.03px"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 2,
+                                  "children": [],
+                                  "imageId": "203609330312x.png"
+                              }
+                          ]
+                      },
+                      {
+                          "id": "I439:78626;398:58359",
+                          "raw": {
+                              "nodeId": "I439:78626;398:58359",
+                              "nodeName": "tag",
+                              "nodeType": "FRAME",
+                              "absoluteBoundingBox": {
+                                  "x": -16066.857421875,
+                                  "y": -10650,
+                                  "width": 54,
+                                  "height": 16
+                              }
+                          },
+                          "nodeType": "view",
+                          "name": "tag",
+                          "uniqueStyleName": "tag-alternate",
+                          "boundingRect": {
+                              "x": -16066.857421875,
+                              "y": -10650,
+                              "width": 54,
+                              "height": 16,
+                              "top": -10650,
+                              "left": -16066.857421875,
+                              "bottom": -10634,
+                              "right": -16012.857421875
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 3,
+                              "position": "absolute",
+                              "left": "0px",
+                              "right": "auto",
+                              "width": "54px",
+                              "top": "0px",
+                              "height": "16px",
+                              "borderTopLeftRadius": "2px",
+                              "borderTopRightRadius": "2px",
+                              "borderBottomRightRadius": "2px",
+                              "borderBottomLeftRadius": "2px",
+                              "background": "url(undefined) no-repeat"
+                          },
+                          "styleIds": {},
+                          "zIndex": 3,
+                          "children": [
+                              {
+                                  "id": "I439:78626;398:58361",
+                                  "raw": {
+                                      "nodeId": "I439:78626;398:58361",
+                                      "nodeName": "低价特卖",
+                                      "nodeType": "GROUP",
+                                      "absoluteBoundingBox": {
+                                          "x": -16063.6572265625,
+                                          "y": -10647.2998046875,
+                                          "width": 47.434288024902344,
+                                          "height": 10.697474479675293
+                                      }
+                                  },
+                                  "nodeType": "image",
+                                  "name": "低价特卖",
+                                  "uniqueStyleName": "alternate-feature-a",
+                                  "boundingRect": {
+                                      "x": -16063.6572265625,
+                                      "y": -10647.2998046875,
+                                      "width": 47.434288024902344,
+                                      "height": 10.697474479675293,
+                                      "top": -10647.2998046875,
+                                      "left": -16063.6572265625,
+                                      "bottom": -10636.602330207825,
+                                      "right": -16016.222938537598
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 2,
+                                      "position": "absolute",
+                                      "left": "3.2001953125px",
+                                      "right": "auto",
+                                      "width": "47.43px",
+                                      "top": "2.7001953125px",
+                                      "height": "10.7px"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 2,
+                                  "children": [],
+                                  "imageId": "di-jia-te-mai12x.png"
+                              },
+                              {
+                                  "id": "I439:78626;398:58373",
+                                  "raw": {
+                                      "nodeId": "I439:78626;398:58373",
+                                      "nodeName": "Group 2036093305",
+                                      "nodeType": "GROUP",
+                                      "absoluteBoundingBox": {
+                                          "x": -16066.857421875,
+                                          "y": -10650,
+                                          "width": 55,
+                                          "height": 16
+                                      }
+                                  },
+                                  "nodeType": "view",
+                                  "name": "Group 2036093305",
+                                  "uniqueStyleName": "alternate-group",
+                                  "boundingRect": {
+                                      "x": -16066.857421875,
+                                      "y": -10650,
+                                      "width": 55,
+                                      "height": 16,
+                                      "top": -10650,
+                                      "left": -16066.857421875,
+                                      "bottom": -10634,
+                                      "right": -16011.857421875
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 3,
+                                      "position": "absolute",
+                                      "left": "0px",
+                                      "right": "auto",
+                                      "width": "55px",
+                                      "top": "0px",
+                                      "height": "16px",
+                                      "background": "url(undefined) no-repeat"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 3,
+                                  "children": [
+                                      {
+                                          "id": "I439:78626;398:58376",
+                                          "raw": {
+                                              "nodeId": "I439:78626;398:58376",
+                                              "nodeName": "Group 2036093301",
+                                              "nodeType": "GROUP",
+                                              "absoluteBoundingBox": {
+                                                  "x": -16063.857421875,
+                                                  "y": -10647.4990234375,
+                                                  "width": 48.99757766723633,
+                                                  "height": 11.499401092529297
+                                              }
+                                          },
+                                          "nodeType": "view",
+                                          "name": "Group 2036093301",
+                                          "uniqueStyleName": "alternate-element-b",
+                                          "boundingRect": {
+                                              "x": -16063.857421875,
+                                              "y": -10647.4990234375,
+                                              "width": 48.99757766723633,
+                                              "height": 11.499401092529297,
+                                              "top": -10647.4990234375,
+                                              "left": -16063.857421875,
+                                              "bottom": -10635.99962234497,
+                                              "right": -16014.859844207764
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 2,
+                                              "position": "absolute",
+                                              "left": "3px",
+                                              "right": "auto",
+                                              "width": "49px",
+                                              "top": "2.5009765625px",
+                                              "height": "11.5px"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 2,
+                                          "children": [
+                                              {
+                                                  "id": "I439:78626;398:58377",
+                                                  "raw": {
+                                                      "nodeId": "I439:78626;398:58377",
+                                                      "nodeName": "Vector",
+                                                      "nodeType": "VECTOR",
+                                                      "absoluteBoundingBox": {
+                                                          "x": -16063.857421875,
+                                                          "y": -10647.4990234375,
+                                                          "width": 12.436197280883789,
+                                                          "height": 11.191123008728027
+                                                      }
+                                                  },
+                                                  "nodeType": "image",
+                                                  "name": "Vector",
+                                                  "uniqueStyleName": "element-vector-c",
+                                                  "boundingRect": {
+                                                      "x": -16063.857421875,
+                                                      "y": -10647.4990234375,
+                                                      "width": 12.436197280883789,
+                                                      "height": 11.191123008728027,
+                                                      "top": -10647.4990234375,
+                                                      "left": -16063.857421875,
+                                                      "bottom": -10636.307900428772,
+                                                      "right": -16051.421224594116
+                                                  },
+                                                  "styles": {
+                                                      "boxSizing": "border-box",
+                                                      "zIndex": 1,
+                                                      "position": "absolute",
+                                                      "left": "0%",
+                                                      "width": "25.38%",
+                                                      "top": "0%",
+                                                      "height": "97.32%"
+                                                  },
+                                                  "styleIds": {},
+                                                  "zIndex": 1,
+                                                  "children": [],
+                                                  "imageId": "vector22x.png"
+                                              },
+                                              {
+                                                  "id": "I439:78626;398:58378",
+                                                  "raw": {
+                                                      "nodeId": "I439:78626;398:58378",
+                                                      "nodeName": "Group 2036093303",
+                                                      "nodeType": "GROUP",
+                                                      "absoluteBoundingBox": {
+                                                          "x": -16050.69140625,
+                                                          "y": -10647.4990234375,
+                                                          "width": 35.83152770996094,
+                                                          "height": 11.499401092529297
+                                                      }
+                                                  },
+                                                  "nodeType": "image",
+                                                  "name": "Group 2036093303",
+                                                  "uniqueStyleName": "alternate-element-c",
+                                                  "boundingRect": {
+                                                      "x": -16050.69140625,
+                                                      "y": -10647.4990234375,
+                                                      "width": 35.83152770996094,
+                                                      "height": 11.499401092529297,
+                                                      "top": -10647.4990234375,
+                                                      "left": -16050.69140625,
+                                                      "bottom": -10635.99962234497,
+                                                      "right": -16014.859878540039
+                                                  },
+                                                  "styles": {
+                                                      "boxSizing": "border-box",
+                                                      "zIndex": 2,
+                                                      "position": "absolute",
+                                                      "left": "13.166015625px",
+                                                      "right": "auto",
+                                                      "width": "35.83px",
+                                                      "top": "0px",
+                                                      "height": "11.5px"
+                                                  },
+                                                  "styleIds": {},
+                                                  "zIndex": 2,
+                                                  "children": [],
+                                                  "imageId": "203609330322x.png"
+                                              }
+                                          ]
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "id": "439:78613",
+                  "raw": {
+                      "nodeId": "439:78613",
+                      "nodeName": "Frame 2036083623",
+                      "nodeType": "FRAME",
+                      "absoluteBoundingBox": {
+                          "x": -16067,
+                          "y": -10650,
+                          "width": 53,
+                          "height": 16
+                      }
+                  },
+                  "nodeType": "view",
+                  "name": "Frame 2036083623",
+                  "uniqueStyleName": "brand-layer2",
+                  "boundingRect": {
+                      "x": -16067,
+                      "y": -10650,
+                      "width": 53,
+                      "height": 16,
+                      "top": -10650,
+                      "left": -16067,
+                      "bottom": -10634,
+                      "right": -16014
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 1,
+                      "flexBasis": "53px",
+                      "width": "53px",
+                      "height": "16px",
+                      "position": "relative",
+                      "background": "url(undefined) no-repeat"
+                  },
+                  "styleIds": {},
+                  "zIndex": 1,
+                  "children": [
+                      {
+                          "id": "439:78615",
+                          "raw": {
+                              "nodeId": "439:78615",
+                              "nodeName": "截屏2024-11-04 17.09.09 2",
+                              "nodeType": "RECTANGLE",
+                              "absoluteBoundingBox": {
+                                  "x": -16067,
+                                  "y": -10650,
+                                  "width": 54.620689392089844,
+                                  "height": 16
+                              }
+                          },
+                          "nodeType": "image",
+                          "name": "截屏2024-11-04 17.09.09 2",
+                          "uniqueStyleName": "core-feature-b",
+                          "boundingRect": {
+                              "x": -16067,
+                              "y": -10650,
+                              "width": 54.620689392089844,
+                              "height": 16,
+                              "top": -10650,
+                              "left": -16067,
+                              "bottom": -10634,
+                              "right": -16012.37931060791
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 2,
+                              "position": "absolute",
+                              "left": "0%",
+                              "width": "103.06%",
+                              "top": "0%",
+                              "height": "100%",
+                              "borderTopLeftRadius": "3.03px",
+                              "borderTopRightRadius": "3.03px",
+                              "borderBottomRightRadius": "3.03px",
+                              "borderBottomLeftRadius": "3.03px"
+                          },
+                          "styleIds": {},
+                          "zIndex": 2,
+                          "children": [],
+                          "imageId": "jie-ping2x.png"
+                      },
+                      {
+                          "id": "439:78616",
+                          "raw": {
+                              "nodeId": "439:78616",
+                              "nodeName": "Group 2036093305",
+                              "nodeType": "GROUP",
+                              "absoluteBoundingBox": {
+                                  "x": -16067,
+                                  "y": -10650,
+                                  "width": 55,
+                                  "height": 16
+                              }
+                          },
+                          "nodeType": "view",
+                          "name": "Group 2036093305",
+                          "uniqueStyleName": "brand-group",
+                          "boundingRect": {
+                              "x": -16067,
+                              "y": -10650,
+                              "width": 55,
+                              "height": 16,
+                              "top": -10650,
+                              "left": -16067,
+                              "bottom": -10634,
+                              "right": -16012
+                          },
+                          "styles": {
+                              "boxSizing": "border-box",
+                              "zIndex": 3,
+                              "position": "absolute",
+                              "left": "0%",
+                              "width": "103.77%",
+                              "top": "0%",
+                              "height": "100%",
+                              "background": "url(undefined) no-repeat"
+                          },
+                          "styleIds": {},
+                          "zIndex": 3,
+                          "children": [
+                              {
+                                  "id": "439:78619",
+                                  "raw": {
+                                      "nodeId": "439:78619",
+                                      "nodeName": "Group 2036093301",
+                                      "nodeType": "GROUP",
+                                      "absoluteBoundingBox": {
+                                          "x": -16063,
+                                          "y": -10647.2646484375,
+                                          "width": 47.000003814697266,
+                                          "height": 11.031159400939941
+                                      }
+                                  },
+                                  "nodeType": "view",
+                                  "name": "Group 2036093301",
+                                  "uniqueStyleName": "brand-element-b",
+                                  "boundingRect": {
+                                      "x": -16063,
+                                      "y": -10647.2646484375,
+                                      "width": 47.000003814697266,
+                                      "height": 11.031159400939941,
+                                      "top": -10647.2646484375,
+                                      "left": -16063,
+                                      "bottom": -10636.23348903656,
+                                      "right": -16015.999996185303
+                                  },
+                                  "styles": {
+                                      "boxSizing": "border-box",
+                                      "zIndex": 2,
+                                      "position": "absolute",
+                                      "left": "7.27%",
+                                      "width": "85.45%",
+                                      "top": "17.1%",
+                                      "height": "68.94%"
+                                  },
+                                  "styleIds": {},
+                                  "zIndex": 2,
+                                  "children": [
+                                      {
+                                          "id": "439:78620",
+                                          "raw": {
+                                              "nodeId": "439:78620",
+                                              "nodeName": "Vector",
+                                              "nodeType": "VECTOR",
+                                              "absoluteBoundingBox": {
+                                                  "x": -16063,
+                                                  "y": -10647.2646484375,
+                                                  "width": 11.9285888671875,
+                                                  "height": 10.734334945678711
+                                              }
+                                          },
+                                          "nodeType": "image",
+                                          "name": "Vector",
+                                          "uniqueStyleName": "element-vector-a",
+                                          "boundingRect": {
+                                              "x": -16063,
+                                              "y": -10647.2646484375,
+                                              "width": 11.9285888671875,
+                                              "height": 10.734334945678711,
+                                              "top": -10647.2646484375,
+                                              "left": -16063,
+                                              "bottom": -10636.530313491821,
+                                              "right": -16051.071411132812
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 1,
+                                              "position": "absolute",
+                                              "left": "0%",
+                                              "width": "25.38%",
+                                              "top": "0%",
+                                              "height": "97.31%"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 1,
+                                          "children": [],
+                                          "imageId": "vector2x.png"
+                                      },
+                                      {
+                                          "id": "439:78621",
+                                          "raw": {
+                                              "nodeId": "439:78621",
+                                              "nodeName": "Group 2036093303",
+                                              "nodeType": "GROUP",
+                                              "absoluteBoundingBox": {
+                                                  "x": -16050.3681640625,
+                                                  "y": -10647.2646484375,
+                                                  "width": 34.368370056152344,
+                                                  "height": 11.031006813049316
+                                              }
+                                          },
+                                          "nodeType": "image",
+                                          "name": "Group 2036093303",
+                                          "uniqueStyleName": "brand-element-c",
+                                          "boundingRect": {
+                                              "x": -16050.3681640625,
+                                              "y": -10647.2646484375,
+                                              "width": 34.368370056152344,
+                                              "height": 11.031006813049316,
+                                              "top": -10647.2646484375,
+                                              "left": -16050.3681640625,
+                                              "bottom": -10636.23364162445,
+                                              "right": -16015.999794006348
+                                          },
+                                          "styles": {
+                                              "boxSizing": "border-box",
+                                              "zIndex": 2,
+                                              "position": "absolute",
+                                              "left": "26.88%",
+                                              "width": "73.12%",
+                                              "top": "0%",
+                                              "height": "100%"
+                                          },
+                                          "styleIds": {},
+                                          "zIndex": 2,
+                                          "children": [],
+                                          "imageId": "20360933032x.png"
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "id": "439:78625",
+                  "raw": {
+                      "nodeId": "439:78625",
+                      "nodeName": "INSIS FEMME泡泡袖立领A摆衬衫",
+                      "nodeType": "TEXT",
+                      "absoluteBoundingBox": {
+                          "x": -16010,
+                          "y": -10650,
+                          "width": 118,
+                          "height": 16
+                      }
+                  },
+                  "nodeType": "text",
+                  "name": "INSIS FEMME泡泡袖立领A摆衬衫",
+                  "uniqueStyleName": "brand-version-1",
+                  "boundingRect": {
+                      "x": -16010,
+                      "y": -10650,
+                      "width": 118,
+                      "height": 16,
+                      "top": -10650,
+                      "left": -16010,
+                      "bottom": -10634,
+                      "right": -15892
+                  },
+                  "styles": {
+                      "boxSizing": "border-box",
+                      "zIndex": 2,
+                      "width": "118px",
+                      "height": "16px",
+                      "display": "flex",
+                      "alignItems": "center",
+                      "verticalAlign": "middle",
+                      "fontSize": "14px",
+                      "lineHeight": "16px",
+                      "fontFamily": "PingFang SC",
+                      "color": "#000000"
+                  },
+                  "styleIds": {},
+                  "zIndex": 2,
+                  "characters": "新疆库尔勒香梨1k",
+                  "children": []
+              }
+          ]
+      }
+  ]
+}
