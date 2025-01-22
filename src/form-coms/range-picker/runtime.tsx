@@ -433,11 +433,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
       let result = [null, null];
 
-      if (_val[0] !== currentValueRef.current[0]) {
+      if (_val[0] !== currentValueRef.current?.[0]) {
         result[0] = _val[0];
       }
 
-      if (_val[1] !== currentValueRef.current[1]) {
+      if (_val[1] !== currentValueRef.current?.[1]) {
         result[1] = _val[1];
       }
 
