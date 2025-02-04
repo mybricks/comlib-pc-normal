@@ -151,13 +151,6 @@
   ],
   "externals": [
     {
-      "name": "@ant-design/cssinjs",
-      "library": "antdCssinjs",
-      "urls": [
-        "public/antd/cssinjs.min.js"
-      ]
-    },
-    {
       "name": "moment",
       "library": "dayjs",
       "version": "1.11.13",
@@ -184,7 +177,7 @@
     },
     {
       "name": "antd",
-      "library": "antd_5_21_4",
+      "library": "antd_5_23_2",
       "version": "5.21.4",
       "urls": [
         "public/antd/antd@5.21.4.min.js",
