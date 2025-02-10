@@ -312,6 +312,12 @@ export default {
               data.staticOptions = options;
               data.config.options = options;
             }
+          },
+          binding : {
+            with: "data.config.options",
+            schema: {
+              type: 'string'
+            }
           }
         },
         {
