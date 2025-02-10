@@ -44,22 +44,24 @@ const tableStyleEditor = {
       description:
         '开启后，表头固定，表格内容支持滚动。可以设置编辑项【可滚动最大高度】和【固定高度】来控制滚动',
       ifVisible({ style }: EditorResult<Data>) {
-        return style.height === 'auto';
+        return !!style.height;
       },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.fixedHeader;
         },
-        set({ data, input, output }: EditorResult<Data>, value: boolean) {
+        set({ data, input, output, style}: EditorResult<Data>, value: boolean) {
           data.fixedHeader = value;
           const event1 = input.get(InputIds.TABLE_HEIGHT);
           const event2 = output.get(InputIds.TABLE_HEIGHT);
           if (value) {
             !event1 && input.add(InputIds.TABLE_HEIGHT, '设置表格高度', Schemas.TABLE_HEIGHT);
             !event2 && output.add(OutputIds.TABLE_HEIGHT, '表格高度', Schemas.TABLE_HEIGHT);
-
             input.get(InputIds.TABLE_HEIGHT).setRels([OutputIds.TABLE_HEIGHT]);
           } else {
+            data.fixedHeight= ''
+            data.scroll.y = ''
+            style.height = "fit-content"
             event1 && input.remove(InputIds.TABLE_HEIGHT);
             event2 && output.remove(OutputIds.TABLE_HEIGHT);
           }
@@ -71,7 +73,7 @@ const tableStyleEditor = {
       description: '设置表格的可滚动最大高度，开启固定表头后生效',
       type: 'Text',
       ifVisible({ data, style }: EditorResult<Data>) {
-        return data.fixedHeader && style.height === 'auto';
+        return data.fixedHeader && !!style.height;
       },
       value: {
         get({ data }: EditorResult<Data>) {
@@ -87,7 +89,8 @@ const tableStyleEditor = {
       type: 'text',
       description: '设置表格的固定高度，开启固定表头后生效',
       ifVisible({ data, style }: EditorResult<Data>) {
-        return data.fixedHeader && style.height === 'auto';
+        console.log("style.height", style.height)
+        return data.fixedHeader && !!style.height;
       },
       value: {
         get({ data }: EditorResult<Data>) {
