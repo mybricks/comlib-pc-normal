@@ -37,7 +37,7 @@ export default function ({
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
-  const [placeholder,setPlaceholder] = useState(data.config.placeholder)
+  const [placeholder, setPlaceholder] = useState(data.config.placeholder);
   const [autoFocus, setAutoFocus] = useState(false);
 
   useFormItemInputs(
@@ -138,22 +138,22 @@ export default function ({
     });
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     //设置是否默认聚焦
     inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
       setAutoFocus(!!flag);
       !!flag ? inputRef.current?.focus() : null;
       relOutputs['setAutoFocusDone'](!!flag);
     });
-  },[])
+  }, []);
 
   useEffect(() => {
     //设置占位符
-    inputs["setPlaceholder"]((value,relOutputs)=>{
+    inputs['setPlaceholder']((value, relOutputs) => {
       setPlaceholder(value);
-      relOutputs['setPlaceholderDone'](value)
-    })
-  })
+      relOutputs['setPlaceholderDone'](value);
+    });
+  });
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
@@ -219,6 +219,7 @@ export default function ({
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
+        maxLength={data.config.maxLength > 0 ? data.config.maxLength : void 0} // 兼容 antd5 中 maxLength 为 -1 时 outofrange 的问题
       />
     </div>
   ) : (
