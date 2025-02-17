@@ -156,7 +156,7 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled'
+                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled .ant-radio-disabled+span'
               },
               {
                 title: '选择框',
