@@ -674,6 +674,13 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
               ${css.datePicker} 
               ${data.useCustomDateCell ? css.slotContainer : ''}
               ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
+            // 兼容 antd5
+            popupClassName={`
+              ${dropdownClassName}
+              ${id} 
+              ${css.datePicker} 
+              ${data.useCustomDateCell ? css.slotContainer : ''}
+              ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
             open={finalOpen}
             format={
               data.config.picker && data.formatMap

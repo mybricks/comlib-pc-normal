@@ -7,7 +7,8 @@ module.exports = Object.assign(
         react: 'react',
         'react-dom': 'react-dom',
         antd: 'antd',
-        moment: 'moment',
+        moment: 'dayjs',
+        dayjs: 'dayjs',
         '@ant-design/icons': '@ant-design/icons'
       }
     ]
