@@ -3,10 +3,10 @@
     "name": "通用PC组件库(antd5)",
     "namespace": "mybricks.normal-pc.antd5"
   },
-  "name": "通用PC组件库",
-  "namespace": "@mybricks/comlib-pc-normal",
+  "name": "通用PC组件库(antd5)",
+  "namespace": "mybricks.normal-pc.antd5",
   "commitInfo": "update",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "comAry": [
     {
       "title": "基础",
