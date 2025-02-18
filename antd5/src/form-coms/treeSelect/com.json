@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.treeSelect",
+  "namespace": "mybricks.normal-pc.antd5.treeSelect",
   "title": "树形选择",
   "version": "1.2.42",
   "description": "树形选择结构的下拉框",

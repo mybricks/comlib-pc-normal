@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.progress",
+  "namespace": "mybricks.normal-pc.antd5.progress",
   "title": "进度条",
   "version": "1.0.5",
   "description": "展示操作的当前进度",

@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.i18n-content",
+  "namespace": "mybricks.normal-pc.antd5.i18n-content",
   "title": "获取语言包",
   "version": "1.0.0",
   "rtType": "js-autorun",

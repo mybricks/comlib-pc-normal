@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.single-image",
+  "namespace": "mybricks.normal-pc.antd5.single-image",
   "title": "图片",
   "version": "1.0.15",
   "description": "可预览的单图",

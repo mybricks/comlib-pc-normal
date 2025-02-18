@@ -1,7 +1,7 @@
 {
-  "namespace": "mybricks.normal-pc.tree",
+  "namespace": "mybricks.normal-pc.antd5.tree",
   "title": "树",
-  "version": "1.0.88",
+  "version": "1.0.89",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",

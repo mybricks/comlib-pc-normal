@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.list",
+  "namespace": "mybricks.normal-pc.antd5.list",
   "title": "列表容器",
   "enable": true,
   "visibility": false,

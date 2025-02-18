@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.page-router",
+  "namespace": "mybricks.normal-pc.antd5.page-router",
   "title": "跳转到...",
   "version": "1.0.8",
   "rtType": "js",
