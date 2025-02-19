@@ -414,7 +414,7 @@ export default function Runtime({
   };
 
   return (
-    <div className={`${css.select} ${color ? css.selectColor : ''}`} ref={ref} id="area">
+    <div className={`${css.select} ${color ? css.selectColor : ''} ${ANTD_VERSION === 5 ? css.antd5Select : ''}`} ref={ref} id="area">
       {data.isEditable ? (
         <Select
           {...configs}
