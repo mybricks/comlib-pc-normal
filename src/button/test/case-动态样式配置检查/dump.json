@@ -385,7 +385,7 @@
 									"_0_": "u_dJXDe",
 									"_30_": "u__uRz0",
 									"_101_": {
-										"_119_": "mybricks.normal-h5.custom-button",
+										"_119_": "amc.normal-h5.custom-button",
 										"_120_": "1.0.28"
 									},
 									"_17_": "按钮",
@@ -413,7 +413,7 @@
 									"_0_": "u_bGsaZ",
 									"_30_": "u_nFv5g",
 									"_101_": {
-										"_119_": "mybricks.normal-h5.custom-button",
+										"_119_": "amc.normal-h5.custom-button",
 										"_120_": "1.0.28"
 									},
 									"_17_": "按钮1",
@@ -847,7 +847,7 @@
 					"_17_": "按钮",
 					"_100_": "custom-button_mRN",
 					"_101_": {
-						"_119_": "mybricks.normal-h5.custom-button",
+						"_119_": "amc.normal-h5.custom-button",
 						"_120_": "1.0.28"
 					},
 					"_102_": true,
@@ -914,7 +914,7 @@
 					"_17_": "按钮1",
 					"_100_": "custom-button_WSn",
 					"_101_": {
-						"_119_": "mybricks.normal-h5.custom-button",
+						"_119_": "amc.normal-h5.custom-button",
 						"_120_": "1.0.28"
 					},
 					"_102_": true,

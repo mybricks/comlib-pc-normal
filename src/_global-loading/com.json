@@ -1,6 +1,6 @@
 {
   "title": "全局Loading",
-  "namespace": "mybricks.normal-h5.global-loading",
+  "namespace": "amc.normal-h5.global-loading",
   "version": "1.0.6",
   "rtType": "js",
   "description": "",

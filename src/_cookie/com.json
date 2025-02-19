@@ -1,6 +1,6 @@
 {
   "title": "cookie",
-  "namespace": "mybricks.normal-h5.cookie",
+  "namespace": "amc.normal-h5.cookie",
   "version": "1.0.1",
   "rtType": "js-autorun",
   "description": "cookie",

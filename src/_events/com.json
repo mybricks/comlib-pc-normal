@@ -1,6 +1,6 @@
 {
   "title": "应用事件",
-  "namespace": "mybricks.normal-h5.events",
+  "namespace": "amc.normal-h5.events",
   "version": "1.0.1",
   "rtType": "js",
   "description": "路由参数",

@@ -1,6 +1,6 @@
 {
   "title": "领域模型表单",
-  "namespace": "mybricks.normal-h5.domain-form",
+  "namespace": "amc.normal-h5.domain-form",
   "version": "1.0.1",
   "description": "领域模型表单",
   "author": "MyBricks",

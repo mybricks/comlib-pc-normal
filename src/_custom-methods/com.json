@@ -1,6 +1,6 @@
 {
   "title": "主应用函数",
-  "namespace": "mybricks.normal-h5.custom-methods",
+  "namespace": "amc.normal-h5.custom-methods",
   "version": "1.0.0",
   "rtType": "js",
   "description": "调用主应用函数",

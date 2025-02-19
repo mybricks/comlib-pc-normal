@@ -1857,7 +1857,7 @@
 					"_18_": "输出勾选数据",
 					"_106_": "custom-button_KY2",
 					"_107_": {
-						"_124_": "mybricks.normal-h5.custom-button",
+						"_124_": "amc.normal-h5.custom-button",
 						"_125_": "1.0.31"
 					},
 					"_108_": true,
@@ -1923,7 +1923,7 @@
 					"_18_": "设置勾选项",
 					"_106_": "custom-button_BOE",
 					"_107_": {
-						"_124_": "mybricks.normal-h5.custom-button",
+						"_124_": "amc.normal-h5.custom-button",
 						"_125_": "1.0.31"
 					},
 					"_108_": true,
@@ -2234,7 +2234,7 @@
 					"_18_": "数据表格",
 					"_106_": "table_Ko_",
 					"_107_": {
-						"_124_": "mybricks.normal-h5.table",
+						"_124_": "amc.normal-h5.table",
 						"_125_": "1.1.88"
 					},
 					"_108_": true,
@@ -2578,7 +2578,7 @@
 					"_18_": "对象取值1",
 					"_106_": "pick_iCw",
 					"_107_": {
-						"_124_": "mybricks.normal-h5.pick",
+						"_124_": "amc.normal-h5.pick",
 						"_125_": "1.0.7",
 						"_136_": "js"
 					},
@@ -8082,7 +8082,7 @@
 					"_18_": "清空勾选",
 					"_106_": "custom-button_ZbU",
 					"_107_": {
-						"_124_": "mybricks.normal-h5.custom-button",
+						"_124_": "amc.normal-h5.custom-button",
 						"_125_": "1.0.31"
 					},
 					"_108_": true,

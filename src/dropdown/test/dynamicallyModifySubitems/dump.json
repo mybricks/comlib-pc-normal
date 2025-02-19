@@ -366,7 +366,7 @@
 									"_0_": "u_fUzdj",
 									"_31_": "u_VJ8IX",
 									"_97_": {
-										"_112_": "mybricks.normal-h5.dropdown",
+										"_112_": "amc.normal-h5.dropdown",
 										"_113_": "1.0.28"
 									},
 									"_18_": "下拉菜单1",
@@ -753,7 +753,7 @@
 					"_18_": "下拉菜单1",
 					"_96_": "dropdown_7_v",
 					"_97_": {
-						"_112_": "mybricks.normal-h5.dropdown",
+						"_112_": "amc.normal-h5.dropdown",
 						"_113_": "1.0.28"
 					},
 					"_98_": true,

@@ -1,6 +1,6 @@
 {
   "title": "二维码",
-  "namespace": "mybricks.normal-h5.qr-code",
+  "namespace": "amc.normal-h5.qr-code",
   "version": "1.0.2",
   "description": "二维码",
   "author": "MyBricks",

@@ -1532,7 +1532,7 @@
 					"_17_": "表单容器",
 					"_105_": "form-container_BJu",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-container",
+						"_121_": "amc.normal-h5.form-container",
 						"_122_": "1.4.47"
 					},
 					"_107_": true,
@@ -1666,7 +1666,7 @@
 					"_17_": "表单容器1",
 					"_105_": "form-container_L32",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-container",
+						"_121_": "amc.normal-h5.form-container",
 						"_122_": "1.4.47"
 					},
 					"_107_": true,
@@ -1784,7 +1784,7 @@
 					"_17_": "表单容器2",
 					"_105_": "form-container_oCJ",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-container",
+						"_121_": "amc.normal-h5.form-container",
 						"_122_": "1.4.47"
 					},
 					"_107_": true,
@@ -1847,7 +1847,7 @@
 					"_17_": "文本",
 					"_105_": "text_SGT",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.text",
+						"_121_": "amc.normal-h5.text",
 						"_122_": "1.0.15"
 					},
 					"_107_": true,
@@ -1889,7 +1889,7 @@
 					"_17_": "文本3",
 					"_105_": "text_xmH",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.text",
+						"_121_": "amc.normal-h5.text",
 						"_122_": "1.0.15"
 					},
 					"_107_": true,
@@ -1940,7 +1940,7 @@
 					"_17_": "自定义容器1",
 					"_105_": "custom-container_N1c",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.custom-container",
+						"_121_": "amc.normal-h5.custom-container",
 						"_122_": "1.0.28"
 					},
 					"_107_": true,
@@ -2004,7 +2004,7 @@
 					"_17_": "按钮",
 					"_105_": "custom-button_blq",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.custom-button",
+						"_121_": "amc.normal-h5.custom-button",
 						"_122_": "1.0.24"
 					},
 					"_107_": true,
@@ -2046,7 +2046,7 @@
 					"_17_": "文本4",
 					"_105_": "text_Go2",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.text",
+						"_121_": "amc.normal-h5.text",
 						"_122_": "1.0.15"
 					},
 					"_107_": true,
@@ -2075,8 +2075,8 @@
 						"_R_": "205"
 					},
 					"_84_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_17_": "表单容器",
 					"_51_": "scope",
@@ -2084,8 +2084,8 @@
 						"_R_": "16"
 					},
 					"_55_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"57": {
@@ -2125,8 +2125,8 @@
 						"_R_": "210"
 					},
 					"_84_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_17_": "表单容器",
 					"_51_": "scope",
@@ -2134,8 +2134,8 @@
 						"_R_": "17"
 					},
 					"_55_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"59": {
@@ -2172,8 +2172,8 @@
 						"_R_": "215"
 					},
 					"_84_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_17_": "表单容器",
 					"_51_": "scope",
@@ -2181,8 +2181,8 @@
 						"_R_": "18"
 					},
 					"_55_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"61": {
@@ -9191,7 +9191,7 @@
 					"_17_": "文本框",
 					"_105_": "form-text_61_",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-text",
+						"_121_": "amc.normal-h5.form-text",
 						"_122_": "1.3.15"
 					},
 					"_107_": true,
@@ -9269,7 +9269,7 @@
 					"_17_": "文本框",
 					"_105_": "form-text_ZZ1",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-text",
+						"_121_": "amc.normal-h5.form-text",
 						"_122_": "1.3.15"
 					},
 					"_107_": true,
@@ -9347,7 +9347,7 @@
 					"_17_": "文本框1",
 					"_105_": "form-text_ftJ",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-text",
+						"_121_": "amc.normal-h5.form-text",
 						"_122_": "1.3.15"
 					},
 					"_107_": true,
@@ -9425,7 +9425,7 @@
 					"_17_": "文本框",
 					"_105_": "form-text_ocD",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.form-text",
+						"_121_": "amc.normal-h5.form-text",
 						"_122_": "1.3.15"
 					},
 					"_107_": true,
@@ -9494,7 +9494,7 @@
 					"_17_": "文本",
 					"_105_": "text_5Ah",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.text",
+						"_121_": "amc.normal-h5.text",
 						"_122_": "1.0.15"
 					},
 					"_107_": true,
@@ -9533,7 +9533,7 @@
 					"_17_": "文本1",
 					"_105_": "text_Cbp",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.text",
+						"_121_": "amc.normal-h5.text",
 						"_122_": "1.0.15"
 					},
 					"_107_": true,
@@ -9579,7 +9579,7 @@
 					"_17_": "自定义容器",
 					"_105_": "custom-container_Lom",
 					"_106_": {
-						"_121_": "mybricks.normal-h5.custom-container",
+						"_121_": "amc.normal-h5.custom-container",
 						"_122_": "1.0.28"
 					},
 					"_107_": true,

@@ -1,6 +1,6 @@
 {
   "title": "栅格布局",
-  "namespace": "mybricks.normal-h5.grid",
+  "namespace": "amc.normal-h5.grid",
   "visibility": false,
   "version": "1.0.18",
   "description": "24 栅格系统",

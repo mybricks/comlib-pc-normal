@@ -1287,7 +1287,7 @@
                     "_17_": "按钮",
                     "_101_": "custom-button_2GO",
                     "_102_": {
-                        "_118_": "mybricks.normal-h5.custom-button",
+                        "_118_": "amc.normal-h5.custom-button",
                         "_119_": "1.0.21"
                     },
                     "_103_": true,
@@ -1457,7 +1457,7 @@
                     "_17_": "数据表格",
                     "_101_": "table_ryL",
                     "_102_": {
-                        "_118_": "mybricks.normal-h5.table",
+                        "_118_": "amc.normal-h5.table",
                         "_119_": "1.1.29"
                     },
                     "_103_": true,
@@ -5283,7 +5283,7 @@
                     "_17_": "文本",
                     "_101_": "text_eM3",
                     "_102_": {
-                        "_118_": "mybricks.normal-h5.text",
+                        "_118_": "amc.normal-h5.text",
                         "_119_": "1.0.13"
                     },
                     "_103_": true,
@@ -5502,7 +5502,7 @@
                     "_17_": "工具条",
                     "_101_": "toolbar_IMm",
                     "_102_": {
-                        "_118_": "mybricks.normal-h5.toolbar",
+                        "_118_": "amc.normal-h5.toolbar",
                         "_119_": "1.0.24"
                     },
                     "_103_": true,

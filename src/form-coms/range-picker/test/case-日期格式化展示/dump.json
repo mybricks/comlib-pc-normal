@@ -412,7 +412,7 @@
 									"_0_": "u_hZ3vM",
 									"_29_": "u_1PoaA",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.range-picker",
+										"_110_": "amc.normal-h5.range-picker",
 										"_111_": "1.1.14"
 									},
 									"_17_": "日期范围选择框",
@@ -438,7 +438,7 @@
 									"_0_": "u_qxN_D",
 									"_29_": "u_rtbWT",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.range-picker",
+										"_110_": "amc.normal-h5.range-picker",
 										"_111_": "1.1.14"
 									},
 									"_17_": "日期范围选择框1",
@@ -464,7 +464,7 @@
 									"_0_": "u_Aqikt",
 									"_29_": "u_usZ8S",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.range-picker",
+										"_110_": "amc.normal-h5.range-picker",
 										"_111_": "1.1.14"
 									},
 									"_17_": "复制的 日期范围选择框1",
@@ -490,7 +490,7 @@
 									"_0_": "u_Q_m4D",
 									"_29_": "u_Knt6y",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.range-picker",
+										"_110_": "amc.normal-h5.range-picker",
 										"_111_": "1.1.14"
 									},
 									"_17_": "复制的 日期范围选择框1",
@@ -516,7 +516,7 @@
 									"_0_": "u_Ckas6",
 									"_29_": "u_gZ8dY",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.range-picker",
+										"_110_": "amc.normal-h5.range-picker",
 										"_111_": "1.1.14"
 									},
 									"_17_": "复制的 日期范围选择框1",
@@ -542,7 +542,7 @@
 									"_0_": "u_9l99c",
 									"_29_": "u_VVwNO",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.range-picker",
+										"_110_": "amc.normal-h5.range-picker",
 										"_111_": "1.1.14"
 									},
 									"_17_": "复制的 日期范围选择框1",
@@ -1946,7 +1946,7 @@
 					"_17_": "日期范围选择框",
 					"_95_": "range-picker_bXS",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.range-picker",
+						"_110_": "amc.normal-h5.range-picker",
 						"_111_": "1.1.14"
 					},
 					"_97_": true,
@@ -2106,7 +2106,7 @@
 					"_17_": "日期范围选择框1",
 					"_95_": "range-picker_2d0",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.range-picker",
+						"_110_": "amc.normal-h5.range-picker",
 						"_111_": "1.1.14"
 					},
 					"_97_": true,
@@ -2266,7 +2266,7 @@
 					"_17_": "复制的 日期范围选择框1",
 					"_95_": "range-picker_2d0",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.range-picker",
+						"_110_": "amc.normal-h5.range-picker",
 						"_111_": "1.1.14"
 					},
 					"_97_": true,
@@ -2426,7 +2426,7 @@
 					"_17_": "复制的 日期范围选择框1",
 					"_95_": "range-picker_2d0",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.range-picker",
+						"_110_": "amc.normal-h5.range-picker",
 						"_111_": "1.1.14"
 					},
 					"_97_": true,
@@ -2586,7 +2586,7 @@
 					"_17_": "复制的 日期范围选择框1",
 					"_95_": "range-picker_2d0",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.range-picker",
+						"_110_": "amc.normal-h5.range-picker",
 						"_111_": "1.1.14"
 					},
 					"_97_": true,
@@ -2746,7 +2746,7 @@
 					"_17_": "复制的 日期范围选择框1",
 					"_95_": "range-picker_2d0",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.range-picker",
+						"_110_": "amc.normal-h5.range-picker",
 						"_111_": "1.1.14"
 					},
 					"_97_": true,

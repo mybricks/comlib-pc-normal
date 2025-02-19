@@ -13,7 +13,7 @@
 			"-v": "1.0.16",
 			"deps": [
 				{
-					"namespace": "mybricks.normal-h5.form-text",
+					"namespace": "amc.normal-h5.form-text",
 					"version": "1.3.10"
 				},
 				{
@@ -31,7 +31,7 @@
 					"version": "1.0.0"
 				},
 				{
-					"namespace": "mybricks.normal-h5.form-container",
+					"namespace": "amc.normal-h5.form-container",
 					"version": "1.4.33"
 				}
 			],
@@ -39,7 +39,7 @@
 				"u_WRBTK": {
 					"id": "u_WRBTK",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "事件检查",
@@ -308,7 +308,7 @@
 				"u_AUG_R": {
 					"id": "u_AUG_R",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "获取值、重置值",
@@ -461,7 +461,7 @@
 				"u_ZDjN2": {
 					"id": "u_ZDjN2",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "设置值",
@@ -614,7 +614,7 @@
 				"u_SZmGc": {
 					"id": "u_SZmGc",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "设置初始值",
@@ -767,7 +767,7 @@
 				"u_Wh_eo": {
 					"id": "u_Wh_eo",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "校验",
@@ -1020,7 +1020,7 @@
 				"u_rBTu2": {
 					"id": "u_rBTu2",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "设置字体颜色",
@@ -1335,7 +1335,7 @@
 				"u_zE_tO": {
 					"id": "u_zE_tO",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-container",
+						"namespace": "amc.normal-h5.form-container",
 						"version": "1.4.33"
 					},
 					"title": "表单容器",
@@ -1543,7 +1543,7 @@
 				"u_wOkKh": {
 					"id": "u_wOkKh",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"frameId": "content",
@@ -1713,7 +1713,7 @@
 				"u_hh0Qi": {
 					"id": "u_hh0Qi",
 					"def": {
-						"namespace": "mybricks.normal-h5.form-text",
+						"namespace": "amc.normal-h5.form-text",
 						"version": "1.3.10"
 					},
 					"title": "禁用、启用",
@@ -2360,7 +2360,7 @@
 						"finishPinParentKey": "u_Ysz9L",
 						"comId": "u_ZDjN2",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setValue",
@@ -2377,7 +2377,7 @@
 						"finishPinParentKey": "u_nQUtS",
 						"comId": "u_SZmGc",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setInitialValue",
@@ -2394,7 +2394,7 @@
 						"finishPinParentKey": "u_w3CY5",
 						"comId": "u_Wh_eo",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "validate",
@@ -2411,7 +2411,7 @@
 						"finishPinParentKey": "u_EWnGv",
 						"comId": "u_rBTu2",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setValue",
@@ -2428,7 +2428,7 @@
 						"finishPinParentKey": "u_LlsYt",
 						"comId": "u_rBTu2",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setColor",
@@ -2446,7 +2446,7 @@
 						"finishPinParentKey": "u_QxLE5",
 						"comId": "u_AUG_R",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "getValue",
@@ -2464,7 +2464,7 @@
 						"finishPinParentKey": "u_JFAu8",
 						"comId": "u_AUG_R",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "resetValue",
@@ -2481,7 +2481,7 @@
 						"finishPinParentKey": "u_8AZHp",
 						"comId": "u_wOkKh",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setValidateInfo",
@@ -2517,7 +2517,7 @@
 						"finishPinParentKey": "u_PSwII",
 						"comId": "u_hh0Qi",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setDisabled",
@@ -2535,7 +2535,7 @@
 						"finishPinParentKey": "u_8bXO3",
 						"comId": "u_hh0Qi",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "setEnabled",
@@ -2588,7 +2588,7 @@
 						"finishPinParentKey": "u_EZ9Yy",
 						"comId": "u_hh0Qi",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "isEnable",
@@ -2605,7 +2605,7 @@
 						"finishPinParentKey": "u_8B5_S",
 						"comId": "u_hh0Qi",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						},
 						"pinId": "isEnable",
@@ -2931,7 +2931,7 @@
 						"id": "u_WRBTK",
 						"name": "u_i8YEL",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},
@@ -2939,7 +2939,7 @@
 						"id": "u_ZDjN2",
 						"name": "u_5Qozv",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},
@@ -2947,7 +2947,7 @@
 						"id": "u_SZmGc",
 						"name": "u_oAHO5",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},
@@ -2955,7 +2955,7 @@
 						"id": "u_Wh_eo",
 						"name": "u_2ahZk",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},
@@ -2963,7 +2963,7 @@
 						"id": "u_AUG_R",
 						"name": "u_TgsQj",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},
@@ -2979,7 +2979,7 @@
 						"id": "u_rBTu2",
 						"name": "u_XJMwp",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},
@@ -2987,7 +2987,7 @@
 						"id": "u_zE_tO",
 						"name": "u_aMdO6",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-container",
+							"namespace": "amc.normal-h5.form-container",
 							"version": "1.4.33"
 						},
 						"slots": {
@@ -3000,7 +3000,7 @@
 										"id": "u_wOkKh",
 										"name": "u_5Omdo",
 										"def": {
-											"namespace": "mybricks.normal-h5.form-text",
+											"namespace": "amc.normal-h5.form-text",
 											"version": "1.3.10"
 										}
 									}
@@ -3017,7 +3017,7 @@
 						"id": "u_hh0Qi",
 						"name": "u_PoM1G",
 						"def": {
-							"namespace": "mybricks.normal-h5.form-text",
+							"namespace": "amc.normal-h5.form-text",
 							"version": "1.3.10"
 						}
 					},

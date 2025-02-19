@@ -1,6 +1,6 @@
 {
   "title": "环境变量",
-  "namespace": "mybricks.normal-h5.env-var",
+  "namespace": "amc.normal-h5.env-var",
   "version": "1.0.1",
   "rtType": "js-autorun",
   "description": "环境变量",

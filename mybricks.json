@@ -1,7 +1,7 @@
 {
   "debugger": "pc-spa",
   "componentType": "PC",
-  "namespace": "mybricks.normal-h5",
+  "namespace": "amc.normal-h5",
   "comAry": {
     "test": [
       {

@@ -1,6 +1,6 @@
 {
   "title": "下拉框",
-  "namespace": "mybricks.normal-h5.select",
+  "namespace": "amc.normal-h5.select",
   "version": "1.1.41",
   "description": "下拉框",
   "author": "ZhuLin",
@@ -394,7 +394,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

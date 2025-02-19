@@ -1,8 +1,6 @@
 {
   "debugger": "pc-spa",
   "componentType": "PC",
-  "fileId": 7632,
-  "commitInfo": "update",
   "namespace": "amc.normal-h5",
   "comAry": [
     {
@@ -148,7 +146,6 @@
   ],
   "externals": [],
   "tags": "react",
-  "domain": "http://10.12.8.34",
   "email": "ludongmin",
   "userName": "ludongmin"
 }

@@ -1,6 +1,6 @@
 {
   "title": "领域模型",
-  "namespace": "mybricks.normal-h5.domain-table",
+  "namespace": "amc.normal-h5.domain-table",
   "version": "1.0.0",
   "description": "领域模型",
   "author": "MyBricks",
@@ -62,7 +62,7 @@
     {
       "id": "table",
       "title": "自定义表格",
-      "schema": "mybricks.normal-h5.domain-table/table",
+      "schema": "amc.normal-h5.domain-table/table",
       "type": "scope",
       "capacity": 1,
       "inputs": [],

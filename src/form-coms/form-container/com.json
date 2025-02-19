@@ -1,6 +1,6 @@
 {
   "title": "表单容器",
-  "namespace": "mybricks.normal-h5.form-container",
+  "namespace": "amc.normal-h5.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
   "version": "1.4.86",
@@ -386,8 +386,8 @@
       "id": "content",
       "title": "表单容器",
       "schema": [
-        "mybricks.normal-h5.form-container/form-item",
-        "mybricks.normal-h5.form-container/form-addition-container"
+        "amc.normal-h5.form-container/form-item",
+        "amc.normal-h5.form-container/form-addition-container"
       ],
       "type": "scope",
       "inputs": [

@@ -849,7 +849,7 @@
 					"_18_": "步骤条",
 					"_92_": "steps_35T",
 					"_93_": {
-						"_103_": "mybricks.normal-h5.steps",
+						"_103_": "amc.normal-h5.steps",
 						"_104_": "1.0.32"
 					},
 					"_94_": true,
@@ -921,7 +921,7 @@
 					"_18_": "步骤条1",
 					"_92_": "steps_MVs",
 					"_93_": {
-						"_103_": "mybricks.normal-h5.steps",
+						"_103_": "amc.normal-h5.steps",
 						"_104_": "1.0.32"
 					},
 					"_94_": true,
@@ -976,7 +976,7 @@
 					"_18_": "文本",
 					"_92_": "text_M04",
 					"_93_": {
-						"_103_": "mybricks.normal-h5.text",
+						"_103_": "amc.normal-h5.text",
 						"_104_": "1.0.22"
 					},
 					"_94_": true,
@@ -1044,7 +1044,7 @@
 					"_18_": "自定义容器",
 					"_92_": "custom-container_Lix",
 					"_93_": {
-						"_103_": "mybricks.normal-h5.custom-container",
+						"_103_": "amc.normal-h5.custom-container",
 						"_104_": "1.0.39"
 					},
 					"_94_": true,

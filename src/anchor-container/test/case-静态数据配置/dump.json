@@ -353,7 +353,7 @@
 									"_0_": "u_n_mEP",
 									"_29_": "u_KUruA",
 									"_94_": {
-										"_109_": "mybricks.normal-h5.anchor-container",
+										"_109_": "amc.normal-h5.anchor-container",
 										"_110_": "1.0.4"
 									},
 									"_17_": "锚点容器",
@@ -827,7 +827,7 @@
 					"_17_": "锚点容器",
 					"_93_": "anchor-container_6rl",
 					"_94_": {
-						"_109_": "mybricks.normal-h5.anchor-container",
+						"_109_": "amc.normal-h5.anchor-container",
 						"_110_": "1.0.4"
 					},
 					"_95_": true,
@@ -887,7 +887,7 @@
 					"_17_": "文本",
 					"_93_": "text_3uh",
 					"_94_": {
-						"_109_": "mybricks.normal-h5.text",
+						"_109_": "amc.normal-h5.text",
 						"_110_": "1.0.15"
 					},
 					"_95_": true,
@@ -927,7 +927,7 @@
 					"_17_": "图片",
 					"_93_": "single-image_pYr",
 					"_94_": {
-						"_109_": "mybricks.normal-h5.single-image",
+						"_109_": "amc.normal-h5.single-image",
 						"_110_": "1.0.9"
 					},
 					"_95_": true,

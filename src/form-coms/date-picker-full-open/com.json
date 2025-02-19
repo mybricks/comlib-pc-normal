@@ -1,6 +1,6 @@
 {
   "title": "全开式日期选择器",
-  "namespace": "mybricks.normal-h5.date-picker-full-open",
+  "namespace": "amc.normal-h5.date-picker-full-open",
   "author": "jidan.wd",
   "author_name": "jidan.wd",
   "version": "1.0.5",
@@ -390,7 +390,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

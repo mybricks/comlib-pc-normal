@@ -1,6 +1,6 @@
 {
   "title": "定时器",
-  "namespace": "mybricks.normal-h5.timer",
+  "namespace": "amc.normal-h5.timer",
   "version": "1.0.2",
   "rtType": "js",
   "description": "",

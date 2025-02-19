@@ -388,7 +388,7 @@
 									"_0_": "u_F0jvo",
 									"_31_": "u_YKgjy",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.icon",
+										"_110_": "amc.normal-h5.icon",
 										"_111_": "1.0.9"
 									},
 									"_18_": "图标",
@@ -420,7 +420,7 @@
 									"_0_": "u_N_Y8g",
 									"_31_": "u_v_Fwg",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.icon",
+										"_110_": "amc.normal-h5.icon",
 										"_111_": "1.0.9"
 									},
 									"_18_": "图标1",
@@ -452,7 +452,7 @@
 									"_0_": "u_7HBf7",
 									"_31_": "u_3Ecx_",
 									"_96_": {
-										"_110_": "mybricks.normal-h5.custom-button",
+										"_110_": "amc.normal-h5.custom-button",
 										"_111_": "1.0.32"
 									},
 									"_18_": "按钮",
@@ -921,7 +921,7 @@
 					"_18_": "图标",
 					"_95_": "icon_AE1",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.icon",
+						"_110_": "amc.normal-h5.icon",
 						"_111_": "1.0.9"
 					},
 					"_97_": true,
@@ -962,7 +962,7 @@
 					"_18_": "图标1",
 					"_95_": "icon_eyc",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.icon",
+						"_110_": "amc.normal-h5.icon",
 						"_111_": "1.0.9"
 					},
 					"_97_": true,
@@ -1029,7 +1029,7 @@
 					"_18_": "按钮",
 					"_95_": "custom-button_38P",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.custom-button",
+						"_110_": "amc.normal-h5.custom-button",
 						"_111_": "1.0.32"
 					},
 					"_97_": true,

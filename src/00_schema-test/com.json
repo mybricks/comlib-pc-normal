@@ -1,6 +1,6 @@
 {
   "title": "schema test",
-  "namespace": "mybricks.normal-h5.schemaTest",
+  "namespace": "amc.normal-h5.schemaTest",
   "version": "1.0.0",
   "description": "schema测试",
   "author": "MyBricks",

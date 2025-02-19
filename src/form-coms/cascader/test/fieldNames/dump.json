@@ -1239,7 +1239,7 @@
 					"_17_": "级联选择",
 					"_108_": "cascader_h6M",
 					"_109_": {
-						"_128_": "mybricks.normal-h5.cascader",
+						"_128_": "amc.normal-h5.cascader",
 						"_129_": "1.1.11"
 					},
 					"_110_": true,
@@ -1310,7 +1310,7 @@
 					"_17_": "级联选择1",
 					"_108_": "cascader_hnK",
 					"_109_": {
-						"_128_": "mybricks.normal-h5.cascader",
+						"_128_": "amc.normal-h5.cascader",
 						"_129_": "1.1.11"
 					},
 					"_110_": true,

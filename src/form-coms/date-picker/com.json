@@ -1,6 +1,6 @@
 {
   "title": "日期选择框",
-  "namespace": "mybricks.normal-h5.date-picker",
+  "namespace": "amc.normal-h5.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "version": "1.1.40",
@@ -535,7 +535,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

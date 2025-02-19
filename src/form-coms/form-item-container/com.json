@@ -1,6 +1,6 @@
 {
   "title": "自定义表单项",
-  "namespace": "mybricks.normal-h5.form-item-container",
+  "namespace": "amc.normal-h5.form-item-container",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "version": "1.1.11",
@@ -320,7 +320,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

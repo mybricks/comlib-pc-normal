@@ -1142,7 +1142,7 @@
 					"_17_": "树",
 					"_94_": "tree_fl6",
 					"_95_": {
-						"_110_": "mybricks.normal-h5.tree",
+						"_110_": "amc.normal-h5.tree",
 						"_111_": "1.0.62"
 					},
 					"_96_": true,
@@ -1209,7 +1209,7 @@
 					"_17_": "按钮",
 					"_94_": "custom-button_chE",
 					"_95_": {
-						"_110_": "mybricks.normal-h5.custom-button",
+						"_110_": "amc.normal-h5.custom-button",
 						"_111_": "1.0.28"
 					},
 					"_96_": true,
@@ -1357,7 +1357,7 @@
 					"_17_": "树1",
 					"_94_": "tree_Jvr",
 					"_95_": {
-						"_110_": "mybricks.normal-h5.tree",
+						"_110_": "amc.normal-h5.tree",
 						"_111_": "1.0.62"
 					},
 					"_96_": true,

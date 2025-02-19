@@ -13,7 +13,7 @@
 			"-v": "1.0.16",
 			"deps": [
 				{
-					"namespace": "mybricks.normal-h5.pick",
+					"namespace": "amc.normal-h5.pick",
 					"version": "1.0.5",
 					"rtType": "js"
 				},
@@ -32,7 +32,7 @@
 				"u_L5FR_": {
 					"id": "u_L5FR_",
 					"def": {
-						"namespace": "mybricks.normal-h5.pick",
+						"namespace": "amc.normal-h5.pick",
 						"version": "1.0.5",
 						"rtType": "js"
 					},
@@ -615,7 +615,7 @@
 						"frameKey": "_rootFrame_",
 						"comId": "u_L5FR_",
 						"def": {
-							"namespace": "mybricks.normal-h5.pick",
+							"namespace": "amc.normal-h5.pick",
 							"version": "1.0.5",
 							"rtType": "js"
 						},

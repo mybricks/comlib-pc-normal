@@ -425,7 +425,7 @@
 					"_27_": "单击按钮",
 					"_68_": "custom-button_tWd",
 					"_69_": {
-						"_70_": "mybricks.normal-h5.custom-button",
+						"_70_": "amc.normal-h5.custom-button",
 						"_71_": "1.0.21"
 					},
 					"_72_": true,
@@ -1804,7 +1804,7 @@
 					"_27_": "动态设置禁用",
 					"_68_": "custom-button_P23",
 					"_69_": {
-						"_70_": "mybricks.normal-h5.custom-button",
+						"_70_": "amc.normal-h5.custom-button",
 						"_71_": "1.0.21"
 					},
 					"_72_": true,
@@ -2138,7 +2138,7 @@
 					"_27_": "动态标题",
 					"_68_": "custom-button_Dzd",
 					"_69_": {
-						"_70_": "mybricks.normal-h5.custom-button",
+						"_70_": "amc.normal-h5.custom-button",
 						"_71_": "1.0.21"
 					},
 					"_72_": true,
@@ -2896,7 +2896,7 @@
 					"_27_": "双击按钮",
 					"_68_": "custom-button_sih",
 					"_69_": {
-						"_70_": "mybricks.normal-h5.custom-button",
+						"_70_": "amc.normal-h5.custom-button",
 						"_71_": "1.0.21"
 					},
 					"_72_": true,

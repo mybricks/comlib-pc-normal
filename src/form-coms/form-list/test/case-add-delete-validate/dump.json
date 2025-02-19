@@ -1225,7 +1225,7 @@
 									"_0_": "u_rOoAi",
 									"_38_": "u__NNs1",
 									"_123_": {
-										"_68_": "mybricks.normal-h5.form-container",
+										"_68_": "amc.normal-h5.form-container",
 										"_69_": "1.4.78"
 									},
 									"_22_": "表单容器",
@@ -1251,7 +1251,7 @@
 									"_0_": "u_7EO_7",
 									"_38_": "u_ExS_f",
 									"_123_": {
-										"_68_": "mybricks.normal-h5.custom-button",
+										"_68_": "amc.normal-h5.custom-button",
 										"_69_": "1.0.32"
 									},
 									"_22_": "按钮",
@@ -2036,7 +2036,7 @@
 					"_22_": "表单容器",
 					"_122_": "form-container_uXh",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.form-container",
+						"_68_": "amc.normal-h5.form-container",
 						"_69_": "1.4.78"
 					},
 					"_124_": true,
@@ -2103,7 +2103,7 @@
 					"_22_": "按钮",
 					"_122_": "custom-button_P1H",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-button",
+						"_68_": "amc.normal-h5.custom-button",
 						"_69_": "1.0.32"
 					},
 					"_124_": true,
@@ -2148,7 +2148,7 @@
 					"_22_": "消息提示",
 					"_122_": "message_AoN",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.message",
+						"_68_": "amc.normal-h5.message",
 						"_69_": "1.0.5",
 						"_142_": "js"
 					},
@@ -2359,8 +2359,8 @@
 					},
 					"_48_": [],
 					"_102_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_22_": "表单容器",
 					"_87_": "scope",
@@ -2368,8 +2368,8 @@
 						"_R_": "16"
 					},
 					"_74_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"46": {
@@ -6940,7 +6940,7 @@
 					"_22_": "动态表单项",
 					"_122_": "form-list_AEf",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.form-list",
+						"_68_": "amc.normal-h5.form-list",
 						"_69_": "1.2.42"
 					},
 					"_124_": true,
@@ -7075,7 +7075,7 @@
 					"_22_": "文本框1",
 					"_122_": "form-text_nJU",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.form-text",
+						"_68_": "amc.normal-h5.form-text",
 						"_69_": "1.3.25"
 					},
 					"_124_": true,
@@ -7142,7 +7142,7 @@
 					"_22_": "按钮",
 					"_122_": "custom-button_HAK",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-button",
+						"_68_": "amc.normal-h5.custom-button",
 						"_69_": "1.0.32"
 					},
 					"_124_": true,
@@ -7226,7 +7226,7 @@
 					"_22_": "按钮3",
 					"_122_": "custom-button_0Wk",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-button",
+						"_68_": "amc.normal-h5.custom-button",
 						"_69_": "1.0.32"
 					},
 					"_124_": true,
@@ -7584,8 +7584,8 @@
 					},
 					"_48_": [],
 					"_102_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_22_": "列表项",
 					"_87_": "scope",
@@ -7593,8 +7593,8 @@
 						"_R_": "184"
 					},
 					"_74_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"248": {
@@ -12360,7 +12360,7 @@
 					"_22_": "按钮1",
 					"_122_": "custom-button_B84",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-button",
+						"_68_": "amc.normal-h5.custom-button",
 						"_69_": "1.0.32"
 					},
 					"_124_": true,
@@ -12493,7 +12493,7 @@
 					"_22_": "按钮2",
 					"_122_": "custom-button_xiO",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-button",
+						"_68_": "amc.normal-h5.custom-button",
 						"_69_": "1.0.32"
 					},
 					"_124_": true,
@@ -12626,7 +12626,7 @@
 					"_22_": "按钮4",
 					"_122_": "custom-button_XAZ",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-button",
+						"_68_": "amc.normal-h5.custom-button",
 						"_69_": "1.0.32"
 					},
 					"_124_": true,
@@ -14478,7 +14478,7 @@
 					"_22_": "文本框",
 					"_122_": "form-text_UCW",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.form-text",
+						"_68_": "amc.normal-h5.form-text",
 						"_69_": "1.3.25"
 					},
 					"_124_": true,
@@ -14642,7 +14642,7 @@
 					"_22_": "数字输入框",
 					"_122_": "input-number_Y8m",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.input-number",
+						"_68_": "amc.normal-h5.input-number",
 						"_69_": "1.1.23"
 					},
 					"_124_": true,
@@ -17262,7 +17262,7 @@
 					"_22_": "自定义容器",
 					"_122_": "custom-container_crz",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.custom-container",
+						"_68_": "amc.normal-h5.custom-container",
 						"_69_": "1.0.38"
 					},
 					"_124_": true,
@@ -17527,7 +17527,7 @@
 					"_22_": "自定义内容项",
 					"_122_": "form-addition-container_IfS",
 					"_123_": {
-						"_68_": "mybricks.normal-h5.form-addition-container",
+						"_68_": "amc.normal-h5.form-addition-container",
 						"_69_": "1.0.0"
 					},
 					"_124_": true,

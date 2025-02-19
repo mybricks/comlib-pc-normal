@@ -1,6 +1,6 @@
 {
   "title": "iFrame",
-  "namespace": "mybricks.normal-h5.iframe",
+  "namespace": "amc.normal-h5.iframe",
   "version": "1.0.4",
   "description": "iframe容器",
   "author": "MyBricks",

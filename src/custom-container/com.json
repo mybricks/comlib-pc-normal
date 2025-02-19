@@ -1,6 +1,6 @@
 {
   "title": "自定义容器",
-  "namespace": "mybricks.normal-h5.custom-container",
+  "namespace": "amc.normal-h5.custom-container",
   "version": "1.0.44",
   "description": "自定义容器",
   "author": "MyBricks",

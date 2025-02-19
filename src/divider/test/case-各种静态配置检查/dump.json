@@ -679,7 +679,7 @@
 					"_17_": "分割线",
 					"_95_": "divider_LXO",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.divider",
+						"_110_": "amc.normal-h5.divider",
 						"_111_": "1.0.0"
 					},
 					"_97_": true,
@@ -718,7 +718,7 @@
 					"_17_": "分割线1",
 					"_95_": "divider_Ind",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.divider",
+						"_110_": "amc.normal-h5.divider",
 						"_111_": "1.0.0"
 					},
 					"_97_": true,
@@ -757,7 +757,7 @@
 					"_17_": "分割线2",
 					"_95_": "divider_xpX",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.divider",
+						"_110_": "amc.normal-h5.divider",
 						"_111_": "1.0.0"
 					},
 					"_97_": true,
@@ -807,7 +807,7 @@
 					"_17_": "图标",
 					"_95_": "icon_81z",
 					"_96_": {
-						"_110_": "mybricks.normal-h5.icon",
+						"_110_": "amc.normal-h5.icon",
 						"_111_": "1.0.3"
 					},
 					"_97_": true,

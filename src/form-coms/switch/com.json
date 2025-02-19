@@ -1,6 +1,6 @@
 {
   "title": "开关",
-  "namespace": "mybricks.normal-h5.switch",
+  "namespace": "amc.normal-h5.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.1.18",
@@ -286,7 +286,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

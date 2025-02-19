@@ -1,6 +1,6 @@
 {
   "title": "获取语言包",
-  "namespace": "mybricks.normal-h5.i18n-content",
+  "namespace": "amc.normal-h5.i18n-content",
   "version": "1.0.0",
   "rtType": "js-autorun",
   "description": "获取语言包数据",

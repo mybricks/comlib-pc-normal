@@ -3078,7 +3078,7 @@
 					"_19_": "事件检查",
 					"_100_": "form-text_faI",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -3205,7 +3205,7 @@
 					"_19_": "设置值",
 					"_100_": "form-text_OiL",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -3332,7 +3332,7 @@
 					"_19_": "设置初始值",
 					"_100_": "form-text_770",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -3465,7 +3465,7 @@
 					"_19_": "校验",
 					"_100_": "form-text_IIo",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -3592,7 +3592,7 @@
 					"_19_": "获取值、重置值",
 					"_100_": "form-text_phY",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -3851,7 +3851,7 @@
 					"_19_": "设置字体颜色",
 					"_100_": "form-text_phY",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -3999,7 +3999,7 @@
 					"_19_": "表单容器",
 					"_100_": "form-container_nj8",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-container",
+						"_118_": "amc.normal-h5.form-container",
 						"_119_": "1.4.33"
 					},
 					"_102_": true,
@@ -4126,7 +4126,7 @@
 					"_19_": "禁用、启用",
 					"_100_": "form-text_phY",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,
@@ -5208,8 +5208,8 @@
 						"_R_": "465"
 					},
 					"_81_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_19_": "表单容器",
 					"_76_": "scope",
@@ -5217,8 +5217,8 @@
 						"_R_": "23"
 					},
 					"_50_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"136": {
@@ -17102,7 +17102,7 @@
 					"_19_": "设置校验结果",
 					"_100_": "form-text_phY",
 					"_101_": {
-						"_118_": "mybricks.normal-h5.form-text",
+						"_118_": "amc.normal-h5.form-text",
 						"_119_": "1.3.10"
 					},
 					"_102_": true,

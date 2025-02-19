@@ -390,7 +390,7 @@
 									"_0_": "u_0n9XK",
 									"_31_": "u_dybKv",
 									"_97_": {
-										"_111_": "mybricks.normal-h5.tabs",
+										"_111_": "amc.normal-h5.tabs",
 										"_112_": "1.0.41"
 									},
 									"_18_": "标签页",
@@ -418,7 +418,7 @@
 									"_0_": "u_r__Yh",
 									"_31_": "u_nYQNl",
 									"_97_": {
-										"_111_": "mybricks.normal-h5.toolbar",
+										"_111_": "amc.normal-h5.toolbar",
 										"_112_": "1.0.35"
 									},
 									"_18_": "工具条",
@@ -1329,7 +1329,7 @@
 					"_18_": "标签页",
 					"_96_": "tabs_gJa",
 					"_97_": {
-						"_111_": "mybricks.normal-h5.tabs",
+						"_111_": "amc.normal-h5.tabs",
 						"_112_": "1.0.41"
 					},
 					"_98_": true,
@@ -1502,7 +1502,7 @@
 					"_18_": "工具条",
 					"_96_": "toolbar_fdC",
 					"_97_": {
-						"_111_": "mybricks.normal-h5.toolbar",
+						"_111_": "amc.normal-h5.toolbar",
 						"_112_": "1.0.35"
 					},
 					"_98_": true,
@@ -1541,7 +1541,7 @@
 					"_18_": "消息提示",
 					"_96_": "message_hJn",
 					"_97_": {
-						"_111_": "mybricks.normal-h5.message",
+						"_111_": "amc.normal-h5.message",
 						"_112_": "1.0.5",
 						"_120_": "js"
 					},
@@ -1574,7 +1574,7 @@
 					"_18_": "消息提示1",
 					"_96_": "message_rtq",
 					"_97_": {
-						"_111_": "mybricks.normal-h5.message",
+						"_111_": "amc.normal-h5.message",
 						"_112_": "1.0.5",
 						"_120_": "js"
 					},

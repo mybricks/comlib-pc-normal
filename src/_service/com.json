@@ -1,6 +1,6 @@
 {
   "title": "服务接口",
-  "namespace": "mybricks.normal-h5.service",
+  "namespace": "amc.normal-h5.service",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.9",

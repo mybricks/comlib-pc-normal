@@ -2,7 +2,7 @@ import { Data, LabelWidthType } from '../types';
 import { getFormItem, getFormItemProp, setFormItemProps } from '../utils';
 
 const additionFormItemEditor = {
-  ':child(mybricks.normal-h5.form-container/form-addition-container)': {
+  ':child(amc.normal-h5.form-container/form-addition-container)': {
     title: '其他内容',
     items: [
       {

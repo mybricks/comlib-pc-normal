@@ -1,6 +1,6 @@
 {
   "title": "图片",
-  "namespace": "mybricks.normal-h5.single-image",
+  "namespace": "amc.normal-h5.single-image",
   "version": "1.0.15",
   "description": "可预览的单图",
   "author": "MyBricks",

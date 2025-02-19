@@ -1,6 +1,6 @@
 {
   "title": "主应用参数",
-  "namespace": "mybricks.normal-h5.props",
+  "namespace": "amc.normal-h5.props",
   "version": "1.0.2",
   "rtType": "js-autorun",
   "description": "获取主应用参数",

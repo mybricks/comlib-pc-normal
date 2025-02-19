@@ -165,7 +165,7 @@ export default {
     refreshSchema({ data, inputs, outputs, slots });
   },
   '@parentUpdated'({ id, name, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-h5.form-container/form-item') {
+    if (schema === 'amc.normal-h5.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true;
     } else {
@@ -392,7 +392,7 @@ export default {
           title: '添加表单项',
           type: 'comSelector',
           options: {
-            schema: 'mybricks.normal-h5.form-container/*',
+            schema: 'amc.normal-h5.form-container/*',
             type: 'add'
           },
           value: {
@@ -542,7 +542,7 @@ export default {
       cate2.items = actionsEditor(data, output);
     }
   },
-  ':child(mybricks.normal-h5.form-container/form-item)': {
+  ':child(amc.normal-h5.form-container/form-item)': {
     title: '表单项',
     items: [
       {
@@ -975,7 +975,7 @@ export default {
       }
     ]
   },
-  ':child(mybricks.normal-h5.form-container/form-addition-container)': {
+  ':child(amc.normal-h5.form-container/form-addition-container)': {
     title: '自定义内容',
     items: [
       {

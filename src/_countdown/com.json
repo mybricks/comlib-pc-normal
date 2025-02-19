@@ -1,6 +1,6 @@
 {
   "title": "倒计时",
-  "namespace": "mybricks.normal-h5.countdown",
+  "namespace": "amc.normal-h5.countdown",
   "version": "1.0.0",
   "rtType": "js",
   "description": "用于倒计时场景",

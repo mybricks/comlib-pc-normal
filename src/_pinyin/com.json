@@ -1,6 +1,6 @@
 {
   "title": "汉字转拼音",
-  "namespace": "mybricks.normal-h5.pinyin",
+  "namespace": "amc.normal-h5.pinyin",
   "version": "1.0.2",
   "rtType": "js",
   "description": "汉字转拼音",

@@ -2104,7 +2104,7 @@
 					"_20_": "不筛选",
 					"_118_": "auto-complete_05i",
 					"_119_": {
-						"_135_": "mybricks.normal-h5.auto-complete",
+						"_135_": "amc.normal-h5.auto-complete",
 						"_136_": "1.1.8"
 					},
 					"_120_": true,
@@ -2226,7 +2226,7 @@
 					"_20_": "值",
 					"_118_": "auto-complete__wh",
 					"_119_": {
-						"_135_": "mybricks.normal-h5.auto-complete",
+						"_135_": "amc.normal-h5.auto-complete",
 						"_136_": "1.1.8"
 					},
 					"_120_": true,
@@ -2348,7 +2348,7 @@
 					"_20_": "标签",
 					"_118_": "auto-complete_wHE",
 					"_119_": {
-						"_135_": "mybricks.normal-h5.auto-complete",
+						"_135_": "amc.normal-h5.auto-complete",
 						"_136_": "1.1.8"
 					},
 					"_120_": true,
@@ -2421,7 +2421,7 @@
 					"_20_": "值或标签",
 					"_118_": "auto-complete_PGG",
 					"_119_": {
-						"_135_": "mybricks.normal-h5.auto-complete",
+						"_135_": "amc.normal-h5.auto-complete",
 						"_136_": "1.1.8"
 					},
 					"_120_": true,

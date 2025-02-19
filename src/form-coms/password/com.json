@@ -1,6 +1,6 @@
 {
   "title": "密码框",
-  "namespace": "mybricks.normal-h5.password",
+  "namespace": "amc.normal-h5.password",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
   "version": "1.1.16",
@@ -278,7 +278,7 @@
   ],
   "slots": [],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "title": "路由参数",
-  "namespace": "mybricks.normal-h5.query",
+  "namespace": "amc.normal-h5.query",
   "version": "1.0.3",
   "rtType": "js-autorun",
   "description": "路由参数",

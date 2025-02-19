@@ -1,6 +1,6 @@
 {
   "title": "数据表格",
-  "namespace": "mybricks.normal-h5.table",
+  "namespace": "amc.normal-h5.table",
   "version": "1.2.22",
   "description": "数据表格",
   "author": "MyBricks",

@@ -1,6 +1,6 @@
 {
   "title": "排序标题栏",
-  "namespace": "mybricks.normal-h5.sort-bar",
+  "namespace": "amc.normal-h5.sort-bar",
   "version": "1.0.3",
   "description": "排序标题栏",
   "author": "MyBricks",

@@ -13,19 +13,19 @@
 			"-v": "1.0.16",
 			"deps": [
 				{
-					"namespace": "mybricks.normal-h5.custom-button",
+					"namespace": "amc.normal-h5.custom-button",
 					"version": "1.0.21"
 				},
 				{
-					"namespace": "mybricks.normal-h5.table",
+					"namespace": "amc.normal-h5.table",
 					"version": "1.1.29"
 				},
 				{
-					"namespace": "mybricks.normal-h5.text",
+					"namespace": "amc.normal-h5.text",
 					"version": "1.0.13"
 				},
 				{
-					"namespace": "mybricks.normal-h5.toolbar",
+					"namespace": "amc.normal-h5.toolbar",
 					"version": "1.0.24"
 				},
 				{
@@ -53,7 +53,7 @@
 				"u_KgxDc": {
 					"id": "u_KgxDc",
 					"def": {
-						"namespace": "mybricks.normal-h5.custom-button",
+						"namespace": "amc.normal-h5.custom-button",
 						"version": "1.0.21"
 					},
 					"title": "按钮",
@@ -124,7 +124,7 @@
 				"u_byakt": {
 					"id": "u_byakt",
 					"def": {
-						"namespace": "mybricks.normal-h5.table",
+						"namespace": "amc.normal-h5.table",
 						"version": "1.1.29"
 					},
 					"title": "数据表格",
@@ -331,7 +331,7 @@
 				"u_UxHkw": {
 					"id": "u_UxHkw",
 					"def": {
-						"namespace": "mybricks.normal-h5.text",
+						"namespace": "amc.normal-h5.text",
 						"version": "1.0.13"
 					},
 					"frameId": "u_wys7y8",
@@ -374,7 +374,7 @@
 				"u_jvGzr": {
 					"id": "u_jvGzr",
 					"def": {
-						"namespace": "mybricks.normal-h5.toolbar",
+						"namespace": "amc.normal-h5.toolbar",
 						"version": "1.0.24"
 					},
 					"frameId": "u_bf2cwt",
@@ -983,7 +983,7 @@
 						"finishPinParentKey": "u_Jt_dj",
 						"comId": "u_byakt",
 						"def": {
-							"namespace": "mybricks.normal-h5.table",
+							"namespace": "amc.normal-h5.table",
 							"version": "1.1.29"
 						},
 						"pinId": "getTableData",
@@ -1018,7 +1018,7 @@
 						"finishPinParentKey": "u_SstzP",
 						"comId": "u_UxHkw",
 						"def": {
-							"namespace": "mybricks.normal-h5.text",
+							"namespace": "amc.normal-h5.text",
 							"version": "1.0.13"
 						},
 						"pinId": "content",
@@ -1175,7 +1175,7 @@
 						"finishPinParentKey": "u_Zx4qx",
 						"comId": "u_jvGzr",
 						"def": {
-							"namespace": "mybricks.normal-h5.toolbar",
+							"namespace": "amc.normal-h5.toolbar",
 							"version": "1.0.24"
 						},
 						"pinId": "setHidden_btn0",
@@ -1192,7 +1192,7 @@
 						"finishPinParentKey": "u_6QeFy",
 						"comId": "u_jvGzr",
 						"def": {
-							"namespace": "mybricks.normal-h5.toolbar",
+							"namespace": "amc.normal-h5.toolbar",
 							"version": "1.0.24"
 						},
 						"pinId": "setHidden_u_31j3ht",
@@ -1261,7 +1261,7 @@
 						"finishPinParentKey": "u_orpV7",
 						"comId": "u_byakt",
 						"def": {
-							"namespace": "mybricks.normal-h5.table",
+							"namespace": "amc.normal-h5.table",
 							"version": "1.1.29"
 						},
 						"pinId": "dataSource",
@@ -1369,7 +1369,7 @@
 						"id": "u_KgxDc",
 						"name": "u_ezKu2",
 						"def": {
-							"namespace": "mybricks.normal-h5.custom-button",
+							"namespace": "amc.normal-h5.custom-button",
 							"version": "1.0.21"
 						}
 					},
@@ -1377,7 +1377,7 @@
 						"id": "u_byakt",
 						"name": "u_pGpGY",
 						"def": {
-							"namespace": "mybricks.normal-h5.table",
+							"namespace": "amc.normal-h5.table",
 							"version": "1.1.29"
 						},
 						"slots": {
@@ -1390,7 +1390,7 @@
 										"id": "u_UxHkw",
 										"name": "u__L2ot",
 										"def": {
-											"namespace": "mybricks.normal-h5.text",
+											"namespace": "amc.normal-h5.text",
 											"version": "1.0.13"
 										}
 									}
@@ -1410,7 +1410,7 @@
 										"id": "u_jvGzr",
 										"name": "u_vj9rj",
 										"def": {
-											"namespace": "mybricks.normal-h5.toolbar",
+											"namespace": "amc.normal-h5.toolbar",
 											"version": "1.0.24"
 										}
 									}

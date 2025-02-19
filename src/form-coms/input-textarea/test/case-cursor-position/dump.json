@@ -381,7 +381,7 @@
                   "_0_": "u_IhihL",
                   "_30_": "u_rgdmZ",
                   "_98_": {
-                    "_113_": "mybricks.normal-h5.input-textarea",
+                    "_113_": "amc.normal-h5.input-textarea",
                     "_114_": "1.1.18"
                   },
                   "_18_": "文本域",
@@ -407,7 +407,7 @@
                   "_0_": "u_Teh_Z",
                   "_30_": "u_8k1tc",
                   "_98_": {
-                    "_113_": "mybricks.normal-h5.custom-button",
+                    "_113_": "amc.normal-h5.custom-button",
                     "_114_": "1.0.32"
                   },
                   "_18_": "按钮",
@@ -909,7 +909,7 @@
           "_18_": "文本域",
           "_97_": "input-textarea_wPa",
           "_98_": {
-            "_113_": "mybricks.normal-h5.input-textarea",
+            "_113_": "amc.normal-h5.input-textarea",
             "_114_": "1.1.18"
           },
           "_99_": true,
@@ -976,7 +976,7 @@
           "_18_": "按钮",
           "_97_": "custom-button_PnH",
           "_98_": {
-            "_113_": "mybricks.normal-h5.custom-button",
+            "_113_": "amc.normal-h5.custom-button",
             "_114_": "1.0.32"
           },
           "_99_": true,

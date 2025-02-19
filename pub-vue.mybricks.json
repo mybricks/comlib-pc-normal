@@ -4,7 +4,7 @@
   "debugger": "pc-spa",
   "componentType": "PC",
   "commitInfo": "update",
-  "namespace": "mybricks.normal-h5-vue",
+  "namespace": "amc.normal-h5-vue",
   "comAry": [
     "./src/_page-router/com.json",
     "./src/_props/com.json",

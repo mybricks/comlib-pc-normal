@@ -1,6 +1,6 @@
 {
   "title": "代码编辑器",
-  "namespace": "mybricks.normal-h5.code-editor",
+  "namespace": "amc.normal-h5.code-editor",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
   "version": "1.1.15",
@@ -254,7 +254,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

@@ -398,7 +398,7 @@
 									"_0_": "u_hJGXB",
 									"_28_": "u_UFoEU",
 									"_98_": {
-										"_108_": "mybricks.normal-h5.select",
+										"_108_": "amc.normal-h5.select",
 										"_109_": "1.1.16"
 									},
 									"_17_": "下拉框",
@@ -967,7 +967,7 @@
 					"_17_": "下拉框",
 					"_97_": "select_JWS",
 					"_98_": {
-						"_108_": "mybricks.normal-h5.select",
+						"_108_": "amc.normal-h5.select",
 						"_109_": "1.1.17"
 					},
 					"_99_": true,
@@ -3366,7 +3366,7 @@
 					"_17_": "按钮",
 					"_97_": "custom-button_PCS",
 					"_98_": {
-						"_108_": "mybricks.normal-h5.custom-button",
+						"_108_": "amc.normal-h5.custom-button",
 						"_109_": "1.0.25"
 					},
 					"_99_": true,

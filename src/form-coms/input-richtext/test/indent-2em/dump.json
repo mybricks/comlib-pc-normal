@@ -362,7 +362,7 @@
 									"_0_": "u_Fkyih",
 									"_31_": "u_zeQWu",
 									"_97_": {
-										"_107_": "mybricks.normal-h5.input-richtext",
+										"_107_": "amc.normal-h5.input-richtext",
 										"_108_": "1.1.36"
 									},
 									"_18_": "富文本输入框",
@@ -824,7 +824,7 @@
 					"_18_": "富文本输入框",
 					"_96_": "input-richtext_4Od",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.input-richtext",
+						"_107_": "amc.normal-h5.input-richtext",
 						"_108_": "1.1.36"
 					},
 					"_98_": true,

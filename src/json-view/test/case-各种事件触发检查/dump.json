@@ -1015,7 +1015,7 @@
 					"_17_": "JSON展示",
 					"_95_": "json-view_BSc",
 					"_96_": {
-						"_112_": "mybricks.normal-h5.json-view",
+						"_112_": "amc.normal-h5.json-view",
 						"_113_": "1.0.12"
 					},
 					"_97_": true,
@@ -1065,7 +1065,7 @@
 					"_17_": "JSON展示1",
 					"_95_": "json-view_Fg_",
 					"_96_": {
-						"_112_": "mybricks.normal-h5.json-view",
+						"_112_": "amc.normal-h5.json-view",
 						"_113_": "1.0.12"
 					},
 					"_97_": true,

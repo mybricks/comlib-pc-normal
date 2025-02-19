@@ -881,7 +881,7 @@
 					"_18_": "步骤条",
 					"_96_": "steps_lL7",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.steps",
+						"_107_": "amc.normal-h5.steps",
 						"_108_": "1.0.32"
 					},
 					"_98_": true,
@@ -977,7 +977,7 @@
 					"_18_": "列表容器",
 					"_96_": "list-new_weN",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.list-new",
+						"_107_": "amc.normal-h5.list-new",
 						"_108_": "1.0.32"
 					},
 					"_98_": true,
@@ -2844,7 +2844,7 @@
 					"_18_": "形状",
 					"_96_": "shape_n0K",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.shape",
+						"_107_": "amc.normal-h5.shape",
 						"_108_": "1.0.3"
 					},
 					"_98_": true,

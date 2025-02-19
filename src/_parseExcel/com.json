@@ -1,6 +1,6 @@
 {
   "title": "Excel解析",
-  "namespace": "mybricks.normal-h5.parseExcel",
+  "namespace": "amc.normal-h5.parseExcel",
   "version": "0.0.5",
   "rtType": "js",
   "description": "将excel文件解析成数据",

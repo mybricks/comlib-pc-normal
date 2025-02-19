@@ -1,6 +1,6 @@
 {
   "title": "确认提示",
-  "namespace": "mybricks.normal-h5.tips",
+  "namespace": "amc.normal-h5.tips",
   "version": "1.0.13",
   "rtType": "js",
   "description": "确认提示对话框",

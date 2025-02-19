@@ -358,7 +358,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   //       fieldAry?.forEach(item => {
   //         if (!item.isPrivate) {
-  //           slots['content'].addCom('mybricks.normal-h5.form-text')
+  //           slots['content'].addCom('amc.normal-h5.form-text')
   //         }
   //       })
 

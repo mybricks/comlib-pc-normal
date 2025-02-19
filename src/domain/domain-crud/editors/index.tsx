@@ -230,7 +230,7 @@ export default {
             data.pageSize = value[0];
             data.childNames?.tableContent?.forEach((name) => {
               const child = getChildByName(name);
-              if (child.def.namespace === 'mybricks.normal-h5.table') {
+              if (child.def.namespace === 'amc.normal-h5.table') {
                 if (!child.data.paginationConfig) {
                   child.data.paginationConfig = {};
                 }
@@ -422,7 +422,7 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
   childNames.queryContent.forEach((comName) => {
     const child = getChildByName(comName);
 
-    if (child.def.namespace === 'mybricks.normal-h5.form-container') {
+    if (child.def.namespace === 'amc.normal-h5.form-container') {
       child.data.domainModel.entity = curEntity;
       child.data.domainModel.type = domainModel.type;
     }
@@ -431,7 +431,7 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
   // childNames.createModalContent.forEach((comName) => {
   //   const child = getChildByName(comName);
 
-  //   if (child.def.namespace === 'mybricks.normal-h5.form-container') {
+  //   if (child.def.namespace === 'amc.normal-h5.form-container') {
   //     child.data.domainModel.entity = curEntity;
   //     child.data.domainModel.type = domainModel.type;
   //   }
@@ -440,7 +440,7 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
   // childNames.editModalContent.forEach((comName) => {
   //   const child = getChildByName(comName);
 
-  //   if (child.def.namespace === 'mybricks.normal-h5.form-container') {
+  //   if (child.def.namespace === 'amc.normal-h5.form-container') {
   //     child.data.domainModel.entity = curEntity;
   //     child.data.domainModel.type = domainModel.type;
   //   }
@@ -449,7 +449,7 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
   childNames.tableContent.forEach((comName) => {
     const child = getChildByName(comName);
 
-    if (child.def.namespace === 'mybricks.normal-h5.table') {
+    if (child.def.namespace === 'amc.normal-h5.table') {
       child.data.domainModel.entity = curEntity;
       child.data.usePagination = domainModel?.query?.abilitySet?.includes('PAGE');
     }

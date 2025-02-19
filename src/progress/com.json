@@ -1,6 +1,6 @@
 {
   "title": "进度条",
-  "namespace": "mybricks.normal-h5.progress",
+  "namespace": "amc.normal-h5.progress",
   "version": "1.0.5",
   "description": "展示操作的当前进度",
   "author": "HuangQiuyun",

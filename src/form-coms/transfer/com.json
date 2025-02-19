@@ -1,6 +1,6 @@
 {
   "title": "穿梭框",
-  "namespace": "mybricks.normal-h5.transfer",
+  "namespace": "amc.normal-h5.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
   "version": "1.1.16",
@@ -410,7 +410,7 @@
   ],
   "slots": [],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

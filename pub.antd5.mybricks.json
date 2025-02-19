@@ -1,7 +1,7 @@
 {
   "previous": {
     "name": "通用H5组件库(antd5)",
-    "namespace": "mybricks.normal-h5.antd5"
+    "namespace": "amc.normal-h5.antd5"
   },
   "name": "通用H5组件库",
   "namespace": "@mybricks/comlib-pc-normal",

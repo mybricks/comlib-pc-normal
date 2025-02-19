@@ -1,6 +1,6 @@
 {
   "title": "跳转到...",
-  "namespace": "mybricks.normal-h5.page-router",
+  "namespace": "amc.normal-h5.page-router",
   "version": "1.0.8",
   "rtType": "js",
   "description": "路由切换",

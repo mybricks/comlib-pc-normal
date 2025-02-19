@@ -389,7 +389,7 @@
 									"_0_": "u_Hc32g",
 									"_31_": "u_zceWb",
 									"_97_": {
-										"_107_": "mybricks.normal-h5.list-new",
+										"_107_": "amc.normal-h5.list-new",
 										"_108_": "1.0.32"
 									},
 									"_18_": "列表容器",
@@ -743,7 +743,7 @@
 					"_18_": "列表容器",
 					"_96_": "list-new_htI",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.list-new",
+						"_107_": "amc.normal-h5.list-new",
 						"_108_": "1.0.32"
 					},
 					"_98_": true,
@@ -790,7 +790,7 @@
 					"_18_": "数据模拟器",
 					"_96_": "dataSimulator_Y2v",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.dataSimulator",
+						"_107_": "amc.normal-h5.dataSimulator",
 						"_108_": "1.0.2",
 						"_116_": "js-autorun"
 					},
@@ -1872,7 +1872,7 @@
 					"_18_": "文本",
 					"_96_": "text_F8f",
 					"_97_": {
-						"_107_": "mybricks.normal-h5.text",
+						"_107_": "amc.normal-h5.text",
 						"_108_": "1.0.22"
 					},
 					"_98_": true,

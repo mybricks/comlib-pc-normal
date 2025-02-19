@@ -455,8 +455,8 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
    */
   if (!data.additionalItems) data.additionalItems = [];
   slot.get('content').setSchema([
-    "mybricks.normal-h5.form-container/form-item",
-    "mybricks.normal-h5.form-container/form-addition-container"
+    "amc.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-addition-container"
   ]);
   //=========== v1.3.9 end ===============
 

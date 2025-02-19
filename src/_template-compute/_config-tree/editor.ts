@@ -8,7 +8,7 @@ export default {
       type: 'sceneComSelector',
       options: {
         filter:({namespace}) => {
-          return namespace === 'mybricks.normal-h5.tree'
+          return namespace === 'amc.normal-h5.tree'
         }
       },
       value: {

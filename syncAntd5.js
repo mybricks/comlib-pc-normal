@@ -119,7 +119,7 @@ TraversalComAry(comAry, antd5ComAry);
 
 // createFileWithDirs(path.resolve(__dirname, "pub.antd5.mybricks.json"), JSON.stringify({
 //   "name": "通用H5组件库(antd5)",
-//   "namespace": "mybricks.normal-h5.antd5",
+//   "namespace": "amc.normal-h5.antd5",
 //   "commitInfo": "update",
 //   comAry: antd5ComAry,
 //   "externals": [

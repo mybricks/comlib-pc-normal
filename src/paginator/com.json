@@ -1,6 +1,6 @@
 {
   "title": "分页器",
-  "namespace": "mybricks.normal-h5.paginator",
+  "namespace": "amc.normal-h5.paginator",
   "version": "1.0.13",
   "description": "分页器",
   "author": "MyBricks",

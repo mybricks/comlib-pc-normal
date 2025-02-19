@@ -1,6 +1,6 @@
 {
   "title": "导航菜单",
-  "namespace": "mybricks.normal-h5.menu",
+  "namespace": "amc.normal-h5.menu",
   "version": "1.0.24",
   "description": "为页面和功能提供导航的菜单列表",
   "author": "MyBricks",

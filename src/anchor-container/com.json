@@ -2,7 +2,7 @@
   "title": "锚点容器",
   "enable": true,
   "visibility": true,
-  "namespace": "mybricks.normal-h5.anchor-container",
+  "namespace": "amc.normal-h5.anchor-container",
   "version": "1.0.12",
   "description": "锚点容器",
   "author": "Mybricks",

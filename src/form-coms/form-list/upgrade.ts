@@ -15,8 +15,8 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
   /** 1. 作用域支持添加自定义内容项组件 */
   if (!data.additionalItems) data.additionalItems = [];
   slot.get('formItems').setSchema([
-    "mybricks.normal-h5.form-container/form-item",
-    "mybricks.normal-h5.form-container/form-addition-container"
+    "amc.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-addition-container"
   ]);
 
   /** 2. 支持标题样式配置 */

@@ -349,7 +349,7 @@
 									"_0_": "u_8DI4h",
 									"_29_": "u_wyVuw",
 									"_95_": {
-										"_109_": "mybricks.normal-h5.form-text",
+										"_109_": "amc.normal-h5.form-text",
 										"_110_": "1.3.16"
 									},
 									"_17_": "文本框",
@@ -667,7 +667,7 @@
 					"_17_": "文本框",
 					"_94_": "form-text_Xan",
 					"_95_": {
-						"_109_": "mybricks.normal-h5.form-text",
+						"_109_": "amc.normal-h5.form-text",
 						"_110_": "1.3.16"
 					},
 					"_96_": true,

@@ -1,6 +1,6 @@
 {
   "title": "单选框",
-  "namespace": "mybricks.normal-h5.radio",
+  "namespace": "amc.normal-h5.radio",
   "version": "1.1.20",
   "description": "单选框",
   "author": "ZhuLin",
@@ -364,7 +364,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-h5.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

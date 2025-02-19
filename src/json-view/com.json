@@ -1,6 +1,6 @@
 {
   "title": "JSON展示",
-  "namespace": "mybricks.normal-h5.json-view",
+  "namespace": "amc.normal-h5.json-view",
   "version": "1.0.13",
   "description": "展示JSON数据",
   "author": "MyBricks",

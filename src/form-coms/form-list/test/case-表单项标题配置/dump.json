@@ -874,7 +874,7 @@
 					"_17_": "动态表单项",
 					"_99_": "form-list_VSu",
 					"_100_": {
-						"_114_": "mybricks.normal-h5.form-list",
+						"_114_": "amc.normal-h5.form-list",
 						"_115_": "1.2.29"
 					},
 					"_101_": true,
@@ -912,8 +912,8 @@
 						"_R_": "57"
 					},
 					"_117_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					],
 					"_17_": "列表项",
 					"_51_": "scope",
@@ -921,8 +921,8 @@
 						"_R_": "16"
 					},
 					"_55_": [
-						"mybricks.normal-h5.form-container/form-item",
-						"mybricks.normal-h5.form-container/form-addition-container"
+						"amc.normal-h5.form-container/form-item",
+						"amc.normal-h5.form-container/form-addition-container"
 					]
 				},
 				"24": {
@@ -2890,7 +2890,7 @@
 					"_17_": "文本框",
 					"_99_": "form-text_1_m",
 					"_100_": {
-						"_114_": "mybricks.normal-h5.form-text",
+						"_114_": "amc.normal-h5.form-text",
 						"_115_": "1.3.17"
 					},
 					"_101_": true,
@@ -2964,7 +2964,7 @@
 					"_17_": "搜索框",
 					"_99_": "search_bJ9",
 					"_100_": {
-						"_114_": "mybricks.normal-h5.search",
+						"_114_": "amc.normal-h5.search",
 						"_115_": "1.1.9"
 					},
 					"_101_": true,
@@ -3038,7 +3038,7 @@
 					"_17_": "搜索框1",
 					"_99_": "search_pQ1",
 					"_100_": {
-						"_114_": "mybricks.normal-h5.search",
+						"_114_": "amc.normal-h5.search",
 						"_115_": "1.1.9"
 					},
 					"_101_": true,
