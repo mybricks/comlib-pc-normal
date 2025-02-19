@@ -368,6 +368,42 @@ const formItemEditor = {
         }
       },
       {
+        title: '标签',
+        type: 'Text',
+        options: {
+          locale: true
+        },
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'titleTag');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'titleTag', value);
+          }
+        }
+      },
+      {
+        title: '标签图标',
+        type: 'icon',
+        options: {
+          locale: true
+        },
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'titleTagIcon');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'titleTagIcon', value);
+          }
+        }
+      },
+      {
         title: '提示语',
         type: 'Text',
         options: {

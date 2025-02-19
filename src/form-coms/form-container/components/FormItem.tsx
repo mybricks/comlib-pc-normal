@@ -6,6 +6,7 @@ import debounce from 'lodash/debounce';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 import classnames from 'classnames';
+import * as Icons from '@ant-design/icons'
 
 interface FormItemProps {
   data: Data;
@@ -169,6 +170,8 @@ const FormItem = (props) => {
       setIsShowTips(false);
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
+  const TagIcon = Icons[item.titleTagIcon]
+  console.log(item.titleTagIcon, TagIcon)
 
   return (
     <Form.Item
@@ -181,7 +184,7 @@ const FormItem = (props) => {
           <label
             ref={labelRef}
             data-form-item={com.name}
-            className="custom-wrap-classname"
+            className={`custom-wrap-classname`}
             onMouseEnter={handleMouseEnter}
             style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
           >
@@ -191,6 +194,16 @@ const FormItem = (props) => {
             >
               {env.i18n(item?.label)}
             </Tooltip>
+            {
+              (item.titleTag || item.titleTagIcon) ? (
+                <div className={css.titleTag}>
+                  {
+                    TagIcon ? <div className={css.icon}><TagIcon/></div> : null
+                  }
+                  <div className={css.title}>{item.titleTag}</div>
+                </div>
+              ) : null
+            }
           </label>
         )
       }

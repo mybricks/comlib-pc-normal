@@ -95,6 +95,14 @@ export const formItemPropsSchema = {
     type: 'string',
     title: '提示语'
   },
+  titleTag: {
+    type: 'string',
+    title: '标签'
+  },
+  titleTagIcon: {
+    type: 'string',
+    title: '标签图标'
+  },
   // widthOption: {
   //   type: 'string',
   //   title: '宽度模式'

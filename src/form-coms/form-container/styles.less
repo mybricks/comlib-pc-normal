@@ -36,6 +36,7 @@
     }
 
     .ant-form-item-label > label {
+      width: 100%;
       line-height: 32px;
       font-size: 14px;
       font-weight: 700;
@@ -252,6 +253,19 @@
 .disableMobileWrapper {
   :global {
     .keepMobileWidth();
+  }
+}
+
+.titleTag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  color: var(--ant-primary-color, '#1890ff');
+  font-weight: 400;
+
+  .icon {
+    font-size: 16px;
   }
 }
 

@@ -67,6 +67,8 @@ export interface FormItems {
   labelSlot?: string
   /** 单个表单项，过长配置 */
   ellipseMode?: 'wrap' | 'ellipse' | 'default'
+  titleTag?: string
+  titleTagIcon: string
 }
 
 export interface AdditionalItem {
@@ -196,6 +198,11 @@ export interface Data {
   collapsedText?: string
   /** 列间距 */
   columnGap?: number
+  /** 标题标签配置 */
+  titleTag: {
+    text?: string
+    icon?: string
+  }
 }
 
 interface DomainModel {
