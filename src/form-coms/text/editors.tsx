@@ -536,6 +536,7 @@ export default {
           },
           value: {
             get({ data }) {
+              console.log(data.rules)
               return data.rules.length > 0
                 ? formatRegexRules(data.rules, FormatScene.Editor)
                 : LengthRules;

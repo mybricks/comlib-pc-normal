@@ -67,7 +67,7 @@ const FormActions = (props: Props) => {
   );
 
   return (
-    <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
+    <Space size={16} wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
         if (props.env?.runtime && item.permission?.id) {
           if (getWhatToDoWithoutPermission(item.permission, env).type !== 'none') {

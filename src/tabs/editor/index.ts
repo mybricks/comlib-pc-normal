@@ -89,23 +89,6 @@ export default {
           }
         },
         {
-          title: '外观',
-          type: 'Select',
-          description: '配置标签页的外观(基本样式)，包括卡片和简约类型',
-          options: [
-            { value: 'editable-card', label: '卡片' },
-            { value: 'line', label: '简约' }
-          ],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.type;
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              data.type = value;
-            }
-          }
-        },
-        {
           title: '尺寸',
           type: 'Select',
           description: '标签页大小, 默认是中(middle)',
@@ -256,9 +239,6 @@ export default {
           title: '可新增',
           type: 'switch',
           description: '开启后，可以点击新增标签页',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card';
-          },
           value: {
             get({ data }: EditorResult<Data>) {
               return !data.hideAdd;
@@ -273,7 +253,7 @@ export default {
           type: 'switch',
           description: '开启后，可以通过插槽配置新增按钮',
           ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card' && !data.hideAdd;
+            return !data.hideAdd;
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -294,9 +274,6 @@ export default {
           title: '可删除',
           type: 'switch',
           description: '开启后，可以点击删除按钮删除标签页',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card';
-          },
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.closable;
@@ -312,7 +289,7 @@ export default {
         },
         {
           ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card' && data.closable;
+            return data.closable;
           },
           title: '点击删除按钮时',
           type: "radio",
@@ -413,9 +390,6 @@ export default {
               title: '标签页新增',
               type: '_Event',
               description: '新增标签页时触发【标签页新增】输出项事件',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.type === 'editable-card';
-              },
               options() {
                 return {
                   outputId: OutputIds.AddTab
@@ -426,9 +400,6 @@ export default {
               title: '标签页删除',
               type: '_Event',
               description: '删除标签页时触发【标签页删除】输出项事件',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.type === 'editable-card';
-              },
               options() {
                 return {
                   outputId: OutputIds.RemoveTab

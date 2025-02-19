@@ -12,9 +12,9 @@ import { SizeOptions, SizeEnum } from '../../types';
 import { createrCatelogEditor } from '../../utils';
 
 export default {
-  // '@init' ({ data, inputs, outputs, slots }) {
-  //   console.log(data.domainModel, slots)
-  // },
+  '@init' ({ style }) {
+
+  },
   ':slot': {},
   '@inputConnected'({ data, outputs }, fromPin, toPin) {
     if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
@@ -243,20 +243,20 @@ export default {
                     target: [`.ant-form-item > div.ant-col.ant-form-item-label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`]
                   },
                   {
-                    title: '边距',
+                    title: '外边距',
                     catelog: '默认',
                     options: ['margin'],
+                    initValue: {
+                      margin: '0 0 16px 0'
+                    },
                     target: `.ant-col:not(.formAction) .ant-form-item`,
                     ifVisible({ data }: EditorResult<Data>) {
-                      /**
-                       * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
-                       */
                       return !(
                         data?.domainModel?.entity?.fieldAry?.length > 0 &&
                         data?.domainModel?.isQuery
                       );
                     }
-                  }
+                  },
                 ]
               },
               {
@@ -291,30 +291,30 @@ export default {
               }
             ]
           }),
-          ...createrCatelogEditor({
-            catelog: '移动端',
-            items: [
-              {
-                title: '移动端表单项标题',
-                catelog: '移动端',
-                options: [
-                  {
-                    type: 'font',
-                    config: {
-                      disableFontFamily: true,
-                      disableColor: true,
-                      disableFontWeight: true,
-                      disableFontSize: true,
-                      disableLineHeight: true,
-                      disableLetterSpacing: true,
-                      disableWhiteSpace: true
-                    }
-                  }
-                ],
-                target: `.mobileWarrper .ant-form-item > div.ant-col.ant-form-item-label`
-              }
-            ]
-          })
+          // ...createrCatelogEditor({
+          //   catelog: '移动端',
+          //   items: [
+          //     {
+          //       title: '移动端表单项标题',
+          //       catelog: '移动端',
+          //       options: [
+          //         {
+          //           type: 'font',
+          //           config: {
+          //             disableFontFamily: true,
+          //             disableColor: true,
+          //             disableFontWeight: true,
+          //             disableFontSize: true,
+          //             disableLineHeight: true,
+          //             disableLetterSpacing: true,
+          //             disableWhiteSpace: true
+          //           }
+          //         }
+          //       ],
+          //       target: `.mobileWarrper .ant-form-item > div.ant-col.ant-form-item-label`
+          //     }
+          //   ]
+          // })
         ]
       }
     ],
@@ -513,6 +513,14 @@ export default {
                 },
                 set({ data }: EditorResult<Data>, value: number) {
                   data.formItemColumn = value;
+                  data.columnGap = {
+                    1: 0,
+                    2: 48,
+                    3: 48,
+                    4: 32,
+                    5: 32,
+                    6: 32,
+                  }[value]
                 }
               }
             },
@@ -597,6 +605,14 @@ export default {
                   data.additionalItems.forEach((item) => {
                     item.span = 24 / value;
                   });
+                  data.columnGap = {
+                    1: 0,
+                    2: 48,
+                    3: 48,
+                    4: 32,
+                    5: 32,
+                    6: 32,
+                  }[value]
                 }
               }
             }

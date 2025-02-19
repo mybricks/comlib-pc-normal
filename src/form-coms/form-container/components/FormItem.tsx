@@ -201,7 +201,7 @@ const FormItem = (props) => {
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}
-      tooltip={env.i18n(item?.tooltip)}
+      tooltip={item?.tooltip ? {title: env.i18n(item?.tooltip), placement: 'right', color: '#ffffff'} : ''}
       colon={!!item?.label && colon}
       hidden={item?.hidden}
     >

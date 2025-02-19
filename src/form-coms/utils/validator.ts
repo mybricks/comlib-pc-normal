@@ -62,11 +62,11 @@ const LENGTH_RULE = [
   },
   {
     key: RuleKeys.MAX_LENGTH,
-    status: false,
+    status: true,
     visible: true,
     title: '最大长度校验',
     message: '内容长度不能大于指定值',
-    limitMaxLength: [1000]
+    limitMaxLength: [255]
   }
 ];
 const VALUE_RULE = [

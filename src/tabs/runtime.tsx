@@ -186,6 +186,7 @@ export default function ({
           }
           const keys: Array<string> = [];
           const ds = tabs.map((tab) => {
+            console.log(tab)
             if (!('closable' in tab)) {
               tab.closable = data.closable;
             }
@@ -273,6 +274,7 @@ export default function ({
   );
 
   const onEdit = (targetKey, action) => {
+    console.log(action, data.tabList)
     const actionMap = {
       add() {
         outputs[OutputIds.AddTab](data.tabList);
@@ -334,8 +336,9 @@ export default function ({
             <TabPane
               tab={<Tooltip title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
               key={item.key}
-              closable={!!item.closable}
+              closable={data.tabList.length > 1 && !!item.closable}
               forceRender={!!data.forceRender}
+              closeIcon={<Icons.CloseCircleFilled/>}
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
@@ -381,7 +384,7 @@ export default function ({
     >
       <Tabs
         activeKey={data.defaultActiveKey}
-        type={data.type}
+        type="editable-card"
         centered={data.centered}
         tabPosition={data.tabPosition}
         onChange={handleClickItem}

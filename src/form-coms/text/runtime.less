@@ -1,4 +1,5 @@
 .fiText {
+
 }
 
 .customIcon {
@@ -14,6 +15,23 @@
   :global {
     .ant-input {
       background: #ff000000 !important;
+
+      &::placeholder {
+        color: #595959;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      border-color: #DFDFDF;
+      border-radius: 4px;
+    }
+
+    .ant-input-affix-wrapper-focused {
+      box-shadow: none;
+    }
+
+    .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+      border-color: var(--ant-primary-color, '#1890ff');
     }
   }
 }

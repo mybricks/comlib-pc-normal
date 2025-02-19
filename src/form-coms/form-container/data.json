@@ -4,16 +4,16 @@
   "items": [],
   "additionalItems": [],
   "nameCount": 0,
-  "formItemColumn": 1,
+  "formItemColumn": 3,
   "enable24Grid": true,
   "ellipseMode": "default",
   "expandText": "展开",
   "collapsedText": "收起",
   "actions": {
-    "visible": true,
-    "widthOption": "flexFull",
+    "visible": false,
+    "widthOption": "span",
     "span": 24,
-    "align": "left",
+    "align": "right",
     "items": [
       {
         "title": "提交",
@@ -57,7 +57,7 @@
   "validateHiddenFields": true,
   "config": {
     "colon": true,
-    "layout": "horizontal",
+    "layout": "vertical",
     "disabled": false,
     "size": "middle"
   },
@@ -70,5 +70,5 @@
     "enableWidthAdaptive": true
   },
   "defaultCollapsed": true,
-  "columnGap": 0
+  "columnGap": 48
 }
