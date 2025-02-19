@@ -2,7 +2,7 @@
   "name": "通用H5组件库（Vue）",
   "version": "1.0.3",
   "debugger": "pc-spa",
-  "componentType": "PC",
+  "componentType": "H5",
   "commitInfo": "update",
   "namespace": "mybricks.normal-h5-vue",
   "comAry": [

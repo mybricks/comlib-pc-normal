@@ -1,7 +1,7 @@
 {
   "debugger": "pc-spa",
   "version": "0.0.21",
-  "componentType": "PC",
+  "componentType": "H5",
   "fileId": 7632,
   "commitInfo": "update",
   "namespace": "mybricks.normal-h5",
