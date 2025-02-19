@@ -1,6 +1,6 @@
 {
   "title": "二维码",
-  "namespace": "mybricks.normal-pc.qr-code",
+  "namespace": "mybricks.normal-h5.qr-code",
   "version": "1.0.2",
   "description": "二维码",
   "author": "MyBricks",
@@ -18,7 +18,9 @@
         "type": "string"
       },
       "desc": "链接地址",
-      "rels": ["setLinkComplete"]
+      "rels": [
+        "setLinkComplete"
+      ]
     },
     {
       "id": "download",
@@ -27,7 +29,9 @@
         "type": "any"
       },
       "desc": "下载二维码图片",
-      "rels": ["downloadComplete"]
+      "rels": [
+        "downloadComplete"
+      ]
     }
   ],
   "outputs": [

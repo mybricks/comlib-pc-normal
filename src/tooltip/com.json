@@ -1,6 +1,6 @@
 {
   "title": "文字提示",
-  "namespace": "mybricks.normal-pc.tooltip",
+  "namespace": "mybricks.normal-h5.tooltip",
   "version": "1.0.15",
   "description": "文本提示组件",
   "author": "MyBricks",
@@ -18,7 +18,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["contentComplete"]
+      "rels": [
+        "contentComplete"
+      ]
     }
   ],
   "outputs": [

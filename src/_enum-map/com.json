@@ -1,6 +1,6 @@
 {
   "title": "枚举映射",
-  "namespace": "mybricks.normal-pc.enumMap",
+  "namespace": "mybricks.normal-h5.enumMap",
   "version": "1.0.2",
   "rtType": "js",
   "description": "枚举映射",

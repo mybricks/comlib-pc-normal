@@ -12,7 +12,7 @@
       "id": "content",
       "title": "内容",
       "type": "scope",
-      "schema": "mybricks.normal-pc.form-container"
+      "schema": "mybricks.normal-h5.form-container"
     }
   ]
 }

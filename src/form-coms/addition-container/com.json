@@ -1,6 +1,6 @@
 {
   "title": "自定义内容项",
-  "namespace": "mybricks.normal-pc.form-addition-container",
+  "namespace": "mybricks.normal-h5.form-addition-container",
   "version": "1.0.0",
   "description": "添加一些非表单项的展示内容",
   "author": "ZhuLin",
@@ -19,6 +19,6 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-addition-container"
+    "mybricks.normal-h5.form-container/form-addition-container"
   ]
 }

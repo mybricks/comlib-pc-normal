@@ -1,6 +1,6 @@
 {
   "title": "表单容器",
-  "namespace": "mybricks.normal-pc.form-container",
+  "namespace": "mybricks.normal-h5.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
   "version": "1.4.86",
@@ -25,7 +25,9 @@
         "description": "表单容器的默认值"
       },
       "desc": "给表单设置初始数据，并触发表单容器【表单数据输入】作用域输入事件，以及内部表单项的【值初始化】事件",
-      "rels": ["setInitialValuesDone"]
+      "rels": [
+        "setInitialValuesDone"
+      ]
     },
     {
       "id": "setFieldsValue",
@@ -34,7 +36,9 @@
         "type": "object",
         "properties": {}
       },
-      "rels": ["setFieldsValueDone"],
+      "rels": [
+        "setFieldsValueDone"
+      ],
       "desc": "给表单设置初始数据，并触发表单容器【表单数据输入】作用域输入事件，以及内部表单项【值更新】输出事件"
     },
     {
@@ -45,13 +49,18 @@
         "description": "key为表单项字段名，value为表单项数据源类型",
         "properties": {}
       },
-      "rels": ["setFieldsSourceDone"],
+      "rels": [
+        "setFieldsSourceDone"
+      ],
       "desc": "设置各表格项数据源，并触发表单容器【设置数据源】作用域输入事件，数据源类型取决于具体某一个表单项的数据源输入类型"
     },
     {
       "id": "submit",
       "title": "提交表单",
-      "rels": ["onFinish", "onSubmitError"],
+      "rels": [
+        "onFinish",
+        "onSubmitError"
+      ],
       "schema": {
         "type": "any"
       },
@@ -60,7 +69,9 @@
     {
       "id": "getFieldsValue",
       "title": "获取表单数据",
-      "rels": ["returnValues"],
+      "rels": [
+        "returnValues"
+      ],
       "schema": {
         "type": "any"
       },
@@ -69,7 +80,10 @@
     {
       "id": "submitAndMerge",
       "title": "提交表单(合并输入项)",
-      "rels": ["onMergeFinish", "onSubmitError"],
+      "rels": [
+        "onMergeFinish",
+        "onSubmitError"
+      ],
       "schema": {
         "type": "object"
       },
@@ -78,7 +92,9 @@
     {
       "id": "resetFields",
       "title": "重置表单",
-      "rels": ["onResetFinish"],
+      "rels": [
+        "onResetFinish"
+      ],
       "schema": {
         "type": "any"
       },
@@ -90,7 +106,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["setDisabledDone"],
+      "rels": [
+        "setDisabledDone"
+      ],
       "desc": "禁用表单项及操作项"
     },
     {
@@ -99,7 +117,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["setEnabledDone"],
+      "rels": [
+        "setEnabledDone"
+      ],
       "desc": "启用表单项及操作项"
     },
     {
@@ -109,7 +129,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["isEditableDone"]
+      "rels": [
+        "isEditableDone"
+      ]
     },
     {
       "id": "validateFields",
@@ -120,7 +142,9 @@
           "type": "string"
         }
       },
-      "rels": ["validateFieldsDone"],
+      "rels": [
+        "validateFieldsDone"
+      ],
       "desc": "输入字段数组，触发指定的表单项校验"
     },
     {
@@ -130,7 +154,9 @@
         "type": "object",
         "properties": {}
       },
-      "rels": ["setFormItemsPropsDone"],
+      "rels": [
+        "setFormItemsPropsDone"
+      ],
       "desc": "动态配置表单项标题、提示语、必填样式等"
     }
   ],
@@ -340,7 +366,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValidate"]
+      "rels": [
+        "returnValidate"
+      ]
     },
     {
       "id": "getValue",
@@ -348,7 +376,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValue"]
+      "rels": [
+        "returnValue"
+      ]
     }
   ],
   "slots": [
@@ -356,8 +386,8 @@
       "id": "content",
       "title": "表单容器",
       "schema": [
-        "mybricks.normal-pc.form-container/form-item",
-        "mybricks.normal-pc.form-container/form-addition-container"
+        "mybricks.normal-h5.form-container/form-item",
+        "mybricks.normal-h5.form-container/form-addition-container"
       ],
       "type": "scope",
       "inputs": [
@@ -414,5 +444,8 @@
       ]
     }
   ],
-  "schema": ["mybricks.domain-pc.crud/query", "*"]
+  "schema": [
+    "mybricks.domain-pc.crud/query",
+    "*"
+  ]
 }

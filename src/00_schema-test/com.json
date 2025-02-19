@@ -1,6 +1,6 @@
 {
   "title": "schema test",
-  "namespace": "mybricks.normal-pc.schemaTest",
+  "namespace": "mybricks.normal-h5.schemaTest",
   "version": "1.0.0",
   "description": "schema测试",
   "author": "MyBricks",
@@ -32,12 +32,12 @@
       "schema": {
         "type": "array",
         "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              }
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
             }
+          }
         }
       }
     }

@@ -10,7 +10,7 @@ export default {
       type: 'sceneComSelector',
       options: {
         filter: ({ namespace }) => {
-          return namespace === 'mybricks.normal-pc.table'
+          return namespace === 'mybricks.normal-h5.table'
         }
       },
       value: {

@@ -1,6 +1,6 @@
 {
   "title": "警告提示",
-  "namespace": "mybricks.normal-pc.alert",
+  "namespace": "mybricks.normal-h5.alert",
   "version": "1.0.13",
   "description": "警告提示",
   "author": "MyBricks",

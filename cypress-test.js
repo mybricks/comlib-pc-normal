@@ -96,7 +96,7 @@ async function getDebugPort() {
         // 确保是 vscode 插件启动的调试服务
         result.status === 'success' &&
         // 确保是当前组件库的调试服务
-        result.config.namespace === 'mybricks.normal-pc' &&
+        result.config.namespace === 'mybricks.normal-h5' &&
         // 确保是用 test.mybricks.json 启动的调试服务
         result.config.comAry.includes('./cypress/materials/_checkpoint/com.json')
       ) {

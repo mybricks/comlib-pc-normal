@@ -1,6 +1,6 @@
 {
   "title": "自动完成",
-  "namespace": "mybricks.normal-pc.auto-complete",
+  "namespace": "mybricks.normal-h5.auto-complete",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "version": "1.1.12",
@@ -342,7 +342,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

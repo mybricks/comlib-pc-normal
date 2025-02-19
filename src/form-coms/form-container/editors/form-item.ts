@@ -55,7 +55,7 @@ const getSlotAfterTitle = (label: string) => {
 
 
 const formItemEditor = {
-  ':child(mybricks.normal-pc.form-container/form-item)': {
+  ':child(mybricks.normal-h5.form-container/form-item)': {
     ':slot': {},
     title: '表单项',
     style: [

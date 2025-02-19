@@ -13,7 +13,7 @@ export default {
         title: "对话框",
         slots:{
           container:[
-            {type:'mybricks.normal-pc.table'}
+            {type:'mybricks.normal-h5.table'}
           ]
         }
       }
@@ -80,7 +80,7 @@ export default {
     例如：
     请回答：添加对话框
     {
-      type:'mybricks.normal-pc.dialog',
+      type:'mybricks.normal-h5.dialog',
       title: "请确认",
       footerBtns:[{ type: 'default', title: '关闭',"id": "Btn1","showText": true },{ type: 'primary', title: '确认',"id": "Btn2","showText": true }],
       slots:{}
@@ -88,23 +88,23 @@ export default {
     注意：这里因为在提出的问题中没有对于对话框内部或者类型的描述，所以slots为空。
     请回答：对话框，包含一个文本
     {
-      type:'mybricks.normal-pc.dialog',
+      type:'mybricks.normal-h5.dialog',
       title: "请确认",
       footerBtns:[{ type: 'default', title: '关闭',"id": "Btn1","showText": true },{ type: 'primary', title: '确认',"id": "Btn2","showText": true }],
       slots:{
         container:[
-          {type:'mybricks.normal-pc.text'}
+          {type:'mybricks.normal-h5.text'}
         ]
       }
     }
     请回答：确认类型对话框
     {
-      type:'mybricks.normal-pc.dialog',
+      type:'mybricks.normal-h5.dialog',
       title: "请确认",
       footerBtns:[{ type: 'default', title: '关闭',"id": "Btn1","showText": true },{ type: 'primary', title: '确认',"id": "Btn2","showText": true }],
       slots:{
         container:[
-          {type:'mybricks.normal-pc.form-container', slots:{ content: [{type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}] }}
+          {type:'mybricks.normal-h5.form-container', slots:{ content: [{type:'mybricks.normal-h5.form-text', label: '输入框', name: 'name0'}] }}
         ]
       }
     }`,
@@ -121,7 +121,7 @@ export default {
     }
     if(def.slots.container !== undefined && def.slots){
       const items = def.slots.container;
-      if(items.length === 1 && def.slots.container[0].type === 'mybricks.normal-pc.form-container'){
+      if(items.length === 1 && def.slots.container[0].type === 'mybricks.normal-h5.form-container'){
         data.useFooter = false
       }
     }

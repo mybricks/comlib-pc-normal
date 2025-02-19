@@ -1,6 +1,6 @@
 {
   "title": "通知提醒",
-  "namespace": "mybricks.normal-pc.notification",
+  "namespace": "mybricks.normal-h5.notification",
   "version": "1.0.2",
   "description": "在系统四个角显示通知提醒信息",
   "author": "mybricks",

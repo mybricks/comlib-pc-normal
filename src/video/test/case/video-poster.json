@@ -1,1 +1,1783 @@
-{"content":{"xg.desn.stageview":{"D":{"C":["xg.desn.designer.stageview.StageViewModel","xg.desn.sdk.ModelState","xg.desn.designer.stageview.ViewSlotModel","xg.desn.designer.stageview.geo.GeoViewModel","xg.desn.designer.stageview.topl.ToplViewModel","xg.desn.designer.stageview.geo.SlotStyleModel","xg.desn.designer.stageview.geo.SlotModel","xg.desn.designer.stageview.topl.FrameModel","xg.desn.designer.stageview.geo.GeoComModel","xg.desn.designer.stageview.topl.PinModel","xg.desn.designer.stageview.topl.ToplComModel","xg.desn.designer.stageview.topl.DiagramModel","xg.desn.sdk.ComRuntimeModel","xg.desn.designer.stageview.topl.ConModel","xg.desn.designer.stageview.topl.ToplComModelForked","xg.desn.sdk.ComStyle","xg.desn.designer.stageview.topl.PinModelForked"],"W":{"id":"_0_","state":"_1_","designerVersion":"_2_","pluginDataset":"_3_","envVars":"_4_","designCostTime":"_5_","comThemes":"_6_","_cssVars":"_7_","viewSlots":"_8_","editViewWidth":"_9_","mainModule":"_10_","@mybricks/plugins/note":"_11_","@mybricks/plugins/service":"_12_","@mybricks/plugins/domain-service":"_13_","@fangzhou/plugin-theme":"_14_","@mybricks/plugins/tools":"_15_","mybricks.plugin.find":"_16_","top":"_17_","bottom":"_18_","instId":"_19_","title":"_20_","slot":"_21_","frame":"_22_","notesMap":"_23_","operationMap":"_24_","connectors":"_25_","config":"_26_","domainModels":"_27_","themeId":"_28_","themeConfig":"_29_","name":"_30_","value":"_31_","closeable":"_32_","status":"_33_","tabs":"_34_","showTitleBar":"_35_","_height":"_36_","height":"_37_","heightRecover":"_38_","style":"_39_","slots":"_40_","notes":"_41_","styleInited":"_42_","showType":"_43_","_curArtboardId":"_44_","frames":"_45_","varComAry":"_46_","comAry":"_47_","diagramAry":"_48_","curDiagramId":"_49_","paramsFn":"_50_","resultFn":"_51_","errorResultFn":"_52_","--ant-primary-color":"_53_","--ant-primary-color-hover":"_54_","--ant-primary-color-active":"_55_","--ant-primary-color-outline":"_56_","--ant-primary-1":"_57_","--ant-primary-2":"_58_","--ant-primary-3":"_59_","--ant-primary-4":"_60_","--ant-primary-5":"_61_","--ant-primary-6":"_62_","--ant-primary-7":"_63_","--ant-primary-color-deprecated-pure":"_64_","--ant-primary-color-deprecated-l-35":"_65_","--ant-primary-color-deprecated-l-20":"_66_","--ant-primary-color-deprecated-t-20":"_67_","--ant-primary-color-deprecated-t-50":"_68_","--ant-primary-color-deprecated-f-12":"_69_","--ant-primary-color-active-deprecated-f-30":"_70_","--ant-primary-color-active-deprecated-d-02":"_71_","--ant-success-color":"_72_","--ant-success-color-hover":"_73_","--ant-success-color-active":"_74_","--ant-success-color-outline":"_75_","--ant-success-color-deprecated-bg":"_76_","--ant-success-color-deprecated-border":"_77_","--ant-error-color":"_78_","--ant-error-color-hover":"_79_","--ant-error-color-active":"_80_","--ant-error-color-outline":"_81_","--ant-error-color-deprecated-bg":"_82_","--ant-error-color-deprecated-border":"_83_","--ant-warning-color":"_84_","--ant-warning-color-hover":"_85_","--ant-warning-color-active":"_86_","--ant-warning-color-outline":"_87_","--ant-warning-color-deprecated-bg":"_88_","--ant-warning-color-deprecated-border":"_89_","--ant-info-color":"_90_","--ant-info-color-deprecated-bg":"_91_","--ant-info-color-deprecated-border":"_92_","zoom":"_93_","layout":"_94_","justifyContent":"_95_","alignItems":"_96_","heightEditable":"_97_","width":"_98_","left":"_99_","layoutTemplate":"_100_","schema":"_101_","zIndex":"_102_","_type":"_103_","editable":"_104_","isFrame":"_105_","frameAry":"_106_","inputPins":"_107_","_inputPins":"_108_","outputPins":"_109_","_outputPins":"_110_","inputJoints":"_111_","outputJoints":"_112_","zIndexCur":"_113_","_defaultF":"_114_","columnGap":"_115_","rowGap":"_116_","flexWrap":"_117_","widthFact":"_118_","heightFact":"_119_","con":"_120_","com":"_121_","init":"_122_","runtime":"_123_","parent":"_124_","type":"_125_","deletable":"_126_","conAry":"_127_","direction":"_128_","hostId":"_129_","_schema":"_130_","foldedStyle":"_131_","configPins":"_132_","inputPinsInModel":"_133_","inputPinExts":"_134_","outputPinsInModel":"_135_","outputPinExts":"_136_","outputPinNexts":"_137_","diagramModel":"_138_","commentAry":"_139_","_title":"_140_","createTime":"_141_","isGlobal":"_142_","showIO":"_143_","updateTime":"_144_","undefined":"_145_","conTemp":"_146_","startFrom":"_147_","model":"_148_","refId":"_149_","def":"_150_","_autoRun":"_151_","topl":"_152_","geo":"_153_","properties":"_154_","visible":"_155_","data":"_156_","inputAry":"_157_","outputAry":"_158_","outputEvents":"_159_","namespace":"_160_","version":"_161_","_ing":"_162_","startPin":"_163_","finishPin":"_164_","startPo":"_165_","finishPo":"_166_","scrollTop":"_167_","scrollLeft":"_168_","rels":"_169_","_schemaFollow":"_170_","rtType":"_171_","typeTitle":"_172_","fromPlugin":"_173_","description":"_174_","wrap":"_175_","forRef":"_176_","icon":"_177_","extValues":"_178_","extBinding":"_179_","editor":"_180_","bindingsFrom":"_181_","bindingsTo":"_182_","permissions":"_183_","spm":"_184_","forkedFrom":"_185_","ioc":"_186_","_key":"_187_","io":"_188_","autoplay":"_189_","muted":"_190_","controls":"_191_","fit":"_192_","src":"_193_","display":"_194_","widthFull":"_195_","visibleOnce":"_196_","j":"_197_","x":"_198_","y":"_199_","fns":"_200_","configs":"_201_","inputs":"_202_","outputs":"_203_","code":"_204_","transformCode":"_205_","setPoster":"_206_","setPosterComplete":"_207_"}},"refs":{"0":{"_F_":0,"_0_":"u_TGyZ7","_1_":{"_R_":"1"},"_2_":0.2,"_3_":{"_11_":{"_23_":{},"_24_":{},"_0_":"u_h05rmzwbnn"},"_12_":{"_25_":[],"_26_":{"_50_":"export default function ({ params, data, headers, url, method }) {\n  // 设置请求query、请求体、请求头\n  return { params, data, headers, url, method };\n }\n","_51_":"export default function ({ response, config }) {\n  // if (response.data.code !== 0) {\n  //   throw new Error(response.data.errMsg)\n  // }\n  return response.data\n}\n","_52_":"export default function handleError({ error, response, config }, { throwError }) {\n  // 错误抛出时预处理数据，请注意：必须调用 throwError 抛出错误;\n  // config：请求入参；error：错误对象；response：响应原始对象；response.status：获取 HTTP 状态码，response.data：获取接口返回值\n  throwError(response.data.message || error);\n}\n"}},"_13_":{"_27_":[]},"_14_":{"_28_":"eshop","_29_":{"_53_":"#326bfb","_54_":"#5c8fff","_55_":"#204dd4","_56_":"rgba(50, 107, 251, 0.2)","_57_":"#f0f7ff","_58_":"#d6e7ff","_59_":"#adcdff","_60_":"#85afff","_61_":"#5c8fff","_62_":"#326bfb","_63_":"#204dd4","_64_":"","_65_":"#e1e9fe","_66_":"#96b3fd","_67_":"#46a6ff","_68_":"#8cc8ff","_69_":"rgba(50, 107, 251, 0.12)","_70_":"rgba(240, 247, 255, 0.3)","_71_":"#dcf4ff","_72_":"#30c453","_73_":"#54d16d","_74_":"#1e9e40","_75_":"rgba(48, 196, 83, 0.2)","_76_":"#f0fff1","_77_":"#a9ebb2","_78_":"#fa4e3e","_79_":"#ff7a69","_80_":"#d4332a","_81_":"rgba(250, 78, 62, 0.2)","_82_":"#fff4f0","_83_":"#ffc7ba","_84_":"#ffaa00","_85_":"#ffbf29","_86_":"#d98900","_87_":"rgba(255, 170, 0, 0.2)","_88_":"#fffbe6","_89_":"#ffe07a","_90_":"#326bfb","_91_":"#f0f7ff","_92_":"#adcdff"}},"_15_":{},"_16_":{}},"_4_":{},"_5_":70,"_6_":{},"_7_":[{"_30_":"--theme-id","_31_":"eshop"},{"_30_":"--ant-primary-color","_31_":"#326bfb"},{"_30_":"--ant-primary-color-hover","_31_":"#5c8fff"},{"_30_":"--ant-primary-color-active","_31_":"#204dd4"},{"_30_":"--ant-primary-color-outline","_31_":"rgba(50, 107, 251, 0.2)"},{"_30_":"--ant-primary-1","_31_":"#f0f7ff"},{"_30_":"--ant-primary-2","_31_":"#d6e7ff"},{"_30_":"--ant-primary-3","_31_":"#adcdff"},{"_30_":"--ant-primary-4","_31_":"#85afff"},{"_30_":"--ant-primary-5","_31_":"#5c8fff"},{"_30_":"--ant-primary-6","_31_":"#326bfb"},{"_30_":"--ant-primary-7","_31_":"#204dd4"},{"_30_":"--ant-primary-color-deprecated-pure","_31_":""},{"_30_":"--ant-primary-color-deprecated-l-35","_31_":"#e1e9fe"},{"_30_":"--ant-primary-color-deprecated-l-20","_31_":"#96b3fd"},{"_30_":"--ant-primary-color-deprecated-t-20","_31_":"#46a6ff"},{"_30_":"--ant-primary-color-deprecated-t-50","_31_":"#8cc8ff"},{"_30_":"--ant-primary-color-deprecated-f-12","_31_":"rgba(50, 107, 251, 0.12)"},{"_30_":"--ant-primary-color-active-deprecated-f-30","_31_":"rgba(240, 247, 255, 0.3)"},{"_30_":"--ant-primary-color-active-deprecated-d-02","_31_":"#dcf4ff"},{"_30_":"--ant-success-color","_31_":"#30c453"},{"_30_":"--ant-success-color-hover","_31_":"#54d16d"},{"_30_":"--ant-success-color-active","_31_":"#1e9e40"},{"_30_":"--ant-success-color-outline","_31_":"rgba(48, 196, 83, 0.2)"},{"_30_":"--ant-success-color-deprecated-bg","_31_":"#f0fff1"},{"_30_":"--ant-success-color-deprecated-border","_31_":"#a9ebb2"},{"_30_":"--ant-error-color","_31_":"#fa4e3e"},{"_30_":"--ant-error-color-hover","_31_":"#ff7a69"},{"_30_":"--ant-error-color-active","_31_":"#d4332a"},{"_30_":"--ant-error-color-outline","_31_":"rgba(250, 78, 62, 0.2)"},{"_30_":"--ant-error-color-deprecated-bg","_31_":"#fff4f0"},{"_30_":"--ant-error-color-deprecated-border","_31_":"#ffc7ba"},{"_30_":"--ant-warning-color","_31_":"#ffaa00"},{"_30_":"--ant-warning-color-hover","_31_":"#ffbf29"},{"_30_":"--ant-warning-color-active","_31_":"#d98900"},{"_30_":"--ant-warning-color-outline","_31_":"rgba(255, 170, 0, 0.2)"},{"_30_":"--ant-warning-color-deprecated-bg","_31_":"#fffbe6"},{"_30_":"--ant-warning-color-deprecated-border","_31_":"#ffe07a"},{"_30_":"--ant-info-color","_31_":"#326bfb"},{"_30_":"--ant-info-color-deprecated-bg","_31_":"#f0f7ff"},{"_30_":"--ant-info-color-deprecated-border","_31_":"#adcdff"}],"_8_":{"_17_":{"_R_":"2"},"_18_":{"_R_":"3"}},"_9_":577,"_10_":{"_19_":"_main_","_20_":"主模块","_21_":{"_R_":"4"},"_22_":{"_R_":"5"}}},"1":{"_F_":1},"2":{"_F_":2,"_0_":"u_Bct8w","_1_":{"_R_":"6"},"_32_":false,"_33_":"normal","_34_":["geoView"],"_35_":false,"_36_":"auto","_37_":"auto"},"3":{"_F_":2,"_0_":"u_8Q5l_","_1_":{"_R_":"7"},"_32_":false,"_33_":"normal","_34_":["toplView"],"_35_":true,"_36_":400,"_38_":400,"_37_":400},"4":{"_F_":3,"_0_":"u_Rxg3h","_1_":{"_R_":"8"},"_30_":"geo","_39_":{"_R_":"9"},"_40_":[{"_R_":"11"}],"_41_":[],"_42_":true,"_43_":"pc","_44_":"u_QDddr"},"5":{"_F_":4,"_0_":"u_pc09I","_1_":{"_R_":"10"},"_30_":"topl","_45_":[{"_R_":"12"}],"_46_":[],"_47_":[],"_48_":[],"_39_":{"_99_":150,"_17_":30},"_49_":"u_UUIbb"},"6":{"_F_":1},"7":{"_F_":1},"8":{"_F_":1},"9":{"_F_":5,"_93_":1,"_94_":"flex-column","_95_":"flex-start","_96_":"flex-start","_97_":true,"_37_":736,"_98_":1024,"_99_":120,"_17_":76},"10":{"_F_":1},"11":{"_F_":6,"_0_":"u_QDddr","_1_":{"_R_":"13"},"_47_":[{"_R_":"16"}],"_39_":{"_R_":"14"},"_20_":"主场景","_100_":[]},"12":{"_F_":7,"_0_":"u_QDddr","_1_":{"_R_":"15"},"_102_":0,"_103_":0,"_39_":{"_99_":null,"_17_":null},"_104_":true,"_105_":true,"_106_":[],"_107_":[{"_R_":"17"}],"_108_":[],"_109_":[{"_R_":"18"},{"_R_":"19"},{"_R_":"20"},{"_R_":"21"}],"_110_":[],"_111_":[],"_112_":[],"_47_":[{"_R_":"22"},{"_R_":"23"},{"_R_":"24"}],"_48_":[{"_R_":"25"}],"_113_":{"_120_":0,"_121_":100},"_20_":"主场景","_114_":true},"13":{"_F_":1},"14":{"_F_":5,"_93_":1,"_94_":"flex-column","_95_":"flex-start","_96_":"flex-start","_37_":736,"_98_":1024,"_115_":0,"_116_":0,"_117_":"nowrap","_118_":1024,"_119_":736},"15":{"_F_":1},"16":{"_F_":8,"_1_":{"_R_":"26"},"_122_":true,"_30_":"u_bs9Ui","_123_":{"_R_":"27"},"_124_":{"_R_":"11"}},"17":{"_F_":9,"_0_":"u_dNCMF","_1_":{"_R_":"28"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[{"_R_":"39"}],"_128_":"inner-output","_129_":"open","_20_":"打开","_130_":{"_125_":"any"},"_104_":true,"_124_":{"_R_":"12"},"_101_":{"_125_":"any"}},"18":{"_F_":9,"_0_":"click","_1_":{"_R_":"29"},"_102_":0,"_103_":2,"_125_":"event","_126_":false,"_127_":[],"_128_":"inner-input","_129_":"click","_20_":"点击","_130_":{"_125_":"any"},"_124_":{"_R_":"12"},"_101_":{"_125_":"any"}},"19":{"_F_":9,"_0_":"scroll","_1_":{"_R_":"30"},"_102_":0,"_103_":2,"_125_":"event","_126_":false,"_127_":[],"_128_":"inner-input","_129_":"scroll","_20_":"滚动","_130_":{"_125_":"object","_154_":{"_167_":{"_125_":"number"},"_168_":{"_125_":"number"}}},"_124_":{"_R_":"12"},"_101_":{"_125_":"object","_154_":{"_167_":{"_125_":"number"},"_168_":{"_125_":"number"}}}},"20":{"_F_":9,"_0_":"load","_1_":{"_R_":"31"},"_102_":0,"_103_":2,"_125_":"event","_126_":false,"_127_":[],"_128_":"inner-input","_129_":"load","_20_":"加载完成","_130_":{"_125_":"any"},"_124_":{"_R_":"12"},"_101_":{"_125_":"any"}},"21":{"_F_":9,"_0_":"unload","_1_":{"_R_":"32"},"_102_":0,"_103_":2,"_125_":"event","_126_":false,"_127_":[],"_128_":"inner-input","_129_":"unload","_20_":"卸载","_130_":{"_125_":"any"},"_124_":{"_R_":"12"},"_101_":{"_125_":"any"}},"22":{"_F_":10,"_1_":{"_R_":"33"},"_103_":1,"_122_":false,"_39_":{"_98_":0,"_37_":0,"_99_":160,"_17_":130},"_131_":{},"_132_":[],"_108_":[],"_107_":[{"_R_":"40"},{"_R_":"41"},{"_R_":"42"}],"_133_":[],"_134_":[{"_R_":"43"},{"_R_":"44"},{"_R_":"45"}],"_110_":[],"_109_":[{"_R_":"46"},{"_R_":"47"},{"_R_":"48"}],"_135_":[],"_136_":[],"_137_":[],"_30_":"u_bs9Ui","_123_":{"_R_":"27"},"_124_":{"_R_":"12"}},"23":{"_F_":10,"_1_":{"_R_":"34"},"_103_":1,"_122_":false,"_39_":{"_98_":113.66015625,"_37_":25,"_99_":388,"_17_":222},"_131_":{},"_132_":[],"_108_":[],"_107_":[{"_R_":"49"}],"_133_":[],"_134_":[],"_110_":[],"_109_":[{"_R_":"50"}],"_135_":[],"_136_":[],"_137_":[],"_30_":"u_L9wY8","_123_":{"_R_":"35"},"_124_":{"_R_":"12"},"_138_":{"_R_":"25"}},"24":{"_F_":10,"_1_":{"_R_":"36"},"_103_":1,"_122_":false,"_39_":{"_98_":115.330078125,"_37_":25,"_99_":172,"_17_":120},"_131_":{},"_132_":[],"_108_":[],"_107_":[{"_R_":"51"}],"_133_":[],"_134_":[],"_110_":[],"_109_":[{"_R_":"52"}],"_135_":[],"_136_":[],"_137_":[],"_30_":"u_vDsei","_123_":{"_R_":"37"},"_124_":{"_R_":"12"},"_138_":{"_R_":"25"}},"25":{"_F_":11,"_0_":"u_UUIbb","_1_":{"_R_":"38"},"_47_":[{"_R_":"53"},{"_R_":"23"},{"_R_":"24"}],"_109_":[],"_112_":[],"_127_":[{"_R_":"39"},{"_R_":"54"},{"_R_":"55"}],"_139_":[],"_39_":{"_155_":true,"_99_":null,"_17_":null,"_37_":400,"_98_":712.3544921875},"_124_":{"_R_":"12"},"_140_":"主场景","_141_":1709864231552,"_142_":true,"_143_":true,"_144_":1710924545741,"_145_":{"_146_":true},"_20_":"主场景"},"26":{"_F_":1},"27":{"_F_":12,"_0_":"u_hn_7G","_148_":{"_156_":{"_189_":true,"_190_":true,"_191_":true,"_192_":"contain","_193_":"https://wave.video/embed/5fd2117f46e0fb000d7c0826/5fd2128246e0fb000cab2d77.mp4"},"_157_":[],"_158_":[],"_159_":{},"_39_":{"_R_":"56"}},"_20_":"播放器","_149_":"video_bR_","_150_":{"_160_":"mybricks.normal-pc.video","_161_":"1.0.11"},"_151_":true,"_152_":{"_R_":"22"},"_153_":{"_R_":"16"}},"28":{"_F_":1},"29":{"_F_":1},"30":{"_F_":1},"31":{"_F_":1},"32":{"_F_":1},"33":{"_F_":1},"34":{"_F_":1},"35":{"_F_":12,"_0_":"u_rQe13","_148_":{"_156_":{"_0_":"poster"},"_157_":[],"_158_":[],"_159_":{},"_39_":{"_R_":"69"}},"_20_":"检查点(测试用)","_149_":"checkpoint_AeH","_150_":{"_160_":"mybricks.test.checkpoint","_161_":"1.0.1","_171_":"js"},"_152_":{"_R_":"23"}},"36":{"_F_":1},"37":{"_F_":12,"_0_":"u_WdLuv","_148_":{"_156_":{"_200_":{"_204_":"(%7B%20outputs%2C%20inputs%20%7D)%20%3D%3E%20%7B%0A%20%20const%20%5B%20inputValue0%20%5D%20%3D%20inputs%3B%0A%20%20const%20%5B%20output0%20%5D%20%3D%20outputs%3B%0A%20%20output0('https%3A%2F%2Fpngimg.com%2Fuploads%2Fmario%2Fmario_PNG125.png')%3B%0A%7D","_205_":"(function()%20%7B%20var%20_RTFN_%3B%20%0A%22use%20strict%22%3B%0A%0Afunction%20_slicedToArray(arr%2C%20i)%20%7B%20return%20_arrayWithHoles(arr)%20%7C%7C%20_iterableToArrayLimit(arr%2C%20i)%20%7C%7C%20_unsupportedIterableToArray(arr%2C%20i)%20%7C%7C%20_nonIterableRest()%3B%20%7D%0A%0Afunction%20_nonIterableRest()%20%7B%20throw%20new%20TypeError(%22Invalid%20attempt%20to%20destructure%20non-iterable%20instance.%5CnIn%20order%20to%20be%20iterable%2C%20non-array%20objects%20must%20have%20a%20%5BSymbol.iterator%5D()%20method.%22)%3B%20%7D%0A%0Afunction%20_unsupportedIterableToArray(o%2C%20minLen)%20%7B%20if%20(!o)%20return%3B%20if%20(typeof%20o%20%3D%3D%3D%20%22string%22)%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20var%20n%20%3D%20Object.prototype.toString.call(o).slice(8%2C%20-1)%3B%20if%20(n%20%3D%3D%3D%20%22Object%22%20%26%26%20o.constructor)%20n%20%3D%20o.constructor.name%3B%20if%20(n%20%3D%3D%3D%20%22Map%22%20%7C%7C%20n%20%3D%3D%3D%20%22Set%22)%20return%20Array.from(o)%3B%20if%20(n%20%3D%3D%3D%20%22Arguments%22%20%7C%7C%20%2F%5E(%3F%3AUi%7CI)nt(%3F%3A8%7C16%7C32)(%3F%3AClamped)%3FArray%24%2F.test(n))%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20%7D%0A%0Afunction%20_arrayLikeToArray(arr%2C%20len)%20%7B%20if%20(len%20%3D%3D%20null%20%7C%7C%20len%20%3E%20arr.length)%20len%20%3D%20arr.length%3B%20for%20(var%20i%20%3D%200%2C%20arr2%20%3D%20new%20Array(len)%3B%20i%20%3C%20len%3B%20i%2B%2B)%20%7B%20arr2%5Bi%5D%20%3D%20arr%5Bi%5D%3B%20%7D%20return%20arr2%3B%20%7D%0A%0Afunction%20_iterableToArrayLimit(arr%2C%20i)%20%7B%20var%20_i%20%3D%20arr%20%3D%3D%20null%20%3F%20null%20%3A%20typeof%20Symbol%20!%3D%3D%20%22undefined%22%20%26%26%20arr%5BSymbol.iterator%5D%20%7C%7C%20arr%5B%22%40%40iterator%22%5D%3B%20if%20(_i%20%3D%3D%20null)%20return%3B%20var%20_arr%20%3D%20%5B%5D%3B%20var%20_n%20%3D%20true%3B%20var%20_d%20%3D%20false%3B%20var%20_s%2C%20_e%3B%20try%20%7B%20for%20(_i%20%3D%20_i.call(arr)%3B%20!(_n%20%3D%20(_s%20%3D%20_i.next()).done)%3B%20_n%20%3D%20true)%20%7B%20_arr.push(_s.value)%3B%20if%20(i%20%26%26%20_arr.length%20%3D%3D%3D%20i)%20break%3B%20%7D%20%7D%20catch%20(err)%20%7B%20_d%20%3D%20true%3B%20_e%20%3D%20err%3B%20%7D%20finally%20%7B%20try%20%7B%20if%20(!_n%20%26%26%20_i%5B%22return%22%5D%20!%3D%20null)%20_i%5B%22return%22%5D()%3B%20%7D%20finally%20%7B%20if%20(_d)%20throw%20_e%3B%20%7D%20%7D%20return%20_arr%3B%20%7D%0A%0Afunction%20_arrayWithHoles(arr)%20%7B%20if%20(Array.isArray(arr))%20return%20arr%3B%20%7D%0A%0A_RTFN_%20%3D%20function%20_RTFN_(_ref)%20%7B%0A%20%20var%20outputs%20%3D%20_ref.outputs%2C%0A%20%20%20%20%20%20inputs%20%3D%20_ref.inputs%3B%0A%0A%20%20var%20_inputs%20%3D%20_slicedToArray(inputs%2C%201)%2C%0A%20%20%20%20%20%20inputValue0%20%3D%20_inputs%5B0%5D%3B%0A%0A%20%20var%20_outputs%20%3D%20_slicedToArray(outputs%2C%201)%2C%0A%20%20%20%20%20%20output0%20%3D%20_outputs%5B0%5D%3B%0A%0A%20%20output0('https%3A%2F%2Fpngimg.com%2Fuploads%2Fmario%2Fmario_PNG125.png')%3B%0A%7D%3B%0A%3B%20return%20_RTFN_%3B%20%7D)()"}},"_157_":[],"_158_":[],"_159_":{},"_39_":{"_R_":"72"}},"_20_":"JS计算(测试用)","_149_":"_muilt-inputJs_Pvr","_150_":{"_160_":"mybricks.test._muilt-inputJs","_161_":"1.0.0","_171_":"js-autorun"},"_152_":{"_R_":"24"}},"38":{"_F_":1},"39":{"_F_":13,"_0_":"u_HtYmG","_1_":{"_R_":"57"},"_102_":0,"_103_":4,"_162_":false,"_139_":[],"_163_":{"_R_":"17"},"_164_":{"_R_":"51"},"_20_":"从 打开 到 参数0 的连接","_124_":{"_R_":"25"},"_165_":{"_197_":35.6,"_198_":60,"_199_":50.5},"_166_":{"_197_":41,"_198_":162,"_199_":130.5}},"40":{"_F_":9,"_0_":"u_Vn74_","_1_":{"_R_":"58"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[],"_128_":"input","_129_":"link","_20_":"视频链接","_130_":{"_125_":"string"},"_169_":["setLinkComplete"],"_124_":{"_R_":"22"},"_101_":{"_125_":"string"}},"41":{"_F_":9,"_0_":"u_x8yDN","_1_":{"_R_":"59"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[],"_128_":"input","_129_":"screenshot","_20_":"截屏","_130_":{"_125_":"string","_20_":"截图文件名"},"_169_":["screenshotComplete"],"_124_":{"_R_":"22"},"_101_":{"_125_":"string","_20_":"截图文件名"}},"42":{"_F_":9,"_0_":"u_3gA3F","_1_":{"_R_":"60"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[{"_R_":"54"}],"_128_":"input","_129_":"setPoster","_20_":"设置封面","_130_":{"_125_":"string","_20_":"封面"},"_169_":["setPosterComplete"],"_124_":{"_R_":"22"},"_101_":{"_125_":"string","_20_":"封面"}},"43":{"_F_":9,"_0_":"u_BHdpK","_1_":{"_R_":"61"},"_102_":0,"_103_":2,"_125_":"ext","_126_":false,"_127_":[],"_128_":"input","_129_":"show","_20_":"显示","_130_":{"_125_":"any"},"_124_":{"_R_":"22"},"_101_":{"_125_":"any"}},"44":{"_F_":9,"_0_":"u_pXY5n","_1_":{"_R_":"62"},"_102_":0,"_103_":2,"_125_":"ext","_126_":false,"_127_":[],"_128_":"input","_129_":"hide","_20_":"隐藏","_130_":{"_125_":"any"},"_124_":{"_R_":"22"},"_101_":{"_125_":"any"}},"45":{"_F_":9,"_0_":"u_N1fkj","_1_":{"_R_":"63"},"_102_":0,"_103_":2,"_125_":"ext","_126_":false,"_127_":[],"_128_":"input","_129_":"showOrHide","_20_":"显示/隐藏","_130_":{"_125_":"any"},"_124_":{"_R_":"22"},"_101_":{"_125_":"any"}},"46":{"_F_":9,"_0_":"u_YvKuP","_1_":{"_R_":"64"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[],"_128_":"output","_129_":"setLinkComplete","_20_":"完成","_130_":{"_125_":"any"},"_124_":{"_R_":"22"},"_101_":{"_125_":"any"}},"47":{"_F_":9,"_0_":"u_Lkpqn","_1_":{"_R_":"65"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[],"_128_":"output","_129_":"screenshotComplete","_20_":"完成","_130_":{"_125_":"any"},"_124_":{"_R_":"22"},"_101_":{"_125_":"any"}},"48":{"_F_":9,"_0_":"u_d8j1r","_1_":{"_R_":"66"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[],"_128_":"output","_129_":"setPosterComplete","_20_":"完成","_130_":{"_125_":"any"},"_124_":{"_R_":"22"},"_101_":{"_125_":"any"}},"49":{"_F_":9,"_0_":"u_dPJLr","_1_":{"_R_":"67"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[{"_R_":"55"}],"_128_":"input","_129_":"check","_20_":"检查","_130_":{"_125_":"string"},"_170_":true,"_124_":{"_R_":"23"},"_101_":{"_125_":"string"}},"50":{"_F_":9,"_0_":"u_yC0Lx","_1_":{"_R_":"68"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[],"_128_":"output","_129_":"export","_20_":"出口","_130_":{"_125_":"follow"},"_170_":true,"_124_":{"_R_":"23"},"_101_":{"_125_":"follow"}},"51":{"_F_":9,"_0_":"u_FI4_0","_1_":{"_R_":"70"},"_102_":0,"_103_":2,"_125_":"param","_126_":false,"_127_":[{"_R_":"39"}],"_128_":"input","_129_":"input.inputValue0","_20_":"参数0","_130_":{"_125_":"any"},"_170_":true,"_124_":{"_R_":"24"},"_101_":{"_125_":"any"}},"52":{"_F_":9,"_0_":"u_RYIqw","_1_":{"_R_":"71"},"_102_":0,"_103_":2,"_125_":"normal","_126_":false,"_127_":[{"_R_":"54"},{"_R_":"55"}],"_128_":"output","_129_":"output0","_20_":"输出项0","_130_":{"_125_":"string"},"_104_":true,"_124_":{"_R_":"24"},"_101_":{"_125_":"string"}},"53":{"_F_":14,"_1_":{"_R_":"73"},"_103_":1,"_122_":false,"_39_":{"_98_":77,"_37_":25,"_99_":460,"_17_":110},"_131_":{},"_132_":[],"_108_":[],"_107_":[{"_R_":"75"}],"_133_":[],"_134_":[],"_110_":[],"_109_":[{"_R_":"77"}],"_135_":[],"_136_":[],"_137_":[],"_124_":{"_R_":"25"},"_185_":{"_R_":"22"},"_186_":{"_201_":{},"_202_":{"_206_":true},"_203_":{"_207_":true}},"_138_":{"_R_":"25"},"_187_":"u_kzblp"},"54":{"_F_":13,"_0_":"u__9jLr","_1_":{"_R_":"74"},"_102_":0,"_103_":4,"_162_":false,"_139_":[],"_163_":{"_R_":"52"},"_164_":{"_R_":"75"},"_20_":"从 输出项0 到 设置封面 的连接","_124_":{"_R_":"25"},"_165_":{"_197_":51.800000000000004,"_198_":299,"_199_":130.5},"_166_":{"_197_":57.2,"_198_":450,"_199_":120.5}},"55":{"_F_":13,"_0_":"u_LvsLS","_1_":{"_R_":"76"},"_102_":0,"_103_":4,"_162_":false,"_139_":[],"_163_":{"_R_":"52"},"_164_":{"_R_":"49"},"_20_":"从 输出项0 到 检查 的连接","_124_":{"_R_":"25"},"_165_":{"_197_":51.800000000000004,"_198_":299,"_199_":130.5},"_166_":{"_197_":35.6,"_198_":378,"_199_":232.5}},"56":{"_F_":15,"_194_":"block","_195_":true,"_98_":"100%","_37_":300,"_118_":1024,"_119_":300},"57":{"_F_":1},"58":{"_F_":1},"59":{"_F_":1},"60":{"_F_":1},"61":{"_F_":1},"62":{"_F_":1},"63":{"_F_":1},"64":{"_F_":1},"65":{"_F_":1},"66":{"_F_":1},"67":{"_F_":1},"68":{"_F_":1},"69":{"_F_":15,"_194_":"block"},"70":{"_F_":1},"71":{"_F_":1},"72":{"_F_":15,"_194_":"block"},"73":{"_F_":1},"74":{"_F_":1},"75":{"_F_":16,"_0_":"u_3gA3F","_1_":{"_R_":"78"},"_102_":0,"_103_":2,"_126_":false,"_127_":[{"_R_":"54"}],"_124_":{"_R_":"53"},"_185_":{"_R_":"42"},"_20_":"设置封面","_101_":{"_125_":"string","_20_":"封面"}},"76":{"_F_":1},"77":{"_F_":16,"_0_":"u_d8j1r","_1_":{"_R_":"79"},"_102_":0,"_103_":2,"_126_":false,"_127_":[],"_124_":{"_R_":"53"},"_185_":{"_R_":"48"},"_20_":"完成","_101_":{"_125_":"any"}},"78":{"_F_":1},"79":{"_F_":1}},"def":{"_R_":"0"}}}}
+{
+	"content": {
+		"xg.desn.stageview": {
+			"D": {
+				"C": [
+					"xg.desn.designer.stageview.StageViewModel",
+					"xg.desn.sdk.ModelState",
+					"xg.desn.designer.stageview.ViewSlotModel",
+					"xg.desn.designer.stageview.geo.GeoViewModel",
+					"xg.desn.designer.stageview.topl.ToplViewModel",
+					"xg.desn.designer.stageview.geo.SlotStyleModel",
+					"xg.desn.designer.stageview.geo.SlotModel",
+					"xg.desn.designer.stageview.topl.FrameModel",
+					"xg.desn.designer.stageview.geo.GeoComModel",
+					"xg.desn.designer.stageview.topl.PinModel",
+					"xg.desn.designer.stageview.topl.ToplComModel",
+					"xg.desn.designer.stageview.topl.DiagramModel",
+					"xg.desn.sdk.ComRuntimeModel",
+					"xg.desn.designer.stageview.topl.ConModel",
+					"xg.desn.designer.stageview.topl.ToplComModelForked",
+					"xg.desn.sdk.ComStyle",
+					"xg.desn.designer.stageview.topl.PinModelForked"
+				],
+				"W": {
+					"id": "_0_",
+					"state": "_1_",
+					"designerVersion": "_2_",
+					"pluginDataset": "_3_",
+					"envVars": "_4_",
+					"designCostTime": "_5_",
+					"comThemes": "_6_",
+					"_cssVars": "_7_",
+					"viewSlots": "_8_",
+					"editViewWidth": "_9_",
+					"mainModule": "_10_",
+					"@mybricks/plugins/note": "_11_",
+					"@mybricks/plugins/service": "_12_",
+					"@mybricks/plugins/domain-service": "_13_",
+					"@fangzhou/plugin-theme": "_14_",
+					"@mybricks/plugins/tools": "_15_",
+					"mybricks.plugin.find": "_16_",
+					"top": "_17_",
+					"bottom": "_18_",
+					"instId": "_19_",
+					"title": "_20_",
+					"slot": "_21_",
+					"frame": "_22_",
+					"notesMap": "_23_",
+					"operationMap": "_24_",
+					"connectors": "_25_",
+					"config": "_26_",
+					"domainModels": "_27_",
+					"themeId": "_28_",
+					"themeConfig": "_29_",
+					"name": "_30_",
+					"value": "_31_",
+					"closeable": "_32_",
+					"status": "_33_",
+					"tabs": "_34_",
+					"showTitleBar": "_35_",
+					"_height": "_36_",
+					"height": "_37_",
+					"heightRecover": "_38_",
+					"style": "_39_",
+					"slots": "_40_",
+					"notes": "_41_",
+					"styleInited": "_42_",
+					"showType": "_43_",
+					"_curArtboardId": "_44_",
+					"frames": "_45_",
+					"varComAry": "_46_",
+					"comAry": "_47_",
+					"diagramAry": "_48_",
+					"curDiagramId": "_49_",
+					"paramsFn": "_50_",
+					"resultFn": "_51_",
+					"errorResultFn": "_52_",
+					"--ant-primary-color": "_53_",
+					"--ant-primary-color-hover": "_54_",
+					"--ant-primary-color-active": "_55_",
+					"--ant-primary-color-outline": "_56_",
+					"--ant-primary-1": "_57_",
+					"--ant-primary-2": "_58_",
+					"--ant-primary-3": "_59_",
+					"--ant-primary-4": "_60_",
+					"--ant-primary-5": "_61_",
+					"--ant-primary-6": "_62_",
+					"--ant-primary-7": "_63_",
+					"--ant-primary-color-deprecated-pure": "_64_",
+					"--ant-primary-color-deprecated-l-35": "_65_",
+					"--ant-primary-color-deprecated-l-20": "_66_",
+					"--ant-primary-color-deprecated-t-20": "_67_",
+					"--ant-primary-color-deprecated-t-50": "_68_",
+					"--ant-primary-color-deprecated-f-12": "_69_",
+					"--ant-primary-color-active-deprecated-f-30": "_70_",
+					"--ant-primary-color-active-deprecated-d-02": "_71_",
+					"--ant-success-color": "_72_",
+					"--ant-success-color-hover": "_73_",
+					"--ant-success-color-active": "_74_",
+					"--ant-success-color-outline": "_75_",
+					"--ant-success-color-deprecated-bg": "_76_",
+					"--ant-success-color-deprecated-border": "_77_",
+					"--ant-error-color": "_78_",
+					"--ant-error-color-hover": "_79_",
+					"--ant-error-color-active": "_80_",
+					"--ant-error-color-outline": "_81_",
+					"--ant-error-color-deprecated-bg": "_82_",
+					"--ant-error-color-deprecated-border": "_83_",
+					"--ant-warning-color": "_84_",
+					"--ant-warning-color-hover": "_85_",
+					"--ant-warning-color-active": "_86_",
+					"--ant-warning-color-outline": "_87_",
+					"--ant-warning-color-deprecated-bg": "_88_",
+					"--ant-warning-color-deprecated-border": "_89_",
+					"--ant-info-color": "_90_",
+					"--ant-info-color-deprecated-bg": "_91_",
+					"--ant-info-color-deprecated-border": "_92_",
+					"zoom": "_93_",
+					"layout": "_94_",
+					"justifyContent": "_95_",
+					"alignItems": "_96_",
+					"heightEditable": "_97_",
+					"width": "_98_",
+					"left": "_99_",
+					"layoutTemplate": "_100_",
+					"schema": "_101_",
+					"zIndex": "_102_",
+					"_type": "_103_",
+					"editable": "_104_",
+					"isFrame": "_105_",
+					"frameAry": "_106_",
+					"inputPins": "_107_",
+					"_inputPins": "_108_",
+					"outputPins": "_109_",
+					"_outputPins": "_110_",
+					"inputJoints": "_111_",
+					"outputJoints": "_112_",
+					"zIndexCur": "_113_",
+					"_defaultF": "_114_",
+					"columnGap": "_115_",
+					"rowGap": "_116_",
+					"flexWrap": "_117_",
+					"widthFact": "_118_",
+					"heightFact": "_119_",
+					"con": "_120_",
+					"com": "_121_",
+					"init": "_122_",
+					"runtime": "_123_",
+					"parent": "_124_",
+					"type": "_125_",
+					"deletable": "_126_",
+					"conAry": "_127_",
+					"direction": "_128_",
+					"hostId": "_129_",
+					"_schema": "_130_",
+					"foldedStyle": "_131_",
+					"configPins": "_132_",
+					"inputPinsInModel": "_133_",
+					"inputPinExts": "_134_",
+					"outputPinsInModel": "_135_",
+					"outputPinExts": "_136_",
+					"outputPinNexts": "_137_",
+					"diagramModel": "_138_",
+					"commentAry": "_139_",
+					"_title": "_140_",
+					"createTime": "_141_",
+					"isGlobal": "_142_",
+					"showIO": "_143_",
+					"updateTime": "_144_",
+					"undefined": "_145_",
+					"conTemp": "_146_",
+					"startFrom": "_147_",
+					"model": "_148_",
+					"refId": "_149_",
+					"def": "_150_",
+					"_autoRun": "_151_",
+					"topl": "_152_",
+					"geo": "_153_",
+					"properties": "_154_",
+					"visible": "_155_",
+					"data": "_156_",
+					"inputAry": "_157_",
+					"outputAry": "_158_",
+					"outputEvents": "_159_",
+					"namespace": "_160_",
+					"version": "_161_",
+					"_ing": "_162_",
+					"startPin": "_163_",
+					"finishPin": "_164_",
+					"startPo": "_165_",
+					"finishPo": "_166_",
+					"scrollTop": "_167_",
+					"scrollLeft": "_168_",
+					"rels": "_169_",
+					"_schemaFollow": "_170_",
+					"rtType": "_171_",
+					"typeTitle": "_172_",
+					"fromPlugin": "_173_",
+					"description": "_174_",
+					"wrap": "_175_",
+					"forRef": "_176_",
+					"icon": "_177_",
+					"extValues": "_178_",
+					"extBinding": "_179_",
+					"editor": "_180_",
+					"bindingsFrom": "_181_",
+					"bindingsTo": "_182_",
+					"permissions": "_183_",
+					"spm": "_184_",
+					"forkedFrom": "_185_",
+					"ioc": "_186_",
+					"_key": "_187_",
+					"io": "_188_",
+					"autoplay": "_189_",
+					"muted": "_190_",
+					"controls": "_191_",
+					"fit": "_192_",
+					"src": "_193_",
+					"display": "_194_",
+					"widthFull": "_195_",
+					"visibleOnce": "_196_",
+					"j": "_197_",
+					"x": "_198_",
+					"y": "_199_",
+					"fns": "_200_",
+					"configs": "_201_",
+					"inputs": "_202_",
+					"outputs": "_203_",
+					"code": "_204_",
+					"transformCode": "_205_",
+					"setPoster": "_206_",
+					"setPosterComplete": "_207_"
+				}
+			},
+			"refs": {
+				"0": {
+					"_F_": 0,
+					"_0_": "u_TGyZ7",
+					"_1_": {
+						"_R_": "1"
+					},
+					"_2_": 0.2,
+					"_3_": {
+						"_11_": {
+							"_23_": {},
+							"_24_": {},
+							"_0_": "u_h05rmzwbnn"
+						},
+						"_12_": {
+							"_25_": [],
+							"_26_": {
+								"_50_": "export default function ({ params, data, headers, url, method }) {\n  // 设置请求query、请求体、请求头\n  return { params, data, headers, url, method };\n }\n",
+								"_51_": "export default function ({ response, config }) {\n  // if (response.data.code !== 0) {\n  //   throw new Error(response.data.errMsg)\n  // }\n  return response.data\n}\n",
+								"_52_": "export default function handleError({ error, response, config }, { throwError }) {\n  // 错误抛出时预处理数据，请注意：必须调用 throwError 抛出错误;\n  // config：请求入参；error：错误对象；response：响应原始对象；response.status：获取 HTTP 状态码，response.data：获取接口返回值\n  throwError(response.data.message || error);\n}\n"
+							}
+						},
+						"_13_": {
+							"_27_": []
+						},
+						"_14_": {
+							"_28_": "eshop",
+							"_29_": {
+								"_53_": "#326bfb",
+								"_54_": "#5c8fff",
+								"_55_": "#204dd4",
+								"_56_": "rgba(50, 107, 251, 0.2)",
+								"_57_": "#f0f7ff",
+								"_58_": "#d6e7ff",
+								"_59_": "#adcdff",
+								"_60_": "#85afff",
+								"_61_": "#5c8fff",
+								"_62_": "#326bfb",
+								"_63_": "#204dd4",
+								"_64_": "",
+								"_65_": "#e1e9fe",
+								"_66_": "#96b3fd",
+								"_67_": "#46a6ff",
+								"_68_": "#8cc8ff",
+								"_69_": "rgba(50, 107, 251, 0.12)",
+								"_70_": "rgba(240, 247, 255, 0.3)",
+								"_71_": "#dcf4ff",
+								"_72_": "#30c453",
+								"_73_": "#54d16d",
+								"_74_": "#1e9e40",
+								"_75_": "rgba(48, 196, 83, 0.2)",
+								"_76_": "#f0fff1",
+								"_77_": "#a9ebb2",
+								"_78_": "#fa4e3e",
+								"_79_": "#ff7a69",
+								"_80_": "#d4332a",
+								"_81_": "rgba(250, 78, 62, 0.2)",
+								"_82_": "#fff4f0",
+								"_83_": "#ffc7ba",
+								"_84_": "#ffaa00",
+								"_85_": "#ffbf29",
+								"_86_": "#d98900",
+								"_87_": "rgba(255, 170, 0, 0.2)",
+								"_88_": "#fffbe6",
+								"_89_": "#ffe07a",
+								"_90_": "#326bfb",
+								"_91_": "#f0f7ff",
+								"_92_": "#adcdff"
+							}
+						},
+						"_15_": {},
+						"_16_": {}
+					},
+					"_4_": {},
+					"_5_": 70,
+					"_6_": {},
+					"_7_": [
+						{
+							"_30_": "--theme-id",
+							"_31_": "eshop"
+						},
+						{
+							"_30_": "--ant-primary-color",
+							"_31_": "#326bfb"
+						},
+						{
+							"_30_": "--ant-primary-color-hover",
+							"_31_": "#5c8fff"
+						},
+						{
+							"_30_": "--ant-primary-color-active",
+							"_31_": "#204dd4"
+						},
+						{
+							"_30_": "--ant-primary-color-outline",
+							"_31_": "rgba(50, 107, 251, 0.2)"
+						},
+						{
+							"_30_": "--ant-primary-1",
+							"_31_": "#f0f7ff"
+						},
+						{
+							"_30_": "--ant-primary-2",
+							"_31_": "#d6e7ff"
+						},
+						{
+							"_30_": "--ant-primary-3",
+							"_31_": "#adcdff"
+						},
+						{
+							"_30_": "--ant-primary-4",
+							"_31_": "#85afff"
+						},
+						{
+							"_30_": "--ant-primary-5",
+							"_31_": "#5c8fff"
+						},
+						{
+							"_30_": "--ant-primary-6",
+							"_31_": "#326bfb"
+						},
+						{
+							"_30_": "--ant-primary-7",
+							"_31_": "#204dd4"
+						},
+						{
+							"_30_": "--ant-primary-color-deprecated-pure",
+							"_31_": ""
+						},
+						{
+							"_30_": "--ant-primary-color-deprecated-l-35",
+							"_31_": "#e1e9fe"
+						},
+						{
+							"_30_": "--ant-primary-color-deprecated-l-20",
+							"_31_": "#96b3fd"
+						},
+						{
+							"_30_": "--ant-primary-color-deprecated-t-20",
+							"_31_": "#46a6ff"
+						},
+						{
+							"_30_": "--ant-primary-color-deprecated-t-50",
+							"_31_": "#8cc8ff"
+						},
+						{
+							"_30_": "--ant-primary-color-deprecated-f-12",
+							"_31_": "rgba(50, 107, 251, 0.12)"
+						},
+						{
+							"_30_": "--ant-primary-color-active-deprecated-f-30",
+							"_31_": "rgba(240, 247, 255, 0.3)"
+						},
+						{
+							"_30_": "--ant-primary-color-active-deprecated-d-02",
+							"_31_": "#dcf4ff"
+						},
+						{
+							"_30_": "--ant-success-color",
+							"_31_": "#30c453"
+						},
+						{
+							"_30_": "--ant-success-color-hover",
+							"_31_": "#54d16d"
+						},
+						{
+							"_30_": "--ant-success-color-active",
+							"_31_": "#1e9e40"
+						},
+						{
+							"_30_": "--ant-success-color-outline",
+							"_31_": "rgba(48, 196, 83, 0.2)"
+						},
+						{
+							"_30_": "--ant-success-color-deprecated-bg",
+							"_31_": "#f0fff1"
+						},
+						{
+							"_30_": "--ant-success-color-deprecated-border",
+							"_31_": "#a9ebb2"
+						},
+						{
+							"_30_": "--ant-error-color",
+							"_31_": "#fa4e3e"
+						},
+						{
+							"_30_": "--ant-error-color-hover",
+							"_31_": "#ff7a69"
+						},
+						{
+							"_30_": "--ant-error-color-active",
+							"_31_": "#d4332a"
+						},
+						{
+							"_30_": "--ant-error-color-outline",
+							"_31_": "rgba(250, 78, 62, 0.2)"
+						},
+						{
+							"_30_": "--ant-error-color-deprecated-bg",
+							"_31_": "#fff4f0"
+						},
+						{
+							"_30_": "--ant-error-color-deprecated-border",
+							"_31_": "#ffc7ba"
+						},
+						{
+							"_30_": "--ant-warning-color",
+							"_31_": "#ffaa00"
+						},
+						{
+							"_30_": "--ant-warning-color-hover",
+							"_31_": "#ffbf29"
+						},
+						{
+							"_30_": "--ant-warning-color-active",
+							"_31_": "#d98900"
+						},
+						{
+							"_30_": "--ant-warning-color-outline",
+							"_31_": "rgba(255, 170, 0, 0.2)"
+						},
+						{
+							"_30_": "--ant-warning-color-deprecated-bg",
+							"_31_": "#fffbe6"
+						},
+						{
+							"_30_": "--ant-warning-color-deprecated-border",
+							"_31_": "#ffe07a"
+						},
+						{
+							"_30_": "--ant-info-color",
+							"_31_": "#326bfb"
+						},
+						{
+							"_30_": "--ant-info-color-deprecated-bg",
+							"_31_": "#f0f7ff"
+						},
+						{
+							"_30_": "--ant-info-color-deprecated-border",
+							"_31_": "#adcdff"
+						}
+					],
+					"_8_": {
+						"_17_": {
+							"_R_": "2"
+						},
+						"_18_": {
+							"_R_": "3"
+						}
+					},
+					"_9_": 577,
+					"_10_": {
+						"_19_": "_main_",
+						"_20_": "主模块",
+						"_21_": {
+							"_R_": "4"
+						},
+						"_22_": {
+							"_R_": "5"
+						}
+					}
+				},
+				"1": {
+					"_F_": 1
+				},
+				"2": {
+					"_F_": 2,
+					"_0_": "u_Bct8w",
+					"_1_": {
+						"_R_": "6"
+					},
+					"_32_": false,
+					"_33_": "normal",
+					"_34_": [
+						"geoView"
+					],
+					"_35_": false,
+					"_36_": "auto",
+					"_37_": "auto"
+				},
+				"3": {
+					"_F_": 2,
+					"_0_": "u_8Q5l_",
+					"_1_": {
+						"_R_": "7"
+					},
+					"_32_": false,
+					"_33_": "normal",
+					"_34_": [
+						"toplView"
+					],
+					"_35_": true,
+					"_36_": 400,
+					"_38_": 400,
+					"_37_": 400
+				},
+				"4": {
+					"_F_": 3,
+					"_0_": "u_Rxg3h",
+					"_1_": {
+						"_R_": "8"
+					},
+					"_30_": "geo",
+					"_39_": {
+						"_R_": "9"
+					},
+					"_40_": [
+						{
+							"_R_": "11"
+						}
+					],
+					"_41_": [],
+					"_42_": true,
+					"_43_": "pc",
+					"_44_": "u_QDddr"
+				},
+				"5": {
+					"_F_": 4,
+					"_0_": "u_pc09I",
+					"_1_": {
+						"_R_": "10"
+					},
+					"_30_": "topl",
+					"_45_": [
+						{
+							"_R_": "12"
+						}
+					],
+					"_46_": [],
+					"_47_": [],
+					"_48_": [],
+					"_39_": {
+						"_99_": 150,
+						"_17_": 30
+					},
+					"_49_": "u_UUIbb"
+				},
+				"6": {
+					"_F_": 1
+				},
+				"7": {
+					"_F_": 1
+				},
+				"8": {
+					"_F_": 1
+				},
+				"9": {
+					"_F_": 5,
+					"_93_": 1,
+					"_94_": "flex-column",
+					"_95_": "flex-start",
+					"_96_": "flex-start",
+					"_97_": true,
+					"_37_": 736,
+					"_98_": 1024,
+					"_99_": 120,
+					"_17_": 76
+				},
+				"10": {
+					"_F_": 1
+				},
+				"11": {
+					"_F_": 6,
+					"_0_": "u_QDddr",
+					"_1_": {
+						"_R_": "13"
+					},
+					"_47_": [
+						{
+							"_R_": "16"
+						}
+					],
+					"_39_": {
+						"_R_": "14"
+					},
+					"_20_": "主场景",
+					"_100_": []
+				},
+				"12": {
+					"_F_": 7,
+					"_0_": "u_QDddr",
+					"_1_": {
+						"_R_": "15"
+					},
+					"_102_": 0,
+					"_103_": 0,
+					"_39_": {
+						"_99_": null,
+						"_17_": null
+					},
+					"_104_": true,
+					"_105_": true,
+					"_106_": [],
+					"_107_": [
+						{
+							"_R_": "17"
+						}
+					],
+					"_108_": [],
+					"_109_": [
+						{
+							"_R_": "18"
+						},
+						{
+							"_R_": "19"
+						},
+						{
+							"_R_": "20"
+						},
+						{
+							"_R_": "21"
+						}
+					],
+					"_110_": [],
+					"_111_": [],
+					"_112_": [],
+					"_47_": [
+						{
+							"_R_": "22"
+						},
+						{
+							"_R_": "23"
+						},
+						{
+							"_R_": "24"
+						}
+					],
+					"_48_": [
+						{
+							"_R_": "25"
+						}
+					],
+					"_113_": {
+						"_120_": 0,
+						"_121_": 100
+					},
+					"_20_": "主场景",
+					"_114_": true
+				},
+				"13": {
+					"_F_": 1
+				},
+				"14": {
+					"_F_": 5,
+					"_93_": 1,
+					"_94_": "flex-column",
+					"_95_": "flex-start",
+					"_96_": "flex-start",
+					"_37_": 736,
+					"_98_": 1024,
+					"_115_": 0,
+					"_116_": 0,
+					"_117_": "nowrap",
+					"_118_": 1024,
+					"_119_": 736
+				},
+				"15": {
+					"_F_": 1
+				},
+				"16": {
+					"_F_": 8,
+					"_1_": {
+						"_R_": "26"
+					},
+					"_122_": true,
+					"_30_": "u_bs9Ui",
+					"_123_": {
+						"_R_": "27"
+					},
+					"_124_": {
+						"_R_": "11"
+					}
+				},
+				"17": {
+					"_F_": 9,
+					"_0_": "u_dNCMF",
+					"_1_": {
+						"_R_": "28"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [
+						{
+							"_R_": "39"
+						}
+					],
+					"_128_": "inner-output",
+					"_129_": "open",
+					"_20_": "打开",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_104_": true,
+					"_124_": {
+						"_R_": "12"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"18": {
+					"_F_": 9,
+					"_0_": "click",
+					"_1_": {
+						"_R_": "29"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "event",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "inner-input",
+					"_129_": "click",
+					"_20_": "点击",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"19": {
+					"_F_": 9,
+					"_0_": "scroll",
+					"_1_": {
+						"_R_": "30"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "event",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "inner-input",
+					"_129_": "scroll",
+					"_20_": "滚动",
+					"_130_": {
+						"_125_": "object",
+						"_154_": {
+							"_167_": {
+								"_125_": "number"
+							},
+							"_168_": {
+								"_125_": "number"
+							}
+						}
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_101_": {
+						"_125_": "object",
+						"_154_": {
+							"_167_": {
+								"_125_": "number"
+							},
+							"_168_": {
+								"_125_": "number"
+							}
+						}
+					}
+				},
+				"20": {
+					"_F_": 9,
+					"_0_": "load",
+					"_1_": {
+						"_R_": "31"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "event",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "inner-input",
+					"_129_": "load",
+					"_20_": "加载完成",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"21": {
+					"_F_": 9,
+					"_0_": "unload",
+					"_1_": {
+						"_R_": "32"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "event",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "inner-input",
+					"_129_": "unload",
+					"_20_": "卸载",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"22": {
+					"_F_": 10,
+					"_1_": {
+						"_R_": "33"
+					},
+					"_103_": 1,
+					"_122_": false,
+					"_39_": {
+						"_98_": 0,
+						"_37_": 0,
+						"_99_": 160,
+						"_17_": 130
+					},
+					"_131_": {},
+					"_132_": [],
+					"_108_": [],
+					"_107_": [
+						{
+							"_R_": "40"
+						},
+						{
+							"_R_": "41"
+						},
+						{
+							"_R_": "42"
+						}
+					],
+					"_133_": [],
+					"_134_": [
+						{
+							"_R_": "43"
+						},
+						{
+							"_R_": "44"
+						},
+						{
+							"_R_": "45"
+						}
+					],
+					"_110_": [],
+					"_109_": [
+						{
+							"_R_": "46"
+						},
+						{
+							"_R_": "47"
+						},
+						{
+							"_R_": "48"
+						}
+					],
+					"_135_": [],
+					"_136_": [],
+					"_137_": [],
+					"_30_": "u_bs9Ui",
+					"_123_": {
+						"_R_": "27"
+					},
+					"_124_": {
+						"_R_": "12"
+					}
+				},
+				"23": {
+					"_F_": 10,
+					"_1_": {
+						"_R_": "34"
+					},
+					"_103_": 1,
+					"_122_": false,
+					"_39_": {
+						"_98_": 113.66015625,
+						"_37_": 25,
+						"_99_": 388,
+						"_17_": 222
+					},
+					"_131_": {},
+					"_132_": [],
+					"_108_": [],
+					"_107_": [
+						{
+							"_R_": "49"
+						}
+					],
+					"_133_": [],
+					"_134_": [],
+					"_110_": [],
+					"_109_": [
+						{
+							"_R_": "50"
+						}
+					],
+					"_135_": [],
+					"_136_": [],
+					"_137_": [],
+					"_30_": "u_L9wY8",
+					"_123_": {
+						"_R_": "35"
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_138_": {
+						"_R_": "25"
+					}
+				},
+				"24": {
+					"_F_": 10,
+					"_1_": {
+						"_R_": "36"
+					},
+					"_103_": 1,
+					"_122_": false,
+					"_39_": {
+						"_98_": 115.330078125,
+						"_37_": 25,
+						"_99_": 172,
+						"_17_": 120
+					},
+					"_131_": {},
+					"_132_": [],
+					"_108_": [],
+					"_107_": [
+						{
+							"_R_": "51"
+						}
+					],
+					"_133_": [],
+					"_134_": [],
+					"_110_": [],
+					"_109_": [
+						{
+							"_R_": "52"
+						}
+					],
+					"_135_": [],
+					"_136_": [],
+					"_137_": [],
+					"_30_": "u_vDsei",
+					"_123_": {
+						"_R_": "37"
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_138_": {
+						"_R_": "25"
+					}
+				},
+				"25": {
+					"_F_": 11,
+					"_0_": "u_UUIbb",
+					"_1_": {
+						"_R_": "38"
+					},
+					"_47_": [
+						{
+							"_R_": "53"
+						},
+						{
+							"_R_": "23"
+						},
+						{
+							"_R_": "24"
+						}
+					],
+					"_109_": [],
+					"_112_": [],
+					"_127_": [
+						{
+							"_R_": "39"
+						},
+						{
+							"_R_": "54"
+						},
+						{
+							"_R_": "55"
+						}
+					],
+					"_139_": [],
+					"_39_": {
+						"_155_": true,
+						"_99_": null,
+						"_17_": null,
+						"_37_": 400,
+						"_98_": 712.3544921875
+					},
+					"_124_": {
+						"_R_": "12"
+					},
+					"_140_": "主场景",
+					"_141_": 1709864231552,
+					"_142_": true,
+					"_143_": true,
+					"_144_": 1710924545741,
+					"_145_": {
+						"_146_": true
+					},
+					"_20_": "主场景"
+				},
+				"26": {
+					"_F_": 1
+				},
+				"27": {
+					"_F_": 12,
+					"_0_": "u_hn_7G",
+					"_148_": {
+						"_156_": {
+							"_189_": true,
+							"_190_": true,
+							"_191_": true,
+							"_192_": "contain",
+							"_193_": "https://wave.video/embed/5fd2117f46e0fb000d7c0826/5fd2128246e0fb000cab2d77.mp4"
+						},
+						"_157_": [],
+						"_158_": [],
+						"_159_": {},
+						"_39_": {
+							"_R_": "56"
+						}
+					},
+					"_20_": "播放器",
+					"_149_": "video_bR_",
+					"_150_": {
+						"_160_": "mybricks.normal-h5.video",
+						"_161_": "1.0.11"
+					},
+					"_151_": true,
+					"_152_": {
+						"_R_": "22"
+					},
+					"_153_": {
+						"_R_": "16"
+					}
+				},
+				"28": {
+					"_F_": 1
+				},
+				"29": {
+					"_F_": 1
+				},
+				"30": {
+					"_F_": 1
+				},
+				"31": {
+					"_F_": 1
+				},
+				"32": {
+					"_F_": 1
+				},
+				"33": {
+					"_F_": 1
+				},
+				"34": {
+					"_F_": 1
+				},
+				"35": {
+					"_F_": 12,
+					"_0_": "u_rQe13",
+					"_148_": {
+						"_156_": {
+							"_0_": "poster"
+						},
+						"_157_": [],
+						"_158_": [],
+						"_159_": {},
+						"_39_": {
+							"_R_": "69"
+						}
+					},
+					"_20_": "检查点(测试用)",
+					"_149_": "checkpoint_AeH",
+					"_150_": {
+						"_160_": "mybricks.test.checkpoint",
+						"_161_": "1.0.1",
+						"_171_": "js"
+					},
+					"_152_": {
+						"_R_": "23"
+					}
+				},
+				"36": {
+					"_F_": 1
+				},
+				"37": {
+					"_F_": 12,
+					"_0_": "u_WdLuv",
+					"_148_": {
+						"_156_": {
+							"_200_": {
+								"_204_": "(%7B%20outputs%2C%20inputs%20%7D)%20%3D%3E%20%7B%0A%20%20const%20%5B%20inputValue0%20%5D%20%3D%20inputs%3B%0A%20%20const%20%5B%20output0%20%5D%20%3D%20outputs%3B%0A%20%20output0('https%3A%2F%2Fpngimg.com%2Fuploads%2Fmario%2Fmario_PNG125.png')%3B%0A%7D",
+								"_205_": "(function()%20%7B%20var%20_RTFN_%3B%20%0A%22use%20strict%22%3B%0A%0Afunction%20_slicedToArray(arr%2C%20i)%20%7B%20return%20_arrayWithHoles(arr)%20%7C%7C%20_iterableToArrayLimit(arr%2C%20i)%20%7C%7C%20_unsupportedIterableToArray(arr%2C%20i)%20%7C%7C%20_nonIterableRest()%3B%20%7D%0A%0Afunction%20_nonIterableRest()%20%7B%20throw%20new%20TypeError(%22Invalid%20attempt%20to%20destructure%20non-iterable%20instance.%5CnIn%20order%20to%20be%20iterable%2C%20non-array%20objects%20must%20have%20a%20%5BSymbol.iterator%5D()%20method.%22)%3B%20%7D%0A%0Afunction%20_unsupportedIterableToArray(o%2C%20minLen)%20%7B%20if%20(!o)%20return%3B%20if%20(typeof%20o%20%3D%3D%3D%20%22string%22)%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20var%20n%20%3D%20Object.prototype.toString.call(o).slice(8%2C%20-1)%3B%20if%20(n%20%3D%3D%3D%20%22Object%22%20%26%26%20o.constructor)%20n%20%3D%20o.constructor.name%3B%20if%20(n%20%3D%3D%3D%20%22Map%22%20%7C%7C%20n%20%3D%3D%3D%20%22Set%22)%20return%20Array.from(o)%3B%20if%20(n%20%3D%3D%3D%20%22Arguments%22%20%7C%7C%20%2F%5E(%3F%3AUi%7CI)nt(%3F%3A8%7C16%7C32)(%3F%3AClamped)%3FArray%24%2F.test(n))%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20%7D%0A%0Afunction%20_arrayLikeToArray(arr%2C%20len)%20%7B%20if%20(len%20%3D%3D%20null%20%7C%7C%20len%20%3E%20arr.length)%20len%20%3D%20arr.length%3B%20for%20(var%20i%20%3D%200%2C%20arr2%20%3D%20new%20Array(len)%3B%20i%20%3C%20len%3B%20i%2B%2B)%20%7B%20arr2%5Bi%5D%20%3D%20arr%5Bi%5D%3B%20%7D%20return%20arr2%3B%20%7D%0A%0Afunction%20_iterableToArrayLimit(arr%2C%20i)%20%7B%20var%20_i%20%3D%20arr%20%3D%3D%20null%20%3F%20null%20%3A%20typeof%20Symbol%20!%3D%3D%20%22undefined%22%20%26%26%20arr%5BSymbol.iterator%5D%20%7C%7C%20arr%5B%22%40%40iterator%22%5D%3B%20if%20(_i%20%3D%3D%20null)%20return%3B%20var%20_arr%20%3D%20%5B%5D%3B%20var%20_n%20%3D%20true%3B%20var%20_d%20%3D%20false%3B%20var%20_s%2C%20_e%3B%20try%20%7B%20for%20(_i%20%3D%20_i.call(arr)%3B%20!(_n%20%3D%20(_s%20%3D%20_i.next()).done)%3B%20_n%20%3D%20true)%20%7B%20_arr.push(_s.value)%3B%20if%20(i%20%26%26%20_arr.length%20%3D%3D%3D%20i)%20break%3B%20%7D%20%7D%20catch%20(err)%20%7B%20_d%20%3D%20true%3B%20_e%20%3D%20err%3B%20%7D%20finally%20%7B%20try%20%7B%20if%20(!_n%20%26%26%20_i%5B%22return%22%5D%20!%3D%20null)%20_i%5B%22return%22%5D()%3B%20%7D%20finally%20%7B%20if%20(_d)%20throw%20_e%3B%20%7D%20%7D%20return%20_arr%3B%20%7D%0A%0Afunction%20_arrayWithHoles(arr)%20%7B%20if%20(Array.isArray(arr))%20return%20arr%3B%20%7D%0A%0A_RTFN_%20%3D%20function%20_RTFN_(_ref)%20%7B%0A%20%20var%20outputs%20%3D%20_ref.outputs%2C%0A%20%20%20%20%20%20inputs%20%3D%20_ref.inputs%3B%0A%0A%20%20var%20_inputs%20%3D%20_slicedToArray(inputs%2C%201)%2C%0A%20%20%20%20%20%20inputValue0%20%3D%20_inputs%5B0%5D%3B%0A%0A%20%20var%20_outputs%20%3D%20_slicedToArray(outputs%2C%201)%2C%0A%20%20%20%20%20%20output0%20%3D%20_outputs%5B0%5D%3B%0A%0A%20%20output0('https%3A%2F%2Fpngimg.com%2Fuploads%2Fmario%2Fmario_PNG125.png')%3B%0A%7D%3B%0A%3B%20return%20_RTFN_%3B%20%7D)()"
+							}
+						},
+						"_157_": [],
+						"_158_": [],
+						"_159_": {},
+						"_39_": {
+							"_R_": "72"
+						}
+					},
+					"_20_": "JS计算(测试用)",
+					"_149_": "_muilt-inputJs_Pvr",
+					"_150_": {
+						"_160_": "mybricks.test._muilt-inputJs",
+						"_161_": "1.0.0",
+						"_171_": "js-autorun"
+					},
+					"_152_": {
+						"_R_": "24"
+					}
+				},
+				"38": {
+					"_F_": 1
+				},
+				"39": {
+					"_F_": 13,
+					"_0_": "u_HtYmG",
+					"_1_": {
+						"_R_": "57"
+					},
+					"_102_": 0,
+					"_103_": 4,
+					"_162_": false,
+					"_139_": [],
+					"_163_": {
+						"_R_": "17"
+					},
+					"_164_": {
+						"_R_": "51"
+					},
+					"_20_": "从 打开 到 参数0 的连接",
+					"_124_": {
+						"_R_": "25"
+					},
+					"_165_": {
+						"_197_": 35.6,
+						"_198_": 60,
+						"_199_": 50.5
+					},
+					"_166_": {
+						"_197_": 41,
+						"_198_": 162,
+						"_199_": 130.5
+					}
+				},
+				"40": {
+					"_F_": 9,
+					"_0_": "u_Vn74_",
+					"_1_": {
+						"_R_": "58"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "input",
+					"_129_": "link",
+					"_20_": "视频链接",
+					"_130_": {
+						"_125_": "string"
+					},
+					"_169_": [
+						"setLinkComplete"
+					],
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "string"
+					}
+				},
+				"41": {
+					"_F_": 9,
+					"_0_": "u_x8yDN",
+					"_1_": {
+						"_R_": "59"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "input",
+					"_129_": "screenshot",
+					"_20_": "截屏",
+					"_130_": {
+						"_125_": "string",
+						"_20_": "截图文件名"
+					},
+					"_169_": [
+						"screenshotComplete"
+					],
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "string",
+						"_20_": "截图文件名"
+					}
+				},
+				"42": {
+					"_F_": 9,
+					"_0_": "u_3gA3F",
+					"_1_": {
+						"_R_": "60"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [
+						{
+							"_R_": "54"
+						}
+					],
+					"_128_": "input",
+					"_129_": "setPoster",
+					"_20_": "设置封面",
+					"_130_": {
+						"_125_": "string",
+						"_20_": "封面"
+					},
+					"_169_": [
+						"setPosterComplete"
+					],
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "string",
+						"_20_": "封面"
+					}
+				},
+				"43": {
+					"_F_": 9,
+					"_0_": "u_BHdpK",
+					"_1_": {
+						"_R_": "61"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "ext",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "input",
+					"_129_": "show",
+					"_20_": "显示",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"44": {
+					"_F_": 9,
+					"_0_": "u_pXY5n",
+					"_1_": {
+						"_R_": "62"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "ext",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "input",
+					"_129_": "hide",
+					"_20_": "隐藏",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"45": {
+					"_F_": 9,
+					"_0_": "u_N1fkj",
+					"_1_": {
+						"_R_": "63"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "ext",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "input",
+					"_129_": "showOrHide",
+					"_20_": "显示/隐藏",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"46": {
+					"_F_": 9,
+					"_0_": "u_YvKuP",
+					"_1_": {
+						"_R_": "64"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "output",
+					"_129_": "setLinkComplete",
+					"_20_": "完成",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"47": {
+					"_F_": 9,
+					"_0_": "u_Lkpqn",
+					"_1_": {
+						"_R_": "65"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "output",
+					"_129_": "screenshotComplete",
+					"_20_": "完成",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"48": {
+					"_F_": 9,
+					"_0_": "u_d8j1r",
+					"_1_": {
+						"_R_": "66"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "output",
+					"_129_": "setPosterComplete",
+					"_20_": "完成",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_124_": {
+						"_R_": "22"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"49": {
+					"_F_": 9,
+					"_0_": "u_dPJLr",
+					"_1_": {
+						"_R_": "67"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [
+						{
+							"_R_": "55"
+						}
+					],
+					"_128_": "input",
+					"_129_": "check",
+					"_20_": "检查",
+					"_130_": {
+						"_125_": "string"
+					},
+					"_170_": true,
+					"_124_": {
+						"_R_": "23"
+					},
+					"_101_": {
+						"_125_": "string"
+					}
+				},
+				"50": {
+					"_F_": 9,
+					"_0_": "u_yC0Lx",
+					"_1_": {
+						"_R_": "68"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [],
+					"_128_": "output",
+					"_129_": "export",
+					"_20_": "出口",
+					"_130_": {
+						"_125_": "follow"
+					},
+					"_170_": true,
+					"_124_": {
+						"_R_": "23"
+					},
+					"_101_": {
+						"_125_": "follow"
+					}
+				},
+				"51": {
+					"_F_": 9,
+					"_0_": "u_FI4_0",
+					"_1_": {
+						"_R_": "70"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "param",
+					"_126_": false,
+					"_127_": [
+						{
+							"_R_": "39"
+						}
+					],
+					"_128_": "input",
+					"_129_": "input.inputValue0",
+					"_20_": "参数0",
+					"_130_": {
+						"_125_": "any"
+					},
+					"_170_": true,
+					"_124_": {
+						"_R_": "24"
+					},
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"52": {
+					"_F_": 9,
+					"_0_": "u_RYIqw",
+					"_1_": {
+						"_R_": "71"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_125_": "normal",
+					"_126_": false,
+					"_127_": [
+						{
+							"_R_": "54"
+						},
+						{
+							"_R_": "55"
+						}
+					],
+					"_128_": "output",
+					"_129_": "output0",
+					"_20_": "输出项0",
+					"_130_": {
+						"_125_": "string"
+					},
+					"_104_": true,
+					"_124_": {
+						"_R_": "24"
+					},
+					"_101_": {
+						"_125_": "string"
+					}
+				},
+				"53": {
+					"_F_": 14,
+					"_1_": {
+						"_R_": "73"
+					},
+					"_103_": 1,
+					"_122_": false,
+					"_39_": {
+						"_98_": 77,
+						"_37_": 25,
+						"_99_": 460,
+						"_17_": 110
+					},
+					"_131_": {},
+					"_132_": [],
+					"_108_": [],
+					"_107_": [
+						{
+							"_R_": "75"
+						}
+					],
+					"_133_": [],
+					"_134_": [],
+					"_110_": [],
+					"_109_": [
+						{
+							"_R_": "77"
+						}
+					],
+					"_135_": [],
+					"_136_": [],
+					"_137_": [],
+					"_124_": {
+						"_R_": "25"
+					},
+					"_185_": {
+						"_R_": "22"
+					},
+					"_186_": {
+						"_201_": {},
+						"_202_": {
+							"_206_": true
+						},
+						"_203_": {
+							"_207_": true
+						}
+					},
+					"_138_": {
+						"_R_": "25"
+					},
+					"_187_": "u_kzblp"
+				},
+				"54": {
+					"_F_": 13,
+					"_0_": "u__9jLr",
+					"_1_": {
+						"_R_": "74"
+					},
+					"_102_": 0,
+					"_103_": 4,
+					"_162_": false,
+					"_139_": [],
+					"_163_": {
+						"_R_": "52"
+					},
+					"_164_": {
+						"_R_": "75"
+					},
+					"_20_": "从 输出项0 到 设置封面 的连接",
+					"_124_": {
+						"_R_": "25"
+					},
+					"_165_": {
+						"_197_": 51.800000000000004,
+						"_198_": 299,
+						"_199_": 130.5
+					},
+					"_166_": {
+						"_197_": 57.2,
+						"_198_": 450,
+						"_199_": 120.5
+					}
+				},
+				"55": {
+					"_F_": 13,
+					"_0_": "u_LvsLS",
+					"_1_": {
+						"_R_": "76"
+					},
+					"_102_": 0,
+					"_103_": 4,
+					"_162_": false,
+					"_139_": [],
+					"_163_": {
+						"_R_": "52"
+					},
+					"_164_": {
+						"_R_": "49"
+					},
+					"_20_": "从 输出项0 到 检查 的连接",
+					"_124_": {
+						"_R_": "25"
+					},
+					"_165_": {
+						"_197_": 51.800000000000004,
+						"_198_": 299,
+						"_199_": 130.5
+					},
+					"_166_": {
+						"_197_": 35.6,
+						"_198_": 378,
+						"_199_": 232.5
+					}
+				},
+				"56": {
+					"_F_": 15,
+					"_194_": "block",
+					"_195_": true,
+					"_98_": "100%",
+					"_37_": 300,
+					"_118_": 1024,
+					"_119_": 300
+				},
+				"57": {
+					"_F_": 1
+				},
+				"58": {
+					"_F_": 1
+				},
+				"59": {
+					"_F_": 1
+				},
+				"60": {
+					"_F_": 1
+				},
+				"61": {
+					"_F_": 1
+				},
+				"62": {
+					"_F_": 1
+				},
+				"63": {
+					"_F_": 1
+				},
+				"64": {
+					"_F_": 1
+				},
+				"65": {
+					"_F_": 1
+				},
+				"66": {
+					"_F_": 1
+				},
+				"67": {
+					"_F_": 1
+				},
+				"68": {
+					"_F_": 1
+				},
+				"69": {
+					"_F_": 15,
+					"_194_": "block"
+				},
+				"70": {
+					"_F_": 1
+				},
+				"71": {
+					"_F_": 1
+				},
+				"72": {
+					"_F_": 15,
+					"_194_": "block"
+				},
+				"73": {
+					"_F_": 1
+				},
+				"74": {
+					"_F_": 1
+				},
+				"75": {
+					"_F_": 16,
+					"_0_": "u_3gA3F",
+					"_1_": {
+						"_R_": "78"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_126_": false,
+					"_127_": [
+						{
+							"_R_": "54"
+						}
+					],
+					"_124_": {
+						"_R_": "53"
+					},
+					"_185_": {
+						"_R_": "42"
+					},
+					"_20_": "设置封面",
+					"_101_": {
+						"_125_": "string",
+						"_20_": "封面"
+					}
+				},
+				"76": {
+					"_F_": 1
+				},
+				"77": {
+					"_F_": 16,
+					"_0_": "u_d8j1r",
+					"_1_": {
+						"_R_": "79"
+					},
+					"_102_": 0,
+					"_103_": 2,
+					"_126_": false,
+					"_127_": [],
+					"_124_": {
+						"_R_": "53"
+					},
+					"_185_": {
+						"_R_": "48"
+					},
+					"_20_": "完成",
+					"_101_": {
+						"_125_": "any"
+					}
+				},
+				"78": {
+					"_F_": 1
+				},
+				"79": {
+					"_F_": 1
+				}
+			},
+			"def": {
+				"_R_": "0"
+			}
+		}
+	}
+}

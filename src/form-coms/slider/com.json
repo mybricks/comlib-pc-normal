@@ -1,6 +1,6 @@
 {
   "title": "滑动输入条",
-  "namespace": "mybricks.normal-pc.slider",
+  "namespace": "mybricks.normal-h5.slider",
   "version": "1.1.12",
   "description": "滑动输入条",
   "author": "ZhuLin",
@@ -76,7 +76,9 @@
           }
         }
       },
-      "rels": ["setSliderRangeDone"]
+      "rels": [
+        "setSliderRangeDone"
+      ]
     },
     {
       "id": "resetValue",
@@ -298,7 +300,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

@@ -1,12 +1,11 @@
 {
   "title": "下拉框+list",
-  "namespace": "mybricks.normal-pc.demo0",
+  "namespace": "mybricks.normal-h5.demo0",
   "version": "1.0.0",
   "description": "下拉框+list",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "runtime": "./runtime.tsx",
-  "inputs": [
-  ],
+  "inputs": [],
   "outputs": []
 }

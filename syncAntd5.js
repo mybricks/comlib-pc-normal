@@ -118,8 +118,8 @@ const TraversalComAry = (comAry, antd5ComAry) => {
 TraversalComAry(comAry, antd5ComAry);
 
 // createFileWithDirs(path.resolve(__dirname, "pub.antd5.mybricks.json"), JSON.stringify({
-//   "name": "通用PC组件库(antd5)",
-//   "namespace": "mybricks.normal-pc.antd5",
+//   "name": "通用H5组件库(antd5)",
+//   "namespace": "mybricks.normal-h5.antd5",
 //   "commitInfo": "update",
 //   comAry: antd5ComAry,
 //   "externals": [

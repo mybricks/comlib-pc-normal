@@ -1,125 +1,125 @@
 export const originformItemList = [
     // {
     //     "title": "表单容器",
-    //     "namespace": "mybricks.normal-pc.form-container"
+    //     "namespace": "mybricks.normal-h5.form-container"
     // },
     {
         "title": "文本框",
-        "namespace": "mybricks.normal-pc.form-text"
+        "namespace": "mybricks.normal-h5.form-text"
     },
     {
         "title": "下拉框",
-        "namespace": "mybricks.normal-pc.select"
+        "namespace": "mybricks.normal-h5.select"
     },
     {
         "title": "文本域",
-        "namespace": "mybricks.normal-pc.input-textarea"
+        "namespace": "mybricks.normal-h5.input-textarea"
     },
     {
         "title": "数字输入框",
-        "namespace": "mybricks.normal-pc.input-number"
+        "namespace": "mybricks.normal-h5.input-number"
     },
 
     {
         "title": "单选框",
-        "namespace": "mybricks.normal-pc.radio"
+        "namespace": "mybricks.normal-h5.radio"
     },
     {
         "title": "多选框",
-        "namespace": "mybricks.normal-pc.checkbox"
+        "namespace": "mybricks.normal-h5.checkbox"
     },
 
     {
         "title": "自动完成",
-        "namespace": "mybricks.normal-pc.auto-complete"
+        "namespace": "mybricks.normal-h5.auto-complete"
     },
     {
         "title": "搜索框",
-        "namespace": "mybricks.normal-pc.search"
+        "namespace": "mybricks.normal-h5.search"
     },
 
     {
         "title": "级联选择",
-        "namespace": "mybricks.normal-pc.cascader"
+        "namespace": "mybricks.normal-h5.cascader"
     },
     {
         "title": "树形选择",
-        "namespace": "mybricks.normal-pc.treeSelect"
+        "namespace": "mybricks.normal-h5.treeSelect"
     },
     {
         "title": "日期选择框",
-        "namespace": "mybricks.normal-pc.date-picker"
+        "namespace": "mybricks.normal-h5.date-picker"
     },
     {
         "title": "全开式日期选择器",
-        "namespace": "mybricks.normal-pc.date-picker-full-open"
+        "namespace": "mybricks.normal-h5.date-picker-full-open"
     },
     {
         "title": "日期范围选择框",
-        "namespace": "mybricks.normal-pc.range-picker"
+        "namespace": "mybricks.normal-h5.range-picker"
     },
     {
         "title": "时间选择框",
-        "namespace": "mybricks.normal-pc.time-picker"
+        "namespace": "mybricks.normal-h5.time-picker"
     },
     {
         "title": "时间范围选择框",
-        "namespace": "mybricks.normal-pc.time-range-picker"
+        "namespace": "mybricks.normal-h5.time-range-picker"
     },
     {
         "title": "开关",
-        "namespace": "mybricks.normal-pc.switch"
+        "namespace": "mybricks.normal-h5.switch"
     },
     {
         "title": "穿梭框",
-        "namespace": "mybricks.normal-pc.transfer"
+        "namespace": "mybricks.normal-h5.transfer"
     },
     {
         "title": "上传",
-        "namespace": "mybricks.normal-pc.upload"
+        "namespace": "mybricks.normal-h5.upload"
     },
     {
         "title": "滑动输入条",
-        "namespace": "mybricks.normal-pc.slider"
+        "namespace": "mybricks.normal-h5.slider"
     },
     {
         "title": "评分",
-        "namespace": "mybricks.normal-pc.rate"
+        "namespace": "mybricks.normal-h5.rate"
     },
     {
         "title": "邮箱",
-        "namespace": "mybricks.normal-pc.form-email"
+        "namespace": "mybricks.normal-h5.form-email"
     },
     {
         "title": "密码框",
-        "namespace": "mybricks.normal-pc.password"
+        "namespace": "mybricks.normal-h5.password"
     },
     {
         "title": "手机号输入框",
-        "namespace": "mybricks.normal-pc.form-phone-number"
+        "namespace": "mybricks.normal-h5.form-phone-number"
     },
     {
         "title": "颜色选择框",
-        "namespace": "mybricks.normal-pc.color"
+        "namespace": "mybricks.normal-h5.color"
     },
     {
         "title": "代码编辑器",
-        "namespace": "mybricks.normal-pc.code-editor"
+        "namespace": "mybricks.normal-h5.code-editor"
     },
     {
         "title": "富文本输入框",
-        "namespace": "mybricks.normal-pc.input-richtext"
+        "namespace": "mybricks.normal-h5.input-richtext"
     },
     {
         "title": "自定义内容项",
-        "namespace": "mybricks.normal-pc.form-addition-container"
+        "namespace": "mybricks.normal-h5.form-addition-container"
     },
     {
         "title": "动态表单项",
-        "namespace": "mybricks.normal-pc.form-list"
+        "namespace": "mybricks.normal-h5.form-list"
     },
     {
         "title": "自定义表单项",
-        "namespace": "mybricks.normal-pc.form-item-container"
+        "namespace": "mybricks.normal-h5.form-item-container"
     },
 ]

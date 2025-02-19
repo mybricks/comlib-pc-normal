@@ -1,6 +1,6 @@
 {
   "title": "postMessage获取",
-  "namespace": "mybricks.normal-pc.receive-message",
+  "namespace": "mybricks.normal-h5.receive-message",
   "version": "1.0.1",
   "rtType": "js-autorun",
   "description": "父子(iframe)页面数据获取",

@@ -156,7 +156,7 @@ export default {
   '@parentUpdated'(curEditor, { schema }) {
     const { id, data, parent, slot } = curEditor;
 
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
+    if (schema === 'mybricks.normal-h5.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true;
       data.actions.visible = false;
@@ -166,7 +166,7 @@ export default {
     // console.log(curEditor, data.domainModel.entity.fieldAry)
     // if (schema === 'mybricks.domain-pc.crud/query') {
     //   if (data.items.length === 0) {
-    //     slot.get('content').addCom('mybricks.normal-pc.form-text', false, { deletable: true, movable: true });
+    //     slot.get('content').addCom('mybricks.normal-h5.form-text', false, { deletable: true, movable: true });
     //   }
     // }
 
@@ -448,7 +448,7 @@ export default {
           title: '添加表单项',
           type: 'comSelector',
           options: {
-            schema: 'mybricks.normal-pc.form-container/*',
+            schema: 'mybricks.normal-h5.form-container/*',
             type: 'add'
           },
           value: {
@@ -790,9 +790,9 @@ export default {
       }
     ]
   },
-  // formItemEditor为:child(mybricks.normal-pc.form-container/form-item) 部分
+  // formItemEditor为:child(mybricks.normal-h5.form-container/form-item) 部分
   ...formItemEditor,
-  // additionFormItemEditor为:child(mybricks.normal-pc.form-container/form-addition-container) 部分
+  // additionFormItemEditor为:child(mybricks.normal-h5.form-container/form-addition-container) 部分
   ...additionFormItemEditor,
   '[data-form-actions]': {
     title: '操作区',

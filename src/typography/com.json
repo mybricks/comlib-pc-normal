@@ -1,6 +1,6 @@
 {
   "title": "文本排版",
-  "namespace": "mybricks.normal-pc.typography",
+  "namespace": "mybricks.normal-h5.typography",
   "version": "1.0.23",
   "description": "展示文本基本格式",
   "author": "MyBricks",

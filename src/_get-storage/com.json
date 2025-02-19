@@ -1,6 +1,6 @@
 {
   "title": "获取Storage数据",
-  "namespace": "mybricks.normal-pc.get-storage",
+  "namespace": "mybricks.normal-h5.get-storage",
   "version": "1.0.4",
   "rtType": "js-autorun",
   "description": "获取Storage数据",

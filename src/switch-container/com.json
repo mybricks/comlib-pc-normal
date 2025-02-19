@@ -1,6 +1,6 @@
 {
   "title": "状态容器",
-  "namespace": "mybricks.normal-pc.switch-container",
+  "namespace": "mybricks.normal-h5.switch-container",
   "version": "1.0.8",
   "description": "根据状态值渲染不同内容的容器，方便实现多状态切换",
   "author": "zhulin",

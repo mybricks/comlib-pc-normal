@@ -1,6 +1,6 @@
 {
   "title": "消息提示",
-  "namespace": "mybricks.normal-pc.message",
+  "namespace": "mybricks.normal-h5.message",
   "version": "1.0.5",
   "rtType": "js",
   "description": "消息提示",

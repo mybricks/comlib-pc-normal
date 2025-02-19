@@ -1,6 +1,6 @@
 {
   "title": "WebSocket",
-  "namespace": "mybricks.normal-pc.websocket",
+  "namespace": "mybricks.normal-h5.websocket",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.0",

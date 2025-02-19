@@ -1,6 +1,6 @@
 {
   "title": "日历",
-  "namespace": "mybricks.normal-pc.calendar",
+  "namespace": "mybricks.normal-h5.calendar",
   "version": "1.0.7",
   "description": "日历",
   "author": "MyBricks",

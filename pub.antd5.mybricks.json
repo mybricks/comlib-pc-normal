@@ -1,9 +1,9 @@
 {
   "previous": {
-    "name": "通用PC组件库(antd5)",
-    "namespace": "mybricks.normal-pc.antd5"
+    "name": "通用H5组件库(antd5)",
+    "namespace": "mybricks.normal-h5.antd5"
   },
-  "name": "通用PC组件库",
+  "name": "通用H5组件库",
   "namespace": "@mybricks/comlib-pc-normal",
   "commitInfo": "update",
   "version": "1.0.0",

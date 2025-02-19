@@ -1,6 +1,6 @@
 {
   "title": "穿梭框",
-  "namespace": "mybricks.normal-pc.transfer",
+  "namespace": "mybricks.normal-h5.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
   "version": "1.1.16",
@@ -45,7 +45,9 @@
         }
       },
       "desc": "给穿梭框设置数据源",
-      "rels": ["setSourceDone"]
+      "rels": [
+        "setSourceDone"
+      ]
     },
     {
       "id": "setValue",
@@ -57,7 +59,9 @@
         }
       },
       "desc": "给穿梭框设置目标值",
-      "rels": ["setValueDone"]
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -69,7 +73,9 @@
           "type": "string"
         }
       },
-      "rels": ["setInitialValueDone"]
+      "rels": [
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "getValue",
@@ -77,7 +83,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValue"],
+      "rels": [
+        "returnValue"
+      ],
       "desc": "获取穿梭框目标值"
     },
     {
@@ -87,7 +95,9 @@
         "type": "any"
       },
       "desc": "重置穿梭框目标值",
-      "rels": ["resetValueDone"]
+      "rels": [
+        "resetValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -96,7 +106,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValidate"]
+      "rels": [
+        "returnValidate"
+      ]
     },
     {
       "id": "setDisabled",
@@ -105,7 +117,9 @@
         "type": "any"
       },
       "desc": "禁用穿梭框组件,并触发启用完成事件输出",
-      "rels": ["setDisabledDone"]
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
@@ -114,7 +128,9 @@
         "type": "any"
       },
       "desc": "启用穿梭框组件,并触发启用完成事件输出",
-      "rels": ["setEnabledDone"]
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
@@ -123,7 +139,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["isEnableDone"]
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -152,7 +170,9 @@
           }
         }
       },
-      "rels": ["setValidateInfoDone"]
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -389,5 +409,8 @@
     }
   ],
   "slots": [],
-  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
+  "schema": [
+    "mybricks.normal-h5.form-container/form-item",
+    "*"
+  ]
 }

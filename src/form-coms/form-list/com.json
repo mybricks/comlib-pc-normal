@@ -1,6 +1,6 @@
 {
   "title": "动态表单项",
-  "namespace": "mybricks.normal-pc.form-list",
+  "namespace": "mybricks.normal-h5.form-list",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "version": "1.2.51",
@@ -438,8 +438,8 @@
       "id": "formItems",
       "title": "列表项",
       "schema": [
-        "mybricks.normal-pc.form-container/form-item",
-        "mybricks.normal-pc.form-container/form-addition-container"
+        "mybricks.normal-h5.form-container/form-item",
+        "mybricks.normal-h5.form-container/form-addition-container"
       ],
       "type": "scope",
       "inputs": [
@@ -496,7 +496,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

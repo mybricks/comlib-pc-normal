@@ -1,7 +1,7 @@
 {
   "title": "静默打印",
   "visibility": false,
-  "namespace": "mybricks.normal-pc.silent-print",
+  "namespace": "mybricks.normal-h5.silent-print",
   "version": "1.0.0",
   "description": "用于静默打印，浏览器自带的打印预览需要用户自行解决",
   "author": "MyBricks",
@@ -17,7 +17,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["afterPrint"]
+      "rels": [
+        "afterPrint"
+      ]
     }
   ],
   "outputs": [

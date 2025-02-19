@@ -1,6 +1,6 @@
 {
   "title": "应用事件",
-  "namespace": "mybricks.normal-pc.events",
+  "namespace": "mybricks.normal-h5.events",
   "version": "1.0.1",
   "rtType": "js",
   "description": "路由参数",
@@ -20,7 +20,9 @@
         "type": "any"
       },
       "desc": "触发应用事件",
-      "rels": ["runDone"]
+      "rels": [
+        "runDone"
+      ]
     }
   ],
   "outputs": [

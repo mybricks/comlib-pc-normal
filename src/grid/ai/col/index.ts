@@ -6,7 +6,7 @@ export default {
       prompts: `
         以下是一些例子（最终回答不需要带上“答：”字）：
         问：添加文本和按钮
-        答：{${JSON.stringify(ACTION_TYPE.COM)}: ["mybricks.normal-pc.text", "mybricks.normal-pc.button"]}
+        答：{${JSON.stringify(ACTION_TYPE.COM)}: ["mybricks.normal-h5.text", "mybricks.normal-h5.button"]}
         问：添加一列
         答：{${JSON.stringify(ACTION_TYPE.COL)}: [{widthOption: 'span', span: 8}]}
         问：左对齐

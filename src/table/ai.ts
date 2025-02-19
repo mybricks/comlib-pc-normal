@@ -6,7 +6,7 @@ export default {
     例如：
     请回答：设计一个表格
     返回： {
-          type:'mybricks.normal-pc.table',
+          type:'mybricks.normal-h5.table',
           usePagination: true,
           headStyle: {
             color: '#1f1f1f',
@@ -68,7 +68,7 @@ export default {
         以下是一些例子，其中关于样式部分的配置你可以根据问题进行修改：
         请回答：修改成一个普通数据表格
         {
-          type:'mybricks.normal-pc.table',
+          type:'mybricks.normal-h5.table',
           columns:[
             {field:'name',title:'名称'},
             {field:'age',title:'年龄'},

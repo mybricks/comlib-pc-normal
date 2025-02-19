@@ -1,6 +1,6 @@
 {
   "title": "轮播图",
-  "namespace": "mybricks.normal-pc.carousel",
+  "namespace": "mybricks.normal-h5.carousel",
   "author": "wufan",
   "author_name": "吴凡",
   "version": "0.0.1",
@@ -12,7 +12,13 @@
   "inputs": [],
   "outputs": [],
   "slots": [
-    { "title": "轮播图1", "id": "slot1" },
-    { "title": "轮播图2", "id": "slot2" }
+    {
+      "title": "轮播图1",
+      "id": "slot1"
+    },
+    {
+      "title": "轮播图2",
+      "id": "slot2"
+    }
   ]
 }

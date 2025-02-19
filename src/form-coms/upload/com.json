@@ -1,6 +1,6 @@
 {
   "title": "上传",
-  "namespace": "mybricks.normal-pc.upload",
+  "namespace": "mybricks.normal-h5.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.59",
@@ -557,7 +557,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

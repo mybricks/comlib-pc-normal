@@ -1,6 +1,6 @@
 {
   "title": "主应用参数",
-  "namespace": "mybricks.normal-pc.props",
+  "namespace": "mybricks.normal-h5.props",
   "version": "1.0.2",
   "rtType": "js-autorun",
   "description": "获取主应用参数",
@@ -17,7 +17,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["propsData"],
+      "rels": [
+        "propsData"
+      ],
       "desc": "触发获取主应用参数"
     }
   ],

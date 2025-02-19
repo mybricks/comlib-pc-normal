@@ -1,6 +1,6 @@
 {
   "title": "播放器",
-  "namespace": "mybricks.normal-pc.video",
+  "namespace": "mybricks.normal-h5.video",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
   "version": "1.0.6",
@@ -19,7 +19,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setLinkComplete"]
+      "rels": [
+        "setLinkComplete"
+      ]
     },
     {
       "id": "screenshot",
@@ -29,7 +31,9 @@
         "type": "string",
         "title": "截图文件名"
       },
-      "rels": ["screenshotComplete"]
+      "rels": [
+        "screenshotComplete"
+      ]
     },
     {
       "id": "setPoster",
@@ -39,7 +43,9 @@
         "type": "string",
         "title": "封面"
       },
-      "rels": ["setPosterComplete"]
+      "rels": [
+        "setPosterComplete"
+      ]
     }
   ],
   "outputs": [

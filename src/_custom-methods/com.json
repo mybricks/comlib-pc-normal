@@ -1,6 +1,6 @@
 {
   "title": "主应用函数",
-  "namespace": "mybricks.normal-pc.custom-methods",
+  "namespace": "mybricks.normal-h5.custom-methods",
   "version": "1.0.0",
   "rtType": "js",
   "description": "调用主应用函数",
@@ -17,7 +17,10 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["result", "error"],
+      "rels": [
+        "result",
+        "error"
+      ],
       "desc": "返回值"
     }
   ],
@@ -30,7 +33,8 @@
         "type": "any"
       },
       "editable": true
-    }, {
+    },
+    {
       "id": "error",
       "title": "执行报错",
       "desc": "调用主应用函数出现报错信息",

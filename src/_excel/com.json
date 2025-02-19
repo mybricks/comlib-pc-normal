@@ -1,6 +1,6 @@
 {
   "title": "Excel导出",
-  "namespace": "mybricks.normal-pc.excel",
+  "namespace": "mybricks.normal-h5.excel",
   "version": "1.0.8",
   "rtType": "js",
   "description": "数据导出excel",

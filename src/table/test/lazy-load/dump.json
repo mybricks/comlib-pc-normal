@@ -1,1 +1,2443 @@
-{"content":{"xg.desn.stageview":{"D":{"C":["xg.desn.designer.stageview.StageViewModel","xg.desn.sdk.ModelState","xg.desn.designer.stageview.ViewSlotModel","xg.desn.designer.stageview.geo.GeoViewModel","xg.desn.designer.stageview.topl.ToplViewModel","xg.desn.designer.stageview.geo.SlotStyleModel","xg.desn.designer.stageview.geo.SlotModel","xg.desn.designer.stageview.topl.FrameModel","xg.desn.designer.stageview.geo.GeoComModel","xg.desn.designer.stageview.topl.PinModel","xg.desn.designer.stageview.topl.ToplComModel","xg.desn.designer.stageview.topl.DiagramModel","xg.desn.sdk.ComRuntimeModel","xg.desn.designer.stageview.topl.ToplComModelForked","xg.desn.designer.stageview.topl.ConModel","xg.desn.sdk.ComStyle","xg.desn.designer.stageview.topl.PinModelForked"],"W":{"id":"_0_","state":"_1_","designerVersion":"_2_","pluginDataset":"_3_","envVars":"_4_","designCostTime":"_5_","comThemes":"_6_","_cssVars":"_7_","viewSlots":"_8_","editViewWidth":"_9_","mainModule":"_10_","@mybricks/plugins/tools":"_11_","@mybricks/plugins/service":"_12_","mybricks.plugin.find":"_13_","top":"_14_","bottom":"_15_","instId":"_16_","title":"_17_","slot":"_18_","frame":"_19_","connectors":"_20_","config":"_21_","closeable":"_22_","status":"_23_","tabs":"_24_","showTitleBar":"_25_","_height":"_26_","width":"_27_","height":"_28_","heightRecover":"_29_","name":"_30_","style":"_31_","slots":"_32_","notes":"_33_","styleInited":"_34_","showType":"_35_","_curArtboardId":"_36_","frames":"_37_","varComAry":"_38_","comAry":"_39_","diagramAry":"_40_","curDiagramId":"_41_","paramsFn":"_42_","resultFn":"_43_","errorResultFn":"_44_","zoom":"_45_","layout":"_46_","justifyContent":"_47_","alignItems":"_48_","left":"_49_","capacity":"_50_","_defaultF":"_51_","_rootF":"_52_","type":"_53_","template":"_54_","proxyFor":"_55_","deletable":"_56_","schema":"_57_","zIndex":"_58_","_type":"_59_","editable":"_60_","isFrame":"_61_","frameAry":"_62_","inputPins":"_63_","_inputPins":"_64_","outputPins":"_65_","_outputPins":"_66_","inputJoints":"_67_","outputJoints":"_68_","zIndexCur":"_69_","debuggable":"_70_","columnGap":"_71_","rowGap":"_72_","flexWrap":"_73_","con":"_74_","com":"_75_","init":"_76_","runtime":"_77_","parent":"_78_","conAry":"_79_","typeTitle":"_80_","fromPlugin":"_81_","direction":"_82_","hostId":"_83_","description":"_84_","wrap":"_85_","_schema":"_86_","forRef":"_87_","icon":"_88_","extValues":"_89_","extBinding":"_90_","editor":"_91_","foldedStyle":"_92_","configPins":"_93_","inputPinsInModel":"_94_","inputPinExts":"_95_","outputPinsInModel":"_96_","outputPinExts":"_97_","outputPinNexts":"_98_","isSingleton":"_99_","diagramModel":"_100_","commentAry":"_101_","_title":"_102_","createTime":"_103_","isGlobal":"_104_","showIO":"_105_","updateTime":"_106_","conTemp":"_107_","startFrom":"_108_","undefined":"_109_","isVar":"_110_","varCom":"_111_","model":"_112_","refId":"_113_","def":"_114_","_autoRun":"_115_","topl":"_116_","geo":"_117_","properties":"_118_","visible":"_119_","data":"_120_","bindingsFrom":"_121_","bindingsTo":"_122_","inputAry":"_123_","outputAry":"_124_","outputEvents":"_125_","permissions":"_126_","spm":"_127_","namespace":"_128_","version":"_129_","rtType":"_130_","scrollTop":"_131_","scrollLeft":"_132_","rels":"_133_","_schemaFollow":"_134_","forkedFrom":"_135_","ioc":"_136_","_key":"_137_","io":"_138_","_ing":"_139_","startPin":"_140_","finishPin":"_141_","errorInfo":"_142_","startPo":"_143_","finishPo":"_144_","rowKey":"_145_","dataSource":"_146_","columns":"_147_","fixedHeader":"_148_","enableStripe":"_149_","headStyle":"_150_","contentStyle":"_151_","scroll":"_152_","bordered":"_153_","size":"_154_","useRowSelection":"_155_","enableRowClickSelection":"_156_","rowSelectionPostion":"_157_","useLoading":"_158_","tableLayout":"_159_","loadingTip":"_160_","usePagination":"_161_","paginationConfig":"_162_","domainModel":"_163_","useSummaryColumn":"_164_","summaryColumnTitle":"_165_","summaryCellTitleCol":"_166_","summaryColumnContentType":"_167_","summaryColumnContentSchema":"_168_","mergeCheckboxColumn":"_169_","isEmpty":"_170_","enableOnRow":"_171_","onRowScript":"_172_","lazyLoad":"_173_","filterIconDefault":"_174_","inputdataSourceSchema":"_175_","display":"_176_","heightAuto":"_177_","heightFull":"_178_","styleAry":"_179_","widthFull":"_180_","visibleOnce":"_181_","suggestBottom":"_182_","items":"_183_","runImmediate":"_184_","fns":"_185_","configs":"_186_","inputs":"_187_","outputs":"_188_","j":"_189_","x":"_190_","y":"_191_","temp":"_192_","color":"_193_","background":"_194_","scrollToFirstRowOnChange":"_195_","total":"_196_","text":"_197_","current":"_198_","currentPage":"_199_","isDynamic":"_200_","disabled":"_201_","defaultPageSize":"_202_","align":"_203_","showSizeChanger":"_204_","pageSizeOptions":"_205_","showQuickJumper":"_206_","hideOnSinglePage":"_207_","useDynamicTitle":"_208_","conMax":"_209_","pageSize":"_210_","pageNum":"_211_","code":"_212_","transformCode":"_213_","dataIndex":"_214_","key":"_215_","ellipsis":"_216_","contentType":"_217_","selector":"_218_","css":"_219_","global":"_220_","withParentComId":"_221_","a":"_222_","b":"_223_","c":"_224_","textAlign":"_225_"}},"refs":{"0":{"_F_":0,"_0_":"u_kACDE","_1_":{"_R_":"1"},"_2_":0.2,"_3_":{"_11_":{},"_12_":{"_20_":[],"_21_":{"_42_":"export default function ({ params, data, headers, url, method }) {\n  // 设置请求query、请求体、请求头\n  return { params, data, headers, url, method };\n }\n","_43_":"export default function ({ response, config }, { throwError }) {\n  // if (response.code !== 0) {\n  //    throwError(response.errMsg);\n  //    throwError({ message: response.errMsg || '我是复杂错误对象' });\n  // }\n  return response\n}\n","_44_":"export default function handleError({ error, response, config }, { throwError }) {\n  // 错误抛出时预处理数据，请注意：必须调用 throwError 抛出错误;\n  // config：请求入参；error：错误对象；response：响应原始对象；response.status：获取 HTTP 状态码，response.data：获取接口返回值\n  throwError(response.data.message || error.message || error);\n}\n"}},"_13_":{}},"_4_":{},"_5_":355,"_6_":{},"_7_":[],"_8_":{"_14_":{"_R_":"2"},"_15_":{"_R_":"3"}},"_9_":290,"_10_":{"_16_":"_main_","_17_":"主模块","_18_":{"_R_":"4"},"_19_":{"_R_":"5"}}},"1":{"_F_":1},"2":{"_F_":2,"_0_":"u_S8dmj","_1_":{"_R_":"6"},"_22_":false,"_23_":"normal","_24_":["geoView"],"_25_":false,"_26_":"auto","_28_":"auto"},"3":{"_F_":2,"_0_":"u_tjBNX","_1_":{"_R_":"7"},"_22_":false,"_23_":"normal","_24_":["toplView"],"_25_":true,"_26_":400,"_29_":400,"_28_":400},"4":{"_F_":3,"_0_":"u_h_8sw","_1_":{"_R_":"8"},"_30_":"geo","_31_":{"_R_":"9"},"_32_":[{"_R_":"11"}],"_33_":[],"_34_":true,"_35_":"pc","_36_":"u_YMm5t"},"5":{"_F_":4,"_0_":"u_aLiAf","_1_":{"_R_":"10"},"_30_":"topl","_37_":[{"_R_":"12"}],"_38_":[],"_39_":[],"_40_":[],"_31_":{"_49_":150,"_14_":150},"_41_":"u_TPn9e"},"6":{"_F_":1},"7":{"_F_":1},"8":{"_F_":1},"9":{"_F_":5,"_45_":1,"_46_":"flex-column","_47_":"flex-start","_48_":"flex-start","_28_":800,"_27_":1024,"_49_":292,"_14_":96},"10":{"_F_":1},"11":{"_F_":6,"_0_":"u_YMm5t","_1_":{"_R_":"13"},"_39_":[{"_R_":"16"}],"_31_":{"_R_":"14"},"_17_":"主场景"},"12":{"_F_":7,"_0_":"u_YMm5t","_1_":{"_R_":"15"},"_58_":0,"_59_":0,"_31_":{"_49_":null,"_14_":null},"_60_":true,"_61_":true,"_62_":[],"_63_":[],"_64_":[],"_65_":[{"_R_":"17"},{"_R_":"18"},{"_R_":"19"},{"_R_":"20"}],"_66_":[],"_67_":[],"_68_":[],"_39_":[{"_R_":"21"},{"_R_":"22"},{"_R_":"23"}],"_40_":[{"_R_":"24"},{"_R_":"25"}],"_69_":{"_74_":0,"_75_":100},"_17_":"主场景","_51_":true},"13":{"_F_":1},"14":{"_F_":5,"_45_":1,"_46_":"flex-column","_47_":"flex-start","_48_":"flex-start","_28_":800,"_27_":1024,"_71_":0,"_72_":0,"_73_":"nowrap"},"15":{"_F_":1},"16":{"_F_":8,"_1_":{"_R_":"26"},"_76_":true,"_30_":"u_Pzi_K","_77_":{"_R_":"27"},"_78_":{"_R_":"11"}},"17":{"_F_":9,"_0_":"click","_1_":{"_R_":"28"},"_58_":0,"_59_":2,"_53_":"event","_56_":false,"_79_":[],"_82_":"inner-input","_83_":"click","_17_":"点击","_86_":{"_53_":"any"},"_78_":{"_R_":"12"},"_57_":{"_53_":"any"}},"18":{"_F_":9,"_0_":"scroll","_1_":{"_R_":"29"},"_58_":0,"_59_":2,"_53_":"event","_56_":false,"_79_":[],"_82_":"inner-input","_83_":"scroll","_17_":"滚动","_86_":{"_53_":"object","_118_":{"_131_":{"_53_":"number"},"_132_":{"_53_":"number"}}},"_78_":{"_R_":"12"},"_57_":{"_53_":"object","_118_":{"_131_":{"_53_":"number"},"_132_":{"_53_":"number"}}}},"19":{"_F_":9,"_0_":"load","_1_":{"_R_":"30"},"_58_":0,"_59_":2,"_53_":"event","_56_":false,"_79_":[],"_82_":"inner-input","_83_":"load","_17_":"加载完成","_86_":{"_53_":"any"},"_78_":{"_R_":"12"},"_57_":{"_53_":"any"}},"20":{"_F_":9,"_0_":"unload","_1_":{"_R_":"31"},"_58_":0,"_59_":2,"_53_":"event","_56_":false,"_79_":[],"_82_":"inner-input","_83_":"unload","_17_":"卸载","_86_":{"_53_":"any"},"_78_":{"_R_":"12"},"_57_":{"_53_":"any"}},"21":{"_F_":10,"_1_":{"_R_":"32"},"_59_":1,"_76_":false,"_31_":{"_27_":0,"_28_":0,"_49_":580,"_14_":280},"_92_":{},"_93_":[],"_64_":[],"_63_":[{"_R_":"39"},{"_R_":"40"},{"_R_":"41"},{"_R_":"42"},{"_R_":"43"}],"_94_":[{"_R_":"44"},{"_R_":"45"},{"_R_":"46"}],"_95_":[{"_R_":"47"},{"_R_":"48"},{"_R_":"49"}],"_66_":[],"_65_":[{"_R_":"50"},{"_R_":"51"},{"_R_":"52"},{"_R_":"53"},{"_R_":"54"},{"_R_":"55"}],"_96_":[{"_R_":"56"},{"_R_":"57"},{"_R_":"58"},{"_R_":"59"}],"_97_":[],"_98_":[],"_30_":"u_Pzi_K","_77_":{"_R_":"27"},"_78_":{"_R_":"12"}},"22":{"_F_":10,"_1_":{"_R_":"33"},"_59_":1,"_76_":false,"_31_":{"_27_":0,"_28_":0,"_49_":0,"_14_":0},"_92_":{},"_93_":[],"_64_":[],"_63_":[{"_R_":"60"},{"_R_":"61"},{"_R_":"62"}],"_94_":[],"_95_":[],"_66_":[],"_65_":[{"_R_":"63"},{"_R_":"64"}],"_96_":[],"_97_":[],"_98_":[],"_30_":"u_Bi7vP","_77_":{"_R_":"34"},"_99_":true,"_78_":{"_R_":"12"}},"23":{"_F_":10,"_1_":{"_R_":"35"},"_59_":1,"_76_":false,"_31_":{"_27_":115.330078125,"_28_":25,"_49_":54,"_14_":51},"_92_":{},"_93_":[],"_64_":[],"_63_":[],"_94_":[],"_95_":[],"_66_":[],"_65_":[{"_R_":"65"}],"_96_":[],"_97_":[],"_98_":[],"_30_":"u_37m_u","_77_":{"_R_":"36"},"_78_":{"_R_":"12"},"_100_":{"_R_":"24"}},"24":{"_F_":11,"_0_":"u_TPn9e","_1_":{"_R_":"37"},"_39_":[{"_R_":"23"},{"_R_":"66"}],"_65_":[],"_68_":[],"_79_":[{"_R_":"67"}],"_101_":[],"_31_":{"_119_":true,"_49_":null,"_14_":null,"_28_":400,"_27_":700},"_78_":{"_R_":"12"},"_102_":"主场景","_103_":1713259367257,"_104_":true,"_105_":true,"_106_":1713259400098,"_17_":"主场景","_109_":{"_107_":true}},"25":{"_F_":11,"_0_":"u_MuRIL","_1_":{"_R_":"38"},"_39_":[],"_65_":[],"_68_":[],"_79_":[],"_101_":[],"_31_":{"_119_":true,"_49_":null,"_14_":null,"_28_":400,"_27_":700},"_78_":{"_R_":"12"},"_102_":"变量0","_103_":1713259398308,"_110_":true,"_111_":{"_R_":"22"},"_106_":1713259398309,"_17_":"变量0","_109_":{"_107_":true}},"26":{"_F_":1},"27":{"_F_":12,"_0_":"u_njEow","_112_":{"_120_":{"_145_":"","_146_":[],"_147_":[{"_17_":"a","_214_":"a","_215_":"u_xk1faf","_27_":140,"_119_":true,"_216_":true,"_217_":"text"},{"_17_":"b","_214_":"b","_215_":"u_31hs3p","_27_":140,"_119_":true,"_216_":true,"_217_":"text"},{"_17_":"c","_214_":"c","_215_":"u_a69rtt","_27_":140,"_119_":true,"_216_":true,"_217_":"text"}],"_148_":false,"_149_":false,"_150_":{"_193_":"#1f1f1f","_194_":"#f5f7f9"},"_151_":{},"_152_":{"_191_":"","_195_":true},"_153_":false,"_154_":"middle","_155_":false,"_156_":false,"_157_":["top","bottom"],"_158_":true,"_159_":"fixed","_160_":"","_161_":true,"_162_":{"_196_":20,"_197_":"共 {total} 条结果","_198_":1,"_199_":{"_211_":1,"_210_":10},"_200_":false,"_201_":false,"_202_":10,"_203_":"flex-end","_154_":"default","_204_":false,"_205_":["10","20","50","100"],"_206_":false,"_207_":false,"_208_":false},"_163_":{},"_164_":false,"_165_":"合计","_166_":1,"_167_":"text","_168_":{"_53_":"string"},"_169_":false,"_170_":false,"_84_":"暂无数据","_171_":false,"_172_":"","_173_":true,"_174_":"FilterFilled","_175_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number"},"_223_":{"_53_":"string"},"_224_":{"_53_":"string"}}}}},"_123_":[{"_83_":"setTotal","_17_":"设置数据总数","_57_":{"_53_":"number"}},{"_83_":"setPageNum","_17_":"设置当前页码","_57_":{"_53_":"number"}},{"_83_":"getPageInfo","_17_":"获取分页数据","_57_":{"_53_":"any"}}],"_124_":[{"_83_":"setTotal","_17_":"设置数据总数完成","_57_":{"_53_":"number"}},{"_83_":"setPageNumFinish","_17_":"设置页码完成","_57_":{"_53_":"number"}},{"_83_":"getPageInfo","_17_":"分页数据","_57_":{"_53_":"object","_118_":{"_211_":{"_53_":"number"},"_210_":{"_53_":"number"}}}},{"_83_":"pageChange","_17_":"点击分页","_57_":{"_53_":"object","_118_":{"_211_":{"_53_":"number"},"_210_":{"_53_":"number"}}}}],"_125_":{},"_31_":{"_R_":"68"}},"_17_":"数据表格","_113_":"table_haM","_114_":{"_128_":"mybricks.normal-pc.table","_129_":"1.1.54"},"_115_":true,"_116_":{"_R_":"21"},"_117_":{"_R_":"16"}},"28":{"_F_":1},"29":{"_F_":1},"30":{"_F_":1},"31":{"_F_":1},"32":{"_F_":1},"33":{"_F_":1},"34":{"_F_":12,"_0_":"u_etmJW","_112_":{"_120_":{},"_123_":[],"_124_":[],"_125_":{},"_31_":{"_R_":"95"}},"_17_":"变量0","_113_":"var_x1k","_114_":{"_128_":"mybricks.core-comlib.var","_129_":"1.0.0","_130_":"js"},"_116_":{"_R_":"22"}},"35":{"_F_":1},"36":{"_F_":12,"_0_":"u_EpFhc","_112_":{"_120_":{"_184_":true,"_185_":{"_212_":"(%7B%20outputs%20%7D)%20%3D%3E%20%7B%0A%20%20const%20%5Boutput0%5D%20%3D%20outputs%3B%0A%20%20output0(%0A%20%20%20%20%7B%0A%20%20%20%20%20%20dataSource%3A%20new%20Array(100).fill(0).map((_%2C%20idx)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20return%20%7B%20a%3A%20idx%20%2B%201%2C%20b%3A%20'xxx'%2C%20c%3A%20'xxx'%20%7D%0A%20%20%20%20%20%20%7D)%2C%0A%20%20%20%20%20%20total%3A%201000%2C%0A%20%20%20%20%20%20pageSize%3A%20100%2C%0A%20%20%20%20%20%20pageNum%3A%202%2C%0A%20%20%20%20%7D%0A%20%20)%3B%0A%7D","_213_":"(function()%20%7B%20var%20_RTFN_%3B%20%0A%22use%20strict%22%3B%0A%0Afunction%20_slicedToArray(arr%2C%20i)%20%7B%20return%20_arrayWithHoles(arr)%20%7C%7C%20_iterableToArrayLimit(arr%2C%20i)%20%7C%7C%20_unsupportedIterableToArray(arr%2C%20i)%20%7C%7C%20_nonIterableRest()%3B%20%7D%0A%0Afunction%20_nonIterableRest()%20%7B%20throw%20new%20TypeError(%22Invalid%20attempt%20to%20destructure%20non-iterable%20instance.%5CnIn%20order%20to%20be%20iterable%2C%20non-array%20objects%20must%20have%20a%20%5BSymbol.iterator%5D()%20method.%22)%3B%20%7D%0A%0Afunction%20_unsupportedIterableToArray(o%2C%20minLen)%20%7B%20if%20(!o)%20return%3B%20if%20(typeof%20o%20%3D%3D%3D%20%22string%22)%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20var%20n%20%3D%20Object.prototype.toString.call(o).slice(8%2C%20-1)%3B%20if%20(n%20%3D%3D%3D%20%22Object%22%20%26%26%20o.constructor)%20n%20%3D%20o.constructor.name%3B%20if%20(n%20%3D%3D%3D%20%22Map%22%20%7C%7C%20n%20%3D%3D%3D%20%22Set%22)%20return%20Array.from(o)%3B%20if%20(n%20%3D%3D%3D%20%22Arguments%22%20%7C%7C%20%2F%5E(%3F%3AUi%7CI)nt(%3F%3A8%7C16%7C32)(%3F%3AClamped)%3FArray%24%2F.test(n))%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20%7D%0A%0Afunction%20_arrayLikeToArray(arr%2C%20len)%20%7B%20if%20(len%20%3D%3D%20null%20%7C%7C%20len%20%3E%20arr.length)%20len%20%3D%20arr.length%3B%20for%20(var%20i%20%3D%200%2C%20arr2%20%3D%20new%20Array(len)%3B%20i%20%3C%20len%3B%20i%2B%2B)%20%7B%20arr2%5Bi%5D%20%3D%20arr%5Bi%5D%3B%20%7D%20return%20arr2%3B%20%7D%0A%0Afunction%20_iterableToArrayLimit(arr%2C%20i)%20%7B%20var%20_i%20%3D%20arr%20%3D%3D%20null%20%3F%20null%20%3A%20typeof%20Symbol%20!%3D%3D%20%22undefined%22%20%26%26%20arr%5BSymbol.iterator%5D%20%7C%7C%20arr%5B%22%40%40iterator%22%5D%3B%20if%20(_i%20%3D%3D%20null)%20return%3B%20var%20_arr%20%3D%20%5B%5D%3B%20var%20_n%20%3D%20true%3B%20var%20_d%20%3D%20false%3B%20var%20_s%2C%20_e%3B%20try%20%7B%20for%20(_i%20%3D%20_i.call(arr)%3B%20!(_n%20%3D%20(_s%20%3D%20_i.next()).done)%3B%20_n%20%3D%20true)%20%7B%20_arr.push(_s.value)%3B%20if%20(i%20%26%26%20_arr.length%20%3D%3D%3D%20i)%20break%3B%20%7D%20%7D%20catch%20(err)%20%7B%20_d%20%3D%20true%3B%20_e%20%3D%20err%3B%20%7D%20finally%20%7B%20try%20%7B%20if%20(!_n%20%26%26%20_i%5B%22return%22%5D%20!%3D%20null)%20_i%5B%22return%22%5D()%3B%20%7D%20finally%20%7B%20if%20(_d)%20throw%20_e%3B%20%7D%20%7D%20return%20_arr%3B%20%7D%0A%0Afunction%20_arrayWithHoles(arr)%20%7B%20if%20(Array.isArray(arr))%20return%20arr%3B%20%7D%0A%0A_RTFN_%20%3D%20function%20_RTFN_(_ref)%20%7B%0A%20%20var%20outputs%20%3D%20_ref.outputs%3B%0A%0A%20%20var%20_outputs%20%3D%20_slicedToArray(outputs%2C%201)%2C%0A%20%20%20%20%20%20output0%20%3D%20_outputs%5B0%5D%3B%0A%0A%20%20output0(%7B%0A%20%20%20%20dataSource%3A%20new%20Array(100).fill(0).map(function%20(_%2C%20idx)%20%7B%0A%20%20%20%20%20%20return%20%7B%0A%20%20%20%20%20%20%20%20a%3A%20idx%20%2B%201%2C%0A%20%20%20%20%20%20%20%20b%3A%20'xxx'%2C%0A%20%20%20%20%20%20%20%20c%3A%20'xxx'%0A%20%20%20%20%20%20%7D%3B%0A%20%20%20%20%7D)%2C%0A%20%20%20%20total%3A%201000%2C%0A%20%20%20%20pageSize%3A%20100%2C%0A%20%20%20%20pageNum%3A%202%0A%20%20%7D)%3B%0A%7D%3B%0A%3B%20return%20_RTFN_%3B%20%7D)()"}},"_123_":[],"_124_":[],"_125_":{},"_31_":{"_R_":"97"}},"_17_":"JS计算(测试用)","_113_":"_muilt-inputJs_diF","_114_":{"_128_":"mybricks.test._muilt-inputJs","_129_":"1.0.0","_130_":"js-autorun"},"_115_":true,"_116_":{"_R_":"23"}},"37":{"_F_":1},"38":{"_F_":1},"39":{"_F_":9,"_0_":"u_pIGzt","_1_":{"_R_":"69"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[{"_R_":"67"}],"_82_":"input","_83_":"dataSource","_17_":"设置数据源","_86_":{"_17_":"数据列表","_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}},"_133_":["dataSource"],"_78_":{"_R_":"21"},"_57_":{"_17_":"数据列表","_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}}},"40":{"_F_":9,"_0_":"u_kN8pD","_1_":{"_R_":"70"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"getTableData","_17_":"获取表格数据","_86_":{"_53_":"any"},"_133_":["getTableData"],"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"41":{"_F_":9,"_0_":"u_fasLL","_1_":{"_R_":"71"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"startLoading","_17_":"开启loading","_86_":{"_53_":"any"},"_133_":["startLoading"],"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"42":{"_F_":9,"_0_":"u_UGya8","_1_":{"_R_":"72"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"endLoading","_17_":"关闭loading","_86_":{"_53_":"any"},"_133_":["endLoading"],"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"43":{"_F_":9,"_0_":"u_lr9_E","_1_":{"_R_":"73"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"setSize","_17_":"设置布局风格","_86_":{"_53_":"string"},"_133_":["setSizeDone"],"_78_":{"_R_":"21"},"_57_":{"_53_":"string"}},"44":{"_F_":9,"_0_":"u_c8lnR","_1_":{"_R_":"74"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"setTotal","_17_":"设置数据总数","_86_":{"_53_":"number"},"_60_":false,"_78_":{"_R_":"21"},"_133_":["setTotal"],"_57_":{"_53_":"number"}},"45":{"_F_":9,"_0_":"u_2nZSi","_1_":{"_R_":"75"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"setPageNum","_17_":"设置当前页码","_86_":{"_53_":"number"},"_60_":false,"_78_":{"_R_":"21"},"_133_":["setPageNumFinish"],"_57_":{"_53_":"number"}},"46":{"_F_":9,"_0_":"u_SglA0","_1_":{"_R_":"76"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"getPageInfo","_17_":"获取分页数据","_86_":{"_53_":"any"},"_60_":false,"_78_":{"_R_":"21"},"_133_":["getPageInfo"],"_57_":{"_53_":"any"}},"47":{"_F_":9,"_0_":"u_nujyb","_1_":{"_R_":"77"},"_58_":0,"_59_":2,"_53_":"ext","_56_":false,"_79_":[],"_82_":"input","_83_":"show","_17_":"显示","_86_":{"_53_":"any"},"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"48":{"_F_":9,"_0_":"u_YB304","_1_":{"_R_":"78"},"_58_":0,"_59_":2,"_53_":"ext","_56_":false,"_79_":[],"_82_":"input","_83_":"hide","_17_":"隐藏","_86_":{"_53_":"any"},"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"49":{"_F_":9,"_0_":"u_TDN6l","_1_":{"_R_":"79"},"_58_":0,"_59_":2,"_53_":"ext","_56_":false,"_79_":[],"_82_":"input","_83_":"showOrHide","_17_":"显示/隐藏","_86_":{"_53_":"any"},"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"50":{"_F_":9,"_0_":"u_xA1RA","_1_":{"_R_":"80"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"getTableData","_17_":"表格数据","_86_":{"_17_":"表格数据","_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_78_":{"_R_":"21"},"_57_":{"_17_":"表格数据","_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}}},"51":{"_F_":9,"_0_":"u_jVZP6","_1_":{"_R_":"81"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"columnsChange","_17_":"列结构变化","_86_":{"_53_":"array"},"_78_":{"_R_":"21"},"_57_":{"_53_":"array"}},"52":{"_F_":9,"_0_":"u__9gpH","_1_":{"_R_":"82"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"dataSource","_17_":"数据源","_86_":{"_17_":"数据列表","_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}},"_78_":{"_R_":"21"},"_57_":{"_17_":"数据列表","_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}}},"53":{"_F_":9,"_0_":"u_Alw9D","_1_":{"_R_":"83"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"startLoading","_17_":"开启loading后","_86_":{"_53_":"any"},"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"54":{"_F_":9,"_0_":"u_Kptf6","_1_":{"_R_":"84"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"endLoading","_17_":"关闭loading后","_86_":{"_53_":"any"},"_78_":{"_R_":"21"},"_57_":{"_53_":"any"}},"55":{"_F_":9,"_0_":"u_FT5pG","_1_":{"_R_":"85"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"setSizeDone","_17_":"设置布局风格完成","_86_":{"_53_":"string"},"_78_":{"_R_":"21"},"_57_":{"_53_":"string"}},"56":{"_F_":9,"_0_":"u_oHNFE","_1_":{"_R_":"86"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"setTotal","_17_":"设置数据总数完成","_86_":{"_53_":"number"},"_60_":false,"_78_":{"_R_":"21"},"_57_":{"_53_":"number"}},"57":{"_F_":9,"_0_":"u_VWmRa","_1_":{"_R_":"87"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"setPageNumFinish","_17_":"设置页码完成","_86_":{"_53_":"number"},"_60_":false,"_78_":{"_R_":"21"},"_57_":{"_53_":"number"}},"58":{"_F_":9,"_0_":"u_4MZ8L","_1_":{"_R_":"88"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"getPageInfo","_17_":"分页数据","_86_":{"_53_":"object","_118_":{"_211_":{"_53_":"number"},"_210_":{"_53_":"number"}}},"_60_":false,"_78_":{"_R_":"21"},"_57_":{"_53_":"object","_118_":{"_211_":{"_53_":"number"},"_210_":{"_53_":"number"}}}},"59":{"_F_":9,"_0_":"u_TOrIB","_1_":{"_R_":"89"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"pageChange","_17_":"点击分页","_86_":{"_53_":"object","_118_":{"_211_":{"_53_":"number"},"_210_":{"_53_":"number"}}},"_60_":false,"_78_":{"_R_":"21"},"_57_":{"_53_":"object","_118_":{"_211_":{"_53_":"number"},"_210_":{"_53_":"number"}}}},"60":{"_F_":9,"_0_":"u_uu4Eb","_1_":{"_R_":"90"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"get","_17_":"读取","_86_":{"_53_":"any"},"_133_":["return"],"_78_":{"_R_":"22"},"_57_":{"_53_":"any"}},"61":{"_F_":9,"_0_":"u_iyMrK","_1_":{"_R_":"91"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"set","_17_":"赋值","_86_":{"_53_":"follow"},"_134_":true,"_133_":["return"],"_78_":{"_R_":"22"},"_57_":{"_53_":"follow"}},"62":{"_F_":9,"_0_":"u_jesjZ","_1_":{"_R_":"92"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"input","_83_":"reset","_17_":"重置","_86_":{"_53_":"any"},"_78_":{"_R_":"22"},"_57_":{"_53_":"any"}},"63":{"_F_":9,"_0_":"u_LFj5p","_1_":{"_R_":"93"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"return","_17_":"完成","_86_":{"_53_":"number"},"_78_":{"_R_":"22"},"_57_":{"_53_":"number"}},"64":{"_F_":9,"_0_":"u_HH_fF","_1_":{"_R_":"94"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[],"_82_":"output","_83_":"changed","_17_":"当值发生变化","_86_":{"_53_":"number"},"_78_":{"_R_":"22"},"_57_":{"_53_":"number"}},"65":{"_F_":9,"_0_":"u_Anyb6","_1_":{"_R_":"96"},"_58_":0,"_59_":2,"_53_":"normal","_56_":false,"_79_":[{"_R_":"67"}],"_82_":"output","_83_":"output0","_17_":"输出项0","_86_":{"_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number"},"_223_":{"_53_":"string"},"_224_":{"_53_":"string"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}},"_60_":true,"_78_":{"_R_":"23"},"_57_":{"_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number"},"_223_":{"_53_":"string"},"_224_":{"_53_":"string"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}}},"66":{"_F_":13,"_1_":{"_R_":"98"},"_59_":1,"_76_":false,"_31_":{"_27_":87,"_28_":25,"_49_":390,"_14_":50},"_92_":{},"_93_":[],"_64_":[],"_63_":[{"_R_":"100"}],"_94_":[],"_95_":[],"_66_":[],"_65_":[{"_R_":"101"}],"_96_":[],"_97_":[],"_98_":[],"_78_":{"_R_":"24"},"_135_":{"_R_":"21"},"_136_":{"_186_":{},"_187_":{"_146_":true},"_188_":{"_146_":true}},"_100_":{"_R_":"24"},"_137_":"u_8kgvR"},"67":{"_F_":14,"_0_":"u_Vf0Ku","_1_":{"_R_":"99"},"_58_":0,"_59_":4,"_139_":false,"_101_":[],"_140_":{"_R_":"65"},"_141_":{"_R_":"100"},"_17_":"从 输出项0 到 设置数据源 的连接","_78_":{"_R_":"24"},"_143_":{"_189_":51.800000000000004,"_190_":181,"_191_":61.5},"_144_":{"_192_":true,"_190_":380.5,"_191_":60.5,"_189_":68}},"68":{"_F_":15,"_176_":"block","_49_":576,"_14_":281,"_28_":300,"_179_":[{"_218_":".summaryCellTitle","_219_":{"_225_":"center"}},{"_218_":".summaryCellContent","_219_":{"_225_":"center"}},{"_218_":"tfoot.ant-table-summary>.summaryRow:hover","_219_":{"_194_":"#f5f7f9"}}],"_27_":"100%","_180_":true},"69":{"_F_":1},"70":{"_F_":1},"71":{"_F_":1},"72":{"_F_":1},"73":{"_F_":1},"74":{"_F_":1},"75":{"_F_":1},"76":{"_F_":1},"77":{"_F_":1},"78":{"_F_":1},"79":{"_F_":1},"80":{"_F_":1},"81":{"_F_":1},"82":{"_F_":1},"83":{"_F_":1},"84":{"_F_":1},"85":{"_F_":1},"86":{"_F_":1},"87":{"_F_":1},"88":{"_F_":1},"89":{"_F_":1},"90":{"_F_":1},"91":{"_F_":1},"92":{"_F_":1},"93":{"_F_":1},"94":{"_F_":1},"95":{"_F_":15,"_176_":"block"},"96":{"_F_":1},"97":{"_F_":15,"_176_":"block"},"98":{"_F_":1},"99":{"_F_":1},"100":{"_F_":16,"_0_":"u_pIGzt","_1_":{"_R_":"102"},"_58_":0,"_59_":2,"_56_":false,"_79_":[{"_R_":"67"}],"_78_":{"_R_":"66"},"_135_":{"_R_":"39"},"_17_":"设置数据源","_57_":{"_17_":"数据列表","_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}}},"101":{"_F_":16,"_0_":"u__9gpH","_1_":{"_R_":"103"},"_58_":0,"_59_":2,"_56_":false,"_79_":[],"_78_":{"_R_":"66"},"_135_":{"_R_":"52"},"_17_":"数据源","_57_":{"_17_":"数据列表","_53_":"object","_118_":{"_146_":{"_53_":"array","_183_":{"_53_":"object","_118_":{"_222_":{"_53_":"number","_17_":"a"},"_223_":{"_53_":"string","_17_":"b"},"_224_":{"_53_":"string","_17_":"c"}}}},"_196_":{"_53_":"number"},"_210_":{"_53_":"number"},"_211_":{"_53_":"number"}}}},"102":{"_F_":1},"103":{"_F_":1}},"def":{"_R_":"0"}}}}
+{
+	"content": {
+		"xg.desn.stageview": {
+			"D": {
+				"C": [
+					"xg.desn.designer.stageview.StageViewModel",
+					"xg.desn.sdk.ModelState",
+					"xg.desn.designer.stageview.ViewSlotModel",
+					"xg.desn.designer.stageview.geo.GeoViewModel",
+					"xg.desn.designer.stageview.topl.ToplViewModel",
+					"xg.desn.designer.stageview.geo.SlotStyleModel",
+					"xg.desn.designer.stageview.geo.SlotModel",
+					"xg.desn.designer.stageview.topl.FrameModel",
+					"xg.desn.designer.stageview.geo.GeoComModel",
+					"xg.desn.designer.stageview.topl.PinModel",
+					"xg.desn.designer.stageview.topl.ToplComModel",
+					"xg.desn.designer.stageview.topl.DiagramModel",
+					"xg.desn.sdk.ComRuntimeModel",
+					"xg.desn.designer.stageview.topl.ToplComModelForked",
+					"xg.desn.designer.stageview.topl.ConModel",
+					"xg.desn.sdk.ComStyle",
+					"xg.desn.designer.stageview.topl.PinModelForked"
+				],
+				"W": {
+					"id": "_0_",
+					"state": "_1_",
+					"designerVersion": "_2_",
+					"pluginDataset": "_3_",
+					"envVars": "_4_",
+					"designCostTime": "_5_",
+					"comThemes": "_6_",
+					"_cssVars": "_7_",
+					"viewSlots": "_8_",
+					"editViewWidth": "_9_",
+					"mainModule": "_10_",
+					"@mybricks/plugins/tools": "_11_",
+					"@mybricks/plugins/service": "_12_",
+					"mybricks.plugin.find": "_13_",
+					"top": "_14_",
+					"bottom": "_15_",
+					"instId": "_16_",
+					"title": "_17_",
+					"slot": "_18_",
+					"frame": "_19_",
+					"connectors": "_20_",
+					"config": "_21_",
+					"closeable": "_22_",
+					"status": "_23_",
+					"tabs": "_24_",
+					"showTitleBar": "_25_",
+					"_height": "_26_",
+					"width": "_27_",
+					"height": "_28_",
+					"heightRecover": "_29_",
+					"name": "_30_",
+					"style": "_31_",
+					"slots": "_32_",
+					"notes": "_33_",
+					"styleInited": "_34_",
+					"showType": "_35_",
+					"_curArtboardId": "_36_",
+					"frames": "_37_",
+					"varComAry": "_38_",
+					"comAry": "_39_",
+					"diagramAry": "_40_",
+					"curDiagramId": "_41_",
+					"paramsFn": "_42_",
+					"resultFn": "_43_",
+					"errorResultFn": "_44_",
+					"zoom": "_45_",
+					"layout": "_46_",
+					"justifyContent": "_47_",
+					"alignItems": "_48_",
+					"left": "_49_",
+					"capacity": "_50_",
+					"_defaultF": "_51_",
+					"_rootF": "_52_",
+					"type": "_53_",
+					"template": "_54_",
+					"proxyFor": "_55_",
+					"deletable": "_56_",
+					"schema": "_57_",
+					"zIndex": "_58_",
+					"_type": "_59_",
+					"editable": "_60_",
+					"isFrame": "_61_",
+					"frameAry": "_62_",
+					"inputPins": "_63_",
+					"_inputPins": "_64_",
+					"outputPins": "_65_",
+					"_outputPins": "_66_",
+					"inputJoints": "_67_",
+					"outputJoints": "_68_",
+					"zIndexCur": "_69_",
+					"debuggable": "_70_",
+					"columnGap": "_71_",
+					"rowGap": "_72_",
+					"flexWrap": "_73_",
+					"con": "_74_",
+					"com": "_75_",
+					"init": "_76_",
+					"runtime": "_77_",
+					"parent": "_78_",
+					"conAry": "_79_",
+					"typeTitle": "_80_",
+					"fromPlugin": "_81_",
+					"direction": "_82_",
+					"hostId": "_83_",
+					"description": "_84_",
+					"wrap": "_85_",
+					"_schema": "_86_",
+					"forRef": "_87_",
+					"icon": "_88_",
+					"extValues": "_89_",
+					"extBinding": "_90_",
+					"editor": "_91_",
+					"foldedStyle": "_92_",
+					"configPins": "_93_",
+					"inputPinsInModel": "_94_",
+					"inputPinExts": "_95_",
+					"outputPinsInModel": "_96_",
+					"outputPinExts": "_97_",
+					"outputPinNexts": "_98_",
+					"isSingleton": "_99_",
+					"diagramModel": "_100_",
+					"commentAry": "_101_",
+					"_title": "_102_",
+					"createTime": "_103_",
+					"isGlobal": "_104_",
+					"showIO": "_105_",
+					"updateTime": "_106_",
+					"conTemp": "_107_",
+					"startFrom": "_108_",
+					"undefined": "_109_",
+					"isVar": "_110_",
+					"varCom": "_111_",
+					"model": "_112_",
+					"refId": "_113_",
+					"def": "_114_",
+					"_autoRun": "_115_",
+					"topl": "_116_",
+					"geo": "_117_",
+					"properties": "_118_",
+					"visible": "_119_",
+					"data": "_120_",
+					"bindingsFrom": "_121_",
+					"bindingsTo": "_122_",
+					"inputAry": "_123_",
+					"outputAry": "_124_",
+					"outputEvents": "_125_",
+					"permissions": "_126_",
+					"spm": "_127_",
+					"namespace": "_128_",
+					"version": "_129_",
+					"rtType": "_130_",
+					"scrollTop": "_131_",
+					"scrollLeft": "_132_",
+					"rels": "_133_",
+					"_schemaFollow": "_134_",
+					"forkedFrom": "_135_",
+					"ioc": "_136_",
+					"_key": "_137_",
+					"io": "_138_",
+					"_ing": "_139_",
+					"startPin": "_140_",
+					"finishPin": "_141_",
+					"errorInfo": "_142_",
+					"startPo": "_143_",
+					"finishPo": "_144_",
+					"rowKey": "_145_",
+					"dataSource": "_146_",
+					"columns": "_147_",
+					"fixedHeader": "_148_",
+					"enableStripe": "_149_",
+					"headStyle": "_150_",
+					"contentStyle": "_151_",
+					"scroll": "_152_",
+					"bordered": "_153_",
+					"size": "_154_",
+					"useRowSelection": "_155_",
+					"enableRowClickSelection": "_156_",
+					"rowSelectionPostion": "_157_",
+					"useLoading": "_158_",
+					"tableLayout": "_159_",
+					"loadingTip": "_160_",
+					"usePagination": "_161_",
+					"paginationConfig": "_162_",
+					"domainModel": "_163_",
+					"useSummaryColumn": "_164_",
+					"summaryColumnTitle": "_165_",
+					"summaryCellTitleCol": "_166_",
+					"summaryColumnContentType": "_167_",
+					"summaryColumnContentSchema": "_168_",
+					"mergeCheckboxColumn": "_169_",
+					"isEmpty": "_170_",
+					"enableOnRow": "_171_",
+					"onRowScript": "_172_",
+					"lazyLoad": "_173_",
+					"filterIconDefault": "_174_",
+					"inputdataSourceSchema": "_175_",
+					"display": "_176_",
+					"heightAuto": "_177_",
+					"heightFull": "_178_",
+					"styleAry": "_179_",
+					"widthFull": "_180_",
+					"visibleOnce": "_181_",
+					"suggestBottom": "_182_",
+					"items": "_183_",
+					"runImmediate": "_184_",
+					"fns": "_185_",
+					"configs": "_186_",
+					"inputs": "_187_",
+					"outputs": "_188_",
+					"j": "_189_",
+					"x": "_190_",
+					"y": "_191_",
+					"temp": "_192_",
+					"color": "_193_",
+					"background": "_194_",
+					"scrollToFirstRowOnChange": "_195_",
+					"total": "_196_",
+					"text": "_197_",
+					"current": "_198_",
+					"currentPage": "_199_",
+					"isDynamic": "_200_",
+					"disabled": "_201_",
+					"defaultPageSize": "_202_",
+					"align": "_203_",
+					"showSizeChanger": "_204_",
+					"pageSizeOptions": "_205_",
+					"showQuickJumper": "_206_",
+					"hideOnSinglePage": "_207_",
+					"useDynamicTitle": "_208_",
+					"conMax": "_209_",
+					"pageSize": "_210_",
+					"pageNum": "_211_",
+					"code": "_212_",
+					"transformCode": "_213_",
+					"dataIndex": "_214_",
+					"key": "_215_",
+					"ellipsis": "_216_",
+					"contentType": "_217_",
+					"selector": "_218_",
+					"css": "_219_",
+					"global": "_220_",
+					"withParentComId": "_221_",
+					"a": "_222_",
+					"b": "_223_",
+					"c": "_224_",
+					"textAlign": "_225_"
+				}
+			},
+			"refs": {
+				"0": {
+					"_F_": 0,
+					"_0_": "u_kACDE",
+					"_1_": {
+						"_R_": "1"
+					},
+					"_2_": 0.2,
+					"_3_": {
+						"_11_": {},
+						"_12_": {
+							"_20_": [],
+							"_21_": {
+								"_42_": "export default function ({ params, data, headers, url, method }) {\n  // 设置请求query、请求体、请求头\n  return { params, data, headers, url, method };\n }\n",
+								"_43_": "export default function ({ response, config }, { throwError }) {\n  // if (response.code !== 0) {\n  //    throwError(response.errMsg);\n  //    throwError({ message: response.errMsg || '我是复杂错误对象' });\n  // }\n  return response\n}\n",
+								"_44_": "export default function handleError({ error, response, config }, { throwError }) {\n  // 错误抛出时预处理数据，请注意：必须调用 throwError 抛出错误;\n  // config：请求入参；error：错误对象；response：响应原始对象；response.status：获取 HTTP 状态码，response.data：获取接口返回值\n  throwError(response.data.message || error.message || error);\n}\n"
+							}
+						},
+						"_13_": {}
+					},
+					"_4_": {},
+					"_5_": 355,
+					"_6_": {},
+					"_7_": [],
+					"_8_": {
+						"_14_": {
+							"_R_": "2"
+						},
+						"_15_": {
+							"_R_": "3"
+						}
+					},
+					"_9_": 290,
+					"_10_": {
+						"_16_": "_main_",
+						"_17_": "主模块",
+						"_18_": {
+							"_R_": "4"
+						},
+						"_19_": {
+							"_R_": "5"
+						}
+					}
+				},
+				"1": {
+					"_F_": 1
+				},
+				"2": {
+					"_F_": 2,
+					"_0_": "u_S8dmj",
+					"_1_": {
+						"_R_": "6"
+					},
+					"_22_": false,
+					"_23_": "normal",
+					"_24_": [
+						"geoView"
+					],
+					"_25_": false,
+					"_26_": "auto",
+					"_28_": "auto"
+				},
+				"3": {
+					"_F_": 2,
+					"_0_": "u_tjBNX",
+					"_1_": {
+						"_R_": "7"
+					},
+					"_22_": false,
+					"_23_": "normal",
+					"_24_": [
+						"toplView"
+					],
+					"_25_": true,
+					"_26_": 400,
+					"_29_": 400,
+					"_28_": 400
+				},
+				"4": {
+					"_F_": 3,
+					"_0_": "u_h_8sw",
+					"_1_": {
+						"_R_": "8"
+					},
+					"_30_": "geo",
+					"_31_": {
+						"_R_": "9"
+					},
+					"_32_": [
+						{
+							"_R_": "11"
+						}
+					],
+					"_33_": [],
+					"_34_": true,
+					"_35_": "pc",
+					"_36_": "u_YMm5t"
+				},
+				"5": {
+					"_F_": 4,
+					"_0_": "u_aLiAf",
+					"_1_": {
+						"_R_": "10"
+					},
+					"_30_": "topl",
+					"_37_": [
+						{
+							"_R_": "12"
+						}
+					],
+					"_38_": [],
+					"_39_": [],
+					"_40_": [],
+					"_31_": {
+						"_49_": 150,
+						"_14_": 150
+					},
+					"_41_": "u_TPn9e"
+				},
+				"6": {
+					"_F_": 1
+				},
+				"7": {
+					"_F_": 1
+				},
+				"8": {
+					"_F_": 1
+				},
+				"9": {
+					"_F_": 5,
+					"_45_": 1,
+					"_46_": "flex-column",
+					"_47_": "flex-start",
+					"_48_": "flex-start",
+					"_28_": 800,
+					"_27_": 1024,
+					"_49_": 292,
+					"_14_": 96
+				},
+				"10": {
+					"_F_": 1
+				},
+				"11": {
+					"_F_": 6,
+					"_0_": "u_YMm5t",
+					"_1_": {
+						"_R_": "13"
+					},
+					"_39_": [
+						{
+							"_R_": "16"
+						}
+					],
+					"_31_": {
+						"_R_": "14"
+					},
+					"_17_": "主场景"
+				},
+				"12": {
+					"_F_": 7,
+					"_0_": "u_YMm5t",
+					"_1_": {
+						"_R_": "15"
+					},
+					"_58_": 0,
+					"_59_": 0,
+					"_31_": {
+						"_49_": null,
+						"_14_": null
+					},
+					"_60_": true,
+					"_61_": true,
+					"_62_": [],
+					"_63_": [],
+					"_64_": [],
+					"_65_": [
+						{
+							"_R_": "17"
+						},
+						{
+							"_R_": "18"
+						},
+						{
+							"_R_": "19"
+						},
+						{
+							"_R_": "20"
+						}
+					],
+					"_66_": [],
+					"_67_": [],
+					"_68_": [],
+					"_39_": [
+						{
+							"_R_": "21"
+						},
+						{
+							"_R_": "22"
+						},
+						{
+							"_R_": "23"
+						}
+					],
+					"_40_": [
+						{
+							"_R_": "24"
+						},
+						{
+							"_R_": "25"
+						}
+					],
+					"_69_": {
+						"_74_": 0,
+						"_75_": 100
+					},
+					"_17_": "主场景",
+					"_51_": true
+				},
+				"13": {
+					"_F_": 1
+				},
+				"14": {
+					"_F_": 5,
+					"_45_": 1,
+					"_46_": "flex-column",
+					"_47_": "flex-start",
+					"_48_": "flex-start",
+					"_28_": 800,
+					"_27_": 1024,
+					"_71_": 0,
+					"_72_": 0,
+					"_73_": "nowrap"
+				},
+				"15": {
+					"_F_": 1
+				},
+				"16": {
+					"_F_": 8,
+					"_1_": {
+						"_R_": "26"
+					},
+					"_76_": true,
+					"_30_": "u_Pzi_K",
+					"_77_": {
+						"_R_": "27"
+					},
+					"_78_": {
+						"_R_": "11"
+					}
+				},
+				"17": {
+					"_F_": 9,
+					"_0_": "click",
+					"_1_": {
+						"_R_": "28"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "event",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "inner-input",
+					"_83_": "click",
+					"_17_": "点击",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"18": {
+					"_F_": 9,
+					"_0_": "scroll",
+					"_1_": {
+						"_R_": "29"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "event",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "inner-input",
+					"_83_": "scroll",
+					"_17_": "滚动",
+					"_86_": {
+						"_53_": "object",
+						"_118_": {
+							"_131_": {
+								"_53_": "number"
+							},
+							"_132_": {
+								"_53_": "number"
+							}
+						}
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_57_": {
+						"_53_": "object",
+						"_118_": {
+							"_131_": {
+								"_53_": "number"
+							},
+							"_132_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"19": {
+					"_F_": 9,
+					"_0_": "load",
+					"_1_": {
+						"_R_": "30"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "event",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "inner-input",
+					"_83_": "load",
+					"_17_": "加载完成",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"20": {
+					"_F_": 9,
+					"_0_": "unload",
+					"_1_": {
+						"_R_": "31"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "event",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "inner-input",
+					"_83_": "unload",
+					"_17_": "卸载",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"21": {
+					"_F_": 10,
+					"_1_": {
+						"_R_": "32"
+					},
+					"_59_": 1,
+					"_76_": false,
+					"_31_": {
+						"_27_": 0,
+						"_28_": 0,
+						"_49_": 580,
+						"_14_": 280
+					},
+					"_92_": {},
+					"_93_": [],
+					"_64_": [],
+					"_63_": [
+						{
+							"_R_": "39"
+						},
+						{
+							"_R_": "40"
+						},
+						{
+							"_R_": "41"
+						},
+						{
+							"_R_": "42"
+						},
+						{
+							"_R_": "43"
+						}
+					],
+					"_94_": [
+						{
+							"_R_": "44"
+						},
+						{
+							"_R_": "45"
+						},
+						{
+							"_R_": "46"
+						}
+					],
+					"_95_": [
+						{
+							"_R_": "47"
+						},
+						{
+							"_R_": "48"
+						},
+						{
+							"_R_": "49"
+						}
+					],
+					"_66_": [],
+					"_65_": [
+						{
+							"_R_": "50"
+						},
+						{
+							"_R_": "51"
+						},
+						{
+							"_R_": "52"
+						},
+						{
+							"_R_": "53"
+						},
+						{
+							"_R_": "54"
+						},
+						{
+							"_R_": "55"
+						}
+					],
+					"_96_": [
+						{
+							"_R_": "56"
+						},
+						{
+							"_R_": "57"
+						},
+						{
+							"_R_": "58"
+						},
+						{
+							"_R_": "59"
+						}
+					],
+					"_97_": [],
+					"_98_": [],
+					"_30_": "u_Pzi_K",
+					"_77_": {
+						"_R_": "27"
+					},
+					"_78_": {
+						"_R_": "12"
+					}
+				},
+				"22": {
+					"_F_": 10,
+					"_1_": {
+						"_R_": "33"
+					},
+					"_59_": 1,
+					"_76_": false,
+					"_31_": {
+						"_27_": 0,
+						"_28_": 0,
+						"_49_": 0,
+						"_14_": 0
+					},
+					"_92_": {},
+					"_93_": [],
+					"_64_": [],
+					"_63_": [
+						{
+							"_R_": "60"
+						},
+						{
+							"_R_": "61"
+						},
+						{
+							"_R_": "62"
+						}
+					],
+					"_94_": [],
+					"_95_": [],
+					"_66_": [],
+					"_65_": [
+						{
+							"_R_": "63"
+						},
+						{
+							"_R_": "64"
+						}
+					],
+					"_96_": [],
+					"_97_": [],
+					"_98_": [],
+					"_30_": "u_Bi7vP",
+					"_77_": {
+						"_R_": "34"
+					},
+					"_99_": true,
+					"_78_": {
+						"_R_": "12"
+					}
+				},
+				"23": {
+					"_F_": 10,
+					"_1_": {
+						"_R_": "35"
+					},
+					"_59_": 1,
+					"_76_": false,
+					"_31_": {
+						"_27_": 115.330078125,
+						"_28_": 25,
+						"_49_": 54,
+						"_14_": 51
+					},
+					"_92_": {},
+					"_93_": [],
+					"_64_": [],
+					"_63_": [],
+					"_94_": [],
+					"_95_": [],
+					"_66_": [],
+					"_65_": [
+						{
+							"_R_": "65"
+						}
+					],
+					"_96_": [],
+					"_97_": [],
+					"_98_": [],
+					"_30_": "u_37m_u",
+					"_77_": {
+						"_R_": "36"
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_100_": {
+						"_R_": "24"
+					}
+				},
+				"24": {
+					"_F_": 11,
+					"_0_": "u_TPn9e",
+					"_1_": {
+						"_R_": "37"
+					},
+					"_39_": [
+						{
+							"_R_": "23"
+						},
+						{
+							"_R_": "66"
+						}
+					],
+					"_65_": [],
+					"_68_": [],
+					"_79_": [
+						{
+							"_R_": "67"
+						}
+					],
+					"_101_": [],
+					"_31_": {
+						"_119_": true,
+						"_49_": null,
+						"_14_": null,
+						"_28_": 400,
+						"_27_": 700
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_102_": "主场景",
+					"_103_": 1713259367257,
+					"_104_": true,
+					"_105_": true,
+					"_106_": 1713259400098,
+					"_17_": "主场景",
+					"_109_": {
+						"_107_": true
+					}
+				},
+				"25": {
+					"_F_": 11,
+					"_0_": "u_MuRIL",
+					"_1_": {
+						"_R_": "38"
+					},
+					"_39_": [],
+					"_65_": [],
+					"_68_": [],
+					"_79_": [],
+					"_101_": [],
+					"_31_": {
+						"_119_": true,
+						"_49_": null,
+						"_14_": null,
+						"_28_": 400,
+						"_27_": 700
+					},
+					"_78_": {
+						"_R_": "12"
+					},
+					"_102_": "变量0",
+					"_103_": 1713259398308,
+					"_110_": true,
+					"_111_": {
+						"_R_": "22"
+					},
+					"_106_": 1713259398309,
+					"_17_": "变量0",
+					"_109_": {
+						"_107_": true
+					}
+				},
+				"26": {
+					"_F_": 1
+				},
+				"27": {
+					"_F_": 12,
+					"_0_": "u_njEow",
+					"_112_": {
+						"_120_": {
+							"_145_": "",
+							"_146_": [],
+							"_147_": [
+								{
+									"_17_": "a",
+									"_214_": "a",
+									"_215_": "u_xk1faf",
+									"_27_": 140,
+									"_119_": true,
+									"_216_": true,
+									"_217_": "text"
+								},
+								{
+									"_17_": "b",
+									"_214_": "b",
+									"_215_": "u_31hs3p",
+									"_27_": 140,
+									"_119_": true,
+									"_216_": true,
+									"_217_": "text"
+								},
+								{
+									"_17_": "c",
+									"_214_": "c",
+									"_215_": "u_a69rtt",
+									"_27_": 140,
+									"_119_": true,
+									"_216_": true,
+									"_217_": "text"
+								}
+							],
+							"_148_": false,
+							"_149_": false,
+							"_150_": {
+								"_193_": "#1f1f1f",
+								"_194_": "#f5f7f9"
+							},
+							"_151_": {},
+							"_152_": {
+								"_191_": "",
+								"_195_": true
+							},
+							"_153_": false,
+							"_154_": "middle",
+							"_155_": false,
+							"_156_": false,
+							"_157_": [
+								"top",
+								"bottom"
+							],
+							"_158_": true,
+							"_159_": "fixed",
+							"_160_": "",
+							"_161_": true,
+							"_162_": {
+								"_196_": 20,
+								"_197_": "共 {total} 条结果",
+								"_198_": 1,
+								"_199_": {
+									"_211_": 1,
+									"_210_": 10
+								},
+								"_200_": false,
+								"_201_": false,
+								"_202_": 10,
+								"_203_": "flex-end",
+								"_154_": "default",
+								"_204_": false,
+								"_205_": [
+									"10",
+									"20",
+									"50",
+									"100"
+								],
+								"_206_": false,
+								"_207_": false,
+								"_208_": false
+							},
+							"_163_": {},
+							"_164_": false,
+							"_165_": "合计",
+							"_166_": 1,
+							"_167_": "text",
+							"_168_": {
+								"_53_": "string"
+							},
+							"_169_": false,
+							"_170_": false,
+							"_84_": "暂无数据",
+							"_171_": false,
+							"_172_": "",
+							"_173_": true,
+							"_174_": "FilterFilled",
+							"_175_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number"
+										},
+										"_223_": {
+											"_53_": "string"
+										},
+										"_224_": {
+											"_53_": "string"
+										}
+									}
+								}
+							}
+						},
+						"_123_": [
+							{
+								"_83_": "setTotal",
+								"_17_": "设置数据总数",
+								"_57_": {
+									"_53_": "number"
+								}
+							},
+							{
+								"_83_": "setPageNum",
+								"_17_": "设置当前页码",
+								"_57_": {
+									"_53_": "number"
+								}
+							},
+							{
+								"_83_": "getPageInfo",
+								"_17_": "获取分页数据",
+								"_57_": {
+									"_53_": "any"
+								}
+							}
+						],
+						"_124_": [
+							{
+								"_83_": "setTotal",
+								"_17_": "设置数据总数完成",
+								"_57_": {
+									"_53_": "number"
+								}
+							},
+							{
+								"_83_": "setPageNumFinish",
+								"_17_": "设置页码完成",
+								"_57_": {
+									"_53_": "number"
+								}
+							},
+							{
+								"_83_": "getPageInfo",
+								"_17_": "分页数据",
+								"_57_": {
+									"_53_": "object",
+									"_118_": {
+										"_211_": {
+											"_53_": "number"
+										},
+										"_210_": {
+											"_53_": "number"
+										}
+									}
+								}
+							},
+							{
+								"_83_": "pageChange",
+								"_17_": "点击分页",
+								"_57_": {
+									"_53_": "object",
+									"_118_": {
+										"_211_": {
+											"_53_": "number"
+										},
+										"_210_": {
+											"_53_": "number"
+										}
+									}
+								}
+							}
+						],
+						"_125_": {},
+						"_31_": {
+							"_R_": "68"
+						}
+					},
+					"_17_": "数据表格",
+					"_113_": "table_haM",
+					"_114_": {
+						"_128_": "mybricks.normal-h5.table",
+						"_129_": "1.1.54"
+					},
+					"_115_": true,
+					"_116_": {
+						"_R_": "21"
+					},
+					"_117_": {
+						"_R_": "16"
+					}
+				},
+				"28": {
+					"_F_": 1
+				},
+				"29": {
+					"_F_": 1
+				},
+				"30": {
+					"_F_": 1
+				},
+				"31": {
+					"_F_": 1
+				},
+				"32": {
+					"_F_": 1
+				},
+				"33": {
+					"_F_": 1
+				},
+				"34": {
+					"_F_": 12,
+					"_0_": "u_etmJW",
+					"_112_": {
+						"_120_": {},
+						"_123_": [],
+						"_124_": [],
+						"_125_": {},
+						"_31_": {
+							"_R_": "95"
+						}
+					},
+					"_17_": "变量0",
+					"_113_": "var_x1k",
+					"_114_": {
+						"_128_": "mybricks.core-comlib.var",
+						"_129_": "1.0.0",
+						"_130_": "js"
+					},
+					"_116_": {
+						"_R_": "22"
+					}
+				},
+				"35": {
+					"_F_": 1
+				},
+				"36": {
+					"_F_": 12,
+					"_0_": "u_EpFhc",
+					"_112_": {
+						"_120_": {
+							"_184_": true,
+							"_185_": {
+								"_212_": "(%7B%20outputs%20%7D)%20%3D%3E%20%7B%0A%20%20const%20%5Boutput0%5D%20%3D%20outputs%3B%0A%20%20output0(%0A%20%20%20%20%7B%0A%20%20%20%20%20%20dataSource%3A%20new%20Array(100).fill(0).map((_%2C%20idx)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20return%20%7B%20a%3A%20idx%20%2B%201%2C%20b%3A%20'xxx'%2C%20c%3A%20'xxx'%20%7D%0A%20%20%20%20%20%20%7D)%2C%0A%20%20%20%20%20%20total%3A%201000%2C%0A%20%20%20%20%20%20pageSize%3A%20100%2C%0A%20%20%20%20%20%20pageNum%3A%202%2C%0A%20%20%20%20%7D%0A%20%20)%3B%0A%7D",
+								"_213_": "(function()%20%7B%20var%20_RTFN_%3B%20%0A%22use%20strict%22%3B%0A%0Afunction%20_slicedToArray(arr%2C%20i)%20%7B%20return%20_arrayWithHoles(arr)%20%7C%7C%20_iterableToArrayLimit(arr%2C%20i)%20%7C%7C%20_unsupportedIterableToArray(arr%2C%20i)%20%7C%7C%20_nonIterableRest()%3B%20%7D%0A%0Afunction%20_nonIterableRest()%20%7B%20throw%20new%20TypeError(%22Invalid%20attempt%20to%20destructure%20non-iterable%20instance.%5CnIn%20order%20to%20be%20iterable%2C%20non-array%20objects%20must%20have%20a%20%5BSymbol.iterator%5D()%20method.%22)%3B%20%7D%0A%0Afunction%20_unsupportedIterableToArray(o%2C%20minLen)%20%7B%20if%20(!o)%20return%3B%20if%20(typeof%20o%20%3D%3D%3D%20%22string%22)%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20var%20n%20%3D%20Object.prototype.toString.call(o).slice(8%2C%20-1)%3B%20if%20(n%20%3D%3D%3D%20%22Object%22%20%26%26%20o.constructor)%20n%20%3D%20o.constructor.name%3B%20if%20(n%20%3D%3D%3D%20%22Map%22%20%7C%7C%20n%20%3D%3D%3D%20%22Set%22)%20return%20Array.from(o)%3B%20if%20(n%20%3D%3D%3D%20%22Arguments%22%20%7C%7C%20%2F%5E(%3F%3AUi%7CI)nt(%3F%3A8%7C16%7C32)(%3F%3AClamped)%3FArray%24%2F.test(n))%20return%20_arrayLikeToArray(o%2C%20minLen)%3B%20%7D%0A%0Afunction%20_arrayLikeToArray(arr%2C%20len)%20%7B%20if%20(len%20%3D%3D%20null%20%7C%7C%20len%20%3E%20arr.length)%20len%20%3D%20arr.length%3B%20for%20(var%20i%20%3D%200%2C%20arr2%20%3D%20new%20Array(len)%3B%20i%20%3C%20len%3B%20i%2B%2B)%20%7B%20arr2%5Bi%5D%20%3D%20arr%5Bi%5D%3B%20%7D%20return%20arr2%3B%20%7D%0A%0Afunction%20_iterableToArrayLimit(arr%2C%20i)%20%7B%20var%20_i%20%3D%20arr%20%3D%3D%20null%20%3F%20null%20%3A%20typeof%20Symbol%20!%3D%3D%20%22undefined%22%20%26%26%20arr%5BSymbol.iterator%5D%20%7C%7C%20arr%5B%22%40%40iterator%22%5D%3B%20if%20(_i%20%3D%3D%20null)%20return%3B%20var%20_arr%20%3D%20%5B%5D%3B%20var%20_n%20%3D%20true%3B%20var%20_d%20%3D%20false%3B%20var%20_s%2C%20_e%3B%20try%20%7B%20for%20(_i%20%3D%20_i.call(arr)%3B%20!(_n%20%3D%20(_s%20%3D%20_i.next()).done)%3B%20_n%20%3D%20true)%20%7B%20_arr.push(_s.value)%3B%20if%20(i%20%26%26%20_arr.length%20%3D%3D%3D%20i)%20break%3B%20%7D%20%7D%20catch%20(err)%20%7B%20_d%20%3D%20true%3B%20_e%20%3D%20err%3B%20%7D%20finally%20%7B%20try%20%7B%20if%20(!_n%20%26%26%20_i%5B%22return%22%5D%20!%3D%20null)%20_i%5B%22return%22%5D()%3B%20%7D%20finally%20%7B%20if%20(_d)%20throw%20_e%3B%20%7D%20%7D%20return%20_arr%3B%20%7D%0A%0Afunction%20_arrayWithHoles(arr)%20%7B%20if%20(Array.isArray(arr))%20return%20arr%3B%20%7D%0A%0A_RTFN_%20%3D%20function%20_RTFN_(_ref)%20%7B%0A%20%20var%20outputs%20%3D%20_ref.outputs%3B%0A%0A%20%20var%20_outputs%20%3D%20_slicedToArray(outputs%2C%201)%2C%0A%20%20%20%20%20%20output0%20%3D%20_outputs%5B0%5D%3B%0A%0A%20%20output0(%7B%0A%20%20%20%20dataSource%3A%20new%20Array(100).fill(0).map(function%20(_%2C%20idx)%20%7B%0A%20%20%20%20%20%20return%20%7B%0A%20%20%20%20%20%20%20%20a%3A%20idx%20%2B%201%2C%0A%20%20%20%20%20%20%20%20b%3A%20'xxx'%2C%0A%20%20%20%20%20%20%20%20c%3A%20'xxx'%0A%20%20%20%20%20%20%7D%3B%0A%20%20%20%20%7D)%2C%0A%20%20%20%20total%3A%201000%2C%0A%20%20%20%20pageSize%3A%20100%2C%0A%20%20%20%20pageNum%3A%202%0A%20%20%7D)%3B%0A%7D%3B%0A%3B%20return%20_RTFN_%3B%20%7D)()"
+							}
+						},
+						"_123_": [],
+						"_124_": [],
+						"_125_": {},
+						"_31_": {
+							"_R_": "97"
+						}
+					},
+					"_17_": "JS计算(测试用)",
+					"_113_": "_muilt-inputJs_diF",
+					"_114_": {
+						"_128_": "mybricks.test._muilt-inputJs",
+						"_129_": "1.0.0",
+						"_130_": "js-autorun"
+					},
+					"_115_": true,
+					"_116_": {
+						"_R_": "23"
+					}
+				},
+				"37": {
+					"_F_": 1
+				},
+				"38": {
+					"_F_": 1
+				},
+				"39": {
+					"_F_": 9,
+					"_0_": "u_pIGzt",
+					"_1_": {
+						"_R_": "69"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [
+						{
+							"_R_": "67"
+						}
+					],
+					"_82_": "input",
+					"_83_": "dataSource",
+					"_17_": "设置数据源",
+					"_86_": {
+						"_17_": "数据列表",
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number",
+											"_17_": "a"
+										},
+										"_223_": {
+											"_53_": "string",
+											"_17_": "b"
+										},
+										"_224_": {
+											"_53_": "string",
+											"_17_": "c"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					},
+					"_133_": [
+						"dataSource"
+					],
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_17_": "数据列表",
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number",
+											"_17_": "a"
+										},
+										"_223_": {
+											"_53_": "string",
+											"_17_": "b"
+										},
+										"_224_": {
+											"_53_": "string",
+											"_17_": "c"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"40": {
+					"_F_": 9,
+					"_0_": "u_kN8pD",
+					"_1_": {
+						"_R_": "70"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "getTableData",
+					"_17_": "获取表格数据",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_133_": [
+						"getTableData"
+					],
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"41": {
+					"_F_": 9,
+					"_0_": "u_fasLL",
+					"_1_": {
+						"_R_": "71"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "startLoading",
+					"_17_": "开启loading",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_133_": [
+						"startLoading"
+					],
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"42": {
+					"_F_": 9,
+					"_0_": "u_UGya8",
+					"_1_": {
+						"_R_": "72"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "endLoading",
+					"_17_": "关闭loading",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_133_": [
+						"endLoading"
+					],
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"43": {
+					"_F_": 9,
+					"_0_": "u_lr9_E",
+					"_1_": {
+						"_R_": "73"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "setSize",
+					"_17_": "设置布局风格",
+					"_86_": {
+						"_53_": "string"
+					},
+					"_133_": [
+						"setSizeDone"
+					],
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "string"
+					}
+				},
+				"44": {
+					"_F_": 9,
+					"_0_": "u_c8lnR",
+					"_1_": {
+						"_R_": "74"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "setTotal",
+					"_17_": "设置数据总数",
+					"_86_": {
+						"_53_": "number"
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_133_": [
+						"setTotal"
+					],
+					"_57_": {
+						"_53_": "number"
+					}
+				},
+				"45": {
+					"_F_": 9,
+					"_0_": "u_2nZSi",
+					"_1_": {
+						"_R_": "75"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "setPageNum",
+					"_17_": "设置当前页码",
+					"_86_": {
+						"_53_": "number"
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_133_": [
+						"setPageNumFinish"
+					],
+					"_57_": {
+						"_53_": "number"
+					}
+				},
+				"46": {
+					"_F_": 9,
+					"_0_": "u_SglA0",
+					"_1_": {
+						"_R_": "76"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "getPageInfo",
+					"_17_": "获取分页数据",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_133_": [
+						"getPageInfo"
+					],
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"47": {
+					"_F_": 9,
+					"_0_": "u_nujyb",
+					"_1_": {
+						"_R_": "77"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "ext",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "show",
+					"_17_": "显示",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"48": {
+					"_F_": 9,
+					"_0_": "u_YB304",
+					"_1_": {
+						"_R_": "78"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "ext",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "hide",
+					"_17_": "隐藏",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"49": {
+					"_F_": 9,
+					"_0_": "u_TDN6l",
+					"_1_": {
+						"_R_": "79"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "ext",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "showOrHide",
+					"_17_": "显示/隐藏",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"50": {
+					"_F_": 9,
+					"_0_": "u_xA1RA",
+					"_1_": {
+						"_R_": "80"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "getTableData",
+					"_17_": "表格数据",
+					"_86_": {
+						"_17_": "表格数据",
+						"_53_": "array",
+						"_183_": {
+							"_53_": "object",
+							"_118_": {
+								"_222_": {
+									"_53_": "number",
+									"_17_": "a"
+								},
+								"_223_": {
+									"_53_": "string",
+									"_17_": "b"
+								},
+								"_224_": {
+									"_53_": "string",
+									"_17_": "c"
+								}
+							}
+						}
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_17_": "表格数据",
+						"_53_": "array",
+						"_183_": {
+							"_53_": "object",
+							"_118_": {
+								"_222_": {
+									"_53_": "number",
+									"_17_": "a"
+								},
+								"_223_": {
+									"_53_": "string",
+									"_17_": "b"
+								},
+								"_224_": {
+									"_53_": "string",
+									"_17_": "c"
+								}
+							}
+						}
+					}
+				},
+				"51": {
+					"_F_": 9,
+					"_0_": "u_jVZP6",
+					"_1_": {
+						"_R_": "81"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "columnsChange",
+					"_17_": "列结构变化",
+					"_86_": {
+						"_53_": "array"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "array"
+					}
+				},
+				"52": {
+					"_F_": 9,
+					"_0_": "u__9gpH",
+					"_1_": {
+						"_R_": "82"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "dataSource",
+					"_17_": "数据源",
+					"_86_": {
+						"_17_": "数据列表",
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number",
+											"_17_": "a"
+										},
+										"_223_": {
+											"_53_": "string",
+											"_17_": "b"
+										},
+										"_224_": {
+											"_53_": "string",
+											"_17_": "c"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_17_": "数据列表",
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number",
+											"_17_": "a"
+										},
+										"_223_": {
+											"_53_": "string",
+											"_17_": "b"
+										},
+										"_224_": {
+											"_53_": "string",
+											"_17_": "c"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"53": {
+					"_F_": 9,
+					"_0_": "u_Alw9D",
+					"_1_": {
+						"_R_": "83"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "startLoading",
+					"_17_": "开启loading后",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"54": {
+					"_F_": 9,
+					"_0_": "u_Kptf6",
+					"_1_": {
+						"_R_": "84"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "endLoading",
+					"_17_": "关闭loading后",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"55": {
+					"_F_": 9,
+					"_0_": "u_FT5pG",
+					"_1_": {
+						"_R_": "85"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "setSizeDone",
+					"_17_": "设置布局风格完成",
+					"_86_": {
+						"_53_": "string"
+					},
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "string"
+					}
+				},
+				"56": {
+					"_F_": 9,
+					"_0_": "u_oHNFE",
+					"_1_": {
+						"_R_": "86"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "setTotal",
+					"_17_": "设置数据总数完成",
+					"_86_": {
+						"_53_": "number"
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "number"
+					}
+				},
+				"57": {
+					"_F_": 9,
+					"_0_": "u_VWmRa",
+					"_1_": {
+						"_R_": "87"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "setPageNumFinish",
+					"_17_": "设置页码完成",
+					"_86_": {
+						"_53_": "number"
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "number"
+					}
+				},
+				"58": {
+					"_F_": 9,
+					"_0_": "u_4MZ8L",
+					"_1_": {
+						"_R_": "88"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "getPageInfo",
+					"_17_": "分页数据",
+					"_86_": {
+						"_53_": "object",
+						"_118_": {
+							"_211_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							}
+						}
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "object",
+						"_118_": {
+							"_211_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"59": {
+					"_F_": 9,
+					"_0_": "u_TOrIB",
+					"_1_": {
+						"_R_": "89"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "pageChange",
+					"_17_": "点击分页",
+					"_86_": {
+						"_53_": "object",
+						"_118_": {
+							"_211_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							}
+						}
+					},
+					"_60_": false,
+					"_78_": {
+						"_R_": "21"
+					},
+					"_57_": {
+						"_53_": "object",
+						"_118_": {
+							"_211_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"60": {
+					"_F_": 9,
+					"_0_": "u_uu4Eb",
+					"_1_": {
+						"_R_": "90"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "get",
+					"_17_": "读取",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_133_": [
+						"return"
+					],
+					"_78_": {
+						"_R_": "22"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"61": {
+					"_F_": 9,
+					"_0_": "u_iyMrK",
+					"_1_": {
+						"_R_": "91"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "set",
+					"_17_": "赋值",
+					"_86_": {
+						"_53_": "follow"
+					},
+					"_134_": true,
+					"_133_": [
+						"return"
+					],
+					"_78_": {
+						"_R_": "22"
+					},
+					"_57_": {
+						"_53_": "follow"
+					}
+				},
+				"62": {
+					"_F_": 9,
+					"_0_": "u_jesjZ",
+					"_1_": {
+						"_R_": "92"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "input",
+					"_83_": "reset",
+					"_17_": "重置",
+					"_86_": {
+						"_53_": "any"
+					},
+					"_78_": {
+						"_R_": "22"
+					},
+					"_57_": {
+						"_53_": "any"
+					}
+				},
+				"63": {
+					"_F_": 9,
+					"_0_": "u_LFj5p",
+					"_1_": {
+						"_R_": "93"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "return",
+					"_17_": "完成",
+					"_86_": {
+						"_53_": "number"
+					},
+					"_78_": {
+						"_R_": "22"
+					},
+					"_57_": {
+						"_53_": "number"
+					}
+				},
+				"64": {
+					"_F_": 9,
+					"_0_": "u_HH_fF",
+					"_1_": {
+						"_R_": "94"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [],
+					"_82_": "output",
+					"_83_": "changed",
+					"_17_": "当值发生变化",
+					"_86_": {
+						"_53_": "number"
+					},
+					"_78_": {
+						"_R_": "22"
+					},
+					"_57_": {
+						"_53_": "number"
+					}
+				},
+				"65": {
+					"_F_": 9,
+					"_0_": "u_Anyb6",
+					"_1_": {
+						"_R_": "96"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_53_": "normal",
+					"_56_": false,
+					"_79_": [
+						{
+							"_R_": "67"
+						}
+					],
+					"_82_": "output",
+					"_83_": "output0",
+					"_17_": "输出项0",
+					"_86_": {
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number"
+										},
+										"_223_": {
+											"_53_": "string"
+										},
+										"_224_": {
+											"_53_": "string"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					},
+					"_60_": true,
+					"_78_": {
+						"_R_": "23"
+					},
+					"_57_": {
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number"
+										},
+										"_223_": {
+											"_53_": "string"
+										},
+										"_224_": {
+											"_53_": "string"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"66": {
+					"_F_": 13,
+					"_1_": {
+						"_R_": "98"
+					},
+					"_59_": 1,
+					"_76_": false,
+					"_31_": {
+						"_27_": 87,
+						"_28_": 25,
+						"_49_": 390,
+						"_14_": 50
+					},
+					"_92_": {},
+					"_93_": [],
+					"_64_": [],
+					"_63_": [
+						{
+							"_R_": "100"
+						}
+					],
+					"_94_": [],
+					"_95_": [],
+					"_66_": [],
+					"_65_": [
+						{
+							"_R_": "101"
+						}
+					],
+					"_96_": [],
+					"_97_": [],
+					"_98_": [],
+					"_78_": {
+						"_R_": "24"
+					},
+					"_135_": {
+						"_R_": "21"
+					},
+					"_136_": {
+						"_186_": {},
+						"_187_": {
+							"_146_": true
+						},
+						"_188_": {
+							"_146_": true
+						}
+					},
+					"_100_": {
+						"_R_": "24"
+					},
+					"_137_": "u_8kgvR"
+				},
+				"67": {
+					"_F_": 14,
+					"_0_": "u_Vf0Ku",
+					"_1_": {
+						"_R_": "99"
+					},
+					"_58_": 0,
+					"_59_": 4,
+					"_139_": false,
+					"_101_": [],
+					"_140_": {
+						"_R_": "65"
+					},
+					"_141_": {
+						"_R_": "100"
+					},
+					"_17_": "从 输出项0 到 设置数据源 的连接",
+					"_78_": {
+						"_R_": "24"
+					},
+					"_143_": {
+						"_189_": 51.800000000000004,
+						"_190_": 181,
+						"_191_": 61.5
+					},
+					"_144_": {
+						"_192_": true,
+						"_190_": 380.5,
+						"_191_": 60.5,
+						"_189_": 68
+					}
+				},
+				"68": {
+					"_F_": 15,
+					"_176_": "block",
+					"_49_": 576,
+					"_14_": 281,
+					"_28_": 300,
+					"_179_": [
+						{
+							"_218_": ".summaryCellTitle",
+							"_219_": {
+								"_225_": "center"
+							}
+						},
+						{
+							"_218_": ".summaryCellContent",
+							"_219_": {
+								"_225_": "center"
+							}
+						},
+						{
+							"_218_": "tfoot.ant-table-summary>.summaryRow:hover",
+							"_219_": {
+								"_194_": "#f5f7f9"
+							}
+						}
+					],
+					"_27_": "100%",
+					"_180_": true
+				},
+				"69": {
+					"_F_": 1
+				},
+				"70": {
+					"_F_": 1
+				},
+				"71": {
+					"_F_": 1
+				},
+				"72": {
+					"_F_": 1
+				},
+				"73": {
+					"_F_": 1
+				},
+				"74": {
+					"_F_": 1
+				},
+				"75": {
+					"_F_": 1
+				},
+				"76": {
+					"_F_": 1
+				},
+				"77": {
+					"_F_": 1
+				},
+				"78": {
+					"_F_": 1
+				},
+				"79": {
+					"_F_": 1
+				},
+				"80": {
+					"_F_": 1
+				},
+				"81": {
+					"_F_": 1
+				},
+				"82": {
+					"_F_": 1
+				},
+				"83": {
+					"_F_": 1
+				},
+				"84": {
+					"_F_": 1
+				},
+				"85": {
+					"_F_": 1
+				},
+				"86": {
+					"_F_": 1
+				},
+				"87": {
+					"_F_": 1
+				},
+				"88": {
+					"_F_": 1
+				},
+				"89": {
+					"_F_": 1
+				},
+				"90": {
+					"_F_": 1
+				},
+				"91": {
+					"_F_": 1
+				},
+				"92": {
+					"_F_": 1
+				},
+				"93": {
+					"_F_": 1
+				},
+				"94": {
+					"_F_": 1
+				},
+				"95": {
+					"_F_": 15,
+					"_176_": "block"
+				},
+				"96": {
+					"_F_": 1
+				},
+				"97": {
+					"_F_": 15,
+					"_176_": "block"
+				},
+				"98": {
+					"_F_": 1
+				},
+				"99": {
+					"_F_": 1
+				},
+				"100": {
+					"_F_": 16,
+					"_0_": "u_pIGzt",
+					"_1_": {
+						"_R_": "102"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_56_": false,
+					"_79_": [
+						{
+							"_R_": "67"
+						}
+					],
+					"_78_": {
+						"_R_": "66"
+					},
+					"_135_": {
+						"_R_": "39"
+					},
+					"_17_": "设置数据源",
+					"_57_": {
+						"_17_": "数据列表",
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number",
+											"_17_": "a"
+										},
+										"_223_": {
+											"_53_": "string",
+											"_17_": "b"
+										},
+										"_224_": {
+											"_53_": "string",
+											"_17_": "c"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"101": {
+					"_F_": 16,
+					"_0_": "u__9gpH",
+					"_1_": {
+						"_R_": "103"
+					},
+					"_58_": 0,
+					"_59_": 2,
+					"_56_": false,
+					"_79_": [],
+					"_78_": {
+						"_R_": "66"
+					},
+					"_135_": {
+						"_R_": "52"
+					},
+					"_17_": "数据源",
+					"_57_": {
+						"_17_": "数据列表",
+						"_53_": "object",
+						"_118_": {
+							"_146_": {
+								"_53_": "array",
+								"_183_": {
+									"_53_": "object",
+									"_118_": {
+										"_222_": {
+											"_53_": "number",
+											"_17_": "a"
+										},
+										"_223_": {
+											"_53_": "string",
+											"_17_": "b"
+										},
+										"_224_": {
+											"_53_": "string",
+											"_17_": "c"
+										}
+									}
+								}
+							},
+							"_196_": {
+								"_53_": "number"
+							},
+							"_210_": {
+								"_53_": "number"
+							},
+							"_211_": {
+								"_53_": "number"
+							}
+						}
+					}
+				},
+				"102": {
+					"_F_": 1
+				},
+				"103": {
+					"_F_": 1
+				}
+			},
+			"def": {
+				"_R_": "0"
+			}
+		}
+	}
+}

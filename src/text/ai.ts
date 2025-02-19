@@ -12,7 +12,7 @@ export default {
     组件定义： ${JSON.stringify(def)}，以下为示例
     请回答： 添加一个文本
     {
-      type: 'mybricks.normal-pc.text',
+      type: 'mybricks.normal-h5.text',
       content: '这是一个文本'}
     `
   },

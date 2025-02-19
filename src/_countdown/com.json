@@ -1,6 +1,6 @@
 {
   "title": "倒计时",
-  "namespace": "mybricks.normal-pc.countdown",
+  "namespace": "mybricks.normal-h5.countdown",
   "version": "1.0.0",
   "rtType": "js",
   "description": "用于倒计时场景",
@@ -18,7 +18,10 @@
       "schema": {
         "type": "number"
       },
-      "rels": ["curTime", "timeOut"],
+      "rels": [
+        "curTime",
+        "timeOut"
+      ],
       "desc": "单位秒 输入需要是数字或者能转换成数字的字符 否则会是默认设置的静态时间"
     }
   ],

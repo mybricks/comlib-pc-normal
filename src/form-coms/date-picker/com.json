@@ -1,6 +1,6 @@
 {
   "title": "日期选择框",
-  "namespace": "mybricks.normal-pc.date-picker",
+  "namespace": "mybricks.normal-h5.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "version": "1.1.40",
@@ -164,7 +164,7 @@
                   "description": "可以是字符或者数组，例如 `TODAY`、`2024-07-17` 可用在>=; ['2024-07-16', '2024-07-28']可用在in、between；'Sat'、'Mon',  用在equal场景",
                   "type": "any"
                 },
-                "op":  {
+                "op": {
                   "type": "enum",
                   "title": "比较符号",
                   "description": "比较操作，例如，>、>=、<= 具体日期，以及in、notIn区间包含关系；equal、notEqual特定日期（周六日、季度一二）；between 日期区间；complex 用于复杂场景，value可取{relation: '&&', rules: []}",
@@ -212,15 +212,15 @@
                     {
                       "type": "string",
                       "value": "between"
-                    }, 
+                    },
                     {
                       "type": "string",
                       "value": "complex"
                     }
                   ]
-                }                   
+                }
               }
-            } 
+            }
           },
           "relation": {
             "type": "enum",
@@ -535,7 +535,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

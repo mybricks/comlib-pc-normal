@@ -30,13 +30,13 @@ export default {
           if (Array.isArray(newData)) {
             newData.forEach(item => {
               if (item.type === 'addItem') {
-                const id = slot.addCom(`mybricks.normal-pc.${item.namespace}`)
+                const id = slot.addCom(`mybricks.normal-h5.${item.namespace}`)
                 newItems.push({ id, ...item.config })
               }
             })
           } else {
             if (newData.type === 'addItem') {
-              const id = slot.addCom(`mybricks.normal-pc.${newData.namespace}`)
+              const id = slot.addCom(`mybricks.normal-h5.${newData.namespace}`)
               newItems.push({ id, ...newData.config })
             }
     
@@ -104,39 +104,39 @@ export default {
     布局说明：buttons单独为一列，总列数为表单项数+1
     例如：
     请回答：过滤表单
-    {type:'mybricks.normal-pc.form-container',buttons:[{type:'primary',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
+    {type:'mybricks.normal-h5.form-container',buttons:[{type:'primary',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
     请回答：过滤表单，包含一个输入框
     {
-      type:'mybricks.normal-pc.form-container',
+      type:'mybricks.normal-h5.form-container',
       buttons:[{type:'primary',title:'查询'}],
       layout: 'inline',
       formItemColumn: 4,
       slots:{
         content:[
-          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
+          {type:'mybricks.normal-h5.form-text', label: '输入框', name: 'name0'}
         ]
       }
     }
     请回答：一行排列表单
     {
-      type:'mybricks.normal-pc.form-container',
+      type:'mybricks.normal-h5.form-container',
       buttons:[{type:'primary',title:'查询'}],
       formItemColumn: 2,
       slots:{
         content:[
-          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
+          {type:'mybricks.normal-h5.form-text', label: '输入框', name: 'name0'}
         ]
       }
     }
     请回答：过滤表单，1行3列布局
     {
-      type:'mybricks.normal-pc.form-container',
+      type:'mybricks.normal-h5.form-container',
       buttons:[{type:'primary',title:'查询'}],
       layout: 'inline',
       formItemColumn: 3,
       slots:{
         content:[
-          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
+          {type:'mybricks.normal-h5.form-text', label: '输入框', name: 'name0'}
         ]
       }
     }

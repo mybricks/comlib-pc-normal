@@ -1,6 +1,6 @@
 {
   "title": "全局Loading",
-  "namespace": "mybricks.normal-pc.global-loading",
+  "namespace": "mybricks.normal-h5.global-loading",
   "version": "1.0.6",
   "rtType": "js",
   "description": "",
@@ -16,7 +16,9 @@
       "id": "open",
       "title": "打开",
       "desc": "开启全局loading",
-      "rels": ["finish"],
+      "rels": [
+        "finish"
+      ],
       "schema": {
         "type": "any"
       }

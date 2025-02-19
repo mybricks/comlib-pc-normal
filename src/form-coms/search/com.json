@@ -1,6 +1,6 @@
 {
   "title": "搜索框",
-  "namespace": "mybricks.normal-pc.search",
+  "namespace": "mybricks.normal-h5.search",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "version": "1.1.17",
@@ -110,7 +110,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["setAutoFocusDone"]
+      "rels": [
+        "setAutoFocusDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -292,7 +294,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

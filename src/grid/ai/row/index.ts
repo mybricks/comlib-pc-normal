@@ -22,7 +22,7 @@ export default {
             问：第一列添加文本和按钮
             答：{${JSON.stringify(
               ACTION_TYPE.ADD_COM
-            )}: [{ key: "column_0", slot: "slot_0", coms: ["mybricks.normal-pc.text", "mybricks.normal-pc.button"]}]}
+            )}: [{ key: "column_0", slot: "slot_0", coms: ["mybricks.normal-h5.text", "mybricks.normal-h5.button"]}]}
             `,
       execute(props) {
         try {

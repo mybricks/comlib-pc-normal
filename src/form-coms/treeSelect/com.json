@@ -1,6 +1,6 @@
 {
   "title": "树形选择",
-  "namespace": "mybricks.normal-pc.treeSelect",
+  "namespace": "mybricks.normal-h5.treeSelect",
   "version": "1.2.42",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
@@ -73,7 +73,7 @@
       "desc": "设置树选择的下拉选项列表",
       "schema": {
         "type": "array",
-        "description":"树形选择结构的下拉框列表数据",
+        "description": "树形选择结构的下拉框列表数据",
         "items": {
           "type": "object",
           "properties": {
@@ -309,7 +309,7 @@
       "desc": "树形选择的异步加载数据事件",
       "schema": {
         "type": "object",
-        "description":"异步加载数据，输出",
+        "description": "异步加载数据，输出",
         "properties": {
           "label": {
             "title": "标签",
@@ -354,7 +354,7 @@
       "id": "setOptionsDone",
       "title": "设置数据源完成",
       "schema": {
-        "description":"设置数据源完成后，输出数据源数据",
+        "description": "设置数据源完成后，输出数据源数据",
         "type": "array",
         "items": {
           "type": "object",
@@ -487,7 +487,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

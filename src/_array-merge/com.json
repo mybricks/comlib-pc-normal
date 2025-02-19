@@ -1,6 +1,6 @@
 {
     "title": "数组合并",
-    "namespace": "mybricks.normal-pc.array-merge",
+    "namespace": "mybricks.normal-h5.array-merge",
     "version": "1.0.1",
     "description": "数组合并",
     "author": "MyBricks",
@@ -10,35 +10,35 @@
     "editors": "./editors.ts",
     "rtType": "js",
     "inputs": [
-      {
-          "id": "input",
-          "title": "输入项",
-          "schema": [
-              {
-                  "name": "inputValue0",
-                  "title": "参数0",
-                  "type": "follow"
-              },
-              {
-                  "name": "inputValue1",
-                  "title": "参数1",
-                  "type": "follow"
-              }
-          ]
-      }
+        {
+            "id": "input",
+            "title": "输入项",
+            "schema": [
+                {
+                    "name": "inputValue0",
+                    "title": "参数0",
+                    "type": "follow"
+                },
+                {
+                    "name": "inputValue1",
+                    "title": "参数1",
+                    "type": "follow"
+                }
+            ]
+        }
     ],
     "outputs": [
-      {
-          "id": "output",
-          "title": "输出项",
-          "desc": "多输入合并为数组后的输出",
-          "schema": {
-              "type": "array",
-              "items": {
-                  "type": "any"
-              }
-          },
-          "editable": true
-      }
+        {
+            "id": "output",
+            "title": "输出项",
+            "desc": "多输入合并为数组后的输出",
+            "schema": {
+                "type": "array",
+                "items": {
+                    "type": "any"
+                }
+            },
+            "editable": true
+        }
     ]
 }

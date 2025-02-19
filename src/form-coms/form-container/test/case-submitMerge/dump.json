@@ -297,7 +297,9 @@
         "0": {
           "_F_": 0,
           "_0_": "u_JhU26",
-          "_1_": { "_R_": "1" },
+          "_1_": {
+            "_R_": "1"
+          },
           "_2_": 0.2,
           "_3_": {
             "_11_": {
@@ -308,7 +310,11 @@
                 "_61_": "export default function handleError({ error, response, config }, { throwError }) {\n  // 错误抛出时预处理数据，请注意：必须调用 throwError 抛出错误;\n  // config：请求入参；error：错误对象；response：响应原始对象；response.status：获取 HTTP 状态码，response.data：获取接口返回值\n  throwError(response.data.message || error.message || error);\n}\n"
               }
             },
-            "_12_": { "_27_": {}, "_28_": {}, "_0_": "u_i4fc7c1a8r" },
+            "_12_": {
+              "_27_": {},
+              "_28_": {},
+              "_0_": "u_i4fc7c1a8r"
+            },
             "_13_": {
               "_29_": "/mybricks-app-pcspa/public/i18n-example.json",
               "_30_": "",
@@ -322,7 +328,10 @@
               "_26_": {
                 "_59_": "export%20default%20function%20(%7B%20params%2C%20data%2C%20headers%2C%20url%2C%20method%20%7D)%20%7B%0A%20%20%2F%2F%20%E8%AE%BE%E7%BD%AE%E8%AF%B7%E6%B1%82query%E3%80%81%E8%AF%B7%E6%B1%82%E4%BD%93%E3%80%81%E8%AF%B7%E6%B1%82%E5%A4%B4%0A%20%20return%20%7B%20params%2C%20data%2C%20headers%2C%20url%2C%20method%20%7D%3B%0A%20%7D%0A",
                 "_60_": "export default function ({ response, config }) {\n  // if (response.code !== 0) {\n  //    throw new Error(response.errMsg)\n  // }\n  return response\n}\n",
-                "_62_": { "_68_": "", "_69_": "" }
+                "_62_": {
+                  "_68_": "",
+                  "_69_": ""
+                }
               }
             },
             "_15_": {
@@ -338,42 +347,102 @@
                       {
                         "_0_": "mybricks@theme",
                         "_122_": [
-                          { "_164_": "--mybricks-primary-color", "_39_": "#1890ff" },
-                          { "_164_": "--mybricks-primary-color-hover", "_39_": "#40a9ff" },
-                          { "_164_": "--mybricks-primary-color-active", "_39_": "#096dd9" },
+                          {
+                            "_164_": "--mybricks-primary-color",
+                            "_39_": "#1890ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-color-hover",
+                            "_39_": "#40a9ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-color-active",
+                            "_39_": "#096dd9"
+                          },
                           {
                             "_164_": "--mybricks-primary-color-outline",
                             "_39_": "rgba(24,144,255,0.2)"
                           },
-                          { "_164_": "--mybricks-primary-1", "_39_": "#e6f7ff" },
-                          { "_164_": "--mybricks-primary-2", "_39_": "#bae7ff" },
-                          { "_164_": "--mybricks-primary-3", "_39_": "#91d5ff" },
-                          { "_164_": "--mybricks-primary-4", "_39_": "#69c0ff" },
-                          { "_164_": "--mybricks-primary-5", "_39_": "#40a9ff" },
-                          { "_164_": "--mybricks-primary-6", "_39_": "#1890ff" },
-                          { "_164_": "--mybricks-primary-7", "_39_": "#096dd9" },
-                          { "_164_": "--mybricks-success-color", "_39_": "#52c41a" },
-                          { "_164_": "--mybricks-success-color-hover", "_39_": "#73d13d" },
-                          { "_164_": "--mybricks-success-color-active", "_39_": "#389e0d" },
+                          {
+                            "_164_": "--mybricks-primary-1",
+                            "_39_": "#e6f7ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-2",
+                            "_39_": "#bae7ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-3",
+                            "_39_": "#91d5ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-4",
+                            "_39_": "#69c0ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-5",
+                            "_39_": "#40a9ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-6",
+                            "_39_": "#1890ff"
+                          },
+                          {
+                            "_164_": "--mybricks-primary-7",
+                            "_39_": "#096dd9"
+                          },
+                          {
+                            "_164_": "--mybricks-success-color",
+                            "_39_": "#52c41a"
+                          },
+                          {
+                            "_164_": "--mybricks-success-color-hover",
+                            "_39_": "#73d13d"
+                          },
+                          {
+                            "_164_": "--mybricks-success-color-active",
+                            "_39_": "#389e0d"
+                          },
                           {
                             "_164_": "--mybricks-success-color-outline",
                             "_39_": "rgba(82,196,26,0.2)"
                           },
-                          { "_164_": "--mybricks-error-color", "_39_": "#ff4d4f" },
-                          { "_164_": "--mybricks-error-color-hover", "_39_": "#ff7875" },
-                          { "_164_": "--mybricks-error-color-active", "_39_": "#d9363e" },
+                          {
+                            "_164_": "--mybricks-error-color",
+                            "_39_": "#ff4d4f"
+                          },
+                          {
+                            "_164_": "--mybricks-error-color-hover",
+                            "_39_": "#ff7875"
+                          },
+                          {
+                            "_164_": "--mybricks-error-color-active",
+                            "_39_": "#d9363e"
+                          },
                           {
                             "_164_": "--mybricks-error-color-outline",
                             "_39_": "rgba(255,77,79,0.2)"
                           },
-                          { "_164_": "--mybricks-warning-color", "_39_": "#faad14" },
-                          { "_164_": "--mybricks-warning-color-hover", "_39_": "#ffc53d" },
-                          { "_164_": "--mybricks-warning-color-active", "_39_": "#d48806" },
+                          {
+                            "_164_": "--mybricks-warning-color",
+                            "_39_": "#faad14"
+                          },
+                          {
+                            "_164_": "--mybricks-warning-color-hover",
+                            "_39_": "#ffc53d"
+                          },
+                          {
+                            "_164_": "--mybricks-warning-color-active",
+                            "_39_": "#d48806"
+                          },
                           {
                             "_164_": "--mybricks-warning-color-outline",
                             "_39_": "rgba(250,173,20,0.2)"
                           },
-                          { "_164_": "--mybricks-info-color", "_39_": "#1890ff" }
+                          {
+                            "_164_": "--mybricks-info-color",
+                            "_39_": "#1890ff"
+                          }
                         ]
                       },
                       {
@@ -395,13 +464,34 @@
                             "_164_": "--ant-primary-color-outline",
                             "_39_": "var(--mybricks-primary-color-outline)"
                           },
-                          { "_164_": "--ant-primary-1", "_39_": "var(--mybricks-primary-1)" },
-                          { "_164_": "--ant-primary-2", "_39_": "var(--mybricks-primary-2)" },
-                          { "_164_": "--ant-primary-3", "_39_": "var(--mybricks-primary-3)" },
-                          { "_164_": "--ant-primary-4", "_39_": "var(--mybricks-primary-4)" },
-                          { "_164_": "--ant-primary-5", "_39_": "var(--mybricks-primary-5)" },
-                          { "_164_": "--ant-primary-6", "_39_": "var(--mybricks-primary-6)" },
-                          { "_164_": "--ant-primary-7", "_39_": "var(--mybricks-primary-7)" },
+                          {
+                            "_164_": "--ant-primary-1",
+                            "_39_": "var(--mybricks-primary-1)"
+                          },
+                          {
+                            "_164_": "--ant-primary-2",
+                            "_39_": "var(--mybricks-primary-2)"
+                          },
+                          {
+                            "_164_": "--ant-primary-3",
+                            "_39_": "var(--mybricks-primary-3)"
+                          },
+                          {
+                            "_164_": "--ant-primary-4",
+                            "_39_": "var(--mybricks-primary-4)"
+                          },
+                          {
+                            "_164_": "--ant-primary-5",
+                            "_39_": "var(--mybricks-primary-5)"
+                          },
+                          {
+                            "_164_": "--ant-primary-6",
+                            "_39_": "var(--mybricks-primary-6)"
+                          },
+                          {
+                            "_164_": "--ant-primary-7",
+                            "_39_": "var(--mybricks-primary-7)"
+                          },
                           {
                             "_164_": "--ant-primary-color-deprecated-l-35",
                             "_39_": "var(--mybricks-primary-color-deprecated-l-35)"
@@ -454,7 +544,10 @@
                             "_164_": "--ant-success-color-deprecated-border",
                             "_39_": "var(--mybricks-success-color-deprecated-border)"
                           },
-                          { "_164_": "--ant-error-color", "_39_": "var(--mybricks-error-color)" },
+                          {
+                            "_164_": "--ant-error-color",
+                            "_39_": "var(--mybricks-error-color)"
+                          },
                           {
                             "_164_": "--ant-error-color-hover",
                             "_39_": "var(--mybricks-error-color-hover)"
@@ -499,7 +592,10 @@
                             "_164_": "--ant-warning-color-deprecated-border",
                             "_39_": "var(--mybricks-warning-color-deprecated-border)"
                           },
-                          { "_164_": "--ant-info-color", "_39_": "var(--mybricks-info-color)" },
+                          {
+                            "_164_": "--ant-info-color",
+                            "_39_": "var(--mybricks-info-color)"
+                          },
                           {
                             "_164_": "--ant-info-color-deprecated-bg",
                             "_39_": "var(--mybricks-info-color-deprecated-bg)"
@@ -514,22 +610,33 @@
                           }
                         ]
                       },
-                      { "_0_": "custom@theme", "_122_": [] }
+                      {
+                        "_0_": "custom@theme",
+                        "_122_": []
+                      }
                     ]
                   }
                 }
               ]
             },
             "_16_": {},
-            "_17_": { "_37_": [] },
+            "_17_": {
+              "_37_": []
+            },
             "_18_": {}
           },
           "_4_": {},
           "_5_": 90,
           "_6_": {},
           "_7_": [
-            { "_38_": "--ant-primary-color", "_39_": "var(--mybricks-primary-color)" },
-            { "_38_": "--ant-primary-color-hover", "_39_": "var(--mybricks-primary-color-hover)" },
+            {
+              "_38_": "--ant-primary-color",
+              "_39_": "var(--mybricks-primary-color)"
+            },
+            {
+              "_38_": "--ant-primary-color-hover",
+              "_39_": "var(--mybricks-primary-color-hover)"
+            },
             {
               "_38_": "--ant-primary-color-active",
               "_39_": "var(--mybricks-primary-color-active)"
@@ -538,13 +645,34 @@
               "_38_": "--ant-primary-color-outline",
               "_39_": "var(--mybricks-primary-color-outline)"
             },
-            { "_38_": "--ant-primary-1", "_39_": "var(--mybricks-primary-1)" },
-            { "_38_": "--ant-primary-2", "_39_": "var(--mybricks-primary-2)" },
-            { "_38_": "--ant-primary-3", "_39_": "var(--mybricks-primary-3)" },
-            { "_38_": "--ant-primary-4", "_39_": "var(--mybricks-primary-4)" },
-            { "_38_": "--ant-primary-5", "_39_": "var(--mybricks-primary-5)" },
-            { "_38_": "--ant-primary-6", "_39_": "var(--mybricks-primary-6)" },
-            { "_38_": "--ant-primary-7", "_39_": "var(--mybricks-primary-7)" },
+            {
+              "_38_": "--ant-primary-1",
+              "_39_": "var(--mybricks-primary-1)"
+            },
+            {
+              "_38_": "--ant-primary-2",
+              "_39_": "var(--mybricks-primary-2)"
+            },
+            {
+              "_38_": "--ant-primary-3",
+              "_39_": "var(--mybricks-primary-3)"
+            },
+            {
+              "_38_": "--ant-primary-4",
+              "_39_": "var(--mybricks-primary-4)"
+            },
+            {
+              "_38_": "--ant-primary-5",
+              "_39_": "var(--mybricks-primary-5)"
+            },
+            {
+              "_38_": "--ant-primary-6",
+              "_39_": "var(--mybricks-primary-6)"
+            },
+            {
+              "_38_": "--ant-primary-7",
+              "_39_": "var(--mybricks-primary-7)"
+            },
             {
               "_38_": "--ant-primary-color-deprecated-l-35",
               "_39_": "var(--mybricks-primary-color-deprecated-l-35)"
@@ -573,8 +701,14 @@
               "_38_": "--ant-primary-color-active-deprecated-d-02",
               "_39_": "var(--mybricks-primary-color-active-deprecated-d-02)"
             },
-            { "_38_": "--ant-success-color", "_39_": "var(--mybricks-success-color)" },
-            { "_38_": "--ant-success-color-hover", "_39_": "var(--mybricks-success-color-hover)" },
+            {
+              "_38_": "--ant-success-color",
+              "_39_": "var(--mybricks-success-color)"
+            },
+            {
+              "_38_": "--ant-success-color-hover",
+              "_39_": "var(--mybricks-success-color-hover)"
+            },
             {
               "_38_": "--ant-success-color-active",
               "_39_": "var(--mybricks-success-color-active)"
@@ -591,10 +725,22 @@
               "_38_": "--ant-success-color-deprecated-border",
               "_39_": "var(--mybricks-success-color-deprecated-border)"
             },
-            { "_38_": "--ant-error-color", "_39_": "var(--mybricks-error-color)" },
-            { "_38_": "--ant-error-color-hover", "_39_": "var(--mybricks-error-color-hover)" },
-            { "_38_": "--ant-error-color-active", "_39_": "var(--mybricks-error-color-active)" },
-            { "_38_": "--ant-error-color-outline", "_39_": "var(--mybricks-error-color-outline)" },
+            {
+              "_38_": "--ant-error-color",
+              "_39_": "var(--mybricks-error-color)"
+            },
+            {
+              "_38_": "--ant-error-color-hover",
+              "_39_": "var(--mybricks-error-color-hover)"
+            },
+            {
+              "_38_": "--ant-error-color-active",
+              "_39_": "var(--mybricks-error-color-active)"
+            },
+            {
+              "_38_": "--ant-error-color-outline",
+              "_39_": "var(--mybricks-error-color-outline)"
+            },
             {
               "_38_": "--ant-error-color-deprecated-bg",
               "_39_": "var(--mybricks-error-color-deprecated-bg)"
@@ -603,8 +749,14 @@
               "_38_": "--ant-error-color-deprecated-border",
               "_39_": "var(--mybricks-error-color-deprecated-border)"
             },
-            { "_38_": "--ant-warning-color", "_39_": "var(--mybricks-warning-color)" },
-            { "_38_": "--ant-warning-color-hover", "_39_": "var(--mybricks-warning-color-hover)" },
+            {
+              "_38_": "--ant-warning-color",
+              "_39_": "var(--mybricks-warning-color)"
+            },
+            {
+              "_38_": "--ant-warning-color-hover",
+              "_39_": "var(--mybricks-warning-color-hover)"
+            },
             {
               "_38_": "--ant-warning-color-active",
               "_39_": "var(--mybricks-warning-color-active)"
@@ -621,7 +773,10 @@
               "_38_": "--ant-warning-color-deprecated-border",
               "_39_": "var(--mybricks-warning-color-deprecated-border)"
             },
-            { "_38_": "--ant-info-color", "_39_": "var(--mybricks-info-color)" },
+            {
+              "_38_": "--ant-info-color",
+              "_39_": "var(--mybricks-info-color)"
+            },
             {
               "_38_": "--ant-info-color-deprecated-bg",
               "_39_": "var(--mybricks-info-color-deprecated-bg)"
@@ -630,67 +785,201 @@
               "_38_": "--ant-info-color-deprecated-border",
               "_39_": "var(--mybricks-info-color-deprecated-border)"
             },
-            { "_38_": "--antd-wave-shadow-color", "_39_": "var(--ant-primary-color)" },
-            { "_38_": "--mybricks-primary-color", "_39_": "#1890ff" },
-            { "_38_": "--mybricks-primary-color-hover", "_39_": "#40a9ff" },
-            { "_38_": "--mybricks-primary-color-active", "_39_": "#096dd9" },
-            { "_38_": "--mybricks-primary-color-outline", "_39_": "rgba(24,144,255,0.2)" },
-            { "_38_": "--mybricks-primary-1", "_39_": "#e6f7ff" },
-            { "_38_": "--mybricks-primary-2", "_39_": "#bae7ff" },
-            { "_38_": "--mybricks-primary-3", "_39_": "#91d5ff" },
-            { "_38_": "--mybricks-primary-4", "_39_": "#69c0ff" },
-            { "_38_": "--mybricks-primary-5", "_39_": "#40a9ff" },
-            { "_38_": "--mybricks-primary-6", "_39_": "#1890ff" },
-            { "_38_": "--mybricks-primary-7", "_39_": "#096dd9" },
-            { "_38_": "--mybricks-success-color", "_39_": "#52c41a" },
-            { "_38_": "--mybricks-success-color-hover", "_39_": "#73d13d" },
-            { "_38_": "--mybricks-success-color-active", "_39_": "#389e0d" },
-            { "_38_": "--mybricks-success-color-outline", "_39_": "rgba(82,196,26,0.2)" },
-            { "_38_": "--mybricks-error-color", "_39_": "#ff4d4f" },
-            { "_38_": "--mybricks-error-color-hover", "_39_": "#ff7875" },
-            { "_38_": "--mybricks-error-color-active", "_39_": "#d9363e" },
-            { "_38_": "--mybricks-error-color-outline", "_39_": "rgba(255,77,79,0.2)" },
-            { "_38_": "--mybricks-warning-color", "_39_": "#faad14" },
-            { "_38_": "--mybricks-warning-color-hover", "_39_": "#ffc53d" },
-            { "_38_": "--mybricks-warning-color-active", "_39_": "#d48806" },
-            { "_38_": "--mybricks-warning-color-outline", "_39_": "rgba(250,173,20,0.2)" },
-            { "_38_": "--mybricks-info-color", "_39_": "#1890ff" },
-            { "_38_": "--mybricks-primary-color-deprecated-l-35", "_39_": "#cbe6ff" },
-            { "_38_": "--mybricks-primary-color-deprecated-l-20", "_39_": "#7ec1ff" },
-            { "_38_": "--mybricks-primary-color-deprecated-t-20", "_39_": "#46a6ff" },
-            { "_38_": "--mybricks-primary-color-deprecated-t-50", "_39_": "#8cc8ff" },
-            { "_38_": "--mybricks-primary-color-deprecated-f-12", "_39_": "rgba(24,144,255,0.12)" },
+            {
+              "_38_": "--antd-wave-shadow-color",
+              "_39_": "var(--ant-primary-color)"
+            },
+            {
+              "_38_": "--mybricks-primary-color",
+              "_39_": "#1890ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-hover",
+              "_39_": "#40a9ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-active",
+              "_39_": "#096dd9"
+            },
+            {
+              "_38_": "--mybricks-primary-color-outline",
+              "_39_": "rgba(24,144,255,0.2)"
+            },
+            {
+              "_38_": "--mybricks-primary-1",
+              "_39_": "#e6f7ff"
+            },
+            {
+              "_38_": "--mybricks-primary-2",
+              "_39_": "#bae7ff"
+            },
+            {
+              "_38_": "--mybricks-primary-3",
+              "_39_": "#91d5ff"
+            },
+            {
+              "_38_": "--mybricks-primary-4",
+              "_39_": "#69c0ff"
+            },
+            {
+              "_38_": "--mybricks-primary-5",
+              "_39_": "#40a9ff"
+            },
+            {
+              "_38_": "--mybricks-primary-6",
+              "_39_": "#1890ff"
+            },
+            {
+              "_38_": "--mybricks-primary-7",
+              "_39_": "#096dd9"
+            },
+            {
+              "_38_": "--mybricks-success-color",
+              "_39_": "#52c41a"
+            },
+            {
+              "_38_": "--mybricks-success-color-hover",
+              "_39_": "#73d13d"
+            },
+            {
+              "_38_": "--mybricks-success-color-active",
+              "_39_": "#389e0d"
+            },
+            {
+              "_38_": "--mybricks-success-color-outline",
+              "_39_": "rgba(82,196,26,0.2)"
+            },
+            {
+              "_38_": "--mybricks-error-color",
+              "_39_": "#ff4d4f"
+            },
+            {
+              "_38_": "--mybricks-error-color-hover",
+              "_39_": "#ff7875"
+            },
+            {
+              "_38_": "--mybricks-error-color-active",
+              "_39_": "#d9363e"
+            },
+            {
+              "_38_": "--mybricks-error-color-outline",
+              "_39_": "rgba(255,77,79,0.2)"
+            },
+            {
+              "_38_": "--mybricks-warning-color",
+              "_39_": "#faad14"
+            },
+            {
+              "_38_": "--mybricks-warning-color-hover",
+              "_39_": "#ffc53d"
+            },
+            {
+              "_38_": "--mybricks-warning-color-active",
+              "_39_": "#d48806"
+            },
+            {
+              "_38_": "--mybricks-warning-color-outline",
+              "_39_": "rgba(250,173,20,0.2)"
+            },
+            {
+              "_38_": "--mybricks-info-color",
+              "_39_": "#1890ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-deprecated-l-35",
+              "_39_": "#cbe6ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-deprecated-l-20",
+              "_39_": "#7ec1ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-deprecated-t-20",
+              "_39_": "#46a6ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-deprecated-t-50",
+              "_39_": "#8cc8ff"
+            },
+            {
+              "_38_": "--mybricks-primary-color-deprecated-f-12",
+              "_39_": "rgba(24,144,255,0.12)"
+            },
             {
               "_38_": "--mybricks-primary-color-active-deprecated-f-30",
               "_39_": "rgba(230,247,255,0.3)"
             },
-            { "_38_": "--mybricks-primary-color-active-deprecated-d-02", "_39_": "#dcf4ff" },
-            { "_38_": "--mybricks-success-color-deprecated-bg", "_39_": "#f6ffed" },
-            { "_38_": "--mybricks-success-color-deprecated-border", "_39_": "#b7eb8f" },
-            { "_38_": "--mybricks-error-color-deprecated-bg", "_39_": "#fff2f0" },
-            { "_38_": "--mybricks-error-color-deprecated-border", "_39_": "#ffccc7" },
-            { "_38_": "--mybricks-warning-color-deprecated-bg", "_39_": "#fffbe6" },
-            { "_38_": "--mybricks-warning-color-deprecated-border", "_39_": "#ffe58f" },
-            { "_38_": "--mybricks-info-color-deprecated-bg", "_39_": "#e6f7ff" },
-            { "_38_": "--mybricks-info-color-deprecated-border", "_39_": "#91d5ff" }
+            {
+              "_38_": "--mybricks-primary-color-active-deprecated-d-02",
+              "_39_": "#dcf4ff"
+            },
+            {
+              "_38_": "--mybricks-success-color-deprecated-bg",
+              "_39_": "#f6ffed"
+            },
+            {
+              "_38_": "--mybricks-success-color-deprecated-border",
+              "_39_": "#b7eb8f"
+            },
+            {
+              "_38_": "--mybricks-error-color-deprecated-bg",
+              "_39_": "#fff2f0"
+            },
+            {
+              "_38_": "--mybricks-error-color-deprecated-border",
+              "_39_": "#ffccc7"
+            },
+            {
+              "_38_": "--mybricks-warning-color-deprecated-bg",
+              "_39_": "#fffbe6"
+            },
+            {
+              "_38_": "--mybricks-warning-color-deprecated-border",
+              "_39_": "#ffe58f"
+            },
+            {
+              "_38_": "--mybricks-info-color-deprecated-bg",
+              "_39_": "#e6f7ff"
+            },
+            {
+              "_38_": "--mybricks-info-color-deprecated-border",
+              "_39_": "#91d5ff"
+            }
           ],
-          "_8_": { "_19_": { "_R_": "2" }, "_20_": { "_R_": "3" } },
+          "_8_": {
+            "_19_": {
+              "_R_": "2"
+            },
+            "_20_": {
+              "_R_": "3"
+            }
+          },
           "_9_": 683,
           "_10_": {
             "_21_": "_main_",
             "_22_": "主模块",
-            "_23_": { "_R_": "4" },
-            "_24_": { "_R_": "5" }
+            "_23_": {
+              "_R_": "4"
+            },
+            "_24_": {
+              "_R_": "5"
+            }
           }
         },
-        "1": { "_F_": 1 },
+        "1": {
+          "_F_": 1
+        },
         "2": {
           "_F_": 2,
           "_0_": "u_Mw8kJ",
-          "_1_": { "_R_": "6" },
+          "_1_": {
+            "_R_": "6"
+          },
           "_40_": false,
           "_41_": "normal",
-          "_42_": ["geoView"],
+          "_42_": [
+            "geoView"
+          ],
           "_43_": false,
           "_44_": "auto",
           "_45_": "auto"
@@ -698,10 +987,14 @@
         "3": {
           "_F_": 2,
           "_0_": "u_TEEXA",
-          "_1_": { "_R_": "7" },
+          "_1_": {
+            "_R_": "7"
+          },
           "_40_": false,
           "_41_": "normal",
-          "_42_": ["toplView"],
+          "_42_": [
+            "toplView"
+          ],
           "_43_": true,
           "_46_": 484,
           "_44_": 484,
@@ -710,10 +1003,18 @@
         "4": {
           "_F_": 3,
           "_0_": "u_D92g_",
-          "_1_": { "_R_": "8" },
+          "_1_": {
+            "_R_": "8"
+          },
           "_38_": "geo",
-          "_47_": { "_R_": "9" },
-          "_48_": [{ "_R_": "11" }],
+          "_47_": {
+            "_R_": "9"
+          },
+          "_48_": [
+            {
+              "_R_": "11"
+            }
+          ],
           "_49_": [],
           "_50_": true,
           "_51_": "pc",
@@ -722,19 +1023,34 @@
         "5": {
           "_F_": 4,
           "_0_": "u_fU3oX",
-          "_1_": { "_R_": "10" },
+          "_1_": {
+            "_R_": "10"
+          },
           "_38_": "topl",
-          "_53_": [{ "_R_": "12" }],
+          "_53_": [
+            {
+              "_R_": "12"
+            }
+          ],
           "_54_": [],
           "_55_": [],
           "_56_": [],
-          "_47_": { "_67_": 150, "_19_": 150 },
+          "_47_": {
+            "_67_": 150,
+            "_19_": 150
+          },
           "_57_": "ui",
           "_58_": "u_YT_Gi"
         },
-        "6": { "_F_": 1 },
-        "7": { "_F_": 1 },
-        "8": { "_F_": 1 },
+        "6": {
+          "_F_": 1
+        },
+        "7": {
+          "_F_": 1
+        },
+        "8": {
+          "_F_": 1
+        },
         "9": {
           "_F_": 5,
           "_63_": 1,
@@ -745,13 +1061,26 @@
           "_67_": 365,
           "_19_": -1
         },
-        "10": { "_F_": 1 },
+        "10": {
+          "_F_": 1
+        },
         "11": {
           "_F_": 6,
           "_0_": "u_nia3u",
-          "_1_": { "_R_": "13" },
-          "_55_": [{ "_R_": "16" }, { "_R_": "17" }],
-          "_47_": { "_R_": "14" },
+          "_1_": {
+            "_R_": "13"
+          },
+          "_55_": [
+            {
+              "_R_": "16"
+            },
+            {
+              "_R_": "17"
+            }
+          ],
+          "_47_": {
+            "_R_": "14"
+          },
           "_48_": [],
           "_22_": "主场景",
           "_73_": [
@@ -762,7 +1091,10 @@
                   "_87_": "com",
                   "_0_": "u__lpyv",
                   "_38_": "u_MQnDG",
-                  "_125_": { "_70_": "mybricks.normal-pc.toolbar", "_71_": "1.0.38" },
+                  "_125_": {
+                    "_70_": "mybricks.normal-h5.toolbar",
+                    "_71_": "1.0.38"
+                  },
                   "_22_": "工具条",
                   "_47_": {
                     "_169_": "block",
@@ -787,7 +1119,10 @@
                   "_87_": "com",
                   "_0_": "u_2VUsA",
                   "_38_": "u_MbYo5",
-                  "_125_": { "_70_": "mybricks.normal-pc.form-container", "_71_": "1.4.79" },
+                  "_125_": {
+                    "_70_": "mybricks.normal-h5.form-container",
+                    "_71_": "1.4.79"
+                  },
                   "_22_": "表单容器",
                   "_47_": {
                     "_169_": "block",
@@ -808,27 +1143,61 @@
         "12": {
           "_F_": 7,
           "_0_": "u_nia3u",
-          "_1_": { "_R_": "15" },
+          "_1_": {
+            "_R_": "15"
+          },
           "_75_": 0,
           "_76_": 0,
-          "_47_": { "_67_": null, "_19_": null },
+          "_47_": {
+            "_67_": null,
+            "_19_": null
+          },
           "_77_": true,
           "_78_": true,
           "_79_": [],
-          "_80_": [{ "_R_": "18" }],
+          "_80_": [
+            {
+              "_R_": "18"
+            }
+          ],
           "_81_": [],
           "_82_": [],
           "_83_": [],
           "_84_": [],
           "_85_": [],
-          "_55_": [{ "_R_": "19" }, { "_R_": "20" }, { "_R_": "21" }, { "_R_": "22" }],
-          "_56_": [{ "_R_": "23" }, { "_R_": "24" }],
-          "_86_": { "_93_": 0, "_94_": 100 },
+          "_55_": [
+            {
+              "_R_": "19"
+            },
+            {
+              "_R_": "20"
+            },
+            {
+              "_R_": "21"
+            },
+            {
+              "_R_": "22"
+            }
+          ],
+          "_56_": [
+            {
+              "_R_": "23"
+            },
+            {
+              "_R_": "24"
+            }
+          ],
+          "_86_": {
+            "_93_": 0,
+            "_94_": 100
+          },
           "_22_": "页面",
           "_87_": "normal",
           "_88_": true
         },
-        "13": { "_F_": 1 },
+        "13": {
+          "_F_": 1
+        },
         "14": {
           "_F_": 5,
           "_63_": 1,
@@ -840,28 +1209,48 @@
           "_91_": 1024,
           "_92_": 800
         },
-        "15": { "_F_": 1 },
+        "15": {
+          "_F_": 1
+        },
         "16": {
           "_F_": 8,
-          "_1_": { "_R_": "25" },
+          "_1_": {
+            "_R_": "25"
+          },
           "_95_": true,
           "_38_": "u_MQnDG",
-          "_96_": { "_R_": "26" },
-          "_97_": { "_R_": "11" }
+          "_96_": {
+            "_R_": "26"
+          },
+          "_97_": {
+            "_R_": "11"
+          }
         },
         "17": {
           "_F_": 8,
-          "_1_": { "_R_": "27" },
+          "_1_": {
+            "_R_": "27"
+          },
           "_95_": true,
           "_38_": "u_MbYo5",
-          "_96_": { "_R_": "28" },
-          "_48_": [{ "_R_": "39" }],
-          "_97_": { "_R_": "11" }
+          "_96_": {
+            "_R_": "28"
+          },
+          "_48_": [
+            {
+              "_R_": "39"
+            }
+          ],
+          "_97_": {
+            "_R_": "11"
+          }
         },
         "18": {
           "_F_": 9,
           "_0_": "open",
-          "_1_": { "_R_": "29" },
+          "_1_": {
+            "_R_": "29"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -870,166 +1259,394 @@
           "_100_": "inner-output",
           "_101_": "open",
           "_22_": "打开",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "12" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "12"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "19": {
           "_F_": 10,
-          "_1_": { "_R_": "30" },
+          "_1_": {
+            "_R_": "30"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 0, "_45_": 0, "_67_": 240, "_19_": 70 },
+          "_47_": {
+            "_66_": 0,
+            "_45_": 0,
+            "_67_": 240,
+            "_19_": 70
+          },
           "_103_": {},
           "_104_": [],
           "_81_": [],
           "_80_": [],
           "_105_": [],
-          "_106_": [{ "_R_": "40" }, { "_R_": "41" }, { "_R_": "42" }, { "_R_": "43" }],
+          "_106_": [
+            {
+              "_R_": "40"
+            },
+            {
+              "_R_": "41"
+            },
+            {
+              "_R_": "42"
+            },
+            {
+              "_R_": "43"
+            }
+          ],
           "_83_": [],
-          "_82_": [{ "_R_": "44" }, { "_R_": "45" }],
+          "_82_": [
+            {
+              "_R_": "44"
+            },
+            {
+              "_R_": "45"
+            }
+          ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
           "_38_": "u_MQnDG",
-          "_96_": { "_R_": "26" },
-          "_97_": { "_R_": "12" }
+          "_96_": {
+            "_R_": "26"
+          },
+          "_97_": {
+            "_R_": "12"
+          }
         },
         "20": {
           "_F_": 10,
-          "_1_": { "_R_": "31" },
+          "_1_": {
+            "_R_": "31"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 0, "_45_": 0, "_67_": 230, "_19_": 240 },
+          "_47_": {
+            "_66_": 0,
+            "_45_": 0,
+            "_67_": 230,
+            "_19_": 240
+          },
           "_103_": {},
           "_104_": [],
-          "_81_": [{ "_R_": "46" }, { "_R_": "47" }, { "_R_": "48" }],
+          "_81_": [
+            {
+              "_R_": "46"
+            },
+            {
+              "_R_": "47"
+            },
+            {
+              "_R_": "48"
+            }
+          ],
           "_80_": [
-            { "_R_": "49" },
-            { "_R_": "50" },
-            { "_R_": "51" },
-            { "_R_": "52" },
-            { "_R_": "53" },
-            { "_R_": "54" },
-            { "_R_": "55" },
-            { "_R_": "56" },
-            { "_R_": "57" },
-            { "_R_": "58" },
-            { "_R_": "59" },
-            { "_R_": "60" }
+            {
+              "_R_": "49"
+            },
+            {
+              "_R_": "50"
+            },
+            {
+              "_R_": "51"
+            },
+            {
+              "_R_": "52"
+            },
+            {
+              "_R_": "53"
+            },
+            {
+              "_R_": "54"
+            },
+            {
+              "_R_": "55"
+            },
+            {
+              "_R_": "56"
+            },
+            {
+              "_R_": "57"
+            },
+            {
+              "_R_": "58"
+            },
+            {
+              "_R_": "59"
+            },
+            {
+              "_R_": "60"
+            }
           ],
           "_105_": [],
-          "_106_": [{ "_R_": "61" }, { "_R_": "62" }, { "_R_": "63" }, { "_R_": "64" }],
+          "_106_": [
+            {
+              "_R_": "61"
+            },
+            {
+              "_R_": "62"
+            },
+            {
+              "_R_": "63"
+            },
+            {
+              "_R_": "64"
+            }
+          ],
           "_83_": [],
           "_82_": [
-            { "_R_": "65" },
-            { "_R_": "66" },
-            { "_R_": "67" },
-            { "_R_": "68" },
-            { "_R_": "69" },
-            { "_R_": "70" },
-            { "_R_": "71" },
-            { "_R_": "72" },
-            { "_R_": "73" },
-            { "_R_": "74" },
-            { "_R_": "75" },
-            { "_R_": "76" },
-            { "_R_": "77" },
-            { "_R_": "78" },
-            { "_R_": "79" },
-            { "_R_": "80" },
-            { "_R_": "81" },
-            { "_R_": "82" }
+            {
+              "_R_": "65"
+            },
+            {
+              "_R_": "66"
+            },
+            {
+              "_R_": "67"
+            },
+            {
+              "_R_": "68"
+            },
+            {
+              "_R_": "69"
+            },
+            {
+              "_R_": "70"
+            },
+            {
+              "_R_": "71"
+            },
+            {
+              "_R_": "72"
+            },
+            {
+              "_R_": "73"
+            },
+            {
+              "_R_": "74"
+            },
+            {
+              "_R_": "75"
+            },
+            {
+              "_R_": "76"
+            },
+            {
+              "_R_": "77"
+            },
+            {
+              "_R_": "78"
+            },
+            {
+              "_R_": "79"
+            },
+            {
+              "_R_": "80"
+            },
+            {
+              "_R_": "81"
+            },
+            {
+              "_R_": "82"
+            }
           ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
           "_38_": "u_MbYo5",
-          "_96_": { "_R_": "28" },
-          "_53_": [{ "_R_": "83" }],
-          "_97_": { "_R_": "12" }
+          "_96_": {
+            "_R_": "28"
+          },
+          "_53_": [
+            {
+              "_R_": "83"
+            }
+          ],
+          "_97_": {
+            "_R_": "12"
+          }
         },
         "21": {
           "_F_": 10,
-          "_1_": { "_R_": "32" },
+          "_1_": {
+            "_R_": "32"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 115.330078125, "_45_": 25, "_67_": 200, "_19_": 40 },
+          "_47_": {
+            "_66_": 115.330078125,
+            "_45_": 25,
+            "_67_": 200,
+            "_19_": 40
+          },
           "_103_": {},
           "_104_": [],
           "_81_": [],
-          "_80_": [{ "_R_": "84" }],
+          "_80_": [
+            {
+              "_R_": "84"
+            }
+          ],
           "_105_": [],
           "_106_": [],
           "_83_": [],
-          "_82_": [{ "_R_": "85" }],
+          "_82_": [
+            {
+              "_R_": "85"
+            }
+          ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
           "_38_": "u_4TJC4",
-          "_96_": { "_R_": "33" },
-          "_97_": { "_R_": "12" },
-          "_110_": { "_R_": "24" }
+          "_96_": {
+            "_R_": "33"
+          },
+          "_97_": {
+            "_R_": "12"
+          },
+          "_110_": {
+            "_R_": "24"
+          }
         },
         "22": {
           "_F_": 10,
-          "_1_": { "_R_": "34" },
+          "_1_": {
+            "_R_": "34"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 113.66015625, "_45_": 25, "_67_": 710, "_19_": 50 },
+          "_47_": {
+            "_66_": 113.66015625,
+            "_45_": 25,
+            "_67_": 710,
+            "_19_": 50
+          },
           "_103_": {},
           "_104_": [],
           "_81_": [],
-          "_80_": [{ "_R_": "86" }],
+          "_80_": [
+            {
+              "_R_": "86"
+            }
+          ],
           "_105_": [],
           "_106_": [],
           "_83_": [],
-          "_82_": [{ "_R_": "87" }],
+          "_82_": [
+            {
+              "_R_": "87"
+            }
+          ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
           "_38_": "u_ddl1Z",
-          "_96_": { "_R_": "35" },
-          "_97_": { "_R_": "12" },
-          "_110_": { "_R_": "24" }
+          "_96_": {
+            "_R_": "35"
+          },
+          "_97_": {
+            "_R_": "12"
+          },
+          "_110_": {
+            "_R_": "24"
+          }
         },
         "23": {
           "_F_": 11,
           "_0_": "u_Xp0r_",
-          "_1_": { "_R_": "36" },
+          "_1_": {
+            "_R_": "36"
+          },
           "_55_": [],
           "_82_": [],
           "_85_": [],
           "_99_": [],
           "_112_": [],
-          "_47_": { "_129_": false, "_67_": null, "_19_": null, "_45_": 400, "_66_": 700 },
-          "_97_": { "_R_": "12" },
+          "_47_": {
+            "_129_": false,
+            "_67_": null,
+            "_19_": null,
+            "_45_": 400,
+            "_66_": 700
+          },
+          "_97_": {
+            "_R_": "12"
+          },
           "_113_": "页面",
           "_114_": 1723714542424,
           "_115_": true,
           "_116_": true,
-          "_117_": { "_121_": true },
+          "_117_": {
+            "_121_": true
+          },
           "_22_": "页面"
         },
         "24": {
           "_F_": 11,
           "_0_": "u_YT_Gi",
-          "_1_": { "_R_": "37" },
-          "_55_": [{ "_R_": "38" }, { "_R_": "88" }, { "_R_": "21" }, { "_R_": "22" }],
+          "_1_": {
+            "_R_": "37"
+          },
+          "_55_": [
+            {
+              "_R_": "38"
+            },
+            {
+              "_R_": "88"
+            },
+            {
+              "_R_": "21"
+            },
+            {
+              "_R_": "22"
+            }
+          ],
           "_82_": [],
           "_85_": [],
-          "_99_": [{ "_R_": "89" }, { "_R_": "90" }, { "_R_": "91" }],
+          "_99_": [
+            {
+              "_R_": "89"
+            },
+            {
+              "_R_": "90"
+            },
+            {
+              "_R_": "91"
+            }
+          ],
           "_112_": [],
-          "_47_": { "_129_": true, "_67_": null, "_19_": 450, "_45_": 400, "_66_": 936 },
-          "_97_": { "_R_": "12" },
-          "_119_": { "_R_": "38" },
+          "_47_": {
+            "_129_": true,
+            "_67_": null,
+            "_19_": 450,
+            "_45_": 400,
+            "_66_": 936
+          },
+          "_97_": {
+            "_R_": "12"
+          },
+          "_119_": {
+            "_R_": "38"
+          },
           "_113_": "工具条 > 单击按钮0",
           "_114_": 1723714559026,
           "_120_": 1723714930592,
-          "_117_": { "_121_": true },
+          "_117_": {
+            "_121_": true
+          },
           "_22_": "工具条 > 单击按钮0"
         },
-        "25": { "_F_": 1 },
+        "25": {
+          "_F_": 1
+        },
         "26": {
           "_F_": 12,
           "_0_": "u__lpyv",
@@ -1044,17 +1661,26 @@
                   "_227_": 0,
                   "_228_": "",
                   "_229_": false,
-                  "_230_": [14, 14],
+                  "_230_": [
+                    14,
+                    14
+                  ],
                   "_231_": 8,
                   "_232_": "",
                   "_233_": false,
                   "_234_": false,
-                  "_47_": { "_45_": "auto", "_66_": "auto" },
+                  "_47_": {
+                    "_45_": "auto",
+                    "_66_": "auto"
+                  },
                   "_235_": false
                 }
               ],
               "_90_": "flex-start",
-              "_166_": [4, 4]
+              "_166_": [
+                4,
+                4
+              ]
             },
             "_136_": [],
             "_137_": [],
@@ -1062,22 +1688,42 @@
               "_167_": [
                 {
                   "_87_": "defined",
-                  "_236_": { "_0_": "u_YT_Gi", "_22_": "工具条 > 单击按钮0" },
+                  "_236_": {
+                    "_0_": "u_YT_Gi",
+                    "_22_": "工具条 > 单击按钮0"
+                  },
                   "_237_": true
                 }
               ],
-              "_168_": [{ "_87_": "defined", "_236_": {}, "_237_": true }]
+              "_168_": [
+                {
+                  "_87_": "defined",
+                  "_236_": {},
+                  "_237_": true
+                }
+              ]
             },
-            "_47_": { "_R_": "93" }
+            "_47_": {
+              "_R_": "93"
+            }
           },
           "_22_": "工具条",
           "_124_": "toolbar_Yqn",
-          "_125_": { "_70_": "mybricks.normal-pc.toolbar", "_71_": "1.0.38" },
+          "_125_": {
+            "_70_": "mybricks.normal-h5.toolbar",
+            "_71_": "1.0.38"
+          },
           "_126_": true,
-          "_127_": { "_R_": "19" },
-          "_128_": { "_R_": "16" }
+          "_127_": {
+            "_R_": "19"
+          },
+          "_128_": {
+            "_R_": "16"
+          }
         },
-        "27": { "_F_": 1 },
+        "27": {
+          "_F_": 1
+        },
         "28": {
           "_F_": 12,
           "_0_": "u_2VUsA",
@@ -1089,7 +1735,9 @@
                 {
                   "_0_": "u_Jw3BN",
                   "_238_": "u_OCGS1",
-                  "_74_": { "_87_": "string" },
+                  "_74_": {
+                    "_87_": "string"
+                  },
                   "_38_": "name",
                   "_239_": "表单项0",
                   "_208_": "span",
@@ -1154,27 +1802,59 @@
               "_191_": {},
               "_192_": false,
               "_193_": true,
-              "_26_": { "_210_": true, "_90_": "horizontal", "_211_": false, "_212_": "middle" },
-              "_194_": { "_87_": "" },
+              "_26_": {
+                "_210_": true,
+                "_90_": "horizontal",
+                "_211_": false,
+                "_212_": "middle"
+              },
+              "_194_": {
+                "_87_": ""
+              },
               "_195_": true,
               "_196_": 0
             },
             "_136_": [],
             "_137_": [],
-            "_138_": { "_197_": [{ "_87_": "defined", "_236_": {}, "_237_": true }] },
-            "_47_": { "_R_": "94" }
+            "_138_": {
+              "_197_": [
+                {
+                  "_87_": "defined",
+                  "_236_": {},
+                  "_237_": true
+                }
+              ]
+            },
+            "_47_": {
+              "_R_": "94"
+            }
           },
           "_22_": "表单容器",
           "_124_": "form-container_tD5",
-          "_125_": { "_70_": "mybricks.normal-pc.form-container", "_71_": "1.4.79" },
+          "_125_": {
+            "_70_": "mybricks.normal-h5.form-container",
+            "_71_": "1.4.79"
+          },
           "_126_": true,
-          "_127_": { "_R_": "20" },
-          "_128_": { "_R_": "17" }
+          "_127_": {
+            "_R_": "20"
+          },
+          "_128_": {
+            "_R_": "17"
+          }
         },
-        "29": { "_F_": 1 },
-        "30": { "_F_": 1 },
-        "31": { "_F_": 1 },
-        "32": { "_F_": 1 },
+        "29": {
+          "_F_": 1
+        },
+        "30": {
+          "_F_": 1
+        },
+        "31": {
+          "_F_": 1
+        },
+        "32": {
+          "_F_": 1
+        },
         "33": {
           "_F_": 12,
           "_0_": "u_4_UAj",
@@ -1188,7 +1868,9 @@
             "_136_": [],
             "_137_": [],
             "_138_": {},
-            "_47_": { "_R_": "143" }
+            "_47_": {
+              "_R_": "143"
+            }
           },
           "_22_": "JS计算(测试用)",
           "_124_": "_muilt-inputJs_W16",
@@ -1197,32 +1879,57 @@
             "_71_": "1.0.0",
             "_155_": "js-autorun"
           },
-          "_127_": { "_R_": "21" }
+          "_127_": {
+            "_R_": "21"
+          }
         },
-        "34": { "_F_": 1 },
+        "34": {
+          "_F_": 1
+        },
         "35": {
           "_F_": 12,
           "_0_": "u_XZbCr",
           "_123_": {
-            "_135_": { "_0_": "submit" },
+            "_135_": {
+              "_0_": "submit"
+            },
             "_136_": [],
             "_137_": [],
             "_138_": {},
-            "_47_": { "_R_": "146" }
+            "_47_": {
+              "_R_": "146"
+            }
           },
           "_22_": "检查点(测试用)",
           "_124_": "checkpoint_Ofe",
-          "_125_": { "_70_": "mybricks.test.checkpoint", "_71_": "1.0.1", "_155_": "js" },
-          "_127_": { "_R_": "22" }
+          "_125_": {
+            "_70_": "mybricks.test.checkpoint",
+            "_71_": "1.0.1",
+            "_155_": "js"
+          },
+          "_127_": {
+            "_R_": "22"
+          }
         },
-        "36": { "_F_": 1 },
-        "37": { "_F_": 1 },
+        "36": {
+          "_F_": 1
+        },
+        "37": {
+          "_F_": 1
+        },
         "38": {
           "_F_": 13,
-          "_1_": { "_R_": "92" },
+          "_1_": {
+            "_R_": "92"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 0, "_45_": 0, "_67_": 50, "_19_": 26 },
+          "_47_": {
+            "_66_": 0,
+            "_45_": 0,
+            "_67_": 50,
+            "_19_": 26
+          },
           "_103_": {},
           "_104_": [],
           "_81_": [],
@@ -1230,40 +1937,68 @@
           "_105_": [],
           "_106_": [],
           "_83_": [],
-          "_82_": [{ "_R_": "149" }],
+          "_82_": [
+            {
+              "_R_": "149"
+            }
+          ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
-          "_97_": { "_R_": "24" },
-          "_130_": { "_R_": "19" },
-          "_131_": { "_122_": {}, "_162_": {}, "_163_": { "_167_": true } },
-          "_110_": { "_R_": "24" },
+          "_97_": {
+            "_R_": "24"
+          },
+          "_130_": {
+            "_R_": "19"
+          },
+          "_131_": {
+            "_122_": {},
+            "_162_": {},
+            "_163_": {
+              "_167_": true
+            }
+          },
+          "_110_": {
+            "_R_": "24"
+          },
           "_132_": true,
           "_133_": "u_Q6G7Z"
         },
         "39": {
           "_F_": 6,
           "_0_": "content",
-          "_1_": { "_R_": "95" },
-          "_55_": [{ "_R_": "154" }],
-          "_47_": { "_R_": "96" },
+          "_1_": {
+            "_R_": "95"
+          },
+          "_55_": [
+            {
+              "_R_": "154"
+            }
+          ],
+          "_47_": {
+            "_R_": "96"
+          },
           "_48_": [],
           "_102_": [
-            "mybricks.normal-pc.form-container/form-item",
-            "mybricks.normal-pc.form-container/form-addition-container"
+            "mybricks.normal-h5.form-container/form-item",
+            "mybricks.normal-h5.form-container/form-addition-container"
           ],
           "_22_": "表单容器",
           "_87_": "scope",
-          "_97_": { "_R_": "17" },
+          "_97_": {
+            "_R_": "17"
+          },
           "_74_": [
-            "mybricks.normal-pc.form-container/form-item",
-            "mybricks.normal-pc.form-container/form-addition-container"
+            "mybricks.normal-h5.form-container/form-item",
+            "mybricks.normal-h5.form-container/form-addition-container"
           ]
         },
         "40": {
           "_F_": 9,
           "_0_": "u_yuAb0",
-          "_1_": { "_R_": "97" },
+          "_1_": {
+            "_R_": "97"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1284,7 +2019,9 @@
               }
             }
           },
-          "_97_": { "_R_": "19" },
+          "_97_": {
+            "_R_": "19"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -1300,7 +2037,9 @@
         "41": {
           "_F_": 9,
           "_0_": "u_HkpNG",
-          "_1_": { "_R_": "98" },
+          "_1_": {
+            "_R_": "98"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1310,14 +2049,22 @@
           "_101_": "show",
           "_22_": "显示",
           "_139_": "显示该组件",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "19" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "19"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "42": {
           "_F_": 9,
           "_0_": "u_FYD4W",
-          "_1_": { "_R_": "99" },
+          "_1_": {
+            "_R_": "99"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1327,14 +2074,22 @@
           "_101_": "hide",
           "_22_": "隐藏",
           "_139_": "隐藏该组件",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "19" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "19"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "43": {
           "_F_": 9,
           "_0_": "u_7MtOr",
-          "_1_": { "_R_": "100" },
+          "_1_": {
+            "_R_": "100"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1344,31 +2099,51 @@
           "_101_": "showOrHide",
           "_22_": "显示/隐藏",
           "_139_": "根据输入的数据(true/false 或 1/0等)切换显示与隐藏",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "19" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "19"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "44": {
           "_F_": 9,
           "_0_": "u_PJhmF",
-          "_1_": { "_R_": "101" },
+          "_1_": {
+            "_R_": "101"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
           "_98_": false,
-          "_99_": [{ "_R_": "89" }],
+          "_99_": [
+            {
+              "_R_": "89"
+            }
+          ],
           "_100_": "output",
           "_101_": "btn0",
           "_22_": "单击按钮0",
           "_139_": "单击按钮后，事件输出",
-          "_102_": { "_87_": "number" },
-          "_97_": { "_R_": "19" },
-          "_74_": { "_87_": "number" }
+          "_102_": {
+            "_87_": "number"
+          },
+          "_97_": {
+            "_R_": "19"
+          },
+          "_74_": {
+            "_87_": "number"
+          }
         },
         "45": {
           "_F_": 9,
           "_0_": "u_ube0K",
-          "_1_": { "_R_": "102" },
+          "_1_": {
+            "_R_": "102"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1378,14 +2153,22 @@
           "_101_": "doubleClick_btn0",
           "_22_": "双击按钮0",
           "_139_": "双击按钮后，事件输出",
-          "_102_": { "_87_": "number" },
-          "_97_": { "_R_": "19" },
-          "_74_": { "_87_": "number" }
+          "_102_": {
+            "_87_": "number"
+          },
+          "_97_": {
+            "_R_": "19"
+          },
+          "_74_": {
+            "_87_": "number"
+          }
         },
         "46": {
           "_F_": 9,
           "_0_": "u__YJqV",
-          "_1_": { "_R_": "103" },
+          "_1_": {
+            "_R_": "103"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1395,14 +2178,24 @@
           "_100_": "input",
           "_101_": "setValue",
           "_22_": "设置值",
-          "_102_": { "_87_": "object", "_201_": {} },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "object", "_201_": {} }
+          "_102_": {
+            "_87_": "object",
+            "_201_": {}
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "object",
+            "_201_": {}
+          }
         },
         "47": {
           "_F_": 9,
           "_0_": "u__50kB",
-          "_1_": { "_R_": "104" },
+          "_1_": {
+            "_R_": "104"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1412,15 +2205,25 @@
           "_100_": "input",
           "_101_": "validate",
           "_22_": "校验",
-          "_102_": { "_87_": "any" },
-          "_141_": ["returnValidate"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "returnValidate"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "48": {
           "_F_": 9,
           "_0_": "u_hRSBY",
-          "_1_": { "_R_": "105" },
+          "_1_": {
+            "_R_": "105"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1430,15 +2233,25 @@
           "_100_": "input",
           "_101_": "getValue",
           "_22_": "获取值",
-          "_102_": { "_87_": "any" },
-          "_141_": ["returnValue"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "returnValue"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "49": {
           "_F_": 9,
           "_0_": "u_gioww",
-          "_1_": { "_R_": "106" },
+          "_1_": {
+            "_R_": "106"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1451,22 +2264,36 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_141_": ["setInitialValuesDone"],
-          "_97_": { "_R_": "20" },
+          "_141_": [
+            "setInitialValuesDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "50": {
           "_F_": 9,
           "_0_": "u_nFl_v",
-          "_1_": { "_R_": "107" },
+          "_1_": {
+            "_R_": "107"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1479,22 +2306,36 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_141_": ["setFieldsValueDone"],
-          "_97_": { "_R_": "20" },
+          "_141_": [
+            "setFieldsValueDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "51": {
           "_F_": 9,
           "_0_": "u_gDbmy",
-          "_1_": { "_R_": "108" },
+          "_1_": {
+            "_R_": "108"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1509,8 +2350,12 @@
             "_139_": "key为表单项字段名，value为表单项数据源类型",
             "_201_": {}
           },
-          "_141_": ["setFieldsSourceDone"],
-          "_97_": { "_R_": "20" },
+          "_141_": [
+            "setFieldsSourceDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_139_": "key为表单项字段名，value为表单项数据源类型",
@@ -1520,7 +2365,9 @@
         "52": {
           "_F_": 9,
           "_0_": "u_B7pJn",
-          "_1_": { "_R_": "109" },
+          "_1_": {
+            "_R_": "109"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1530,15 +2377,26 @@
           "_101_": "submit",
           "_22_": "提交表单",
           "_139_": "触发表单进行校验，校验成功触发【提交数据输出】输出事件，校验失败触发【校验失败输出】输出事件",
-          "_102_": { "_87_": "any" },
-          "_141_": ["onFinish", "onSubmitError"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "onFinish",
+            "onSubmitError"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "53": {
           "_F_": 9,
           "_0_": "u_9K_mT",
-          "_1_": { "_R_": "110" },
+          "_1_": {
+            "_R_": "110"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1548,33 +2406,58 @@
           "_101_": "getFieldsValue",
           "_22_": "获取表单数据",
           "_139_": "不进行表单校验，直接触发【表单数据输出】输出事件",
-          "_102_": { "_87_": "any" },
-          "_141_": ["returnValues"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "returnValues"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "54": {
           "_F_": 9,
           "_0_": "u_i91Vh",
-          "_1_": { "_R_": "111" },
+          "_1_": {
+            "_R_": "111"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
           "_98_": false,
-          "_99_": [{ "_R_": "90" }],
+          "_99_": [
+            {
+              "_R_": "90"
+            }
+          ],
           "_100_": "input",
           "_101_": "submitAndMerge",
           "_22_": "提交表单(合并输入项)",
           "_139_": "接收对象结构参数输入，触发表单进行校验，校验成功触发【提交数据输出（合并输入项）】输出事件，校验失败触发【校验失败输出】输出事件",
-          "_102_": { "_87_": "object" },
-          "_141_": ["onMergeFinish", "onSubmitError"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "object" }
+          "_102_": {
+            "_87_": "object"
+          },
+          "_141_": [
+            "onMergeFinish",
+            "onSubmitError"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "object"
+          }
         },
         "55": {
           "_F_": 9,
           "_0_": "u_vft7X",
-          "_1_": { "_R_": "112" },
+          "_1_": {
+            "_R_": "112"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1584,15 +2467,25 @@
           "_101_": "resetFields",
           "_22_": "重置表单",
           "_139_": "触发表单所有字段进行重置",
-          "_102_": { "_87_": "any" },
-          "_141_": ["onResetFinish"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "onResetFinish"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "56": {
           "_F_": 9,
           "_0_": "u_2G1An",
-          "_1_": { "_R_": "113" },
+          "_1_": {
+            "_R_": "113"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1602,15 +2495,25 @@
           "_101_": "setDisabled",
           "_22_": "设置禁用",
           "_139_": "禁用表单项及操作项",
-          "_102_": { "_87_": "any" },
-          "_141_": ["setDisabledDone"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "setDisabledDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "57": {
           "_F_": 9,
           "_0_": "u_Tqj1T",
-          "_1_": { "_R_": "114" },
+          "_1_": {
+            "_R_": "114"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1620,15 +2523,25 @@
           "_101_": "setEnabled",
           "_22_": "设置启用",
           "_139_": "启用表单项及操作项",
-          "_102_": { "_87_": "any" },
-          "_141_": ["setEnabledDone"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "setEnabledDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "58": {
           "_F_": 9,
           "_0_": "u_PcaQ_",
-          "_1_": { "_R_": "115" },
+          "_1_": {
+            "_R_": "115"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1638,15 +2551,25 @@
           "_101_": "isEditable",
           "_22_": "设置编辑/只读",
           "_139_": "设置表单编辑/只读状态",
-          "_102_": { "_87_": "boolean" },
-          "_141_": ["isEditableDone"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_141_": [
+            "isEditableDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "59": {
           "_F_": 9,
           "_0_": "u_Oqlpq",
-          "_1_": { "_R_": "116" },
+          "_1_": {
+            "_R_": "116"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1656,15 +2579,31 @@
           "_101_": "validateFields",
           "_22_": "校验表单项",
           "_139_": "输入字段数组，触发指定的表单项校验",
-          "_102_": { "_87_": "array", "_176_": { "_87_": "string" } },
-          "_141_": ["validateFieldsDone"],
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "array", "_176_": { "_87_": "string" } }
+          "_102_": {
+            "_87_": "array",
+            "_176_": {
+              "_87_": "string"
+            }
+          },
+          "_141_": [
+            "validateFieldsDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "array",
+            "_176_": {
+              "_87_": "string"
+            }
+          }
         },
         "60": {
           "_F_": 9,
           "_0_": "u_P22Ib",
-          "_1_": { "_R_": "117" },
+          "_1_": {
+            "_R_": "117"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1681,25 +2620,68 @@
                 "_87_": "object",
                 "_22_": "表单项0",
                 "_201_": {
-                  "_240_": { "_87_": "boolean", "_22_": "隐藏标题" },
-                  "_239_": { "_87_": "string", "_22_": "标题" },
-                  "_247_": { "_87_": "string", "_22_": "标题提示" },
-                  "_139_": { "_87_": "string", "_22_": "提示语" },
-                  "_188_": { "_87_": "number", "_22_": "标题自定义宽度" },
-                  "_248_": { "_87_": "boolean", "_22_": "标题是否换行" },
-                  "_249_": { "_87_": "boolean", "_22_": "标题对齐方式" },
-                  "_210_": { "_87_": "boolean", "_22_": "标题冒号" },
-                  "_250_": { "_87_": "boolean", "_22_": "必填样式" },
-                  "_251_": { "_87_": "object", "_22_": "标签样式" },
-                  "_252_": { "_87_": "object", "_22_": "提示语样式" },
-                  "_211_": { "_87_": "boolean", "_22_": "是否禁用" },
-                  "_175_": { "_87_": "number", "_22_": "栅格宽度" }
+                  "_240_": {
+                    "_87_": "boolean",
+                    "_22_": "隐藏标题"
+                  },
+                  "_239_": {
+                    "_87_": "string",
+                    "_22_": "标题"
+                  },
+                  "_247_": {
+                    "_87_": "string",
+                    "_22_": "标题提示"
+                  },
+                  "_139_": {
+                    "_87_": "string",
+                    "_22_": "提示语"
+                  },
+                  "_188_": {
+                    "_87_": "number",
+                    "_22_": "标题自定义宽度"
+                  },
+                  "_248_": {
+                    "_87_": "boolean",
+                    "_22_": "标题是否换行"
+                  },
+                  "_249_": {
+                    "_87_": "boolean",
+                    "_22_": "标题对齐方式"
+                  },
+                  "_210_": {
+                    "_87_": "boolean",
+                    "_22_": "标题冒号"
+                  },
+                  "_250_": {
+                    "_87_": "boolean",
+                    "_22_": "必填样式"
+                  },
+                  "_251_": {
+                    "_87_": "object",
+                    "_22_": "标签样式"
+                  },
+                  "_252_": {
+                    "_87_": "object",
+                    "_22_": "提示语样式"
+                  },
+                  "_211_": {
+                    "_87_": "boolean",
+                    "_22_": "是否禁用"
+                  },
+                  "_175_": {
+                    "_87_": "number",
+                    "_22_": "栅格宽度"
+                  }
                 }
               }
             }
           },
-          "_141_": ["setFormItemsPropsDone"],
-          "_97_": { "_R_": "20" },
+          "_141_": [
+            "setFormItemsPropsDone"
+          ],
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -1707,19 +2689,58 @@
                 "_87_": "object",
                 "_22_": "表单项0",
                 "_201_": {
-                  "_240_": { "_87_": "boolean", "_22_": "隐藏标题" },
-                  "_239_": { "_87_": "string", "_22_": "标题" },
-                  "_247_": { "_87_": "string", "_22_": "标题提示" },
-                  "_139_": { "_87_": "string", "_22_": "提示语" },
-                  "_188_": { "_87_": "number", "_22_": "标题自定义宽度" },
-                  "_248_": { "_87_": "boolean", "_22_": "标题是否换行" },
-                  "_249_": { "_87_": "boolean", "_22_": "标题对齐方式" },
-                  "_210_": { "_87_": "boolean", "_22_": "标题冒号" },
-                  "_250_": { "_87_": "boolean", "_22_": "必填样式" },
-                  "_251_": { "_87_": "object", "_22_": "标签样式" },
-                  "_252_": { "_87_": "object", "_22_": "提示语样式" },
-                  "_211_": { "_87_": "boolean", "_22_": "是否禁用" },
-                  "_175_": { "_87_": "number", "_22_": "栅格宽度" }
+                  "_240_": {
+                    "_87_": "boolean",
+                    "_22_": "隐藏标题"
+                  },
+                  "_239_": {
+                    "_87_": "string",
+                    "_22_": "标题"
+                  },
+                  "_247_": {
+                    "_87_": "string",
+                    "_22_": "标题提示"
+                  },
+                  "_139_": {
+                    "_87_": "string",
+                    "_22_": "提示语"
+                  },
+                  "_188_": {
+                    "_87_": "number",
+                    "_22_": "标题自定义宽度"
+                  },
+                  "_248_": {
+                    "_87_": "boolean",
+                    "_22_": "标题是否换行"
+                  },
+                  "_249_": {
+                    "_87_": "boolean",
+                    "_22_": "标题对齐方式"
+                  },
+                  "_210_": {
+                    "_87_": "boolean",
+                    "_22_": "标题冒号"
+                  },
+                  "_250_": {
+                    "_87_": "boolean",
+                    "_22_": "必填样式"
+                  },
+                  "_251_": {
+                    "_87_": "object",
+                    "_22_": "标签样式"
+                  },
+                  "_252_": {
+                    "_87_": "object",
+                    "_22_": "提示语样式"
+                  },
+                  "_211_": {
+                    "_87_": "boolean",
+                    "_22_": "是否禁用"
+                  },
+                  "_175_": {
+                    "_87_": "number",
+                    "_22_": "栅格宽度"
+                  }
                 }
               }
             }
@@ -1728,7 +2749,9 @@
         "61": {
           "_F_": 9,
           "_0_": "u_u5Fim",
-          "_1_": { "_R_": "118" },
+          "_1_": {
+            "_R_": "118"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1749,7 +2772,9 @@
               }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -1765,7 +2790,9 @@
         "62": {
           "_F_": 9,
           "_0_": "u_8vxJ4",
-          "_1_": { "_R_": "119" },
+          "_1_": {
+            "_R_": "119"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1775,14 +2802,22 @@
           "_101_": "show",
           "_22_": "显示",
           "_139_": "显示该组件",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "63": {
           "_F_": 9,
           "_0_": "u_97qvI",
-          "_1_": { "_R_": "120" },
+          "_1_": {
+            "_R_": "120"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1792,14 +2827,22 @@
           "_101_": "hide",
           "_22_": "隐藏",
           "_139_": "隐藏该组件",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "64": {
           "_F_": 9,
           "_0_": "u_szcZb",
-          "_1_": { "_R_": "121" },
+          "_1_": {
+            "_R_": "121"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -1809,14 +2852,22 @@
           "_101_": "showOrHide",
           "_22_": "显示/隐藏",
           "_139_": "根据输入的数据(true/false 或 1/0等)切换显示与隐藏",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "65": {
           "_F_": 9,
           "_0_": "u_e8C2c",
-          "_1_": { "_R_": "122" },
+          "_1_": {
+            "_R_": "122"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1829,21 +2880,33 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "66": {
           "_F_": 9,
           "_0_": "u_ZnBfr",
-          "_1_": { "_R_": "123" },
+          "_1_": {
+            "_R_": "123"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1856,28 +2919,52 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_22_": "字段名", "_87_": "string", "_139_": "字段名" },
-              "_215_": { "_22_": "校验信息", "_87_": "string", "_139_": "校验信息" }
+              "_38_": {
+                "_22_": "字段名",
+                "_87_": "string",
+                "_139_": "字段名"
+              },
+              "_215_": {
+                "_22_": "校验信息",
+                "_87_": "string",
+                "_139_": "校验信息"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_22_": "字段名", "_87_": "string", "_139_": "字段名" },
-              "_215_": { "_22_": "校验信息", "_87_": "string", "_139_": "校验信息" }
+              "_38_": {
+                "_22_": "字段名",
+                "_87_": "string",
+                "_139_": "字段名"
+              },
+              "_215_": {
+                "_22_": "校验信息",
+                "_87_": "string",
+                "_139_": "校验信息"
+              }
             }
           }
         },
         "67": {
           "_F_": 9,
           "_0_": "u_ovFh9",
-          "_1_": { "_R_": "124" },
+          "_1_": {
+            "_R_": "124"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
           "_98_": false,
-          "_99_": [{ "_R_": "91" }],
+          "_99_": [
+            {
+              "_R_": "91"
+            }
+          ],
           "_100_": "output",
           "_101_": "onMergeFinish",
           "_22_": "提交数据输出",
@@ -1885,21 +2972,33 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "68": {
           "_F_": 9,
           "_0_": "u_oM_Pf",
-          "_1_": { "_R_": "125" },
+          "_1_": {
+            "_R_": "125"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1934,7 +3033,9 @@
               }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -1964,7 +3065,9 @@
         "69": {
           "_F_": 9,
           "_0_": "u_uiMZ0",
-          "_1_": { "_R_": "126" },
+          "_1_": {
+            "_R_": "126"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1974,14 +3077,22 @@
           "_101_": "onResetFinish",
           "_22_": "重置完成",
           "_139_": "成功重置表单时触发",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "70": {
           "_F_": 9,
           "_0_": "u_qdIPu",
-          "_1_": { "_R_": "127" },
+          "_1_": {
+            "_R_": "127"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -1991,14 +3102,24 @@
           "_101_": "returnValidate",
           "_22_": "校验结果",
           "_139_": "输出表单校验结果",
-          "_102_": { "_87_": "boolean", "_139_": "布尔类型的校验结果" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "boolean", "_139_": "布尔类型的校验结果" }
+          "_102_": {
+            "_87_": "boolean",
+            "_139_": "布尔类型的校验结果"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "boolean",
+            "_139_": "布尔类型的校验结果"
+          }
         },
         "71": {
           "_F_": 9,
           "_0_": "u_h9LMb",
-          "_1_": { "_R_": "128" },
+          "_1_": {
+            "_R_": "128"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2008,14 +3129,26 @@
           "_101_": "returnValue",
           "_22_": "值输出",
           "_139_": "输出所有字段的当前值",
-          "_102_": { "_87_": "object", "_139_": "输出表单所有项的值，格式为对象", "_201_": {} },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "object", "_139_": "输出表单所有项的值，格式为对象", "_201_": {} }
+          "_102_": {
+            "_87_": "object",
+            "_139_": "输出表单所有项的值，格式为对象",
+            "_201_": {}
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "object",
+            "_139_": "输出表单所有项的值，格式为对象",
+            "_201_": {}
+          }
         },
         "72": {
           "_F_": 9,
           "_0_": "u_S4YTp",
-          "_1_": { "_R_": "129" },
+          "_1_": {
+            "_R_": "129"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2028,21 +3161,33 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "73": {
           "_F_": 9,
           "_0_": "u_dKT7V",
-          "_1_": { "_R_": "130" },
+          "_1_": {
+            "_R_": "130"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2055,21 +3200,33 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "74": {
           "_F_": 9,
           "_0_": "u_Xi7Y5",
-          "_1_": { "_R_": "131" },
+          "_1_": {
+            "_R_": "131"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2079,14 +3236,22 @@
           "_101_": "onClickCancel",
           "_22_": "取消",
           "_139_": "取消表单时触发",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "75": {
           "_F_": 9,
           "_0_": "u_YSaW9",
-          "_1_": { "_R_": "132" },
+          "_1_": {
+            "_R_": "132"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2098,21 +3263,33 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "76": {
           "_F_": 9,
           "_0_": "u_oNibE",
-          "_1_": { "_R_": "133" },
+          "_1_": {
+            "_R_": "133"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2121,14 +3298,24 @@
           "_100_": "output",
           "_101_": "setFieldsValueDone",
           "_22_": "设置表单数据（触发值变化）完成",
-          "_102_": { "_87_": "object", "_201_": {} },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "object", "_201_": {} }
+          "_102_": {
+            "_87_": "object",
+            "_201_": {}
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "object",
+            "_201_": {}
+          }
         },
         "77": {
           "_F_": 9,
           "_0_": "u_2ivJs",
-          "_1_": { "_R_": "134" },
+          "_1_": {
+            "_R_": "134"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2142,7 +3329,9 @@
             "_139_": "key为表单项字段名，value为表单项数据源类型",
             "_201_": {}
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_139_": "key为表单项字段名，value为表单项数据源类型",
@@ -2152,7 +3341,9 @@
         "78": {
           "_F_": 9,
           "_0_": "u_G4GAp",
-          "_1_": { "_R_": "135" },
+          "_1_": {
+            "_R_": "135"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2161,14 +3352,22 @@
           "_100_": "output",
           "_101_": "setDisabledDone",
           "_22_": "设置禁用完成",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "79": {
           "_F_": 9,
           "_0_": "u_yfaFL",
-          "_1_": { "_R_": "136" },
+          "_1_": {
+            "_R_": "136"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2177,14 +3376,22 @@
           "_100_": "output",
           "_101_": "setEnabledDone",
           "_22_": "设置启用完成",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "80": {
           "_F_": 9,
           "_0_": "u_znBjk",
-          "_1_": { "_R_": "137" },
+          "_1_": {
+            "_R_": "137"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2194,14 +3401,22 @@
           "_101_": "isEditableDone",
           "_22_": "设置编辑/只读完成",
           "_139_": "设置表单编辑/只读完成",
-          "_102_": { "_87_": "boolean" },
-          "_97_": { "_R_": "20" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_97_": {
+            "_R_": "20"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "81": {
           "_F_": 9,
           "_0_": "u_RW72B",
-          "_1_": { "_R_": "138" },
+          "_1_": {
+            "_R_": "138"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2216,34 +3431,58 @@
               "_218_": {
                 "_87_": "enum",
                 "_176_": [
-                  { "_87_": "string", "_39_": "success" },
-                  { "_87_": "string", "_39_": "error" }
+                  {
+                    "_87_": "string",
+                    "_39_": "success"
+                  },
+                  {
+                    "_87_": "string",
+                    "_39_": "error"
+                  }
                 ]
               },
-              "_215_": { "_87_": "string" },
-              "_38_": { "_87_": "string" }
+              "_215_": {
+                "_87_": "string"
+              },
+              "_38_": {
+                "_87_": "string"
+              }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
               "_218_": {
                 "_87_": "enum",
                 "_176_": [
-                  { "_87_": "string", "_39_": "success" },
-                  { "_87_": "string", "_39_": "error" }
+                  {
+                    "_87_": "string",
+                    "_39_": "success"
+                  },
+                  {
+                    "_87_": "string",
+                    "_39_": "error"
+                  }
                 ]
               },
-              "_215_": { "_87_": "string" },
-              "_38_": { "_87_": "string" }
+              "_215_": {
+                "_87_": "string"
+              },
+              "_38_": {
+                "_87_": "string"
+              }
             }
           }
         },
         "82": {
           "_F_": 9,
           "_0_": "u_KCsS8",
-          "_1_": { "_R_": "139" },
+          "_1_": {
+            "_R_": "139"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2259,24 +3498,65 @@
                 "_87_": "object",
                 "_22_": "表单项0",
                 "_201_": {
-                  "_240_": { "_87_": "boolean", "_22_": "隐藏标题" },
-                  "_239_": { "_87_": "string", "_22_": "标题" },
-                  "_247_": { "_87_": "string", "_22_": "标题提示" },
-                  "_139_": { "_87_": "string", "_22_": "提示语" },
-                  "_188_": { "_87_": "number", "_22_": "标题自定义宽度" },
-                  "_248_": { "_87_": "boolean", "_22_": "标题是否换行" },
-                  "_249_": { "_87_": "boolean", "_22_": "标题对齐方式" },
-                  "_210_": { "_87_": "boolean", "_22_": "标题冒号" },
-                  "_250_": { "_87_": "boolean", "_22_": "必填样式" },
-                  "_251_": { "_87_": "object", "_22_": "标签样式" },
-                  "_252_": { "_87_": "object", "_22_": "提示语样式" },
-                  "_211_": { "_87_": "boolean", "_22_": "是否禁用" },
-                  "_175_": { "_87_": "number", "_22_": "栅格宽度" }
+                  "_240_": {
+                    "_87_": "boolean",
+                    "_22_": "隐藏标题"
+                  },
+                  "_239_": {
+                    "_87_": "string",
+                    "_22_": "标题"
+                  },
+                  "_247_": {
+                    "_87_": "string",
+                    "_22_": "标题提示"
+                  },
+                  "_139_": {
+                    "_87_": "string",
+                    "_22_": "提示语"
+                  },
+                  "_188_": {
+                    "_87_": "number",
+                    "_22_": "标题自定义宽度"
+                  },
+                  "_248_": {
+                    "_87_": "boolean",
+                    "_22_": "标题是否换行"
+                  },
+                  "_249_": {
+                    "_87_": "boolean",
+                    "_22_": "标题对齐方式"
+                  },
+                  "_210_": {
+                    "_87_": "boolean",
+                    "_22_": "标题冒号"
+                  },
+                  "_250_": {
+                    "_87_": "boolean",
+                    "_22_": "必填样式"
+                  },
+                  "_251_": {
+                    "_87_": "object",
+                    "_22_": "标签样式"
+                  },
+                  "_252_": {
+                    "_87_": "object",
+                    "_22_": "提示语样式"
+                  },
+                  "_211_": {
+                    "_87_": "boolean",
+                    "_22_": "是否禁用"
+                  },
+                  "_175_": {
+                    "_87_": "number",
+                    "_22_": "栅格宽度"
+                  }
                 }
               }
             }
           },
-          "_97_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "20"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -2284,19 +3564,58 @@
                 "_87_": "object",
                 "_22_": "表单项0",
                 "_201_": {
-                  "_240_": { "_87_": "boolean", "_22_": "隐藏标题" },
-                  "_239_": { "_87_": "string", "_22_": "标题" },
-                  "_247_": { "_87_": "string", "_22_": "标题提示" },
-                  "_139_": { "_87_": "string", "_22_": "提示语" },
-                  "_188_": { "_87_": "number", "_22_": "标题自定义宽度" },
-                  "_248_": { "_87_": "boolean", "_22_": "标题是否换行" },
-                  "_249_": { "_87_": "boolean", "_22_": "标题对齐方式" },
-                  "_210_": { "_87_": "boolean", "_22_": "标题冒号" },
-                  "_250_": { "_87_": "boolean", "_22_": "必填样式" },
-                  "_251_": { "_87_": "object", "_22_": "标签样式" },
-                  "_252_": { "_87_": "object", "_22_": "提示语样式" },
-                  "_211_": { "_87_": "boolean", "_22_": "是否禁用" },
-                  "_175_": { "_87_": "number", "_22_": "栅格宽度" }
+                  "_240_": {
+                    "_87_": "boolean",
+                    "_22_": "隐藏标题"
+                  },
+                  "_239_": {
+                    "_87_": "string",
+                    "_22_": "标题"
+                  },
+                  "_247_": {
+                    "_87_": "string",
+                    "_22_": "标题提示"
+                  },
+                  "_139_": {
+                    "_87_": "string",
+                    "_22_": "提示语"
+                  },
+                  "_188_": {
+                    "_87_": "number",
+                    "_22_": "标题自定义宽度"
+                  },
+                  "_248_": {
+                    "_87_": "boolean",
+                    "_22_": "标题是否换行"
+                  },
+                  "_249_": {
+                    "_87_": "boolean",
+                    "_22_": "标题对齐方式"
+                  },
+                  "_210_": {
+                    "_87_": "boolean",
+                    "_22_": "标题冒号"
+                  },
+                  "_250_": {
+                    "_87_": "boolean",
+                    "_22_": "必填样式"
+                  },
+                  "_251_": {
+                    "_87_": "object",
+                    "_22_": "标签样式"
+                  },
+                  "_252_": {
+                    "_87_": "object",
+                    "_22_": "提示语样式"
+                  },
+                  "_211_": {
+                    "_87_": "boolean",
+                    "_22_": "是否禁用"
+                  },
+                  "_175_": {
+                    "_87_": "number",
+                    "_22_": "栅格宽度"
+                  }
                 }
               }
             }
@@ -2305,91 +3624,175 @@
         "83": {
           "_F_": 7,
           "_0_": "content",
-          "_1_": { "_R_": "140" },
+          "_1_": {
+            "_R_": "140"
+          },
           "_75_": 0,
           "_76_": 0,
-          "_47_": { "_67_": null, "_19_": null },
+          "_47_": {
+            "_67_": null,
+            "_19_": null
+          },
           "_77_": true,
           "_78_": true,
           "_79_": [],
-          "_80_": [{ "_R_": "155" }, { "_R_": "156" }],
-          "_81_": [{ "_R_": "157" }, { "_R_": "158" }],
+          "_80_": [
+            {
+              "_R_": "155"
+            },
+            {
+              "_R_": "156"
+            }
+          ],
+          "_81_": [
+            {
+              "_R_": "157"
+            },
+            {
+              "_R_": "158"
+            }
+          ],
           "_82_": [],
           "_83_": [],
           "_84_": [],
           "_85_": [],
-          "_55_": [{ "_R_": "159" }],
-          "_56_": [{ "_R_": "160" }],
-          "_86_": { "_93_": 0, "_94_": 100 },
+          "_55_": [
+            {
+              "_R_": "159"
+            }
+          ],
+          "_56_": [
+            {
+              "_R_": "160"
+            }
+          ],
+          "_86_": {
+            "_93_": 0,
+            "_94_": 100
+          },
           "_22_": "表单容器",
           "_88_": false,
-          "_97_": { "_R_": "20" }
+          "_97_": {
+            "_R_": "20"
+          }
         },
         "84": {
           "_F_": 9,
           "_0_": "u_WHA9o",
-          "_1_": { "_R_": "141" },
+          "_1_": {
+            "_R_": "141"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "param",
           "_98_": false,
-          "_99_": [{ "_R_": "89" }],
+          "_99_": [
+            {
+              "_R_": "89"
+            }
+          ],
           "_100_": "input",
           "_101_": "input.inputValue0",
           "_22_": "参数0",
-          "_102_": { "_87_": "number" },
+          "_102_": {
+            "_87_": "number"
+          },
           "_145_": true,
-          "_97_": { "_R_": "21" },
-          "_74_": { "_87_": "number" }
+          "_97_": {
+            "_R_": "21"
+          },
+          "_74_": {
+            "_87_": "number"
+          }
         },
         "85": {
           "_F_": 9,
           "_0_": "u_jdTY0",
-          "_1_": { "_R_": "142" },
+          "_1_": {
+            "_R_": "142"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
           "_98_": false,
-          "_99_": [{ "_R_": "90" }],
+          "_99_": [
+            {
+              "_R_": "90"
+            }
+          ],
           "_100_": "output",
           "_101_": "output0",
           "_22_": "输出项0",
-          "_102_": { "_87_": "object", "_201_": { "_38_": { "_87_": "string" } } },
+          "_102_": {
+            "_87_": "object",
+            "_201_": {
+              "_38_": {
+                "_87_": "string"
+              }
+            }
+          },
           "_77_": true,
-          "_97_": { "_R_": "21" },
-          "_74_": { "_87_": "object", "_201_": { "_38_": { "_87_": "string" } } }
+          "_97_": {
+            "_R_": "21"
+          },
+          "_74_": {
+            "_87_": "object",
+            "_201_": {
+              "_38_": {
+                "_87_": "string"
+              }
+            }
+          }
         },
         "86": {
           "_F_": 9,
           "_0_": "u_nj0Oj",
-          "_1_": { "_R_": "144" },
+          "_1_": {
+            "_R_": "144"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
           "_98_": false,
-          "_99_": [{ "_R_": "91" }],
+          "_99_": [
+            {
+              "_R_": "91"
+            }
+          ],
           "_100_": "input",
           "_101_": "check",
           "_22_": "检查",
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
           "_145_": true,
-          "_97_": { "_R_": "22" },
+          "_97_": {
+            "_R_": "22"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "87": {
           "_F_": 9,
           "_0_": "u_zx7Xn",
-          "_1_": { "_R_": "145" },
+          "_1_": {
+            "_R_": "145"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2398,84 +3801,172 @@
           "_100_": "output",
           "_101_": "export",
           "_22_": "出口",
-          "_102_": { "_87_": "follow" },
+          "_102_": {
+            "_87_": "follow"
+          },
           "_145_": true,
-          "_97_": { "_R_": "22" },
-          "_74_": { "_87_": "follow" }
+          "_97_": {
+            "_R_": "22"
+          },
+          "_74_": {
+            "_87_": "follow"
+          }
         },
         "88": {
           "_F_": 13,
-          "_1_": { "_R_": "147" },
+          "_1_": {
+            "_R_": "147"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 87, "_45_": 45, "_67_": 470, "_19_": 50 },
+          "_47_": {
+            "_66_": 87,
+            "_45_": 45,
+            "_67_": 470,
+            "_19_": 50
+          },
           "_103_": {},
           "_104_": [],
           "_81_": [],
-          "_80_": [{ "_R_": "151" }],
+          "_80_": [
+            {
+              "_R_": "151"
+            }
+          ],
           "_105_": [],
           "_106_": [],
           "_83_": [],
-          "_82_": [{ "_R_": "153" }, { "_R_": "161" }],
+          "_82_": [
+            {
+              "_R_": "153"
+            },
+            {
+              "_R_": "161"
+            }
+          ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
-          "_97_": { "_R_": "24" },
-          "_130_": { "_R_": "20" },
+          "_97_": {
+            "_R_": "24"
+          },
+          "_130_": {
+            "_R_": "20"
+          },
           "_131_": {
             "_122_": {},
-            "_162_": { "_221_": true },
-            "_163_": { "_222_": true, "_223_": true }
+            "_162_": {
+              "_221_": true
+            },
+            "_163_": {
+              "_222_": true,
+              "_223_": true
+            }
           },
-          "_110_": { "_R_": "24" },
+          "_110_": {
+            "_R_": "24"
+          },
           "_133_": "u_1b4Du"
         },
         "89": {
           "_F_": 14,
           "_0_": "u_o5UNg",
-          "_1_": { "_R_": "148" },
+          "_1_": {
+            "_R_": "148"
+          },
           "_75_": 0,
           "_76_": 4,
           "_156_": false,
           "_112_": [],
-          "_157_": { "_R_": "149" },
-          "_158_": { "_R_": "84" },
+          "_157_": {
+            "_R_": "149"
+          },
+          "_158_": {
+            "_R_": "84"
+          },
           "_22_": "从 单击按钮0 到 参数0 的连接",
-          "_97_": { "_R_": "24" },
-          "_159_": { "_204_": 62.6, "_205_": 60, "_206_": 50.5 },
-          "_160_": { "_207_": true, "_205_": 190.5, "_206_": 50.5, "_204_": 41 }
+          "_97_": {
+            "_R_": "24"
+          },
+          "_159_": {
+            "_204_": 62.6,
+            "_205_": 60,
+            "_206_": 50.5
+          },
+          "_160_": {
+            "_207_": true,
+            "_205_": 190.5,
+            "_206_": 50.5,
+            "_204_": 41
+          }
         },
         "90": {
           "_F_": 14,
           "_0_": "u_U1uff",
-          "_1_": { "_R_": "150" },
+          "_1_": {
+            "_R_": "150"
+          },
           "_75_": 0,
           "_76_": 4,
           "_156_": false,
           "_112_": [],
-          "_157_": { "_R_": "85" },
-          "_158_": { "_R_": "151" },
+          "_157_": {
+            "_R_": "85"
+          },
+          "_158_": {
+            "_R_": "151"
+          },
           "_22_": "从 输出项0 到 提交表单(合并输入项) 的连接",
-          "_97_": { "_R_": "24" },
-          "_159_": { "_204_": 51.800000000000004, "_205_": 327, "_206_": 50.5 },
-          "_160_": { "_207_": true, "_205_": 460.5, "_206_": 60.5, "_204_": 122 }
+          "_97_": {
+            "_R_": "24"
+          },
+          "_159_": {
+            "_204_": 51.800000000000004,
+            "_205_": 327,
+            "_206_": 50.5
+          },
+          "_160_": {
+            "_207_": true,
+            "_205_": 460.5,
+            "_206_": 60.5,
+            "_204_": 122
+          }
         },
         "91": {
           "_F_": 14,
           "_0_": "u_dnjvB",
-          "_1_": { "_R_": "152" },
+          "_1_": {
+            "_R_": "152"
+          },
           "_75_": 0,
           "_76_": 4,
           "_156_": false,
           "_112_": [],
-          "_157_": { "_R_": "153" },
-          "_158_": { "_R_": "86" },
+          "_157_": {
+            "_R_": "153"
+          },
+          "_158_": {
+            "_R_": "86"
+          },
           "_22_": "从 提交数据输出 到 检查 的连接",
-          "_97_": { "_R_": "24" },
-          "_159_": { "_204_": 78.80000000000001, "_205_": 569, "_206_": 60.5 },
-          "_160_": { "_207_": true, "_205_": 700.5, "_206_": 60.5, "_204_": 35.6 }
+          "_97_": {
+            "_R_": "24"
+          },
+          "_159_": {
+            "_204_": 78.80000000000001,
+            "_205_": 569,
+            "_206_": 60.5
+          },
+          "_160_": {
+            "_207_": true,
+            "_205_": 700.5,
+            "_206_": 60.5,
+            "_204_": 35.6
+          }
         },
-        "92": { "_F_": 1 },
+        "92": {
+          "_F_": 1
+        },
         "93": {
           "_F_": 15,
           "_169_": "block",
@@ -2500,7 +3991,9 @@
           "_91_": 342,
           "_92_": 112
         },
-        "95": { "_F_": 1 },
+        "95": {
+          "_F_": 1
+        },
         "96": {
           "_F_": 5,
           "_63_": 1,
@@ -2509,118 +4002,274 @@
           "_91_": 342,
           "_92_": 112
         },
-        "97": { "_F_": 1 },
-        "98": { "_F_": 1 },
-        "99": { "_F_": 1 },
-        "100": { "_F_": 1 },
-        "101": { "_F_": 1 },
-        "102": { "_F_": 1 },
-        "103": { "_F_": 1 },
-        "104": { "_F_": 1 },
-        "105": { "_F_": 1 },
-        "106": { "_F_": 1 },
-        "107": { "_F_": 1 },
-        "108": { "_F_": 1 },
-        "109": { "_F_": 1 },
-        "110": { "_F_": 1 },
-        "111": { "_F_": 1 },
-        "112": { "_F_": 1 },
-        "113": { "_F_": 1 },
-        "114": { "_F_": 1 },
-        "115": { "_F_": 1 },
-        "116": { "_F_": 1 },
-        "117": { "_F_": 1 },
-        "118": { "_F_": 1 },
-        "119": { "_F_": 1 },
-        "120": { "_F_": 1 },
-        "121": { "_F_": 1 },
-        "122": { "_F_": 1 },
-        "123": { "_F_": 1 },
-        "124": { "_F_": 1 },
-        "125": { "_F_": 1 },
-        "126": { "_F_": 1 },
-        "127": { "_F_": 1 },
-        "128": { "_F_": 1 },
-        "129": { "_F_": 1 },
-        "130": { "_F_": 1 },
-        "131": { "_F_": 1 },
-        "132": { "_F_": 1 },
-        "133": { "_F_": 1 },
-        "134": { "_F_": 1 },
-        "135": { "_F_": 1 },
-        "136": { "_F_": 1 },
-        "137": { "_F_": 1 },
-        "138": { "_F_": 1 },
-        "139": { "_F_": 1 },
-        "140": { "_F_": 1 },
-        "141": { "_F_": 1 },
-        "142": { "_F_": 1 },
-        "143": { "_F_": 15, "_169_": "block" },
-        "144": { "_F_": 1 },
-        "145": { "_F_": 1 },
-        "146": { "_F_": 15, "_169_": "block" },
-        "147": { "_F_": 1 },
-        "148": { "_F_": 1 },
+        "97": {
+          "_F_": 1
+        },
+        "98": {
+          "_F_": 1
+        },
+        "99": {
+          "_F_": 1
+        },
+        "100": {
+          "_F_": 1
+        },
+        "101": {
+          "_F_": 1
+        },
+        "102": {
+          "_F_": 1
+        },
+        "103": {
+          "_F_": 1
+        },
+        "104": {
+          "_F_": 1
+        },
+        "105": {
+          "_F_": 1
+        },
+        "106": {
+          "_F_": 1
+        },
+        "107": {
+          "_F_": 1
+        },
+        "108": {
+          "_F_": 1
+        },
+        "109": {
+          "_F_": 1
+        },
+        "110": {
+          "_F_": 1
+        },
+        "111": {
+          "_F_": 1
+        },
+        "112": {
+          "_F_": 1
+        },
+        "113": {
+          "_F_": 1
+        },
+        "114": {
+          "_F_": 1
+        },
+        "115": {
+          "_F_": 1
+        },
+        "116": {
+          "_F_": 1
+        },
+        "117": {
+          "_F_": 1
+        },
+        "118": {
+          "_F_": 1
+        },
+        "119": {
+          "_F_": 1
+        },
+        "120": {
+          "_F_": 1
+        },
+        "121": {
+          "_F_": 1
+        },
+        "122": {
+          "_F_": 1
+        },
+        "123": {
+          "_F_": 1
+        },
+        "124": {
+          "_F_": 1
+        },
+        "125": {
+          "_F_": 1
+        },
+        "126": {
+          "_F_": 1
+        },
+        "127": {
+          "_F_": 1
+        },
+        "128": {
+          "_F_": 1
+        },
+        "129": {
+          "_F_": 1
+        },
+        "130": {
+          "_F_": 1
+        },
+        "131": {
+          "_F_": 1
+        },
+        "132": {
+          "_F_": 1
+        },
+        "133": {
+          "_F_": 1
+        },
+        "134": {
+          "_F_": 1
+        },
+        "135": {
+          "_F_": 1
+        },
+        "136": {
+          "_F_": 1
+        },
+        "137": {
+          "_F_": 1
+        },
+        "138": {
+          "_F_": 1
+        },
+        "139": {
+          "_F_": 1
+        },
+        "140": {
+          "_F_": 1
+        },
+        "141": {
+          "_F_": 1
+        },
+        "142": {
+          "_F_": 1
+        },
+        "143": {
+          "_F_": 15,
+          "_169_": "block"
+        },
+        "144": {
+          "_F_": 1
+        },
+        "145": {
+          "_F_": 1
+        },
+        "146": {
+          "_F_": 15,
+          "_169_": "block"
+        },
+        "147": {
+          "_F_": 1
+        },
+        "148": {
+          "_F_": 1
+        },
         "149": {
           "_F_": 16,
           "_0_": "u_PJhmF",
-          "_1_": { "_R_": "162" },
+          "_1_": {
+            "_R_": "162"
+          },
           "_75_": 0,
           "_76_": 2,
           "_98_": false,
-          "_99_": [{ "_R_": "89" }],
-          "_97_": { "_R_": "38" },
-          "_130_": { "_R_": "44" },
+          "_99_": [
+            {
+              "_R_": "89"
+            }
+          ],
+          "_97_": {
+            "_R_": "38"
+          },
+          "_130_": {
+            "_R_": "44"
+          },
           "_203_": true,
           "_22_": "单击按钮0",
-          "_74_": { "_87_": "number" }
+          "_74_": {
+            "_87_": "number"
+          }
         },
-        "150": { "_F_": 1 },
+        "150": {
+          "_F_": 1
+        },
         "151": {
           "_F_": 16,
           "_0_": "u_i91Vh",
-          "_1_": { "_R_": "163" },
+          "_1_": {
+            "_R_": "163"
+          },
           "_75_": 0,
           "_76_": 2,
           "_98_": false,
-          "_99_": [{ "_R_": "90" }],
-          "_97_": { "_R_": "88" },
-          "_130_": { "_R_": "54" },
+          "_99_": [
+            {
+              "_R_": "90"
+            }
+          ],
+          "_97_": {
+            "_R_": "88"
+          },
+          "_130_": {
+            "_R_": "54"
+          },
           "_22_": "提交表单(合并输入项)",
-          "_74_": { "_87_": "object" }
+          "_74_": {
+            "_87_": "object"
+          }
         },
-        "152": { "_F_": 1 },
+        "152": {
+          "_F_": 1
+        },
         "153": {
           "_F_": 16,
           "_0_": "u_ovFh9",
-          "_1_": { "_R_": "164" },
+          "_1_": {
+            "_R_": "164"
+          },
           "_75_": 0,
           "_76_": 2,
           "_98_": false,
-          "_99_": [{ "_R_": "91" }],
-          "_97_": { "_R_": "88" },
-          "_130_": { "_R_": "67" },
+          "_99_": [
+            {
+              "_R_": "91"
+            }
+          ],
+          "_97_": {
+            "_R_": "88"
+          },
+          "_130_": {
+            "_R_": "67"
+          },
           "_22_": "提交数据输出",
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "154": {
           "_F_": 8,
-          "_1_": { "_R_": "165" },
+          "_1_": {
+            "_R_": "165"
+          },
           "_95_": true,
           "_38_": "u_OCGS1",
-          "_96_": { "_R_": "166" },
+          "_96_": {
+            "_R_": "166"
+          },
           "_213_": true,
-          "_97_": { "_R_": "39" }
+          "_97_": {
+            "_R_": "39"
+          }
         },
         "155": {
           "_F_": 9,
           "_0_": "u_kjHm_",
-          "_1_": { "_R_": "167" },
+          "_1_": {
+            "_R_": "167"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2632,21 +4281,33 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           },
-          "_97_": { "_R_": "83" },
+          "_97_": {
+            "_R_": "83"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_87_": "string", "_22_": "表单项0", "_139_": "字段名为 name的表单项值" }
+              "_38_": {
+                "_87_": "string",
+                "_22_": "表单项0",
+                "_139_": "字段名为 name的表单项值"
+              }
             }
           }
         },
         "156": {
           "_F_": 9,
           "_0_": "u_rF1Cp",
-          "_1_": { "_R_": "168" },
+          "_1_": {
+            "_R_": "168"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2660,7 +4321,9 @@
             "_139_": "key为表单项字段名，value为表单项数据源类型",
             "_201_": {}
           },
-          "_97_": { "_R_": "83" },
+          "_97_": {
+            "_R_": "83"
+          },
           "_74_": {
             "_87_": "object",
             "_139_": "key为表单项字段名，value为表单项数据源类型",
@@ -2670,7 +4333,9 @@
         "157": {
           "_F_": 9,
           "_0_": "u_Ez9Jc",
-          "_1_": { "_R_": "169" },
+          "_1_": {
+            "_R_": "169"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2680,14 +4345,34 @@
           "_100_": "inner-output",
           "_101_": "validateTrigger",
           "_22_": "触发校验",
-          "_102_": { "_87_": "object", "_201_": { "_0_": { "_87_": "string", "_22_": "组件ID" } } },
-          "_97_": { "_R_": "83" },
-          "_74_": { "_87_": "object", "_201_": { "_0_": { "_87_": "string", "_22_": "组件ID" } } }
+          "_102_": {
+            "_87_": "object",
+            "_201_": {
+              "_0_": {
+                "_87_": "string",
+                "_22_": "组件ID"
+              }
+            }
+          },
+          "_97_": {
+            "_R_": "83"
+          },
+          "_74_": {
+            "_87_": "object",
+            "_201_": {
+              "_0_": {
+                "_87_": "string",
+                "_22_": "组件ID"
+              }
+            }
+          }
         },
         "158": {
           "_F_": 9,
           "_0_": "u_atgs9",
-          "_1_": { "_R_": "170" },
+          "_1_": {
+            "_R_": "170"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2700,112 +4385,242 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_0_": { "_87_": "string", "_22_": "组件ID" },
-              "_39_": { "_87_": "any", "_22_": "组件值" }
+              "_0_": {
+                "_87_": "string",
+                "_22_": "组件ID"
+              },
+              "_39_": {
+                "_87_": "any",
+                "_22_": "组件值"
+              }
             }
           },
-          "_97_": { "_R_": "83" },
+          "_97_": {
+            "_R_": "83"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_0_": { "_87_": "string", "_22_": "组件ID" },
-              "_39_": { "_87_": "any", "_22_": "组件值" }
+              "_0_": {
+                "_87_": "string",
+                "_22_": "组件ID"
+              },
+              "_39_": {
+                "_87_": "any",
+                "_22_": "组件值"
+              }
             }
           }
         },
         "159": {
           "_F_": 10,
-          "_1_": { "_R_": "171" },
+          "_1_": {
+            "_R_": "171"
+          },
           "_76_": 1,
           "_95_": false,
-          "_47_": { "_66_": 0, "_45_": 0, "_67_": 140, "_19_": 170 },
+          "_47_": {
+            "_66_": 0,
+            "_45_": 0,
+            "_67_": 140,
+            "_19_": 170
+          },
           "_103_": {},
           "_104_": [],
           "_81_": [],
           "_80_": [
-            { "_R_": "174" },
-            { "_R_": "175" },
-            { "_R_": "176" },
-            { "_R_": "177" },
-            { "_R_": "178" },
-            { "_R_": "179" },
-            { "_R_": "180" },
-            { "_R_": "181" },
-            { "_R_": "182" },
-            { "_R_": "183" },
-            { "_R_": "184" },
-            { "_R_": "185" }
+            {
+              "_R_": "174"
+            },
+            {
+              "_R_": "175"
+            },
+            {
+              "_R_": "176"
+            },
+            {
+              "_R_": "177"
+            },
+            {
+              "_R_": "178"
+            },
+            {
+              "_R_": "179"
+            },
+            {
+              "_R_": "180"
+            },
+            {
+              "_R_": "181"
+            },
+            {
+              "_R_": "182"
+            },
+            {
+              "_R_": "183"
+            },
+            {
+              "_R_": "184"
+            },
+            {
+              "_R_": "185"
+            }
           ],
           "_105_": [],
-          "_106_": [{ "_R_": "186" }, { "_R_": "187" }, { "_R_": "188" }, { "_R_": "189" }],
+          "_106_": [
+            {
+              "_R_": "186"
+            },
+            {
+              "_R_": "187"
+            },
+            {
+              "_R_": "188"
+            },
+            {
+              "_R_": "189"
+            }
+          ],
           "_83_": [],
           "_82_": [
-            { "_R_": "190" },
-            { "_R_": "191" },
-            { "_R_": "192" },
-            { "_R_": "193" },
-            { "_R_": "194" },
-            { "_R_": "195" },
-            { "_R_": "196" },
-            { "_R_": "197" },
-            { "_R_": "198" },
-            { "_R_": "199" },
-            { "_R_": "200" },
-            { "_R_": "201" },
-            { "_R_": "202" },
-            { "_R_": "203" },
-            { "_R_": "204" },
-            { "_R_": "205" },
-            { "_R_": "206" }
+            {
+              "_R_": "190"
+            },
+            {
+              "_R_": "191"
+            },
+            {
+              "_R_": "192"
+            },
+            {
+              "_R_": "193"
+            },
+            {
+              "_R_": "194"
+            },
+            {
+              "_R_": "195"
+            },
+            {
+              "_R_": "196"
+            },
+            {
+              "_R_": "197"
+            },
+            {
+              "_R_": "198"
+            },
+            {
+              "_R_": "199"
+            },
+            {
+              "_R_": "200"
+            },
+            {
+              "_R_": "201"
+            },
+            {
+              "_R_": "202"
+            },
+            {
+              "_R_": "203"
+            },
+            {
+              "_R_": "204"
+            },
+            {
+              "_R_": "205"
+            },
+            {
+              "_R_": "206"
+            }
           ],
           "_107_": [],
           "_108_": [],
           "_109_": [],
           "_38_": "u_OCGS1",
-          "_96_": { "_R_": "166" },
-          "_97_": { "_R_": "83" }
+          "_96_": {
+            "_R_": "166"
+          },
+          "_97_": {
+            "_R_": "83"
+          }
         },
         "160": {
           "_F_": 11,
           "_0_": "u_vNPbQ",
-          "_1_": { "_R_": "172" },
+          "_1_": {
+            "_R_": "172"
+          },
           "_55_": [],
           "_82_": [],
           "_85_": [],
           "_99_": [],
           "_112_": [],
-          "_47_": { "_129_": false, "_67_": null, "_19_": null, "_45_": 400, "_66_": 700 },
-          "_97_": { "_R_": "83" },
+          "_47_": {
+            "_129_": false,
+            "_67_": null,
+            "_19_": null,
+            "_45_": 400,
+            "_66_": 700
+          },
+          "_97_": {
+            "_R_": "83"
+          },
           "_113_": "表单容器",
           "_114_": 1723714549142,
           "_115_": true,
           "_116_": true,
-          "_117_": { "_121_": true },
+          "_117_": {
+            "_121_": true
+          },
           "_22_": "表单容器"
         },
         "161": {
           "_F_": 16,
           "_0_": "u_ZnBfr",
-          "_1_": { "_R_": "173" },
+          "_1_": {
+            "_R_": "173"
+          },
           "_75_": 0,
           "_76_": 2,
           "_98_": false,
           "_99_": [],
-          "_97_": { "_R_": "88" },
-          "_130_": { "_R_": "66" },
+          "_97_": {
+            "_R_": "88"
+          },
+          "_130_": {
+            "_R_": "66"
+          },
           "_22_": "校验失败输出",
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_38_": { "_22_": "字段名", "_87_": "string", "_139_": "字段名" },
-              "_215_": { "_22_": "校验信息", "_87_": "string", "_139_": "校验信息" }
+              "_38_": {
+                "_22_": "字段名",
+                "_87_": "string",
+                "_139_": "字段名"
+              },
+              "_215_": {
+                "_22_": "校验信息",
+                "_87_": "string",
+                "_139_": "校验信息"
+              }
             }
           }
         },
-        "162": { "_F_": 1 },
-        "163": { "_F_": 1 },
-        "164": { "_F_": 1 },
-        "165": { "_F_": 1 },
+        "162": {
+          "_F_": 1
+        },
+        "163": {
+          "_F_": 1
+        },
+        "164": {
+          "_F_": 1
+        },
+        "165": {
+          "_F_": 1
+        },
         "166": {
           "_F_": 12,
           "_0_": "u_Jw3BN",
@@ -2813,7 +4628,10 @@
             "_135_": {
               "_129_": true,
               "_253_": [],
-              "_254_": ["onBlur", "onPressEnter"],
+              "_254_": [
+                "onBlur",
+                "onPressEnter"
+              ],
               "_26_": {
                 "_263_": true,
                 "_264_": "submitMerge",
@@ -2833,31 +4651,80 @@
             "_136_": [],
             "_137_": [],
             "_138_": {
-              "_259_": [{ "_87_": "defined", "_236_": {}, "_237_": true }],
-              "_260_": [{ "_87_": "defined", "_236_": {}, "_237_": true }],
-              "_261_": [{ "_87_": "defined", "_236_": {}, "_237_": true }],
-              "_262_": [{ "_87_": "defined", "_236_": {}, "_237_": true }]
+              "_259_": [
+                {
+                  "_87_": "defined",
+                  "_236_": {},
+                  "_237_": true
+                }
+              ],
+              "_260_": [
+                {
+                  "_87_": "defined",
+                  "_236_": {},
+                  "_237_": true
+                }
+              ],
+              "_261_": [
+                {
+                  "_87_": "defined",
+                  "_236_": {},
+                  "_237_": true
+                }
+              ],
+              "_262_": [
+                {
+                  "_87_": "defined",
+                  "_236_": {},
+                  "_237_": true
+                }
+              ]
             },
-            "_47_": { "_R_": "207" }
+            "_47_": {
+              "_R_": "207"
+            }
           },
           "_22_": "文本框",
           "_124_": "form-text_lK2",
-          "_125_": { "_70_": "mybricks.normal-pc.form-text", "_71_": "1.3.25" },
+          "_125_": {
+            "_70_": "mybricks.normal-h5.form-text",
+            "_71_": "1.3.25"
+          },
           "_126_": true,
-          "_127_": { "_R_": "159" },
-          "_128_": { "_R_": "154" }
+          "_127_": {
+            "_R_": "159"
+          },
+          "_128_": {
+            "_R_": "154"
+          }
         },
-        "167": { "_F_": 1 },
-        "168": { "_F_": 1 },
-        "169": { "_F_": 1 },
-        "170": { "_F_": 1 },
-        "171": { "_F_": 1 },
-        "172": { "_F_": 1 },
-        "173": { "_F_": 1 },
+        "167": {
+          "_F_": 1
+        },
+        "168": {
+          "_F_": 1
+        },
+        "169": {
+          "_F_": 1
+        },
+        "170": {
+          "_F_": 1
+        },
+        "171": {
+          "_F_": 1
+        },
+        "172": {
+          "_F_": 1
+        },
+        "173": {
+          "_F_": 1
+        },
         "174": {
           "_F_": 9,
           "_0_": "u_XPDAz",
-          "_1_": { "_R_": "208" },
+          "_1_": {
+            "_R_": "208"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2867,15 +4734,25 @@
           "_101_": "setValue",
           "_22_": "设置值",
           "_139_": "设置文本框的值，并触发值变化事件输出",
-          "_102_": { "_87_": "string" },
-          "_141_": ["setValueDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_141_": [
+            "setValueDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "175": {
           "_F_": 9,
           "_0_": "u_qEX6a",
-          "_1_": { "_R_": "209" },
+          "_1_": {
+            "_R_": "209"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2885,15 +4762,25 @@
           "_101_": "setInitialValue",
           "_22_": "设置初始值",
           "_139_": "设置文本框的初始值，并触发值初始化事件输出",
-          "_102_": { "_87_": "string" },
-          "_141_": ["setInitialValueDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_141_": [
+            "setInitialValueDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "176": {
           "_F_": 9,
           "_0_": "u_Iigih",
-          "_1_": { "_R_": "210" },
+          "_1_": {
+            "_R_": "210"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2903,15 +4790,25 @@
           "_101_": "validate",
           "_22_": "校验",
           "_139_": "触发文本框的校验检查，并输出校验结果",
-          "_102_": { "_87_": "any" },
-          "_141_": ["returnValidate"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "returnValidate"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "177": {
           "_F_": 9,
           "_0_": "u_zuORJ",
-          "_1_": { "_R_": "211" },
+          "_1_": {
+            "_R_": "211"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2921,15 +4818,25 @@
           "_101_": "getValue",
           "_22_": "获取值",
           "_139_": "获取文本框的值并输出",
-          "_102_": { "_87_": "any" },
-          "_141_": ["returnValue"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "returnValue"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "178": {
           "_F_": 9,
           "_0_": "u_oK7Y1",
-          "_1_": { "_R_": "212" },
+          "_1_": {
+            "_R_": "212"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2939,15 +4846,25 @@
           "_101_": "resetValue",
           "_22_": "重置值",
           "_139_": "清空文本框的值",
-          "_102_": { "_87_": "any" },
-          "_141_": ["resetValueDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "resetValueDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "179": {
           "_F_": 9,
           "_0_": "u_7aHNq",
-          "_1_": { "_R_": "213" },
+          "_1_": {
+            "_R_": "213"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2957,15 +4874,25 @@
           "_101_": "setDisabled",
           "_22_": "设置禁用",
           "_139_": "禁用文本框，并触发禁用完成事件输出",
-          "_102_": { "_87_": "any" },
-          "_141_": ["setDisabledDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "setDisabledDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "180": {
           "_F_": 9,
           "_0_": "u_kfLMM",
-          "_1_": { "_R_": "214" },
+          "_1_": {
+            "_R_": "214"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2975,15 +4902,25 @@
           "_101_": "setEnabled",
           "_22_": "设置启用",
           "_139_": "启用文本框， 并触发启用完成事件输出",
-          "_102_": { "_87_": "any" },
-          "_141_": ["setEnabledDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_141_": [
+            "setEnabledDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "181": {
           "_F_": 9,
           "_0_": "u_vEi3g",
-          "_1_": { "_R_": "215" },
+          "_1_": {
+            "_R_": "215"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -2992,15 +4929,25 @@
           "_100_": "input",
           "_101_": "isEnable",
           "_22_": "启用/禁用",
-          "_102_": { "_87_": "boolean" },
-          "_141_": ["isEnableDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_141_": [
+            "isEnableDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "182": {
           "_F_": 9,
           "_0_": "u_AZUk0",
-          "_1_": { "_R_": "216" },
+          "_1_": {
+            "_R_": "216"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3010,15 +4957,25 @@
           "_101_": "isEditable",
           "_22_": "设置编辑/只读",
           "_139_": "设置表单项编辑/只读态",
-          "_102_": { "_87_": "boolean" },
-          "_141_": ["isEditableDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_141_": [
+            "isEditableDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "183": {
           "_F_": 9,
           "_0_": "u_Ghqr7",
-          "_1_": { "_R_": "217" },
+          "_1_": {
+            "_R_": "217"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3028,15 +4985,25 @@
           "_101_": "setColor",
           "_22_": "设置字体颜色",
           "_139_": "设置文本框里字体的颜色",
-          "_102_": { "_87_": "string" },
-          "_141_": ["setColorDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_141_": [
+            "setColorDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "184": {
           "_F_": 9,
           "_0_": "u_5iKNL",
-          "_1_": { "_R_": "218" },
+          "_1_": {
+            "_R_": "218"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3046,15 +5013,25 @@
           "_101_": "setAutoFocus",
           "_22_": "设置聚焦状态",
           "_139_": "true:聚焦 false:不聚焦",
-          "_102_": { "_87_": "boolean" },
-          "_141_": ["setAutoFocusDone"],
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_141_": [
+            "setAutoFocusDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "185": {
           "_F_": 9,
           "_0_": "u_pD2rT",
-          "_1_": { "_R_": "219" },
+          "_1_": {
+            "_R_": "219"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3071,15 +5048,28 @@
                 "_139_": "校验状态，成功/失败",
                 "_87_": "enum",
                 "_176_": [
-                  { "_87_": "string", "_39_": "success" },
-                  { "_87_": "string", "_39_": "error" }
+                  {
+                    "_87_": "string",
+                    "_39_": "success"
+                  },
+                  {
+                    "_87_": "string",
+                    "_39_": "error"
+                  }
                 ]
               },
-              "_215_": { "_139_": "帮助提示信息", "_87_": "string" }
+              "_215_": {
+                "_139_": "帮助提示信息",
+                "_87_": "string"
+              }
             }
           },
-          "_141_": ["setValidateInfoDone"],
-          "_97_": { "_R_": "159" },
+          "_141_": [
+            "setValidateInfoDone"
+          ],
+          "_97_": {
+            "_R_": "159"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -3087,18 +5077,29 @@
                 "_139_": "校验状态，成功/失败",
                 "_87_": "enum",
                 "_176_": [
-                  { "_87_": "string", "_39_": "success" },
-                  { "_87_": "string", "_39_": "error" }
+                  {
+                    "_87_": "string",
+                    "_39_": "success"
+                  },
+                  {
+                    "_87_": "string",
+                    "_39_": "error"
+                  }
                 ]
               },
-              "_215_": { "_139_": "帮助提示信息", "_87_": "string" }
+              "_215_": {
+                "_139_": "帮助提示信息",
+                "_87_": "string"
+              }
             }
           }
         },
         "186": {
           "_F_": 9,
           "_0_": "u_LYdg2",
-          "_1_": { "_R_": "220" },
+          "_1_": {
+            "_R_": "220"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -3119,7 +5120,9 @@
               }
             }
           },
-          "_97_": { "_R_": "159" },
+          "_97_": {
+            "_R_": "159"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -3135,7 +5138,9 @@
         "187": {
           "_F_": 9,
           "_0_": "u_Fqka6",
-          "_1_": { "_R_": "221" },
+          "_1_": {
+            "_R_": "221"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -3145,14 +5150,22 @@
           "_101_": "show",
           "_22_": "显示",
           "_139_": "显示该组件",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "188": {
           "_F_": 9,
           "_0_": "u__67lC",
-          "_1_": { "_R_": "222" },
+          "_1_": {
+            "_R_": "222"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -3162,14 +5175,22 @@
           "_101_": "hide",
           "_22_": "隐藏",
           "_139_": "隐藏该组件",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "189": {
           "_F_": 9,
           "_0_": "u_8g1Cu",
-          "_1_": { "_R_": "223" },
+          "_1_": {
+            "_R_": "223"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "ext",
@@ -3179,14 +5200,22 @@
           "_101_": "showOrHide",
           "_22_": "显示/隐藏",
           "_139_": "根据输入的数据(true/false 或 1/0等)切换显示与隐藏",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "190": {
           "_F_": 9,
           "_0_": "u_2VFaR",
-          "_1_": { "_R_": "224" },
+          "_1_": {
+            "_R_": "224"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3196,14 +5225,22 @@
           "_101_": "onInitial",
           "_22_": "值初始化",
           "_139_": "文本框的值初始化事件输出",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "191": {
           "_F_": 9,
           "_0_": "u_fhO3l",
-          "_1_": { "_R_": "225" },
+          "_1_": {
+            "_R_": "225"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3213,14 +5250,22 @@
           "_101_": "onChange",
           "_22_": "值更新",
           "_139_": "文本框的值更新事件输出",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "192": {
           "_F_": 9,
           "_0_": "u_pf0_u",
-          "_1_": { "_R_": "226" },
+          "_1_": {
+            "_R_": "226"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3230,14 +5275,22 @@
           "_101_": "onBlur",
           "_22_": "失去焦点",
           "_139_": "文本框的失去焦点事件输出",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "193": {
           "_F_": 9,
           "_0_": "u_QWIkb",
-          "_1_": { "_R_": "227" },
+          "_1_": {
+            "_R_": "227"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3247,14 +5300,22 @@
           "_101_": "onPressEnter",
           "_22_": "按下回车",
           "_139_": "文本框的按下回车事件输出",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "194": {
           "_F_": 9,
           "_0_": "u_CpyQg",
-          "_1_": { "_R_": "228" },
+          "_1_": {
+            "_R_": "228"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3264,14 +5325,24 @@
           "_101_": "onValidate",
           "_22_": "校验触发",
           "_139_": "文本框的校验触发事件输出",
-          "_102_": { "_22_": "当前值", "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_22_": "当前值", "_87_": "string" }
+          "_102_": {
+            "_22_": "当前值",
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_22_": "当前值",
+            "_87_": "string"
+          }
         },
         "195": {
           "_F_": 9,
           "_0_": "u_1TrAy",
-          "_1_": { "_R_": "229" },
+          "_1_": {
+            "_R_": "229"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3284,23 +5355,43 @@
           "_102_": {
             "_87_": "object",
             "_201_": {
-              "_218_": { "_22_": "校验状态", "_87_": "string", "_139_": "校验状态，成功/失败" },
-              "_215_": { "_22_": "校验提示", "_87_": "string", "_139_": "帮助提示信息" }
+              "_218_": {
+                "_22_": "校验状态",
+                "_87_": "string",
+                "_139_": "校验状态，成功/失败"
+              },
+              "_215_": {
+                "_22_": "校验提示",
+                "_87_": "string",
+                "_139_": "帮助提示信息"
+              }
             }
           },
-          "_97_": { "_R_": "159" },
+          "_97_": {
+            "_R_": "159"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
-              "_218_": { "_22_": "校验状态", "_87_": "string", "_139_": "校验状态，成功/失败" },
-              "_215_": { "_22_": "校验提示", "_87_": "string", "_139_": "帮助提示信息" }
+              "_218_": {
+                "_22_": "校验状态",
+                "_87_": "string",
+                "_139_": "校验状态，成功/失败"
+              },
+              "_215_": {
+                "_22_": "校验提示",
+                "_87_": "string",
+                "_139_": "帮助提示信息"
+              }
             }
           }
         },
         "196": {
           "_F_": 9,
           "_0_": "u_P28t4",
-          "_1_": { "_R_": "230" },
+          "_1_": {
+            "_R_": "230"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3310,14 +5401,22 @@
           "_101_": "returnValue",
           "_22_": "值输出",
           "_139_": "获取文本框的值后，值输出",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "197": {
           "_F_": 9,
           "_0_": "u_SUWBi",
-          "_1_": { "_R_": "231" },
+          "_1_": {
+            "_R_": "231"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3326,14 +5425,22 @@
           "_100_": "output",
           "_101_": "setValueDone",
           "_22_": "设置值完成",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "198": {
           "_F_": 9,
           "_0_": "u_J5a92",
-          "_1_": { "_R_": "232" },
+          "_1_": {
+            "_R_": "232"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3342,14 +5449,22 @@
           "_100_": "output",
           "_101_": "setInitialValueDone",
           "_22_": "设置初始值完成",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "199": {
           "_F_": 9,
           "_0_": "u_kxIAd",
-          "_1_": { "_R_": "233" },
+          "_1_": {
+            "_R_": "233"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3358,14 +5473,22 @@
           "_100_": "output",
           "_101_": "resetValueDone",
           "_22_": "重置完成",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "200": {
           "_F_": 9,
           "_0_": "u_8zJH7",
-          "_1_": { "_R_": "234" },
+          "_1_": {
+            "_R_": "234"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3374,14 +5497,22 @@
           "_100_": "output",
           "_101_": "setDisabledDone",
           "_22_": "禁用完成",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "201": {
           "_F_": 9,
           "_0_": "u_AH655",
-          "_1_": { "_R_": "235" },
+          "_1_": {
+            "_R_": "235"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3390,14 +5521,22 @@
           "_100_": "output",
           "_101_": "setEnabledDone",
           "_22_": "启用完成",
-          "_102_": { "_87_": "any" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "any" }
+          "_102_": {
+            "_87_": "any"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "any"
+          }
         },
         "202": {
           "_F_": 9,
           "_0_": "u_ZNwb_",
-          "_1_": { "_R_": "236" },
+          "_1_": {
+            "_R_": "236"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3406,14 +5545,22 @@
           "_100_": "output",
           "_101_": "isEditableDone",
           "_22_": "设置编辑/只读完成",
-          "_102_": { "_87_": "boolean" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "203": {
           "_F_": 9,
           "_0_": "u_0_Jva",
-          "_1_": { "_R_": "237" },
+          "_1_": {
+            "_R_": "237"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3422,14 +5569,22 @@
           "_100_": "output",
           "_101_": "isEnableDone",
           "_22_": "启用/禁用完成",
-          "_102_": { "_87_": "boolean" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "204": {
           "_F_": 9,
           "_0_": "u_ejHe6",
-          "_1_": { "_R_": "238" },
+          "_1_": {
+            "_R_": "238"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3438,14 +5593,22 @@
           "_100_": "output",
           "_101_": "setColorDone",
           "_22_": "设置字体颜色完成",
-          "_102_": { "_87_": "string" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "string" }
+          "_102_": {
+            "_87_": "string"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "string"
+          }
         },
         "205": {
           "_F_": 9,
           "_0_": "u_d3GGn",
-          "_1_": { "_R_": "239" },
+          "_1_": {
+            "_R_": "239"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3454,14 +5617,22 @@
           "_100_": "output",
           "_101_": "setAutoFocusDone",
           "_22_": "设置聚焦状态完成",
-          "_102_": { "_87_": "boolean" },
-          "_97_": { "_R_": "159" },
-          "_74_": { "_87_": "boolean" }
+          "_102_": {
+            "_87_": "boolean"
+          },
+          "_97_": {
+            "_R_": "159"
+          },
+          "_74_": {
+            "_87_": "boolean"
+          }
         },
         "206": {
           "_F_": 9,
           "_0_": "u_fCYh_",
-          "_1_": { "_R_": "240" },
+          "_1_": {
+            "_R_": "240"
+          },
           "_75_": 0,
           "_76_": 2,
           "_87_": "normal",
@@ -3477,14 +5648,25 @@
                 "_139_": "校验状态，成功/失败",
                 "_87_": "enum",
                 "_176_": [
-                  { "_87_": "string", "_39_": "success" },
-                  { "_87_": "string", "_39_": "error" }
+                  {
+                    "_87_": "string",
+                    "_39_": "success"
+                  },
+                  {
+                    "_87_": "string",
+                    "_39_": "error"
+                  }
                 ]
               },
-              "_215_": { "_139_": "帮助提示信息", "_87_": "string" }
+              "_215_": {
+                "_139_": "帮助提示信息",
+                "_87_": "string"
+              }
             }
           },
-          "_97_": { "_R_": "159" },
+          "_97_": {
+            "_R_": "159"
+          },
           "_74_": {
             "_87_": "object",
             "_201_": {
@@ -3492,11 +5674,20 @@
                 "_139_": "校验状态，成功/失败",
                 "_87_": "enum",
                 "_176_": [
-                  { "_87_": "string", "_39_": "success" },
-                  { "_87_": "string", "_39_": "error" }
+                  {
+                    "_87_": "string",
+                    "_39_": "success"
+                  },
+                  {
+                    "_87_": "string",
+                    "_39_": "error"
+                  }
                 ]
               },
-              "_215_": { "_139_": "帮助提示信息", "_87_": "string" }
+              "_215_": {
+                "_139_": "帮助提示信息",
+                "_87_": "string"
+              }
             }
           }
         },
@@ -3508,41 +5699,109 @@
           "_91_": 342,
           "_92_": 32
         },
-        "208": { "_F_": 1 },
-        "209": { "_F_": 1 },
-        "210": { "_F_": 1 },
-        "211": { "_F_": 1 },
-        "212": { "_F_": 1 },
-        "213": { "_F_": 1 },
-        "214": { "_F_": 1 },
-        "215": { "_F_": 1 },
-        "216": { "_F_": 1 },
-        "217": { "_F_": 1 },
-        "218": { "_F_": 1 },
-        "219": { "_F_": 1 },
-        "220": { "_F_": 1 },
-        "221": { "_F_": 1 },
-        "222": { "_F_": 1 },
-        "223": { "_F_": 1 },
-        "224": { "_F_": 1 },
-        "225": { "_F_": 1 },
-        "226": { "_F_": 1 },
-        "227": { "_F_": 1 },
-        "228": { "_F_": 1 },
-        "229": { "_F_": 1 },
-        "230": { "_F_": 1 },
-        "231": { "_F_": 1 },
-        "232": { "_F_": 1 },
-        "233": { "_F_": 1 },
-        "234": { "_F_": 1 },
-        "235": { "_F_": 1 },
-        "236": { "_F_": 1 },
-        "237": { "_F_": 1 },
-        "238": { "_F_": 1 },
-        "239": { "_F_": 1 },
-        "240": { "_F_": 1 }
+        "208": {
+          "_F_": 1
+        },
+        "209": {
+          "_F_": 1
+        },
+        "210": {
+          "_F_": 1
+        },
+        "211": {
+          "_F_": 1
+        },
+        "212": {
+          "_F_": 1
+        },
+        "213": {
+          "_F_": 1
+        },
+        "214": {
+          "_F_": 1
+        },
+        "215": {
+          "_F_": 1
+        },
+        "216": {
+          "_F_": 1
+        },
+        "217": {
+          "_F_": 1
+        },
+        "218": {
+          "_F_": 1
+        },
+        "219": {
+          "_F_": 1
+        },
+        "220": {
+          "_F_": 1
+        },
+        "221": {
+          "_F_": 1
+        },
+        "222": {
+          "_F_": 1
+        },
+        "223": {
+          "_F_": 1
+        },
+        "224": {
+          "_F_": 1
+        },
+        "225": {
+          "_F_": 1
+        },
+        "226": {
+          "_F_": 1
+        },
+        "227": {
+          "_F_": 1
+        },
+        "228": {
+          "_F_": 1
+        },
+        "229": {
+          "_F_": 1
+        },
+        "230": {
+          "_F_": 1
+        },
+        "231": {
+          "_F_": 1
+        },
+        "232": {
+          "_F_": 1
+        },
+        "233": {
+          "_F_": 1
+        },
+        "234": {
+          "_F_": 1
+        },
+        "235": {
+          "_F_": 1
+        },
+        "236": {
+          "_F_": 1
+        },
+        "237": {
+          "_F_": 1
+        },
+        "238": {
+          "_F_": 1
+        },
+        "239": {
+          "_F_": 1
+        },
+        "240": {
+          "_F_": 1
+        }
       },
-      "def": { "_R_": "0" }
+      "def": {
+        "_R_": "0"
+      }
     }
   }
 }

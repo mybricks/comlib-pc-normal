@@ -1,6 +1,6 @@
 {
   "title": "富文本",
-  "namespace": "mybricks.normal-pc.richtext-preview",
+  "namespace": "mybricks.normal-h5.richtext-preview",
   "version": "1.0.5",
   "description": "展示多姿多彩的富文本",
   "author": "MyBricks",

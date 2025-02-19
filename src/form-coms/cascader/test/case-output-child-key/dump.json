@@ -370,7 +370,7 @@
                   "_0_": "u_On_tM",
                   "_31_": "u_8gAnY",
                   "_99_": {
-                    "_115_": "mybricks.normal-pc.cascader",
+                    "_115_": "mybricks.normal-h5.cascader",
                     "_116_": "1.1.16"
                   },
                   "_18_": "级联选择",
@@ -910,7 +910,7 @@
           "_18_": "级联选择",
           "_98_": "cascader_45H",
           "_99_": {
-            "_115_": "mybricks.normal-pc.cascader",
+            "_115_": "mybricks.normal-h5.cascader",
             "_116_": "1.1.16"
           },
           "_100_": true,

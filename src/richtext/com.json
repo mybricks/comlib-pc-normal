@@ -1,6 +1,6 @@
 {
   "title": "富文本输入",
-  "namespace": "mybricks.normal-pc.richtext",
+  "namespace": "mybricks.normal-h5.richtext",
   "visibility": false,
   "version": "1.0.2",
   "description": "富文本输入",

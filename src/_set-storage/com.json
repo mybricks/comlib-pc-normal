@@ -1,6 +1,6 @@
 {
   "title": "设置Storage数据",
-  "namespace": "mybricks.normal-pc.set-storage",
+  "namespace": "mybricks.normal-h5.set-storage",
   "version": "1.0.2",
   "rtType": "js",
   "description": "设置storage数据",

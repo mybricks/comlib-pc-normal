@@ -1,6 +1,6 @@
 {
   "title": "全开式日期选择器",
-  "namespace": "mybricks.normal-pc.date-picker-full-open",
+  "namespace": "mybricks.normal-h5.date-picker-full-open",
   "author": "jidan.wd",
   "author_name": "jidan.wd",
   "version": "1.0.5",
@@ -19,7 +19,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setValueDone"]
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -28,7 +30,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setInitialValueDone"]
+      "rels": [
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -37,7 +41,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValidate"]
+      "rels": [
+        "returnValidate"
+      ]
     },
     {
       "id": "getValue",
@@ -46,7 +52,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValue"]
+      "rels": [
+        "returnValue"
+      ]
     },
     {
       "id": "resetValue",
@@ -55,7 +63,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["resetValueDone"]
+      "rels": [
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
@@ -64,7 +74,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["setDisabledDone"]
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
@@ -73,7 +85,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["setEnabledDone"]
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
@@ -82,7 +96,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["isEnableDone"]
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "isEditable",
@@ -91,7 +107,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["isEditableDone"]
+      "rels": [
+        "isEditableDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -119,7 +137,9 @@
           }
         }
       },
-      "rels": ["setValidateInfoDone"]
+      "rels": [
+        "setValidateInfoDone"
+      ]
     },
     {
       "id": "disabledDate",
@@ -128,7 +148,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["disabledDateDone"]
+      "rels": [
+        "disabledDateDone"
+      ]
     },
     {
       "id": "setColor",
@@ -137,7 +159,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setColorDone"]
+      "rels": [
+        "setColorDone"
+      ]
     },
     {
       "id": "setDateType",
@@ -168,7 +192,9 @@
           }
         ]
       },
-      "rels": ["setDateTypeDone"]
+      "rels": [
+        "setDateTypeDone"
+      ]
     }
   ],
   "outputs": [
@@ -363,5 +389,8 @@
       }
     }
   ],
-  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
+  "schema": [
+    "mybricks.normal-h5.form-container/form-item",
+    "*"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "title": "气泡",
-  "namespace": "mybricks.normal-pc.popover",
+  "namespace": "mybricks.normal-h5.popover",
   "version": "1.0.19",
   "description": "气泡",
   "author": "MyBricks",
@@ -17,7 +17,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["_titleComplete"]
+      "rels": [
+        "_titleComplete"
+      ]
     },
     {
       "id": "content",
@@ -25,7 +27,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["contentComplete"]
+      "rels": [
+        "contentComplete"
+      ]
     }
   ],
   "outputs": [

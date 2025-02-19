@@ -1,6 +1,6 @@
 {
   "title": "级联选择",
-  "namespace": "mybricks.normal-pc.cascader",
+  "namespace": "mybricks.normal-h5.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "version": "1.1.24",
@@ -260,7 +260,7 @@
       "desc": "级联选择的异步加载数据事件",
       "schema": {
         "type": "object",
-        "description":"异步加载数据，输出",
+        "description": "异步加载数据，输出",
         "properties": {
           "label": {
             "title": "标签",
@@ -408,39 +408,39 @@
       "id": "setOptionsDone",
       "title": "设置数据源完成",
       "schema": {
-          "type": "object",
-          "properties": {
-            "value": {
-              "title": "值",
-              "description": "选项值",
-              "type": "any"
-            },
-            "label": {
-              "title": "名称",
-              "description": "选项标签（一般展示）",
-              "type": "string"
-            },
-            "disabled": {
-              "title": "禁用",
-              "description": "选项禁用，true为禁用",
-              "type": "boolean"
-            },
-            "isLeaf": {
-              "title": "是否叶子节点",
-              "type": "boolean",
-              "description": "是否是叶子节点, 设置了异步加载时有效"
-            },
-            "children": {
-              "title": "子项",
-              "description": "子项内容，逐级嵌套",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {}
-              }
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "值",
+            "description": "选项值",
+            "type": "any"
+          },
+          "label": {
+            "title": "名称",
+            "description": "选项标签（一般展示）",
+            "type": "string"
+          },
+          "disabled": {
+            "title": "禁用",
+            "description": "选项禁用，true为禁用",
+            "type": "boolean"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean",
+            "description": "是否是叶子节点, 设置了异步加载时有效"
+          },
+          "children": {
+            "title": "子项",
+            "description": "子项内容，逐级嵌套",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
             }
           }
         }
+      }
     },
     {
       "id": "setValidateInfoDone",
@@ -470,7 +470,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "title": "步骤条",
-  "namespace": "mybricks.normal-pc.steps",
+  "namespace": "mybricks.normal-h5.steps",
   "version": "1.1.5",
   "description": "步骤条",
   "author": "MyBricks",
@@ -21,7 +21,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["nextStepComplete"]
+      "rels": [
+        "nextStepComplete"
+      ]
     },
     {
       "id": "prevStep",
@@ -30,7 +32,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["prevStepComplete"]
+      "rels": [
+        "prevStepComplete"
+      ]
     },
     {
       "id": "jumpTo",
@@ -39,13 +43,17 @@
       "schema": {
         "type": "number"
       },
-      "rels": ["jumpToComplete"]
+      "rels": [
+        "jumpToComplete"
+      ]
     },
     {
       "id": "getIndex",
       "title": "获取当前步骤",
       "desc": "步骤从0开始计数，获取当前所在的步骤",
-      "rels": ["getIndex"],
+      "rels": [
+        "getIndex"
+      ],
       "schema": {
         "type": "any"
       }
@@ -60,7 +68,9 @@
           "type": "number"
         }
       },
-      "rels": ["setHideStepsComplete"]
+      "rels": [
+        "setHideStepsComplete"
+      ]
     }
   ],
   "outputs": [

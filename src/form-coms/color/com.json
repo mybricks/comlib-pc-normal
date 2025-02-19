@@ -1,6 +1,6 @@
 {
   "title": "颜色选择框",
-  "namespace": "mybricks.normal-pc.color",
+  "namespace": "mybricks.normal-h5.color",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "version": "1.1.16",
@@ -258,7 +258,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-h5.form-container/form-item",
     "*"
   ]
 }

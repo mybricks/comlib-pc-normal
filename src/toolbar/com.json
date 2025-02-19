@@ -1,6 +1,6 @@
 {
   "title": "工具条",
-  "namespace": "mybricks.normal-pc.toolbar",
+  "namespace": "mybricks.normal-h5.toolbar",
   "version": "1.0.41",
   "description": "工具条",
   "author": "MyBricks",
@@ -34,7 +34,7 @@
   ],
   "slots": [
     {
-    	"id": "随机ID",
+      "id": "随机ID",
       "defer": true,
       "description": "工具条按钮插槽，可自定义按钮内容"
     }
