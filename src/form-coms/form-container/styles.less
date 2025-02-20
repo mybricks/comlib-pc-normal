@@ -18,6 +18,9 @@
   }
 
   :global {
+    .ant-form-item {
+      margin: 0 0 16px 0;
+    }
     .ant-form-item-label-wrap {
       overflow: hidden;
     }
@@ -44,11 +47,10 @@
 
       .ant-form-item-tooltip {
         color: var(--ant-primary-color, '#1890ff');
+        font-size: 16px;
+        margin-left: 8px;
       }
 
-      >label>.anticon {
-        font-size: 16pxs;
-      }
     }
 
     .formAction .ant-btn {
@@ -66,9 +68,14 @@
       }
     }
 
-    .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional):before, 
+    .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional):before {
+      color: #A14D43;
+    }
+
     .ant-form-item-explain-error {
       color: #A14D43;
+      font-size: 14px;
+      line-height: 32px;
     }
 
     .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper {
@@ -77,6 +84,14 @@
 
     .ant-input-affix-wrapper-disabled {
       background-color: transparent;
+    }
+
+    .ant-input,.ant-input[disabled] {
+      color: #262626;
+    }
+
+    .ant-form-item-has-error .formItemDesc {
+      display: none;
     }
 
   }
@@ -265,6 +280,7 @@
   font-weight: 400;
 
   .icon {
+    margin-right: 8px;
     font-size: 16px;
   }
 }

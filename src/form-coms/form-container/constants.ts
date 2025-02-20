@@ -45,6 +45,7 @@ export const outputIds = {
   RETURN_VALUES: 'returnValues',
   ON_VALIDATE: 'onValidate',
   ON_COLLAPSE: 'onCollapse',
+  ON_CLICK_TAG: 'onClickTag',
 
   setValueDone: "setValueDone",
   setInitialValueDone: "setInitialValueDone",

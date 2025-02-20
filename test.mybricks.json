@@ -8,7 +8,6 @@
     "./cypress/materials/_checkpoint/com.json",
     "./cypress/materials/_multi-inputJs/com.json",
     "./cypress/materials/toolbar/com.json",
-    
     {
       "title": "基础",
       "comAry": [
@@ -83,7 +82,9 @@
         "./src/form-coms/input-richtext/com.json",
         "./src/form-coms/form-list/com.json",
         "./src/form-coms/form-item-container/com.json",
-        "./src/form-coms/addition-container/com.json"
+        "./src/form-coms/addition-container/com.json",
+        "./src/form-coms/raw-text/com.json",
+        "./src/form-coms/raw-number/com.json"
       ]
     },
     {

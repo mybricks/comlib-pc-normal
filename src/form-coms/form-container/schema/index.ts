@@ -45,7 +45,6 @@ function getDynamicItemsSchema(data) {
 }
 
 function getFormItemPropsSchema(data: Data) {
-  console.log(data)
   const { layout } = data.config;
   const { width, span, ...res } = formItemPropsSchema;
   const properties = {};

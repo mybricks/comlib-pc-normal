@@ -67,11 +67,11 @@ const formItemEditor = {
             options: [{ type: 'font', config: { disableTextAlign: true } }],
             target: [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`]
           },
-          {
-            title: '冒号',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label:after`]
-          },
+          // {
+          //   title: '冒号',
+          //   options: [{ type: 'font', config: { disableTextAlign: true } }],
+          //   target: [`div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`, `div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label:after`]
+          // },
           {
             title: '对齐方式',
             options: [
@@ -401,6 +401,13 @@ const formItemEditor = {
           set({ id, name, data }: EditorResult<Data>, value: string) {
             setFormItemProps({ data, id, name }, 'titleTagIcon', value);
           }
+        }
+      },
+      {
+        title: '点击标签',
+        type: '_event',
+        options: {
+          outputId: 'onClickTag'
         }
       },
       {

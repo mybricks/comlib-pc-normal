@@ -7,6 +7,7 @@ import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 import classnames from 'classnames';
 import * as Icons from '@ant-design/icons'
+import { outputIds } from '../constants';
 
 interface FormItemProps {
   data: Data;
@@ -171,7 +172,13 @@ const FormItem = (props) => {
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
   const TagIcon = Icons[item.titleTagIcon]
-  console.log(item.titleTagIcon, TagIcon)
+
+  const onClickTag = useCallback(() => {
+    if (props.env?.edit) return;
+    props.outputs[outputIds.ON_CLICK_TAG](item);
+  }, [
+    item
+  ])
 
   return (
     <Form.Item
@@ -181,6 +188,7 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
+          <>
           <label
             ref={labelRef}
             data-form-item={com.name}
@@ -194,17 +202,18 @@ const FormItem = (props) => {
             >
               {env.i18n(item?.label)}
             </Tooltip>
-            {
-              (item.titleTag || item.titleTagIcon) ? (
-                <div className={css.titleTag}>
-                  {
-                    TagIcon ? <div className={css.icon}><TagIcon/></div> : null
-                  }
-                  <div className={css.title}>{item.titleTag}</div>
-                </div>
-              ) : null
-            }
           </label>
+          {
+            (item.titleTag || item.titleTagIcon) ? (
+              <div onClick={onClickTag} className={css.titleTag}>
+                {
+                  TagIcon ? <div className={css.icon}><TagIcon/></div> : null
+                }
+                <div className={css.title}>{item.titleTag}</div>
+              </div>
+            ) : null
+          }
+          </>
         )
       }
       className={item.labelSlot ? css.customLabel : void 0}

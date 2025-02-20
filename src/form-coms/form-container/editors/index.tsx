@@ -714,18 +714,18 @@ export default {
                 }
               }
             },
-            {
-              title: '显示冒号',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config?.colon || data.colon;
-                },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.config.colon = value;
-                }
-              }
-            }
+            // {
+            //   title: '显示冒号',
+            //   type: 'Switch',
+            //   value: {
+            //     get({ data }: EditorResult<Data>) {
+            //       return data.config?.colon || data.colon;
+            //     },
+            //     set({ data }: EditorResult<Data>, value: boolean) {
+            //       data.config.colon = value;
+            //     }
+            //   }
+            // }
           ]
         },
         // {

@@ -11,6 +11,7 @@ import { checkIfMobile } from '../../utils';
 
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env, dynamicEnableOrDisabledRef } = props;
+
   const layoutType = data.layoutType;
 
   const layout = data.config?.layout || data.layout;
@@ -55,6 +56,7 @@ const SlotContent = (props) => {
             item={item}
             isMobile={isMobile}
             env={env}
+            outputs={outputs}
             // field={props?.field}
           />
         ) : (
@@ -179,7 +181,7 @@ const SlotContent = (props) => {
       // inputValues: {}
       // key: props?.field?.name
     });
-  }, [layout, slots, isMobile, layoutType]);
+  }, [layout, slots, isMobile, layoutType, outputs]);
 
   return content;
 };

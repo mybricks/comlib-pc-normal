@@ -41,14 +41,14 @@ const REQUIRED_RULE = {
   status: false,
   visible: true,
   title: '必填',
-  message: '内容不能为空'
+  message: '内容不能为空！'
 };
 const REG_EXP_RULE = {
   key: RuleKeys.REG_EXP,
   status: false,
   visible: true,
   title: '正则校验',
-  message: '内容不能为空',
+  message: '内容不能为空！',
   regExr: `^(?!(null|undefined|)$).+`
 };
 const LENGTH_RULE = [
@@ -57,7 +57,7 @@ const LENGTH_RULE = [
     status: false,
     visible: true,
     title: '最小长度校验',
-    message: '内容长度不能小于指定值',
+    message: '内容长度不能小于${limitMinLength}！',
     limitMinLength: [2]
   },
   {
@@ -65,7 +65,7 @@ const LENGTH_RULE = [
     status: true,
     visible: true,
     title: '最大长度校验',
-    message: '内容长度不能大于指定值',
+    message: '内容长度不能大于${limitMaxLength}！',
     limitMaxLength: [255]
   }
 ];
@@ -75,7 +75,7 @@ const VALUE_RULE = [
     status: false,
     visible: true,
     title: '最小值校验',
-    message: '不能小于指定值',
+    message: '不能小于${limitMinValue}！',
     limitMinValue: [0]
   },
   {
@@ -83,7 +83,7 @@ const VALUE_RULE = [
     status: false,
     visible: true,
     title: '最大值校验',
-    message: '不能大于指定值',
+    message: '不能大于${limitMaxValue}！',
     limitMaxValue: [10000]
   }
 ];
@@ -172,24 +172,28 @@ export const ruleFnMap = {
   },
   [RuleKeys.MIN]: ({ value, message, failed, successed, env, limitMinValue }) => {
     if (typeCheck(value, 'NUMBER') && value < limitMinValue) {
+      message = message.replace(/\$\{limitMinValue\}/, limitMinValue)
       return failed(env.i18n(message));
     }
     return successed();
   },
   [RuleKeys.MAX]: ({ value, message, failed, successed, env, limitMaxValue }) => {
     if (typeCheck(value, 'NUMBER') && value > limitMaxValue) {
+      message = message.replace(/\$\{limitMaxValue\}/, limitMaxValue)
       return failed(env.i18n(message));
     }
     return successed();
   },
   [RuleKeys.MIN_LENGTH]: ({ value, message, failed, successed, env, limitMinLength }) => {
     if (value && value?.toString().length < limitMinLength) {
+      message = message.replace(/\$\{limitMinLength\}/, limitMinLength)
       return failed(env.i18n(message));
     }
     return successed();
   },
   [RuleKeys.MAX_LENGTH]: ({ value, message, failed, successed, env, limitMaxLength }) => {
     if (value && value?.toString().length > limitMaxLength) {
+      message = message.replace(/\$\{limitMaxLength\}/, limitMaxLength)
       return failed(env.i18n(message));
     }
     return successed();
