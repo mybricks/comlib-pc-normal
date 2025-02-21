@@ -10,9 +10,7 @@ export default {
     options: ['width']
   },
   ':root': {
-    style: [
-
-    ],
+    style: [],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[0].items = [
@@ -21,6 +19,7 @@ export default {
           type: 'text',
           options: [
             { width: '100%', stringMode: true },
+            { width: '100%', stringMode: true }
           ],
           description:
             '设置文本的默认内容，也可以通过逻辑连线连接文本的输入项【内容】动态修改文本的内容',
@@ -29,11 +28,11 @@ export default {
               return data.content;
             },
             set({ data }: EditorResult<Data>, value: number) {
-              console.log(value)
+              console.log(value);
               data.content = value;
             }
           }
-        },
+        }
         // {
         //   title: '事件',
         //   items: [
