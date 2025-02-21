@@ -1,34 +1,36 @@
-.wrapper {
-  .title {
-    line-height: 32px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #262626;
-  }
-
-  .tips {
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 16px;
-    color: var(--ant-primary-color, '#1890ff');
-  }
-
-  .content {
-    padding: 0 8px;
-    white-space: pre-wrap;
-  }
-
-  .number {
-    cursor: pointer;
-  }
+.content-container {
+  position: relative;
+  max-height: 4.284em; /* Adjust line-height * number of lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 1.428em; /* Adjust this to match your line height */
+  transition: max-height 0.3s;
 }
-
-:global {
-  .ant-popover {
-    .ant-popover-inner-content {
-      max-width: 200px;
-      white-space: pre-wrap;
-    }
-  }
-
+ 
+.content-container.expanded {
+  max-height: none; /* Remove height constraint when expanded */
+  -webkit-line-clamp: unset; /* Remove line clamp when expanded */
+  line-clamp: unset;
 }
+ 
+.content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  padding: 0 28px 0 8px;
+  white-space: pre-wrap;
+}
+ 
+.toggle-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: var(--ant-primary-color, '#1890ff');
+  cursor: pointer;
+}
+ 

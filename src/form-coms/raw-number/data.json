@@ -1,11 +1,3 @@
 {
-  "content": "直接内容",
-  "outputContent": "",
-  "align": "left",
-  "isEllipsis": true,
-  "ellipsis": {
-    "rows": 3
-  },
-  "style": {},
-  "useDynamicStyle": false
+  "content": 0
 }

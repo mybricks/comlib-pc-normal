@@ -1,62 +1,26 @@
-import { getPropsFromObject } from '../../utils/toReact';
-import {
-  AlignTypeEnum,
-  CursorTypeEnum,
-  Data,
-  InputIds,
-  OutputIds,
-  WhiteSpaceEnum
-} from './constants';
-
 export default function ({ data }) {
-  const style = { ...data.style };
-  delete style.styleEditorUnfold;
-
-  const propsStr = getPropsFromObject({
-    style: {
-      ...style,
-      wordBreak: 'break-all',
-      whiteSpace:
-        (data.isEllipsis && data.ellipsis?.rows > 1) || !data.isEllipsis
-          ? WhiteSpaceEnum.PreWrap
-          : WhiteSpaceEnum.NoWrap,
-      cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
-    },
-    ellipsis: data.ellipsis || {}
-  });
-
-  const component =
-    data.isEllipsis && data.ellipsis?.rows > 1 ? 'Typography.Paragraph' : 'Typography.Text';
-
-  const jsx = `<div
-  ${getPropsFromObject({
-    style: {
-      textAlign: data.align || AlignTypeEnum.Left,
-      lineHeight: 1
+  let configStr = ''
+  Object.keys(data.config).forEach(key => {
+    if (typeof data.config[key] !== 'undefined' && data.config[key] !== '') {
+      configStr +=  typeof data.config[key] === 'boolean' || typeof data.config[key] === 'number' ? `${key}={${data.config[key]}}` : `${key}="${data.config[key]}"` + ' '
     }
-  })}
->
-<${component}
-  ${propsStr}
->
-  ${data.content || ''}
-</${component}>
-</div>
-`;
+  })
+
+  let str = `<Input ${configStr} />`
 
   return {
     imports: [
       {
         from: 'antd',
-        coms: ['Typography']
+        coms: ['Input']
       },
       {
         from: 'antd/dist/antd.css',
         coms: []
       }
     ],
-    jsx,
+  	jsx: str,
     style: '',
     js: ''
-  };
+  }
 }
