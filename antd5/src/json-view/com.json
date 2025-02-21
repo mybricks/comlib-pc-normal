@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.json-view",
+  "namespace": "mybricks.normal-pc.antd5.json-view",
   "title": "JSON展示",
   "version": "1.0.13",
   "description": "展示JSON数据",

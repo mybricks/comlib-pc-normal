@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.custom-methods",
+  "namespace": "mybricks.normal-pc.antd5.custom-methods",
   "title": "主应用函数",
   "version": "1.0.0",
   "rtType": "js",

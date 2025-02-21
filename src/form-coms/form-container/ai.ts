@@ -1,6 +1,17 @@
 export default {
+  '@toTemplateJSON'({data}) {//用于生成模版
+    const json = {}
+    for (const key in data) {
+      if (key === 'items') {
+        json[key] = []
+      } else {
+        json[key] = data[key]
+      }
+    }
 
-  ':root'({ data }) {
+    return json
+  },
+  ':root'({data}) {
     return {
       prompts: `
       你是一名优秀的程序员，当前是一个表单容器,
@@ -21,12 +32,12 @@ export default {
       {type: 'updateForm', data: { formItemColumn: 4 }}
       仅需返回合法的JSON，不需要任何注释等信息
       `,
-      execute({ data, newData, slots }) {
+      execute({data, newData, slots}) {
         // console.log(newData)
         try {
           const slot = slots.get('content')
           const newItems: any[] = []
-    
+
           if (Array.isArray(newData)) {
             newData.forEach(item => {
               if (item.type === 'addItem') {
@@ -39,7 +50,7 @@ export default {
               const id = slot.addCom(`amc.normal-h5.${newData.namespace}`)
               newItems.push({ id, ...newData.config })
             }
-    
+
             if (newData.type === 'updateForm') {
               if (typeof newData.data?.formItemColumn === 'number') {
                 data.formItemColumn = newData.data?.formItemColumn
@@ -48,13 +59,13 @@ export default {
                   item.span = (24 / data.formItemColumn);
                 })
               }
-    
+
               if (typeof newData.data?.config?.layout === 'string') {
                 data.config.layout = newData.data?.config?.layout
               }
             }
           }
-    
+
           setTimeout(() => { // hack...
             newItems.forEach(newItem => {
               const item = data.items.find(item => item.id === newItem.id)
@@ -66,7 +77,7 @@ export default {
             })
             // console.log(data.items)
           }, 100)
-    
+
         } catch (ex) {
           console.error(ex)
         }
@@ -90,7 +101,7 @@ export default {
 //       }
 //     }
 //   },
-  prompts () {
+  prompts() {
     const def = {
       layout: 'horizontal',
       buttons: [{type: 'primary', title: '提交'}],
@@ -143,7 +154,7 @@ export default {
   `
   },
   '@create'(props) {
-    const { def, data } = props
+    const {def, data} = props
     // console.log('def:', def)
     if (def.buttons && def.buttons.length > 0) {
       def.buttons.forEach((item, index) => {

@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.silent-print",
+  "namespace": "mybricks.normal-pc.antd5.silent-print",
   "title": "静默打印",
   "visibility": false,
   "version": "1.0.0",

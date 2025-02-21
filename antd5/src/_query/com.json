@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.query",
+  "namespace": "mybricks.normal-pc.antd5.query",
   "title": "路由参数",
   "version": "1.0.3",
   "rtType": "js-autorun",

@@ -99,6 +99,12 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.outputContent = value;
             }
+          },
+          binding:{
+            with: 'data.outputContent',
+            schema: {
+              type: 'string'
+            }
           }
         }
       ];
@@ -117,6 +123,12 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.content = value;
+            }
+          },
+          binding: {
+            with: 'data.content',
+            schema: {
+              type: 'string'
             }
           }
         },

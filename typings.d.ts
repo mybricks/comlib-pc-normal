@@ -8,6 +8,8 @@ declare module '*.svg' {
   export = resource;
 }
 
+declare const ANTD_VERSION: number;
+
 /**
  * hasPermission 返回的权限数据格式
  */

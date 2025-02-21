@@ -40,7 +40,8 @@
     "react-to-print": "^2.14.13",
     "react-virtualized-auto-sizer": "^1.0.24",
     "resize-observer-polyfill": "^1.5.1",
-    "to-json-schema": "^0.2.5"
+    "to-json-schema": "^0.2.5",
+    "webpack": "^5.98.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",

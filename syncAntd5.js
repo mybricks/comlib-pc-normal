@@ -53,8 +53,8 @@ const TraversalComAry = (comAry, antd5ComAry) => {
       const split = namespace.split(".");
       split.splice(split.length - 1, 0, "antd5");
       const antd5Json = {
-        // namespace: split.join(".")
-        namespace
+        namespace: split.join(".")
+        // namespace
       }
       const isUi = !json.rtType; // 没有rtType是ui组件;
       Object.entries(other).forEach(([key, value]) => {
