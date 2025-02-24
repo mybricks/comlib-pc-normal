@@ -12,9 +12,7 @@ import { SizeOptions, SizeEnum } from '../../types';
 import { createrCatelogEditor } from '../../utils';
 
 export default {
-  '@init' ({ style }) {
-
-  },
+  '@init'({ style }) {},
   ':slot': {},
   '@inputConnected'({ data, outputs }, fromPin, toPin) {
     if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
@@ -34,9 +32,15 @@ export default {
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
     if (curSlot.id === 'content') {
-      const { id, inputDefs, outputDefs, name } = child;
+      const { id, title, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
+
+      let formItemColumn = data.formItemColumn;
+      if (title === '文本域') {
+        formItemColumn = 1;
+      }
+
       if (com) {
         // 表单项
         if (item) {
@@ -50,7 +54,7 @@ export default {
             name: `表单项${nowC}`,
             label: `表单项${nowC}`,
             widthOption: 'span',
-            span: 24 / data.formItemColumn,
+            span: 24 / formItemColumn,
             colon: 'default',
             labelWidthType: 'default',
             // labelAlign: 'default',
@@ -215,13 +219,19 @@ export default {
                     catelog: '默认',
                     title: '内容',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
-                    target: [`.ant-form-item > div.ant-col.ant-form-item-label > label > label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`]
+                    target: [
+                      `.ant-form-item > div.ant-col.ant-form-item-label > label > label`,
+                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`
+                    ]
                   },
                   {
                     title: '冒号',
                     catelog: '默认',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
-                    target: [`.ant-form-item > div.ant-col.ant-form-item-label > label:after`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label:after`]
+                    target: [
+                      `.ant-form-item > div.ant-col.ant-form-item-label > label:after`,
+                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label:after`
+                    ]
                   },
                   {
                     title: '对齐方式',
@@ -240,7 +250,10 @@ export default {
                         }
                       }
                     ],
-                    target: [`.ant-form-item > div.ant-col.ant-form-item-label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`]
+                    target: [
+                      `.ant-form-item > div.ant-col.ant-form-item-label`,
+                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`
+                    ]
                   },
                   {
                     title: '外边距',
@@ -256,7 +269,7 @@ export default {
                         data?.domainModel?.isQuery
                       );
                     }
-                  },
+                  }
                 ]
               },
               {
@@ -267,7 +280,10 @@ export default {
                     catelog: '默认',
                     title: '字体',
                     options: ['font'],
-                    target: [`.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-control .formItemDesc`]
+                    target: [
+                      `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`,
+                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-control .formItemDesc`
+                    ]
                   }
                 ]
               },
@@ -285,12 +301,15 @@ export default {
                     title: '外边距',
                     catelog: '默认',
                     options: ['margin'],
-                    target: [`div.ant-col.formAction div.ant-row.ant-form-item`, `div.ant-col.formAction div.ant-form-item`]
+                    target: [
+                      `div.ant-col.formAction div.ant-row.ant-form-item`,
+                      `div.ant-col.formAction div.ant-form-item`
+                    ]
                   }
                 ]
               }
             ]
-          }),
+          })
           // ...createrCatelogEditor({
           //   catelog: '移动端',
           //   items: [
@@ -519,8 +538,8 @@ export default {
                     3: 48,
                     4: 32,
                     5: 32,
-                    6: 32,
-                  }[value]
+                    6: 32
+                  }[value];
                 }
               }
             },
@@ -611,8 +630,8 @@ export default {
                     3: 48,
                     4: 32,
                     5: 32,
-                    6: 32,
-                  }[value]
+                    6: 32
+                  }[value];
                 }
               }
             }
@@ -713,7 +732,7 @@ export default {
                   return data.ellipseMode;
                 }
               }
-            },
+            }
             // {
             //   title: '显示冒号',
             //   type: 'Switch',

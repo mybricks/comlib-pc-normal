@@ -6,7 +6,7 @@ import debounce from 'lodash/debounce';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 import classnames from 'classnames';
-import * as Icons from '@ant-design/icons'
+import * as Icons from '@ant-design/icons';
 import { outputIds } from '../constants';
 
 interface FormItemProps {
@@ -171,14 +171,12 @@ const FormItem = (props) => {
       setIsShowTips(false);
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
-  const TagIcon = Icons[item.titleTagIcon]
+  const TagIcon = Icons[item.titleTagIcon];
 
   const onClickTag = useCallback(() => {
     if (props.env?.edit) return;
     props.outputs[outputIds.ON_CLICK_TAG](item);
-  }, [
-    item
-  ])
+  }, [item]);
 
   return (
     <Form.Item
@@ -189,30 +187,30 @@ const FormItem = (props) => {
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
           <>
-          <label
-            ref={labelRef}
-            data-form-item={com.name}
-            className={`custom-wrap-classname`}
-            onMouseEnter={handleMouseEnter}
-            style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
-          >
-            <Tooltip
-              placement="topLeft"
-              title={isShowTips && env.runtime ? env.i18n(item?.label) : null}
+            <label
+              ref={labelRef}
+              data-form-item={com.name}
+              className={`custom-wrap-classname`}
+              onMouseEnter={handleMouseEnter}
+              style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
             >
-              {env.i18n(item?.label)}
-            </Tooltip>
-          </label>
-          {
-            (item.titleTag || item.titleTagIcon) ? (
+              <Tooltip
+                placement="topLeft"
+                title={isShowTips && env.runtime ? env.i18n(item?.label) : null}
+              >
+                {env.i18n(item?.label)}
+              </Tooltip>
+            </label>
+            {item.titleTag || item.titleTagIcon ? (
               <div onClick={onClickTag} className={css.titleTag}>
-                {
-                  TagIcon ? <div className={css.icon}><TagIcon/></div> : null
-                }
+                {TagIcon ? (
+                  <div className={css.icon}>
+                    <TagIcon />
+                  </div>
+                ) : null}
                 <div className={css.title}>{item.titleTag}</div>
               </div>
-            ) : null
-          }
+            ) : null}
           </>
         )
       }
@@ -223,7 +221,11 @@ const FormItem = (props) => {
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}
-      tooltip={item?.tooltip ? {title: env.i18n(item?.tooltip), placement: 'right', color: '#ffffff'} : ''}
+      tooltip={
+        item?.tooltip
+          ? { title: env.i18n(item?.tooltip), placement: 'right', color: '#ffffff' }
+          : ''
+      }
       colon={!!item?.label && colon}
       hidden={item?.hidden}
     >
