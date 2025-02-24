@@ -34,7 +34,8 @@ import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
 import { connectorEditor } from "../../utils/connector";
 import { ConnectorFiledName } from "../constants";
-export function getColumnsFromSchema(schema: any) {
+export function getColumnsFromSchema(schema: any, config?: { defaultWidth: number | "auto" }) {
+  const { defaultWidth } = config || { defaultWidth: 140 };
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {
@@ -47,7 +48,7 @@ export function getColumnsFromSchema(schema: any) {
           title: key,
           dataIndex: key,
           key: uuid(),
-          width: 140,
+          width: defaultWidth,
           visible: true,
           ellipsis: true,
           contentType: 'text'
@@ -174,7 +175,9 @@ export default {
   ...connectorEditor<EditorResult<Data>>({
     fieldName: ConnectorFiledName,
     set({ data, input }: EditorResult<Data>, { schema }) {
-      data.columns = getColumnsFromSchema(schema);
+      data.columns = getColumnsFromSchema(schema, {
+        defaultWidth: "auto",
+      });
       if (data.columns.length) {
         data.rowKey = data.columns[0].dataIndex as string;
         data.columns[0].isRowKey = true;

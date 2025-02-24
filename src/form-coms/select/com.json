@@ -396,5 +396,21 @@
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
     "*"
-  ]
+  ],
+  "connector": {
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }
