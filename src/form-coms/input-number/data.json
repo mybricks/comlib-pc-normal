@@ -4,10 +4,10 @@
   "visible": true,
   "config": {
     "disabled": false,
-    "placeholder": "请输入数字",
+    "placeholder": "",
     "addonBefore": "",
     "addonAfter": "",
-    "precision": 0,
+    "precision": 2,
     "step": 1,
     "size": "middle"
   },
@@ -18,13 +18,13 @@
   "isFormatter": false,
   "charPostion": "prefix",
   "character": "¥",
-  "isMax": false,
+  "isMax": true,
   "isMin": false,
-  "max": 100,
+  "max": 999999999999,
   "min": 0,
   "isEditable": true,
-  "isControl": true,
-  "useGrouping": false,
-  "isParser": false,
-  "isPrecision": false
+  "isControl": false,
+  "useGrouping": true,
+  "isParser": true,
+  "isPrecision": true
 }

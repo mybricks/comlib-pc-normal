@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { InputNumber, InputNumberProps,InputRef } from 'antd';
+import { InputNumber, InputNumberProps, InputRef, Popover } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -7,6 +7,7 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { ValidateTriggerType } from '../types';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
+import { formatNumberWithChineseUnits } from '../../utils/formatNumber';
 export interface Data {
   options: any[];
   rules: any[];
@@ -210,27 +211,33 @@ export default function Runtime(props: RuntimeParams<Data>) {
       : {};
   }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
+  const formatterNumber = useMemo(() => {
+    return formatNumberWithChineseUnits(value);
+  }, [value]);
+  console.log(formatterNumber);
   return data.isEditable ? (
-    <div className={css.inputNumber}>
-      <InputNumber<string | number>
-        ref={inputRef}
-        value={value}
-        {...data.config}
-        {...NumberProps}
-        {...ParserProps}
-        precision={data.isPrecision ? data.config.precision : void 0}
-        placeholder={env.i18n(data.config.placeholder)}
-        addonBefore={env.i18n(data.config.addonBefore)}
-        addonAfter={env.i18n(data.config.addonAfter)}
-        autoFocus={autoFocus}
-        onChange={onChange}
-        onBlur={onBlur}
-        onPressEnter={onPressEnter}
-        min={data.isMin ? data.min : void 0}
-        max={data.isMax ? data.max : void 0}
-        controls={data.isControl}
-      />
-    </div>
+    <Popover content={formatterNumber} placement="bottom" trigger="hover">
+      <div className={css.inputNumber}>
+        <InputNumber<string | number>
+          ref={inputRef}
+          value={value}
+          {...data.config}
+          {...NumberProps}
+          {...ParserProps}
+          precision={data.isPrecision ? data.config.precision : void 0}
+          placeholder={env.i18n(data.config.placeholder)}
+          addonBefore={env.i18n(data.config.addonBefore)}
+          addonAfter={env.i18n(data.config.addonAfter)}
+          autoFocus={autoFocus}
+          onChange={onChange}
+          onBlur={onBlur}
+          onPressEnter={onPressEnter}
+          min={data.isMin ? data.min : void 0}
+          max={data.isMax ? data.max : void 0}
+          controls={false}
+        />
+      </div>
+    </Popover>
   ) : (
     <div>{value}</div>
   );
