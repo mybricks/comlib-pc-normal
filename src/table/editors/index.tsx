@@ -32,6 +32,8 @@ import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
+import { connectorEditor } from "../../utils/connector";
+import { ConnectorFiledName } from "../constants";
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -169,6 +171,18 @@ export default {
     },
     style: [...TableStyleEditor.items, emptyStyleEditor, rowTreeEditor]
   },
+  ...connectorEditor<EditorResult<Data>>({
+    fieldName: ConnectorFiledName,
+    set({ data, input }: EditorResult<Data>, { schema }) {
+      data.columns = getColumnsFromSchema(schema);
+      if (data.columns.length) {
+        data.rowKey = data.columns[0].dataIndex as string;
+        data.columns[0].isRowKey = true;
+      }
+      // input.get(InputIds.SET_DATA_SOURCE).setSchema(schema); // 这个要用的等引擎修复
+      data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+    }
+  }),
   ...columnEditor,
   ...PaginatorEditor,
   ...SummaryColumnEditor,

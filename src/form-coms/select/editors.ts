@@ -2,8 +2,9 @@ import {uuid} from '../../utils';
 import {RuleKeys, defaultValidatorExample, defaultRules} from '../utils/validator';
 import {InputIds, Option, OutputIds, SizeEnum, SizeOptions, ValidateTriggerType} from '../types';
 import {Data} from './types';
-import {Schemas} from './constants';
+import {Schemas, ConnectorFiledName} from './constants';
 import {createrCatelogEditor} from '../utils';
+import { connectorEditor } from "../../utils/connector";
 
 let tempOptions: Option[] = [],
   optionsLength;
@@ -118,6 +119,9 @@ export default {
   '@init': ({style}) => {
     style.width = '100%';
   },
+  ...connectorEditor({
+    fieldName: ConnectorFiledName,
+  }),
   ':root': {
     style: [
       {
@@ -495,6 +499,9 @@ export default {
         {
           title: '静态选项配置',
           type: 'array',
+          ifVisible({data}: EditorResult<Data>) {
+            return !data[ConnectorFiledName];
+          },
           options: {
             getTitle: ({label, checked}) => {
               return `${env.i18n(label)}${checked ? ': 默认值' : ''}`;

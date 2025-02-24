@@ -179,3 +179,5 @@ export const DefaultOnCellScript = `/**
     style: {}
   }
 }`;
+
+export const ConnectorFiledName = "_connector";
