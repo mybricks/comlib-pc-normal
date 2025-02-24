@@ -9,6 +9,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
 import { inputIds, outputIds } from '../form-container/constants';
 import { ValidateInfo } from '../types';
+import TextEllipsis from '../../components/TextEllipsis';
 
 export default function Runtime({
   env,
@@ -204,7 +205,7 @@ export default function Runtime({
                         color: value === item.value ? activeFontColor : ''
                       }}
                     >
-                      {env.i18n(label)}
+                      <TextEllipsis maxLines={2}>{env.i18n(label)}</TextEllipsis>
                     </Radio>
                   </div>
                 );
@@ -246,7 +247,10 @@ export default function Runtime({
                   checked={item.checked}
                   style={{ color: value === item.value ? activeFontColor : '' }}
                 >
-                  <span data-radio-idx={item.key}>{env.i18n(label)}</span>
+                  <span data-radio-idx={item.key}>
+                    <TextEllipsis maxLines={2}>{env.i18n(label)}</TextEllipsis>
+                  </span>
+                  {/* <span data-radio-idx={item.key}>{env.i18n(label)}</span> */}
                 </Radio>
               );
             })}

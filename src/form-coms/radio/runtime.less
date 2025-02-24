@@ -1,6 +1,55 @@
 .radio {
   margin-top: 5px;
   margin-bottom: 5px;
+
+  :global {
+    .ant-radio-inner {
+      border-color: #bfbfbf;
+    }
+    .ant-radio-checked {
+      .ant-radio-inner {
+        border-color: var(--ant-primary-color, #1890ff);
+        box-shadow: none !important;
+      }
+      .ant-radio-inner:after {
+        background-color: var(--ant-primary-color, #1890ff);
+      }
+    }
+
+    .ant-radio-wrapper-disabled {
+      .ant-radio-inner {
+        border-color: #bfbfbf;
+        background-color: #ececec;
+      }
+
+      .ant-radio-disabled.ant-radio-checked {
+        .ant-radio-inner:after {
+          background-color: var(--ant-primary-color, #1890ff);
+        }
+
+        & + span {
+          color: #262626;
+        }
+      }
+
+      &.ant-radio-wrapper-checked {
+        .ant-radio-inner {
+          border-color: var(--ant-primary-color, #1890ff);
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+:global(.ant-form-item-has-error) {
+  .radio {
+    :global {
+      .ant-radio-inner {
+        border-color: #a14d43;
+      }
+    }
+  }
 }
 
 .suggestion {

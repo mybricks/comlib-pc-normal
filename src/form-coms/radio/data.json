@@ -26,5 +26,6 @@
   "enableButtonStyle": false,
   "buttonStyle": "outline",
   "isEditable": true,
-  "autoFocus": false
+  "autoFocus": false,
+  "requiredMessage": "单选框尚未选择！"
 }

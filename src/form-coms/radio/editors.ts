@@ -439,7 +439,17 @@ export default {
           },
           value: {
             get({ data }) {
-              return data?.rules?.length > 0 ? data.rules : defaultRules;
+              const _defaultRules = defaultRules.map((r) => {
+                if (r.key === RuleKeys.REQUIRED) {
+                  return {
+                    ...r,
+                    message: data.requiredMessage
+                  };
+                } else {
+                  return r;
+                }
+              });
+              return data?.rules?.length > 0 ? data.rules : _defaultRules;
             },
             set({ data }, value: any) {
               data.rules = value;
