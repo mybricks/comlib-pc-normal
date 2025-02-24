@@ -11,7 +11,8 @@ import {
   SlotIds,
   TEMPLATE_RENDER_KEY,
   DefaultRowKey,
-  DefaultOnRowScript
+  DefaultOnRowScript,
+  ConnectorFiledName
 } from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -46,11 +47,14 @@ import { runJs } from '../../package/com-utils';
 import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
 import useDemandDataSource from './hooks/use-demand-data-source';
+import { useConnector } from '../utils/connector';
 
 export const TableContext = createContext<any>({ slots: {} });
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, style } = props;
+  /** 是否有连接器 */
+  const hasConnector = data[ConnectorFiledName];
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
@@ -156,6 +160,21 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
+  const dataSourceConnectorState = useConnector({ env, connector: data[ConnectorFiledName] }, (promise, state) => {
+    if (!state.top) {
+      setLoading(true);
+      promise.then((dataSource) => {
+        if (!state.stop) {
+          setTableData(dataSource);
+        }
+      }).finally(() => {
+        if (!state.stop) {
+          setLoading(false);
+        }
+      })
+    }
+  })
+
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
       const getFields = (cols: any[]) => {
@@ -204,6 +223,7 @@ export default function (props: RuntimeParams<Data>) {
 
       // 设置数据源
       inputs[InputIds.SET_DATA_SOURCE]((ds: any, relOutputs: any) => {
+        dataSourceConnectorState.stop = true;
         setTableData(ds);
         setLoading(false);
         handleOutputFn(relOutputs, OutputIds.SET_DATA_SOURCE, ds);
@@ -212,11 +232,13 @@ export default function (props: RuntimeParams<Data>) {
       // 表格loading
       inputs[InputIds.START_LOADING] &&
         inputs[InputIds.START_LOADING]((val: any, relOutputs: any) => {
+          dataSourceConnectorState.stop = true;
           setLoading(true);
           handleOutputFn(relOutputs, OutputIds.START_LOADING, val);
         });
       inputs[InputIds.END_LOADING] &&
         inputs[InputIds.END_LOADING]((val: any, relOutputs: any) => {
+          dataSourceConnectorState.stop = true;
           setLoading(false);
           handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
         });
@@ -821,7 +843,8 @@ export default function (props: RuntimeParams<Data>) {
           <ColumnRender {...columnRenderProps} env={env} outputs={outputs} />
         </ErrorBoundary>
       ),
-      filterIconDefault: data.filterIconDefault
+      filterIconDefault: data.filterIconDefault,
+      hasConnector
     });
   };
 
@@ -1047,7 +1070,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // 设计态数据mock
-  const defaultDataSource = getDefaultDataSource(data.columns, rowKey, env);
+  const defaultDataSource = hasConnector ? demandDataSource : getDefaultDataSource(data.columns, rowKey, env);
 
   const setCurrentSelectRows = (_record) => {
     const targetRowKeyVal = _record[rowKey];

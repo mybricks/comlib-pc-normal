@@ -67,6 +67,8 @@ interface Props {
   focusCellinfo: any;
   setFocusCellinfo: any;
   filterIconDefault?: FilterIconEnum;
+  /** 是否有连接器 */
+  hasConnector: boolean;
 }
 
 export default ({
@@ -79,7 +81,8 @@ export default ({
   focusRowIndex,
   setFocusCellinfo,
   focusCellinfo,
-  filterIconDefault
+  filterIconDefault,
+  hasConnector
 }: Props) => {
   const isDragging = env.runtime ? false : checkIsDragging(data);
 
@@ -156,7 +159,8 @@ export default ({
   const getColumns = () => {
     return [...(data.columns || [])].map((item) => ({
       ...item,
-      dataIndex: env.edit ? item?.key : item?.dataIndex
+      // 编辑状态并且没有连接器
+      dataIndex: (env.edit && !hasConnector) ? item?.key : item?.dataIndex
     }));
   };
 

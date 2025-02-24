@@ -179,7 +179,7 @@ export default {
         data.rowKey = data.columns[0].dataIndex as string;
         data.columns[0].isRowKey = true;
       }
-      // input.get(InputIds.SET_DATA_SOURCE).setSchema(schema); // 这个要用的等引擎修复
+      input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
       data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
     }
   }),
