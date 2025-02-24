@@ -3,10 +3,12 @@
   border: none;
 
   :global {
-    .ant-collapse-arrow {
+    .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
       position: static !important;
       top: 0 !important;
       padding: 0 !important;
+      margin-right: 0;
+      color: #ececec;
     }
     .ant-collapse-item > .ant-collapse-header {
       line-height: 32px;
@@ -21,7 +23,7 @@
       gap: 16px;
 
       &:hover {
-        background-color: var(--ant-primary-color-hover, #bae7ff);
+        background-color: var(--mb-color-primary-bg, #e6f7ff);
       }
 
       &::after {
