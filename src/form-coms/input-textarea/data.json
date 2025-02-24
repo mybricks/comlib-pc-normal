@@ -3,14 +3,15 @@
   "rules": [],
   "config": {
     "allowClear": true,
-    "placeholder": "请输入内容",
+    "placeholder": "",
     "disabled": false,
-    "showCount": false,
-    "maxLength": -1,
+    "showCount": true,
+    "maxLength": 2000,
     "size": "middle"
   },
   "minRows": 3,
   "maxRows": 6,
   "selectionStart": 0,
-  "isEditable": true
+  "isEditable": true,
+  "maxLengthMessage": "填写内容不可超过${limitMaxLength}字！"
 }

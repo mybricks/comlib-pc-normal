@@ -38,7 +38,7 @@ type FormControlInputType = {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
-  console.log(outputs)
+
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
 
@@ -711,10 +711,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <Fragment>
         {!data.isFormItem ? (
           <Form
-            className={`${css.form} ${slots['content'].size === 0 && env.edit && data.actions.visible
-              ? css.empty
-              : undefined}`
-            }
+            className={`${css.form} ${
+              slots['content'].size === 0 && env.edit && data.actions.visible
+                ? css.empty
+                : undefined
+            }`}
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined

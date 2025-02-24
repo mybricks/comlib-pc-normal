@@ -162,24 +162,24 @@ export default {
             }
           }
         },
-        {
-          title: '行数限制',
-          type: 'Inputnumber',
-          options: [
-            { title: '最小', min: 1, width: 100 },
-            { title: '最大', min: 3, width: 100 }
-          ],
-          description: '行数限制',
-          value: {
-            get({ data }) {
-              return [data.minRows || 3, data.maxRows || 6];
-            },
-            set({ data }, value: number[]) {
-              data.minRows = value[0];
-              data.maxRows = value[1];
-            }
-          }
-        },
+        // {
+        //   title: '行数限制',
+        //   type: 'Inputnumber',
+        //   options: [
+        //     { title: '最小', min: 1, width: 100 },
+        //     { title: '最大', min: 3, width: 100 }
+        //   ],
+        //   description: '行数限制',
+        //   value: {
+        //     get({ data }) {
+        //       return [data.minRows || 3, data.maxRows || 6];
+        //     },
+        //     set({ data }, value: number[]) {
+        //       data.minRows = value[0];
+        //       data.maxRows = value[1];
+        //     }
+        //   }
+        // },
         {
           title: '禁用状态',
           type: 'switch',
@@ -294,9 +294,21 @@ export default {
           },
           value: {
             get({ data }) {
+              const _LengthRules = LengthRules.map((r) => {
+                if (r.key === RuleKeys.MAX_LENGTH) {
+                  return {
+                    ...r,
+                    message: data.maxLengthMessage,
+                    limitMaxLength: [data.config.maxLength]
+                  };
+                } else {
+                  return r;
+                }
+              });
+
               return data.rules.length > 0
                 ? formatRegexRules(data.rules, FormatScene.Editor)
-                : LengthRules;
+                : _LengthRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);

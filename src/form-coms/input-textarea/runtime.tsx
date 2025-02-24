@@ -7,7 +7,8 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { TextAreaRef } from 'antd/lib/input/TextArea';
 import { inputIds, outputIds } from '../form-container/constants';
-import { InputIds } from '../types';
+import { InputIds, ValidateTriggerType } from '../types';
+import css from './runtime.less';
 
 export interface Data {
   value: string | undefined;
@@ -18,6 +19,7 @@ export interface Data {
   /** 光标位置  */
   selectionStart?: number;
   isEditable: boolean;
+  maxLength: number;
 }
 
 export default function ({
@@ -37,7 +39,7 @@ export default function ({
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
-  const [placeholder,setPlaceholder] = useState(data.config.placeholder)
+  const [placeholder, setPlaceholder] = useState(data.config.placeholder);
   const [autoFocus, setAutoFocus] = useState(false);
 
   useFormItemInputs(
@@ -76,6 +78,7 @@ export default function ({
           data.isEditable = val;
         },
         validate(model, outputRels) {
+          console.log(data.rules, 'validate');
           validateFormItem({
             value: valueRef.current,
             env,
@@ -138,22 +141,22 @@ export default function ({
     });
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     //设置是否默认聚焦
     inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
       setAutoFocus(!!flag);
       !!flag ? inputRef.current?.focus() : null;
       relOutputs['setAutoFocusDone'](!!flag);
     });
-  },[])
+  }, []);
 
   useEffect(() => {
     //设置占位符
-    inputs["setPlaceholder"]((value,relOutputs)=>{
+    inputs['setPlaceholder']((value, relOutputs) => {
       setPlaceholder(value);
-      relOutputs['setPlaceholderDone'](value)
-    })
-  })
+      relOutputs['setPlaceholderDone'](value);
+    });
+  });
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
@@ -171,6 +174,7 @@ export default function ({
     const val = e.target.value;
     console.warn('onChange', val);
     changeValue(val);
+    debounceValidateTrigger(parentSlot, { id, name });
     outputs['onChange'](val);
   }, []);
 
@@ -207,7 +211,7 @@ export default function ({
   }, [env.edit, data.minRows, data.maxRows]);
 
   return data.isEditable ? (
-    <div>
+    <div className={css.textarea}>
       <Input.TextArea
         ref={inputRef}
         {...data.config}
@@ -215,7 +219,7 @@ export default function ({
         placeholder={env.i18n(placeholder)}
         value={value}
         readOnly={!!edit}
-        {...sizeConfig}
+        // {...sizeConfig}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}

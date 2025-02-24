@@ -214,7 +214,7 @@ const FormItem = (props) => {
           </>
         )
       }
-      className={item.labelSlot ? css.customLabel : void 0}
+      className={`${item.labelSlot ? css.customLabel : ''} ${item.description ? 'has-desc' : ''}`}
       labelCol={labelCol}
       labelAlign={labelAlign}
       name={item?.name}
