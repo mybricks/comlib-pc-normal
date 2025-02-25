@@ -46,7 +46,7 @@ export const connectorEditor = <T>(params: {
       async set(params, connector) {
         const outputSchema = connector.markList[0].outputSchema;
 
-        params.data._connector = {
+        params.data[fieldName] = {
           // globalMock: connector.globalMock
           outputSchema,
           connector: {
