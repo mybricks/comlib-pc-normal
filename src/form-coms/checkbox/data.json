@@ -21,9 +21,10 @@
     }
   ],
   "checkAll": false,
-  "layout": "horizontal",
+  "layout": "vertical",
   "checkAllText": "全选",
   "isEditable": true,
   "isIndeterminate": false,
-  "eventBubble": false
+  "eventBubble": false,
+  "requiredMessage": "复选框尚未选择！"
 }

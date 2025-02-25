@@ -10,8 +10,8 @@ export const getCheckBoxItemInfo = (
   datasetKey = 'checkboxIdx'
 ): { item: Partial<Option>; index: number } => {
   const key = focusArea?.dataset?.[datasetKey];
-  if(key === 'all') {
-    return { item: { label: data.checkAllText, key: 'all', index: 0  }}
+  if (key === 'all') {
+    return { item: { label: data.checkAllText, key: 'all', index: 0 } };
   }
   const index = data.staticOptions.findIndex((item) => key && item.key === key);
   const res = index === -1 ? undefined : data.staticOptions[index];
@@ -61,7 +61,7 @@ export default {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -70,8 +70,8 @@ export default {
               {
                 title: '选择框',
                 options: [
-                  'border', 
-                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
                 target: '.ant-checkbox:hover .ant-checkbox-inner',
@@ -127,7 +127,8 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked > span:nth-child(2)'
+                target:
+                  'label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked > span:nth-child(2)'
               },
               {
                 title: '选择框勾选符号',
@@ -141,7 +142,8 @@ export default {
                     }
                   }
                 ],
-                target: '.ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner:after'
+                target:
+                  '.ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner:after'
               }
             ]
           }),
@@ -192,7 +194,7 @@ export default {
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target:
                   'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
-              },
+              }
             ]
           })
         ]
@@ -271,38 +273,37 @@ export default {
             get({ data }) {
               return data.isIndeterminate;
             },
-            set({ data, input, output }, value: "partChecked" | "unChecked" | "allChecked") {
-              const event = input.get("setIndeterminate");
+            set({ data, input, output }, value: 'partChecked' | 'unChecked' | 'allChecked') {
+              const event = input.get('setIndeterminate');
               const schema = {
-                type: "enum",
+                type: 'enum',
                 items: [
                   {
-                    type: "string",
-                    value: "partChecked"
+                    type: 'string',
+                    value: 'partChecked'
                   },
                   {
-                    type: "string",
-                    value: "unChecked"
+                    type: 'string',
+                    value: 'unChecked'
                   },
                   {
-                    type: "string",
-                    value: "allChecked"
+                    type: 'string',
+                    value: 'allChecked'
                   }
                 ]
-              }
+              };
               if (value) {
-                !event && input.add("setIndeterminate", "设置全选框状态", schema);
-                
-                !output.get("setIndeterminateDone") &&
-                output.add("setIndeterminateDone", '设置全选框状态完成', schema);
+                !event && input.add('setIndeterminate', '设置全选框状态', schema);
 
-                input.get("setIndeterminate").setRels(["setIndeterminateDone"]);
+                !output.get('setIndeterminateDone') &&
+                  output.add('setIndeterminateDone', '设置全选框状态完成', schema);
+
+                input.get('setIndeterminate').setRels(['setIndeterminateDone']);
               } else {
-                event && input.remove("setIndeterminate");
-                output.get("setIndeterminateDone") && output.remove("setIndeterminateDone");
+                event && input.remove('setIndeterminate');
+                output.get('setIndeterminateDone') && output.remove('setIndeterminateDone');
               }
               data.isIndeterminate = value;
-              
             }
           }
         },
@@ -374,14 +375,15 @@ export default {
         {
           title: '禁止冒泡',
           description: '默认关闭，阻止多选框的点击事件冒泡',
-          type:'switch',
+          type: 'switch',
           value: {
             get({ data }) {
               return data.eventBubble;
             },
-           set({ data }, value: boolean) {
+            set({ data }, value: boolean) {
               data.eventBubble = value;
-            }}
+            }
+          }
         },
         {
           title: '布局',
@@ -467,7 +469,17 @@ export default {
           },
           value: {
             get({ data }) {
-              return data?.rules?.length > 0 ? data.rules : defaultRules;
+              const _defaultRules = defaultRules.map((r) => {
+                if (r.key === RuleKeys.REQUIRED) {
+                  return {
+                    ...r,
+                    message: data.requiredMessage
+                  };
+                } else {
+                  return r;
+                }
+              });
+              return data?.rules?.length > 0 ? data.rules : _defaultRules;
             },
             set({ data }, value: any) {
               data.rules = value;
@@ -515,18 +527,18 @@ export default {
       type: 'text',
       value: {
         get({ data, focusArea }) {
-          if(!focusArea) return
-          const { item } = getCheckBoxItemInfo(data, focusArea)
-          return item.label
+          if (!focusArea) return;
+          const { item } = getCheckBoxItemInfo(data, focusArea);
+          return item.label;
         },
         set({ data, focusArea, input, output }, value) {
-          if(!focusArea) return
-          const { item } = getCheckBoxItemInfo(data, focusArea)
-          if(item.key === 'all') {
-            data.checkAllText = value
-            return
+          if (!focusArea) return;
+          const { item } = getCheckBoxItemInfo(data, focusArea);
+          if (item.key === 'all') {
+            data.checkAllText = value;
+            return;
           }
-          item.label = value
+          item.label = value;
         }
       }
     },
@@ -539,21 +551,21 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
-            if(!focusArea) return
-          const { item } = getCheckBoxItemInfo(data, focusArea)
-          return item.label
+            if (!focusArea) return;
+            const { item } = getCheckBoxItemInfo(data, focusArea);
+            return item.label;
           },
           set({ data, focusArea }: EditorResult<Data>, val) {
-            if(!focusArea) return
-            const { item } = getCheckBoxItemInfo(data, focusArea)
-            if(item.key === 'all') {
-              data.checkAllText = val
-              return
+            if (!focusArea) return;
+            const { item } = getCheckBoxItemInfo(data, focusArea);
+            if (item.key === 'all') {
+              data.checkAllText = val;
+              return;
             }
-            item.label = val
+            item.label = val;
           }
         }
-      },
+      }
     ]
-  },
+  }
 };

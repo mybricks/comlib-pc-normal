@@ -16,6 +16,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
 import { typeCheck } from '../../utils';
+import TextEllipsis from '../../components/TextEllipsis';
 
 export default function Runtime({
   env,
@@ -326,7 +327,7 @@ export default function Runtime({
             ...dynamicStyle
           }}
         >
-          {env.i18n(opt.label)}
+          <TextEllipsis maxLines={2}>{env.i18n(opt.label)}</TextEllipsis>
         </span>
       )
     };
