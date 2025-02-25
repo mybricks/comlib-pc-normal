@@ -1,7 +1,7 @@
 {
   "title": "单选框",
   "namespace": "mybricks.normal-pc.radio",
-  "version": "1.1.20",
+  "version": "1.1.21",
   "description": "单选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -22,7 +22,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setValueDone"]
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -31,7 +33,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setInitialValueDone"]
+      "rels": [
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -40,7 +44,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValidate"]
+      "rels": [
+        "returnValidate"
+      ]
     },
     {
       "id": "getValue",
@@ -49,7 +55,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["returnValue"]
+      "rels": [
+        "returnValue"
+      ]
     },
     {
       "id": "resetValue",
@@ -58,7 +66,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["resetValueDone"]
+      "rels": [
+        "resetValueDone"
+      ]
     },
     {
       "id": "setOptions",
@@ -92,7 +102,9 @@
           }
         }
       },
-      "rels": ["setOptionsDone"]
+      "rels": [
+        "setOptionsDone"
+      ]
     },
     {
       "id": "setDisabled",
@@ -101,7 +113,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["setDisabledDone"]
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
@@ -110,7 +124,9 @@
       "schema": {
         "type": "any"
       },
-      "rels": ["setEnabledDone"]
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
@@ -119,7 +135,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["isEnableDone"]
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "isEditable",
@@ -128,7 +146,9 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": ["isEditableDone"]
+      "rels": [
+        "isEditableDone"
+      ]
     },
     {
       "id": "setActiveFontColor",
@@ -137,7 +157,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setActiveFontColorDone"]
+      "rels": [
+        "setActiveFontColorDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -166,7 +188,9 @@
           }
         }
       },
-      "rels": ["setValidateInfoDone"]
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -339,5 +363,8 @@
       }
     }
   ],
-  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
 }
