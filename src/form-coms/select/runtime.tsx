@@ -102,7 +102,7 @@ export default function Runtime({
   }, [data.config.mode, data.config.labelInValue]);
 
   const optionConnectorState = useConnector({ env, connector: data[ConnectorFiledName] }, (promise, state) => {
-    if (!state.top) {
+    if (!state.stop) {
       setFetching(true);
       promise.then((optoins) => {
         if (!state.stop) {

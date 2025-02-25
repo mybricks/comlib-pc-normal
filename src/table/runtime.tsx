@@ -161,7 +161,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   const dataSourceConnectorState = useConnector({ env, connector: data[ConnectorFiledName] }, (promise, state) => {
-    if (!state.top) {
+    if (!state.stop) {
       setLoading(true);
       promise.then((dataSource) => {
         if (!state.stop) {
