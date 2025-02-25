@@ -18,10 +18,18 @@
         box-shadow: none;
         border-color: var(--ant-primary-color, #1890ff);
       }
+
+      &[disabled] {
+        background-color: transparent;
+      }
     }
 
     .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
       border-color: #a14d43;
+    }
+
+    .ant-input-textarea-status-error.ant-input-textarea-show-count.ant-input-textarea-in-form-item:after {
+      margin-bottom: -32px;
     }
   }
 }
