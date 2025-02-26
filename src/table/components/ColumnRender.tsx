@@ -78,9 +78,9 @@ function ColumnRender(props: ColumnRenderProps) {
       return value;
     }
     return value;
-  }, [props.value, columnItem.formatData, columnItem.contentType, record, index, env.edit]);
+  }, [props.value, columnItem?.formatData, columnItem?.contentType, record, index, env.edit]);
 
-  switch (columnItem.contentType) {
+  switch (columnItem?.contentType) {
     case ContentTypeEnum.Text:
       if (columnItem.ellipsis && String(value)?.trim()?.length > 0) {
         return (
