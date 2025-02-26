@@ -119,9 +119,7 @@ export default {
   '@init': ({style}) => {
     style.width = '100%';
   },
-  ...connectorEditor({
-    fieldName: ConnectorFiledName,
-  }),
+  ...connectorEditor(),
   ':root': {
     style: [
       {

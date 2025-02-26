@@ -8,7 +8,6 @@ import { InputIds, OutputIds, ValidateTriggerType } from '../types';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { useConnector } from "../../utils/connector";
-import { ConnectorFiledName } from "./constants";
 
 const DefaultOptionKey = '_id';
 
@@ -80,8 +79,7 @@ export default function Runtime({
   const [value, setValue] = useState<any>(data.value);
   const valueRef = useRef<any>(data.value);
   const [color, setColor] = useState('');
-  // 有连接器时默认空数组数，否则使用静态配置
-  const [selectOptions, setSelectOptions] = useState(data[ConnectorFiledName] ? [] : data.staticOptions);
+  const [selectOptions, setSelectOptions] = useState<Data['staticOptions']>([]);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -101,7 +99,7 @@ export default function Runtime({
     };
   }, [data.config.mode, data.config.labelInValue]);
 
-  const optionConnectorState = useConnector({ env, connector: data[ConnectorFiledName] }, (promise, state) => {
+  const [optionConnector, optionConnectorState] = useConnector({ env, data }, (promise, state) => {
     if (!state.stop) {
       setFetching(true);
       promise.then((optoins) => {
@@ -115,6 +113,12 @@ export default function Runtime({
       })
     }
   })
+
+  useEffect(() => {
+    if (!optionConnector) {
+      setSelectOptions(data.staticOptions)
+    }
+  }, [optionConnector, data.staticOptions])
 
   const inputsSetOptions = useCallback((ds, relOutputs) => {
     if (Array.isArray(ds)) {

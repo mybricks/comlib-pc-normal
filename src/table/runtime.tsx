@@ -12,7 +12,6 @@ import {
   TEMPLATE_RENDER_KEY,
   DefaultRowKey,
   DefaultOnRowScript,
-  ConnectorFiledName
 } from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -53,8 +52,6 @@ export const TableContext = createContext<any>({ slots: {} });
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, style } = props;
-  /** 是否有连接器 */
-  const hasConnector = data[ConnectorFiledName];
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
@@ -160,7 +157,7 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
-  const dataSourceConnectorState = useConnector({ env, connector: data[ConnectorFiledName] }, (promise, state) => {
+  const [dataSourceConnector, dataSourceConnectorState] = useConnector({ env, data }, (promise, state) => {
     if (!state.stop) {
       setLoading(true);
       promise.then((dataSource) => {
@@ -844,7 +841,7 @@ export default function (props: RuntimeParams<Data>) {
         </ErrorBoundary>
       ),
       filterIconDefault: data.filterIconDefault,
-      hasConnector
+      hasConnector: dataSourceConnector
     });
   };
 
@@ -1070,7 +1067,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // 设计态数据mock
-  const defaultDataSource = hasConnector ? demandDataSource : getDefaultDataSource(data.columns, rowKey, env);
+  const defaultDataSource = dataSourceConnector ? demandDataSource : getDefaultDataSource(data.columns, rowKey, env);
 
   const setCurrentSelectRows = (_record) => {
     const targetRowKeyVal = _record[rowKey];

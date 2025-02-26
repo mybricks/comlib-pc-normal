@@ -33,7 +33,6 @@ import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
 import { connectorEditor } from "../../utils/connector";
-import { ConnectorFiledName } from "../constants";
 export function getColumnsFromSchema(schema: any, config?: { defaultWidth: number | "auto" }) {
   const { defaultWidth } = config || { defaultWidth: 140 };
   function getColumnsFromSchemaProperties(properties) {
@@ -173,17 +172,18 @@ export default {
     style: [...TableStyleEditor.items, emptyStyleEditor, rowTreeEditor]
   },
   ...connectorEditor<EditorResult<Data>>({
-    fieldName: ConnectorFiledName,
     set({ data, input }: EditorResult<Data>, { schema }) {
-      data.columns = getColumnsFromSchema(schema, {
-        defaultWidth: "auto",
-      });
-      if (data.columns.length) {
-        data.rowKey = data.columns[0].dataIndex as string;
-        data.columns[0].isRowKey = true;
+      if (schema?.type === "array" && schema.items?.type === "object" && schema.items.properties) {
+        data.columns = getColumnsFromSchema(schema, {
+          defaultWidth: "auto",
+        });
+        if (data.columns.length) {
+          data.rowKey = data.columns[0].dataIndex as string;
+          data.columns[0].isRowKey = true;
+        }
+        input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
+        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
       }
-      input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
-      data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
     }
   }),
   ...columnEditor,

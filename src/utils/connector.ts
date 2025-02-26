@@ -1,10 +1,14 @@
 import { useRef, useEffect } from "react";
 
-export const useConnector = ({ env, connector }, callback) => {
+export const ConnectorFiledName = "_connector";
+
+export const useConnector = ({ env, data, filedName = ConnectorFiledName }, callback) => {
   const stateRef = useRef({
     init: false,
     stop: false,
   });
+
+  const connector = data[filedName];
 
   useEffect(() => {
     if (connector && !stateRef.current.stop) {
@@ -29,15 +33,15 @@ export const useConnector = ({ env, connector }, callback) => {
     }
   }, [connector])
 
-  return stateRef.current;
+  return [connector, stateRef.current];
 }
 
 export const connectorEditor = <T>(params: {
-  fieldName: string;
+  fieldName?: string;
   set?: (params: any, result: { schema: any }) => void;
   remove?: (params: any) => void;
-}) => {
-  const { fieldName, set, remove } = params;
+} = {}) => {
+  const { fieldName = ConnectorFiledName, set, remove } = params;
   return {
     "@connector": {
       get: ({ data }) => {
@@ -61,6 +65,7 @@ export const connectorEditor = <T>(params: {
         set?.(params as T, { schema: outputSchema });
       },
       remove(params) {
+        params.data[fieldName] = null;
         Reflect.deleteProperty(params.data, fieldName);
         remove?.(params as T);
       }
