@@ -19,37 +19,38 @@
     color: #a14d43;
     border-color: #a14d43;
   }
-  :global {
-    .ant-input {
-      background: #ff000000 !important;
+}
 
-      &::placeholder {
-        color: #595959;
-      }
+:global {
+  .ant-input {
+    background: #ff000000 !important;
+
+    &::placeholder {
+      color: #595959;
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    border-color: #dfdfdf;
+    border-radius: 4px;
+  }
+
+  .ant-input-group-addon {
+    color: #262626;
+    background-color: transparent;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    min-width: 48px;
+    padding: 0 16px;
+
+    &:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
-    .ant-input-affix-wrapper {
-      border-color: #dfdfdf;
-      border-radius: 4px;
-    }
-
-    .ant-input-group-addon {
-      color: #262626;
-      background-color: transparent;
-      border: 1px solid #dfdfdf;
-      border-radius: 4px;
-      min-width: 48px;
-      padding: 0 16px;
-
-      &:first-child {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-
-      &:last-child {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 }
