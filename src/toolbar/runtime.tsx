@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Button, Dropdown, Menu, Space, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { EllipsisOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { InputIds, OutputIds } from './constants';
 import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
@@ -139,8 +139,8 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     );
     return (
       <Dropdown overlay={menu} placement="bottomRight">
-        <div className={css.ellipsisIcon}>
-          <EllipsisOutlined />
+        <div className={css.button}>
+          <Button icon={<DownOutlined />}>更多</Button>
         </div>
       </Dropdown>
     );

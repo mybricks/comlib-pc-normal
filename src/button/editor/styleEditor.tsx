@@ -64,6 +64,21 @@ const StyleEditor = [
     }
   },
   {
+    title: '禁用',
+    type: 'Switch',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !data.asMapArea;
+    },
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.disabled;
+      },
+      set({ data }: EditorResult<Data>, value: boolean) {
+        data.disabled = value;
+      }
+    }
+  },
+  {
     title: '形状',
     type: 'Select',
     ifVisible({ data }: EditorResult<Data>) {

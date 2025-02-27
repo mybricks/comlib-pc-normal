@@ -214,9 +214,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const formatterNumber = useMemo(() => {
     return formatNumberWithChineseUnits(value);
   }, [value]);
-  console.log(formatterNumber);
+
   return data.isEditable ? (
-    <Popover content={formatterNumber} placement="bottom" trigger="hover">
+    <Popover
+      content={formatterNumber}
+      open={formatterNumber !== ''}
+      placement="bottom"
+      trigger="hover"
+    >
       <div className={css.inputNumber}>
         <InputNumber<string | number>
           ref={inputRef}

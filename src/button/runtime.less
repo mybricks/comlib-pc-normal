@@ -5,7 +5,47 @@
 
   .button {
     width: 100%;
-    height: 100%;
+    height: 32px;
+    min-width: 100px;
+    border-radius: 4px;
+  }
+
+  :global {
+    .ant-btn-two-chinese-chars > :not(.anticon) {
+      letter-spacing: 0;
+      margin-right: 0;
+    }
+
+    // 次要按钮
+    .ant-btn-default:not([disabled]) {
+      border: 1px solid #ececec;
+      color: #262626;
+
+      &:hover {
+        border-color: var(--ant-primary-color, #1890ff);
+        color: var(--ant-primary-color, #1890ff);
+        background: #ffffff;
+      }
+    }
+
+    // 主要按钮
+    .ant-btn-primary:not([disabled]) {
+      border-color: var(--ant-primary-color, #1890ff);
+      background: var(--ant-primary-color, #1890ff);
+
+      // 使用主题包的主色悬浮态
+      &:hover {
+        border-color: var(--mb-color-primary-hover, #40a9ff);
+        background: var(--mb-color-primary-hover, #40a9ff);
+      }
+    }
+
+    // 禁用状态
+    .ant-btn[disabled] {
+      color: #595959;
+      border-color: #ececec;
+      background: #ececec;
+    }
   }
 }
 

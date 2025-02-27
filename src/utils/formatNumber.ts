@@ -1,5 +1,5 @@
-export function formatNumberWithChineseUnits(num: number, decimals: number = 2) {
-  if (num === undefined || num === null) return '0';
+export function formatNumberWithChineseUnits(num: any, decimals: number = 2) {
+  if (num === undefined || num === null) return '';
 
   // 处理小数位数，但不要丢失小数部分
   const numStr = num.toString();

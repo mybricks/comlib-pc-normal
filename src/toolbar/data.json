@@ -24,8 +24,10 @@
     }
   ],
   "layout": "flex-start",
+  "useEllipses": true,
+  "maxShowNumber": 5,
   "spaceSize": [
-    4,
-    4
+    16,
+    16
   ]
 }

@@ -68,7 +68,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     if (outputs[OutputIds.DbClick].getConnections().length) {
       e.stopPropagation();
     }
-    
+
     const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
     outputs[OutputIds.DbClick](outputVal);
   }, []);
@@ -90,7 +90,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         danger={data.danger}
         size={data.size}
         shape={data.shape}
-        disabled={disabled}
+        disabled={data.disabled || disabled}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
         style={dynamicStyle}

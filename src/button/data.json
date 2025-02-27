@@ -10,6 +10,7 @@
   "size": "middle",
   "type": "primary",
   "shape": "default",
+  "disabled": false,
   "src": "",
   "showText": true,
   "iconLocation": "front",

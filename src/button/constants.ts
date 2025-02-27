@@ -30,6 +30,7 @@ export interface Data {
   iconLocation: 'front' | 'back';
   iconDistance: number;
   size: SizeEnum;
+  disabled: boolean;
   type: TypeEnum;
   shape: ShapeEnum;
   /**
