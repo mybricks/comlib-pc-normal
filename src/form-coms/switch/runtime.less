@@ -1,0 +1,36 @@
+.switch {
+  :global {
+    // 关闭样式
+    .ant-switch {
+      height: 18px;
+      background-image: none;
+      background-color: var(--mb-color-primary-bg, #e6f7ff);
+
+      &:focus {
+        box-shadow: none;
+      }
+
+      .ant-click-animating-node {
+        display: none;
+      }
+    }
+    .ant-switch-handle {
+      left: -2px;
+      top: -1px;
+      width: 20px;
+      height: 20px;
+    }
+    // 开启样式
+    .ant-switch.ant-switch-checked {
+      background-color: #dfdfdf;
+
+      .ant-switch-handle {
+        left: calc(100% - 20px);
+
+        &::before {
+          background-color: var(--ant-primary-color, #1890ff);
+        }
+      }
+    }
+  }
+}
