@@ -7,6 +7,7 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { StatusEnum } from './const';
 import { InputIds, OutputIds, ValidateInfo } from '../types';
+import css from './runtime.less';
 
 export interface Data {
   value: boolean | undefined;
@@ -152,7 +153,7 @@ export default function ({
   };
 
   return (
-    <div>
+    <div className={css.switch}>
       {data.isEditable ? (
         <Switch
           {...config}

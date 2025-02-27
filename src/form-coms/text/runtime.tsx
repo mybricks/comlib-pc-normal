@@ -216,7 +216,6 @@ export default function (props: RuntimeParams<Data>) {
       ref={inputRef}
       type="text"
       {...data.config}
-      maxLength={data.config.maxLength > 0 ? data.config.maxLength : void 0} // 兼容 antd5 中 maxLength 为 -1 时 outofrange 的问题
       placeholder={env.i18n(data.config.placeholder)}
       addonBefore={env.i18n(data.config.addonBefore)}
       addonAfter={env.i18n(data.config.addonAfter)}
