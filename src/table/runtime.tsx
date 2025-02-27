@@ -496,14 +496,16 @@ export default function (props: RuntimeParams<Data>) {
           return typeof item[rowKey] === 'undefined' || item[rowKey] === null;
         })
       ) {
-        throw new Error(
-          `请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`
-        );
+        // throw new Error(
+        //   `请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`
+        // );
+        console.error(`请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`);
       }
 
       const list = unionBy(dataSource, rowKey);
       if (list.length !== dataSource.length) {
-        throw new Error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
+        // throw new Error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
+        console.error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
       }
     }
     if (env.runtime) {
