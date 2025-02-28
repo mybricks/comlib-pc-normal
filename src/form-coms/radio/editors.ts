@@ -156,7 +156,7 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled .ant-radio-disabled+span'
+                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled'
               },
               {
                 title: '选择框',
@@ -312,12 +312,6 @@ export default {
               data.staticOptions = options;
               data.config.options = options;
             }
-          },
-          binding : {
-            with: "data.config.options",
-            schema: {
-              type: 'string'
-            }
           }
         },
         {
@@ -445,7 +439,17 @@ export default {
           },
           value: {
             get({ data }) {
-              return data?.rules?.length > 0 ? data.rules : defaultRules;
+              const _defaultRules = defaultRules.map((r) => {
+                if (r.key === RuleKeys.REQUIRED) {
+                  return {
+                    ...r,
+                    message: data.requiredMessage
+                  };
+                } else {
+                  return r;
+                }
+              });
+              return data?.rules?.length > 0 ? data.rules : _defaultRules;
             },
             set({ data }, value: any) {
               data.rules = value;

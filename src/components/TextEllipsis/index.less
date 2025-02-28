@@ -1,0 +1,31 @@
+.text-ellipsis {
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  transition: max-height 0.3s;
+}
+
+.content-container.expanded {
+  max-height: none; /* Remove height constraint when expanded */
+  -webkit-line-clamp: unset; /* Remove line clamp when expanded */
+  line-clamp: unset;
+}
+
+.content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  padding: 0 28px 0 8px;
+  white-space: pre-wrap;
+}
+
+.toggle-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: var(--ant-primary-color, #1890ff);
+  cursor: pointer;
+}
