@@ -144,7 +144,32 @@
     "./src/_template-compute/_config-form_detail/com.json",
     "./src/_template-compute/_config-tree/com.json"
   ],
-  "externals": [],
+  "externals": [
+    {
+      "name": "@ant-design/icons",
+      "library": "icons",
+      "urls": [
+        "public/ant-design-icons@4.7.0.min.js"
+      ]
+    },
+    {
+      "name": "moment",
+      "library": "moment",
+      "urls": [
+        "public/moment/moment@2.29.4.min.js",
+        "public/moment/locale/zh-cn.min.js"
+      ]
+    },
+    {
+      "name": "antd",
+      "library": "antd",
+      "urls": [
+        "public/antd/antd@4.21.6.variable.min.css",
+        "public/antd/antd@4.21.6.min.js",
+        "public/antd/locale/zh_CN.js"
+      ]
+    }
+  ],
   "tags": "react",
   "email": "ludongmin",
   "userName": "ludongmin"
