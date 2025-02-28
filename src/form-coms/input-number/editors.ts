@@ -44,7 +44,7 @@ export default {
             items: [
               {
                 title: '输入框',
-                items: [  
+                items: [
                   {
                     title: '文本内容',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
@@ -316,20 +316,20 @@ export default {
             }
           ]
         },
-        {
-          title: '步长',
-          type: 'Text',
-          description: '默认为1,只允许设置大于0的整数',
-          value: {
-            get({ data }) {
-              return data.config.step;
-            },
-            set({ data }, value: string) {
-              const num = parseInt(value, 10);
-              data.config.step = isNaN(num) || num <= 0 ? undefined : num;
-            }
-          }
-        },
+        // {
+        //   title: '步长',
+        //   type: 'Text',
+        //   description: '默认为1,只允许设置大于0的整数',
+        //   value: {
+        //     get({ data }) {
+        //       return data.config.step;
+        //     },
+        //     set({ data }, value: string) {
+        //       const num = parseInt(value, 10);
+        //       data.config.step = isNaN(num) || num <= 0 ? undefined : num;
+        //     }
+        //   }
+        // },
         {
           title: '最大值限制',
           type: 'switch',
@@ -352,7 +352,7 @@ export default {
           options: [{ width: 200 }],
           value: {
             get({ data }) {
-              return [data.max] || [100];
+              return [data.max];
             },
             set({ data }, value: number[]) {
               data.max = value[0];
@@ -381,26 +381,26 @@ export default {
           options: [{ width: 200 }],
           value: {
             get({ data }) {
-              return [data.min] || [0];
+              return [data.min];
             },
             set({ data }, value: number[]) {
               data.min = value[0];
             }
           }
         },
-        {
-          title: '快捷增减',
-          description: '是否显示增减按钮，默认展示',
-          type: 'switch',
-          value: {
-            get({ data }) {
-              return data.isControl;
-            },
-            set({ data }, value: boolean) {
-              data.isControl = value;
-            }
-          }
-        },
+        // {
+        //   title: '快捷增减',
+        //   description: '是否显示增减按钮，默认展示',
+        //   type: 'switch',
+        //   value: {
+        //     get({ data }) {
+        //       return data.isControl;
+        //     },
+        //     set({ data }, value: boolean) {
+        //       data.isControl = value;
+        //     }
+        //   }
+        // },
         {
           title: '校验触发时机',
           type: 'Select',

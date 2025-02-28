@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { InputNumber, InputNumberProps,InputRef } from 'antd';
+import { InputNumber, InputNumberProps, InputRef, Popover } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -228,7 +228,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onPressEnter={onPressEnter}
         min={data.isMin ? data.min : void 0}
         max={data.isMax ? data.max : void 0}
-        controls={data.isControl}
+        controls={false}
       />
     </div>
   ) : (

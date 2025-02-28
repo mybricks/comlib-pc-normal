@@ -2,14 +2,56 @@
   :global {
     .ant-input-number-group-wrapper {
       width: 100%;
+      &.ant-input-number-group-wrapper-status-error .ant-input-number-group-addon {
+        color: #a14d43;
+        border-color: #a14d43;
+      }
+
+      .ant-input-number-status-error.ant-input-number {
+        border-color: #a14d43;
+      }
     }
-    .ant-input-number {
+    .ant-input-number-wrapper > .ant-input-number {
       width: 100%;
+      border-color: #dfdfdf;
+      border-radius: 4px;
+
+      &.ant-input-number-focused {
+        box-shadow: none;
+        border-color: var(--ant-primary-color, #1890ff);
+      }
+
+      &.ant-input-number-disabled {
+        border: none;
+      }
     }
     .ant-input-number-input {
       height: auto;
       padding: 4px 11px;
       line-height: 1.5715;
+    }
+
+    .ant-input-number-disabled {
+      background-color: transparent;
+      color: #262626;
+    }
+    .ant-input-number-group-addon {
+      color: #262626;
+      background-color: transparent;
+      border: 1px solid #dfdfdf;
+      border-radius: 4px;
+      min-width: 48px;
+      padding: 0 16px;
+
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
   }
 }
