@@ -2,6 +2,7 @@
   "debugger": "pc-spa",
   "componentType": "PC",
   "namespace": "amc.normal-h5",
+  "domain": "http://dev.manateeai.com",
   "comAry": [
     {
       "title": "基础",
