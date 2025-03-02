@@ -33,7 +33,7 @@ export default {
                 }
               },
               'border',
-              { 
+              {
                 type: 'font',
                 config: { disableTextAlign: true }
               },
@@ -152,6 +152,13 @@ export default {
         type: '_Event',
         options: {
           outputId: OutputIds.Click
+        }
+      },
+      {
+        title: '运行中单击',
+        type: '_Event',
+        options: {
+          outputId: OutputIds.ClickOnRunning
         }
       },
       {

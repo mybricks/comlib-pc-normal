@@ -1,7 +1,7 @@
 {
   "title": "按钮",
   "namespace": "mybricks.normal-pc.custom-button",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "description": "按钮",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -27,9 +27,31 @@
     },
     {
       "id": "dynamicDisabled",
-      "title": "设置禁用",
+      "title": "设置状态：禁用",
       "schema": {
         "type": "boolean"
+      },
+      "rels": [
+        "setDynamicDisabledDone"
+      ]
+    },
+    {
+      "id": "setStateRunning",
+      "title": "设置状态：运行中",
+      "description": "设置按钮为运行中状态，可传递显示按钮的文案",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setDynamicDisabledDone"
+      ]
+    },
+    {
+      "id": "setStateNormal",
+      "title": "恢复",
+      "description": "设置按钮为常规状态，可传递显示按钮的文案",
+      "schema": {
+        "type": "string"
       },
       "rels": [
         "setDynamicDisabledDone"
@@ -55,6 +77,13 @@
     {
       "id": "click",
       "title": "单击",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "clickOnRunning",
+      "title": "运行时单击",
       "schema": {
         "type": "number"
       }

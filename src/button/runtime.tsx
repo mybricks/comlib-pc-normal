@@ -5,6 +5,7 @@ import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { Space, Image, Button } from 'antd';
 import { renderBtnContext } from './btnRender';
+import { values } from 'lodash';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const [disabled, setDisable] = useState(false);
@@ -34,6 +35,53 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         data.text = val;
         relOutputs['setDynamicTitleDone'](val);
       });
+
+      inputs['setStateRunning']((val, relOutputs) => {
+        //setDisable(true)
+        const running = {
+          //保存原始数据
+          text: data.text,
+          icon: data.icon,
+          useIcon: data.useIcon
+        };
+
+        data.running = running;
+
+        data.useIcon = true;
+        data.icon = 'LoadingOutlined';
+
+        if (val) {
+          data.text = env.i18n(val);
+        }
+      });
+
+      inputs['setStateRunning']((val, relOutputs) => {
+        //setDisable(true)
+        const running = {
+          //保存原始数据
+          text: data.text,
+          icon: data.icon,
+          useIcon: data.useIcon
+        };
+
+        data.running = running;
+
+        data.useIcon = true;
+        data.icon = 'LoadingOutlined';
+
+        data.text = val || env.i18n('loading');
+      });
+
+      inputs['setStateNormal']((val, relOutputs) => {
+        if (data.running) {
+          data.text = data.running.text;
+          data.icon = data.running.icon;
+          data.useIcon = data.running.useIcon;
+
+          delete data.running;
+        }
+      });
+
       inputs[InputIds.Disabled]((value, relOutputs) => {
         setDisable(value);
         relOutputs['setDynamicDisabledDone'](value);
@@ -52,11 +100,17 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       return;
     }
 
+    const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
+
+    if (data.running) {
+      outputs[OutputIds.ClickOnRunning](outputVal);
+      return;
+    }
+
     if (outputs[OutputIds.Click].getConnections().length) {
       e.stopPropagation();
     }
 
-    const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
     outputs[OutputIds.Click](outputVal);
   }, []);
 
@@ -65,10 +119,14 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       return;
     }
 
+    if (data.running) {
+      return;
+    }
+
     if (outputs[OutputIds.DbClick].getConnections().length) {
       e.stopPropagation();
     }
-    
+
     const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
     outputs[OutputIds.DbClick](outputVal);
   }, []);
