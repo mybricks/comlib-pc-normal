@@ -213,6 +213,12 @@ export default {
                 items: [
                   {
                     catelog: '默认',
+                    title: '背景色',
+                    options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                    target: [`.ant-form-item > div.ant-col.ant-form-item-label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`]
+                  },
+                  {
+                    catelog: '默认',
                     title: '内容',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
                     target: [`.ant-form-item > div.ant-col.ant-form-item-label > label > label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`]
