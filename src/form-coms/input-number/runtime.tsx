@@ -212,6 +212,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
   const formatterNumber = useMemo(() => {
+    if (!value || Number(value) < 10000) return '';
     return formatNumberWithChineseUnits(value);
   }, [value]);
 

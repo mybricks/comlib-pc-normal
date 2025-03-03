@@ -20,21 +20,34 @@ const TextEllipsis: React.FC<Props> = ({ children, maxLines }) => {
   const [showToggle, setShowToggle] = useState(false);
 
   useEffect(() => {
-    if (contentRef.current) {
-      const contentHeight = contentRef.current.scrollHeight;
-      const lineHeight = parseFloat(window.getComputedStyle(contentRef.current).lineHeight);
-      const maxVisibleHeight = lineHeight * maxLines;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (!contentRef.current) return;
+        console.log('Element is now in the viewport!');
+        const contentHeight = contentRef.current.scrollHeight;
+        const lineHeight = parseFloat(window.getComputedStyle(contentRef.current).lineHeight);
+        const maxVisibleHeight = lineHeight * maxLines;
 
-      // 根据内容高度判断是否需要显示展开/收起按钮
-      setShowToggle(contentHeight > maxVisibleHeight);
+        // 根据内容高度判断是否需要显示展开/收起按钮
+        setShowToggle(contentHeight > maxVisibleHeight);
 
-      // 设置展开/收起状态
-      if (!isExpanded && contentHeight > maxVisibleHeight) {
-        setIsExpanded(false);
-      } else if (isExpanded && contentHeight <= maxVisibleHeight) {
-        setIsExpanded(true);
+        // 设置展开/收起状态
+        if (!isExpanded && contentHeight > maxVisibleHeight) {
+          setIsExpanded(false);
+        } else if (isExpanded && contentHeight <= maxVisibleHeight) {
+          setIsExpanded(true);
+        }
       }
+    });
+    if (contentRef.current) {
+      observer.observe(contentRef.current);
     }
+    // 清理函数，在组件卸载时停止观察
+    return () => {
+      if (contentRef.current) {
+        observer.unobserve(contentRef.current);
+      }
+    };
   }, [isExpanded, maxLines]);
 
   const style = useMemo(() => {
@@ -53,8 +66,8 @@ const TextEllipsis: React.FC<Props> = ({ children, maxLines }) => {
     >
       <div className={css.content}>{children}</div>
       {showToggle && (
-        <div 
-          className={css['toggle-button']} 
+        <div
+          className={css['toggle-button']}
           onClick={handleToggle}
           onMouseDown={(e) => e.stopPropagation()}
           onMouseUp={(e) => e.stopPropagation()}
