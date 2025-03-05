@@ -419,44 +419,70 @@ export default function (props: RuntimeParams<Data>) {
     ({ value, index }) => {
       index = Number(index);
       if (value && index >= 0) {
-        if (index > dataSource.length) return dataSource;
-        const newDataSource = [...dataSource];
-        const tempValue = newDataSource[index];
-        newDataSource[index] = {
-          ...tempValue, // 需要保留类似rowKey的数据
-          ...value
-        };
-        setDataSource(newDataSource);
+        setDataSource((dataSource) => {
+          if (index > dataSource.length) return dataSource;
+          const newDataSource = [...dataSource];
+          const tempValue = newDataSource[index];
+          newDataSource[index] = {
+            ...tempValue, // 需要保留类似rowKey的数据
+            ...value
+          };
+          return newDataSource;
+        })
+        // if (index > dataSource.length) return dataSource;
+        // const newDataSource = [...dataSource];
+        // const tempValue = newDataSource[index];
+        // newDataSource[index] = {
+        //   ...tempValue, // 需要保留类似rowKey的数据
+        //   ...value
+        // };
+        // setDataSource(newDataSource);
       }
     },
-    [dataSource]
+    []
+    // [dataSource]
   );
   const handleMove = useCallback(
     (index: number, direction = 'up') => {
       index = Number(index);
       const targetIndex = direction === 'up' ? index - 1 : index + 1;
 
-      if (targetIndex >= 0 && targetIndex < dataSource.length) {
-        const newData = [...dataSource];
-        [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
-        setDataSource(newData);
-      }
+      setDataSource((dataSource) => {
+        if (targetIndex >= 0 && targetIndex < dataSource.length) {
+          const newData = [...dataSource];
+          [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
+          return newData;
+        }
+        return dataSource
+      })
+
+      // if (targetIndex >= 0 && targetIndex < dataSource.length) {
+      //   const newData = [...dataSource];
+      //   [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
+      //   setDataSource(newData);
+      // }
     },
-    [dataSource]
+    []
+    // [dataSource]
   );
 
   const handleRemove = useCallback(
     (index: number) => {
       index = Number(index);
-      const newData = dataSource.filter((_, i) => i !== index);
-      setDataSource(newData);
+      setDataSource((dataSource) => {
+        const newData = dataSource.filter((_, i) => i !== index);
+        return newData;
+      })
+      // const newData = dataSource.filter((_, i) => i !== index);
+      // setDataSource(newData);
     },
-    [dataSource]
+    []
+    // [dataSource]
   );
 
   useEffect(() => {
     // 监听插槽输出数据
-    if (slots) {
+    if (env.runtime && slots) {
       Object.keys(slots).forEach((slot) => {
         const slotOutput = slots[slot]?.outputs[OutputIds.Edit_Table_Data];
         if (slotOutput) {
@@ -476,7 +502,10 @@ export default function (props: RuntimeParams<Data>) {
         bindOutput(OutputIds.Row_Move_Up, (index: number) => handleMove(index));
       });
     }
-  }, [editTableData]);
+  }, [
+    // editTableData
+    data.columns
+  ]);
 
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
@@ -848,11 +877,14 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // hack: fix编辑时数据未及时响应
-  useEffect(() => {
-    if (env.edit) {
-      initFilterMap();
-    }
-  }, [JSON.stringify(data.columns)]);
+  if (env.edit) {
+    useEffect(() => {
+      if (env.edit) {
+        initFilterMap();
+      }
+    }, [JSON.stringify(data.columns)]);
+  }
+  
   // const renderColumnsWhenEdit = useCallback(() => {
   //   return renderColumns();
   // }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
