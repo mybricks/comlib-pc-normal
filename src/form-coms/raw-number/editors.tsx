@@ -17,18 +17,13 @@ export default {
         {
           title: '内容',
           type: 'text',
-          options: [
-            { width: '100%', stringMode: true },
-            { width: '100%', stringMode: true }
-          ],
           description:
             '设置文本的默认内容，也可以通过逻辑连线连接文本的输入项【内容】动态修改文本的内容',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.content;
             },
-            set({ data }: EditorResult<Data>, value: number) {
-              console.log(value);
+            set({ data }: EditorResult<Data>, value: string) {
               data.content = value;
             }
           }

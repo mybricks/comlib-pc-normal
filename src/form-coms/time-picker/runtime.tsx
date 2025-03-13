@@ -11,6 +11,7 @@ import ConfigProvider from '../../components/ConfigProvider';
 
 import styles from './style.less';
 import { InputIds, OutputIds } from '../types';
+import { runJs } from '../../../package/com-utils';
 
 function isNumber(input) {
   return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
@@ -178,10 +179,26 @@ export default function ({
     validateTrigger(parentSlot, { id, name });
   };
 
+  const getDefaultValue = () => {
+    const getValidTimeValue = (time: number, step: number) => {
+      if (!step || step === 1) return time;
+      const mod = time % step;
+      if (mod === 0) return time;
+      else return time + (step - mod);
+    };
+    // 注意不能直接设置默认值，要根据设置的步长来进行设置，保证默认值都处于可选中状态
+    const { hourStep, minuteStep, secondStep } = data.config;
+    const now = moment();
+    const hour = getValidTimeValue(now.hour(), hourStep);
+    const minute = getValidTimeValue(now.minute(), minuteStep);
+    const second = getValidTimeValue(now.second(), secondStep);
+    return moment(`${hour}:${minute}:${second}`, 'hh:mm:ss');
+  };
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div ref={wrapperRef} className={styles.wrap}>
-        {data.isEditable ? (
+      {data.isEditable ? (
+        <div ref={wrapperRef} className={styles.timePicker}>
           <TimePicker
             {...data.config}
             placeholder={env.i18n(placeholder)}
@@ -190,15 +207,35 @@ export default function ({
             disabled={disabled}
             allowClear
             showNow={data.showNow}
+            defaultValue={getDefaultValue()}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
-            popupClassName={id}
+            popupClassName={id + ' ' + styles.timePickerPopup}
             onChange={onChange}
+            disabledTime={() => {
+              const res: any = {
+                disabledHours: undefined,
+                disabledMinutes: undefined,
+                disabledSeconds: undefined
+              };
+
+              if (data.disabledTimeRules?.[0]?.status) {
+                res.disabledHours = runJs(data.disabledTimeRules[0].validateCode);
+              }
+              if (data.disabledTimeRules?.[1]?.status) {
+                res.disabledMinutes = runJs(data.disabledTimeRules[1].validateCode);
+              }
+              if (data.disabledTimeRules?.[2]?.status) {
+                res.disabledSeconds = runJs(data.disabledTimeRules[2].validateCode);
+              }
+
+              return res;
+            }}
           />
-        ) : (
-          transCalculation(value)
-        )}
-      </div>
+        </div>
+      ) : (
+        transCalculation(value)
+      )}
     </ConfigProvider>
   );
 }

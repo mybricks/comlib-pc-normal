@@ -7,7 +7,7 @@ export default {
     style.width = '100%';
   },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     style: [

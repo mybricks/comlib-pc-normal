@@ -6,7 +6,8 @@
   "config": {
     "allowClear": true,
     "placeholder": "请输入",
-    "disabled": false
+    "disabled": false,
+    "showSearch": false
   },
   "filterRule": "value"
 }

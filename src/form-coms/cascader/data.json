@@ -19,5 +19,7 @@
     "value": "value",
     "children": "children" 
   },
-  "useLoadData": false
+  "useLoadData": false,
+  "checkedOptionShowWay": "parent",
+  "fullNodeSplit": "/"
 }

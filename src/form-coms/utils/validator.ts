@@ -12,7 +12,9 @@ export enum RuleKeys {
   CODE_VALIDATOR = 'codeValidator',
   Email_VALIDATOR = 'emailValidator',
   PHONE_NUMBER_VALIDATOR = 'phoneNumberValidator',
-  CUSTOM_EVENT = 'customEvent'
+  CUSTOM_EVENT = 'customEvent',
+  LOW_COMPLEX_VALIDATOR = 'lowComplexValidator',
+  NORMAL_COMPLEX_VALIDATOR = 'normalComplexValidator',
 }
 
 export const defaultValidatorExample =
@@ -30,6 +32,28 @@ export const emailValidator =
   let reg = new RegExp( \`^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$\`);
   if (value && !reg.test(value)) {
     context.failed(\`邮箱格式不符合要求\`);
+  } else {
+    context.successed();
+  }
+}
+`);
+
+export const lowComplexValidator =
+  encodeURIComponent(`export default async function (value, context) {
+  let reg = /^(?=.*[a-z])(?=.*[0-9]).{6,}$/;
+  if (value && !reg.test(value)) {
+    context.failed(\`密码最少6位，必须包含小写字母，数字\`);
+  } else {
+    context.successed();
+  }
+}
+`);
+
+export const normalComplexValidator =
+  encodeURIComponent(`export default async function (value, context) {
+  let reg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
+  if (value && !reg.test(value)) {
+    context.failed(\`密码最少8位，必须包含大写字母，小写字母，数字\`);
   } else {
     context.successed();
   }
@@ -87,6 +111,22 @@ const VALUE_RULE = [
     limitMaxValue: [10000]
   }
 ];
+const PASSWORD_RULE = [
+  {
+    key: RuleKeys.LOW_COMPLEX_VALIDATOR,
+    status: false,
+    visible: true,
+    title: '低复杂度密码校验',
+    validateCode: lowComplexValidator
+  },
+  {
+    key: RuleKeys.NORMAL_COMPLEX_VALIDATOR,
+    status: false,
+    visible: true,
+    title: '中复杂度密码校验',
+    validateCode: normalComplexValidator
+  },
+]
 const CUSTOM_RULE = [
   {
     key: RuleKeys.CODE_VALIDATOR,
@@ -108,6 +148,8 @@ export const defaultRules = [REQUIRED_RULE, ...CUSTOM_RULE];
 export const ExpRules = [REQUIRED_RULE, REG_EXP_RULE, ...CUSTOM_RULE];
 
 export const LengthRules = [REQUIRED_RULE, ...LENGTH_RULE, REG_EXP_RULE, ...CUSTOM_RULE];
+
+export const PasswordRules = [REQUIRED_RULE, ...LENGTH_RULE, REG_EXP_RULE, ...PASSWORD_RULE, ...CUSTOM_RULE];
 
 export const ValueRules = [
   REQUIRED_RULE,
@@ -203,6 +245,12 @@ export const ruleFnMap = {
       return failed(env.i18n(message));
     }
     return successed();
+  },
+  [RuleKeys.LOW_COMPLEX_VALIDATOR]: ({ validateCode, args, env }) => {
+    return runJs(validateCode, args, { env });
+  },
+  [RuleKeys.NORMAL_COMPLEX_VALIDATOR]: ({ validateCode, args, env }) => {
+    return runJs(validateCode, args, { env });
   },
   [RuleKeys.CODE_VALIDATOR]: ({ validateCode, args, env }) => {
     return runJs(validateCode, args, { env });

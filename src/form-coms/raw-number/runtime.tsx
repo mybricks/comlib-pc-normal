@@ -1,53 +1,48 @@
-import { Form, Input, InputProps, Popover } from 'antd';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useFormItemInputs from '../form-container/models/FormItem';
-import { validateTrigger } from '../form-container/models/validate';
-import { debounceValidateTrigger } from '../form-container/models/validate';
-import { validateFormItem, RuleKeys } from '../utils/validator';
-import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { Popover } from 'antd';
+import React, { useLayoutEffect } from 'react';
+import { InputIds, ValidateTriggerType } from '../types';
 import css from './runtime.less';
 export interface Data {
-  content: number | undefined;
+  content: string | undefined;
 }
 
-function numberToChineseFormatWithDecimal(num, decimalPlaces = 2) {
-  // 定义单位
-  const units = ['', '万', '亿', '兆'];
-
-  // 分离整数部分和小数部分
-  const [integerStr, decimalStr] = num.toFixed(decimalPlaces).split('.');
-  const integer = parseInt(integerStr, 10);
-  const decimal = parseFloat(`0.${decimalStr}`);
-
-  let result = '';
-  let unitIndex = 0;
-  let tempNum = integer;
-  let lastPartHadValue = false; // 标记上一部分是否有值
-
-  // 处理整数部分
-  while (tempNum > 0) {
-      const part = tempNum % 10000;
-      if (part > 0) {
-          lastPartHadValue = true;
-      }
-      if (lastPartHadValue || part > 0) {
-          result = `${part}${units[unitIndex]}${result}`;
-      }
-      tempNum = Math.floor(tempNum / 10000);
-      unitIndex++;
+function numberToChineseFormatWithDecimal(num: string = '') {
+  const [integer, decimal] = String(num).split('.');
+  // 如果是非法数字直接返回
+  if (Number.isNaN(Number(num))) {
+    return num;
   }
 
-  // 移除结果末尾多余的'万'或'亿'（如果整数部分为0）
-  if (result === '0万' || result === '0亿' || result === '0兆') {
-      result = '0';
-  } else {
-      // 移除整数部分末尾不必要的'0万'或'0亿'（例如10000 -> 1，而不是10000万）
-      result = result.replace(/0万$/, '').replace(/0亿$/, '').replace(/0兆$/, '');
-  }
+  let units = [
+    { name: '亿', unit: 100000000 },
+    { name: '万', unit: 10000 },
+    { name: '', unit: 1 }
+  ];
 
-  // 处理小数部分并合并结果
-  const decimalResult = decimal.toFixed(decimalPlaces).slice(1); // 去掉开头的'0.'
-  return `${result === '0' && decimalResult !== '00' ? '' : result}${decimalResult === '00' ? '' : `.${decimalResult}`}`;
+  let calcNum = Number(integer);
+  return (
+    units.reduce((prev: string, curr) => {
+      // 计算出当前数字是几个对应的unit
+      const currentUnit = Number(calcNum) / curr.unit;
+      // 只有大于等于1才进行格式化
+      if (currentUnit >= 1) {
+        // 将当前数字减去对应的“几个unit”便于下个循环计算，如260,000,000在第一次循环会减去2个亿变成60,000,000……
+        calcNum -= curr.unit * Math.floor(currentUnit);
+        // 拼接字符串
+        return prev + Math.floor(currentUnit) + curr.name;
+      } else {
+        // 如果不大于1直接跳过本次计算
+        return prev;
+      }
+      // 最后再拼接小数部分，按照原型如果这里是.00则不进行展示
+    }, '') + (decimal === '00' || !decimal ? '' : '.' + decimal)
+  );
+}
+
+function formatContent(content: string | undefined) {
+  // 如果不是合法的数字则不进行千分位格式化
+  if (!content || Number.isNaN(Number(content))) return content;
+  return String(content).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export default function ({
@@ -61,11 +56,15 @@ export default function ({
   id,
   name
 }: RuntimeParams<Data>) {
-
+  useLayoutEffect(() => {
+    inputs[InputIds.SetValue]?.((value: string) => {
+      data.content = value;
+    });
+  }, []);
 
   return (
     <Popover placement="bottomLeft" content={numberToChineseFormatWithDecimal(data.content)}>
-      <span className={css.number}>{String(data.content).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+      <span className={css.number}>{formatContent(data.content)}</span>
     </Popover>
   );
 }

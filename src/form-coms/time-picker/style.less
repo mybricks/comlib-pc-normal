@@ -1,5 +1,22 @@
-.wrap {
+.timePicker {
   :global(.ant-picker) {
     width: 100%;
+  }
+}
+
+.timePickerPopup {
+  :global {
+    .ant-picker-time-panel-column {
+      border-left: 0 !important;
+    }
+    .ant-picker-panel .ant-picker-footer {
+      border-top-color: #ececec;
+    }
+    .ant-picker-time-panel-column
+      > li.ant-picker-time-panel-cell
+      .ant-picker-time-panel-cell-inner {
+      height: 32px;
+      line-height: 32px;
+    }
   }
 }

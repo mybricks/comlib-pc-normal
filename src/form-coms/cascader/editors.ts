@@ -1,7 +1,7 @@
 import { OutputIds, SizeEnum, SizeOptions } from '../types';
 import { createrCatelogEditor } from '../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Data } from './runtime';
+import { Data, CheckedOptionShowWay } from './runtime';
 import { refreshSchema } from './constants';
 
 export default {
@@ -357,6 +357,8 @@ export default {
               data.maxTagCountType = value;
               if (data.maxTagCountType == 'isResponsive') {
                 data.config.maxTagCount = 'responsive';
+              } else if (data.maxTagCountType == 'isCustom') {
+                data.config.maxTagCount = 1;
               }
             }
           }
@@ -377,13 +379,61 @@ export default {
           },
           value: {
             get({ data }) {
-              if (!data.config.maxTagCount) {
+              if (!data.config.maxTagCount || data.config.maxTagCount === 'responsive') {
                 data.config.maxTagCount = 1;
               }
               return data.config.maxTagCount;
             },
             set({ data }, value: number) {
               data.config.maxTagCount = value;
+            }
+          }
+        },
+        {
+          title: '选中项展示方式',
+          type: 'select',
+          description:
+            '可以选择只展示父节点、只展示子节点与展示完整节点',
+          ifVisible({ data }) {
+            return data.isMultiple && data.isCheckAutoWithChildren;;
+          },
+          options: [
+            {
+              label: '只展示父节点',
+              value: 'parent'
+            },
+            {
+              label: '只展示子节点',
+              value: 'child'
+            },
+            {
+              label: '展示完整节点',
+              value: 'full'
+            },
+          ],
+          value: {
+            get({ data }) {
+              return data.checkedOptionShowWay || 'parent';
+            },
+            set({ data }, value: CheckedOptionShowWay) {
+              data.checkedOptionShowWay = value;
+            }
+          }
+        },
+        {
+          title: '展示完整节点分隔符',
+          type: 'text',
+          description:
+            '当选择【展示完整节点】时可自定义节点之间的分隔符',
+          ifVisible({ data }) {
+            return data.isMultiple && data.isCheckAutoWithChildren && data.checkedOptionShowWay === 'full';
+          },
+          value: {
+            get({ data }) {
+              return data.fullNodeSplit;
+            },
+            set({ data }, value: string) {
+              data.fullNodeSplit = value;
             }
           }
         },

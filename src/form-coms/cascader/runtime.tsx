@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { Cascader, CascaderProps, message } from 'antd';
 import type { FieldNames } from 'rc-cascader';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -11,6 +11,7 @@ import { mockData } from './mockData';
 import { InputIds, OutputIds } from '../types';
 import { setDataForLoadData } from './utils';
 
+export type CheckedOptionShowWay = 'parent' | 'child' | 'full';
 export interface Data {
   options: any[];
   placeholder: string;
@@ -24,6 +25,9 @@ export interface Data {
   mount?: string;
   useLoadData: boolean;
   loadDataOnce: boolean;
+  isCheckAutoWithChildren: boolean;
+  checkedOptionShowWay: CheckedOptionShowWay;
+  fullNodeSplit: string;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -150,7 +154,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
-        debounceValidateTrigger(parentSlot, { id: props.id, name: props.name, validateInfo: info });
+        debounceValidateTrigger(parentSlot, {
+          id: props.id,
+          name: props.name,
+          validateInfo: info
+        } as any);
         relOutputs['setValidateInfoDone'](info);
       }
     });
@@ -178,32 +186,36 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const getAllValues = (optionsArray: Array<Record<string, any>>, pre: Array<string>) => {
-    let values = [];
+    let values: any[] = [];
     optionsArray.forEach((option) => {
-      if (option[data.fieldNames.children]?.length) {
+      if (
+        data.fieldNames.children &&
+        option[data.fieldNames.children]?.length &&
+        data.fieldNames.value
+      ) {
         values.push(
           ...getAllValues(option[data.fieldNames.children], [
             ...pre,
             option[data.fieldNames?.value]
           ])
         );
-      } else {
-        values.push([...pre, option[data.fieldNames?.value]]);
+      } else if (data.fieldNames.value) {
+        values.push([...pre, option[data.fieldNames.value]]);
       }
     });
     return values;
   };
 
   const onChange = (val, selectedOptions) => {
-    let useFormatted = data.isCheckAutoWithChildren === true && data.isMultiple;
+    let useFormatted = data.isCheckAutoWithChildren && data.isMultiple;
     let flattedVal: Array<any> = [];
     // 多选模式下，为true时，某一项选项全选，带上下一级children的信息
     // 例如[{label: 'A', value: 'A', children: [{ label: 'BB', value: 'BB'}, {label: 'CC', val: 'CC}]}], 选中[['A']]后，处理后的值是[['A', 'BB'], ['A', 'CC']]
-    if (data.isCheckAutoWithChildren === true && data.isMultiple) {
+    if (data.isCheckAutoWithChildren && data.isMultiple) {
       if (val.length) {
         selectedOptions.forEach((selectedOpt, index) => {
           let last = selectedOpt[selectedOpt.length - 1];
-          if (last[data.fieldNames.children]?.length) {
+          if (data.fieldNames.children && last[data.fieldNames.children]?.length) {
             flattedVal.push(...getAllValues(last[data.fieldNames.children], val[index]));
           } else {
             if (Array.isArray(val[index])) {
@@ -230,7 +242,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return env?.canvasElement || document.body;
   };
 
-
   useEffect(() => {
     inputs['setLoadData']((val, relOutputs) => {
       if (!data.useLoadData) {
@@ -238,10 +249,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
       const { node, resolve } = curNode.current as any;
       const targetOption = node[node.length - 1];
-      if(Array.isArray(val)){
+      if (Array.isArray(val)) {
         setOptions(setDataForLoadData(data, targetOption, options, val));
         relOutputs['setLoadDataDone'](val);
-      }else{
+      } else {
         logger.error('请设置数组类型子项数据');
       }
       resolve();
@@ -258,6 +269,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
+  const showCheckedStrategy = useMemo(() => {
+    if (data.checkedOptionShowWay === 'parent') {
+      return Cascader.SHOW_PARENT;
+    }
+    else if (data.checkedOptionShowWay === 'child' || data.checkedOptionShowWay === 'full') {
+      return Cascader.SHOW_CHILD;
+    }
+    return Cascader.SHOW_PARENT;
+  }, [data.checkedOptionShowWay])
+
   return (
     <div className={css.cascader}>
       {data.isEditable ? (
@@ -273,6 +294,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
           dropdownClassName={id}
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
           loadData={data.useLoadData ? onLoadData : undefined}
+          showCheckedStrategy={showCheckedStrategy}
+          displayRender={data.checkedOptionShowWay === 'full' && data.isCheckAutoWithChildren ? (label, selectedOptions) => {
+            const recursionChildren = (
+              array: any[],
+              result: string
+            ) => {
+              if (!array?.[0]?.children?.length) return result + array[0].label;
+              return recursionChildren(array[0].children, result + array[0].label + data.fullNodeSplit);
+            };
+            if (selectedOptions && selectedOptions.length > 0) {
+              return recursionChildren(selectedOptions, '');
+            }
+            return label;
+          } : undefined}
         />
       ) : Array.isArray(value) ? (
         value.join(',')

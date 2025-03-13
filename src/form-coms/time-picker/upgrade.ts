@@ -202,7 +202,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
    * @description v1.1.20 新增 显示此刻控制
    */
   if(typeof data.showNow === 'undefined') {
-    data.showNow = true
+    data.showNow = false
   }
   //=========== 1.1.14 end ===============
 

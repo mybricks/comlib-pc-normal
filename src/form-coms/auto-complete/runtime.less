@@ -1,7 +1,29 @@
 .autoComplete {
   :global {
+    position: relative;
     .ant-select {
       width: 100%;
     }
+  }
+  .iconSearch {
+    position: absolute;
+    top: 50%;
+    right: 13px;
+    z-index: 100;
+    transform: translateY(-50%);
+    background-color: #fff;
+    cursor: pointer;
+  }
+}
+
+:global {
+  .rc-virtual-list-holder {
+    max-height: 160px !important;
+    .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+      background-color: #ececec;
+    }
+  }
+  .rc-virtual-list-scrollbar-thumb {
+    background-color: #dfdfdf !important;
   }
 }

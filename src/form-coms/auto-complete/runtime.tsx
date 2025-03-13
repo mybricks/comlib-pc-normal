@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useLayoutEffect, useEffect, useState } from 'react';
 import { AutoComplete, Input, InputRef } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -25,6 +26,7 @@ export interface Data {
     placeholder: string;
     allowClear: boolean;
     disabled: boolean;
+    showSearch: boolean;
   };
   filterRule: 'value' | 'label' | 'all';
 }
@@ -193,6 +195,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <div className={css.autoComplete}>
       <AutoComplete
         {...data.config}
+        virtual={false}
         placeholder={env.i18n(data.config.placeholder)}
         value={value}
         onChange={onChange}
@@ -203,6 +206,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onSearch={data.isOnSearch ? onSearch : void 0}
         options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.options, env)}
       />
+      {data.config.showSearch && <SearchOutlined className={css.iconSearch} onClick={() => {
+        outputs['onSearchBtnClick']?.();
+      }} />}
     </div>
   );
 }

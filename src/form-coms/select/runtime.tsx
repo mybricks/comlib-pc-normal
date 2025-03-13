@@ -427,8 +427,8 @@ export default function Runtime({
           onBlur={onBlur}
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
           maxTagCount={data.maxTagCount}
-          dropdownClassName={id}
-          listHeight={data.maxHeight ? Number(data.maxHeight) : void 0}
+          popupClassName={id}
+          listHeight={data.maxHeight ? Number(data.maxHeight) : 160}
           placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}
           style={{

@@ -77,6 +77,30 @@ export default {
         }
       },
       {
+        title: '搜索按钮',
+        type: 'switch',
+        description: '是否显示搜索按钮，可自定义点击事件，注意会覆盖清除按钮',
+        value: {
+          get({ data }) {
+            return data.config.showSearch;
+          },
+          set({ data }, value: boolean) {
+            data.config.showSearch = value;
+          }
+        }
+      },
+      {
+        title: '搜索按钮点击事件',
+        ifVisible({ data }) {
+          return data.config.showSearch;
+        },
+        type: '_Event',
+        description: '点击搜索按钮时触发，触发【搜索按钮点击】输出项事件',
+        options: {
+          outputId: 'onSearchBtnClick'
+        }
+      },
+      {
         title: '筛选',
         type: 'switch',
         description: '是否根据输入项内容进行筛选值',

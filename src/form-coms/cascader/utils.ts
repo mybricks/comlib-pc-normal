@@ -1,8 +1,8 @@
 /**
  * 更新节点数据
  */
-export const setDataForLoadData = (data, curNode, dataSource, newNodeData = []) => {
-    let newData = [];
+export const setDataForLoadData = (data, curNode, dataSource, newNodeData: any[] = []) => {
+    let newData: any[] = [];
     const trueValueFieldName = data.fieldNames.value || 'value';
     const trurChildrenFieldName = data.fieldNames.children || 'children';
 

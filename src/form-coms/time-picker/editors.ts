@@ -275,6 +275,61 @@ export default {
                   data.showNow = val;
                 }
               }
+            },
+            {
+              title: '不可选时间',
+              description: '配置不可选择的时间段',
+              type: 'ArrayCheckbox',
+              options: {
+                checkField: 'status',
+                visibleField: 'visible',
+                getTitle: (item) => item.title,
+                items: [
+                  {
+                    title: '编辑禁用规则',
+                    description: '这里返回的number数组为禁用的时刻',
+                    type: 'code',
+                    options: {
+                      language: 'javascript',
+                      enableFullscreen: false,
+                      title: '编辑禁用规则',
+                      width: 600,
+                      minimap: {
+                        enabled: false
+                      },
+                      babel: true,
+                      eslint: {
+                        parserOptions: {
+                          ecmaVersion: '2020',
+                          sourceType: 'module'
+                        }
+                      }
+                    },
+                    value: 'validateCode'
+                  }
+                ],
+              },
+              value: {
+                get({data}) {
+                  return data?.disabledTimeRules?.length > 0 ? data.disabledTimeRules : ['Hours', 'Minutes', 'Seconds'].map((key) => ({
+                    key: `disabled${key}`,
+                    status: false,
+                    visible: true,
+                    title: `设置 ${key} 禁用规则`,
+//                     validateCode: encodeURIComponent(`export default async function (${key === 'Hours' ? '' : (key === 'Minutes' ? 'selectedHour' : 'selectedHour, selectedMinute')}) {
+//   const ${key.toLowerCase()} = [];
+//   return ${key.toLowerCase()};
+// }`)
+validateCode: encodeURIComponent(`return function (${key === 'Hours' ? '' : (key === 'Minutes' ? 'selectedHour' : 'selectedHour, selectedMinute')}) {
+  const ${key.toLowerCase()} = [];
+  return ${key.toLowerCase()};
+}`)
+                  }));
+                },
+                set({data}, val) {
+                  data.disabledTimeRules = val
+                }
+              }
             }
           ]
         },
@@ -351,7 +406,7 @@ export default {
               title: '分',
               description: '设置分钟的步长，展示可选的分钟',
               type: 'inputNumber',
-              options: [{ width: 100, min: 0, max: 60 }],
+              options: [{ width: 100, min: 1, max: 60 }],
               value: {
                 get({ data }: EditorResult<Data>) {
                   return [data.config?.minuteStep || 1];
@@ -365,7 +420,7 @@ export default {
               title: '秒',
               description: '设置秒的步长，展示可选的秒',
               type: 'inputNumber',
-              options: [{ width: 100, min: 0, max: 60 }],
+              options: [{ width: 100, min: 1, max: 60 }],
               value: {
                 get({ data }: EditorResult<Data>) {
                   return [data.config?.secondStep || 1];

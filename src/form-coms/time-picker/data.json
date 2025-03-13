@@ -1,10 +1,11 @@
 {
   "placeholder": "请选择时间",
   "rules": [],
+  "disabledTimeRules": [],
   "format": "timeStamp",
   "customFormat": "HH:mm:ss",
   "isEditable": true,
-  "showNow": true,
+  "showNow": false,
   "config": {
     "size": "middle"
   }
