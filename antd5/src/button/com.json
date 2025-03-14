@@ -80,7 +80,7 @@
     },
     {
       "id": "clickOnRunning",
-      "title": "运行中单击",
+      "title": "运行时单击",
       "schema": {
         "type": "number"
       }

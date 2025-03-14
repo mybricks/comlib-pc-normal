@@ -114,7 +114,7 @@ export default function Runtime({
     }
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!optionConnector) {
       setSelectOptions(data.staticOptions)
     }
