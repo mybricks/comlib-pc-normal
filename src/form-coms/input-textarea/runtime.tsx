@@ -219,7 +219,7 @@ export default function ({
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
-        maxLength={data.config.maxLength > 0 ? data.config.maxLength : void 0} // 兼容 antd5 中 maxLength 为 -1 时 outofrange 的问题
+        maxLength={data.config.maxLength && data.config.maxLength > 0 ? data.config.maxLength : void 0} // 兼容 antd5 中 maxLength 为 -1 时 outofrange 的问题
       />
     </div>
   ) : (

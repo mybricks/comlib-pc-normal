@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 import css from './style.less';
+import { DoubleRightOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const defaultKey = '1';
@@ -36,6 +37,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       className={css.collapseWrap}
       activeKey={activeKey}
       collapsible={data.useExtra ? 'header' : void 0}
+      expandIcon={({ isActive }) => <DoubleRightOutlined rotate={isActive ? -90 : 90} />}
       onChange={(val: string | string[]) => {
         setActiveKey(typeof val === 'string' ? [val] : val);
         if (data.useDynamicExpand && outputs[OutputIds.ExpandedChange]) {

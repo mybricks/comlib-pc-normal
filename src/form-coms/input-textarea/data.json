@@ -5,7 +5,7 @@
     "allowClear": true,
     "placeholder": "请输入内容",
     "disabled": false,
-    "showCount": false,
+    "showCount": true,
     "maxLength": -1,
     "size": "middle"
   },
