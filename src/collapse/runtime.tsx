@@ -37,7 +37,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       className={css.collapseWrap}
       activeKey={activeKey}
       collapsible={data.useExtra ? 'header' : void 0}
-      expandIcon={({ isActive }) => <DoubleRightOutlined rotate={isActive ? -90 : 90} />}
+      expandIcon={({ isActive }) => <DoubleRightOutlined rotate={isActive ? 90 : -90} style={{marginRight: 8}} />}
       onChange={(val: string | string[]) => {
         setActiveKey(typeof val === 'string' ? [val] : val);
         if (data.useDynamicExpand && outputs[OutputIds.ExpandedChange]) {
