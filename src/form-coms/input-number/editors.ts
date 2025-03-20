@@ -345,7 +345,7 @@ export default {
         },
         {
           title: '最大值',
-          type: 'inputNumber',
+          type: 'Text',
           ifVisible({ data }) {
             return !!data.isMax;
           },
@@ -355,7 +355,7 @@ export default {
               return [data.max];
             },
             set({ data }, value: number[]) {
-              data.max = value[0];
+              data.max = value;
             }
           }
         },

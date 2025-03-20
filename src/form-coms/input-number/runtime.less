@@ -1,5 +1,9 @@
 .inputNumber {
   :global {
+    .ant-input-number-wrapper.ant-input-number-group:has(.ant-input-number-focused) > .ant-input-number-group-addon {
+      border-color: var(--ant-primary-color, #1890ff);
+    }
+    // .ant-input-number-wrapper.ant-input-number-group:has(.ant-input-number) > .ant-input-number-group-addon
     .ant-input-number-group-wrapper {
       width: 100%;
       &.ant-input-number-group-wrapper-status-error .ant-input-number-group-addon {
