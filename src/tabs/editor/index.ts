@@ -91,92 +91,93 @@ export default {
         {
           title: '外观',
           type: 'Select',
-          description: '配置标签页的外观(基本样式)，包括卡片和简约类型',
+          description: '配置标签页激活 tab 下划线的模式',
           options: [
-            { value: 'editable-card', label: '卡片' },
-            { value: 'line', label: '简约' }
+            { value: 'auto', label: '跟随文本' },
+            { value: 'full', label: '与tab等宽' },
+            { value: 'fixed', label: '固定值' },
           ],
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.type;
+              return data.activeLineMode;
             },
             set({ data }: EditorResult<Data>, value: string) {
-              data.type = value;
+              data.activeLineMode = value;
             }
           }
         },
-        {
-          title: '尺寸',
-          type: 'Select',
-          description: '标签页大小, 默认是中(middle)',
-          options: [
-            {
-              label: '大',
-              value: 'large'
-            },
-            {
-              label: '中',
-              value: 'middle'
-            },
-            {
-              label: '小',
-              value: 'small'
-            }
-          ],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.size || 'middle';
-            },
-            set({ data }: EditorResult<Data>, val: 'large' | 'middle' | 'small') {
-              data.size = val;
-            }
-          }
-        },
-        {
-          title: '标签位置',
-          type: 'Select',
-          description: '标签位置, 默认是上部(top)',
-          options: [
-            { label: '上', value: 'top' },
-            { label: '左', value: 'left' },
-            { label: '右', value: 'right' },
-            { label: '下', value: 'bottom' }
-          ],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.tabPosition || 'top';
-            },
-            set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
-              data.tabPosition = value;
-            }
-          }
-        },
-        {
-          title: '标签居中',
-          type: 'Switch',
-          description: '标签页是否居中',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.centered;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.centered = value;
-            }
-          }
-        },
-        {
-          title: '禁止点击切换',
-          type: 'Switch',
-          description: '开启后，禁止点击切换标签页',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.prohibitClick;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.prohibitClick = value;
-            }
-          }
-        },
+        // {
+        //   title: '尺寸',
+        //   type: 'Select',
+        //   description: '标签页大小, 默认是中(middle)',
+        //   options: [
+        //     {
+        //       label: '大',
+        //       value: 'large'
+        //     },
+        //     {
+        //       label: '中',
+        //       value: 'middle'
+        //     },
+        //     {
+        //       label: '小',
+        //       value: 'small'
+        //     }
+        //   ],
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.size || 'middle';
+        //     },
+        //     set({ data }: EditorResult<Data>, val: 'large' | 'middle' | 'small') {
+        //       data.size = val;
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '标签位置',
+        //   type: 'Select',
+        //   description: '标签位置, 默认是上部(top)',
+        //   options: [
+        //     { label: '上', value: 'top' },
+        //     { label: '左', value: 'left' },
+        //     { label: '右', value: 'right' },
+        //     { label: '下', value: 'bottom' }
+        //   ],
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.tabPosition || 'top';
+        //     },
+        //     set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
+        //       data.tabPosition = value;
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '标签居中',
+        //   type: 'Switch',
+        //   description: '标签页是否居中',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.centered;
+        //     },
+        //     set({ data }: EditorResult<Data>, value: boolean) {
+        //       data.centered = value;
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '禁止点击切换',
+        //   type: 'Switch',
+        //   description: '开启后，禁止点击切换标签页',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.prohibitClick;
+        //     },
+        //     set({ data }: EditorResult<Data>, value: boolean) {
+        //       data.prohibitClick = value;
+        //     }
+        //   }
+        // },
         {
           title: '隐藏时是否渲染内容',
           type: 'Switch',
@@ -190,39 +191,39 @@ export default {
             }
           }
         },
-        {
-          title: '动态设置显示tab',
-          type: 'Switch',
-          description:
-            '开启后，可以通过逻辑连线连接标签页的输入项【设置显示tab】设置显示（激活）的标签页',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useDynamicTab;
-            },
-            set({ data, input, output }: EditorResult<Data>, value: boolean) {
-              if (value) {
-                input.add({
-                  id: InputIds.SetShowTab,
-                  title: '设置显示tab',
-                  schema: {
-                    type: 'array',
-                    items: {
-                      title: '显示tab的Id',
-                      type: 'number'
-                    }
-                  },
-                  desc: '设置显示的标签页，下标从0开始'
-                });
-                output.add(OutputIds.SetShowTabComplete, '完成', { type: 'any' });
-                input.get(InputIds.SetShowTab).setRels([OutputIds.SetShowTabComplete]);
-              } else {
-                input.remove(InputIds.SetShowTab);
-                output.remove(OutputIds.SetShowTabComplete);
-              }
-              data.useDynamicTab = value;
-            }
-          }
-        },
+        // {
+        //   title: '动态设置显示tab',
+        //   type: 'Switch',
+        //   description:
+        //     '开启后，可以通过逻辑连线连接标签页的输入项【设置显示tab】设置显示（激活）的标签页',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.useDynamicTab;
+        //     },
+        //     set({ data, input, output }: EditorResult<Data>, value: boolean) {
+        //       if (value) {
+        //         input.add({
+        //           id: InputIds.SetShowTab,
+        //           title: '设置显示tab',
+        //           schema: {
+        //             type: 'array',
+        //             items: {
+        //               title: '显示tab的Id',
+        //               type: 'number'
+        //             }
+        //           },
+        //           desc: '设置显示的标签页，下标从0开始'
+        //         });
+        //         output.add(OutputIds.SetShowTabComplete, '完成', { type: 'any' });
+        //         input.get(InputIds.SetShowTab).setRels([OutputIds.SetShowTabComplete]);
+        //       } else {
+        //         input.remove(InputIds.SetShowTab);
+        //         output.remove(OutputIds.SetShowTabComplete);
+        //       }
+        //       data.useDynamicTab = value;
+        //     }
+        //   }
+        // },
         {
           title: '隐藏插槽占位',
           type: 'Switch',
@@ -236,176 +237,176 @@ export default {
             }
           }
         },
-        {
-          title: '动态标签页',
-          type: 'switch',
-          description: '开启后，可以通过逻辑连线连接标签页的输入项【设置标签页数据】动态设置标签页',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.dynamicTabs;
-            },
-            set(props: EditorResult<Data>, val: boolean) {
-              const { data } = props;
-              data.dynamicTabs = val;
-              data.hideSlots = val;
-              setDynamicTabsIO(props);
-            }
-          }
-        },
-        {
-          title: '可新增',
-          type: 'switch',
-          description: '开启后，可以点击新增标签页',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card';
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return !data.hideAdd;
-            },
-            set({ data }: EditorResult<Data>, val: boolean) {
-              data.hideAdd = !val;
-            }
-          }
-        },
-        {
-          title: '新增插槽',
-          type: 'switch',
-          description: '开启后，可以通过插槽配置新增按钮',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card' && !data.hideAdd;
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useAddIcon;
-            },
-            set({ data, slot }: EditorResult<Data>, val: boolean) {
-              data.useAddIcon = val;
-              const hasSlot = slot.get(SlotIds.AddIcon);
-              if (val) {
-                !hasSlot && slot.add(SlotIds.AddIcon, '新增按钮');
-              } else {
-                hasSlot && slot.remove(SlotIds.AddIcon);
-              }
-            }
-          }
-        },
-        {
-          title: '可删除',
-          type: 'switch',
-          description: '开启后，可以点击删除按钮删除标签页',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card';
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return !!data.closable;
-            },
-            set({ data }: EditorResult<Data>, val: boolean) {
-              data.closable = val;
-              data.tabList = data.tabList.map((tab) => {
-                tab.closable = val;
-                return tab;
-              });
-            }
-          }
-        },
-        {
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card' && data.closable;
-          },
-          title: '点击删除按钮时',
-          type: "radio",
-          description: "如选择自定义删除，需要手动处理删除逻辑",
-          options: [
-            { label: "直接删除", value: false },
-            { label: "自定义", value: true },
-          ],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useCustomClose ?? false;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.useCustomClose = value;
-            }
-          }
-        },
-        {
-          title: "不展示「更多」按钮",
-          description: "开启后，当标签项较多时，支持滚动，但不展示「更多」按钮",
-          type: "Switch",
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.hideMoreIcon;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.hideMoreIcon = value;
-            }
-          }
-        },
-        {
-          title: '额外内容',
-          items: [
-            {
-              title: '左侧',
-              type: 'Switch',
-              description: '开启后，左侧新增【左侧内容】插槽',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.useLeftExtra;
-                },
-                set({ data, slot }: EditorResult<Data>, value: boolean) {
-                  data.useLeftExtra = value;
-                  const hasSlot = slot.get(SlotIds.LeftExtra);
-                  if (value) {
-                    !hasSlot && slot.add(SlotIds.LeftExtra, '左侧内容');
-                  } else {
-                    hasSlot && slot.remove(SlotIds.LeftExtra);
-                  }
-                }
-              }
-            },
-            {
-              title: '右侧',
-              type: 'Switch',
-              description: '开启后，右侧新增【右侧内容】插槽',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.useRigthExtra;
-                },
-                set({ data, slot }: EditorResult<Data>, value: boolean) {
-                  data.useRigthExtra = value;
-                  const hasSlot = slot.get(SlotIds.RigthExtra);
-                  if (value) {
-                    !hasSlot && slot.add(SlotIds.RigthExtra, '右侧内容');
-                  } else {
-                    hasSlot && slot.remove(SlotIds.RigthExtra);
-                  }
-                }
-              }
-            },
-            {
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.useRigthExtra;
-              },
-              title: "右侧额外内容位置",
-              type: "radio",
-              description: "如果「标签位置」为左、右时，则浮动方向对应为上浮动，下浮动",
-              options: [
-                { label: "左浮动", value: "left" },
-                { label: "右浮动", value: "right" },
-              ],
-              value: {
-                get({ data }) {
-                  return data.rightExtraPosition || "right";
-                },
-                set({ data }, value) {
-                  data.rightExtraPosition = value;
-                }
-              }
-            }
-          ]
-        },
+        // {
+        //   title: '动态标签页',
+        //   type: 'switch',
+        //   description: '开启后，可以通过逻辑连线连接标签页的输入项【设置标签页数据】动态设置标签页',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.dynamicTabs;
+        //     },
+        //     set(props: EditorResult<Data>, val: boolean) {
+        //       const { data } = props;
+        //       data.dynamicTabs = val;
+        //       data.hideSlots = val;
+        //       setDynamicTabsIO(props);
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '可新增',
+        //   type: 'switch',
+        //   description: '开启后，可以点击新增标签页',
+        //   ifVisible({ data }: EditorResult<Data>) {
+        //     return data.type === 'editable-card';
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return !data.hideAdd;
+        //     },
+        //     set({ data }: EditorResult<Data>, val: boolean) {
+        //       data.hideAdd = !val;
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '新增插槽',
+        //   type: 'switch',
+        //   description: '开启后，可以通过插槽配置新增按钮',
+        //   ifVisible({ data }: EditorResult<Data>) {
+        //     return data.type === 'editable-card' && !data.hideAdd;
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.useAddIcon;
+        //     },
+        //     set({ data, slot }: EditorResult<Data>, val: boolean) {
+        //       data.useAddIcon = val;
+        //       const hasSlot = slot.get(SlotIds.AddIcon);
+        //       if (val) {
+        //         !hasSlot && slot.add(SlotIds.AddIcon, '新增按钮');
+        //       } else {
+        //         hasSlot && slot.remove(SlotIds.AddIcon);
+        //       }
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '可删除',
+        //   type: 'switch',
+        //   description: '开启后，可以点击删除按钮删除标签页',
+        //   ifVisible({ data }: EditorResult<Data>) {
+        //     return data.type === 'editable-card';
+        //   },
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return !!data.closable;
+        //     },
+        //     set({ data }: EditorResult<Data>, val: boolean) {
+        //       data.closable = val;
+        //       data.tabList = data.tabList.map((tab) => {
+        //         tab.closable = val;
+        //         return tab;
+        //       });
+        //     }
+        //   }
+        // },
+        // {
+        //   ifVisible({ data }: EditorResult<Data>) {
+        //     return data.type === 'editable-card' && data.closable;
+        //   },
+        //   title: '点击删除按钮时',
+        //   type: "radio",
+        //   description: "如选择自定义删除，需要手动处理删除逻辑",
+        //   options: [
+        //     { label: "直接删除", value: false },
+        //     { label: "自定义", value: true },
+        //   ],
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.useCustomClose ?? false;
+        //     },
+        //     set({ data }: EditorResult<Data>, value: boolean) {
+        //       data.useCustomClose = value;
+        //     }
+        //   }
+        // },
+        // {
+        //   title: "不展示「更多」按钮",
+        //   description: "开启后，当标签项较多时，支持滚动，但不展示「更多」按钮",
+        //   type: "Switch",
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.hideMoreIcon;
+        //     },
+        //     set({ data }: EditorResult<Data>, value: boolean) {
+        //       data.hideMoreIcon = value;
+        //     }
+        //   }
+        // },
+        // {
+        //   title: '额外内容',
+        //   items: [
+        //     {
+        //       title: '左侧',
+        //       type: 'Switch',
+        //       description: '开启后，左侧新增【左侧内容】插槽',
+        //       value: {
+        //         get({ data }: EditorResult<Data>) {
+        //           return data.useLeftExtra;
+        //         },
+        //         set({ data, slot }: EditorResult<Data>, value: boolean) {
+        //           data.useLeftExtra = value;
+        //           const hasSlot = slot.get(SlotIds.LeftExtra);
+        //           if (value) {
+        //             !hasSlot && slot.add(SlotIds.LeftExtra, '左侧内容');
+        //           } else {
+        //             hasSlot && slot.remove(SlotIds.LeftExtra);
+        //           }
+        //         }
+        //       }
+        //     },
+        //     {
+        //       title: '右侧',
+        //       type: 'Switch',
+        //       description: '开启后，右侧新增【右侧内容】插槽',
+        //       value: {
+        //         get({ data }: EditorResult<Data>) {
+        //           return data.useRigthExtra;
+        //         },
+        //         set({ data, slot }: EditorResult<Data>, value: boolean) {
+        //           data.useRigthExtra = value;
+        //           const hasSlot = slot.get(SlotIds.RigthExtra);
+        //           if (value) {
+        //             !hasSlot && slot.add(SlotIds.RigthExtra, '右侧内容');
+        //           } else {
+        //             hasSlot && slot.remove(SlotIds.RigthExtra);
+        //           }
+        //         }
+        //       }
+        //     },
+        //     {
+        //       ifVisible({ data }: EditorResult<Data>) {
+        //         return data.useRigthExtra;
+        //       },
+        //       title: "右侧额外内容位置",
+        //       type: "radio",
+        //       description: "如果「标签位置」为左、右时，则浮动方向对应为上浮动，下浮动",
+        //       options: [
+        //         { label: "左浮动", value: "left" },
+        //         { label: "右浮动", value: "right" },
+        //       ],
+        //       value: {
+        //         get({ data }) {
+        //           return data.rightExtraPosition || "right";
+        //         },
+        //         set({ data }, value) {
+        //           data.rightExtraPosition = value;
+        //         }
+        //       }
+        //     }
+        //   ]
+        // },
         {
           title: '事件',
           items: [

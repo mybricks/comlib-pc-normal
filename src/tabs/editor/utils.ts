@@ -11,7 +11,7 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
   ],
   target,
   domTarget:
-    '.root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab'
+    '.root > .adm-tabs > .adm-tabs-header > .adm-tabs-tab-list > .adm-tabs-tab-wrapper'
 });
 
 export const createFontStyleForActive = ({ initValue, target, title = '标签' }: StyleModeType<Data>) => ({

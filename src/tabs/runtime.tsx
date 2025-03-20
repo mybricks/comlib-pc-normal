@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, ReactNode, useMemo } from 'react';
 import classnames from 'classnames';
-import { Tabs, Tooltip, Badge } from 'antd';
+import { Tooltip, Badge } from 'antd';
+import { Tabs } from 'antd-mobile';
 import { Data, InputIds, OutputIds, SlotIds, TabItem } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
@@ -9,7 +10,7 @@ import { getWhatToDoWithoutPermission } from '../utils/permission';
 import cx from 'classnames';
 import { isNumber } from '../utils/types';
 
-const { TabPane } = Tabs;
+const { Tab } = Tabs;
 
 //选择图标样式
 const chooseIcon = ({ icon }: { icon: ReactNode }) => {
@@ -272,33 +273,6 @@ export default function ({
     [showTabs]
   );
 
-  const onEdit = (targetKey, action) => {
-    const actionMap = {
-      add() {
-        outputs[OutputIds.AddTab](data.tabList);
-      },
-      remove(key: string) {
-        let index = data.tabList.findIndex((i) => i.key == key);
-        if (index == -1) return;
-
-        if (data.useCustomClose) {
-          // 自定义
-          outputs[OutputIds.RemoveTab](data.tabList[index]);
-        } else {
-          // 直接删除
-          let item = data.tabList.splice(index, 1);
-          // 如果删除为当前激活tab，则激活下一个tab
-          if (data.defaultActiveKey === key && data.tabList.length) {
-            let activeIndex = Math.min(index, data.tabList.length - 1);
-            data.defaultActiveKey = data.tabList[activeIndex].key + '';
-          }
-          outputs[OutputIds.RemoveTab](item[0]);
-        }
-      }
-    };
-    actionMap[action](targetKey);
-  };
-
   const renderInfo = (item) => {
     const tabName = env.i18n(item.name);
     return item.infoType === 'icon' ? (
@@ -331,10 +305,9 @@ export default function ({
           }
 
           return (
-            <TabPane
-              tab={<Tooltip title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
+            <Tab
               key={item.key}
-              closable={!!item.closable}
+              title={renderInfo(item)}
               forceRender={!!data.forceRender}
             >
               {data.hideSlots ? null : (
@@ -345,51 +318,24 @@ export default function ({
                   })}
                 </div>
               )}
-            </TabPane>
+            </Tab>
           );
         })}
       </>
     );
   };
 
-  const tabBarExtraContent = (() => {
-    const res = {} as { left?: ReactNode; right?: ReactNode };
-    if (data.useLeftExtra && slots[SlotIds.LeftExtra]) res.left = slots[SlotIds.LeftExtra].render();
-    if (data.useRigthExtra && slots[SlotIds.RigthExtra])
-      res.right = slots[SlotIds.RigthExtra].render();
-    if (Object.keys(res).length === 0) return undefined;
-    return res;
-  })();
-
-  const AddIcon = () => {
-    if (data.useAddIcon && slots[SlotIds.AddIcon]) {
-      return slots[SlotIds.AddIcon].render();
-    }
-    return undefined;
-  }
-
   return (
     <div
       className={cx([
         css.tabbox,
         'root',
-        {
-          [css.hideMoreIcon]: data.hideMoreIcon,
-          [css.rightExtraFloatLeft]: data.useRigthExtra && data.rightExtraPosition === 'left'
-        }
       ])}
     >
       <Tabs
+        activeLineMode={data.activeLineMode}
         activeKey={data.defaultActiveKey}
-        type={data.type}
-        centered={data.centered}
-        tabPosition={data.tabPosition}
         onChange={handleClickItem}
-        size={data.size || 'middle'}
-        addIcon={data.useAddIcon ? <AddIcon /> : undefined}
-        hideAdd={data.hideAdd}
-        onEdit={env.edit ? undefined : onEdit}
-        tabBarExtraContent={tabBarExtraContent}
       >
         {renderItems()}
       </Tabs>
