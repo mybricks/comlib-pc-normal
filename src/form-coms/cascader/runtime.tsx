@@ -259,7 +259,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    <div className={`${css.cascader} ${ANTD_VERSION === 5 ? css.antd5Cascader : ''}`}>
+    <div className={`${css.cascader}`}>
       {data.isEditable ? (
         <Cascader
           value={value}

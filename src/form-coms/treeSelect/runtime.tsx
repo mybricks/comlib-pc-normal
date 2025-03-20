@@ -415,7 +415,7 @@ export default function Runtime({
   };
 
   return (
-    <div ref={wrapperRef} className={`${css.select} ${color ? css.selectColor : ''} ${ANTD_VERSION === 5 ? css.antd5Select : ''}`}>
+    <div ref={wrapperRef} className={`${css.select} ${color ? css.selectColor : ''}`}>
       {data.isEditable ? (
         <TreeSelect
           treeIcon
