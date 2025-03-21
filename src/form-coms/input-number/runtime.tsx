@@ -232,6 +232,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       />
     </div>
   ) : (
-    <div>{value}</div>
+    <div>{data.config.addonBefore}{value}{data.config.addonAfter}</div>
   );
 }
