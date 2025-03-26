@@ -169,7 +169,6 @@ const FormItem = (props) => {
       setIsShowTips(false);
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
-
   return (
     <Form.Item
       label={
@@ -196,7 +195,7 @@ const FormItem = (props) => {
       }
       className={item.labelSlot ? css.customLabel : void 0}
       labelCol={labelCol}
-      labelAlign={labelAlign}
+      labelAlign={labelAlign || 'left'}
       name={item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}

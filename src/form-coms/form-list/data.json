@@ -73,10 +73,10 @@
   "submitHiddenFields": false,
   "disabled": false,
   "formItemConfig": {
-    "colon": true,
+    "colon": false,
     "layout": "horizontal",
     "labelWrap": false,
-    "labelAlign": "right",
+    "labelAlign": "left",
     "disabled": false
   },
   "layoutType": "horizontal"

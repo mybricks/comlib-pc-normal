@@ -3,19 +3,14 @@
   "config": {
     "disabled": false,
     "placeholder": "请选择",
-    "mode": "default",
     "showSearch": true,
     "filterOption": true,
-    "optionFilterProp": "label",
-    "showArrow": true,
-    "dropdownMatchSelectWidth": true,
-    "size": "middle"
+    "optionFilterProp": "label"
   },
   "mount": "body",
   "validateTrigger": [
     "onChange"
   ],
-  "maxTagCount": "",
   "staticOptions": [],
   "dropdownSearchOption": false,
   "outputValueType": "value",

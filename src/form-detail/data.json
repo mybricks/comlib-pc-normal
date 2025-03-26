@@ -8,7 +8,7 @@
   "column": 3,
   "mobileColumn": 3,
   "items": [],
-  "colon": true,
+  "colon": false,
   "autoWidth": true,
   "showExtra": false
 }

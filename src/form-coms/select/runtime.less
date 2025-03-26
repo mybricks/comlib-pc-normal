@@ -1,36 +1,55 @@
+:global {
+  .adm-picker-header-button {
+    color: var(--ant-primary-color, #1890ff);
+  }
+}
 .select {
-  --select--selection-overflow-max-height: none;
-
-  :global {
-    .ant-select {
-      width: 100%;
+  .selectContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 4px;
+    padding: 0 11px;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 14px;
+    border: 1px solid #dfdfdf;
+    cursor: pointer;
+    &.selectDisabled {
+      cursor: not-allowed;
     }
-
-    .ant-select-selection-overflow {
-      max-height: var(--select--selection-overflow-max-height, 'none');
-      overflow-y: auto;
-    }
-    .ant-select-multiple .ant-select-selection-item {
-      height: inherit;
-    }
+  }
+  .selectPlaceholder {
+    color: #bfbfbf;
+  }
+  .selectArrow {
+    color: rgba(0, 0, 0, 0.25);
   }
 }
 
-.selectColor {
-  :global{
-    .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector{
-      color: unset !important;
-    }
-    .ant-select-selection-item{
-      color: unset !important;
-    }
+.searchContent {
+  position: relative;
+  width: 200px;
+  margin: 0 auto;
+  &Input {
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
   }
-}
-
-.antd5Select {
-  :global {
-    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-      border-radius: 6px;
-    }
+  &IconSearch {
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    transform: translateY(-50%);
+    color: #bfbfbf;
+  }
+  &IconClose {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    color: #bfbfbf;
+    cursor: pointer;
   }
 }

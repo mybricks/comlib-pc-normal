@@ -117,7 +117,7 @@ export default function ({ data, slots }) {
   }
   const defaultFormProps = {
     labelWrap: false,
-    labelAlign: 'right',
+    labelAlign: 'left',
     layout: "horizontal",
     disabled: false,
     colon: true

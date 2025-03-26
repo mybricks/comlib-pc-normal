@@ -231,6 +231,9 @@ export default {
         {
           title: '全选框默认选中',
           type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.checkAll;
+          },
           description: '是否默认选中全选框,开启后，设置选项或初始状态，都为全选状态',
           value: {
             get({ data }) {

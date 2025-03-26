@@ -35,6 +35,8 @@ export const OutputIds = {
   ReturnValue: 'returnValue',
   OnValidate: 'onValidate',
   SetDynamicStylesDone: 'setDynamicStylesDone',
+  OnConfirm: 'OnConfirm',
+  OnCancel: 'OnCancel',
 }
 
 export type DateType = "custom" | "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years";

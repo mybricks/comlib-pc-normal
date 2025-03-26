@@ -56,7 +56,7 @@
   "submitHiddenFields": false,
   "validateHiddenFields": true,
   "config": {
-    "colon": true,
+    "colon": false,
     "layout": "horizontal",
     "disabled": false,
     "size": "middle"
