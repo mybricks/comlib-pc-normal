@@ -1,8 +1,8 @@
 {
-  "title": "下拉框",
-  "namespace": "amc.normal-h5.select",
+  "title": "下拉框-H5",
+  "namespace": "amc.normal-h5.picker",
   "version": "1.1.43",
-  "description": "下拉框",
+  "description": "下拉框-H5",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "icon": "./icon.svg",
@@ -154,27 +154,6 @@
       ]
     },
     {
-      "id": "setLoading",
-      "title": "设置加载中状态",
-      "schema": {
-        "type": "boolean"
-      },
-      "rels": [
-        "setLoadingDone"
-      ]
-    },
-    {
-      "id": "setColor",
-      "title": "设置字体颜色",
-      "desc": "设置下拉框里字体的颜色",
-      "schema": {
-        "type": "string"
-      },
-      "rels": [
-        "setColorDone"
-      ]
-    },
-    {
       "id": "setValidateInfo",
       "title": "设置校验结果",
       "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
@@ -224,9 +203,17 @@
       }
     },
     {
-      "id": "onBlur",
-      "title": "失去焦点",
-      "desc": "下拉框失去焦点时触发，输出下拉框当前值",
+      "id": "onConfirm",
+      "title": "点击确认",
+      "desc": "点击确认时触发，输出下拉框当前值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onCancel",
+      "title": "点击取消",
+      "desc": "点击取消时触发，输出下拉框当前值",
       "schema": {
         "type": "string"
       }
@@ -349,20 +336,6 @@
       "title": "设置编辑/只读完成",
       "schema": {
         "type": "boolean"
-      }
-    },
-    {
-      "id": "setLoadingDone",
-      "title": "设置加载中状态完成",
-      "schema": {
-        "type": "boolean"
-      }
-    },
-    {
-      "id": "setColorDone",
-      "title": "设置字体颜色完成",
-      "schema": {
-        "type": "string"
       }
     },
     {

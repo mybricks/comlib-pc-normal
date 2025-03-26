@@ -169,6 +169,7 @@ const FormItem = (props) => {
       setIsShowTips(false);
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
+  console.log('titleNewRow', item);
   return (
     <Form.Item
       label={
@@ -193,7 +194,11 @@ const FormItem = (props) => {
           </label>
         )
       }
-      className={item.labelSlot ? css.customLabel : void 0}
+      className={classnames({
+        [css.customLabel]: !!item.labelSlot,
+        [css.newRow]: item.titleNewRow,
+      })}
+      // className={item.labelSlot ? css.customLabel : void 0}
       labelCol={labelCol}
       labelAlign={labelAlign || 'left'}
       name={item?.name}
@@ -204,7 +209,7 @@ const FormItem = (props) => {
       colon={!!item?.label && colon}
       hidden={item?.hidden}
     >
-      <div className={css.formItemControl}>
+      <div className={css.formItemControl} style={ item.titleNewRow ? { paddingLeft: item.labelWidth || '98px' } : undefined}>
         <div className={css.formItemSlotContent}>
           <JSXWrapper com={com} />
         </div>

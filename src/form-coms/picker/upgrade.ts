@@ -46,6 +46,12 @@ export default function ({
   if (!output.get(OutputIds.OnInitial)) {
     output.add(OutputIds.OnInitial, '值初始化', setValueSchema);
   }
+  if (!output.get(OutputIds.OnConfirm)) {
+    output.add(OutputIds.OnConfirm, '点击确定', setValueSchema);
+  }
+  if (!output.get(OutputIds.OnCancel)) {
+    output.add(OutputIds.OnCancel, '点击取消', setValueSchema);
+  }
   output.get(OutputIds.OnInitial).setTitle('值初始化');
 
   //=========== v1.0.2 end ===============
@@ -114,6 +120,8 @@ export default function ({
     output.get(OutputIds.OnChange)?.setSchema(outputValueSchema);
     output.get(OutputIds.OnInitial)?.setSchema(outputValueSchema);
     output.get(OutputIds.OnBlur)?.setSchema(outputValueSchema);
+    output.get(OutputIds.OnConfirm)?.setSchema(outputValueSchema);
+    output.get(OutputIds.OnCancel)?.setSchema(outputValueSchema);
     output.get(OutputIds.ReturnValue)?.setSchema(outputValueSchema);
   }
 
@@ -195,7 +203,7 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
-  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+  // input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
   /**
    * @description v1.1.2 新增 校验触发时机 配置项
@@ -317,15 +325,15 @@ export default function ({
     input.get("setLoading").setRels(["setLoadingDone"]);
   }
 
-  //9、设置字体颜色
-  if (!output.get(outputIds.setColorDone)) {
-    output.add(outputIds.setColorDone, '设置字体颜色完成', { type: "string" });
-  }
-  if (output.get(outputIds.setColorDone) &&
-    input.get('setColor') &&
-    !input.get('setColor')?.rels?.includes(outputIds.setColorDone)) {
-    input.get('setColor').setRels([outputIds.setColorDone]);
-  }
+  // //9、设置字体颜色
+  // if (!output.get(outputIds.setColorDone)) {
+  //   output.add(outputIds.setColorDone, '设置字体颜色完成', { type: "string" });
+  // }
+  // if (output.get(outputIds.setColorDone) &&
+  //   input.get('setColor') &&
+  //   !input.get('setColor')?.rels?.includes(outputIds.setColorDone)) {
+  //   input.get('setColor').setRels([outputIds.setColorDone]);
+  // }
   //10、设置校验状态
   const infoSchema = {
     "type": "object",

@@ -1,40 +1,32 @@
-import { SelectProps } from 'antd';
+import { PickerProps } from 'antd-mobile';
 import { Option } from '../types';
+import { PickerValue } from 'antd-mobile/es/components/picker-view';
 
 export interface Data {
   config: {
     options: any[];
     disabled: boolean;
-    allowClear: boolean;
     placeholder: string;
     loading?: boolean;
-    mode?: 'tags' | 'multiple' | 'default';
     labelInValue?: boolean;
     showSearch: boolean;
     filterOption: boolean;
     optionFilterProp: string;
-  } & SelectProps;
-  maxHeight: string;
-  maxTagCount: number | 'responsive';
+  } & PickerProps;
   rules: any[];
-  value?: number | string | number[] | string[];
+  value?: PickerValue[];
   staticOptions: Option[];
   remoteOptions: any[];
   dropdownSearchOption: boolean;
-  outputValueType: 'value' | 'labelInValue' | 'option';
+  outputValueType: PickerValue[];
   validateTrigger: string[];
   isEditable: boolean;
   resetOptionsWhenEmptySearch: boolean;
-  /**@description v1.1.17 选项后置插槽 */
-  slotAfterOption?: string;
-  /**@description v1.1.17 搭建态是否展示弹层 */
-  hidePopWhenEdit?: boolean;
   labelFieldName: string;
   valueFieldName: string;
   disabledFieldName: string;
   checkedFieldName: string;
   customField: boolean;
-  placement: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
   /** 挂载点 */
   mount?: string
 }

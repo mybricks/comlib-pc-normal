@@ -384,6 +384,19 @@ const formItemEditor = {
         }
       },
       {
+        title: '标题单独一行',
+        type: 'Switch',
+        description: '如果标题过长可以启用此项',
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'titleNewRow');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'titleNewRow', value);
+          }
+        }
+      },
+      {
         title: '后置插槽',
         type: 'Switch',
         value: {

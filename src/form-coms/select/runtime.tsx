@@ -1,26 +1,14 @@
-import React, { useLayoutEffect, useState, useRef, useCallback } from 'react';
-import { Input } from 'antd';
-import { Picker } from 'antd-mobile';
-import { RightOutlined, SearchOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import React, { useCallback, useRef, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { Select, Spin } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck, i18nFn } from '../../utils';
-import { InputIds, OutputIds } from '../types';
+import { InputIds, OutputIds, ValidateTriggerType } from '../types';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+
 const DefaultOptionKey = '_id';
-
-const getFieldNames = (data: Data) => {
-  const fieldNames = {
-    label: data.labelFieldName || 'label',
-    value: data.valueFieldName || 'value',
-    disabled: data.disabledFieldName || 'disabled',
-    checked: data.checkedFieldName || 'checked'
-  };
-
-  return fieldNames;
-};
 
 /**
  * 计算表单项的输出值
@@ -60,6 +48,17 @@ const getOutputValue = (data, env, value) => {
   return outputValue;
 };
 
+const getFieldNames = (data: Data) => {
+  const fieldNames = {
+    label: data.labelFieldName || 'label',
+    value: data.valueFieldName || 'value',
+    disabled: data.disabledFieldName || 'disabled',
+    checked: data.checkedFieldName || 'checked'
+  };
+
+  return fieldNames;
+};
+
 export default function Runtime({
   env,
   data,
@@ -72,20 +71,35 @@ export default function Runtime({
   name,
   title
 }: RuntimeParams<Data>) {
-  const [visible, setVisible] = useState(false);
-  const [value, setValue] = useState(data.value);
-  const [searchValue, setSearchValue] = useState('');
-  const valueRef = useRef<any>(data.value);
+  //fetching, 是否开启loading的开关
+  const [fetching, setFetching] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const validateRelOutputRef = useRef<any>(null);
+  const [value, setValue] = useState<any>(data.value);
+  const valueRef = useRef<any>(data.value);
+  const [color, setColor] = useState('');
 
-  const changeValue = useCallback((value) => {
-    setValue(value);
-    valueRef.current = value;
-    const outputValue = getOutputValue(data, env, value);
-    outputs['onChange'](outputValue);
-    onChangeForFc(parentSlot, { id: id, value: outputValue, name });
-    return outputValue;
-  }, []);
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
+  /**
+   * 类型校验方法
+   */
+  const valueTypeCheck = useMemo(() => {
+    if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+      return {
+        type: ['ARRAY', 'UNDEFINED', 'NULL'],
+        message: `${title}组件:【设置值】参数必须是数组！`
+      };
+    }
+    return {
+      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED', 'NULL'],
+      message: `${title}组件:【设置值】参数必须是基本类型！`
+    };
+  }, [data.config.mode, data.config.labelInValue]);
+
+  useLayoutEffect(() => {
+    if (env.edit || data.value !== undefined) changeValue(data.value);
+  }, [data.value]);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
@@ -128,8 +142,12 @@ export default function Runtime({
     });
 
     inputs['setValue']((val, relOutputs) => {
-      const outputValue = setValue(val);
+      if (!typeCheck(val, valueTypeCheck.type)) {
+        logger.warn(valueTypeCheck.message);
+      } else {
+        const outputValue = changeValue(val);
         outputs[OutputIds.OnChange](outputValue);
+      }
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
       }
@@ -137,15 +155,19 @@ export default function Runtime({
 
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val, relOutputs) => {
-        const outputValue = setValue(val);
+        if (!typeCheck(val, valueTypeCheck.type)) {
+          logger.warn(valueTypeCheck.message);
+        } else {
+          const outputValue = changeValue(val);
           outputs[OutputIds.OnInitial](outputValue);
+        }
         if (relOutputs['setInitialValueDone']) {
           relOutputs['setInitialValueDone'](val);
         }
       });
 
     inputs['resetValue']((_, relOutputs) => {
-      setValue(void 0);
+      changeValue(void 0);
       if (relOutputs['resetValueDone']) {
         relOutputs['resetValueDone']();
       }
@@ -155,8 +177,7 @@ export default function Runtime({
       if (Array.isArray(ds)) {
         const fieldNames = getFieldNames(data);
         const newOptions = data.customField
-          ? ds
-          .map((item) => {
+          ? ds.map((item) => {
               return {
                 ...(fieldNames.value in item
                   ? {
@@ -196,9 +217,26 @@ export default function Runtime({
             newValArray.push(value);
           }
         });
+        if (updateValue) {
+          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode)) {
+            changeValue(newValArray);
+          }
+          if (!data.config.mode || data.config.mode === 'default') {
+            changeValue(newVal);
+          }
+        }
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
+      setFetching(false);
+    });
+
+    inputs['setLoading']((val: boolean, relOutputs) => {
+      data.config = {
+        ...data.config,
+        loading: val
+      };
+      relOutputs['setLoadingDone'](val);
     });
 
     //设置禁用
@@ -250,88 +288,164 @@ export default function Runtime({
         });
       }
     });
+    // 设置下拉框字体颜色
+    inputs[InputIds.SetColor]((color: string, relOutputs) => {
+      if (typeof color === 'string') {
+        setColor(color);
+        relOutputs['setColorDone'](color);
+      }
+    });
   }, [value]);
 
-  const { options, ...configs } = data.config;
+  useEffect(() => {
+    const isNumberString = new RegExp(/^\d*$/);
+    let maxHeight = data.maxHeight == '0' ? null : data.maxHeight;
+    if (maxHeight && isNumberString.test(maxHeight)) {
+      maxHeight = maxHeight + 'px';
+    }
+    // ref.current?.querySelector('select')?.style.setProperty('--select--selection-overflow-max-height', maxHeight);
+  }, [data.maxHeight]);
 
-  const getPopContainer = () => {
+  const onValidateTrigger = (type: string) => {
+    data.validateTrigger?.includes(type) && debounceValidateTrigger(parentSlot, { id, name });
+  };
+
+  const changeValue = useCallback((value) => {
+    if (value == undefined) {
+      if (data.config.mode !== "default") {
+        // 模式为多选和标签时，默认值为空数组
+        value = []
+      }
+    }
+    setValue(value);
+    valueRef.current = value;
+    const outputValue = getOutputValue(data, env, value);
+    onChangeForFc(parentSlot, { id: id, value: outputValue, name });
+    return outputValue;
+  }, [data.config.mode]);
+
+  const onChange = useCallback((val) => {
+    const outputValue = changeValue(val);
+    outputs['onChange'](outputValue);
+    onValidateTrigger(ValidateTriggerType.OnChange);
+  }, []);
+
+  const onBlur = useCallback((e) => {
+    const outputValue = getOutputValue(data, env, valueRef.current);
+    onValidateTrigger(ValidateTriggerType.OnBlur);
+    outputs['onBlur'](outputValue);
+  }, []);
+
+  const onSearch = (e) => {
+    //开启远程搜索功能
+    if (data.dropdownSearchOption) {
+      setFetching(true);
+      outputs['remoteSearch'](e);
+    }
+    //1、远程数据源
+    if (data.dropdownSearchOption === true && !e && data.resetOptionsWhenEmptySearch) {
+      data.config.options = [];
+      setFetching(false);
+    }
+    //2、本地数据源, 不做处理
+  };
+
+  const { options, ...configs } = data.config;
+  const renderOptions = data.slotAfterOption
+    ? void 0
+    : i18nFn(env.edit ? data.staticOptions : options, env);
+
+  const OptionsWithSlot = () => {
+    if (!data.slotAfterOption) return null;
+    return (
+      <>
+        {(env.edit ? [{ label: '搭建占位', value: 1 }] : options)?.map((opt, inx) => {
+          return (
+            <Select.Option value={opt.value} label={opt.label} key={opt.value}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                <div
+                  style={{
+                    flex: 1,
+                    width: '100%'
+                  }}
+                >
+                  {opt.label}
+                </div>
+                <div
+                  onClick={(e) => {
+                    // 阻止触发选项选中事件
+                    e.stopPropagation();
+                  }}
+                  style={{
+                    minWidth: env.edit ? '60px' : void 0
+                  }}
+                >
+                  {slots[data.slotAfterOption]?.render({
+                    key: data.slotAfterOption,
+                    inputValues: {
+                      option: opt,
+                      index: inx
+                    }
+                  })}
+                </div>
+              </div>
+            </Select.Option>
+          );
+        })}
+      </>
+    );
+  };
+
+  const getPopContainer = (triggerNode) => {
     if (data.mount === undefined) {
       data.mount = 'body';
+    }
+    // 预览态 和发布后 没有env.runtime.debug
+    if (env.runtime && !env.runtime.debug) {
+      return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
     }
     // 其他情况
     return env?.canvasElement || document.body;
   };
 
-  const renderSearch = useCallback(() => {
-    return (
-      <div className={css.searchContent}>
-        <SearchOutlined className={css.searchContentIconSearch} />
-        <Input
-          className={css.searchContentInput}
-          placeholder="搜索"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-        />
-        <CloseCircleOutlined className={css.searchContentIconClose} />
-      </div>
-    );
-  }, [searchValue]);
-
-  const onClose = useCallback(() => {
-    setVisible(false);
-    outputs['onCancel']?.();
-  }, []);
-
-  const onConfirm = useCallback((v) => {
-    changeValue(v);
-    outputs['onConfirm']?.(v);
-  }, []);
-
   return (
-    <div className={`${css.select}`} id="select">
+    <div className={`${css.select} ${color ? css.selectColor : ''}`} ref={ref} id="area">
       {data.isEditable ? (
-        <>
-          <Picker
-            getContainer={getPopContainer}
-            visible={visible}
-            onClose={onClose}
-            title={renderSearch()}
-            columns={data.config.options || []}
-            onConfirm={onConfirm}
-            onSelect={changeValue}
-            value={value}
-          >
-            {(items, { open, close }) => {
-              console.log('items', items);
-              return (
-                <div
-                  className={`${css.selectContent} ${
-                    data.config.disabled ? css.selectDisabled : ''
-                  }`}
-                  onClick={() =>
-                    env.runtime !== false && !data.config.disabled && setVisible((v) => !v)
-                  }
-                >
-                  {items.length === 0 ? (
-                    <div className={css.selectPlaceholder}>{data.config.placeholder}</div>
-                  ) : (
-                    <div
-                      className={css.selectValue}
-                      onClick={() =>
-                        env.runtime !== false && !data.config.disabled && setVisible((v) => !v)
-                      }
-                    >
-                      {items.map((v) => v?.label || '未选择').join('/')}
-                    </div>
-                  )}
-                  <RightOutlined className={css.selectArrow} />
-                </div>
-              );
-            }}
-          </Picker>
-        </>
+        <Select
+          {...configs}
+          placeholder={env.i18n(data.config.placeholder)}
+          labelInValue={false}
+          showArrow={data.config.showArrow}
+          options={renderOptions}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
+          maxTagCount={data.maxTagCount}
+          dropdownClassName={id}
+          listHeight={data.maxHeight ? Number(data.maxHeight) : void 0}
+          placement={data.placement || 'bottomLeft'}
+          optionLabelProp={'label'}
+          style={{
+            color: color
+          }}
+          open={
+            env.design || (env.edit && data.slotAfterOption && !data.hidePopWhenEdit)
+              ? true
+              : void 0
+          }
+          onSearch={data.config.showSearch ? onSearch : void 0}
+          notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
+        >
+          {OptionsWithSlot()}
+        </Select>
       ) : (
-        <div>test not isEditable</div>
+        <div>{Array.isArray(value) ? value.join(',') : value}</div>
       )}
     </div>
   );
