@@ -1,6 +1,7 @@
 .inputNumber {
   :global {
-    .ant-input-number-wrapper.ant-input-number-group:has(.ant-input-number-focused) > .ant-input-number-group-addon {
+    .ant-input-number-wrapper.ant-input-number-group:has(.ant-input-number-focused)
+      > .ant-input-number-group-addon {
       border-color: var(--ant-primary-color, #1890ff);
     }
     // .ant-input-number-wrapper.ant-input-number-group:has(.ant-input-number) > .ant-input-number-group-addon
@@ -64,12 +65,16 @@
   .ant-form-item-explain-error {
     color: #a14d43;
   }
+  .ant-input-affix-wrapper-status-error,
+  .ant-input-number-status-error,
+  .ant-select-status-error,
+  .ant-picker-status-error {
+    border-color: #a14d43 !important;
+    box-shadow: none !important;
+  }
   .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input)
     .ant-select-selector {
     border-color: #a14d43 !important;
-  }
-  .ant-picker-status-error.ant-picker,
-  .ant-picker-status-error.ant-picker:not([disabled]):hover {
-    border-color: #a14d43 !important;
+    box-shadow: none !important;
   }
 }
