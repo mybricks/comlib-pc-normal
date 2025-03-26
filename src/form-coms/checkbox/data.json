@@ -9,7 +9,8 @@
         "key": "option1"
       }
     ],
-    "disabled": false
+    "disabled": false,
+    "showLabelExpand": false
   },
   "staticOptions": [
     {

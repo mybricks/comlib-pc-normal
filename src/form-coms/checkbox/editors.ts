@@ -216,6 +216,19 @@ export default {
           }
         },
         {
+          title: '展开收起',
+          type: 'switch',
+          description: '是否显示展开/收起按钮',
+          value: {
+            get({ data }) {
+              return data.config.showLabelExpand;
+            },
+            set({ data }, value: boolean) {
+              data.config.showLabelExpand = value;
+            }
+          }
+        },
+        {
           title: '全选框',
           type: 'switch',
           description: '是否使用全选框',

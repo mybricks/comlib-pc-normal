@@ -8,6 +8,7 @@ import React, {
   useState
 } from 'react';
 import { Alert, Checkbox } from 'antd';
+import RawText from '../raw-text/runtime';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { InputIds, OutputIds } from '../types';
@@ -326,7 +327,18 @@ export default function Runtime({
             ...dynamicStyle
           }}
         >
-          {env.i18n(opt.label)}
+          {data.config.showLabelExpand ? (
+            <RawText
+              env={env}
+              data={{
+                content: env.i18n(opt.label),
+                expandRows: 2
+              }}
+            />
+          ) : (
+            env.i18n(opt.label)
+          )}
+          {/* {env.i18n(opt.label)} */}
         </span>
       )
     };
