@@ -169,7 +169,7 @@ const FormItem = (props) => {
       setIsShowTips(false);
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
-  console.log('titleNewRow', item);
+  
   return (
     <Form.Item
       label={
