@@ -6,6 +6,7 @@ import debounce from 'lodash/debounce';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 import classnames from 'classnames';
+import { outputIds as OutputIds } from '../constants';
 
 interface FormItemProps {
   data: Data;
@@ -170,6 +171,19 @@ const FormItem = (props) => {
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
 
+  const onClickTag = useCallback(() => {
+    if (props.env?.edit) return;
+    console.log(props.outputs);
+    if (props.outputs?.[OutputIds.OnTagClick]) {
+      console.log(props.outputs[OutputIds.OnTagClick]);
+      props.outputs[OutputIds.OnTagClick](item);
+    }
+    console.log(item);
+    if (slots['content'].outputs[OutputIds.OnTagClick]) {
+      slots['content'].outputs[OutputIds.OnTagClick](item);
+    }
+  }, [item]);
+
   return (
     <Form.Item
       label={
@@ -178,20 +192,25 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
-          <label
-            ref={labelRef}
-            data-form-item={com.name}
-            className="custom-wrap-classname"
-            onMouseEnter={handleMouseEnter}
-            style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
-          >
-            <Tooltip
-              placement="topLeft"
-              title={isShowTips && env.runtime ? env.i18n(item?.label) : null}
+          <>
+            <label
+              ref={labelRef}
+              data-form-item={com.name}
+              className="custom-wrap-classname"
+              onMouseEnter={handleMouseEnter}
+              style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
             >
-              {env.i18n(item?.label)}
-            </Tooltip>
-          </label>
+              <Tooltip
+                placement="topLeft"
+                title={isShowTips && env.runtime ? env.i18n(item?.label) : null}
+              >
+                {env.i18n(item?.label)}
+              </Tooltip>
+            </label>
+            <div style={{ marginLeft: '20px' }} onClick={onClickTag}>
+              测试标签
+            </div>
+          </>
         )
       }
       className={item.labelSlot ? css.customLabel : void 0}

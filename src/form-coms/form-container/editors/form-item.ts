@@ -5,6 +5,7 @@ import {
   refreshFormItemPropsSchema,
   refreshFieldSourceSchema
 } from '../schema';
+import {outputIds} from '../constants'
 import { getFormItem, getFormItemProp, setFormItemProps } from '../utils';
 import { uuid } from '../../../utils';
 import DomainFieldEditor from './DomainFieldEditor';
@@ -537,6 +538,17 @@ const formItemEditor = {
               set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
                 setFormItemProps({ data, id, name }, 'colon', value);
               }
+            }
+          },
+          {
+            title: '标签事件',
+            type: '_event',
+            options({ data }) {
+              console.log("添加标签事件")
+              return {
+                outputId: outputIds.OnTagClick,
+                forParent: true,
+              };
             }
           },
           {

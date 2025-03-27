@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.87",
+  "version": "1.4.90",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -323,6 +323,13 @@
         "type": "object",
         "properties": {}
       }
+    },
+    {
+      "id": "OnTagClick",
+      "title": "设置标签点击",
+      "schema": {
+        "type": "string"
+      }
     }
   ],
   "_inputs": [
@@ -409,6 +416,15 @@
                 "title": "组件值"
               }
             }
+          }
+        }
+      ],
+      "outputs":[
+        {
+          "id": "OnTagClick",
+          "title": "设置标签点击",
+          "schema": {
+            "type": "string"
           }
         }
       ]
