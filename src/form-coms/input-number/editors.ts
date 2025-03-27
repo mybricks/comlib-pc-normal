@@ -44,7 +44,7 @@ export default {
             items: [
               {
                 title: '输入框',
-                items: [  
+                items: [
                   {
                     title: '文本内容',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
@@ -188,6 +188,19 @@ export default {
             },
             set({ data }, value: boolean) {
               data.config.disabled = value;
+            }
+          }
+        },
+        {
+          title: '默认聚焦',
+          type: 'switch',
+          description: '是否默认聚焦',
+          value: {
+            get({ data }) {
+              return data.setAutoFocus;
+            },
+            set({ data }, value: boolean) {
+              data.setAutoFocus = value;
             }
           }
         },
