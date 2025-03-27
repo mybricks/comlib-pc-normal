@@ -9,7 +9,8 @@
         "key": "option1"
       }
     ],
-    "disabled": false
+    "disabled": false,
+    "showLabelExpand": false
   },
   "staticOptions": [
     {
@@ -21,10 +22,9 @@
     }
   ],
   "checkAll": false,
-  "layout": "vertical",
+  "layout": "horizontal",
   "checkAllText": "全选",
   "isEditable": true,
   "isIndeterminate": false,
-  "eventBubble": false,
-  "requiredMessage": "复选框尚未选择！"
+  "eventBubble": false
 }

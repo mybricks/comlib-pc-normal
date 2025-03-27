@@ -1,51 +1,14 @@
 .checkbox {
   margin-top: 5px;
   margin-bottom: 5px;
-
-  :global {
-    // 鼠标移入
-    .ant-checkbox-wrapper:hover .ant-checkbox-inner {
-      border-color: var(--ant-primary-color, #1890ff) !important;
-    }
-    // 选中
-    .ant-checkbox-checked .ant-checkbox-inner {
-      background-color: var(--ant-primary-color, #1890ff);
-      border-color: var(--ant-primary-color, #1890ff) !important;
-    }
-
-    // 禁用
-    .ant-checkbox-disabled {
-      .ant-checkbox-inner {
-        background-color: #ececec;
-        border-color: #bfbfbf !important;
-      }
-      + span {
-        color: #bfbfbf;
-      }
-    }
-
-    // 禁用和选中
-    .ant-checkbox-wrapper-checked.ant-checkbox-wrapper-disabled {
-      .ant-checkbox-checked.ant-checkbox-disabled {
-        .ant-checkbox-inner {
-          background-color: var(--ant-primary-color, #1890ff);
-          border-color: var(--ant-primary-color, #1890ff) !important;
-
-          &::after {
-            border-color: #ffffff;
-          }
-        }
-
-        + span {
-          color: #262626;
-        }
-      }
-    }
-  }
 }
 
 .suggestion {
   font-style: italic;
   padding: 5px;
   color: #aaa;
+}
+
+.labelExpand {
+  
 }

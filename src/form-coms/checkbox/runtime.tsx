@@ -8,6 +8,7 @@ import React, {
   useState
 } from 'react';
 import { Alert, Checkbox } from 'antd';
+import RawText from '../raw-text/runtime';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { InputIds, OutputIds } from '../types';
@@ -16,7 +17,6 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
 import { typeCheck } from '../../utils';
-import TextEllipsis from '../../components/TextEllipsis';
 
 export default function Runtime({
   env,
@@ -327,7 +327,18 @@ export default function Runtime({
             ...dynamicStyle
           }}
         >
-          <TextEllipsis maxLines={2}>{env.i18n(opt.label)}</TextEllipsis>
+          {data.config.showLabelExpand ? (
+            <RawText
+              env={env}
+              data={{
+                content: env.i18n(opt.label),
+                expandRows: 2
+              }}
+            />
+          ) : (
+            env.i18n(opt.label)
+          )}
+          {/* {env.i18n(opt.label)} */}
         </span>
       )
     };
