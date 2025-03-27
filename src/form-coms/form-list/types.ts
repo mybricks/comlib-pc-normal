@@ -1,22 +1,22 @@
-import { FormItemProps, FormListFieldData, FormProps } from 'antd'
-import { ButtonType } from 'antd/es/button/button'
-import { FormLayout } from 'antd/es/form/Form'
-import { ValidateInfo, SizeEnum } from '../types'
+import { FormItemProps, FormListFieldData, FormProps } from 'antd';
+import { ButtonType } from 'antd/es/button/button';
+import { FormLayout } from 'antd/es/form/Form';
+import { ValidateInfo, SizeEnum } from '../types';
 
 export type IconSrcType = false | 'custom' | 'inner';
 
 export interface Action {
-  title: string
-  loading?: boolean
-  isDefault: boolean
-  outputId: string
-  type?: ButtonType
-  key: string
-  visible?: boolean
-  danger?: boolean
-  size: SizeEnum
+  title: string;
+  loading?: boolean;
+  isDefault: boolean;
+  outputId: string;
+  type?: ButtonType;
+  key: string;
+  visible?: boolean;
+  danger?: boolean;
+  size: SizeEnum;
   /** @description 动态显示表达式 */
-  displayExpression?: string
+  displayExpression?: string;
   /** @description 图标配置 */
   iconConfig: {
     // 图标来源
@@ -31,12 +31,12 @@ export interface Action {
     customIcon?: string;
     // 图标位置
     location: LocationEnum;
-  }
+  };
   /** @description 权限配置 */
   permission?: {
-    id: string,
+    id: string;
     type?: string;
-  }
+  };
 }
 
 interface Actions {
@@ -46,62 +46,62 @@ interface Actions {
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
-  inlinePadding?: number[],
+  inlinePadding?: number[];
 }
 
 export interface FormItems {
   id: string;
-  name: string
-  comName: string
-  schema: {}
-  label: string
-  span: number
-  required?: boolean
-  colon?: FormItemColonType
-  visible: boolean
-  validateStatus?: string
-  help?: string
-  tooltip?: string
-  labelStyle?: {}
-  labelAlign?: 'left' | 'right' | 'default'
-  labelAutoWrap?: boolean | 'default'
-  hiddenLabel?: boolean
-  showLabel: boolean | 'default'
-  description?: string
-  descriptionStyle?: {}
-  widthOption: LabelWidthType
-  width?: number
-  inlineMargin?: number[]
-  slotAfter?: string
-  labelWidthType?: LabelWidthType
-  labelWidth?: number
-  labelCol?: number
+  name: string;
+  comName: string;
+  schema: {};
+  label: string;
+  span: number;
+  required?: boolean;
+  colon?: FormItemColonType;
+  visible: boolean;
+  validateStatus?: string;
+  help?: string;
+  tooltip?: string;
+  labelStyle?: {};
+  labelAlign?: 'left' | 'right' | 'default';
+  labelAutoWrap?: boolean | 'default';
+  hiddenLabel?: boolean;
+  showLabel: boolean | 'default';
+  description?: string;
+  descriptionStyle?: {};
+  widthOption: LabelWidthType;
+  width?: number;
+  inlineMargin?: number[];
+  slotAfter?: string;
+  labelWidthType?: LabelWidthType;
+  labelWidth?: number;
+  labelCol?: number;
 }
 
 export interface AdditionalItem {
   id: string;
-  comName: string
-  span: number
-  widthOption: LabelWidthType
-  width?: number
+  comName: string;
+  span: number;
+  widthOption: LabelWidthType;
+  width?: number;
 }
 
-export type LabelWidthType = 'px' | 'span' | 'flexFull'
+export type LabelWidthType = 'px' | 'span' | 'flexFull';
 
 export interface Data {
   value: any[] | undefined;
   /**
    * @description 列表数据
    */
-  fields: FormListFieldData[]
+  fields: FormListFieldData[];
   /**
    * @description 列表当前最大key
    */
-  MaxKey: number
+  MaxKey: number;
   /**
    * @description 表单项数目
    */
-  nameCount: number
+  nameCount: number;
   /**
    * @description 校验规则
    */
@@ -117,7 +117,7 @@ export interface Data {
   /**
    * @description 列表初始长度
    */
-  initLength: number
+  initLength: number;
   /**
    * @description 用户操作
    */
@@ -127,7 +127,7 @@ export interface Data {
     key: React.Key;
     value?: {};
     startIndex: number;
-  }
+  };
   /**
    * @description 需要初始化的列表项索引
    */
@@ -135,76 +135,89 @@ export interface Data {
   /**
    * @description 是否提交隐藏表单项
    */
-  submitHiddenFields: boolean
+  submitHiddenFields: boolean;
   /**
    * @description 是否禁用
    */
-  disabled: boolean
+  disabled: boolean;
   /**
    * 开启添加校验行为
    */
-  enableAddValidate?: boolean
+  enableAddValidate?: boolean;
   /**
    * @description 是否作为表单项
    */
-  isFormItem: boolean
+  isFormItem: boolean;
   /**
    * @description 单行列数
    */
-  formItemColumn: number
+  formItemColumn: number;
   /**
    * @description 插槽样式
    */
-  slotStyle: {}
+  slotStyle: {};
   /**
    * @description 操作项
    */
-  actions: Actions
+  actions: Actions;
   /**
    * @description 显示标题
    */
-  showLabel: boolean
+  showLabel: boolean;
   /**
    * @description 标题宽度类型
    */
-  labelWidthType: LabelWidthType
+  labelWidthType: LabelWidthType;
   /**
    * @description 标题宽度
    */
-  labelWidth: number
+  labelWidth: number;
   /**
    * @description 标题宽度占比
    */
-  labelCol: number
-  wrapperCol: number
+  labelCol: number;
+  wrapperCol: number;
   /**
    * @description 标题是否展示冒号
    */
-  colon: boolean | undefined
+  colon: boolean | undefined;
   /**
    * @description 表单项公共配置
    */
-  formItemConfig: FormItemProps
+  formItemConfig: FormItemProps;
   /**
    * @description 列表项外边距
    */
-  listItemMargin: number[]
+  listItemMargin: number[];
   /**
    * @description 表单项尺寸
    */
-  size: 'small' | 'middle' | 'large'
+  size: 'small' | 'middle' | 'large';
   /**
    * @description 表单布局类型
    */
-  layoutType?: FormLayout
+  layoutType?: FormLayout;
 
   /** 列表项属性，通过修改某一项传进的数据 */
-  listItemProps?: Record<string, any>
+  listItemProps?: Record<string, any>;
+
+  /**
+   * @description 编辑/只读
+   */
+  isEditable: boolean;
 }
 
-export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
+export type FormControlInputId =
+  | 'validate'
+  | 'getValue'
+  | 'setValue'
+  | 'resetValue'
+  | 'setInitialValue'
+  | 'setDisabled'
+  | 'setEnabled'
+  | 'isEditable';
 
-export type FormItemColonType = true | false | "default";
+export type FormItemColonType = true | false | 'default';
 
 export type FormControlInputRels = {
   validate: (val?: any) => {
@@ -225,14 +238,14 @@ export type FormControlInputType = {
 };
 export type ChildrenStore = {
   [key: number | string]: {
-    [id: string]: FormControlInputType
+    [id: string]: FormControlInputType;
   };
-}
+};
 export type ListItemPropsStore = {
   [key: number | string]: {
-    [name: string]: Partial<FormItems>
-  }
-}
+    [name: string]: Partial<FormItems>;
+  };
+};
 
 /** @description 按钮图标位置 */
 export enum LocationEnum {

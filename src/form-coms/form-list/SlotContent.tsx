@@ -81,6 +81,7 @@ const SlotContent = (
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let { item, isFormItem } = getFormItem(data, com);
+            console.log(item);
             if (!item) return;
             const visible = com.style.display !== 'none';
             // 非表单项不收集childrenStore
@@ -193,7 +194,7 @@ const SlotContent = (
     <Form layout={data?.layoutType || 'horizontal'} disabled={data?.disabled}>
       <Row key={field.key} className="form-list-item">
         {content}
-        {!env.edit && actions}
+        {!env.edit && data.isEditable && actions}
       </Row>
     </Form>
   );
