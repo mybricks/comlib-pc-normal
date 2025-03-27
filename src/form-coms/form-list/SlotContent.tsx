@@ -39,6 +39,7 @@ const SlotContent = (
     callbacks,
     suffixKey
   } = props;
+
   const content = useMemo(() => {
     return slots[SlotIds.FormItems]?.render({
       itemWrap(com: { id; jsx; name }) {
@@ -189,7 +190,7 @@ const SlotContent = (
    */
 
   return (
-    <Form layout={data?.layoutType || 'horizontal'}>
+    <Form layout={data?.layoutType || 'horizontal'} disabled={data?.disabled}>
       <Row key={field.key} className="form-list-item">
         {content}
         {!env.edit && actions}
