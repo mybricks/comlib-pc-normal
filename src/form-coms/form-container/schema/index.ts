@@ -141,6 +141,9 @@ function refreshFieldSourceSchema({ data, inputs, outputs, slots }, options: Fie
   const { type, fieldName, originFieldName, schema} = options
   if(inputs.get(inputIds.setFieldsSource)) {
     let fieldSourceSchema = cloneDeep(inputs.get(inputIds.setFieldsSource).schema);
+    
+    if (!fieldSourceSchema) return
+
     if(options.type === 'add') {
       fieldSourceSchema.properties[fieldName] = schema
     }
