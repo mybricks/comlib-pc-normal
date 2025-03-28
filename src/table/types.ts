@@ -3,6 +3,8 @@ import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
   Text = 'text',
+  Image = 'image',
+  Link = 'link',
   SlotItem = 'slotItem',
   Group = 'group'
 }
