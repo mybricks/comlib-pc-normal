@@ -49,10 +49,10 @@ function ColumnRender(props: ColumnRenderProps) {
         columnItem?.formatData?.formatterName
       )
         ? {
-            index,
-            rowRecord: record,
-            value: oriValue
-          }
+          index,
+          rowRecord: record,
+          value: oriValue
+        }
         : oriValue;
       if (columnItem?.formatData?.formatterName === 'KEYMAP') {
         oriValue = env.i18n(genFormatting(columnItem.formatData)(valueToBeFormat));
@@ -91,6 +91,29 @@ function ColumnRender(props: ColumnRenderProps) {
         //     <span className={css.ellipsisWrap}>{value}</span>
         //   </Tooltip>
         // );
+      } else {
+        return value ?? null;
+      }
+    case ContentTypeEnum.Image:
+      if (value) {
+        return (
+          <a href={value} target="_blank">
+            <img src={value} style={{ width: 80, height: 80, borderRadius: 6 }} />
+          </a>
+        );
+      } else {
+        return value ?? null;
+      }
+    case ContentTypeEnum.Link:
+      if (value) {
+        if (columnItem.ellipsis && String(value)?.trim()?.length > 0) {
+          return (
+            <a href={value} target="_blank" className={css.ellipsisWrap}>{value}</a>
+          );
+        }
+        return (
+          <a href={value} target="_blank">{value}</a>
+        );
       } else {
         return value ?? null;
       }
