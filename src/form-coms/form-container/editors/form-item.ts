@@ -395,12 +395,10 @@ const formItemEditor = {
             const { item } = getFormItem(data, { id, name });
             if (value && item) {
               const slotId = uuid();
-              item['slotAfter'] = slotId;
-              // setFormItemProps({ data, id }, 'slotAfter', slotId);
-              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label) });
+              setFormItemProps({ data, id, name }, 'slotAfter', slotId);
+              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label) })
             } else {
               const slotAfter = getFormItemProp({ data, id, name }, 'slotAfter');
-
               if (slot.get(slotAfter)) {
                 slot.remove(slotAfter);
                 setFormItemProps({ data, id, name }, 'slotAfter', '');

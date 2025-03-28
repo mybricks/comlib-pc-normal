@@ -38,6 +38,7 @@ type FormControlInputType = {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
+  console.log(slots)
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
 

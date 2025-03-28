@@ -28,6 +28,7 @@ const JSXWrapper = (props: FormControlProps) => {
 
 const FormItem = (props) => {
   const { com, item, data, slots, isMobile, env } = props;
+  console.log(slots)
   const { dynamicStyle = {}, label } = item;
   const [isShowTips, setIsShowTips] = useState(false);
   const formColon = data.config?.colon || data.colon;
@@ -178,11 +179,18 @@ const FormItem = (props) => {
       console.log(props.outputs[OutputIds.OnTagClick]);
       props.outputs[OutputIds.OnTagClick](item);
     }
-    console.log(item);
+    console.log(slots['content'].outputs[OutputIds.OnTagClick]);
     if (slots['content'].outputs[OutputIds.OnTagClick]) {
-      slots['content'].outputs[OutputIds.OnTagClick](item);
+      slots['content'].outputs[OutputIds.OnTagClick]("sddd");
     }
-  }, [item]);
+  }, []);
+
+  useEffect(()=>{
+    console.log(slots)
+    console.log(item.slotAfter)
+    console.log(slots[item.slotAfter])
+  }, [item, slots])
+
 
   return (
     <Form.Item
@@ -207,9 +215,6 @@ const FormItem = (props) => {
                 {env.i18n(item?.label)}
               </Tooltip>
             </label>
-            <div style={{ marginLeft: '20px' }} onClick={onClickTag}>
-              测试标签
-            </div>
           </>
         )
       }
@@ -231,8 +236,8 @@ const FormItem = (props) => {
         {item.slotAfter && (
           <div
             className={classnames(
-              css.formItemSlotAfter,
-              env.edit && slots[item.slotAfter].size === 0 && css.formItemSlotAfterEmpty
+              css.formItemSlotAfter
+              env.edit && slots[item.slotAfter]?.size === 0 && css.formItemSlotAfterEmpty
             )}
           >
             {<Form.Item noStyle>{slots[item.slotAfter]?.render({ scope: com.scope })}</Form.Item>}
