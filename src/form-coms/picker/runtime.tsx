@@ -9,7 +9,6 @@ import { typeCheck, i18nFn } from '../../utils';
 import { InputIds, OutputIds } from '../types';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import 'antd-mobile/bundle/style.css'
 const DefaultOptionKey = '_id';
 
 const getFieldNames = (data: Data) => {
@@ -298,7 +297,7 @@ export default function Runtime({
   }, [data.config.options, searchValue]);
 
   return (
-    <div className={`${css.select}`} id="select">
+    <div className={`${css.picker}`}>
       {data.isEditable ? (
         <>
           <Picker
@@ -315,18 +314,18 @@ export default function Runtime({
               console.log('items', items);
               return (
                 <div
-                  className={`${css.selectContent} ${
-                    data.config.disabled ? css.selectDisabled : ''
+                  className={`${css.pickerContent} ${
+                    data.config.disabled ? css.pickerDisabled : ''
                   }`}
                   onClick={() =>
                     env.runtime !== false && !data.config.disabled && setVisible((v) => !v)
                   }
                 >
                   {items.length === 0 ? (
-                    <div className={css.selectPlaceholder}>{data.config.placeholder}</div>
+                    <div className={css.pickerPlaceholder}>{data.config.placeholder}</div>
                   ) : (
                     <div
-                      className={css.selectValue}
+                      className={css.pickerValue}
                       onClick={() =>
                         env.runtime !== false && !data.config.disabled && setVisible((v) => !v)
                       }
@@ -334,7 +333,7 @@ export default function Runtime({
                       {items.map((v) => v?.label || '未选择').join('/')}
                     </div>
                   )}
-                  <RightOutlined className={css.selectArrow} />
+                  <RightOutlined className={css.pickerArrow} />
                 </div>
               );
             }}

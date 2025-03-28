@@ -2,10 +2,13 @@
   .adm-picker-header-button {
     color: var(--ant-primary-color, #1890ff);
   }
+  .adm-picker {
+    background-color: #fff;
+  }
 }
 
-.select {
-  .selectContent {
+.picker {
+  .pickerContent {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,14 +20,14 @@
     font-size: 14px;
     border: 1px solid #dfdfdf;
     cursor: pointer;
-    &.selectDisabled {
+    &.pickerDisabled {
       cursor: not-allowed;
     }
   }
-  .selectPlaceholder {
+  .pickerPlaceholder {
     color: #bfbfbf;
   }
-  .selectArrow {
+  .pickerArrow {
     color: rgba(0, 0, 0, 0.25);
   }
 }
