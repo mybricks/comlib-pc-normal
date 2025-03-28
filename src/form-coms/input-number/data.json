@@ -26,5 +26,6 @@
   "isControl": true,
   "useGrouping": false,
   "isParser": false,
-  "isPrecision": false
+  "isPrecision": false,
+  "setAutoFocus": false
 }

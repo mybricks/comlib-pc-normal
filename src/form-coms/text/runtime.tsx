@@ -34,7 +34,9 @@ export interface Data {
 
   isEditable: boolean;
   contentSize: number[];
-  iconGap: number[]
+  iconGap: number[];
+
+  setAutoFocus?: boolean;
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -129,10 +131,12 @@ export default function (props: RuntimeParams<Data>) {
       }
     });
     inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
-      setAutoFocus(!!flag);
       !!flag ? inputRef.current?.focus() : null;
       relOutputs['setAutoFocusDone'](flag);
     });
+    if (data.setAutoFocus) {
+      inputRef.current?.focus();
+    }
     inputs[inputIds.SET_VALIDATE_INFO]?.((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);
@@ -179,17 +183,33 @@ export default function (props: RuntimeParams<Data>) {
 
   const innerRender = ({ icon }: { icon: ReactNode }) => {
     let Icon = Icons && Icons[icon as string]?.render();
-    Icon = typeof Icon === 'undefined' ?
-        <div style={{ display: 'flex', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: icon }} /> :
-        Icons && Icons[icon as string]?.render();
+    Icon =
+      typeof Icon === 'undefined' ? (
+        <div
+          style={{ display: 'flex', alignItems: 'center' }}
+          dangerouslySetInnerHTML={{ __html: icon }}
+        />
+      ) : (
+        Icons && Icons[icon as string]?.render()
+      );
 
-    return <div style={{ fontSize: data.contentSize?.[0] || 14 ,marginRight:data.iconGap?.[0] || 0}}>{Icon}</div>;
+    return (
+      <div style={{ fontSize: data.contentSize?.[0] || 14, marginRight: data.iconGap?.[0] || 0 }}>
+        {Icon}
+      </div>
+    );
   };
 
   const customRender = (src) => {
     return (
-      <div style={{marginRight:data.iconGap?.[0] || 0}}>
-        <Image width={data.contentSize?.[1] || 14} height={data.contentSize?.[0] || 14} src={src} preview={false} alt={' '} />
+      <div style={{ marginRight: data.iconGap?.[0] || 0 }}>
+        <Image
+          width={data.contentSize?.[1] || 14}
+          height={data.contentSize?.[0] || 14}
+          src={src}
+          preview={false}
+          alt={' '}
+        />
       </div>
     );
   };
@@ -208,7 +228,7 @@ export default function (props: RuntimeParams<Data>) {
     } else if (data.preSrc === 'custom' && data.preCustomIcon) {
       return customRender(data.preCustomIcon);
     }
-  }, [data.preInnerIcon, data.preCustomIcon,data.preSrc]);
+  }, [data.preInnerIcon, data.preCustomIcon, data.preSrc]);
 
   let jsx = data.isEditable ? (
     <Input
@@ -227,11 +247,18 @@ export default function (props: RuntimeParams<Data>) {
       onBlur={onBlur}
       onPressEnter={onPressEnter}
       //size={'large'}
-      showCount={data.config.showCount ? {
-        formatter: ({ count, maxLength}) => {
-          const effectiveMaxLength = maxLength ?? -1;
-          return effectiveMaxLength > 0 ? `${value?.length || 0} / ${maxLength}` : `${value?.length || 0}`}
-      } : void 0}
+      showCount={
+        data.config.showCount
+          ? {
+              formatter: ({ count, maxLength }) => {
+                const effectiveMaxLength = maxLength ?? -1;
+                return effectiveMaxLength > 0
+                  ? `${value?.length || 0} / ${maxLength}`
+                  : `${value?.length || 0}`;
+              }
+            }
+          : void 0
+      }
       prefix={data.preSrc !== false ? renderPrefix() : void 0}
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
