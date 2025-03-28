@@ -99,6 +99,7 @@ function ColumnRender(props: ColumnRenderProps) {
         return (
           <Image
             height={80}
+            width={80}
             src={value}
           />
         );
