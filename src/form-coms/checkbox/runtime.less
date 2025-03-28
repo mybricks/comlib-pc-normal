@@ -1,14 +1,31 @@
 .checkbox {
   margin-top: 5px;
   margin-bottom: 5px;
+  :global(.ant-checkbox-wrapper) {
+    display: flex;
+    .ant-checkbox-wrapper.ant-checkbox-wrapper-in-form-item.ant-checkbox-group-item {
+      display: flex;
+    }
+  }
+  .expand {
+    display: flex;
+    justify-content: center;
+    color: #bfbfbf;
+    cursor: pointer;
+    &Icon {
+      margin-right: 8px;
+      &Up {
+        transform: rotate(270deg);
+      }
+      &Down {
+        transform: rotate(90deg);
+      }
+    }
+  }
 }
 
 .suggestion {
   font-style: italic;
   padding: 5px;
   color: #aaa;
-}
-
-.labelExpand {
-  
 }

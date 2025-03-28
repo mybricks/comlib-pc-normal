@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useRef, useCallback } from 'react';
+import React, { useLayoutEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Input } from 'antd';
 import { Picker } from 'antd-mobile';
 import { RightOutlined, SearchOutlined, CloseCircleOutlined } from '@ant-design/icons';
@@ -9,6 +9,7 @@ import { typeCheck, i18nFn } from '../../utils';
 import { InputIds, OutputIds } from '../types';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import 'antd-mobile/bundle/style.css'
 const DefaultOptionKey = '_id';
 
 const getFieldNames = (data: Data) => {
@@ -129,7 +130,7 @@ export default function Runtime({
 
     inputs['setValue']((val, relOutputs) => {
       const outputValue = setValue(val);
-        outputs[OutputIds.OnChange](outputValue);
+      outputs[OutputIds.OnChange](outputValue);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
       }
@@ -138,7 +139,7 @@ export default function Runtime({
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val, relOutputs) => {
         const outputValue = setValue(val);
-          outputs[OutputIds.OnInitial](outputValue);
+        outputs[OutputIds.OnInitial](outputValue);
         if (relOutputs['setInitialValueDone']) {
           relOutputs['setInitialValueDone'](val);
         }
@@ -155,8 +156,7 @@ export default function Runtime({
       if (Array.isArray(ds)) {
         const fieldNames = getFieldNames(data);
         const newOptions = data.customField
-          ? ds
-          .map((item) => {
+          ? ds.map((item) => {
               return {
                 ...(fieldNames.value in item
                   ? {
@@ -287,6 +287,16 @@ export default function Runtime({
     outputs['onConfirm']?.(v);
   }, []);
 
+  const columns = useMemo(() => {
+    if (!searchValue) {
+      return data.config.options || [];
+    } else {
+      return (data.config.options || []).map((opts) => {
+        return opts.filter((opt) => opt.label.includes(searchValue));
+      });
+    }
+  }, [data.config.options, searchValue]);
+
   return (
     <div className={`${css.select}`} id="select">
       {data.isEditable ? (
@@ -296,7 +306,7 @@ export default function Runtime({
             visible={visible}
             onClose={onClose}
             title={renderSearch()}
-            columns={data.config.options || []}
+            columns={columns}
             onConfirm={onConfirm}
             onSelect={changeValue}
             value={value}

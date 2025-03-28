@@ -8,6 +8,7 @@ import React, {
   useState
 } from 'react';
 import { Alert, Checkbox } from 'antd';
+import { DoubleRightOutlined } from '@ant-design/icons';
 import RawText from '../raw-text/runtime';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -34,6 +35,7 @@ export default function Runtime({
   const [dynamicStyles, setDynamicStyles] = useState<{ value: any; style: CSSProperties }[]>([]);
   const [single, setSingle] = useState<boolean>(false);
   const valueRef = useRef<any>(data.value);
+  const [isExpand, setIsExpand] = useState(true);
 
   const [value, setValue] = useState<any>(data.value);
   // 运行时只执行一次
@@ -316,33 +318,50 @@ export default function Runtime({
   };
 
   let options = env.edit ? data.staticOptions : data.config.options;
-  let newOptions = options.map((opt) => {
-    const dynamicStyle = dynamicStyles.find((i) => i?.value === opt.value)?.style || {};
-    return {
-      ...opt,
-      label: (
-        <span
-          style={{
-            color: valueRef.current?.includes(opt.value) ? activeFontColor : '',
-            ...dynamicStyle
-          }}
-        >
-          {data.config.showLabelExpand ? (
-            <RawText
-              env={env}
-              data={{
-                content: env.i18n(opt.label),
-                expandRows: 2
+  const newOptions = useMemo(() => {
+    return options
+      .filter((opt, optIndex) => {
+        if (isExpand) {
+          return opt;
+        }
+        return optIndex < 5;
+      })
+      .map((opt) => {
+        const dynamicStyle = dynamicStyles.find((i) => i?.value === opt.value)?.style || {};
+        return {
+          ...opt,
+          label: (
+            <span
+              style={{
+                color: valueRef.current?.includes(opt.value) ? activeFontColor : '',
+                ...dynamicStyle
               }}
-            />
-          ) : (
-            env.i18n(opt.label)
-          )}
-          {/* {env.i18n(opt.label)} */}
-        </span>
-      )
-    };
-  });
+            >
+              {data.config.showLabelExpand ? (
+                <RawText
+                  env={env}
+                  data={{
+                    content: env.i18n(opt.label),
+                    expandRows: 2
+                  }}
+                />
+              ) : (
+                env.i18n(opt.label)
+              )}
+              {/* {env.i18n(opt.label)} */}
+            </span>
+          )
+        };
+      });
+  }, [
+    options,
+    isExpand,
+    env,
+    dynamicStyles,
+    data.config.showLabelExpand,
+    valueRef.current,
+    activeFontColor
+  ]);
 
   const radioGroupChildren = useMemo(() => {
     if (env.edit) {
@@ -411,6 +430,19 @@ export default function Runtime({
         value.join(',')
       ) : (
         value
+      )}
+      {options.length > 5 && (
+        <div
+          className={css.expand}
+          onClick={() => {
+            setIsExpand((v) => {
+              return !v;
+            });
+          }}
+        >
+          <DoubleRightOutlined className={css.expandIcon + ' ' + (isExpand ? css.expandIconUp : css.expandIconDown)} color="#bfbfbf" />
+          {isExpand ? '收起' : '展开'}
+        </div>
       )}
     </div>
   );
