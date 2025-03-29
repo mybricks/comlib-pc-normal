@@ -333,7 +333,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

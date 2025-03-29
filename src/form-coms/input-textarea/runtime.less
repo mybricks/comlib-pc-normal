@@ -1,0 +1,45 @@
+.textarea {
+  :global {
+    .ant-input-textarea-show-count.ant-input-textarea-in-form-item:after {
+      margin-bottom: 0;
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 14px;
+      line-height: 32px;
+    }
+
+    textarea.ant-input {
+      height: 160px;
+      min-height: 32px;
+      max-height: 192px;
+      border: 1px solid #dfdfdf;
+      border-radius: 4px;
+
+      &:focus {
+        box-shadow: none;
+        border-color: var(--ant-primary-color, #1890ff);
+      }
+
+      &[disabled] {
+        background-color: transparent;
+      }
+    }
+
+    .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
+      border-color: #a14d43;
+    }
+
+    .ant-input-textarea-status-error.ant-input-textarea-show-count.ant-input-textarea-in-form-item:after {
+      margin-bottom: -32px;
+    }
+  }
+}
+
+:global(.ant-form-item.has-desc) {
+  .textarea {
+    :global {
+      .ant-input-textarea-show-count.ant-input-textarea-in-form-item:after {
+        margin-bottom: -32px;
+      }
+    }
+  }
+}

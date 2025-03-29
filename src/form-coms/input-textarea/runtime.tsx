@@ -7,7 +7,8 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { TextAreaRef } from 'antd/lib/input/TextArea';
 import { inputIds, outputIds } from '../form-container/constants';
-import { InputIds } from '../types';
+import { InputIds, ValidateTriggerType } from '../types';
+import css from './runtime.less';
 
 export interface Data {
   value: string | undefined;
@@ -18,6 +19,7 @@ export interface Data {
   /** 光标位置  */
   selectionStart?: number;
   isEditable: boolean;
+  maxLength: number;
 }
 
 export default function ({
@@ -76,6 +78,7 @@ export default function ({
           data.isEditable = val;
         },
         validate(model, outputRels) {
+          console.log(data.rules, 'validate');
           validateFormItem({
             value: valueRef.current,
             env,
@@ -171,6 +174,7 @@ export default function ({
     const val = e.target.value;
     console.warn('onChange', val);
     changeValue(val);
+    debounceValidateTrigger(parentSlot, { id, name });
     outputs['onChange'](val);
   }, []);
 
@@ -207,7 +211,7 @@ export default function ({
   }, [env.edit, data.minRows, data.maxRows]);
 
   return data.isEditable ? (
-    <div>
+    <div className={css.textarea}>
       <Input.TextArea
         ref={inputRef}
         {...data.config}
@@ -215,11 +219,10 @@ export default function ({
         placeholder={env.i18n(placeholder)}
         value={value}
         readOnly={!!edit}
-        {...sizeConfig}
+        // {...sizeConfig}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
-        maxLength={data.config.maxLength && data.config.maxLength > 0 ? data.config.maxLength : void 0} // 兼容 antd5 中 maxLength 为 -1 时 outofrange 的问题
       />
     </div>
   ) : (
