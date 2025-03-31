@@ -1,6 +1,6 @@
 {
   "title": "多选框",
-  "namespace": "amc.normal-h5.checkbox",
+  "namespace": "mybricks.normal-pc.checkbox",
   "version": "1.1.30",
   "description": "多选框",
   "author": "ZhuLin",
@@ -444,7 +444,7 @@
     }
   ],
   "schema": [
-    "amc.normal-h5.form-container/form-item",
+    "mybricks.normal-pc.form-container/form-item",
     "*"
   ]
 }
