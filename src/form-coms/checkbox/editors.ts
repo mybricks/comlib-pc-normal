@@ -216,15 +216,45 @@ export default {
           }
         },
         {
-          title: '展开收起',
+          title: '文本展开收起',
           type: 'switch',
-          description: '是否显示展开/收起按钮',
+          description: '是否显示每一项的文本展开/收起按钮',
           value: {
             get({ data }) {
-              return data.config.showLabelExpand;
+              return data.showLabelExpand;
             },
             set({ data }, value: boolean) {
-              data.config.showLabelExpand = value;
+              data.showLabelExpand = value;
+            }
+          }
+        },
+        {
+          title: '展开收起（整体）',
+          type: 'switch',
+          description: '超过指定个数后会显示整体展开/收起按钮',
+          value: {
+            get({ data }) {
+              return data.showExpand;
+            },
+            set({ data }, value: boolean) {
+              data.showExpand = value;
+            }
+          }
+        },
+        {
+          title: '展开收起临界个数',
+          type: 'inputNumber',
+          description: '超过该数量后会显示整体展开/收起按钮',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.showExpand;
+          },
+          options: [{ min: 1 }],
+          value: {
+            get({ data }) {
+              return [data.showExpandLimit];
+            },
+            set({ data }, value: number) {
+              data.showExpandLimit = value[0];
             }
           }
         },

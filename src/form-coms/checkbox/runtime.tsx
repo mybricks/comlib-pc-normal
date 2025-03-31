@@ -324,7 +324,7 @@ export default function Runtime({
         if (isExpand) {
           return opt;
         }
-        return optIndex < 5;
+        return optIndex < data.showExpandLimit;
       })
       .map((opt) => {
         const dynamicStyle = dynamicStyles.find((i) => i?.value === opt.value)?.style || {};
@@ -337,7 +337,7 @@ export default function Runtime({
                 ...dynamicStyle
               }}
             >
-              {data.config.showLabelExpand ? (
+              {data.showLabelExpand ? (
                 <RawText
                   env={env}
                   data={{
@@ -358,7 +358,9 @@ export default function Runtime({
     isExpand,
     env,
     dynamicStyles,
-    data.config.showLabelExpand,
+    data.showLabelExpand,
+    data.showExpand,
+    data.showExpandLimit,
     valueRef.current,
     activeFontColor
   ]);
@@ -431,7 +433,7 @@ export default function Runtime({
       ) : (
         value
       )}
-      {options.length > 5 && (
+      {data.showExpand && options.length > data.showExpandLimit && (
         <div
           className={css.expand}
           onClick={() => {

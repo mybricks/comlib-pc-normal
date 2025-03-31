@@ -9,9 +9,11 @@
         "key": "option1"
       }
     ],
-    "disabled": false,
-    "showLabelExpand": false
+    "disabled": false
   },
+  "showLabelExpand": false,
+  "showExpand": true,
+  "showExpandLimit": 5,
   "staticOptions": [
     {
       "label": "选项1",
