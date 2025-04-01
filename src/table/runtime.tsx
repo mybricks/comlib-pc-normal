@@ -292,6 +292,13 @@ export default function (props: RuntimeParams<Data>) {
           handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
 
+        // 总结栏显示/隐藏
+        inputs[InputIds.SET_SUMMARY_COLUMN] &&
+        inputs[InputIds.SET_SUMMARY_COLUMN]((val: any, relOutputs: any) => {
+          data.useSummaryColumn = val;
+          relOutputs[OutputIds.SET_SHOW_SUMMARY_COLUMN](data.useSummaryColumn);
+        });  
+
       // 总结栏数据
       inputs[InputIds.SUMMARY_COLUMN] &&
         inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
