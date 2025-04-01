@@ -70,8 +70,11 @@ export const InputIds = {
   // 开启关闭所有展开项
   EnableAllExpandedRows: 'enableAllExpandedRows',
 
+  // 设置总结栏的显示/隐藏
+  SET_SUMMARY_COLUMN: 'setSummaryColumn',
   // 总结栏输入数据
   SUMMARY_COLUMN: 'summaryColumn',
+  
 
   TABLE_HEIGHT: 'tableHeight',
   // 动态修改列属性
@@ -125,7 +128,8 @@ export const OutputIds = {
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',
   CHANGE_COLS_ATTR: 'changeColsAttr',
-  SET_SIZE_DONE: 'setSizeDone'
+  SET_SIZE_DONE: 'setSizeDone',
+  SET_SHOW_SUMMARY_COLUMN: 'setShowSummaryCloumn'
 };
 
 export const DefaultRowKey = '_uuid';
