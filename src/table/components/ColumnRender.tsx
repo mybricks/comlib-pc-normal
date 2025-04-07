@@ -96,11 +96,41 @@ function ColumnRender(props: ColumnRenderProps) {
       }
     case ContentTypeEnum.Image:
       if (value) {
+        let normalizedValue = value
+        try {
+          if (typeof value === 'string') {
+            normalizedValue = JSON.parse(value)
+          }
+        } catch (e) {}
+        if (Array.isArray(normalizedValue)) {
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              flexWrap: 'wrap',
+            }}>
+              {
+                normalizedValue.map((item, index) => {
+                  const url = item?.url || item;
+                  return (
+                    <Image
+                      height={80}
+                      width={80}
+                      src={url}
+                      key={index}
+                    />
+                  );
+                })
+              }
+            </div>
+          );
+        }
         return (
           <Image
             height={80}
             width={80}
-            src={value}
+            src={normalizedValue}
           />
         );
       } else {
@@ -108,13 +138,33 @@ function ColumnRender(props: ColumnRenderProps) {
       }
     case ContentTypeEnum.Link:
       if (value) {
-        if (columnItem.ellipsis && String(value)?.trim()?.length > 0) {
+        let normalizedValue = value
+        try {
+          if (typeof value === 'string') {
+            normalizedValue = JSON.parse(value)
+          }
+        } catch (e) {}
+        if (Array.isArray(normalizedValue)) {
           return (
-            <a href={value} target="_blank" className={css.ellipsisWrap}>{value}</a>
+            <div className={columnItem.ellipsis ? css.ellipsisWrap : ''}>
+              {
+                normalizedValue.map((item, index) => {
+                  const url = item?.url || item;
+                  return (
+                    <a href={url} target="_blank" key={index}>{url}</a>
+                  );
+                })
+              }
+            </div>
+          );
+        }
+        if (columnItem.ellipsis && String(normalizedValue)?.trim()?.length > 0) {
+          return (
+            <a href={normalizedValue} target="_blank" className={css.ellipsisWrap}>{normalizedValue}</a>
           );
         }
         return (
-          <a href={value} target="_blank">{value}</a>
+          <a href={normalizedValue} target="_blank">{normalizedValue}</a>
         );
       } else {
         return value ?? null;
