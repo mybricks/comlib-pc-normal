@@ -131,6 +131,19 @@ export default {
           }
         },
         {
+          title: '输入框禁用',
+          type: 'switch',
+          description: '设置输入框为只读（避免在移动设备上打开虚拟键盘',
+          value: {
+            get({ data }) {
+              return data.config.inputReadOnly;
+            },
+            set({ data }, value: boolean) {
+              data.config.inputReadOnly = value;
+            }
+          }
+        },
+        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',

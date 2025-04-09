@@ -657,6 +657,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
                 ? customDateRender
                 : undefined
             }
+            inputReadOnly={data.config.inputReadOnly}
             showTime={getShowTime()}
             showNow={data.showNow}
             onChange={onChange}
