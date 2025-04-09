@@ -3,7 +3,7 @@
   "namespace": "amc.normal-h5.time-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.20",
+  "version": "1.1.21",
   "description": "时间选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",

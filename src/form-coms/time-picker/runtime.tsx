@@ -26,7 +26,7 @@ export default function ({
   name,
   onError
 }: RuntimeParams<Data>) {
-  const { placeholder, disabled, format, customFormat } = data;
+  const { placeholder, disabled, format, customFormat, inputReadOnly } = data;
   const [value, setValue] = useState<Moment | null>();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOutputRef = useRef<any>(null);
@@ -189,6 +189,7 @@ export default function ({
             format={_format}
             disabled={disabled}
             allowClear
+            inputReadOnly={inputReadOnly}
             showNow={data.showNow}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}

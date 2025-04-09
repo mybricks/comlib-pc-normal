@@ -5,6 +5,7 @@
   "customFormat": "HH:mm:ss",
   "isEditable": true,
   "showNow": true,
+  "inputReadOnly": false,
   "config": {
     "size": "middle"
   }
