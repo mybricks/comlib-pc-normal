@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 // import { useResizeObserver } from '../hooks/useResizeObserver';
+import { debounce } from 'lodash';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -98,16 +99,36 @@ export default function (props: RuntimeParams<Data>) {
     };
   }, [dynamicStyle, legacyStyle, data.slotStyle]);
 
-  const onScroll = useCallback(() => {
-    // 当滚动到顶部 / 底部 的时候，触发事件
-    if (ref.current) {
-      if (ref.current.scrollTop === 0) {
+
+  const handleScroll = useCallback(
+    debounce(() => {
+       // 当滚动到顶部 / 底部 的时候，触发事件
+      const container = ref.current;
+      if (!container) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const nearBottom = scrollTop + clientHeight >= scrollHeight - 100; // 距底部 100px
+      const nearTop = scrollTop < 50
+      if(nearTop) {
         outputs["scrollTop"]?.();
-      } else if (ref.current.scrollHeight - ref.current.scrollTop === ref.current.clientHeight) {
+      }
+      if (nearBottom) {
         outputs["scrollBottom"]?.();
       }
-    }
-  }, []);
+    }, 100), // 防抖时间 200ms
+    []
+  );
+
+  // const onScroll = useCallback(() => {
+  //   // 当滚动到顶部 / 底部 的时候，触发事件
+  //   if (ref.current) {
+  //     if (ref.current.scrollTop === 0) {
+  //       outputs["scrollTop"]?.();
+  //     } else if (ref.current.scrollHeight - ref.current.scrollTop === ref.current.clientHeight) {
+  //       outputs["scrollBottom"]?.();
+  //     }
+  //   }
+  // }, []);
 
   // useResizeObserver(ref, (entries) => {
   //   if (!ref.current) return;
@@ -197,6 +218,14 @@ export default function (props: RuntimeParams<Data>) {
     outputs[OutputIds.Click]?.();
   };
 
+
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
   return (
     <div
       id={data?.id}
@@ -217,7 +246,6 @@ export default function (props: RuntimeParams<Data>) {
       onMouseLeave={() => {
         outputs[OutputIds.MouseLeave]?.();
       }}
-      onScroll={onScroll}
     >
       {data.isAutoScroll
         ? scrollRender()
