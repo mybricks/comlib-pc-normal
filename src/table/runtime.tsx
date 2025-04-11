@@ -172,8 +172,44 @@ export default function (props: RuntimeParams<Data>) {
     }
   })
 
+  const domain = useMemo(() => {
+    if (env.runtime && data._domainModel) {
+      return env.callDomainModel({
+        // 模型信息
+        model: data._domainModel,
+        // [TODO] 参数 => 分页信息
+        params: {},
+        configs: {
+          // 注册，当该模型更新时，会主动推送数据
+          callType: "register",
+        }
+      }, (error, output) => {
+        if (error) {
+          console.error(error);
+        } else {
+          const { data, meta } = output;
+          // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+          setTableData({
+            dataSource: data,
+            total: meta.count,
+            pageNum: meta.page,
+            pageSize: meta.pageSize
+          });
+        }
+      });
+    }
+  }, [])
+
   useEffect(() => {
-    if (env.runtime.debug?.prototype) {
+    return () => {
+      domain?.destroy();
+    }
+  }, [])
+
+
+  useEffect(() => {
+    // 如果选了领域模型，prototype模式就不mock了
+    if (env.runtime.debug?.prototype && !data._domainModel) {
       const getFields = (cols: any[]) => {
         let res: string[] = [];
         cols.map((col) => {

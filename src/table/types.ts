@@ -254,4 +254,7 @@ export interface Data {
   hasUpdateRowKey?: number;
 
   borderSpacing?: React.CSSProperties['borderSpacing'];
+
+  /** 领域模型 */
+  _domainModel?: any;
 }

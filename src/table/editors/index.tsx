@@ -143,6 +143,18 @@ export default {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
       cateAry[0].items = [
+        {
+          title: "领域模型选择",
+          type: "_domainModelSelect",
+          value: {
+            get({ data }) {
+              return data._domainModel;
+            },
+            set({ data }, _domainModel) {
+              data._domainModel = _domainModel;
+            },
+          },
+        },
         getAddColumnEditor(props),
         ...UsePaginatorEditor,
         ...RowKeyEditor,
