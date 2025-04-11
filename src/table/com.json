@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.2.31",
+  "version": "1.2.32",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -73,6 +73,26 @@
         "setSizeDone"
       ],
       "desc": "有三种布局风格: large | middle | small"
+    },
+    {
+      "id": "getSorter",
+      "title": "获取排序数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getSorter"
+      ]
+    },
+    {
+      "id": "setSorter",
+      "title": "设置排序数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setSorter"
+      ]
     }
   ],
   "outputs": [
@@ -122,6 +142,43 @@
       "desc": "设置表格的布局风格，并输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "getSorter",
+      "title": "排序数据",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "order": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setSorter",
+      "title": "设置排序数据完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "sorter",
+      "title": "排序",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "order": {
+            "type": "string"
+          }
+        }
       }
     }
   ],
