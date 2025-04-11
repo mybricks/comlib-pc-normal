@@ -20,8 +20,8 @@ import SummaryColumn from './table/summaryColumn';
 import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
-import rowExpandEditor from "./rowExpand";
-import rowTreeEditor from "./rowTree";
+import rowExpandEditor from './rowExpand';
+import rowTreeEditor from './rowTree';
 import { emptyEditor, emptyStyleEditor } from './table/empty';
 import { getColumnsSchema } from '../utils';
 import {
@@ -32,8 +32,8 @@ import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
-import { connectorEditor } from "../../utils/connector";
-export function getColumnsFromSchema(schema: any, config?: { defaultWidth: number | "auto" }) {
+import { connectorEditor } from '../../utils/connector';
+export function getColumnsFromSchema(schema: any, config?: { defaultWidth: number | 'auto' }) {
   const { defaultWidth } = config || { defaultWidth: 140 };
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -143,18 +143,6 @@ export default {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
       cateAry[0].items = [
-        {
-          title: "领域模型选择",
-          type: "_domainModelSelect",
-          value: {
-            get({ data }) {
-              return data._domainModel;
-            },
-            set({ data }, _domainModel) {
-              data._domainModel = _domainModel;
-            },
-          },
-        },
         getAddColumnEditor(props),
         ...UsePaginatorEditor,
         ...RowKeyEditor,
@@ -185,9 +173,9 @@ export default {
   },
   ...connectorEditor<EditorResult<Data>>({
     set({ data, input }: EditorResult<Data>, { schema }) {
-      if (schema?.type === "array" && schema.items?.type === "object" && schema.items.properties) {
+      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
         data.columns = getColumnsFromSchema(schema, {
-          defaultWidth: "auto",
+          defaultWidth: 'auto'
         });
         if (data.columns.length) {
           data.rowKey = data.columns[0].dataIndex as string;
