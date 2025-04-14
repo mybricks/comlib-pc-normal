@@ -9,35 +9,35 @@ interface Props {
   input: any;
 }
 const addSorterIO = ({ data, output, input }: Props) => {
-  const event1 = output.get(OutputIds.SORTER);
-  const event2 = output.get(OutputIds.GET_SORT);
-  const event3 = input.get(InputIds.GET_SORT);
-  const event4 = input.get(InputIds.SET_SORT);
+  // const event1 = output.get(OutputIds.SORTER);
+  // const event2 = output.get(OutputIds.GET_SORT);
+  // const event3 = input.get(InputIds.GET_SORT);
+  // const event4 = input.get(InputIds.SET_SORT);
 
-  const useSort = data.columns.some((item) => item.sorter?.enable);
-  if (useSort) {
-    if (!event1) {
-      output.add(OutputIds.SORTER, '排序', Schemas.SORTER);
-    }
-    if (!event2) {
-      output.add(OutputIds.GET_SORT, '排序数据', Schemas.SORTER);
-    }
-    if (!event3) {
-      input.add(InputIds.GET_SORT, '获取排序数据', Schemas.Void);
-      input.get(InputIds.GET_SORT).setRels([OutputIds.GET_SORT]);
-    }
-    if (!event4) {
-      input.add(InputIds.SET_SORT, '设置排序数据', Schemas.SORTER);
-      output.add(OutputIds.SET_SORT, '排序数据', Schemas.SORTER);
-      input.get(InputIds.SET_SORT).setRels([OutputIds.SET_SORT]);
-    }
-  } else {
-    event1 && output.remove(OutputIds.SORTER);
-    event2 && output.remove(OutputIds.GET_SORT);
-    event3 && input.remove(InputIds.GET_SORT);
-    event4 && input.remove(InputIds.SET_SORT);
-    event4 && output.remove(OutputIds.SET_SORT);
-  }
+  // const useSort = data.columns.some((item) => item.sorter?.enable);
+  // if (useSort) {
+  //   if (!event1) {
+  //     output.add(OutputIds.SORTER, '排序', Schemas.SORTER);
+  //   }
+  //   if (!event2) {
+  //     output.add(OutputIds.GET_SORT, '排序数据', Schemas.SORTER);
+  //   }
+  //   if (!event3) {
+  //     input.add(InputIds.GET_SORT, '获取排序数据', Schemas.Void);
+  //     input.get(InputIds.GET_SORT).setRels([OutputIds.GET_SORT]);
+  //   }
+  //   if (!event4) {
+  //     input.add(InputIds.SET_SORT, '设置排序数据', Schemas.SORTER);
+  //     output.add(OutputIds.SET_SORT, '排序数据', Schemas.SORTER);
+  //     input.get(InputIds.SET_SORT).setRels([OutputIds.SET_SORT]);
+  //   }
+  // } else {
+  //   event1 && output.remove(OutputIds.SORTER);
+  //   event2 && output.remove(OutputIds.GET_SORT);
+  //   event3 && input.remove(InputIds.GET_SORT);
+  //   event4 && input.remove(InputIds.SET_SORT);
+  //   event4 && output.remove(OutputIds.SET_SORT);
+  // }
 };
 
 const SortEditor = {
@@ -106,11 +106,11 @@ const SortEditor = {
     {
       title: '排序事件',
       type: '_Event',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getColumnItem(data, focusArea);
-        return item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Request;
-      },
+      // ifVisible({ data, focusArea }: EditorResult<Data>) {
+      //   if (!focusArea) return;
+      //   const item = getColumnItem(data, focusArea);
+      //   return item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Request;
+      // },
       options: () => {
         return {
           outputId: OutputIds.SORTER
