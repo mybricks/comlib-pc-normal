@@ -19,5 +19,6 @@
     "background": "#ffffff"
   },
   "slideIndex": 0,
-  "catelogDot": "默认"
+  "catelogDot": "默认",
+  "useSlots": false
 }

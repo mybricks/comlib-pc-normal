@@ -101,6 +101,18 @@ export default {
         }
       },
       {
+        title: '开启插槽',
+        type: 'Switch',
+        value: {
+          get({ data }) {
+            return data.useSlots ?? true;
+          },
+          set({ data }, val) {
+            data.useSlots = val;
+          }
+        }
+      },
+      {
         title: '自动切换',
         type: 'Switch',
         value: {
