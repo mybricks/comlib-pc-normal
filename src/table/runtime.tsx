@@ -177,11 +177,16 @@ export default function (props: RuntimeParams<Data>) {
       return env.callDomainModel({
         // 模型信息
         model: data._domainModel,
-        // [TODO] 参数 => 分页信息
-        params: {},
+        // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+        params: {
+          pageSize: data.paginationConfig.currentPage.pageSize,
+          page: data.paginationConfig.currentPage.pageNum
+        },
         configs: {
           // 注册，当该模型更新时，会主动推送数据
           callType: "register",
+          // 调用call接口获取数据
+          registerMode: "selfCall",
         }
       }, (error, output) => {
         if (error) {
@@ -201,8 +206,10 @@ export default function (props: RuntimeParams<Data>) {
   }, [])
 
   useEffect(() => {
-    return () => {
-      domain?.destroy();
+    if (env.runtime && data._domainModel) {
+      return () => {
+        domain?.destroy?.();
+      }
     }
   }, [])
 

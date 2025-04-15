@@ -32,7 +32,7 @@ import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
-import { connectorEditor } from '../../utils/connector';
+// import { connectorEditor } from '../../utils/connector';
 export function getColumnsFromSchema(schema: any, config?: { defaultWidth: number | 'auto' }) {
   const { defaultWidth } = config || { defaultWidth: 140 };
   function getColumnsFromSchemaProperties(properties) {
@@ -44,7 +44,7 @@ export function getColumnsFromSchema(schema: any, config?: { defaultWidth: numbe
         properties[key].type === 'boolean'
       ) {
         columns.push({
-          title: key,
+          title: properties[key].description || properties[key].title || key,
           dataIndex: key,
           key: uuid(),
           width: defaultWidth,
@@ -171,9 +171,13 @@ export default {
     },
     style: [...TableStyleEditor.items, emptyStyleEditor, rowTreeEditor]
   },
-  ...connectorEditor<EditorResult<Data>>({
-    set({ data, input }: EditorResult<Data>, { schema }) {
-      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
+  "@domainModel": {
+    get({ data }) {
+      return data._domainModel;
+    },
+    set({ input, data }, _domainModel) {
+      const schema = _domainModel.service.returnType;
+      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && data.columns.length <= 1) {
         data.columns = getColumnsFromSchema(schema, {
           defaultWidth: 'auto'
         });
@@ -184,8 +188,24 @@ export default {
         input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
       }
-    }
-  }),
+      data._domainModel = _domainModel;
+    },
+  },
+  // ...connectorEditor<EditorResult<Data>>({
+  //   set({ data, input }: EditorResult<Data>, { schema }) {
+  //     if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
+  //       data.columns = getColumnsFromSchema(schema, {
+  //         defaultWidth: 'auto'
+  //       });
+  //       if (data.columns.length) {
+  //         data.rowKey = data.columns[0].dataIndex as string;
+  //         data.columns[0].isRowKey = true;
+  //       }
+  //       input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
+  //       data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+  //     }
+  //   }
+  // }),
   ...columnEditor,
   ...PaginatorEditor,
   ...SummaryColumnEditor,
