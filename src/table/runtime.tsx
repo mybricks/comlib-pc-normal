@@ -173,7 +173,7 @@ export default function (props: RuntimeParams<Data>) {
   })
 
   const domain = useMemo(() => {
-    if (env.runtime && data._domainModel) {
+    if (env.runtime && data._domainModel && env.callDomainModel) {
       return env.callDomainModel({
         // 模型信息
         model: data._domainModel,
