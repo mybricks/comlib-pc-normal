@@ -187,8 +187,13 @@ export default function (props: RuntimeParams<Data>) {
           callType: "register",
           // 调用call接口获取数据
           registerMode: "selfCall",
+        },
+
+      }, (error, loading, output) => {
+        if (loading) {
+          // [TODO] 加载中
+          return
         }
-      }, (error, output) => {
         if (error) {
           console.error(error);
         } else {

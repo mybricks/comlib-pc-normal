@@ -177,7 +177,7 @@ export default {
     },
     set({ input, data }, _domainModel) {
       const schema = _domainModel.service?.responses?.properties?.data;
-      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
+      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && data.columns.length <= 1) {
         data.columns = getColumnsFromSchema(schema, {
           defaultWidth: 'auto'
         });

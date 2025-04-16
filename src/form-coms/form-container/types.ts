@@ -196,6 +196,9 @@ export interface Data {
   collapsedText?: string
   /** 列间距 */
   columnGap?: number
+
+  /** 领域模型 */
+  _domainModel?: any;
 }
 
 interface DomainModel {
