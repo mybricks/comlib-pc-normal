@@ -9,5 +9,6 @@ export interface Data {
   format: string,
   customFormat: string,
   isEditable: boolean,
+  inputReadOnly:boolean,
   config: TimePickerProps
 }

@@ -5,6 +5,7 @@
   "format": "timeStamp",
   "customFormat": "HH:mm:ss",
   "isEditable": true,
+  "inputReadOnly": false,
   "showNow": false,
   "config": {
     "size": "middle"

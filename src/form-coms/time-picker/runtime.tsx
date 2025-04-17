@@ -205,6 +205,7 @@ export default function ({
             value={value}
             format={_format}
             disabled={disabled}
+            inputReadOnly={data.inputReadOnly}
             allowClear
             showNow={data.showNow}
             defaultValue={getDefaultValue()}
