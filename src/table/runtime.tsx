@@ -173,7 +173,7 @@ export default function (props: RuntimeParams<Data>) {
   })
 
   const domain = useMemo(() => {
-    if (env.runtime && data._domainModel) {
+    if (env.runtime && data._domainModel && env.callDomainModel) {
       return env.callDomainModel({
         // 模型信息
         model: data._domainModel,
@@ -187,8 +187,13 @@ export default function (props: RuntimeParams<Data>) {
           callType: "register",
           // 调用call接口获取数据
           registerMode: "selfCall",
+        },
+
+      }, (error, loading, output) => {
+        if (loading) {
+          // [TODO] 加载中
+          return
         }
-      }, (error, output) => {
         if (error) {
           console.error(error);
         } else {

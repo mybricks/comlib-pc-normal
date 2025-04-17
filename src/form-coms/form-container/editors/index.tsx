@@ -190,6 +190,14 @@ export default {
   '@resize': {
     options: ['width']
   },
+  "@domainModel": {
+    get({ data }) {
+      return data._domainModel;
+    },
+    set({ data }, _domainModel) {
+      data._domainModel = _domainModel;
+    },
+  },
   ':root': {
     style: [
       {

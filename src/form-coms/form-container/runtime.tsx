@@ -38,7 +38,7 @@ type FormControlInputType = {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
-  const formContext = useRef({ store: {} });
+  const formContext = useRef({ store: {}, values: {} });
   const [formRef] = Form.useForm();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -648,7 +648,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .then(() => {
         getValue()
           .then((values: any) => {
-            let res = { ...params, ...values };
+            let res = { ...formContext.current.values, ...params, ...values };
             if (
               data.domainModel?.entity?.fieldAry?.length > 0 &&
               data.domainModel?.isQuery &&
@@ -698,6 +698,38 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </>
     );
   };
+
+  useEffect(() => {
+    if (env.runtime && data._domainModel && env.callDomainModel) {
+      const domain = env.callDomainModel({
+        // 模型信息
+        model: data._domainModel,
+        configs: {
+          // 注册，当该模型更新时，会主动推送数据，接口调用
+          callType: "register",
+          // 注册模式，推送静态数据，非接口调用
+          registerMode: "staticPush",
+          // 禁止默认调用
+          autoCallOnce: false,
+        }
+      }, (error, loading, output) => {
+        if (loading) {
+          return;
+        }
+        if (error) {
+          console.error(error);
+        } else {
+          formContext.current.values = output.data;
+          setInitialValues(output.data, () => {});
+        }
+      });
+
+      return () => {
+        domain?.destroy?.();
+      }
+    }
+  }, [])
+
   return (
     <div
       className={classnames(
