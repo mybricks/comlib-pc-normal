@@ -8,6 +8,7 @@
   "contentType": "timeStamp",
   "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "config": {
+    "inputReadOnly": false,
     "disabled": false,
     "placeholder": "请选择日期",
     "picker": "date",
