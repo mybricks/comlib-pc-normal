@@ -172,16 +172,17 @@ export default function (props: RuntimeParams<Data>) {
     }
   })
 
-  const domain = useMemo(() => {
-    if (env.runtime && data._domainModel && env.callDomainModel) {
+  const domainDataSource = useMemo(() => {
+    if (env.runtime && data._domainModel?.dataSource && env.callDomainModel) {
+      const { usePagination } = data;
       return env.callDomainModel({
         // 模型信息
-        model: data._domainModel,
+        model: data._domainModel.dataSource,
         // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
-        params: {
+        params: usePagination ? {
           pageSize: data.paginationConfig.currentPage.pageSize,
           page: data.paginationConfig.currentPage.pageNum
-        },
+        } : {},
         configs: {
           // 注册，当该模型更新时，会主动推送数据
           callType: "register",
@@ -192,36 +193,50 @@ export default function (props: RuntimeParams<Data>) {
       }, (error, loading, output) => {
         if (loading) {
           // [TODO] 加载中
+          setLoading(loading)
           return
         }
+        setLoading(loading)
         if (error) {
           console.error(error);
         } else {
           const { data, meta } = output;
           // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
-          setTableData({
-            dataSource: data,
-            total: meta.count,
-            pageNum: meta.page,
-            pageSize: meta.pageSize
-          });
+          if (usePagination) {
+            setTableData({
+              dataSource: data,
+              total: meta.count,
+              pageNum: meta.page,
+              pageSize: meta.pageSize
+            });
+          } else {
+            setTableData(data);
+          }
         }
       });
     }
   }, [])
 
   useEffect(() => {
-    if (env.runtime && data._domainModel) {
+    if (env.runtime && domainDataSource) {
       return () => {
-        domain?.destroy?.();
+        domainDataSource?.destroy?.();
       }
     }
   }, [])
 
+  const onPaginationChange = useCallback(({ pageSize, pageNum }) => {
+    if (env.runtime && domainDataSource) {
+      domainDataSource.call({
+        pageSize,
+        page: pageNum
+      })
+    }
+  }, [domainDataSource])
 
   useEffect(() => {
     // 如果选了领域模型，prototype模式就不mock了
-    if (env.runtime.debug?.prototype && !data._domainModel) {
+    if (env.runtime.debug?.prototype && !domainDataSource) {
       const getFields = (cols: any[]) => {
         let res: string[] = [];
         cols.map((col) => {
@@ -1428,6 +1443,7 @@ export default function (props: RuntimeParams<Data>) {
               outputs={outputs}
               selectedRows={selectedRows}
               selectedRowKeys={selectedRowKeys}
+              onPaginationChange={onPaginationChange}
             />
           </div>
         </TableContext.Provider>

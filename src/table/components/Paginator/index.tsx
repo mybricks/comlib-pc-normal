@@ -12,9 +12,10 @@ interface Props {
   parentSlot: any;
   containerRef?: React.RefObject<HTMLDivElement>;
   config: any;
+  onPaginationChange: (params: { pageSize: number, pageNum: number }) => void;
 }
 export default (props: Props) => {
-  const { data, inputs, outputs, env, containerRef, config } = props;
+  const { data, inputs, outputs, env, containerRef, config, onPaginationChange } = props;
   const {
     total,
     text,
@@ -87,6 +88,10 @@ export default (props: Props) => {
 
   const onChange = (pageNum: number, pageSize: number) => {
     if (env.runtime) {
+      onPaginationChange({
+        pageNum,
+        pageSize
+      })
       data.currentPage = {
         pageNum,
         pageSize

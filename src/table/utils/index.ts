@@ -43,7 +43,7 @@ export const getColumnItemInfo = (
   return res || { column: {}, parent: [], index: -1 };
 };
 
-export const getNewColumn = (data?: Data) => {
+export const getNewColumn = (data?: Data, values: any = {}) => {
   const title = data ? `列${data?.columns?.length + 1}` : '新增';
   const obj: IColumn = {
     title,
@@ -60,7 +60,8 @@ export const getNewColumn = (data?: Data) => {
     sorter: {
       enable: false,
       type: SorterTypeEnum.Size
-    }
+    },
+    ...values,
   };
   return obj;
 };

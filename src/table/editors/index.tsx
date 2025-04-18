@@ -33,8 +33,8 @@ import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
 // import { connectorEditor } from '../../utils/connector';
-export function getColumnsFromSchema(schema: any, config?: { defaultWidth: number | 'auto' }) {
-  const { defaultWidth } = config || { defaultWidth: 140 };
+export function getColumnsFromSchema(schema: any, values: Record<string, any> = {}) {
+  const { defaultWidth = 140, ...other } = values;
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {
@@ -50,7 +50,8 @@ export function getColumnsFromSchema(schema: any, config?: { defaultWidth: numbe
           width: defaultWidth,
           visible: true,
           ellipsis: true,
-          contentType: 'text'
+          contentType: 'text',
+          ...other
         });
       }
     });
@@ -173,22 +174,54 @@ export default {
   },
   "@domainModel": {
     get({ data }) {
-      return data._domainModel;
+      return data._domainModel?.dataSource;
     },
     set({ input, data }, _domainModel) {
       const schema = _domainModel.service?.responses?.properties?.data;
-      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && data.columns.length <= 1) {
-        data.columns = getColumnsFromSchema(schema, {
+      // 类型校验
+      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
+        if (!data._domainModel) {
+          data._domainModel = {
+            dataSource: _domainModel
+          }
+        } else {
+          data._domainModel.dataSource = _domainModel;
+        }
+
+        const schemaColumns = getColumnsFromSchema(schema, {
           defaultWidth: 'auto'
         });
+
+        const columns = data.columns.filter((column) => {
+          return column.contentType === "slotItem";
+        }).map((column) => {
+          if (column.dataIndex.endsWith(`_${column.contentType}`)) {
+            return column;
+          }
+          return {
+            ...column,
+            dataIndex: column.key + `_${column.contentType}`
+          }
+        });
+
+        const customIDMap: Record<string, boolean> = columns.reduce((pre, cur) => {
+          pre[cur.dataIndex] = true
+          return pre;
+        }, {});
+
+        data.columns = schemaColumns.filter((schemaColumn) => {
+          return !customIDMap[schemaColumn.dataIndex]
+        }).concat(columns);
+
         if (data.columns.length) {
           data.rowKey = data.columns[0].dataIndex as string;
           data.columns[0].isRowKey = true;
         }
         input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+      } else {
+        console.warn("[数据表格] 领域模型服务类型不匹配", _domainModel);
       }
-      data._domainModel = _domainModel;
     },
   },
   // ...connectorEditor<EditorResult<Data>>({
