@@ -72,6 +72,16 @@ export function getColumnsFromSchema(schema: any, values: Record<string, any> = 
   return getColumnsFromSchemaProperties(columnSchema);
 }
 
+const setDomainModel = ({ data, key, _domainModel }) => {
+  if (!data._domainModel) {
+    data._domainModel = {
+      [key]: _domainModel
+    }
+  } else {
+    data._domainModel[key] = _domainModel;
+  }
+}
+
 export default {
   ':slot': {},
   '@init': ({ style, data }) => {
@@ -178,20 +188,26 @@ export default {
       return data._domainModel?.dataSource;
     },
     set({ input, data }, _domainModel) {
+      if (!_domainModel) {
+        setDomainModel({
+          data,
+          key: "dataSource",
+          _domainModel
+        })
+        return;
+      }
       if (isSameDomainInstanceAndService(data._domainModel?.dataSource, _domainModel)) {
         return;
       }
 
       const schema = _domainModel.service?.responses?.properties?.data;
       // 类型校验
-      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
-        if (!data._domainModel) {
-          data._domainModel = {
-            dataSource: _domainModel
-          }
-        } else {
-          data._domainModel.dataSource = _domainModel;
-        }
+      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && _domainModel.service.method === "get") {
+        setDomainModel({
+          data,
+          key: "dataSource",
+          _domainModel
+        })
 
         const schemaColumns = getColumnsFromSchema(schema, {
           defaultWidth: 'auto'

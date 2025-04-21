@@ -199,29 +199,33 @@ export default {
       return data._domainModel;
     },
     set({ data, slot }, _domainModel) {
+      if (!_domainModel) {
+        data._domainModel = _domainModel;
+        return;
+      }
+      
       if (isSameDomainInstanceAndService(data._domainModel, _domainModel)) {
         return;
       }
-
-      const properties = _domainModel.service.responses?.properties;
       // 类型校验
-      if (properties && properties.data?.type === "object" && _domainModel.method !== "get") {
-        if (data._domainModel) {
-          // 切换了领域模型，清空原先生成的表单项
-          slot.get('content').clear();
-        }
-        Object.entries(properties.data.properties).forEach(([property, schema]: any) => {
-          // [TODO] 根据schema选择要添加的组件，目前全部是string
-          slot.get('content')
-            .addCom(
-              ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
-              false,
-              { deletable: true, movable: true },
-              {
-                name: property,
-                label: schema.title || property
-              }
-            );
+      const { service } = _domainModel;
+
+      if (service?.method === "post") {
+        // 清空表单项
+        slot.get('content').clear();
+        service.params.forEach((param) => {
+          if (!param.hidden) {
+            slot.get('content')
+              .addCom(
+                ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
+                false,
+                { deletable: true, movable: true },
+                {
+                  name: param.name,
+                  label: param.title || param.name
+                }
+              );
+          }
         });
         data._domainModel = _domainModel;
       } else {
