@@ -33,6 +33,7 @@ export default {
     }
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
+    console.log("[@childAdd] => ")
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
@@ -194,8 +195,36 @@ export default {
     get({ data }) {
       return data._domainModel;
     },
-    set({ data }, _domainModel) {
+    set({ data, slot }, _domainModel) {
+      slot.get('content')
+        .addCom(
+          "mybricks.normal-pc.form-text",
+          false,
+          { deletable: true, movable: true, TEST: 1 },
+          { TEST: 1, }
+        );
       data._domainModel = _domainModel;
+      // const properties = _domainModel.service.responses?.properties;
+      // 类型校验
+      // if (properties && properties.data?.type === "object" && _domainModel.method !== "get") {
+      //   Object.entries(properties.data.properties).forEach(([property, schema]: any) => {
+      //     // const params = {
+      //     //   name: property,
+      //     //   title: schema.title || property
+      //     // }
+      //     // [TODO] 根据schema选择要添加的组件，目前全部是string
+      //     slot.get('content')
+      //       .addCom(
+      //         "mybricks.normal-pc.form-text",
+      //         false,
+      //         { deletable: true, movable: true, TEST: 1 },
+      //         { TEST: 1, }
+      //       );
+      //   })
+      //   data._domainModel = _domainModel;
+      // } else {
+      //   console.warn("[表单容器] 领域模型服务类型不匹配", _domainModel);
+      // }
     },
   },
   ':root': {
