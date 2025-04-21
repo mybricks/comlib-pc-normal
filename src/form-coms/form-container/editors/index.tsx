@@ -10,6 +10,7 @@ import formItemEditor from './form-item';
 import additionFormItemEditor from './form-addition-item';
 import { SizeOptions, SizeEnum } from '../../types';
 import { createrCatelogEditor } from '../../utils';
+import { isSameDomainInstanceAndService } from "../../../utils/domainModel";
 
 export default {
   // '@init' ({ data, inputs, outputs, slots }) {
@@ -32,8 +33,7 @@ export default {
       refreshParamsSchema(data, outputs);
     }
   },
-  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
-    console.log("[@childAdd] => ")
+  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, configs = {} as { name: string; label: string;}) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
@@ -44,12 +44,15 @@ export default {
           item.schema = com.schema;
         } else {
           const nowC = data.nameCount++;
+
+          const { name: itemName, label: itemLabel } = configs;
+
           data.items.push({
             id,
             comName: name,
             schema: com.schema,
-            name: `表单项${nowC}`,
-            label: `表单项${nowC}`,
+            name: itemName || `表单项${nowC}`,
+            label: itemLabel || `表单项${nowC}`,
             widthOption: 'span',
             span: 24 / data.formItemColumn,
             colon: 'default',
@@ -82,7 +85,7 @@ export default {
           if (fieldSourceSchema) {
             refreshFieldSourceSchema(
               { data, inputs, outputs, slots },
-              { type: 'add', fieldName: `表单项${nowC}`, schema: fieldSourceSchema }
+              { type: 'add', fieldName: itemName || `表单项${nowC}`, schema: fieldSourceSchema }
             );
           }
         }
@@ -196,35 +199,34 @@ export default {
       return data._domainModel;
     },
     set({ data, slot }, _domainModel) {
-      slot.get('content')
-        .addCom(
-          "mybricks.normal-pc.form-text",
-          false,
-          { deletable: true, movable: true, TEST: 1 },
-          { TEST: 1, }
-        );
-      data._domainModel = _domainModel;
-      // const properties = _domainModel.service.responses?.properties;
+      if (isSameDomainInstanceAndService(data._domainModel, _domainModel)) {
+        return;
+      }
+
+      const properties = _domainModel.service.responses?.properties;
       // 类型校验
-      // if (properties && properties.data?.type === "object" && _domainModel.method !== "get") {
-      //   Object.entries(properties.data.properties).forEach(([property, schema]: any) => {
-      //     // const params = {
-      //     //   name: property,
-      //     //   title: schema.title || property
-      //     // }
-      //     // [TODO] 根据schema选择要添加的组件，目前全部是string
-      //     slot.get('content')
-      //       .addCom(
-      //         "mybricks.normal-pc.form-text",
-      //         false,
-      //         { deletable: true, movable: true, TEST: 1 },
-      //         { TEST: 1, }
-      //       );
-      //   })
-      //   data._domainModel = _domainModel;
-      // } else {
-      //   console.warn("[表单容器] 领域模型服务类型不匹配", _domainModel);
-      // }
+      if (properties && properties.data?.type === "object" && _domainModel.method !== "get") {
+        if (data._domainModel) {
+          // 切换了领域模型，清空原先生成的表单项
+          slot.get('content').clear();
+        }
+        Object.entries(properties.data.properties).forEach(([property, schema]: any) => {
+          // [TODO] 根据schema选择要添加的组件，目前全部是string
+          slot.get('content')
+            .addCom(
+              ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
+              false,
+              { deletable: true, movable: true },
+              {
+                name: property,
+                label: schema.title || property
+              }
+            );
+        });
+        data._domainModel = _domainModel;
+      } else {
+        console.warn("[表单容器] 领域模型服务类型不匹配", _domainModel);
+      }
     },
   },
   ':root': {

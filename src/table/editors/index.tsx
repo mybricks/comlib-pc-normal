@@ -33,6 +33,7 @@ import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
 // import { connectorEditor } from '../../utils/connector';
+import { isSameDomainInstanceAndService } from "../../utils/domainModel";
 export function getColumnsFromSchema(schema: any, values: Record<string, any> = {}) {
   const { defaultWidth = 140, ...other } = values;
   function getColumnsFromSchemaProperties(properties) {
@@ -177,6 +178,10 @@ export default {
       return data._domainModel?.dataSource;
     },
     set({ input, data }, _domainModel) {
+      if (isSameDomainInstanceAndService(data._domainModel?.dataSource, _domainModel)) {
+        return;
+      }
+
       const schema = _domainModel.service?.responses?.properties?.data;
       // 类型校验
       if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
