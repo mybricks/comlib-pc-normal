@@ -417,6 +417,8 @@ export default function (props: RuntimeParams<Data>) {
                   item[key] = templateCol[key];
                 }
               });
+              item.key = uuid()
+              item._id = uuid()
               return item;
             } else {
               return item;
