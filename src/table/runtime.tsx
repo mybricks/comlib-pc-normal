@@ -186,8 +186,6 @@ export default function (props: RuntimeParams<Data>) {
         configs: {
           // 注册，当该模型更新时，会主动推送数据
           callType: "register",
-          // 调用call接口获取数据
-          registerMode: "selfCall",
         },
 
       }, (error, loading, output) => {
