@@ -214,12 +214,13 @@ export default {
         // 清空表单项
         slot.get('content').clear();
         service.params.forEach((param) => {
-          if (!param.hidden) {
+          if (!param["x-read-only"]) {
             slot.get('content')
               .addCom(
                 ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
                 false,
                 { deletable: true, movable: true },
+                // visible: param["x-read-only"] ? false: true
                 {
                   name: param.name,
                   label: param.title || param.name

@@ -381,6 +381,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setFieldsValue = (val, cb?) => {
+    formContext.current.values = val;
     const formData = objectFilter(val);
     if (Object.keys(formData).length > 0) {
       const length = Object.keys(formData).length - 1;
@@ -426,6 +427,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
   const setInitialValues = (val, cb?) => {
+    formContext.current.values = val;
     try {
       const formData = objectFilter(val);
       if (Object.keys(formData).length > 0) {
@@ -648,7 +650,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .then(() => {
         getValue()
           .then((values: any) => {
-            let res = { ...formContext.current.values, ...params, ...values };
+            let res = { ...params, ...values };
             if (
               data.domainModel?.entity?.fieldAry?.length > 0 &&
               data.domainModel?.isQuery &&
@@ -661,11 +663,35 @@ export default function Runtime(props: RuntimeParams<Data>) {
               };
             }
 
-            if (outputRels) {
-              outputRels[outputId](res);
+            const output = outputRels ? outputRels[outputId] : outputs[outputId];
+
+            if (data._domainModel && env.callDomainModel) {
+              res = { ...formContext.current.values, ...res };
+              env.callDomainModel({
+                model: data._domainModel,
+                params: res,
+              }, (error, loading, result) => {
+                if (loading) {
+                  // 等待接口返回
+                  return;
+                }
+                if (error) {
+                  // 报错
+                  console.error(`[表单容器] callDomainModel`, error);
+                } else {
+                  // 成功
+                  output(result)
+                }
+              })
             } else {
-              outputs[outputId](res);
+              output(res);
             }
+
+            // if (outputRels) {
+            //   outputRels[outputId](res);
+            // } else {
+            //   outputs[outputId](res);
+            // }
           })
           .catch((e) => {
             console.log('收集表单项值失败', e);
@@ -698,37 +724,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </>
     );
   };
-
-  useEffect(() => {
-    if (env.runtime && data._domainModel && env.callDomainModel) {
-      const domain = env.callDomainModel({
-        // 模型信息
-        model: data._domainModel,
-        configs: {
-          // 注册，当该模型更新时，会主动推送数据，接口调用
-          callType: "register",
-          // 注册模式，推送静态数据，非接口调用
-          registerMode: "staticPush",
-          // 禁止默认调用
-          autoCallOnce: false,
-        }
-      }, (error, loading, output) => {
-        if (loading) {
-          return;
-        }
-        if (error) {
-          console.error(error);
-        } else {
-          formContext.current.values = output.data;
-          setInitialValues(output.data, () => {});
-        }
-      });
-
-      return () => {
-        domain?.destroy?.();
-      }
-    }
-  }, [])
 
   return (
     <div
