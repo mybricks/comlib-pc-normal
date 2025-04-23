@@ -15,6 +15,7 @@ export const getBtnItemInfo = (
   const key = focusArea?.dataset?.[datasetKey];
   const index = data.staticOptions.findIndex((item) => key && item.key === key);
   const res = index === -1 ? undefined : data.staticOptions[index];
+  data.config.options = data.staticOptions;
   return { item: res, index };
 };
 
