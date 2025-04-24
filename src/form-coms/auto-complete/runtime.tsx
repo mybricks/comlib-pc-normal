@@ -204,6 +204,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onBlur={onBlur}
         onSelect={onSelect}
         onSearch={data.isOnSearch ? onSearch : void 0}
+        listHeight={160}
+        listItemHeight={32}
         options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.options, env)}
       />
       {data.config.showSearch && <SearchOutlined className={css.iconSearch} onClick={() => {
