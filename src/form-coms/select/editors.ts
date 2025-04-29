@@ -349,19 +349,33 @@ export default {
           }
         },
         {
-          title: '选择框最大高度',
-          type: 'Text',
+          title: '下拉框框高度',
+          type: 'number',
           description:
-            '选择框的最大高度，超出后垂直滚动。不设置表示默认配置，设置为0表示适应内容高度。默认单位为像素（px）',
+            '下拉框的最大高度，超出后垂直滚动。不设置表示默认配置，设置为0表示适应内容高度。默认单位为像素（px），注意：请设置为32的整数倍避免滚动条出现异常',
           value: {
             get({data}) {
-              return data.maxHeight;
+              return data.listHeight;
             },
-            set({data}, value: string) {
-              data.maxHeight = value;
+            set({data}, value: number) {
+              data.listHeight = value;
             }
           }
         },
+        // {
+        //   title: '下拉框选项高度',
+        //   type: 'number',
+        //   description:
+        //     '不设置表示默认配置，默认单位为像素（px）,注意，请配合【下拉框高度】选项进行设置，建议【下拉框高度】为【下拉框选项高度】的整数倍',
+        //   value: {
+        //     get({data}) {
+        //       return data.listItemHeight;
+        //     },
+        //     set({data}, value: number) {
+        //       data.listItemHeight = value;
+        //     }
+        //   }
+        // },
         {
           title: '选择框弹出位置',
           type: 'select',

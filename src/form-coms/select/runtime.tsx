@@ -413,8 +413,6 @@ export default function Runtime({
     return env?.canvasElement || document.body;
   };
 
-  console.log('data.maxHeight', data.maxHeight)
-
   return (
     <div className={`${css.select} ${color ? css.selectColor : ''}`} ref={ref} id="area">
       {data.isEditable ? (
@@ -430,8 +428,8 @@ export default function Runtime({
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
           maxTagCount={data.maxTagCount}
           popupClassName={id}
-          listHeight={data.maxHeight ? Number(data.maxHeight) : 160}
-          listItemHeight={32}
+          listHeight={data.listHeight ? data.listHeight : 160}
+          // listItemHeight={data.listItemHeight ? data.listItemHeight : 50}
           placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}
           style={{

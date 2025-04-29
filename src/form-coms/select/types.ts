@@ -14,7 +14,8 @@ export interface Data {
     filterOption: boolean;
     optionFilterProp: string;
   } & SelectProps;
-  maxHeight: string;
+  listHeight?: number;
+  listItemHeight?: number;
   maxTagCount: number | 'responsive';
   rules: any[];
   value?: number | string | number[] | string[];
