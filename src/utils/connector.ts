@@ -43,7 +43,7 @@ export const connectorEditor = <T>(params: {
 } = {}) => {
   const { fieldName = ConnectorFiledName, set, remove } = params;
   return {
-    "@domainModel": {
+    "@connector": {
       get: ({ data }) => {
         return data[fieldName]?.connector;
       },

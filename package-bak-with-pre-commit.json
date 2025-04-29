@@ -1,6 +1,6 @@
 {
   "name": "@mybricks/comlib-pc-normal",
-  "version": "2.0.24",
+  "version": "2.0.23",
   "description": "通用PC组件库",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,11 @@
     "cy:open": "npx cypress open --env check='__checkAll',DEBUG=true port=8080",
     "cy:run": "node cypress-test.js"
   },
+  "pre-commit": [
+    "checkFile",
+    "lint-staged",
+    "cy:run"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com:mybricks/comlib-pc-normal.git"
