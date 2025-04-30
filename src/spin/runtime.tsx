@@ -6,6 +6,7 @@ import css from './runtime.less';
 export interface Data {
   tip?: string;
   size?: SpinSize;
+  slotStyle?: any;
 }
 
 export default function ({ env, data, inputs, slots }: RuntimeParams<Data>) {
@@ -28,7 +29,12 @@ export default function ({ env, data, inputs, slots }: RuntimeParams<Data>) {
 
   return (
     <Fragment>
-      <Spin wrapperClassName={css['spin-wrapper']} spinning={loading} size={data.size} tip={env.i18n(data.tip)}>
+      <Spin
+        wrapperClassName={css['spin-wrapper']}
+        spinning={loading}
+        size={data.size}
+        tip={env.i18n(data.tip)}
+      >
         {slots['content']?.render()}
       </Spin>
     </Fragment>

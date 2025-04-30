@@ -35,6 +35,8 @@ export interface Data {
   isEditable: boolean;
   contentSize: number[];
   iconGap: number[];
+
+  setAutoFocus?: boolean;
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -129,10 +131,12 @@ export default function (props: RuntimeParams<Data>) {
       }
     });
     inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
-      setAutoFocus(!!flag);
       !!flag ? inputRef.current?.focus() : null;
       relOutputs['setAutoFocusDone'](flag);
     });
+    if (data.setAutoFocus) {
+      inputRef.current?.focus();
+    }
     inputs[inputIds.SET_VALIDATE_INFO]?.((info: object, relOutputs) => {
       if (validateRelOutputRef.current) {
         validateRelOutputRef.current(info);

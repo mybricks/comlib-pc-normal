@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 // import { useResizeObserver } from '../hooks/useResizeObserver';
 import { debounce } from 'lodash';
@@ -11,16 +11,16 @@ export default function (props: RuntimeParams<Data>) {
     behavior,
     block,
     inline,
-    overflowY,
-    overflowX,
-    useOverflowUnset,
+    // overflowY,
+    // overflowX,
+    // useOverflowUnset,
     useFixed
   } = data;
   const ref = useRef<HTMLDivElement>(null);
 
   const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
-  const [preHeight, setPreHeight] = useState('auto');
-  const [preType, setPreType] = useState('normal');
+  // const [preHeight, setPreHeight] = useState('auto');
+  // const [preType, setPreType] = useState('normal');
 
   useEffect(() => {
     if (useFixed && ref.current?.parentElement?.style) {
@@ -73,17 +73,17 @@ export default function (props: RuntimeParams<Data>) {
     return { ...legacyStyle, ...data.legacyConfigStyle };
   }, [data.legacyConfigStyle, data.legacyStyle]);
 
-  const getOverflowStyle = () => {
-    const res = {
-      overflowY: overflowY || OverflowEnum.Hidden,
-      overflowX: overflowX || OverflowEnum.Hidden
-    };
-    if (useOverflowUnset) {
-      res.overflowX = res.overflowX === OverflowEnum.Hidden ? OverflowEnum.Unset : res.overflowX;
-      res.overflowY = res.overflowY === OverflowEnum.Hidden ? OverflowEnum.Unset : res.overflowY;
-    }
-    return res;
-  };
+  // const getOverflowStyle = () => {
+  //   const res = {
+  //     overflowY: overflowY || OverflowEnum.Hidden,
+  //     overflowX: overflowX || OverflowEnum.Hidden
+  //   };
+  //   if (useOverflowUnset) {
+  //     res.overflowX = res.overflowX === OverflowEnum.Hidden ? OverflowEnum.Unset : res.overflowX;
+  //     res.overflowY = res.overflowY === OverflowEnum.Hidden ? OverflowEnum.Unset : res.overflowY;
+  //   }
+  //   return res;
+  // };
 
   const slotStyle = useMemo(() => {
     const minHeight = dynamicStyle?.minHeight || legacyStyle?.minHeight;
@@ -192,25 +192,25 @@ export default function (props: RuntimeParams<Data>) {
   //   console.log('totalHeight', totalHeight);
   // })
 
-  const scrollRender = () => {
-    return (
-      <div
-        className={
-          data.isAutoScroll && env.runtime
-            ? data.direction === 'vertical'
-              ? css.verticalRowUp
-              : css.horizontalRowUp
-            : void 0
-        }
-        style={{
-          animationDuration: env.runtime ? `${data.scrollTime}ms` : void 0,
-          display: env.edit ? 'unset' : void 0
-        }}
-      >
-        {slots[SlotIds.Content]?.render({ style: slotStyle })}
-      </div>
-    );
-  };
+  // const scrollRender = () => {
+  //   return (
+  //     <div
+  //       className={
+  //         data.isAutoScroll && env.runtime
+  //           ? data.direction === 'vertical'
+  //             ? css.verticalRowUp
+  //             : css.horizontalRowUp
+  //           : void 0
+  //       }
+  //       style={{
+  //         animationDuration: env.runtime ? `${data.scrollTime}ms` : void 0,
+  //         display: env.edit ? 'unset' : void 0
+  //       }}
+  //     >
+  //       {slots[SlotIds.Content]?.render({ style: slotStyle })}
+  //     </div>
+  //   );
+  // };
 
   const onBubbleClick = (e) => {
     e.stopPropagation();
@@ -247,14 +247,50 @@ export default function (props: RuntimeParams<Data>) {
         outputs[OutputIds.MouseLeave]?.();
       }}
     >
-      {data.isAutoScroll
+      {/* {data.isAutoScroll
         ? scrollRender()
         : slots[SlotIds.Content]?.render({
             style:
               env.edit && data.slotStyle?.position === 'smart'
                 ? { ...data.slotStyle, minHeight: 30 }
                 : data.slotStyle
-          })}
+          })} */}
+          {env.edit ? (
+            <EditSlotRender env={env} data={data} slots={slots} slotStyle={slotStyle} />
+          ) : (
+            <RuntimeSlotRender env={env} data={data} slots={slots} slotStyle={slotStyle} />
+          )}
     </div>
   );
 }
+
+const EditSlotRender = ({ env, data, slots, slotStyle }) => {
+  return data.isAutoScroll
+  ? (
+    <div
+      className={
+        data.isAutoScroll && env.runtime
+          ? data.direction === 'vertical'
+            ? css.verticalRowUp
+            : css.horizontalRowUp
+          : void 0
+      }
+      style={{
+        animationDuration: env.runtime ? `${data.scrollTime}ms` : void 0,
+        display: env.edit ? 'unset' : void 0
+      }}
+    >
+      {slots[SlotIds.Content]?.render({ style: slotStyle })}
+    </div>
+  )
+  : slots[SlotIds.Content]?.render({
+      style:
+        env.edit && data.slotStyle?.position === 'smart'
+          ? { ...data.slotStyle, minHeight: 30 }
+          : data.slotStyle
+    })
+}
+
+const RuntimeSlotRender = memo(EditSlotRender, () => {
+  return true;
+})

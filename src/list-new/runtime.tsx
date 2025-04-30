@@ -19,16 +19,12 @@ const mockData = ['id1', 'id2', 'id3', 'id4', 'id5'];
 
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {
-  let { grid, useLoading, useGetDataSource } = data;
+  let { grid, useLoading } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
   const datasourceRef = useRef([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
-  const isMobile = checkIfMobile(env);
-
   const [columns, setColumns] = useState(1);
-
-  grid = isMobile ? { ...grid, column: grid.mobileColumn } : { ...grid };
 
   useLayoutEffect(() => {
     if (env.runtime.debug?.prototype) {
@@ -50,7 +46,6 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
     }
   }, []);
 
-  //设置数据源输入及loading状态设置
   useEffect(() => {
     if (env.edit) {
       let mock = [{ id: 1, [rowKey]: uuid() }];
@@ -59,6 +54,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
     }
 
     if (env.runtime) {
+      //设置数据源输入及loading状态设置
       inputs[InputIds.DATA_SOURCE]((v, relOutputs) => {
         if (Array.isArray(v)) {
           const ds = v.map((item, index) => ({
@@ -79,19 +75,13 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
           setLoading(v !== false);
           relOutputs['setLoadingDone'](v);
         });
-    }
-  }, []);
-  //获取数据源
-  useEffect(() => {
-    if (env.runtime) {
+
+      //获取数据源
       inputs[InputIds.GetDataSource]((val, relOutputs) => {
         relOutputs?.[OutputIds.GetDataSource](datasourceRef.current);
       });
-    }
-  }, []);
-  //添加一项
-  useEffect(() => {
-    if (env.runtime) {
+
+      //添加一项
       inputs[InputIds.AddItem]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -104,12 +94,8 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         datasourceRef.current = newDataSource;
         relOutputs['addItemDone'](v);
       });
-    }
-  }, []);
 
-  //删除一项
-  useEffect(() => {
-    if (env.runtime) {
+      //删除一项
       inputs[InputIds.RemoveItem]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -121,12 +107,8 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         datasourceRef.current = newDataSource;
         relOutputs['removeItemDone'](v);
       });
-    }
-  }, []);
 
-  //改动一项
-  useEffect(() => {
-    if (env.runtime) {
+      //改动一项
       inputs[InputIds.ChangeItem]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -146,12 +128,8 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
           logger.error('未指定index（位置）或index不在合理范围内');
         }
       });
-    }
-  }, []);
 
-  //指定对应项上移
-  useEffect(() => {
-    if (env.runtime) {
+      //指定对应项上移
       inputs[InputIds.MoveUp]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -165,12 +143,8 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
           logger.error('指定index不在合理范围内');
         }
       });
-    }
-  }, []);
 
-  //指定对应项下移
-  useEffect(() => {
-    if (env.runtime) {
+      //指定对应项下移
       inputs[InputIds.MoveDown]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -185,6 +159,12 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         }
       });
     }
+
+    let orderedOptions = (data.customOptions || []).sort(sortUsePoint);
+    const width = window.innerWidth;
+    let newColumns = columnHandel(orderedOptions, width);
+    //如果没有对应列数默认处理成1
+    setColumns(newColumns || 1);
   }, []);
 
   useEffect(() => {
@@ -199,14 +179,6 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
     window.addEventListener('resize', debounceFn);
     return () => window.removeEventListener('resize', debounceFn);
   }, [data.customOptions]);
-
-  useEffect(() => {
-    let orderedOptions = (data.customOptions || []).sort(sortUsePoint);
-    const width = window.innerWidth;
-    let newColumns = columnHandel(orderedOptions, width);
-    //如果没有对应列数默认处理成1
-    setColumns(newColumns || 1);
-  }, []);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     let newDataSource = arrayMove(dataSource, oldIndex, newIndex);

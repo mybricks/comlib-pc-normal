@@ -20,8 +20,8 @@ import SummaryColumn from './table/summaryColumn';
 import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
-import rowExpandEditor from "./rowExpand";
-import rowTreeEditor from "./rowTree";
+import rowExpandEditor from './rowExpand';
+import rowTreeEditor from './rowTree';
 import { emptyEditor, emptyStyleEditor } from './table/empty';
 import { getColumnsSchema } from '../utils';
 import {
@@ -32,7 +32,10 @@ import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
 import filterIconDefault from './table/filterIconDefault';
-export function getColumnsFromSchema(schema: any) {
+// import { connectorEditor } from '../../utils/connector';
+import { isSameDomainInstanceAndService } from "../../utils/domainModel";
+export function getColumnsFromSchema(schema: any, values: Record<string, any> = {}) {
+  const { defaultWidth = 140, ...other } = values;
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {
@@ -42,13 +45,14 @@ export function getColumnsFromSchema(schema: any) {
         properties[key].type === 'boolean'
       ) {
         columns.push({
-          title: key,
+          title: properties[key].description || properties[key].title || key,
           dataIndex: key,
           key: uuid(),
-          width: 140,
+          width: defaultWidth,
           visible: true,
           ellipsis: true,
-          contentType: 'text'
+          contentType: 'text',
+          ...other
         });
       }
     });
@@ -66,6 +70,16 @@ export function getColumnsFromSchema(schema: any) {
     }
   }
   return getColumnsFromSchemaProperties(columnSchema);
+}
+
+const setDomainModel = ({ data, key, _domainModel }) => {
+  if (!data._domainModel) {
+    data._domainModel = {
+      [key]: _domainModel
+    }
+  } else {
+    data._domainModel[key] = _domainModel;
+  }
 }
 
 export default {
@@ -169,6 +183,83 @@ export default {
     },
     style: [...TableStyleEditor.items, emptyStyleEditor, rowTreeEditor]
   },
+  "@domainModel": {
+    get({ data }) {
+      return data._domainModel?.dataSource;
+    },
+    set({ input, data }, _domainModel) {
+      if (!_domainModel) {
+        setDomainModel({
+          data,
+          key: "dataSource",
+          _domainModel
+        })
+        return;
+      }
+      if (isSameDomainInstanceAndService(data._domainModel?.dataSource, _domainModel)) {
+        return;
+      }
+
+      const schema = _domainModel.service?.responses?.properties?.data;
+      // 类型校验
+      if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && _domainModel.service.method === "get") {
+        setDomainModel({
+          data,
+          key: "dataSource",
+          _domainModel
+        })
+
+        const schemaColumns = getColumnsFromSchema(schema, {
+          defaultWidth: 'auto'
+        });
+
+        const columns = data.columns.filter((column) => {
+          return column.contentType === "slotItem";
+        }).map((column) => {
+          if (column.dataIndex.endsWith(`_${column.contentType}`)) {
+            return column;
+          }
+          return {
+            ...column,
+            dataIndex: column.key + `_${column.contentType}`
+          }
+        });
+
+        const customIDMap: Record<string, boolean> = columns.reduce((pre, cur) => {
+          pre[cur.dataIndex] = true
+          return pre;
+        }, {});
+
+        data.columns = schemaColumns.filter((schemaColumn) => {
+          return !customIDMap[schemaColumn.dataIndex]
+        }).concat(columns);
+
+        if (data.columns.length) {
+          data.rowKey = data.columns[0].dataIndex as string;
+          data.columns[0].isRowKey = true;
+        }
+        input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
+        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+      } else {
+        console.warn("[数据表格] 领域模型服务类型不匹配", _domainModel);
+      }
+    },
+  },
+  // ...connectorEditor<EditorResult<Data>>({
+  //   set({ data, input }: EditorResult<Data>, { schema }) {
+  //     if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties) {
+  //       data.columns = getColumnsFromSchema(schema, {
+  //         defaultWidth: 'auto'
+  //       });
+  //       if (data.columns.length) {
+  //         data.rowKey = data.columns[0].dataIndex as string;
+  //         data.columns[0].isRowKey = true;
+  //       }
+  //       input.get(InputIds.SET_DATA_SOURCE).setSchema(schema);
+  //       data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+  //     }
+  //   }
+  // }),
   ...columnEditor,
   ...PaginatorEditor,
   ...SummaryColumnEditor,

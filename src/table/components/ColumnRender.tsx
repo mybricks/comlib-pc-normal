@@ -3,7 +3,7 @@ import { DefaultRowKey, OutputIds } from '../constants';
 import { ContentTypeEnum, IColumn } from '../types';
 import SlotRender from './Slot';
 import { genFormatting } from '../../utils/dataFormatter';
-import { Tooltip } from 'antd';
+import { Tooltip, Image } from 'antd';
 import css from './style.less';
 import { TableContext } from '../runtime';
 
@@ -49,10 +49,10 @@ function ColumnRender(props: ColumnRenderProps) {
         columnItem?.formatData?.formatterName
       )
         ? {
-            index,
-            rowRecord: record,
-            value: oriValue
-          }
+          index,
+          rowRecord: record,
+          value: oriValue
+        }
         : oriValue;
       if (columnItem?.formatData?.formatterName === 'KEYMAP') {
         oriValue = env.i18n(genFormatting(columnItem.formatData)(valueToBeFormat));
@@ -78,9 +78,9 @@ function ColumnRender(props: ColumnRenderProps) {
       return value;
     }
     return value;
-  }, [props.value, columnItem.formatData, columnItem.contentType, record, index, env.edit]);
+  }, [props.value, columnItem?.formatData, columnItem?.contentType, record, index, env.edit]);
 
-  switch (columnItem.contentType) {
+  switch (columnItem?.contentType) {
     case ContentTypeEnum.Text:
       if (columnItem.ellipsis && String(value)?.trim()?.length > 0) {
         return (
@@ -91,6 +91,81 @@ function ColumnRender(props: ColumnRenderProps) {
         //     <span className={css.ellipsisWrap}>{value}</span>
         //   </Tooltip>
         // );
+      } else {
+        return value ?? null;
+      }
+    case ContentTypeEnum.Image:
+      if (value) {
+        let normalizedValue = value
+        try {
+          if (typeof value === 'string') {
+            normalizedValue = JSON.parse(value)
+          }
+        } catch (e) {}
+        if (Array.isArray(normalizedValue)) {
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              flexWrap: 'wrap',
+            }}>
+              {
+                normalizedValue.map((item, index) => {
+                  const url = item?.url || item;
+                  return (
+                    <Image
+                      height={80}
+                      width={80}
+                      src={url}
+                      key={index}
+                    />
+                  );
+                })
+              }
+            </div>
+          );
+        }
+        return (
+          <Image
+            height={80}
+            width={80}
+            src={normalizedValue}
+          />
+        );
+      } else {
+        return value ?? null;
+      }
+    case ContentTypeEnum.Link:
+      if (value) {
+        let normalizedValue = value
+        try {
+          if (typeof value === 'string') {
+            normalizedValue = JSON.parse(value)
+          }
+        } catch (e) {}
+        if (Array.isArray(normalizedValue)) {
+          return (
+            <div className={columnItem.ellipsis ? css.ellipsisWrap : ''}>
+              {
+                normalizedValue.map((item, index) => {
+                  const url = item?.url || item;
+                  return (
+                    <a href={url} target="_blank" key={index}>{url}</a>
+                  );
+                })
+              }
+            </div>
+          );
+        }
+        if (columnItem.ellipsis && String(normalizedValue)?.trim()?.length > 0) {
+          return (
+            <a href={normalizedValue} target="_blank" className={css.ellipsisWrap}>{normalizedValue}</a>
+          );
+        }
+        return (
+          <a href={normalizedValue} target="_blank">{normalizedValue}</a>
+        );
       } else {
         return value ?? null;
       }

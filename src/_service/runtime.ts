@@ -34,7 +34,10 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
           onResponseInterception: (response) => {
             outputs[OUTPUT_ID.HEADERS]?.(response.headers || {});
           },
-          isMultipleOutputs: true
+          isMultipleOutputs: true,
+          stream: (val) => {
+            outputs['then'](val);
+          }
         })
         .then((val) => {
           if (currentTaskId === taskId || !data.useThrottle) {

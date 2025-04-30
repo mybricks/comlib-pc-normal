@@ -148,10 +148,11 @@ const RuntimeActions = {
 
 const getParams = (val, data: Data) => {
   if (data?.useDynamic) {
-    if (typeof val === 'string') {
-      return val;
-    }
-    return undefined;
+    // if (typeof val === 'string') {
+    //   return val;
+    // }
+    // return undefined;
+    return val
   }
   return {
     title: data?.title,

@@ -38,7 +38,7 @@ type FormControlInputType = {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
-  const formContext = useRef({ store: {} });
+  const formContext = useRef({ store: {}, values: {} });
   const [formRef] = Form.useForm();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -381,6 +381,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setFieldsValue = (val, cb?) => {
+    formContext.current.values = val;
     const formData = objectFilter(val);
     if (Object.keys(formData).length > 0) {
       const length = Object.keys(formData).length - 1;
@@ -426,6 +427,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
   const setInitialValues = (val, cb?) => {
+    formContext.current.values = val;
     try {
       const formData = objectFilter(val);
       if (Object.keys(formData).length > 0) {
@@ -661,11 +663,35 @@ export default function Runtime(props: RuntimeParams<Data>) {
               };
             }
 
-            if (outputRels) {
-              outputRels[outputId](res);
+            const output = outputRels ? outputRels[outputId] : outputs[outputId];
+
+            if (data._domainModel && env.callDomainModel) {
+              res = { ...formContext.current.values, ...res };
+              env.callDomainModel({
+                model: data._domainModel,
+                params: res,
+              }, (error, loading, result) => {
+                if (loading) {
+                  // 等待接口返回
+                  return;
+                }
+                if (error) {
+                  // 报错
+                  console.error(`[表单容器] callDomainModel`, error);
+                } else {
+                  // 成功
+                  output(result)
+                }
+              })
             } else {
-              outputs[outputId](res);
+              output(res);
             }
+
+            // if (outputRels) {
+            //   outputRels[outputId](res);
+            // } else {
+            //   outputs[outputId](res);
+            // }
           })
           .catch((e) => {
             console.log('收集表单项值失败', e);
@@ -698,6 +724,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </>
     );
   };
+
   return (
     <div
       className={classnames(

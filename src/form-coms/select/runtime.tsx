@@ -7,6 +7,7 @@ import { typeCheck, i18nFn } from '../../utils';
 import { InputIds, OutputIds, ValidateTriggerType } from '../types';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { useConnector } from "../../utils/connector";
 
 const DefaultOptionKey = '_id';
 
@@ -48,7 +49,7 @@ const getOutputValue = (data, env, value) => {
   return outputValue;
 };
 
-const getFieldNames = (data: Data) => {
+const getFieldNames = (data: getRouterData) => {
   const fieldNames = {
     label: data.labelFieldName || 'label',
     value: data.valueFieldName || 'value',
@@ -78,6 +79,7 @@ export default function Runtime({
   const [value, setValue] = useState<any>(data.value);
   const valueRef = useRef<any>(data.value);
   const [color, setColor] = useState('');
+  const [selectOptions, setSelectOptions] = useState<Data['staticOptions']>([]);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -96,6 +98,88 @@ export default function Runtime({
       message: `${title}组件:【设置值】参数必须是基本类型！`
     };
   }, [data.config.mode, data.config.labelInValue]);
+
+  const [optionConnector, optionConnectorState] = useConnector({ env, data }, (promise, state) => {
+    if (!state.stop) {
+      setFetching(true);
+      promise.then((optoins) => {
+        if (!state.stop) {
+          inputsSetOptions(optoins, null);
+        }
+      }).finally(() => {
+        if (!state.stop) {
+          setFetching(false);
+        }
+      })
+    }
+  })
+
+  useLayoutEffect(() => {
+    if (!optionConnector) {
+      setSelectOptions(data.staticOptions)
+    }
+  }, [optionConnector, data.staticOptions])
+
+  const inputsSetOptions = useCallback((ds, relOutputs) => {
+    if (Array.isArray(ds)) {
+      const fieldNames = getFieldNames(data);
+      const newOptions = data.customField
+        ? ds.map((item) => {
+            return {
+              ...(fieldNames.value in item
+                ? {
+                    value: item[fieldNames.value]
+                  }
+                : {}),
+              ...(fieldNames.label in item
+                ? {
+                    label: item[fieldNames.label]
+                  }
+                : {}),
+              ...(fieldNames.disabled in item
+                ? {
+                    disabled: item[fieldNames.disabled]
+                  }
+                : {}),
+              ...(fieldNames.checked in item
+                ? {
+                    checked: item[fieldNames.checked]
+                  }
+                : {})
+            };
+          })
+        : ds;
+      if (env.runtime) {
+        data.config.options = [...newOptions];
+      }
+      setSelectOptions([...newOptions]);
+      relOutputs?.['setOptionsDone'](ds);
+
+      //计算值更新
+      let newValArray: any[] = [],
+        newVal;
+      let updateValue = false;
+      newOptions.map((item) => {
+        const { checked, value } = item;
+        if (checked && value != undefined) {
+          updateValue = true;
+          newVal = value;
+          newValArray.push(value);
+        }
+      });
+      if (updateValue) {
+        if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode)) {
+          changeValue(newValArray);
+        }
+        if (!data.config.mode || data.config.mode === 'default') {
+          changeValue(newVal);
+        }
+      }
+    } else {
+      logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
+    }
+    setFetching(false);
+  }, [])
 
   useLayoutEffect(() => {
     if (env.edit || data.value !== undefined) changeValue(data.value);
@@ -174,62 +258,67 @@ export default function Runtime({
     });
 
     inputs['setOptions']((ds, relOutputs) => {
-      if (Array.isArray(ds)) {
-        const fieldNames = getFieldNames(data);
-        const newOptions = data.customField
-          ? ds.map((item) => {
-              return {
-                ...(fieldNames.value in item
-                  ? {
-                      value: item[fieldNames.value]
-                    }
-                  : {}),
-                ...(fieldNames.label in item
-                  ? {
-                      label: item[fieldNames.label]
-                    }
-                  : {}),
-                ...(fieldNames.disabled in item
-                  ? {
-                      disabled: item[fieldNames.disabled]
-                    }
-                  : {}),
-                ...(fieldNames.checked in item
-                  ? {
-                      checked: item[fieldNames.checked]
-                    }
-                  : {})
-              };
-            })
-          : ds;
-        data.config.options = [...newOptions];
-        relOutputs['setOptionsDone'](ds);
+      optionConnectorState.stop = true;
+      inputsSetOptions(ds, relOutputs)
+    })
 
-        //计算值更新
-        let newValArray: any[] = [],
-          newVal;
-        let updateValue = false;
-        newOptions.map((item) => {
-          const { checked, value } = item;
-          if (checked && value != undefined) {
-            updateValue = true;
-            newVal = value;
-            newValArray.push(value);
-          }
-        });
-        if (updateValue) {
-          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode)) {
-            changeValue(newValArray);
-          }
-          if (!data.config.mode || data.config.mode === 'default') {
-            changeValue(newVal);
-          }
-        }
-      } else {
-        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
-      }
-      setFetching(false);
-    });
+    // inputs['setOptions']((ds, relOutputs) => {
+    //   if (Array.isArray(ds)) {
+    //     const fieldNames = getFieldNames(data);
+    //     const newOptions = data.customField
+    //       ? ds.map((item) => {
+    //           return {
+    //             ...(fieldNames.value in item
+    //               ? {
+    //                   value: item[fieldNames.value]
+    //                 }
+    //               : {}),
+    //             ...(fieldNames.label in item
+    //               ? {
+    //                   label: item[fieldNames.label]
+    //                 }
+    //               : {}),
+    //             ...(fieldNames.disabled in item
+    //               ? {
+    //                   disabled: item[fieldNames.disabled]
+    //                 }
+    //               : {}),
+    //             ...(fieldNames.checked in item
+    //               ? {
+    //                   checked: item[fieldNames.checked]
+    //                 }
+    //               : {})
+    //           };
+    //         })
+    //       : ds;
+    //     data.config.options = [...newOptions];
+    //     relOutputs['setOptionsDone'](ds);
+
+    //     //计算值更新
+    //     let newValArray: any[] = [],
+    //       newVal;
+    //     let updateValue = false;
+    //     newOptions.map((item) => {
+    //       const { checked, value } = item;
+    //       if (checked && value != undefined) {
+    //         updateValue = true;
+    //         newVal = value;
+    //         newValArray.push(value);
+    //       }
+    //     });
+    //     if (updateValue) {
+    //       if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode)) {
+    //         changeValue(newValArray);
+    //       }
+    //       if (!data.config.mode || data.config.mode === 'default') {
+    //         changeValue(newVal);
+    //       }
+    //     }
+    //   } else {
+    //     logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
+    //   }
+    //   setFetching(false);
+    // });
 
     inputs['setLoading']((val: boolean, relOutputs) => {
       data.config = {
@@ -339,12 +428,15 @@ export default function Runtime({
   const onSearch = (e) => {
     //开启远程搜索功能
     if (data.dropdownSearchOption) {
+      optionConnectorState.stop = true;
       setFetching(true);
       outputs['remoteSearch'](e);
     }
     //1、远程数据源
     if (data.dropdownSearchOption === true && !e && data.resetOptionsWhenEmptySearch) {
       data.config.options = [];
+      setSelectOptions([]);
+      optionConnectorState.stop = true;
       setFetching(false);
     }
     //2、本地数据源, 不做处理
@@ -353,13 +445,13 @@ export default function Runtime({
   const { options, ...configs } = data.config;
   const renderOptions = data.slotAfterOption
     ? void 0
-    : i18nFn(env.edit ? data.staticOptions : options, env);
+    : i18nFn(selectOptions, env);
 
   const OptionsWithSlot = () => {
     if (!data.slotAfterOption) return null;
     return (
       <>
-        {(env.edit ? [{ label: '搭建占位', value: 1 }] : options)?.map((opt, inx) => {
+        {(env.edit ? [{ label: '搭建占位', value: 1 }] : selectOptions)?.map((opt, inx) => {
           return (
             <Select.Option value={opt.value} label={opt.label} key={opt.value}>
               <div

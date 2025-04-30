@@ -14,8 +14,10 @@ interface Props {
   env: any;
 }
 
-const JSXWrapper = ({ com }) => {
-  return com.jsx;
+const JSXWrapper = ({ com, isEditable }) => {
+  // return com.jsx;
+  com.jsx.props.data.isEditable = isEditable;
+  return React.cloneElement(com.jsx, com.jsx.props);
 };
 
 const FormItem = (props: Props) => {
@@ -62,7 +64,7 @@ const FormItem = (props: Props) => {
         tooltip={env.i18n(item?.tooltip)}
         style={style}
       >
-        <JSXWrapper com={com} />
+        <JSXWrapper com={com} isEditable={data.isEditable} />
       </Form.Item>
       <div className={css.formItemControl}>
         <div className={css.formItemSlotContent}></div>

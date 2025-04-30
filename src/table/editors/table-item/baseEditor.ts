@@ -123,6 +123,8 @@ const createBaseEditor = ({ data }) => ({
       type: 'Select',
       options: [
         { label: '普通文字', value: ContentTypeEnum.Text },
+        { label: '图片', value: ContentTypeEnum.Image },
+        { label: '链接', value: ContentTypeEnum.Link },
         { label: '自定义插槽', value: ContentTypeEnum.SlotItem },
         { label: '分组', value: ContentTypeEnum.Group }
       ],

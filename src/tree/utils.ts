@@ -106,7 +106,7 @@ export const traverseTree = ({
 
   if (!treeData || treeData.length === 0) return null;
   const searchTree = (treeNode: TreeData, index: number, parent: TreeData) => {
-    if (treeNode[keyFieldName] === targetKey) {
+    if (keyToString(treeNode[keyFieldName]) === targetKey) {
       return {
         parent,
         node: treeNode,

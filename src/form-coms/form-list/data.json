@@ -79,5 +79,6 @@
     "labelAlign": "left",
     "disabled": false
   },
-  "layoutType": "horizontal"
+  "layoutType": "horizontal",
+  "isEditable": true
 }

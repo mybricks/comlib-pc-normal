@@ -6,7 +6,7 @@
   "name": "通用H5组件库",
   "namespace": "@mybricks/comlib-pc-normal",
   "commitInfo": "update",
-  "version": "1.0.4",
+  "version": "1.0.23",
   "comAry": [
     {
       "title": "基础",

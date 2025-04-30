@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.table",
   "title": "数据表格",
-  "version": "1.2.22",
+  "version": "1.2.38",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -70,6 +70,26 @@
         "setSizeDone"
       ],
       "desc": "有三种布局风格: large | middle | small"
+    },
+    {
+      "id": "getSorter",
+      "title": "获取排序数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getSorter"
+      ]
+    },
+    {
+      "id": "setSorter",
+      "title": "设置排序数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "setSorter"
+      ]
     }
   ],
   "outputs": [
@@ -120,6 +140,43 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "getSorter",
+      "title": "排序数据",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "order": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setSorter",
+      "title": "设置排序数据完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "sorter",
+      "title": "排序",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "order": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "slots": [
@@ -129,5 +186,13 @@
       "defer": true,
       "description": "用于自定义列内容，例如嵌入工具条、文本等，列插槽是作用域插槽，可以提供获取当前行数据，修改行数据和上下移动当前行的编排能力"
     }
-  ]
+  ],
+  "connector": {
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
 }

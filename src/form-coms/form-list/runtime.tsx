@@ -63,7 +63,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
     // 设置值
     inputs[InputIds.SetValue]((value, outputRels) => {
-      keyRef.current = keyRef.current + 1
+      keyRef.current = keyRef.current + 1;
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         resetForm();
         data.value = value;
@@ -82,7 +82,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 设置初始值
     inputs[InputIds.SetInitialValue]((value, outputRels) => {
-      keyRef.current = keyRef.current + 1
+      keyRef.current = keyRef.current + 1;
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         resetForm();
         data.value = value;
@@ -148,6 +148,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         if (outputRels['isEnableDone']) {
           outputRels['isEnableDone'](val);
         }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, outputRels) => {
+      data.isEditable = val;
+      data.userAction.type = InputIds.SetEditable;
+      setValuesForInput({ data, childrenStore });
+      if (outputRels['isReadOnlyDone']) {
+        outputRels['isReadOnlyDone'](val);
       }
     });
 
@@ -244,7 +254,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
     }
   }, []);
-
   // useEffect(() => {
   //   // 初始化
   //   if (env.runtime && initLength) {
@@ -268,18 +277,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.fields.forEach((field) => {
         const { name, key } = field;
         const fieldFormItems = childrenStore[key];
-        const fieldPromise = data.items.filter((item) => {
-          return fieldFormItems[item.comName]
-        }).map((item) => {
-          const { index, inputs, visible } = fieldFormItems[item.comName];
-          if (!data.submitHiddenFields && !visible) {
-            // 隐藏的表单项，不再校验
-            return { validateStatus: 'success' };
-          }
-          return new Promise((resolve, reject) => {
-            validateForInput({ item, index, inputs }, resolve);
+        const fieldPromise = data.items
+          .filter((item) => {
+            return fieldFormItems[item.comName];
+          })
+          .map((item) => {
+            const { index, inputs, visible } = fieldFormItems[item.comName];
+            if (!data.submitHiddenFields && !visible) {
+              // 隐藏的表单项，不再校验
+              return { validateStatus: 'success' };
+            }
+            return new Promise((resolve, reject) => {
+              validateForInput({ item, index, inputs }, resolve);
+            });
           });
-        });
         allPromise.push(...fieldPromise);
       });
       Promise.all(allPromise)
@@ -305,14 +316,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         values[name] = {};
       }
       const fieldFormItems = childrenStore[key];
-      data.items.filter((item) => {
-        return fieldFormItems[item.comName]
-      }).map((item) => {
-        const { visible } = fieldFormItems[item.comName];
-        if (data.submitHiddenFields || visible) {
-          values[name][item.name] = data.value?.[name]?.[item.name];
-        }
-      });
+      data.items
+        .filter((item) => {
+          return fieldFormItems[item.comName];
+        })
+        .map((item) => {
+          const { visible } = fieldFormItems[item.comName];
+          if (data.submitHiddenFields || visible) {
+            values[name][item.name] = data.value?.[name]?.[item.name];
+          }
+        });
     });
     return values;
   }, []);
@@ -340,6 +353,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     fieldIndex: 0,
     hiddenRemoveButton: true
   };
+
+  data.isEditable = data.isEditable ?? true;
 
   return (
     <>
@@ -372,7 +387,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           </div>
         );
       })}
-      {data.fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
+      {data.isEditable && data.fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
     </>
   );
 }

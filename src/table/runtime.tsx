@@ -11,7 +11,7 @@ import {
   SlotIds,
   TEMPLATE_RENDER_KEY,
   DefaultRowKey,
-  DefaultOnRowScript
+  DefaultOnRowScript,
 } from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -46,6 +46,7 @@ import { runJs } from '../../package/com-utils';
 import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
 import useDemandDataSource from './hooks/use-demand-data-source';
+import { useConnector } from '../utils/connector';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -156,8 +157,84 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
+  const [dataSourceConnector, dataSourceConnectorState] = useConnector({ env, data }, (promise, state) => {
+    if (!state.stop) {
+      setLoading(true);
+      promise.then((dataSource) => {
+        if (!state.stop) {
+          setTableData(dataSource);
+        }
+      }).finally(() => {
+        if (!state.stop) {
+          setLoading(false);
+        }
+      })
+    }
+  })
+
+  const domainDataSource = useMemo(() => {
+    if (env.runtime && data._domainModel?.dataSource && env.callDomainModel) {
+      const { usePagination } = data;
+      return env.callDomainModel({
+        // 模型信息
+        model: data._domainModel.dataSource,
+        // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+        params: usePagination ? {
+          pageSize: data.paginationConfig.currentPage.pageSize,
+          page: data.paginationConfig.currentPage.pageNum
+        } : {},
+        configs: {
+          // 注册，当该模型更新时，会主动推送数据
+          callType: "register",
+        },
+
+      }, (error, loading, output) => {
+        if (loading) {
+          // [TODO] 加载中
+          setLoading(loading)
+          return
+        }
+        setLoading(loading)
+        if (error) {
+          console.error(error);
+        } else {
+          const { data, meta } = output;
+          // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+          if (usePagination) {
+            setTableData({
+              dataSource: data,
+              total: meta.count,
+              pageNum: meta.page,
+              pageSize: meta.pageSize
+            });
+          } else {
+            setTableData(data);
+          }
+        }
+      });
+    }
+  }, [])
+
   useEffect(() => {
-    if (env.runtime.debug?.prototype) {
+    if (env.runtime && domainDataSource) {
+      return () => {
+        domainDataSource?.destroy?.();
+      }
+    }
+  }, [])
+
+  const onPaginationChange = useCallback(({ pageSize, pageNum }) => {
+    if (env.runtime && domainDataSource) {
+      domainDataSource.call({
+        pageSize,
+        page: pageNum
+      })
+    }
+  }, [domainDataSource])
+
+  useEffect(() => {
+    // 如果选了领域模型，prototype模式就不mock了
+    if (env.runtime.debug?.prototype && !domainDataSource) {
       const getFields = (cols: any[]) => {
         let res: string[] = [];
         cols.map((col) => {
@@ -204,6 +281,7 @@ export default function (props: RuntimeParams<Data>) {
 
       // 设置数据源
       inputs[InputIds.SET_DATA_SOURCE]((ds: any, relOutputs: any) => {
+        dataSourceConnectorState.stop = true;
         setTableData(ds);
         setLoading(false);
         handleOutputFn(relOutputs, OutputIds.SET_DATA_SOURCE, ds);
@@ -212,11 +290,13 @@ export default function (props: RuntimeParams<Data>) {
       // 表格loading
       inputs[InputIds.START_LOADING] &&
         inputs[InputIds.START_LOADING]((val: any, relOutputs: any) => {
+          dataSourceConnectorState.stop = true;
           setLoading(true);
           handleOutputFn(relOutputs, OutputIds.START_LOADING, val);
         });
       inputs[InputIds.END_LOADING] &&
         inputs[InputIds.END_LOADING]((val: any, relOutputs: any) => {
+          dataSourceConnectorState.stop = true;
           setLoading(false);
           handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
         });
@@ -273,6 +353,13 @@ export default function (props: RuntimeParams<Data>) {
           handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
 
+        // 总结栏显示/隐藏
+        inputs[InputIds.SET_SUMMARY_COLUMN] &&
+        inputs[InputIds.SET_SUMMARY_COLUMN]((val: any, relOutputs: any) => {
+          data.useSummaryColumn = val;
+          relOutputs[OutputIds.SET_SHOW_SUMMARY_COLUMN](data.useSummaryColumn);
+        });  
+
       // 总结栏数据
       inputs[InputIds.SUMMARY_COLUMN] &&
         inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
@@ -328,6 +415,8 @@ export default function (props: RuntimeParams<Data>) {
                   item[key] = templateCol[key];
                 }
               });
+              item.key = uuid()
+              item._id = uuid()
               return item;
             } else {
               return item;
@@ -400,44 +489,70 @@ export default function (props: RuntimeParams<Data>) {
     ({ value, index }) => {
       index = Number(index);
       if (value && index >= 0) {
-        if (index > dataSource.length) return dataSource;
-        const newDataSource = [...dataSource];
-        const tempValue = newDataSource[index];
-        newDataSource[index] = {
-          ...tempValue, // 需要保留类似rowKey的数据
-          ...value
-        };
-        setDataSource(newDataSource);
+        setDataSource((dataSource) => {
+          if (index > dataSource.length) return dataSource;
+          const newDataSource = [...dataSource];
+          const tempValue = newDataSource[index];
+          newDataSource[index] = {
+            ...tempValue, // 需要保留类似rowKey的数据
+            ...value
+          };
+          return newDataSource;
+        })
+        // if (index > dataSource.length) return dataSource;
+        // const newDataSource = [...dataSource];
+        // const tempValue = newDataSource[index];
+        // newDataSource[index] = {
+        //   ...tempValue, // 需要保留类似rowKey的数据
+        //   ...value
+        // };
+        // setDataSource(newDataSource);
       }
     },
-    [dataSource]
+    []
+    // [dataSource]
   );
   const handleMove = useCallback(
     (index: number, direction = 'up') => {
       index = Number(index);
       const targetIndex = direction === 'up' ? index - 1 : index + 1;
 
-      if (targetIndex >= 0 && targetIndex < dataSource.length) {
-        const newData = [...dataSource];
-        [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
-        setDataSource(newData);
-      }
+      setDataSource((dataSource) => {
+        if (targetIndex >= 0 && targetIndex < dataSource.length) {
+          const newData = [...dataSource];
+          [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
+          return newData;
+        }
+        return dataSource
+      })
+
+      // if (targetIndex >= 0 && targetIndex < dataSource.length) {
+      //   const newData = [...dataSource];
+      //   [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
+      //   setDataSource(newData);
+      // }
     },
-    [dataSource]
+    []
+    // [dataSource]
   );
 
   const handleRemove = useCallback(
     (index: number) => {
       index = Number(index);
-      const newData = dataSource.filter((_, i) => i !== index);
-      setDataSource(newData);
+      setDataSource((dataSource) => {
+        const newData = dataSource.filter((_, i) => i !== index);
+        return newData;
+      })
+      // const newData = dataSource.filter((_, i) => i !== index);
+      // setDataSource(newData);
     },
-    [dataSource]
+    []
+    // [dataSource]
   );
 
   useEffect(() => {
     // 监听插槽输出数据
-    if (slots) {
+    if (env.runtime && slots) {
       Object.keys(slots).forEach((slot) => {
         const slotOutput = slots[slot]?.outputs[OutputIds.Edit_Table_Data];
         if (slotOutput) {
@@ -457,7 +572,10 @@ export default function (props: RuntimeParams<Data>) {
         bindOutput(OutputIds.Row_Move_Up, (index: number) => handleMove(index));
       });
     }
-  }, [editTableData]);
+  }, [
+    // editTableData
+    data.columns
+  ]);
 
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
@@ -477,14 +595,16 @@ export default function (props: RuntimeParams<Data>) {
           return typeof item[rowKey] === 'undefined' || item[rowKey] === null;
         })
       ) {
-        throw new Error(
-          `请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`
-        );
+        // throw new Error(
+        //   `请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`
+        // );
+        console.error(`请检查表格数据，存在行标识字段【${rowKey}】为undefined或null，无法正确渲染`);
       }
 
       const list = unionBy(dataSource, rowKey);
       if (list.length !== dataSource.length) {
-        throw new Error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
+        // throw new Error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
+        console.error(`请检查表格数据，存在行标识字段【${rowKey}】重复，无法正确渲染`);
       }
     }
     if (env.runtime) {
@@ -821,16 +941,20 @@ export default function (props: RuntimeParams<Data>) {
           <ColumnRender {...columnRenderProps} env={env} outputs={outputs} />
         </ErrorBoundary>
       ),
-      filterIconDefault: data.filterIconDefault
+      filterIconDefault: data.filterIconDefault,
+      hasConnector: dataSourceConnector
     });
   };
 
   // hack: fix编辑时数据未及时响应
-  useEffect(() => {
-    if (env.edit) {
-      initFilterMap();
-    }
-  }, [JSON.stringify(data.columns)]);
+  if (env.edit) {
+    useEffect(() => {
+      if (env.edit) {
+        initFilterMap();
+      }
+    }, [JSON.stringify(data.columns)]);
+  }
+  
   // const renderColumnsWhenEdit = useCallback(() => {
   //   return renderColumns();
   // }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
@@ -1047,7 +1171,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // 设计态数据mock
-  const defaultDataSource = getDefaultDataSource(data.columns, rowKey, env);
+  const defaultDataSource = dataSourceConnector ? demandDataSource : getDefaultDataSource(data.columns, rowKey, env);
 
   const setCurrentSelectRows = (_record) => {
     const targetRowKeyVal = _record[rowKey];
@@ -1319,6 +1443,7 @@ export default function (props: RuntimeParams<Data>) {
               outputs={outputs}
               selectedRows={selectedRows}
               selectedRowKeys={selectedRowKeys}
+              onPaginationChange={onPaginationChange}
             />
           </div>
         </TableContext.Provider>
