@@ -192,6 +192,19 @@ export default {
           }
         },
         {
+          title: '默认聚焦',
+          type: 'switch',
+          description: '是否默认聚焦',
+          value: {
+            get({ data }) {
+              return data.setAutoFocus;
+            },
+            set({ data }, value: boolean) {
+              data.setAutoFocus = value;
+            }
+          }
+        },
+        {
           title: '小数控制',
           items: [
             {

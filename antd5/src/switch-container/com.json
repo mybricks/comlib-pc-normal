@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.switch-container",
+  "namespace": "mybricks.normal-pc.antd5.switch-container",
   "title": "状态容器",
   "version": "1.0.8",
   "description": "根据状态值渲染不同内容的容器，方便实现多状态切换",

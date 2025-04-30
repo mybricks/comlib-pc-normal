@@ -198,11 +198,9 @@ export interface Data {
   collapsedText?: string
   /** 列间距 */
   columnGap?: number
-  /** 标题标签配置 */
-  titleTag: {
-    text?: string
-    icon?: string
-  }
+
+  /** 领域模型 */
+  _domainModel?: any;
 }
 
 interface DomainModel {

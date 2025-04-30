@@ -2,6 +2,22 @@ import { message } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
 import { uuid } from '../utils';
 
+if (ANTD_VERSION === 5) {
+  // [TODO] 注入环境变量区分 edit 和 rt
+  // [TODO] 待讨论。需要监听取消调试事件以卸载message列表，取消调试后data-canvas['debug']dom卸载，导致message不会被卸载，antd5message列表维护在一份全局实例里。
+  message.config({
+    getContainer: () => {
+      // 不挂#_geoview-wrapper_ [data-canvas='debug']的话，提示不居中，shadowRoot宽度比调试的画布要快
+      // const container = document.getElementById('_mybricks-geo-webview_')?.shadowRoot;
+      // 挂#_geoview-wrapper_ [data-canvas='debug']，取消调试时如果message还没结束，下去调试还会再弹出来
+      const container = document.getElementById('_mybricks-geo-webview_')?.shadowRoot?.querySelector("#_geoview-wrapper_ [data-canvas='debug']");
+      return container as HTMLElement;
+    }
+  })
+}
+
+
+
 // 运行时执行
 const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
   const { type, content, duration } = data;

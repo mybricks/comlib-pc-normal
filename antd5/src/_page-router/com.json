@@ -1,7 +1,7 @@
 {
-  "namespace": "mybricks.normal-pc.page-router",
+  "namespace": "mybricks.normal-pc.antd5.page-router",
   "title": "跳转到...",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "rtType": "js",
   "description": "路由切换",
   "author": "MyBricks",

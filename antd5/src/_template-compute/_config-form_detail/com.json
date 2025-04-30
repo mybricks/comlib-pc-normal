@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.comlib-template-compute._config_form_detail",
+  "namespace": "mybricks.comlib-template-compute.antd5._config_form_detail",
   "title": "配置描述列表",
   "version": "1.0.2",
   "description": "配置描述列表",

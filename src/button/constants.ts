@@ -37,6 +37,12 @@ export interface Data {
    * 是否是危险按钮样式
    */
   danger?: boolean;
+
+  running:{
+    text
+    useIcon
+    icon
+  }
 }
 
 export const InputIds = {
@@ -45,6 +51,7 @@ export const InputIds = {
 
 export const OutputIds = {
   Click: 'click',
+  ClickOnRunning: 'clickOnRunning',
   DbClick: 'dbClick'
 };
 

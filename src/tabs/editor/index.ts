@@ -470,7 +470,7 @@ export default {
           target: ({ id }: EditorResult<Data>) =>
             `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(
               id
-            )} div.ant-tabs-tab-btn`
+            )} div.ant-tabs-tab-btn span`
         })
       },
       {

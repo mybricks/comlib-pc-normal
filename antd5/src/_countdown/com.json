@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.countdown",
+  "namespace": "mybricks.normal-pc.antd5.countdown",
   "title": "倒计时",
   "version": "1.0.0",
   "rtType": "js",

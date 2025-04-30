@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.anchor-container",
+  "namespace": "mybricks.normal-pc.antd5.anchor-container",
   "title": "锚点容器",
   "enable": true,
   "visibility": true,

@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.drawer",
+  "namespace": "mybricks.normal-pc.antd5.drawer",
   "title": "抽屉",
   "enable": true,
   "visibility": false,

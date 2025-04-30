@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const commonCfg = require('./webpack.common');
 
 module.exports = Object.assign(
@@ -17,6 +18,11 @@ module.exports = Object.assign(
           root: 'ReactDOM'
         },
       }
+    ],
+    plugins: [
+      new webpack.DefinePlugin({
+        'ANTD_VERSION': JSON.stringify(5),
+      }),
     ]
   },
   commonCfg

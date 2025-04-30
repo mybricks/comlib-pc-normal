@@ -94,9 +94,9 @@ module.exports = {
   //     '@ant-design/icons': '@ant-design/icons'
   //   }
   // ],
-  plugins: [
+  // plugins: [
     // new BundleAnalyzerPlugin({
     //   analyzerMode: 'static'
     // })
-  ]
+  // ]
 };

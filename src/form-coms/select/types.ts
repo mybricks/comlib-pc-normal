@@ -37,5 +37,7 @@ export interface Data {
   customField: boolean;
   placement: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
   /** 挂载点 */
-  mount?: string
+  mount?: string;
+  /** 连接器 */
+  _connector: any;
 }

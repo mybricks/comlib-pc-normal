@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.notification",
+  "namespace": "mybricks.normal-pc.antd5.notification",
   "title": "通知提醒",
   "version": "1.0.2",
   "description": "在系统四个角显示通知提醒信息",

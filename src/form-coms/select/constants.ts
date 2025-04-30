@@ -9,3 +9,5 @@ export const Schemas = {
         type: 'number'
     },
 }
+
+export const ConnectorFiledName = "_connector";

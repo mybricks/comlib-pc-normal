@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.excel",
+  "namespace": "mybricks.normal-pc.antd5.excel",
   "title": "Excel导出",
   "version": "1.0.8",
   "rtType": "js",

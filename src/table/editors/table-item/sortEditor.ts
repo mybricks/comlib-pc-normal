@@ -32,11 +32,11 @@ const addSorterIO = ({ data, output, input }: Props) => {
       input.get(InputIds.SET_SORT).setRels([OutputIds.SET_SORT]);
     }
   } else {
-    event1 && output.remove(OutputIds.SORTER);
-    event2 && output.remove(OutputIds.GET_SORT);
-    event3 && input.remove(InputIds.GET_SORT);
-    event4 && input.remove(InputIds.SET_SORT);
-    event4 && output.remove(OutputIds.SET_SORT);
+    // event1 && output.remove(OutputIds.SORTER);
+    // event2 && output.remove(OutputIds.GET_SORT);
+    // event3 && input.remove(InputIds.GET_SORT);
+    // event4 && input.remove(InputIds.SET_SORT);
+    // event4 && output.remove(OutputIds.SET_SORT);
   }
 };
 
@@ -106,11 +106,11 @@ const SortEditor = {
     {
       title: '排序事件',
       type: '_Event',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getColumnItem(data, focusArea);
-        return item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Request;
-      },
+      // ifVisible({ data, focusArea }: EditorResult<Data>) {
+      //   if (!focusArea) return;
+      //   const item = getColumnItem(data, focusArea);
+      //   return item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Request;
+      // },
       options: () => {
         return {
           outputId: OutputIds.SORTER

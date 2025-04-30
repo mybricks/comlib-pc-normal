@@ -1,7 +1,7 @@
 {
-  "namespace": "mybricks.normal-pc.text",
+  "namespace": "mybricks.normal-pc.antd5.text",
   "title": "文本",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "文本",
   "author": "MyBricks",
   "author_name": "MyBricks",

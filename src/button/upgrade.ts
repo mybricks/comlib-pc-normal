@@ -139,5 +139,23 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
     output.add("setDynamicStyleDone", '设置动态样式完成', { type: 'any' })
     input.get("setDynamicStyle").setRels(["setDynamicStyleDone"])
   }
+
+  //1.0.36 -> 1.0.37 增加了若干输入输出
+  if (!output.get("clickOnRunning")) {
+    output.add("clickOnRunning", "运行时单击", { type: 'number' });
+  }
+
+  if (!input.get("setStateRunning")) {
+    input.add("setStateRunning", "设置状态：运行中", {
+      type: "string"
+    })
+  }
+
+  if (!input.get("setStateNormal")) {
+    input.add("setStateNormal", "恢复", {
+      type: "string"
+    })
+  }
+
   return true;
 }

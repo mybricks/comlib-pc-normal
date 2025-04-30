@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.global-loading",
+  "namespace": "mybricks.normal-pc.antd5.global-loading",
   "title": "全局Loading",
   "version": "1.0.6",
   "rtType": "js",

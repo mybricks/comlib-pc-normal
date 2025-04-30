@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.iframe",
+  "namespace": "mybricks.normal-pc.antd5.iframe",
   "title": "iFrame",
   "version": "1.0.4",
   "description": "iframe容器",

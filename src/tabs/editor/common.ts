@@ -7,7 +7,7 @@ export const createItem = (data): TabItem => {
     id: key,
     key,
     name: `标签页${data.tabList.length + 1}`,
-    closable: true,
+    closable: data.closable,
   };
 };
 

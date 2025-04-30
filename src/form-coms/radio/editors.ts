@@ -15,6 +15,7 @@ export const getBtnItemInfo = (
   const key = focusArea?.dataset?.[datasetKey];
   const index = data.staticOptions.findIndex((item) => key && item.key === key);
   const res = index === -1 ? undefined : data.staticOptions[index];
+  data.config.options = data.staticOptions;
   return { item: res, index };
 };
 
@@ -156,7 +157,7 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled'
+                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled .ant-radio-disabled+span'
               },
               {
                 title: '选择框',
@@ -311,6 +312,12 @@ export default {
               });
               data.staticOptions = options;
               data.config.options = options;
+            }
+          },
+          binding : {
+            with: "data.config.options",
+            schema: {
+              type: 'string'
             }
           }
         },
