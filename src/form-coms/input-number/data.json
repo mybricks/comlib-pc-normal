@@ -23,9 +23,9 @@
   "max": 999999999999,
   "min": 0,
   "isEditable": true,
-  "isControl": true,
-  "useGrouping": false,
-  "isParser": false,
-  "isPrecision": false,
+  "isControl": false,
+  "useGrouping": true,
+  "isParser": true,
+  "isPrecision": true,
   "setAutoFocus": false
 }

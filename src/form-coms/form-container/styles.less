@@ -26,6 +26,10 @@
       overflow: hidden;
     }
 
+    .ant-col-24.ant-form-item-label, .ant-col-xl-24.ant-form-item-label, .ant-form-vertical .ant-form-item-label {
+      padding: 0;
+    }
+
     .ant-form-inline .ant-form-item > .ant-form-item-control {
       min-width: 0;
     }
@@ -37,15 +41,15 @@
 
     .ant-form-item-label {
       padding: 0;
+      text-align: left; // 不能删除，否则对齐方式会默认为右对齐
     }
 
     .ant-form-item-label > label {
-      width: 100%;
       line-height: 32px;
       font-size: 14px;
       font-weight: 700;
       color: #262626;
-
+      text-align: left;
       .ant-form-item-tooltip {
         color: var(--ant-primary-color, #1890ff);
         font-size: 16px;

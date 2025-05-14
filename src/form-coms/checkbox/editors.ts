@@ -423,7 +423,7 @@ export default {
             get({ data }) {
               return data.layout;
             },
-            set({ data }, value: boolean) {
+            set({ data }, value: string) {
               data.layout = value;
             }
           }

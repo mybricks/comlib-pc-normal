@@ -6,6 +6,7 @@ const { Paragraph } = Typography;
 
 export interface Data {
   content: string | undefined;
+  expandRows?: number;
 }
 
 export default function ({
@@ -28,7 +29,7 @@ export default function ({
         ellipsis={
           isExpanded
             ? {
-                rows: 3,
+                rows: data.expandRows || 3,
                 expandable: true,
                 symbol: <span></span>,
                 suffix: (

@@ -296,14 +296,14 @@ export default function Runtime({
   //   return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
   // }
 
-  const checkboxStyle = {
+  const checkboxStyle = useMemo(() => ({
     marginBottom: data.layout === 'vertical' ? '8px' : void 0
-  };
+  }), [data.layout]);
 
-  const checkboxGroup = {
+  const checkboxGroup = useMemo(() => ({
     display: data.layout === 'vertical' ? 'grid' : void 0,
     gap: data.layout === 'vertical' ? '8px' : void 0
-  };
+  }), [data.layout]);
 
   const singlebox = {
     width: '16px'

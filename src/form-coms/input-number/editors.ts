@@ -250,7 +250,7 @@ export default {
             {
               title: '格式化',
               type: 'Switch',
-              description: '默认关闭，不开启格式化，开启后可配置格式化，并实时进行小数校验',
+              description: '开启后可配置格式化，并实时进行小数校验',
               value: {
                 get({ data }) {
                   return data.isParser;
@@ -401,19 +401,19 @@ export default {
             }
           }
         },
-        // {
-        //   title: '快捷增减',
-        //   description: '是否显示增减按钮，默认展示',
-        //   type: 'switch',
-        //   value: {
-        //     get({ data }) {
-        //       return data.isControl;
-        //     },
-        //     set({ data }, value: boolean) {
-        //       data.isControl = value;
-        //     }
-        //   }
-        // },
+        {
+          title: '快捷增减',
+          description: '是否显示增减按钮，默认展示',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return data.isControl;
+            },
+            set({ data }, value: boolean) {
+              data.isControl = value;
+            }
+          }
+        },
         {
           title: '校验触发时机',
           type: 'Select',

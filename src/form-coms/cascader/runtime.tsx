@@ -295,18 +295,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
           loadData={data.useLoadData ? onLoadData : undefined}
           showCheckedStrategy={showCheckedStrategy}
-          displayRender={data.checkedOptionShowWay === 'full' && data.isCheckAutoWithChildren ? (label, selectedOptions) => {
-            const recursionChildren = (
-              array: any[],
-              result: string
-            ) => {
-              if (!array?.[0]?.children?.length) return result + array[0].label;
-              return recursionChildren(array[0].children, result + array[0].label + data.fullNodeSplit);
-            };
-            if (selectedOptions && selectedOptions.length > 0) {
-              return recursionChildren(selectedOptions, '');
-            }
-            return label;
+          displayRender={data.checkedOptionShowWay === 'full' && data.isCheckAutoWithChildren ? (label) => {
+            return label.join(data.fullNodeSplit);
           } : undefined}
         />
       ) : Array.isArray(value) ? (

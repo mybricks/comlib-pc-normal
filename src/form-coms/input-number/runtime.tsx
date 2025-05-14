@@ -178,7 +178,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }
             if (reg !== '') {
               if (data.useGrouping) {
-                reg = reg.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                const [integer, decimal] = reg.split('.');
+                reg = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (decimal ? `.${decimal}` : '');
               }
               if (data.isFormatter && data.charPostion === 'suffix') {
                 reg = `${reg}${data.character}`;
@@ -201,12 +202,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
             if (data.isFormatter) {
               let parser = value.replace(`${data.character}`, '');
               if (data.useGrouping) {
-                parser = parser!.replace(/\$\s?|(,*)/g, '');
+                parser = parser!.replace(/\$\s?|(,*)/g, '')
               }
               return parser;
             } else {
               if (data.useGrouping) {
-                return value!.replace(/\$\s?|(,*)/g, '');
+                return value!.replace(/\$\s?|(,*)/g, '')
               }
               return value;
             }
@@ -244,7 +245,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           onPressEnter={onPressEnter}
           min={data.isMin ? data.min : void 0}
           max={data.isMax ? data.max : void 0}
-          controls={false}
+          controls={data.isControl}
         />
       </div>
     </Popover>
