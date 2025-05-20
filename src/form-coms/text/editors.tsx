@@ -11,6 +11,8 @@ import { outputIds } from '../form-container/constants';
 import { Data } from './runtime';
 import { ValidateTriggerType, SizeOptions, SizeEnum } from '../types';
 
+LengthRules[2]!.limitMaxLength[0] = 255
+
 export default {
   '@resize': {
     options: ['width']

@@ -3,10 +3,10 @@
   "rules": [],
   "config": {
     "allowClear": true,
-    "placeholder": "请输入内容",
+    "placeholder": "",
     "disabled": false,
     "showCount": true,
-    "maxLength": -1,
+    "maxLength": 2000,
     "size": "middle"
   },
   "minRows": 3,

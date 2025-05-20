@@ -1,7 +1,7 @@
 import { Data } from './types';
 import {
   RuleKeys,
-  LengthRules,
+  PasswordRules,
   showMessage,
   getTitle,
   formatRegexRules,
@@ -260,6 +260,54 @@ export default {
                       return item.key === RuleKeys.CODE_VALIDATOR;
                     },
                     value: 'validateCode'
+                  },
+                  {
+                    title: '低复杂度密码校验',
+                    type: 'code',
+                    options: {
+                      language: 'javascript',
+                      enableFullscreen: false,
+                      title: '低复杂度密码校验',
+                      width: 600,
+                      minimap: {
+                        enabled: false
+                      },
+                      babel: true,
+                      eslint: {
+                        parserOptions: {
+                          ecmaVersion: '2020',
+                          sourceType: 'module'
+                        }
+                      }
+                    },
+                    ifVisible(item: any, index: number) {
+                      return item.key === RuleKeys.LOW_COMPLEX_VALIDATOR;
+                    },
+                    value: 'validateCode'
+                  },
+                  {
+                    title: '中复杂度密码校验',
+                    type: 'code',
+                    options: {
+                      language: 'javascript',
+                      enableFullscreen: false,
+                      title: '中复杂度密码校验',
+                      width: 600,
+                      minimap: {
+                        enabled: false
+                      },
+                      babel: true,
+                      eslint: {
+                        parserOptions: {
+                          ecmaVersion: '2020',
+                          sourceType: 'module'
+                        }
+                      }
+                    },
+                    ifVisible(item: any, index: number) {
+                      return item.key === RuleKeys.NORMAL_COMPLEX_VALIDATOR;
+                    },
+                    value: 'validateCode'
                   }
                 ]
               },
@@ -267,7 +315,7 @@ export default {
                 get({ data }) {
                   return data.rules.length > 0
                     ? formatRegexRules(data.rules, FormatScene.Editor)
-                    : LengthRules;
+                    : PasswordRules;
                 },
                 set({ data }, value: any) {
                   data.rules = formatRegexRules(value);
@@ -280,7 +328,7 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }) {
-            const customRule = (data.rules || LengthRules).find(
+            const customRule = (data.rules || PasswordRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
             return !!customRule?.status;

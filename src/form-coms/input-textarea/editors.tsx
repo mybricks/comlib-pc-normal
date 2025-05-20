@@ -12,6 +12,8 @@ import { createrCatelogEditor } from '../utils';
 import { outputIds } from '../form-container/constants';
 import { SizeEnum, SizeOptions } from '../types';
 
+
+
 export default {
   '@resize': {
     options: ['width']
@@ -294,9 +296,22 @@ export default {
           },
           value: {
             get({ data }) {
+
+              const _LengthRules = LengthRules.map((r) => {
+                if (r.key === RuleKeys.MAX_LENGTH) {
+                  return {
+                    ...r,
+                    message: data.maxLengthMessage,
+                    limitMaxLength: [data.config.maxLength]
+                  };
+                } else {
+                  return r;
+                }
+              });
+
               return data.rules.length > 0
                 ? formatRegexRules(data.rules, FormatScene.Editor)
-                : LengthRules;
+                : _LengthRules;
             },
             set({ data }, value: any) {
               data.rules = formatRegexRules(value);
