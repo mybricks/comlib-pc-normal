@@ -7,3 +7,19 @@ export const createrCatelogEditor = ({ catelog, items, ifVisible }: { catelog: s
         }
     });
 };
+
+export const templateRender = (template: string, params: any) => {
+    return template.replace(/\$?{([^\{\}]*?)\}/g, (match, key) => {
+      switch (key?.trim?.()) {
+        case 'label':{
+            return params?.label;
+        }
+        case '标题':{
+          return params?.label;
+        }
+        default:
+          return `{${key}}`;
+      }
+    });
+};
+

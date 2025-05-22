@@ -1,5 +1,5 @@
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
-import { createrCatelogEditor } from '../utils';
+import { createrCatelogEditor, templateRender } from '../utils';
 import {
   RuleKeys,
   defaultValidatorExample,
@@ -452,14 +452,28 @@ export default {
             items: [
               {
                 title: '提示文字',
-                type: 'Text',
+                description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+                type: 'EXPRESSION',
                 options: {
-                  locale: true
+                  autoSize: true,
+                  placeholder: '例:${标题}不能为空',
+                  suggestions: [
+                    {
+                      label: '标题',
+                      insertText: '标题',
+                      detail: `标题`
+                    },
+                  ],
+                  runCode: (script) => {
+                    return {
+                      success: templateRender(script, { label: "xx标题"}, name)
+                    };
+                  },
                 },
-                value: 'message',
                 ifVisible(item: any, index: number) {
                   return showMessage(item.key);
-                }
+                },
+                value: 'message',
               },
               {
                 title: '正则表达式',
