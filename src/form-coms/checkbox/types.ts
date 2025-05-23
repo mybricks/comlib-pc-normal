@@ -17,4 +17,5 @@ export interface Data {
     isIndeterminate: boolean;
     defaultCheckedAll?: boolean;
     eventBubble?: boolean;
+    outputValueType: 'value' | 'option'
 }
