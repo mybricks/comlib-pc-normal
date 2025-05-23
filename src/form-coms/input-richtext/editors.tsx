@@ -10,6 +10,8 @@ import {
 } from '../utils/validator';
 import { Data, getBtnItemIndex, iconType } from './types';
 import { toolbarOptions, BtnItemDataSetKey } from './utils';
+import { templateRender } from '../utils'
+
 export default {
   '@resize': {
     options: ['width']
@@ -223,13 +225,27 @@ export default {
             items: [
               {
                 title: '提示文字',
-                type: 'Text',
+                description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+                type: 'EXPRESSION',
+                options: {
+                  autoSize: true,
+                  placeholder: '例:${标题}不能为空',
+                  suggestions: [
+                    {
+                      label: '标题',
+                      insertText: '标题',
+                      detail: `标题`
+                    },
+                  ],
+                  runCode: (script) => {
+                    return {
+                      success: templateRender(script, { label: "xx标题"}, name)
+                    };
+                  },
+                },  
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return showMessage(item.key);
-                },
-                options: {
-                  locale: true
                 }
               },
               {

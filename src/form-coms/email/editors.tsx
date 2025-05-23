@@ -9,6 +9,7 @@ import {
 } from '../utils/validator';
 import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { Data } from './runtime';
+import { templateRender } from '../utils'
 
 export const emailRules = [
   {
@@ -106,8 +107,8 @@ export default {
       catalog[0].items = [
         {
           title: '提示内容',
-          type: 'Text',
-          description: '该提示内容会在值为空时显示',
+          description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+          type: 'EXPRESSION',
           options: {
             locale: true
           },
@@ -238,9 +239,23 @@ export default {
             items: [
               {
                 title: '提示文字',
-                type: 'Text',
+                description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+                type: 'EXPRESSION',
                 options: {
-                  locale: true
+                  autoSize: true,
+                  placeholder: '例:${标题}不能为空',
+                  suggestions: [
+                    {
+                      label: '标题',
+                      insertText: '标题',
+                      detail: `标题`
+                    },
+                  ],
+                  runCode: (script) => {
+                    return {
+                      success: templateRender(script, { label: "xx标题"}, name)
+                    };
+                  },
                 },
                 value: 'message',
                 ifVisible(item: any, index: number) {

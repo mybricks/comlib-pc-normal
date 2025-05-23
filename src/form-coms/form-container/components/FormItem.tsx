@@ -8,6 +8,7 @@ import css from '../styles.less';
 import classnames from 'classnames';
 import * as Icons from '@ant-design/icons';
 import { outputIds } from '../constants';
+import { templateRender } from '../../utils'
 
 interface FormItemProps {
   data: Data;
@@ -178,6 +179,11 @@ const FormItem = (props) => {
     props.outputs[outputIds.ON_CLICK_TAG](item);
   }, [item]);
 
+  const handleHelp = (msg: string)=>{
+    if(!msg) return ''
+    return templateRender(msg, item)
+  }
+
   return (
     <Form.Item
       label={
@@ -220,7 +226,7 @@ const FormItem = (props) => {
       name={item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}
-      help={item?.help}
+      help={handleHelp(item?.help)}
       tooltip={
         item?.tooltip
           ? { title: env.i18n(item?.tooltip), placement: 'right', color: '#ffffff' }
