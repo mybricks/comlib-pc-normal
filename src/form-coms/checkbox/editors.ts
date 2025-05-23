@@ -605,7 +605,6 @@ const refreshSchema = ({input, output, data}: { input: any; output: any; data: D
   
   output.get(OutputIds.OnInitial)?.setSchema(returnValueSchema);
   output.get(OutputIds.OnChange).setSchema(returnValueSchema);
-  output.get(OutputIds.OnBlur).setSchema(returnValueSchema);
   output.get(OutputIds.ReturnValue).setSchema(returnValueSchema);
   output.get(OutputIds.OnValidate).setSchema(returnValueSchema);
 };
