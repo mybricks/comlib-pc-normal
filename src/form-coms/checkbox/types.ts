@@ -4,8 +4,10 @@ export interface Data {
     config: {
         options: CheckboxOptionType[];
         disabled: boolean;
-        showLabelExpand?: boolean;
     };
+    showLabelExpand?: boolean;
+    showExpand?: boolean;
+    showExpandLimit: number;
     rules: any[];
     value?: any[];
     checkAll: boolean;

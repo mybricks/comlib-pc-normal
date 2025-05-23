@@ -8,6 +8,42 @@ export const actionsEditor = (data: Data, output, env) => {
     title: '操作区',
     items: [
       {
+        title: '启用编辑表单',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.enableEditForm
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.actions.enableEditForm = val
+          }
+        }
+      },
+      {
+        title: '事件',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.enableEditForm;
+        },
+        items: [
+          {
+            title: '提交',
+            description: '即使不新建事件仍会触发提交',
+            type: '_event',
+            options: {
+              outputId: 'onClickOperateSearch'
+            }
+          },
+          {
+            title: '重置',
+            description: '即使不新建事件仍会触发重置',
+            type: '_event',
+            options: {
+              outputId: 'onClickOperateReset'
+            }
+          }
+        ]
+      },
+      {
         title: '显示',
         type: 'Switch',
         value: {

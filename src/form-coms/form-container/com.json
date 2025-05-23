@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.93",
+  "version": "1.4.94",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -263,6 +263,22 @@
         "type": "object",
         "description": "表单容器提交事件输出",
         "properties": {}
+      }
+    },
+    {
+      "id": "onClickOperateSearch",
+      "title": "查询",
+      "desc": "点击查询按钮时触发，输出所有字段的当前值",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "onClickOperateReset",
+      "title": "重置",
+      "desc": "点击重置按钮时触发，输出所有字段的当前值",
+      "schema": {
+        "type": "object"
       }
     },
     {

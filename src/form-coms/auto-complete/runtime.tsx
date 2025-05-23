@@ -37,7 +37,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const inputRef = useRef<InputRef>(null);
   const valueRef = useRef<any>();
   const validateRelOutputRef = useRef<any>(null);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<string>();
 
   useLayoutEffect(() => {
     inputs[InputIds.SetColor]((color: string) => {
@@ -195,6 +195,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <div className={css.autoComplete}>
       <AutoComplete
         {...data.config}
+        open={!!value ? value.length > 1 : false}
         virtual={false}
         placeholder={env.i18n(data.config.placeholder)}
         value={value}
@@ -206,10 +207,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onSearch={data.isOnSearch ? onSearch : void 0}
         listHeight={160}
         listItemHeight={32}
-        options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.options, env)}
+        options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.options.filter((_, index) => !!value && value.length > 1 ? index < 20 : true), env)} // 要求只显示前20条数据
       />
       {data.config.showSearch && <SearchOutlined className={css.iconSearch} onClick={() => {
-        outputs['onSearchBtnClick']?.();
+        outputs['onSearchBtnClick']?.(value);
       }} />}
     </div>
   );

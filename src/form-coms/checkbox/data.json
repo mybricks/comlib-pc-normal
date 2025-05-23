@@ -9,9 +9,11 @@
         "key": "option1"
       }
     ],
-    "disabled": false,
-    "showLabelExpand": false
+    "disabled": false
   },
+  "showLabelExpand": false,
+  "showExpand": true,
+  "showExpandLimit": 5,
   "staticOptions": [
     {
       "label": "选项1",
@@ -22,7 +24,7 @@
     }
   ],
   "checkAll": false,
-  "layout": "vertical",
+  "layout": "horizontal",
   "checkAllText": "全选",
   "isEditable": true,
   "isIndeterminate": false,

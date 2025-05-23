@@ -8,7 +8,8 @@ import React, {
   useRef
 } from 'react';
 import { uuid } from '../../utils';
-import { Form } from 'antd';
+import { Button, Form } from 'antd';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Data, DynamicItemData, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject, getFormItem } from './utils';
@@ -667,22 +668,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
             if (data._domainModel && env.callDomainModel) {
               res = { ...formContext.current.values, ...res };
-              env.callDomainModel({
-                model: data._domainModel,
-                params: res,
-              }, (error, loading, result) => {
-                if (loading) {
-                  // 等待接口返回
-                  return;
+              env.callDomainModel(
+                {
+                  model: data._domainModel,
+                  params: res
+                },
+                (error, loading, result) => {
+                  if (loading) {
+                    // 等待接口返回
+                    return;
+                  }
+                  if (error) {
+                    // 报错
+                    console.error(`[表单容器] callDomainModel`, error);
+                  } else {
+                    // 成功
+                    output(result);
+                  }
                 }
-                if (error) {
-                  // 报错
-                  console.error(`[表单容器] callDomainModel`, error);
-                } else {
-                  // 成功
-                  output(result)
-                }
-              })
+              );
             } else {
               output(res);
             }
@@ -725,6 +729,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   };
 
+  const [isOperationFold, setIsOperationFold] = useState<Boolean>(false);
   return (
     <div
       className={classnames(
@@ -740,7 +745,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               slots['content'].size === 0 && env.edit && data.actions.visible
                 ? css.empty
                 : undefined
-            }`}
+            } ${isOperationFold ? css.formFold : ''}`}
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
@@ -763,6 +768,101 @@ export default function Runtime(props: RuntimeParams<Data>) {
         )}
         {data.useDynamicItems && !env.runtime && templateLable()}
       </Fragment>
+      {data.actions.enableEditForm && (
+        <div className={css.operation + ' ' + css['operation' + data.config?.layout]}>
+          <div className={css.operationExpand}>
+            {isOperationFold ? (
+              <div className={css.operationExpandRow} onClick={() => setIsOperationFold((v) => !v)}>
+                <DownOutlined />
+                <span className={css.operationExpandRowName}>{env.i18n('展开')}</span>
+              </div>
+            ) : (
+              <div className={css.operationExpandRow} onClick={() => setIsOperationFold((v) => !v)}>
+                <UpOutlined />
+                <span className={css.operationExpandRowName}>{env.i18n('收起')}</span>
+              </div>
+            )}
+          </div>
+          <div>
+            <Button
+              className={css.operationBtnSubmit}
+              type="primary"
+              onClick={() => {
+                if (env.runtime) {
+                  validate()
+                    .then(() => {
+                      getValue()
+                        .then((values: any) => {
+                          let res = { ...values };
+                          if (
+                            data.domainModel?.entity?.fieldAry?.length > 0 &&
+                            data.domainModel?.isQuery &&
+                            data.domainModel?.type === 'domain'
+                          ) {
+                            // 领域模型数据处理
+                            res = {
+                              values: { ...res },
+                              fieldsRules: { ...data.domainModel.queryFieldRules }
+                            };
+                          }
+
+                          if (data._domainModel && env.callDomainModel) {
+                            res = { ...formContext.current.values, ...res };
+                            env.callDomainModel(
+                              {
+                                model: data._domainModel,
+                                params: res
+                              },
+                              (error, loading, result) => {
+                                if (loading) {
+                                  // 等待接口返回
+                                  return;
+                                }
+                                if (error) {
+                                  // 报错
+                                  console.error(`[表单容器] callDomainModel`, error);
+                                } else {
+                                  // 成功
+                                  outputs['onClickOperateSearch']?.(result);
+                                }
+                              }
+                            );
+                          } else {
+                            outputs['onClickOperateSearch']?.(res);
+                          }
+
+                          // if (outputRels) {
+                          //   outputRels[outputId](res);
+                          // } else {
+                          //   outputs[outputId](res);
+                          // }
+                        })
+                        .catch((e) => {
+                          console.log('收集表单项值失败', e);
+                        });
+                    })
+                    .catch((e) => {
+                      const { validateStatus, ...other } = e;
+                      console.log('校验失败', e);
+                    });
+                }
+              }}
+            >
+              查询
+            </Button>
+            <Button
+              className={css.operationBtnReset}
+              onClick={() => {
+                if (env.runtime) {
+                  resetFields(outputs['onClickOperateReset']);
+                }
+              }}
+            >
+              重置
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

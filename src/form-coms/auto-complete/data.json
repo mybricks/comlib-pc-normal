@@ -1,7 +1,7 @@
 {
   "options": [],
   "rules": [],
-  "isFilter": false,
+  "isFilter": true,
   "isOnSearch": false,
   "config": {
     "allowClear": true,
@@ -9,5 +9,5 @@
     "disabled": false,
     "showSearch": false
   },
-  "filterRule": "value"
+  "filterRule": "label"
 }

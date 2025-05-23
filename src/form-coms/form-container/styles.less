@@ -1,9 +1,47 @@
 @import '../../global.less';
 .wrapper {
-  position: 'relative';
+  position: relative;
+  display: flex;
 
   * {
     transition: 0s !important;
+  }
+
+  .operation {
+    display: flex;
+    &.operationvertical {
+      margin-top: 32px;
+      .operationExpand {
+        margin-top: 80px;
+      }
+      .operationBtnReset {
+        margin-top: 48px;
+      }
+    }
+    &BtnSubmit {
+      display: block;
+      width: 90px;
+    }
+    &BtnReset {
+      display: block;
+      width: 90px;
+      margin-top: 16px;
+    }
+    &Expand {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      &Row {
+        white-space: nowrap;
+        margin: 0 8px;
+        line-height: 32px;
+        color: var(--ant-primary-color, #1890ff);
+        cursor: pointer;
+        &Name {
+          margin-left: 8px;
+        }
+      }
+    }
   }
 
   .slotInlineWrapper {
@@ -162,8 +200,20 @@
 }
 
 .form {
+  flex-grow: 1;
   &:global(.ant-form-vertical .formAction .ant-form-item-label) {
     display: none;
+  }
+}
+.formFold {
+  &:global(.ant-form-horizontal),
+  &:global(.ant-form-inline) {
+    height: 90px;
+    overflow: hidden;
+  }
+  &:global(.ant-form-vertical) {
+    height: 160px;
+    overflow: hidden;
   }
 }
 

@@ -25,6 +25,7 @@ export interface Action {
 }
 
 interface Actions {
+  enableEditForm?: boolean
   items: Action[];
   widthOption: LabelWidthType;
   width: number;
