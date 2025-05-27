@@ -35,7 +35,7 @@ export default function Runtime({
   const [dynamicStyles, setDynamicStyles] = useState<{ value: any; style: CSSProperties }[]>([]);
   const [single, setSingle] = useState<boolean>(false);
   const valueRef = useRef<any>(data.value);
-  const [isExpand, setIsExpand] = useState(true);
+  const [isExpand, setIsExpand] = useState(false);
 
   const [value, setValue] = useState<any>(data.value);
   // 运行时只执行一次
@@ -342,7 +342,7 @@ export default function Runtime({
                   env={env}
                   data={{
                     content: env.i18n(opt.label),
-                    expandRows: 2
+                    expandRows: 3
                   }}
                 />
               ) : (
@@ -443,7 +443,7 @@ export default function Runtime({
           }}
         >
           <DoubleRightOutlined className={css.expandIcon + ' ' + (isExpand ? css.expandIconUp : css.expandIconDown)} color="#bfbfbf" />
-          {isExpand ? '收起' : '展开'}
+          {isExpand ? env.i18n('收起') : env.i18n('展开')}
         </div>
       )}
     </div>

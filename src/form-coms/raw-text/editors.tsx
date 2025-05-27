@@ -33,20 +33,6 @@ export default {
             }
           }
         },
-        {
-          title: '收起时行数',
-          type: 'inputNumber',
-          description: '可以设置处于收起状态时展示的文本行数',
-          options: [{ width: 100, min: 1 }],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.expandRows;
-            },
-            set({ data }: EditorResult<Data>, value: number) {
-              data.expandRows = value;
-            }
-          }
-        },
         // {
         //   title: '事件',
         //   items: [
