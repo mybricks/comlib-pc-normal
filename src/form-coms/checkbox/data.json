@@ -24,7 +24,7 @@
     }
   ],
   "checkAll": false,
-  "layout": "horizontal",
+  "layout": "vertical",
   "checkAllText": "全选",
   "isEditable": true,
   "isIndeterminate": false,
