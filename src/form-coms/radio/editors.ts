@@ -398,7 +398,6 @@ export default {
               return title;
             },
             items: [
-              ems: [
                 {
                   title: '提示文字',
                   description: '提示文字的表达式（{}）, 例：${标题}不能为空',

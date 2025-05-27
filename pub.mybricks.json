@@ -25,6 +25,7 @@
       "comAry": [
         "./src/grid/com.json",
         "./src/card/com.json",
+        "./src/card-list/com.json",
         "./src/tabs/com.json",
         "./src/list/com.json",
         "./src/list-new/com.json",

@@ -1,0 +1,21 @@
+{
+  "tabList": [
+    {
+      "name": "卡片1",
+      "key": "tab0",
+      "id": "tab0",
+      "infoType": "text",
+      "size": "default",
+      "offset": [
+        0,
+        0
+      ],
+      "status": "error",
+      "showZero": false,
+      "closable": true
+    }
+  ],
+  "slotStyle": {},
+  "hideAdd": false,
+  "closable": true
+}

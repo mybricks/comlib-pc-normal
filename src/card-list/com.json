@@ -1,0 +1,157 @@
+{
+  "title": "卡片列表",
+  "namespace": "mybricks.normal-pc.card-list",
+  "version": "1.0.0",
+  "description": "卡片列表组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editor/index.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "inputs": [
+    {
+      "id": "getTabs",
+      "title": "获取卡片列表",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["getTabsDone"],
+      "desc": "获取当前所有的的卡片信息列表"
+    },
+    {
+      "title": "删除卡片",
+      "description": "删除指定卡片，key 或 index 二选一",
+      "id": "removeTab",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "title": "卡片 key",
+            "type": "string",
+            "description": "卡片的 key"
+          },
+          "index": {
+            "title": "卡片下标",
+            "type": "number",
+            "description": "卡片的下标"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "addTab",
+      "title": "卡片新增",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "卡片id",
+              "type": "string",
+              "description": "卡片的id"
+            },
+            "name": {
+              "title": "卡片标题",
+              "type": "string",
+              "description": "卡片的标题"
+            },
+            "key": {
+              "title": "卡片key",
+              "type": "string",
+              "description": "卡片的key"
+            },
+            "index": {
+              "title": "下标",
+              "type": "number",
+              "description": "卡片的下标index"
+            },
+            "closable": {
+              "title": "可关闭",
+              "type": "boolean",
+              "description": "卡片是否可关闭"
+            }
+          }
+        }
+      },
+      "desc": "卡片新增"
+    },
+    {
+      "id": "removeTab",
+      "title": "卡片删除",
+      "description": "被删除卡片信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "卡片id",
+            "type": "string",
+            "description": "卡片的id"
+          },
+          "name": {
+            "title": "卡片标题",
+            "type": "string",
+            "description": "卡片的标题"
+          },
+          "key": {
+            "title": "卡片key",
+            "type": "string",
+            "description": "卡片的key"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number",
+            "description": "卡片的下标index"
+          },
+          "closable": {
+            "title": "可关闭",
+            "type": "boolean",
+            "description": "卡片是否可关闭"
+          }
+        }
+      },
+      "desc": "卡片删除"
+    },
+    {
+      "id": "getTabsDone",
+      "title": "卡片数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "卡片id",
+              "type": "string",
+              "description": "卡片id"
+            },
+            "name": {
+              "title": "卡片标题",
+              "type": "string",
+              "description": "卡片标题"
+            },
+            "key": {
+              "title": "卡片key",
+              "type": "string",
+              "description": "卡片key"
+            }
+          }
+        }
+      },
+      "desc": "输出卡片数据，关联输入项【获取卡片列表】"
+    }
+  ],
+  "slots": [
+    {
+      "id": "tab0",
+      "title": "卡片1"
+    }
+  ]
+}
