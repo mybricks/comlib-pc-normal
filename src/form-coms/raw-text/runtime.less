@@ -1,0 +1,25 @@
+.textOverflow {
+  &Wrapper {
+    display: flex;
+  }
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  &::before {
+    content: '';
+    float: right;
+    width: 0;
+    height: calc(100% - 20px);
+  }
+}
+
+.toggleHiddenBtn {
+  float: right;
+  clear: both;
+  display: block;
+  height: 18px;
+  line-height: 18px;
+  padding: 0;
+}
