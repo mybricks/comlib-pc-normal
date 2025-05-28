@@ -2,12 +2,13 @@
   "rules": [],
   "config": {
     "fileKey": "file",
-    "buttonText": "点击上传",
+    "buttonText": "点击上传图片",
     "name": "file",
-    "fileType": [],
-    "fileSize": 0,
+    "fileType": [".jpg,.jpeg", ".png"],
+    "fileSize": 20,
     "fileCount": 0,
-    "uploadStyle": {}
+    "uploadStyle": {},
+    "usePreview": true
   },
   "isCustom": false,
   "imageSize": [

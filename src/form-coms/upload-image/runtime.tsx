@@ -1,13 +1,13 @@
-import { Upload, message, Image, UploadFile } from 'antd';
+import { Upload, message, Image, UploadFile, Popconfirm, ConfigProvider } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { RuleKeys, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import cls from 'classnames';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { slotInputIds } from '../form-container/constants';
-
+import zhCN from 'antd/es/locale/zh_CN';
 import css from './runtime.less';
 import { OutputIds, ValidateInfo } from '../types';
 
@@ -59,15 +59,7 @@ export default function ({
   const uploadInputRef = useRef(null);
   // fileListRef.current = fileList;
   const uploadRef = useRef(null);
-  const {
-    fileKey,
-    fileCount,
-    buttonText,
-    fileSize,
-    fileType,
-    usePreview,
-    multiple
-  } = data.config;
+  const { fileKey, fileCount, buttonText, fileSize, fileType, usePreview, multiple } = data.config;
 
   const validateRelOutputRef = useRef<any>(null);
 
@@ -456,33 +448,22 @@ export default function ({
     [env.edit]
   );
 
-  const hideUploadButton = useMemo(() => {
-    if (env.edit) return false;
-    // 接收类型全是图片，且文件个数为1且已经上传了一个时，隐藏
-    const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
-    const isAllAcceptImage =
-      fileType?.length && fileType.every((fType) => imageTypes.includes(fType));
-    return (
-      isAllAcceptImage &&
-      fileCount === 1 &&
-      (fileList || []).length === 1
-    );
-  }, [fileCount, fileList, fileType, env.edit]);
-
-  const outerSlotRender = useMemo(() => {
-    const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
-    const isAllAcceptImage =
-      fileType?.length && fileType.every((fType) => imageTypes.includes(fType));
-    return fileCount === 1 && isAllAcceptImage;
-  }, [fileCount, fileList, fileType]);
+  // const hideUploadButton = useMemo(() => {
+  //   if (env.edit) return false;
+  //   // 接收类型全是图片，且文件个数为1且已经上传了一个时，隐藏
+  //   const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
+  //   const isAllAcceptImage =
+  //     fileType?.length && fileType.every((fType) => imageTypes.includes(fType));
+  //   return isAllAcceptImage && fileCount === 1 && (fileList || []).length === 1;
+  // }, [fileCount, fileList, fileType, env.edit]);
 
   // 上传按钮渲染
   const renderUploadText = () => {
     // 上传个数为1，且 当前文件列表为一个时，隐藏图片卡片的上传按钮
     const pictureButton = (
-      <div>
+      <div className={css.uploadTextWrapper} onClick={handleLabelClick}>
         <PlusOutlined />
-        <div style={{ marginTop: 8 }} className="upload-btn-text" onClick={handleLabelClick}>
+        <div style={{ marginTop: 16 }} className="upload-btn-text">
           {env.i18n(buttonText)}
         </div>
       </div>
@@ -493,69 +474,66 @@ export default function ({
 
   const classnames = [css.uploadWrap];
 
-  // hideUploadButton ? css.uploadPictureCardHideWrap : ''
   return (
-    <div ref={uploadRef} className={cls(classnames.join(' '))}>
-      <Upload
-        name={fileKey}
-        listType="picture-card"
-        fileList={Array.isArray(fileList) ? fileList : void 0}
-        accept={fileType.join()}
-        ref={uploadInputRef}
-        customRequest={() => {}}
-        beforeUpload={beforeUpload}
-        onRemove={onRemove}
-        onPreview={onPreview}
-        multiple={multiple}
-        maxCount={fileCount}
-        progress={{ strokeWidth: 5, showInfo: false }}
-        showUploadList={
-          hideUploadButton
-            ? false
-            : {
-                showPreviewIcon: usePreview
-              }
-        }
-        //iconRender={Icons && Icons[uploadIcon]?.render()}
-      >
-        {!outerSlotRender &&
-          slots['customUpload']?.render({
-            style: {
-              display: 'none'
-            }
-          })}
-        {data.isEditable ? (
-          hideUploadButton ? null : (
-            renderUploadText()
-          )
-        ) : (
-          ''
-        )}
-        {hideUploadButton ? (
-          <div className={css['custom-upload-image']}>
-            {fileList[0]?.url ? (
-              <img
-                src={fileList[0]?.url}
-                alt="uploaded"
-                onClick={(e) => e.stopPropagation()}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            ) : (
-              <span style={{ marginTop: '20%', display: 'inline-block' }}>Uploading </span>
-            )}
-            <div className={css['overlay-text']}>重新上传</div>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </Upload>
-      {outerSlotRender
-        ? slots['customUpload']?.render({
-            style: {
-              display: 'none'
-            }
-          })
-        : null}
-    </div>
+    <ConfigProvider locale={zhCN}>
+      <div ref={uploadRef} className={cls(classnames.join(' '))}>
+        <Upload
+          name={fileKey}
+          listType="picture-card"
+          fileList={Array.isArray(fileList) ? fileList : void 0}
+          accept={fileType.join()}
+          ref={uploadInputRef}
+          customRequest={() => {}}
+          beforeUpload={beforeUpload}
+          onRemove={onRemove}
+          onPreview={onPreview}
+          multiple={multiple}
+          maxCount={fileCount}
+          progress={{ strokeWidth: 4, showInfo: false }}
+          showUploadList={
+            env.edit
+              ? false
+              : {
+                  showPreviewIcon: usePreview,
+                  removeIcon: (file) => (
+                    <Popconfirm
+                      icon={false}
+                      title={env.i18n('即将删除图片，是否继续？')}
+                      okText={env.i18n('确认')}
+                      cancelText={env.i18n('取消')}
+                      onConfirm={() => onRemove(file)}
+                      onCancel={(e) => {
+                        e?.preventDefault();
+                        e?.stopPropagation();
+                      }}
+                    >
+                      <span
+                        title={env.i18n('删除图片')}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <DeleteOutlined />
+                      </span>
+                    </Popconfirm>
+                  ),
+                  previewIcon: (
+                    <span title={env.i18n('预览图片')}>
+                      <EyeOutlined />
+                    </span>
+                  )
+                }
+          }
+        >
+          {data.isEditable ? renderUploadText() : ''}
+        </Upload>
+        {(data.config.fileType.length > 0 || data.config.fileSize > 0) && <span className={css.imageUploaderTips}>
+          {data.config.fileType.length > 0 && `支持格式：${data.config.fileType.map((i) => i.replace(/\./g, '')).map((i) => i.replace(/\,/g, '/')).join('/')}`}
+          {(data.config.fileType.length > 0 && data.config.fileSize > 0) && ','}
+          {data.config.fileSize > 0 && `单个图片不超过${data.config.fileSize}M`}
+        </span>}
+      </div>
+    </ConfigProvider>
   );
 }
