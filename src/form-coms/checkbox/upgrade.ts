@@ -21,6 +21,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add('onInitial', '初始化', valueSchema);
   }
 
+
+  // 增加输入的数据类型配置
+  if(typeof data.outputValueType === 'undefined') {
+    data.outputValueType = 'value'
+  }
+
   /**
     * @description v1.0.3 增加全选框配置
     */

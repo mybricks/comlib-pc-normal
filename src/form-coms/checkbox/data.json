@@ -28,5 +28,6 @@
   "checkAllText": "全选",
   "isEditable": true,
   "isIndeterminate": false,
-  "eventBubble": false
+  "eventBubble": false,
+  "outputValueType": "value"
 }
