@@ -302,7 +302,7 @@ export default function Runtime({
         // };
 
         if (node.children && node.children.length > 0) {
-          resolve();
+          resolve(undefined);
           return;
         }
 
@@ -311,13 +311,14 @@ export default function Runtime({
           resolve
         };
 
-        if (!node._depth) {
+        if (node._depth === undefined) {
+          resolve();
           return;
         }
 
         outputs['loadData']({
           ...node,
-          [data.labelFieldName || 'label']: node.title
+          [data.labelFieldName || 'label']: node[data.labelFieldName || 'label']
         });
       });
     },
