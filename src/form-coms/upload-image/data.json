@@ -1,0 +1,21 @@
+{
+  "rules": [],
+  "config": {
+    "fileKey": "file",
+    "buttonText": "点击上传图片",
+    "name": "file",
+    "fileType": [".jpg,.jpeg", ".png"],
+    "fileSize": 20,
+    "fileCount": 0,
+    "uploadStyle": {},
+    "usePreview": true
+  },
+  "isCustom": false,
+  "imageSize": [
+    0,
+    0
+  ],
+  "customUpload": true,
+  "fileClick": false,
+  "isEditable": true
+}

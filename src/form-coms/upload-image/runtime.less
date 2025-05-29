@@ -1,0 +1,107 @@
+.uploadWrap {
+  :global {
+    .ant-upload-list-item-actions .anticon svg {
+      fill: #ffffff;
+    }
+    .ant-upload-select .anticon svg {
+      width: 24px;
+      height: 24px;
+      fill: #262626;
+    }
+    .ant-upload-list-picture-card-container {
+      width: 100px;
+      height: 100px;
+    }
+    .ant-upload.ant-upload-select-picture-card {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 0px;
+      margin-right: 0px;
+    }
+    // 隐藏上传中的文本
+    .ant-upload-list-item-uploading .ant-upload-list-item-thumbnail {
+      display: none !important;
+    }
+    // 调整上传中进度条位置到中间
+    .ant-upload-list-item-progress {
+      bottom: 50%;
+      transform: translate(0, 50%);
+    }
+  }
+  .uploadTextWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #ececec;
+  }
+  .uploadImageItem {
+    width: 100px;
+    &Img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .imageUploaderTips {
+    font-size: 12px;
+    color: #349ca6;
+  }
+}
+
+.uploadPictureCardHideWrap {
+  :global {
+    .ant-upload.ant-upload-select-picture-card {
+      display: none !important;
+    }
+  }
+}
+
+.custom-upload-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-upload-image:hover {
+  .overlay-text {
+    display: block;
+  }
+}
+.overlay-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: none;
+  border-radius: 0 0 2px 2px;
+  // transform: translate(0, -50%);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.emptyDragger {
+  :global {
+    .ant-upload-drag {
+      display: none;
+    }
+  }
+}
+
+.custom {
+  :global {
+    .ant-upload {
+      display: block;
+    }
+  }
+}
