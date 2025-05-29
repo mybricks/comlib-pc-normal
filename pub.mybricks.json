@@ -70,6 +70,8 @@
         "./src/form-coms/switch/com.json",
         "./src/form-coms/transfer/com.json",
         "./src/form-coms/upload/com.json",
+        "./src/form-coms/upload-image/com.json",
+        "./src/form-coms/upload-file/com.json",
         "./src/form-coms/slider/com.json",
         "./src/form-coms/rate/com.json",
         "./src/form-coms/email/com.json",
