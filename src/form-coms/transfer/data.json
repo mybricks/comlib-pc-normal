@@ -4,7 +4,17 @@
     {
       "title": "item",
       "description": "description",
-      "disabled": false
+      "children" : [{
+        "title": "item12111",
+        "description": "description"
+      },{
+        "title": "item1dd",
+        "description": "description"
+      }]
+    },
+    {
+      "title": "item122",
+      "description": "description"
     }
   ],
   "rules": []

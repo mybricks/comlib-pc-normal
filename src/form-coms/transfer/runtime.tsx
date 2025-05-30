@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { message, Transfer } from 'antd';
-import { Data } from './types';
+import React, { Children, useCallback, useEffect, useRef, useState } from 'react';
+import { message, Transfer, Tree, Empty, Input } from 'antd';
+import { UserOutlined, SearchOutlined, TeamOutlined} from '@ant-design/icons';
+import { Data, TransferItem } from './types';
 import { uuid } from '../../utils';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
@@ -10,6 +11,23 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
+
+const generateTreeData = (data: TransferItem[]) => {
+  data?.map((item) => {
+      if (!item.key) {
+        item.key = uuid();
+      }
+      if(item?.children) {
+        generateTreeData(item.children)
+      }
+    });
+}
+
+function mergeAndDedupeArrays(arr1, arr2) {
+  const mergedArray = [...arr1, ...arr2];
+  const mergedSet = new Set(mergedArray);
+  return Array.from(mergedSet);
+}
 
 export default function ({
   data,
@@ -24,16 +42,59 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
     data;
-  const _dataSource = dataSource?.map((item) => {
-    if (!item.key) {
-      item.key = uuid();
-    }
-    return item;
-  });
+  // const _dataSource = dataSource?.map((item) => {
+  //   if (!item.key) {
+  //     item.key = uuid();
+  //   }
+  //   return item;
+  // });
+  generateTreeData(dataSource||[])
 
+  const transferRef = useRef(null);
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
+  const [leftSelectedKeys, setLeftSelectedKeys] = useState<string[] | undefined>([]);
+  const [searchValue, setSearchValue] = useState('');
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>([]);
+
+  const transferDataSource: TransferItem[] = [];
+  const leftAllKeys: String[] = []
+  function flatten(list: TransferItem[] = []) {
+    list.forEach((item) => {
+      transferDataSource.push(item as TransferItem);
+      leftAllKeys.push(item.key);
+      flatten(item.children);
+    });
+  }
+  flatten(dataSource);
+
+  const getTreeKeys = (list: TransferItem[] = [], keys: String[] = []) =>{
+    list.forEach((item) => {
+      keys.push(item.key)
+      getTreeKeys(item.children, keys);
+    });
+  }
+
+  const filterTreeData = (treeNodes: TransferItem[] = [],
+    checkedKeys: string[],
+    searchValue: string) => {
+    const loop = (treeNodes) =>
+      treeNodes
+        .map((item ) => {
+          const match = item.title.toLowerCase().includes(searchValue.toLowerCase());
+          const children = item.children ? loop(item.children) : [];
+          return {
+            ...item,
+            disabled: checkedKeys.includes(item.key as string),
+            children,
+            isMatch: match || children.some((child) => child.isMatch),
+          };
+        })
+        .filter((item) => item.isMatch);
+    return loop(treeNodes);
+  }
+
+  const treeData = filterTreeData(dataSource||[], targetKeys, searchValue)
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
@@ -94,6 +155,16 @@ export default function ({
     },
     [targetKeys]
   );
+
+  const clearSelectedTargetItems = () => {
+    transferRef.current?.setStateKeys('right', []);
+  }
+
+  const leftSelectAll = () => {
+    let treeKeys = [] 
+    getTreeKeys(treeData, treeKeys)
+    transferRef.current?.setStateKeys('left',  mergeAndDedupeArrays(treeKeys, leftSelectedKeys));
+  }
 
   const setTarget = (val) => {
     if (!Array.isArray(val) && val !== null && val !== undefined) {
@@ -185,6 +256,9 @@ export default function ({
     return title;
   };
 
+  const isChecked = (selectedKeys: React.Key[], eventKey: React.Key) =>
+    selectedKeys.includes(eventKey);
+
   // 勾选数据更新
   const onSelectChange = (sourceSelectedKeys: string[], targetSelectedKeys: string[]) => {
     outputs['onSelectChange'] &&
@@ -194,23 +268,73 @@ export default function ({
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <Transfer
+        ref={transferRef}
         className={styles.transfer}
         style={{ height: style.height }}
         titles={[
-          <span data-transfer-title-idx="0">{env.i18n(titles[0])}</span>,
-          <span data-transfer-title-idx="1">{env.i18n(titles[1])}</span>
+          // <span data-transfer-title-idx="0">{env.i18n(titles[0])}</span>,
+          // <span data-transfer-title-idx="1">{env.i18n(titles[1])}</span>
         ]}
-        dataSource={_dataSource}
+        dataSource={transferDataSource}
         targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
+        // selectedKeys={leftSelectedKeys}
         showSearch={showSearch}
-        showSelectAll
+        showSelectAll={false}
         oneWay={oneWay}
         disabled={disabled}
+        operations={['<<', '>>']}
         render={renderItem}
         pagination={showPagination && pagination}
         onChange={onChange}
-        onSelectChange={onSelectChange}
-      />
+        // onSelectChange={onSelectChange}
+        selectAllLabels={[
+          ({ selectedCount, totalCount }) => (<div className={styles.search}> 
+            <Input
+              size="small"
+              placeholder="请输入"
+              prefix={<UserOutlined />}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+            /><div className={styles.leftSelectAll} onClick={leftSelectAll}>全选</div></div>),
+          ({ selectedCount, totalCount }) => (
+            <div className={styles.rightHeader}>
+              <div>已选择({selectedCount})</div>
+              <div onClick={clearSelectedTargetItems}>清空</div>
+            </div>
+          ),
+        ]}
+        >
+        {({ direction, onItemSelect, selectedKeys }) => {
+          if(direction === 'left') {
+            setLeftSelectedKeys(selectedKeys)
+            const checkedKeys = [...selectedKeys, ...targetKeys];
+            return(
+              <div className={styles.container}>
+                    {
+                    treeData?.length <= 0 ? 
+                      <div className={styles.empetyContainer}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/></div>:<div></div>
+                    }
+                  <Tree
+                    blockNode
+                    checkable
+                    className={styles.tree}
+                    checkStrictly
+                    defaultExpandAll
+                    checkedKeys={checkedKeys}
+                    treeData={treeData}
+                    onCheck={(_, { node: { key } }) => {
+                      onItemSelect(key as string, !isChecked(checkedKeys, key));
+                    }}
+                    onSelect={(_, { node: { key } }) => {
+                      onItemSelect(key as string, !isChecked(checkedKeys, key));
+                    }}
+                />
+              </div>
+            )
+          }
+      }}
+      </Transfer>
     </ConfigProvider>
   );
 }
