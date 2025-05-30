@@ -10,6 +10,24 @@
       "title": "ID",
       "width": "auto",
       "contentType": "text"
+    },
+    {
+      "key": "index",
+      "dataIndex": "index",
+      "visible": true,
+      "isRowKey": false,
+      "title": "编号",
+      "width": "48",
+      "contentType": "text"
+    },
+    {
+      "key": "操作",
+      "dataIndex": "操作",
+      "visible": true,
+      "isRowKey": false,
+      "title": "操作",
+      "width": "140",
+      "contentType": "text"
     }
   ],
   "fixedHeader": false,
@@ -25,7 +43,7 @@
   },
   "bordered": false,
   "size": "middle",
-  "useRowSelection": false,
+  "useRowSelection": true,
   "enableRowClickSelection": false,
   "rowSelectionMessage": "已选中 { count } 项",
   "rowSelectionPostion": [
@@ -35,7 +53,7 @@
   "useLoading": true,
   "tableLayout": "fixed",
   "loadingTip": "",
-  "usePagination": false,
+  "usePagination": true,
   "paginationConfig": {
     "total": 20,
     "text": "共 {total} 条结果",
@@ -49,14 +67,14 @@
     "defaultPageSize": 10,
     "align": "flex-end",
     "size": "default",
-    "showSizeChanger": false,
+    "showSizeChanger": true,
     "pageSizeOptions": [
       "10",
       "20",
       "50",
       "100"
     ],
-    "showQuickJumper": false,
+    "showQuickJumper": true,
     "hideOnSinglePage": false,
     "useDynamicTitle": false
   },
