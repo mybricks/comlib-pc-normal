@@ -29,6 +29,7 @@
     "copy-to-clipboard": "^3.3.3",
     "flv.js": "^1.6.2",
     "hls.js": "^1.2.8",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "mock-json-schema": "^1.1.1",
     "moment": "^2.29.1",

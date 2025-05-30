@@ -1,6 +1,13 @@
 import { Button, Upload, message, Image, UploadFile, Modal } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { UploadOutlined, FileOutlined, EyeOutlined, DeleteOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import {
+  UploadOutlined,
+  FileOutlined,
+  EyeOutlined,
+  DeleteOutlined,
+  CloudUploadOutlined,
+  DownloadOutlined
+} from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { RuleKeys, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
@@ -11,6 +18,7 @@ import { slotInputIds } from '../form-container/constants';
 import css from './runtime.less';
 import { OutputIds, ValidateInfo } from '../types';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import JSZip from 'jszip';
 
 interface UploadConfig {
   buttonText: string;
@@ -45,11 +53,48 @@ export interface Data {
   buttonSize: string;
 }
 
+const downloadFile = (url, fileName) => {
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+const fetchBlob = async (fetchUrl, method = 'GET', body = null) => {
+  const res = await window.fetch(fetchUrl, {
+    method,
+    body: body ? JSON.stringify(body) : null,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'Access-Control-Allow-Origin': '*'
+    }
+  });
+  const blob = await res.blob();
+  return blob;
+};
+
+const batchDownload = (fileList: UploadFile[]) => {
+  if (fileList.length === 0) return;
+  const zip = new JSZip();
+  fileList.forEach((file) => {
+    zip.file(file.name, fetchBlob(file.url, 'GET'));
+  });
+  zip.generateAsync({ type: 'blob' }).then((blob) => {
+    const url = window.URL.createObjectURL(blob);
+    downloadFile(url, `${new Date().toLocaleString()}.zip`);
+  });
+};
+
 const renderUploadFileDate = (date?: number | Date) => {
   if (!date) return;
   const d = new Date(date);
-  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
-}
+  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+};
 
 export default function ({
   env,
@@ -61,24 +106,8 @@ export default function ({
   id,
   name
 }: RuntimeParams<Data>) {
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: '-1',
-      name: 'imageimageimageimage.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      lastModified: 1748503088372,
-    }
-  ]);
-  const fileListRef = useRef<UploadFile[]>([
-    {
-      uid: '-1',
-      name: 'imageimageimageimage.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      lastModified: 1748503088372,
-    }
-  ]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
 
   const uploadInputRef = useRef(null);
@@ -535,28 +564,46 @@ export default function ({
           return (
             <div className={css.uploadFileItem}>
               <FileOutlined />
-              <a onClick={actions.preview} className={css.uploadFileItemName} title={file.name}>{file.name}</a>
-              <span className={css.uploadFileItemDate}>{renderUploadFileDate(file.lastModified)}</span>
+              <a onClick={actions.preview} className={css.uploadFileItemName} title={file.name}>
+                {file.name}
+              </a>
+              <span className={css.uploadFileItemDate}>
+                {renderUploadFileDate(file.lastModified)}
+              </span>
               <div className={css.uploadFileItemActions}>
-                <a title={env.i18n('预览')} onClick={actions.preview}><EyeOutlined /></a>
-                <a title={env.i18n('下载')} onClick={actions.download}><CloudUploadOutlined /></a>
-                <a title={env.i18n('删除')} onClick={() => {
-                  Modal.confirm({
-                    title: env.i18n('即将删除文件，是否继续？'),
-                    icon: false,
-                    okText: env.i18n('确定'),
-                    cancelText: env.i18n('取消'),
-                    onOk: actions.remove,
-                  })
-                }}><DeleteOutlined /></a>
+                <a title={env.i18n('预览')} onClick={actions.preview}>
+                  <EyeOutlined />
+                </a>
+                <a title={env.i18n('下载')} onClick={actions.download}>
+                  <CloudUploadOutlined />
+                </a>
+                <a
+                  title={env.i18n('删除')}
+                  onClick={() => {
+                    Modal.confirm({
+                      title: env.i18n('即将删除文件，是否继续？'),
+                      icon: false,
+                      okText: env.i18n('确定'),
+                      cancelText: env.i18n('取消'),
+                      onOk: actions.remove
+                    });
+                  }}
+                >
+                  <DeleteOutlined />
+                </a>
               </div>
             </div>
           );
         }}
       >
-        <Button size={data.buttonSize as SizeType} icon={<UploadOutlined />}>{data.config.buttonText}</Button>
-        <span>批量下载</span>
+        <Button size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
+          {data.config.buttonText}
+        </Button>
       </Upload>
+      <a className={css.batchDownload} onClick={() => env.runtime && batchDownload(fileListRef.current)}>
+        <DownloadOutlined />
+        <span style={{ marginLeft: 8 }}>批量下载</span>
+      </a>
     </div>
   );
 }
