@@ -1,16 +1,21 @@
-import { Upload, message, Image, UploadFile, Popconfirm, ConfigProvider, Progress } from 'antd';
-import { ActionSheet } from 'antd-mobile';
+import { Button, Upload, message, Image, UploadFile, Progress } from 'antd';
+import {ActionSheet} from'antd-mobile';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { DeleteOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  UploadOutlined,
+  FileOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RuleKeys, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import cls from 'classnames';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { slotInputIds } from '../form-container/constants';
-import zhCN from 'antd/es/locale/zh_CN';
 import css from './runtime.less';
 import { OutputIds, ValidateInfo } from '../types';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import JSZip from 'jszip';
 
 interface UploadConfig {
   buttonText: string;
@@ -21,7 +26,7 @@ interface UploadConfig {
   fileKey: string;
   usePreview?: boolean;
   multiple?: boolean;
-  uploadIcon?: string;
+  uploadStyle: React.CSSProperties;
   disabled: boolean;
   useCustomRemove: boolean;
 }
@@ -36,12 +41,57 @@ interface UploadFileList {
 export interface Data {
   rules: any[];
   config: UploadConfig;
-  isCustom: boolean;
+  isShowUploadList: boolean;
   imageSize: number[];
   customUpload: boolean;
   fileClick: boolean;
   isEditable: boolean;
+  /**@description v1.0.35 按钮尺寸 */
+  buttonSize: string;
 }
+
+const downloadFile = (url, fileName) => {
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+const fetchBlob = async (fetchUrl, method = 'GET', body = null) => {
+  const res = await window.fetch(fetchUrl, {
+    method,
+    body: body ? JSON.stringify(body) : null,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'Access-Control-Allow-Origin': '*'
+    }
+  });
+  const blob = await res.blob();
+  return blob;
+};
+
+const batchDownload = (fileList: UploadFile[]) => {
+  if (fileList.length === 0) return;
+  const zip = new JSZip();
+  fileList.forEach((file) => {
+    zip.file(file.name, fetchBlob(file.url, 'GET'));
+  });
+  zip.generateAsync({ type: 'blob' }).then((blob) => {
+    const url = window.URL.createObjectURL(blob);
+    downloadFile(url, `${new Date().toLocaleString()}.zip`);
+  });
+};
+
+const renderUploadFileDate = (date?: number | Date) => {
+  if (!date) return;
+  const d = new Date(date);
+  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+};
 
 export default function ({
   env,
@@ -59,8 +109,18 @@ export default function ({
 
   const uploadInputRef = useRef(null);
   // fileListRef.current = fileList;
-  const uploadRef = useRef(null);
-  const { fileKey, fileCount, buttonText, fileSize, fileType, usePreview, multiple } = data.config;
+  const uploadRef = useRef();
+  const {
+    fileKey,
+    disabled,
+    fileCount,
+    buttonText,
+    uploadStyle,
+    fileSize,
+    fileType,
+    usePreview,
+    multiple
+  } = data.config;
 
   const validateRelOutputRef = useRef<any>(null);
 
@@ -272,7 +332,6 @@ export default function ({
   // 文件上传输出
   const onCustomRequest = (fileList: UploadFile[]) => {
     if (!data.customUpload) {
-      console.log(env);
       if (typeof env.uploadFile !== 'function') {
         message.error(`应用的env中没有uploadFile方法`);
         return;
@@ -439,75 +498,74 @@ export default function ({
     render(<ImgPreview src={src} onClose={onClose} />, divEle);
   };
 
-  const handleLabelClick = useCallback(
-    (e) => {
-      if (env.edit) {
-        e.stopPropagation();
-        return;
-      }
-    },
-    [env.edit]
-  );
+  const setUploadStyle = (node: HTMLElement) => {
+    if (!node) {
+      return;
+    }
+    const uploadSelectWrap = node.querySelector('.ant-upload-select');
+    let fileListKey, uploadBtnKey;
+    fileListKey = '.ant-upload-list-item';
+    uploadBtnKey = '.ant-btn';
 
-  // const hideUploadButton = useMemo(() => {
-  //   if (env.edit) return false;
-  //   // 接收类型全是图片，且文件个数为1且已经上传了一个时，隐藏
-  //   const imageTypes = ['.jpg,.jpeg', '.png', '.svg', '.gif', '.tiff'];
-  //   const isAllAcceptImage =
-  //     fileType?.length && fileType.every((fType) => imageTypes.includes(fType));
-  //   return isAllAcceptImage && fileCount === 1 && (fileList || []).length === 1;
-  // }, [fileCount, fileList, fileType, env.edit]);
-
-  // 上传按钮渲染
-  const renderUploadText = () => {
-    // 上传个数为1，且 当前文件列表为一个时，隐藏图片卡片的上传按钮
-    const pictureButton = (
-      <div className={css.uploadTextWrapper} onClick={handleLabelClick}>
-        <PlusOutlined />
-        <div style={{ marginTop: 16 }} className="upload-btn-text">
-          {env.i18n(buttonText)}
-        </div>
-      </div>
-    );
-
-    return pictureButton;
+    const list = [
+      uploadSelectWrap,
+      ...(fileListKey ? Array.from(node.querySelectorAll(fileListKey)) : []),
+      uploadBtnKey ? uploadSelectWrap?.querySelector(uploadBtnKey) : uploadSelectWrap
+    ];
+    list.forEach((ele) => {
+      Object.keys(uploadStyle || {}).forEach((key) => {
+        if (ele) {
+          ele.style[key] = uploadStyle[key] ? `${uploadStyle[key]}px` : '';
+        }
+      });
+    });
   };
 
+  useEffect(() => {
+    setUploadStyle(uploadRef.current);
+  }, [uploadRef.current, uploadStyle, fileList]);
+
   const classnames = [css.uploadWrap];
+  if (env.edit) {
+    classnames.push(css.custom);
+  }
 
+  //编辑态，自定义内容时不可编辑
+  let condition = env.edit;
+
+  // hideUploadButton ? css.uploadPictureCardHideWrap : ''
   return (
-    <ConfigProvider locale={zhCN}>
-      <div ref={uploadRef} className={cls(classnames.join(' '))}>
-        <Upload
-          name={fileKey}
-          listType="picture-card"
-          fileList={Array.isArray(fileList) ? fileList : void 0}
-          accept={fileType.join()}
-          ref={uploadInputRef}
-          customRequest={() => {}}
-          beforeUpload={beforeUpload}
-          onRemove={onRemove}
-          onPreview={onPreview}
-          multiple={multiple}
-          maxCount={fileCount}
-          progress={{ strokeWidth: 4, showInfo: false }}
-          itemRender={(
-            originNode: React.ReactElement,
-            file: UploadFile,
-            fileList: object[],
-            actions: { download: any; preview: any; remove: any }
-          ) => {
-            if (file.percent && file.percent < 100) {
-              return (
-                <div className={css.uploadTextWrapper}>
-                  <Progress type="line" showInfo={false} percent={file.percent} strokeWidth={4} />
-                </div>
-              );
-            }
+    <div ref={uploadRef} className={cls(classnames.join(' '))}>
+      <Upload
+        name={fileKey}
+        listType="text"
+        fileList={Array.isArray(fileList) ? fileList : void 0}
+        accept={fileType.join()}
+        ref={uploadInputRef}
+        customRequest={() => {}}
+        beforeUpload={beforeUpload}
+        onRemove={onRemove}
+        onPreview={onPreview}
+        disabled={condition ? true : disabled}
+        multiple={multiple}
+        maxCount={fileCount}
+        showUploadList={{
+          showPreviewIcon: usePreview
+        }}
+        itemRender={(
+          originNode: React.ReactElement,
+          file: UploadFile,
+          fileList: object[],
+          actions: { download: any; preview: any; remove: any }
+        ) => {
+          if (file.percent && file?.percent < 100) {
+            return <div className={css.uploading}><LoadingOutlined className={css.uploadingIcon} />{file.name}</div>;
+          }
 
-            return (
-              <div
-                className={css.uploadImageItem}
+          return (
+            <div className={css.uploadFileItem}>
+              <FileOutlined />
+              <a
                 onClick={() => {
                   const handle = ActionSheet.show({
                     actions: [
@@ -546,61 +604,26 @@ export default function ({
                     cancelText: env.i18n('取消')
                   });
                 }}
+                className={css.uploadFileItemName}
+                title={file.name}
               >
-                <img className={css.uploadImageItemImg} src={file.url}></img>
-              </div>
-            );
-          }}
-          showUploadList={
-            env.edit
-              ? false
-              : {
-                  showPreviewIcon: usePreview,
-                  removeIcon: (file) => (
-                    <Popconfirm
-                      icon={false}
-                      title={env.i18n('即将删除图片，是否继续？')}
-                      okText={env.i18n('确认')}
-                      cancelText={env.i18n('取消')}
-                      onConfirm={() => onRemove(file)}
-                      onCancel={(e) => {
-                        e?.preventDefault();
-                        e?.stopPropagation();
-                      }}
-                    >
-                      <span
-                        title={env.i18n('删除图片')}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      >
-                        <DeleteOutlined />
-                      </span>
-                    </Popconfirm>
-                  ),
-                  previewIcon: (
-                    <span title={env.i18n('预览图片')}>
-                      <EyeOutlined />
-                    </span>
-                  )
-                }
-          }
-        >
-          {data.isEditable ? renderUploadText() : ''}
-        </Upload>
-        {(data.config.fileType.length > 0 || data.config.fileSize > 0) && (
-          <span className={css.imageUploaderTips}>
-            {data.config.fileType.length > 0 &&
-              `支持格式：${data.config.fileType
-                .map((i) => i.replace(/\./g, ''))
-                .map((i) => i.replace(/\,/g, '/'))
-                .join('/')}`}
-            {data.config.fileType.length > 0 && data.config.fileSize > 0 && ','}
-            {data.config.fileSize > 0 && `单个图片不超过${data.config.fileSize}M`}
-          </span>
-        )}
-      </div>
-    </ConfigProvider>
+                {file.name}
+              </a>
+            </div>
+          );
+        }}
+      >
+        <Button size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
+          {data.config.buttonText}
+        </Button>
+      </Upload>
+      {/* <a
+        className={css.batchDownload}
+        onClick={() => env.runtime && batchDownload(fileListRef.current)}
+      >
+        <DownloadOutlined />
+        <span style={{ marginLeft: 8 }}>批量下载</span>
+      </a> */}
+    </div>
   );
 }

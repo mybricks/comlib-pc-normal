@@ -1,0 +1,22 @@
+{
+  "rules": [],
+  "config": {
+    "fileKey": "file",
+    "buttonText": "上传文件",
+    "name": "file",
+    "fileType": [],
+    "fileSize": 0,
+    "fileCount": 0,
+    "uploadStyle": {},
+    "usePreview": true
+  },
+  "isShowUploadList": true,
+  "imageSize": [
+    0,
+    0
+  ],
+  "buttonSize": "middle",
+  "customUpload": true,
+  "fileClick": false,
+  "isEditable": true
+}

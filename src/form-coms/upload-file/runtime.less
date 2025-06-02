@@ -1,0 +1,111 @@
+.uploadWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  :global {
+    .ant-upload-list-item-actions .anticon svg {
+      fill: #ffffff;
+    }
+    .ant-upload.ant-upload-select-picture-card {
+      margin-bottom: 0px;
+      margin-right: 0px;
+    }
+    .ant-form-item-with-help .ant-form-item-explain {
+      min-height: 0;
+    }
+  }
+
+  .uploading {
+    color: var(--ant-primary-color, #1890ff);
+    &Icon {
+      margin-right: 8px;
+    }
+  }
+
+  .uploadFileItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #595959;
+    &Name {
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &Date {
+      white-space: nowrap;
+    }
+    &Actions {
+      display: flex;
+      line-height: 1;
+      gap: 8px;
+      a {
+        color: #595959;
+      }
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .batchDownload {
+    font-size: 14px;
+  }
+}
+
+.uploadPictureCardHideWrap {
+  :global {
+    .ant-upload.ant-upload-select-picture-card {
+      display: none !important;
+    }
+  }
+}
+
+.custom-upload-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-upload-image:hover {
+  .overlay-text {
+    display: block;
+  }
+}
+.overlay-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: none;
+  border-radius: 0 0 2px 2px;
+  // transform: translate(0, -50%);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.emptyDragger {
+  :global {
+    .ant-upload-drag {
+      display: none;
+    }
+  }
+}
+
+.custom {
+  :global {
+    .ant-upload {
+      display: block;
+    }
+  }
+}
