@@ -178,6 +178,13 @@ export default function ({
     return valueRef.current;
   }, [targetKeys]);
 
+
+  const chooseSearchIcons = (val) => {
+    if(val==1)
+      return (<SearchOutlined />)
+    return (<UserOutlined />)
+  };
+
   useFormItemInputs(
     {
       id,
@@ -282,7 +289,7 @@ export default function ({
         showSelectAll={false}
         oneWay={oneWay}
         disabled={disabled}
-        operations={['<<', '>>']}
+        operations={['>>', '<<']}
         render={renderItem}
         pagination={showPagination && pagination}
         onChange={onChange}
@@ -292,7 +299,7 @@ export default function ({
             <Input
               size="small"
               placeholder="请输入"
-              prefix={<UserOutlined />}
+              prefix={chooseSearchIcons(1)}
               onChange={(e) => {
                 setSearchValue(e.target.value);
               }}
