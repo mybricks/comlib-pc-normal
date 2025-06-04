@@ -250,11 +250,13 @@ export default function Runtime({
         return;
       }
 
-      let myCurNode = curNode.current[val[data.valueFieldName]] as any;
-      const { node, resolve } = myCurNode as any;
+      let myCurNode = curNode.current[val[data.valueFieldName || "value"]] as any;
+      const { node, resolves } = myCurNode as any;
       // const { node, resolve } = curNode.current as any;
       data.options = setTreeDataForLoadData(data, node, data.options, val);
-      resolve();
+      // resolve();
+      resolves.forEach((resolve) => resolve())
+      myCurNode.resolves = []
       treeLoadedKeysRef.current = uniq([...treeLoadedKeys, `${node.key}`]);
       setTreeLoadKeys(uniq([...treeLoadedKeys, `${node.key}`]));
       relOutputs['setLoadDataDone'](val);
@@ -306,13 +308,18 @@ export default function Runtime({
           return;
         }
 
-        curNode.current[node.key] = {
-          node,
-          resolve
-        };
+        const key = "key" in node ? node.key : node[data.valueFieldName || "value"]
+  
+        if (!curNode.current[key]) {
+          curNode.current[key] = {
+            node,
+            resolves: [resolve]
+          }
+        } else {
+          curNode.current[key].resolves.push(resolve)
+        }
 
         if (node._depth === undefined) {
-          resolve();
           return;
         }
 
