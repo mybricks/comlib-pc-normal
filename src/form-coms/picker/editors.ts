@@ -1,9 +1,9 @@
-import {uuid} from '../../utils';
-import {RuleKeys, defaultValidatorExample, defaultRules} from '../utils/validator';
-import {InputIds, Option, OutputIds, SizeEnum, SizeOptions, ValidateTriggerType} from '../types';
-import {Data} from './types';
-import {Schemas} from './constants';
-import {createrCatelogEditor} from '../utils';
+import { uuid } from '../../utils';
+import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { InputIds, Option, OutputIds, SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
+import { Data } from './types';
+import { Schemas } from './constants';
+import { templateRender } from '../utils';
 
 let tempOptions: Option[] = [],
   optionsLength;
@@ -18,7 +18,7 @@ const initParams = (data: Data) => {
   optionsLength = (data.staticOptions || []).length;
 };
 
-const refreshSchema = ({input, output, data}: { input: any; output: any; data: Data }) => {
+const refreshSchema = ({ input, output, data }: { input: any; output: any; data: Data }) => {
   let setValueSchema, returnValueSchema;
   if (data.outputValueType === 'value') {
     returnValueSchema = Schemas.String;
@@ -55,7 +55,7 @@ const refreshSchema = ({input, output, data}: { input: any; output: any; data: D
   }
   input.get(InputIds.SetInitialValue)?.setSchema(setValueSchema);
   input.get(InputIds.SetValue).setSchema(setValueSchema);
-  
+
   output.get(OutputIds.OnInitial)?.setSchema(returnValueSchema);
   output.get(OutputIds.OnChange).setSchema(returnValueSchema);
   output.get(OutputIds.OnConfirm).setSchema(returnValueSchema);
@@ -70,7 +70,7 @@ const reFiledNameSchema = (data: Data, input, output) => {
   const trueLabelFieldName = data.labelFieldName || 'label';
   const trueDisabledFieldName = data.disabledFieldName || 'disabled';
   const trueCheckedFieldName = data.checkedFieldName || 'checked';
-  
+
   const schema = {
     type: 'array',
     items: {
@@ -99,14 +99,14 @@ const reFiledNameSchema = (data: Data, input, output) => {
       }
     }
   };
-  
+
   const setOptionsPin = input.get('setOptions');
   const setOptionsDonePin = output.get('setOptionsDone');
-  
+
   if (setOptionsPin) {
     setOptionsPin.setSchema(schema);
   }
-  
+
   if (setOptionsDonePin) {
     setOptionsDonePin.setSchema(schema);
   }
@@ -117,7 +117,7 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@init': ({style}) => {
+  '@init': ({ style }) => {
     style.width = '100%';
   },
   ':root': {
@@ -312,10 +312,10 @@ export default {
     //     ]
     //   }
     // ],
-    items: ({data, env}: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       // catalog[1].title = '高级';
-      
+
       catalog[0].items = [
         {
           title: '提示内容',
@@ -325,10 +325,10 @@ export default {
           },
           description: '该提示内容会在值为空时显示',
           value: {
-            get({data}) {
+            get({ data }) {
               return data.config.placeholder;
             },
-            set({data}, value: string) {
+            set({ data }, value: string) {
               data.config.placeholder = value;
             }
           }
@@ -338,10 +338,10 @@ export default {
           type: 'switch',
           description: '是否禁用状态',
           value: {
-            get({data}) {
+            get({ data }) {
               return data.config.disabled;
             },
-            set({data}, value: boolean) {
+            set({ data }, value: boolean) {
               data.config.disabled = value;
             }
           }
@@ -461,31 +461,31 @@ export default {
           options: {
             checkField: 'status',
             visibleField: 'visible',
-            getTitle: ({title}: any) => {
+            getTitle: ({ title }: any) => {
               return title;
             },
             items: [
-              // {
-              //   title: '提示文字',
-              //   description: '提示文字的表达式（{}, =, <, >, ||, &&）, 例：${label}不能为空',
-              //   type: 'EXPRESSION',
-              //   options: {
-              //     autoSize: true,
-              //     placeholder: '例：${label}不能为空',
-              //     // suggestions: getSuggestions(true),
-              //   },
-              //   value: 'message'
-              // },
               {
                 title: '提示文字',
-                type: 'Text',
+                description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+                type: 'EXPRESSION',
                 options: {
-                  locale: true
+                  autoSize: true,
+                  placeholder: '例:${标题}不能为空',
+                  suggestions: [
+                    {
+                      label: '标题',
+                      insertText: '标题',
+                      detail: `标题`
+                    }
+                  ],
+                  runCode: (script) => {
+                    return {
+                      success: templateRender(script, { label: 'xx标题' })
+                    };
+                  }
                 },
-                value: 'message',
-                ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.REQUIRED;
-                }
+                value: 'message'
               },
               {
                 title: '编辑校验规则',
@@ -514,10 +514,10 @@ export default {
             ]
           },
           value: {
-            get({data}) {
+            get({ data }) {
               return data?.rules?.length > 0 ? data.rules : defaultRules;
             },
-            set({data}, value: any) {
+            set({ data }, value: any) {
               data.rules = value;
             }
           }
@@ -525,7 +525,7 @@ export default {
         {
           title: '校验触发事件',
           type: '_event',
-          ifVisible({data}: EditorResult<Data>) {
+          ifVisible({ data }: EditorResult<Data>) {
             const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
@@ -565,11 +565,11 @@ export default {
               options: {
                 outputId: 'onCancel'
               }
-            },
+            }
           ]
         }
       ];
-      
+
       // catalog[1].items = [
       //   {
       //     title: '字段配置',

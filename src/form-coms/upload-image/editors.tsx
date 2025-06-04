@@ -1,7 +1,5 @@
-import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
-import { getFilterSelector } from '../../utils/cssSelector';
 import { templateRender } from '../utils';
 
 const basicUploadDoneSchema = {
@@ -380,11 +378,11 @@ export default {
             items: [
               {
                 title: '提示文字',
-                description: '提示文字的表达式（{}）, 例：内容不能为空',
+                description: '提示文字的表达式（{}）, 例：${标题}不能为空',
                 type: 'EXPRESSION',
                 options: {
                   autoSize: true,
-                  placeholder: '例:内容不能为空',
+                  placeholder: '例:${标题}不能为空',
                   suggestions: [
                     {
                       label: '标题',
@@ -397,9 +395,6 @@ export default {
                       success: templateRender(script, { label: "xx标题"})
                     };
                   },
-                },
-                ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.REQUIRED;
                 },
                 value: 'message',
               },

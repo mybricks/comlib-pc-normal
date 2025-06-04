@@ -1,4 +1,5 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { templateRender } from '../utils';
 
 export default {
   '@resize': {
@@ -87,14 +88,25 @@ export default {
           items: [
             {
               title: '提示文字',
-              type: 'Text',
-              value: 'message',
-              ifVisible(item: any, index: number) {
-                return item.key === RuleKeys.REQUIRED;
-              },
+              description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+              type: 'EXPRESSION',
               options: {
-                locale: true
-              }
+                autoSize: true,
+                placeholder: '例:${标题}不能为空',
+                suggestions: [
+                  {
+                    label: '标题',
+                    insertText: '标题',
+                    detail: `标题`
+                  },
+                ],
+                runCode: (script) => {
+                  return {
+                    success: templateRender(script, { label: "xx标题"})
+                  };
+                },
+              },
+              value: 'message',
             },
             {
               title: '编辑校验规则',

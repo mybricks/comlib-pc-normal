@@ -3,7 +3,7 @@ import { Form, Tooltip } from 'antd';
 import { Data, FormControlProps } from '../types';
 import { usePrevious } from '../../../utils/hooks';
 import debounce from 'lodash/debounce';
-import { unitConversion } from '../../../utils';
+import { templateRender } from '../../utils';
 import css from '../styles.less';
 import classnames from 'classnames';
 
@@ -169,7 +169,12 @@ const FormItem = (props) => {
       setIsShowTips(false);
     }
   }, [data.layoutType, item.label, prevLabel, isShowTips]);
-  
+
+  const handleHelp = (msg: string) => {
+    if (!msg) return '';
+    return templateRender(msg, item);
+  };
+
   return (
     <Form.Item
       label={
@@ -196,7 +201,7 @@ const FormItem = (props) => {
       }
       className={classnames({
         [css.customLabel]: !!item.labelSlot,
-        [css.newRow]: item.titleNewRow,
+        [css.newRow]: item.titleNewRow
       })}
       // className={item.labelSlot ? css.customLabel : void 0}
       labelCol={labelCol}
@@ -204,12 +209,15 @@ const FormItem = (props) => {
       name={item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}
-      help={item?.help}
+      help={handleHelp(item?.help)}
       tooltip={env.i18n(item?.tooltip)}
       colon={!!item?.label && colon}
       hidden={item?.hidden}
     >
-      <div className={css.formItemControl} style={ item.titleNewRow ? { paddingLeft: item.labelWidth || '98px' } : undefined}>
+      <div
+        className={css.formItemControl}
+        style={item.titleNewRow ? { paddingLeft: item.labelWidth || '98px' } : undefined}
+      >
         <div className={css.formItemSlotContent}>
           <JSXWrapper com={com} />
         </div>
