@@ -59,6 +59,7 @@
         "./src/form-coms/picker/com.json",
         "./src/form-coms/checkbox/com.json",
         "./src/form-coms/cascader/com.json",
+        "./src/form-coms/cascader-m/com.json",
         "./src/form-coms/treeSelect/com.json",
         "./src/form-coms/date-picker/com.json",
         "./src/form-coms/date-picker-full-open/com.json",

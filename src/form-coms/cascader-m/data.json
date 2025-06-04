@@ -1,0 +1,25 @@
+{
+  "visible": true,
+  "config": {
+    "options": [],
+    "disabled": false,
+    "placeholder": "请选择",
+    "showSearch": true,
+    "filterOption": true,
+    "optionFilterProp": "label"
+  },
+  "mount": "body",
+  "validateTrigger": [
+    "onChange"
+  ],
+  "staticOptions": [],
+  "dropdownSearchOption": false,
+  "outputValueType": "value",
+  "isEditable": true,
+  "resetOptionsWhenEmptySearch": true,
+  "labelFieldName": "",
+  "valueFieldName": "",
+  "disabledFieldName": "",
+  "checkedFieldName": "",
+  "customField": false
+}

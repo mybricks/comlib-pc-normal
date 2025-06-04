@@ -1,0 +1,67 @@
+.cascaderSelector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 32px;
+  padding: 0 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  cursor: pointer;
+  &Value {
+    color: rgba(0, 0, 0, 0.85);
+  }
+  &Icon {
+    font-size: 12px;
+  }
+  &Disabled {
+    cursor: not-allowed;
+  }
+}
+
+.cascaderPopup {
+  font-size: 14px;
+  &Operate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 32px;
+    padding: 0 11px;
+  }
+  &Selected {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 8px 0;
+    padding: 0 11px;
+    &Item {
+      padding: 4px 8px;
+      border-radius: 4px;
+      background-color: #ececec;
+      color: rgba(0, 0, 0, 0.85);
+      &Close {
+        margin-left: 4px;
+      }
+    }
+  }
+  &ReturnLast {
+    display: block;
+    line-height: 32px;
+    text-align: center;
+  }
+  &List {
+    height: 128px;
+    overflow-y: scroll;
+    &Item {
+      line-height: 32px;
+      text-align: center;
+      cursor: pointer;
+      &Selected {
+        background-color: var(--ant-primary-color, #e4f0f1);
+        font-weight: bolder;
+      }
+    }
+  }
+}
