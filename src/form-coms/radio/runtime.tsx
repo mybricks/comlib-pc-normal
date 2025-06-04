@@ -9,7 +9,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
 import { inputIds, outputIds } from '../form-container/constants';
 import { ValidateInfo } from '../types';
-import TextEllipsis from '../../components/TextEllipsis';
+import RawText from '../raw-text/runtime';
 
 export default function Runtime({
   env,
@@ -185,7 +185,10 @@ export default function Runtime({
             value={value}
             onChange={onChange}
           >
-            <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+            <Space
+              direction={data.layout === 'vertical' ? 'vertical' : void 0}
+              style={{ flexWrap: 'wrap' }}
+            >
               {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
                 const label = item.label;
                 const autoFocus =
@@ -205,7 +208,13 @@ export default function Runtime({
                         color: value === item.value ? activeFontColor : ''
                       }}
                     >
-                      <TextEllipsis maxLines={2}>{env.i18n(label)}</TextEllipsis>
+                      <RawText
+                        env={env}
+                        data={{
+                          content: env.i18n(label),
+                          expandRows: 2
+                        }}
+                      />
                     </Radio>
                   </div>
                 );
@@ -248,7 +257,13 @@ export default function Runtime({
                   style={{ color: value === item.value ? activeFontColor : '' }}
                 >
                   <span data-radio-idx={item.key}>
-                    <TextEllipsis maxLines={2}>{env.i18n(label)}</TextEllipsis>
+                    <RawText
+                      env={env}
+                      data={{
+                        content: env.i18n(label),
+                        expandRows: 2
+                      }}
+                    />
                   </span>
                   {/* <span data-radio-idx={item.key}>{env.i18n(label)}</span> */}
                 </Radio>

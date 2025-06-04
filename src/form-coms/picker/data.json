@@ -2,7 +2,7 @@
   "visible": true,
   "config": {
     "disabled": false,
-    "placeholder": "请选择",
+    "placeholder": "",
     "showSearch": true,
     "filterOption": true,
     "optionFilterProp": "label"

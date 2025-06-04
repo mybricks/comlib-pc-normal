@@ -380,11 +380,11 @@ export default {
             items: [
               {
                 title: '提示文字',
-                description: '提示文字的表达式（{}）, 例：${标题}不能为空',
+                description: '提示文字的表达式（{}）, 例：内容不能为空',
                 type: 'EXPRESSION',
                 options: {
                   autoSize: true,
-                  placeholder: '例:${标题}不能为空',
+                  placeholder: '例:内容不能为空',
                   suggestions: [
                     {
                       label: '标题',

@@ -65,14 +65,14 @@ const REQUIRED_RULE = {
   status: false,
   visible: true,
   title: '必填',
-  message: '内容不能为空'
+  message: '${标题}不能为空'
 };
 const REG_EXP_RULE = {
   key: RuleKeys.REG_EXP,
   status: false,
   visible: true,
   title: '正则校验',
-  message: '内容不能为空',
+  message: '${标题}不能为空',
   regExr: `^(?!(null|undefined|)$).+`
 };
 const LENGTH_RULE = [

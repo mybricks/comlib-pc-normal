@@ -146,7 +146,7 @@ const SlotContent = (props) => {
           );
         } else {
           return (
-            <Row style={{ width: '100%', ...(hasGutter ? { columnGap: data.columnGap } : {}) }}>
+            <Row style={{ width: '100%' }} gutter={hasGutter ? data.columnGap : 0}>
               {isInlineModel && (
                 <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                   {jsx}
@@ -229,7 +229,7 @@ export function getComOrItemJsx({
 
   return (
     <Col
-      style={{ display: com.style.display, width: flexBasis }}
+      span={item.span}
       key={data.useDynamicItems ? item.id : com.id}
     >
       {comJSX.jsx}

@@ -11,7 +11,11 @@ export default {
   },
   ':root': {
     style: [
-
+      {
+        title: '内容',
+        type: 'style',
+        target: '.raw-text-content'
+      },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
@@ -30,6 +34,23 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.content = value;
+            }
+          }
+        },
+        {
+          title: '最小行数',
+          type: 'number',
+          description:
+            '超过该行数后显示 展开/收起 按钮',
+          options: {
+            locale: true
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.expandRows;
+            },
+            set({ data }: EditorResult<Data>, value: number) {
+              data.expandRows = value;
             }
           }
         },

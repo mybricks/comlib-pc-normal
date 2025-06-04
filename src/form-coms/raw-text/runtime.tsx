@@ -23,7 +23,7 @@ export default function ({
   return (
     <div className={css.textOverflowWrapper}>
       <div
-        className={css.textOverflow}
+        className={css.textOverflow + ' raw-text-content'}
         style={{
           WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows,
         }}
