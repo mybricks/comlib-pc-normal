@@ -10,7 +10,7 @@
   "config": {
     "inputReadOnly": false,
     "disabled": false,
-    "placeholder": "请选择日期",
+    "placeholder": "",
     "picker": "date",
     "allowClear": true,
     "size": "middle"

@@ -49,9 +49,9 @@ export default {
           }
         },
         {
-          title: '添加标签页',
+          title: '新增分页面版',
           type: 'Button',
-          description: '新增一个标签页，增加一个标签页插槽、标签页显示和隐藏输出',
+          description: '新增分页面版，增加一个标签页插槽、标签页显示和隐藏输出',
           value: {
             set({ data, slots, output, env }: EditorResult<Data>) {
               const newItem = createItem(data);

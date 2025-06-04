@@ -408,6 +408,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
   };
   const onPanelChange: DatePickerProps['onPanelChange'] = (value, mode) => {
     outputs['onPanelChange']({ value, mode });
+    setMode(mode);
   };
 
   const getShowTime = () => {
@@ -602,8 +603,8 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       const callback = function (e: MouseEvent) {
         // 如果点击到了隐藏面板的外部
         if (
-          e.target !== dropdownWrapperRef.current &&
-          !dropdownWrapperRef.current?.contains(e.target as Node)
+          e.target !== dropdownWrapperRef.current
+          && !dropdownWrapperRef.current?.contains(e.target as Node)
         ) {
           setOpen(false);
         }
@@ -631,11 +632,14 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
     }
   }, [data.defaultPickerValue]);
 
+  const [mode, setMode] = useState<DatePickerProps['mode']>();
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       {data.isEditable ? (
         <div className={css.datePicker} ref={wrapperRef} style={{ height: wrapperHeight }}>
           <DatePicker
+            mode={mode}
             panelRender={(originPanel) => {
               return (
                 <div ref={dropdownWrapperRef}>
@@ -646,6 +650,13 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
                     slots[SlotIds.DatePanelFooter]?.render({ title: '底部插槽' })}
                 </div>
               );
+            }}
+            onOpenChange={(open) => {
+              if (!open) {
+                setTimeout(() => {
+                  setMode(undefined);
+                }, 300);
+              };
             }}
             value={value}
             {...data.config}

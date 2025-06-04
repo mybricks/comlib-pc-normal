@@ -135,7 +135,7 @@ export default function ({
           <div className={css.cardItem + ' card-list-item'}>
             <div className={css.cardItemTitle}>
               <span>{item.name}</span>
-              {data.tabList.length > 1 && <a onClick={() => {onEdit(item.key, 'remove')}}><DeleteOutlined /></a>}
+              {data.tabList.length > 1 && <a className={css.cardItemDelete} onClick={() => {onEdit(item.key, 'remove')}}><DeleteOutlined /></a>}
             </div>
             <div className={classnames(css.cardItemContent)}>
               {slots[item.id]?.render({
@@ -146,8 +146,8 @@ export default function ({
           </div>
         );
       })}
-      <Button type="link" onClick={() => onEdit('', 'add')}>
-        + 新增分页面板
+      <Button className={css.cardItemAdd} type="link" onClick={() => onEdit('', 'add')}>
+        + {env.i18n('新增分页面板')}
       </Button>
     </div>
   );

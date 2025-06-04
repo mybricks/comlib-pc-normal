@@ -269,7 +269,11 @@ export default {
             addable: false,
             getTitle: (item, index: number) => {
               const { direction, offset, title } = item;
-              return `${title}${direction === 'before' ? '之前' : '之后'} ${offset} 天禁止选择`;
+              if (direction === 'before') {
+                return `T-${offset}之前禁止选择`;
+              } else {
+                return `T+${offset}之后禁止选择`;
+              }
             },
             items: [
               {

@@ -1,5 +1,5 @@
 import { uuid } from '../../utils';
-import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { RuleKeys, defaultRules } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
 import { Option, SizeEnum, SizeOptions } from '../types';
 import { Data } from './types';
