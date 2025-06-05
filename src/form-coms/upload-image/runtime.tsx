@@ -482,7 +482,8 @@ export default function ({
           name={fileKey}
           listType="picture-card"
           fileList={Array.isArray(fileList) ? fileList : void 0}
-          accept={fileType.join()}
+          // accept={fileType.join()}
+          accept="image/*"
           ref={uploadInputRef}
           customRequest={() => {}}
           beforeUpload={beforeUpload}
