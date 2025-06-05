@@ -10,7 +10,7 @@
   "expandText": "展开",
   "collapsedText": "收起",
   "actions": {
-    "visible": true,
+    "visible": false,
     "widthOption": "flexFull",
     "span": 24,
     "align": "left",
@@ -57,7 +57,7 @@
   "validateHiddenFields": true,
   "config": {
     "colon": false,
-    "layout": "horizontal",
+    "layout": "vertical",
     "disabled": false,
     "size": "middle"
   },

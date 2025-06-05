@@ -6,7 +6,7 @@
   "rules": [],
   "config": {
     "allowClear": true,
-    "placeholder": "请选择",
+    "placeholder": "",
     "disabled": false,
     "maxTagCount": "responsive",
     "changeOnSelect": false,

@@ -40,10 +40,10 @@
     .ant-form .ant-form-item {
       flex-wrap: wrap !important;
     }
-    .ant-form .ant-form-item .ant-form-item-control,
-    .ant-form .ant-form-item .ant-form-item-label {
-      flex: 0 0 100% !important;
-      max-width: 100% !important;
+    .ant-form:not(.ant-form-horizontal) .ant-form-item-control,
+    .ant-form:not(.ant-form-horizontal) .ant-form-item-label {
+      flex: 0 0 100%;
+      max-width: 100%;
     }
   }
 }
@@ -127,6 +127,7 @@
       line-height: 1.5715;
       white-space: normal;
       text-align: left;
+      font-weight: bolder;
     }
 
     .ant-form-item .ant-form-item-label > label {
@@ -145,12 +146,16 @@
       text-align: right;
     }
 
+    .ant-form-item-with-help .ant-form-item-explain {
+      min-height: 0;
+    }
+
     .ant-form .ant-form-item {
       flex-wrap: wrap;
     }
 
-    .ant-form .ant-form-item .ant-form-item-control,
-    .ant-form .ant-form-item .ant-form-item-label {
+    .ant-form:not(.ant-form-horizontal) .ant-form-item-control,
+    .ant-form:not(.ant-form-horizontal) .ant-form-item-label {
       flex: 0 0 100%;
       max-width: 100%;
     }
@@ -187,8 +192,8 @@
 }
 
 .keepMobileWidth {
-  .ant-form .ant-form-item .ant-form-item-control {
-    flex: 1 1 0 !important;
+  .ant-form:not(.ant-form-horizontal) .ant-form-item-control {
+    flex: 1 1 0;
     max-width: 100%;
   }
   // .ant-form-item .ant-form-item-label {
