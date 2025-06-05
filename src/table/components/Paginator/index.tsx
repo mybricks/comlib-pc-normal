@@ -129,7 +129,7 @@ export default (props: Props) => {
           total={total}
           showTotal={isMobile ? () => null : totalText}
           current={current}
-          pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
+          pageSize={(env.edit ? 20 : pageSize || defaultPageSize) || 1}
           // defaultPageSize={defaultPageSize}
           size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
           simple={isMobile || size === SizeTypeEnum.Simple}
