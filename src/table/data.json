@@ -8,7 +8,7 @@
       "visible": false,
       "isRowKey": true,
       "title": "ID",
-      "width": "auto",
+      "width": "48",
       "contentType": "text"
     },
     {
@@ -60,11 +60,11 @@
     "current": 1,
     "currentPage": {
       "pageNum": 1,
-      "pageSize": 10
+      "pageSize": 20
     },
     "isDynamic": false,
     "disabled": false,
-    "defaultPageSize": 10,
+    "defaultPageSize": 20,
     "align": "flex-end",
     "size": "default",
     "showSizeChanger": true,
@@ -76,7 +76,8 @@
     ],
     "showQuickJumper": true,
     "hideOnSinglePage": false,
-    "useDynamicTitle": false
+    "useDynamicTitle": false,
+    "useFrontPage":true
   },
   "domainModel": {},
   "useSummaryColumn": false,

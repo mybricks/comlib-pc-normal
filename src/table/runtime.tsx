@@ -1426,6 +1426,7 @@ export default function (props: RuntimeParams<Data>) {
                     ? TableLayoutEnum.Fixed
                     : data.tableLayout) || TableLayoutEnum.Fixed
                 }
+                sticky
               >
                 {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
               </Table>

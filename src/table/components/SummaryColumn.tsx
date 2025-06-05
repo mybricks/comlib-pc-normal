@@ -27,7 +27,7 @@ export default (slots, data: Data, summaryColumnData: string) => {
   }
 
   return (
-    <Table.Summary>
+    <Table.Summary fixed={"top"}>
       <Table.Summary.Row className="summaryRow">
         <Table.Summary.Cell
           index={0}
