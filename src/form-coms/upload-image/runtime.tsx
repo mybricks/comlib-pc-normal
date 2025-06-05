@@ -461,7 +461,7 @@ export default function ({
   const renderUploadText = () => {
     // 上传个数为1，且 当前文件列表为一个时，隐藏图片卡片的上传按钮
     const pictureButton = (
-      <div className={css.uploadTextWrapper} onClick={handleLabelClick}>
+      <div className={css.uploadTextWrapper + ' uploadWrapper'} onClick={handleLabelClick}>
         <PlusOutlined />
         <div style={{ marginTop: 16 }} className="upload-btn-text">
           {env.i18n(buttonText)}
@@ -508,19 +508,20 @@ export default function ({
                       }}
                     >
                       <span
-                        title={env.i18n('删除图片')}
+                        style={{ marginLeft: 8 }}
+                        title={env.i18n('删除')}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
                       >
-                        <DeleteOutlined />
+                        <DeleteOutlined style={{ width: 24, height: 24, margin: 0, fontSize: 24 }} />
                       </span>
                     </Popconfirm>
                   ),
                   previewIcon: (
-                    <span title={env.i18n('预览图片')}>
-                      <EyeOutlined />
+                    <span title={env.i18n('预览')}>
+                      <EyeOutlined style={{ width: 24, height: 24, margin: 0, fontSize: 24 }} />
                     </span>
                   )
                 }
@@ -528,11 +529,17 @@ export default function ({
         >
           {data.isEditable ? renderUploadText() : ''}
         </Upload>
-        {(data.config.fileType.length > 0 || data.config.fileSize > 0) && <span className={css.imageUploaderTips}>
-          {data.config.fileType.length > 0 && `支持格式：${data.config.fileType.map((i) => i.replace(/\./g, '')).map((i) => i.replace(/\,/g, '/')).join('/')}`}
-          {(data.config.fileType.length > 0 && data.config.fileSize > 0) && ','}
-          {data.config.fileSize > 0 && `单个图片不超过${data.config.fileSize}M`}
-        </span>}
+        {(data.config.fileType.length > 0 || data.config.fileSize > 0) && (
+          <span className={css.imageUploaderTips}>
+            {data.config.fileType.length > 0 &&
+              `支持格式：${data.config.fileType
+                .map((i) => i.replace(/\./g, ''))
+                .map((i) => i.replace(/\,/g, '/'))
+                .join('/')}`}
+            {data.config.fileType.length > 0 && data.config.fileSize > 0 && ','}
+            {data.config.fileSize > 0 && `单个图片不超过${data.config.fileSize}M`}
+          </span>
+        )}
       </div>
     </ConfigProvider>
   );

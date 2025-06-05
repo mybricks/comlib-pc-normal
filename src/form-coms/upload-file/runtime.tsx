@@ -106,8 +106,22 @@ export default function ({
   id,
   name
 }: RuntimeParams<Data>) {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const fileListRef = useRef<UploadFile[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: '-1',
+      name: 'image.pngimage.pngimage.pngimage.pngimage.pngimage.pngimage.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    }
+  ]);
+  const fileListRef = useRef<UploadFile[]>([
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    }
+  ]);
   const removeFileRef = useRef<UploadFile>();
 
   const uploadInputRef = useRef(null);
@@ -563,7 +577,7 @@ export default function ({
         ) => {
           return (
             <div className={css.uploadFileItem}>
-              <FileOutlined />
+              <FileOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
               <a onClick={actions.preview} className={css.uploadFileItemName} title={file.name}>
                 {file.name}
               </a>
@@ -572,20 +586,41 @@ export default function ({
               </span>
               <div className={css.uploadFileItemActions}>
                 <a title={env.i18n('预览')} onClick={actions.preview}>
-                  <EyeOutlined />
+                  <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                 </a>
                 <a title={env.i18n('下载')} onClick={actions.download}>
-                  <CloudUploadOutlined />
+                  <CloudUploadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                 </a>
                 <a
                   title={env.i18n('删除')}
                   onClick={() => {
                     Modal.confirm({
                       title: env.i18n('即将删除文件，是否继续？'),
+                      style: {
+                        borderColor: '#bfbfbf'
+                      },
                       icon: false,
                       okText: env.i18n('确定'),
                       cancelText: env.i18n('取消'),
-                      onOk: actions.remove
+                      onOk: actions.remove,
+                      okButtonProps: {
+                        style: {
+                          width: 48,
+                          height: 24,
+                          lineHeight: '24px',
+                          padding: 0,
+                          fontSize: 12
+                        }
+                      },
+                      cancelButtonProps: {
+                        style: {
+                          width: 48,
+                          height: 24,
+                          lineHeight: '24px',
+                          padding: 0,
+                          fontSize: 12
+                        }
+                      }
                     });
                   }}
                 >
@@ -600,7 +635,10 @@ export default function ({
           {data.config.buttonText}
         </Button>
       </Upload>
-      <a className={css.batchDownload} onClick={() => env.runtime && batchDownload(fileListRef.current)}>
+      <a
+        className={css.batchDownload}
+        onClick={() => env.runtime && batchDownload(fileListRef.current)}
+      >
         <DownloadOutlined />
         <span style={{ marginLeft: 8 }}>批量下载</span>
       </a>

@@ -2,16 +2,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  & > span {
+    display: block;
+    width: 100%;
+  }
   :global {
+    .ant-upload .ant-btn {
+      border-color: #ececec;
+    }
     .ant-upload-list-item-actions .anticon svg {
       fill: #ffffff;
     }
     .ant-upload.ant-upload-select-picture-card {
       margin-bottom: 0px;
       margin-right: 0px;
-    }
-    .ant-form-item-with-help .ant-form-item-explain {
-      min-height: 0;
     }
   }
 

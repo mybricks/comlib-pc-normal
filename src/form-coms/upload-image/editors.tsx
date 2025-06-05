@@ -35,8 +35,7 @@ export default {
         title: '背景',
         options: ['background', 'border'],
         target: ({ id }: EditorResult<Data>) => [
-          `.ant-upload.ant-upload-select-picture-card`,
-          `.ant-upload .ant-btn`
+          `.uploadWrapper`,
         ]
         //target: ['.ant-upload.ant-upload-select-picture-card', `.ant-upload .ant-btn`],
       },

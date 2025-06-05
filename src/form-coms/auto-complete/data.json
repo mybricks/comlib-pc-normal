@@ -5,7 +5,7 @@
   "isOnSearch": false,
   "config": {
     "allowClear": true,
-    "placeholder": "请输入",
+    "placeholder": "",
     "disabled": false,
     "showSearch": false
   },

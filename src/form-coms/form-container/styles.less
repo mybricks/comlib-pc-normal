@@ -57,14 +57,13 @@
   }
 
   :global {
-    .ant-form-item {
-      margin: 0 0 16px 0;
-    }
     .ant-form-item-label-wrap {
       overflow: hidden;
     }
 
-    .ant-col-24.ant-form-item-label, .ant-col-xl-24.ant-form-item-label, .ant-form-vertical .ant-form-item-label {
+    .ant-col-24.ant-form-item-label,
+    .ant-col-xl-24.ant-form-item-label,
+    .ant-form-vertical .ant-form-item-label {
       padding: 0;
     }
 
@@ -122,6 +121,10 @@
       line-height: 32px;
     }
 
+    .ant-form-item-with-help .ant-form-item-explain {
+      min-height: 0;
+    }
+
     .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(
         .ant-input-affix-wrapper-borderless
       ).ant-input-affix-wrapper {
@@ -137,9 +140,29 @@
       color: #262626;
     }
 
+    .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+    .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover {
+      border-color: #a14d43;
+      box-shadow: none;
+    }
+
     // checkbox 校验失败选项增加边框
     .ant-form-item-has-error .ant-checkbox-inner {
       border-color: #a14d43;
+    }
+
+    // 图片上传
+    .ant-form-item-has-error .uploadWrapper {
+      border-color: #a14d43;
+      color: #a14d43;
+      .anticon {
+        color: #a14d43;
+      }
+    }
+
+    .ant-form-item-has-error .ant-upload .ant-btn {
+      border-color: #a14d43;
+      color: #a14d43;
     }
 
     .ant-form-item-has-error .formItemDesc {

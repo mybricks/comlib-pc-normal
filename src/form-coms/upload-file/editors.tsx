@@ -78,6 +78,10 @@ const basicUploadDoneSchema = {
 };
 
 export default {
+  '@init'({ style }) {
+    style.width = 'fit-content';
+    style.height = 'auto';
+  },
   '@resize': {
     options: ['width']
   },
