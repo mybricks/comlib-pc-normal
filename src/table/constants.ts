@@ -129,7 +129,10 @@ export const OutputIds = {
   EnableAllExpandedRows: 'enableAllExpandedRows',
   CHANGE_COLS_ATTR: 'changeColsAttr',
   SET_SIZE_DONE: 'setSizeDone',
-  SET_SHOW_SUMMARY_COLUMN: 'setShowSummaryCloumn'
+  SET_SHOW_SUMMARY_COLUMN: 'setShowSummaryCloumn',
+
+  // 单元格里的switch点击事件
+  CELL_SWITCH_CLICK:'cellSwitchClick'
 };
 
 export const DefaultRowKey = '_uuid';

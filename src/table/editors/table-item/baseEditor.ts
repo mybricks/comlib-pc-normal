@@ -125,6 +125,7 @@ const createBaseEditor = ({ data }) => ({
         { label: '普通文字', value: ContentTypeEnum.Text },
         { label: '图片', value: ContentTypeEnum.Image },
         { label: '链接', value: ContentTypeEnum.Link },
+        { label: '开关', value: ContentTypeEnum.Switch },
         { label: '自定义插槽', value: ContentTypeEnum.SlotItem },
         { label: '分组', value: ContentTypeEnum.Group }
       ],
@@ -177,6 +178,11 @@ const createBaseEditor = ({ data }) => ({
             }
           }
           setCol({ data, focusArea }, 'contentType', value);
+          if(value === ContentTypeEnum.Switch) {
+            output.add(`${OutputIds.CELL_SWITCH_CLICK}_${column.key}`, `${column.title}列-开关点击`, Schemas.CELL_SWITCH_CLICK);
+          }else{
+            output.remove(`${OutputIds.CELL_SWITCH_CLICK}_${column.key}`);
+          }
           setDataSchema({ data, focusArea, output, input, slot, env, ...res });
         }
       }

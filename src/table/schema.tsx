@@ -576,5 +576,26 @@ export const Schemas = {
   },
   SET_SIZE_DONE: {
     type: 'string'
+  },
+  CELL_SWITCH_CLICK:{
+    type: 'object',
+    properties: {
+      record: {
+        type: 'object',
+        description: '行数据'
+      },
+      index: {
+        type: 'number',
+        description: '单元格所在行的索引'
+      },
+      dataIndex: {
+        type: 'string',
+        description: '单元格所在列在数据项中的字段名称'
+      },
+      currentColValue: {
+        type: 'any',
+        description: '当前单元格的值'
+      }
+    }
   }
 };

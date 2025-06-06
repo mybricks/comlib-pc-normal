@@ -295,6 +295,28 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
   },
   {
+    title: '首列',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      { type: 'border', config: { disableBorder: true } }
+    ],
+    target:({ data }: EditorResult<Data>)=>`.ant-table-container table>thead>tr:first-child th:first-child, .ant-table-tbody>tr>td:first-child${data.useSummaryColumn? ', .ant-table-summary>tr>td:first-child' : ''}`
+  },
+  {
+    title: '尾列',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      { type: 'border', config: { disableBorder: true } }
+    ],
+    target: ({ data }: EditorResult<Data>)=>`.ant-table-container table>thead>tr:last-child th:last-child, .ant-table-tbody>tr>td:last-child${data.useSummaryColumn? ', .ant-table-summary>tr>td:last-child' : ''}`
+  },
+  {
     title: '表头滚动单元格',
     catelog: '默认',
     options: [{ type: 'background', config: { disableBackgroundImage: true } }],

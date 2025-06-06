@@ -1,4 +1,5 @@
 import { setCol } from '../../schema';
+import { OutputIds } from '../../constants';
 import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants';
 import {
   AlignEnum,
@@ -17,6 +18,24 @@ export const DefaultColor = {
 };
 
 const StyleEditor = [
+  {
+    title: "开关切换事件",
+    type: '_Event',
+    ifVisible({ data , focusArea, output, ...res}: EditorResult<Data>) {
+      if (!focusArea) return;
+      if(getColumnItem(data, focusArea).contentType === ContentTypeEnum.Switch) {
+        return true
+      }else{
+        return false
+      }
+    },
+    options: ({ data, focusArea }: EditorResult<Data>) => {
+      const item = getColumnItem(data, focusArea);
+      return {
+        outputId: `${OutputIds.CELL_SWITCH_CLICK}_${item.key}`,
+      };
+    }
+  },
   {
     title: '内容省略展示',
     type: 'Switch',

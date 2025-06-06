@@ -6,7 +6,8 @@ export enum ContentTypeEnum {
   Image = 'image',
   Link = 'link',
   SlotItem = 'slotItem',
-  Group = 'group'
+  Group = 'group',
+  Switch = 'switch'
 }
 export enum AlignEnum {
   Left = 'left',
