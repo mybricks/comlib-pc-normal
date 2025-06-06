@@ -57,7 +57,7 @@
   "validateHiddenFields": true,
   "config": {
     "colon": false,
-    "layout": "vertical",
+    "layout": "horizontal",
     "disabled": false,
     "size": "middle"
   },
