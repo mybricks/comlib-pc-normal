@@ -90,15 +90,14 @@ export default {
       {
         items: [
           {
-            title: '隐藏图标',
+            title: '显示批量下载',
             type: 'switch',
-            description: '是否隐藏图标，默认不隐藏',
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.hideIcon;
+                return data.showBatchDownload;
               },
               set({ data }: EditorResult<Data>, value: boolean) {
-                data.hideIcon = value;
+                data.showBatchDownload = value;
               }
             }
           },

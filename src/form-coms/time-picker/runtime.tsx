@@ -210,7 +210,8 @@ export default function ({
             showNow={data.showNow}
             defaultValue={getDefaultValue()}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-            open={env.design ? true : void 0}
+            // open={env.design ? true : void 0}
+            open={true}
             popupClassName={id + ' ' + styles.timePickerPopup}
             onChange={onChange}
             disabledTime={() => {

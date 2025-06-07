@@ -51,6 +51,7 @@ export interface Data {
   isEditable: boolean;
   /**@description v1.0.35 按钮尺寸 */
   buttonSize: string;
+  showBatchDownload: boolean;
 }
 
 const downloadFile = (url, fileName) => {
@@ -621,13 +622,15 @@ export default function ({
           {data.config.buttonText}
         </Button>
       </Upload>
-      <a
-        className={css.batchDownload}
-        onClick={() => env.runtime && batchDownload(fileListRef.current)}
-      >
-        <DownloadOutlined />
-        <span style={{ marginLeft: 8 }}>批量下载</span>
-      </a>
+      {data.showBatchDownload && (
+        <a
+          className={css.batchDownload}
+          onClick={() => env.runtime && batchDownload(fileListRef.current)}
+        >
+          <DownloadOutlined />
+          <span style={{ marginLeft: 8 }}>{env.i18n('批量下载')}</span>
+        </a>
+      )}
     </div>
   );
 }
