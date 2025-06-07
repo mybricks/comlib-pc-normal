@@ -1,12 +1,14 @@
 .uploadWrap {
   :global {
+    .anticon {
+      color: #262626;
+    }
     .ant-upload-list-item-actions .anticon svg {
       fill: #ffffff;
     }
     .ant-upload-select .anticon svg {
       width: 24px;
       height: 24px;
-      fill: #262626;
     }
     .ant-upload-list-picture-card-container {
       width: 100px;
@@ -17,6 +19,18 @@
       height: 100px;
       margin-bottom: 0px;
       margin-right: 0px;
+      border: none !important;
+    }
+    .ant-upload-list-picture-card .ant-upload-list-item, .ant-upload-list-picture .ant-upload-list-item {
+      border-radius: 4px;
+      padding: 3px;
+      border-color: #bfbfbf;
+    }
+    .ant-upload-list-item.ant-upload-list-item-uploading {
+      border-style: solid;
+    }
+    .ant-upload-list-item.ant-upload-list-item-done {
+      background-color: #bfbfbf;
     }
     // 隐藏上传中的文本
     .ant-upload-list-item-uploading .ant-upload-list-item-thumbnail {
@@ -24,8 +38,12 @@
     }
     // 调整上传中进度条位置到中间
     .ant-upload-list-item-progress {
+      width: 92px;
       bottom: 50%;
       transform: translate(0, 50%);
+      .ant-progress-inner {
+        background-color: #ececec;
+      }
     }
   }
   .uploadTextWrapper {
@@ -36,6 +54,8 @@
     width: 100%;
     height: 100%;
     background-color: #ececec;
+    border: 1px dashed #bfbfbf;
+    border-radius: 4px;
   }
   .uploadImageItem {
     width: 100%;

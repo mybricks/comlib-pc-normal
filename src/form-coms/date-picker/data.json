@@ -9,7 +9,7 @@
   "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "config": {
     "disabled": false,
-    "placeholder": "请选择日期",
+    "placeholder": "",
     "picker": "date",
     "allowClear": true,
     "size": "middle",

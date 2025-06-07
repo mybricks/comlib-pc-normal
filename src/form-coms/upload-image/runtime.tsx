@@ -462,7 +462,7 @@ export default function ({
   const renderUploadText = () => {
     // 上传个数为1，且 当前文件列表为一个时，隐藏图片卡片的上传按钮
     const pictureButton = (
-      <div className={css.uploadTextWrapper} onClick={handleLabelClick}>
+      <div className={css.uploadTextWrapper + ' uploadWrapper'} onClick={handleLabelClick}>
         <PlusOutlined />
         <div style={{ marginTop: 16 }} className="upload-btn-text">
           {env.i18n(buttonText)}
@@ -552,41 +552,6 @@ export default function ({
               </div>
             );
           }}
-          showUploadList={
-            env.edit
-              ? false
-              : {
-                  showPreviewIcon: usePreview,
-                  removeIcon: (file) => (
-                    <Popconfirm
-                      icon={false}
-                      title={env.i18n('即将删除图片，是否继续？')}
-                      okText={env.i18n('确认')}
-                      cancelText={env.i18n('取消')}
-                      onConfirm={() => onRemove(file)}
-                      onCancel={(e) => {
-                        e?.preventDefault();
-                        e?.stopPropagation();
-                      }}
-                    >
-                      <span
-                        title={env.i18n('删除图片')}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      >
-                        <DeleteOutlined />
-                      </span>
-                    </Popconfirm>
-                  ),
-                  previewIcon: (
-                    <span title={env.i18n('预览图片')}>
-                      <EyeOutlined />
-                    </span>
-                  )
-                }
-          }
         >
           {data.isEditable ? renderUploadText() : ''}
         </Upload>

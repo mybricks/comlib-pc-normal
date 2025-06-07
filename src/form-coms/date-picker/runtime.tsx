@@ -636,6 +636,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       {data.isEditable ? (
         <div className={css.datePicker} ref={wrapperRef} style={{ height: wrapperHeight }}>
           <DatePicker
+            inputReadOnly={true}
             panelRender={(originPanel) => {
               return (
                 <div ref={dropdownWrapperRef}>

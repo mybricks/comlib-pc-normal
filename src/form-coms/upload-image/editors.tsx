@@ -1,5 +1,7 @@
+import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
+import { getFilterSelector } from '../../utils/cssSelector';
 import { templateRender } from '../utils';
 
 const basicUploadDoneSchema = {
@@ -33,8 +35,7 @@ export default {
         title: '背景',
         options: ['background', 'border'],
         target: ({ id }: EditorResult<Data>) => [
-          `.ant-upload.ant-upload-select-picture-card`,
-          `.ant-upload .ant-btn`
+          `.uploadWrapper`,
         ]
         //target: ['.ant-upload.ant-upload-select-picture-card', `.ant-upload .ant-btn`],
       },
@@ -395,6 +396,9 @@ export default {
                       success: templateRender(script, { label: "xx标题"})
                     };
                   },
+                },
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REQUIRED;
                 },
                 value: 'message',
               },
