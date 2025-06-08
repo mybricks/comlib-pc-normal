@@ -1,4 +1,6 @@
 {
+  "useEllipses": true,
+  "maxShowNumber": 2,
   "btnList": [
     {
       "key": "btn0",
@@ -18,14 +20,14 @@
       "useDynamicLoading": false,
       "style": {
         "height": "auto",
-        "width": "auto"
+        "width": ""
       },
       "useIcon": false
     }
   ],
   "layout": "flex-start",
   "spaceSize": [
-    4,
-    4
+    8,
+    8
   ]
 }

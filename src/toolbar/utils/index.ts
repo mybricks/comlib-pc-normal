@@ -18,7 +18,7 @@ export const getNewBtn = (): BtnItem => {
     useDynamicLoading: false,
     style: {
       height: 'auto',
-      width: 'auto'
+      width: ''
     },
     isSlot: false,
     useIcon: false

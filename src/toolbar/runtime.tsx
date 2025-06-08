@@ -5,14 +5,12 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import { InputIds, OutputIds } from './constants';
 import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
-import { checkIfMobile } from '../utils';
 import { getWhatToDoWithoutPermission } from '../utils/permission';
 import { renderBtnContext } from './btnRender';
 
 export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
@@ -138,9 +136,12 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
       </Menu>
     );
     return (
-      <Dropdown overlay={menu} placement="bottomRight">
-        <div className={css.ellipsisIcon}>
+      <Dropdown overlay={menu} placement="topLeft">
+        {/* <div className={css.ellipsisIcon}>
           <EllipsisOutlined />
+        </div> */}
+        <div className={css.button}>
+          <Button block={true}>更多</Button>
         </div>
       </Dropdown>
     );
@@ -232,17 +233,18 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   return (
     <div
       ref={wrapperRef}
-      className={`mybricks-toolbar ${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
+      className={`mybricks-toolbar ${css.toolbar} ${css.mobileToolbar}`}
       style={{
         justifyContent: data.layout,
-        gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
+        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
+        padding: '0 8px',
         height: '100%'
       }}
     >
       {(data.btnList || []).length > 0 || env.runtime ? (
         <>
-          {renderBtnList(normalBtnList)}
           {renderEllipsisList(ellipsisBtnList)}
+          {renderBtnList(normalBtnList)}
         </>
       ) : (
         <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>

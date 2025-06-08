@@ -1,6 +1,6 @@
 {
   "title": "直接内容-文本",
-  "namespace": "mybricks.normal-pc.form-raw-text",
+  "namespace": "amc.normal-h5.form-raw-text",
   "author": "qiuyun",
   "author_name": "秋筠",
   "version": "1.0.3",
@@ -275,7 +275,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "amc.normal-h5.form-container/form-item",
     "*"
   ]
 }

@@ -59,7 +59,7 @@ export default function ({
     if (item.style === undefined) {
       item.style = {
         height: 'auto',
-        width: 'auto'
+        width: ''
       };
     }
 
