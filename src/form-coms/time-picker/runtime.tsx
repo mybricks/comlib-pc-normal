@@ -180,7 +180,7 @@ export default function ({
   };
 
   const getDefaultValue = () => {
-    const getValidTimeValue = (time: number, step: number) => {
+    const getValidTimeValue = (time: number, step?: number) => {
       if (!step || step === 1) return time;
       const mod = time % step;
       if (mod === 0) return time;
@@ -210,8 +210,7 @@ export default function ({
             showNow={data.showNow}
             defaultValue={getDefaultValue()}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-            // open={env.design ? true : void 0}
-            open={true}
+            open={env.design ? true : void 0}
             popupClassName={id + ' ' + styles.timePickerPopup}
             onChange={onChange}
             disabledTime={() => {
