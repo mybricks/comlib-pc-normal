@@ -11,6 +11,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
+import { set } from 'lodash';
 
 const generateTreeData = (data: TransferItem[]) => {
   data?.map((item) => {
@@ -27,6 +28,10 @@ function mergeAndDedupeArrays(arr1, arr2) {
   const mergedArray = [...arr1, ...arr2];
   const mergedSet = new Set(mergedArray);
   return Array.from(mergedSet);
+}
+
+function difference(set1, set2) {
+  return set1.filter(item => !set2.includes(item));
 }
 
 export default function ({
@@ -158,6 +163,7 @@ export default function ({
 
   const clearSelectedTargetItems = () => {
     transferRef.current?.setStateKeys('right', []);
+    setTargetKeys([])
   }
 
   const leftSelectAll = () => {
@@ -298,7 +304,7 @@ export default function ({
           ({ selectedCount, totalCount }) => (<div className={styles.search}> 
             <Input
               size="small"
-              placeholder="请输入"
+              // placeholder="请输入"
               prefix={chooseSearchIcons(1)}
               onChange={(e) => {
                 setSearchValue(e.target.value);
@@ -322,21 +328,25 @@ export default function ({
                     treeData?.length <= 0 ? 
                       <div className={styles.empetyContainer}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/></div>:<div></div>
                     }
-                  <Tree
+                    <div className={styles.treeContainer}>
+                    <Tree
                     blockNode
                     checkable
                     className={styles.tree}
-                    checkStrictly
+                    //checkStrictly
                     defaultExpandAll
                     checkedKeys={checkedKeys}
                     treeData={treeData}
                     onCheck={(_, { node: { key } }) => {
-                      onItemSelect(key as string, !isChecked(checkedKeys, key));
+                      transferRef.current?.setStateKeys('left', _);
+                      // onItemSelect(key as string, !isChecked(checkedKeys, key));
                     }}
                     onSelect={(_, { node: { key } }) => {
-                      onItemSelect(key as string, !isChecked(checkedKeys, key));
+                      transferRef.current?.setStateKeys('left', _);
+                      // onItemSelect(key as string, !isChecked(checkedKeys, key));
                     }}
                 />
+                    </div>
               </div>
             )
           }
