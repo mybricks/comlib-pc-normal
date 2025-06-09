@@ -13,7 +13,7 @@
   },
   "showLabelExpand": false,
   "showExpand": true,
-  "showExpandLimit": 5,
+  "showExpandLimit": 3,
   "staticOptions": [
     {
       "label": "选项1",
@@ -24,7 +24,7 @@
     }
   ],
   "checkAll": false,
-  "layout": "horizontal",
+  "layout": "vertical",
   "checkAllText": "全选",
   "isEditable": true,
   "isIndeterminate": false,

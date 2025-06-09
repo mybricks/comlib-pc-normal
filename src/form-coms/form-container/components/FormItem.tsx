@@ -229,7 +229,7 @@ const FormItem = (props) => {
       help={handleHelp(item?.help)}
       tooltip={
         item?.tooltip
-          ? { title: env.i18n(item?.tooltip), placement: 'right', color: '#ffffff' }
+          ? { title: env.i18n(item?.tooltip), placement: 'right', width: 200, overlayInnerStyle: { color: '#fff' } }
           : ''
       }
       colon={!!item?.label && colon}
