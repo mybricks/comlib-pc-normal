@@ -1,5 +1,5 @@
 import React, { Children, useCallback, useEffect, useRef, useState } from 'react';
-import { message, Transfer, Tree, Empty, Input } from 'antd';
+import { message, Transfer, Tree, Empty, Input, Select } from 'antd';
 import { UserOutlined, SearchOutlined, TeamOutlined} from '@ant-design/icons';
 import { Data, TransferItem } from './types';
 import { uuid } from '../../utils';
@@ -57,17 +57,22 @@ export default function ({
 
   const transferRef = useRef(null);
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
+  const [rightSelectedKeys, setRightSelectedKeys] = useState<string[] | undefined>([]);
   const [leftSelectedKeys, setLeftSelectedKeys] = useState<string[] | undefined>([]);
   const [searchValue, setSearchValue] = useState('');
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>([]);
+  const [showTransfer, setShowTransfer] = useState(false);
 
   const transferDataSource: TransferItem[] = [];
   const leftAllKeys: String[] = []
+  const selectDataSource: any[] = []
+  const selectRef = React.useRef<any>();
   function flatten(list: TransferItem[] = []) {
     list.forEach((item) => {
       transferDataSource.push(item as TransferItem);
       leftAllKeys.push(item.key);
+      selectDataSource.push(item)
       flatten(item.children);
     });
   }
@@ -191,6 +196,10 @@ export default function ({
     return (<UserOutlined />)
   };
 
+  const handleOpenTransfer = () => {
+    setShowTransfer(true)
+  };
+
   useFormItemInputs(
     {
       id,
@@ -251,9 +260,12 @@ export default function ({
   };
 
   const changeValue = (targetKeys: string[] | undefined) => {
-    setTargetKeys(targetKeys);
-    valueRef.current = targetKeys;
-    onChangeForFc(parentSlot, { id, name, value: targetKeys });
+    let uniqueArr = targetKeys?.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+    });
+    setTargetKeys(uniqueArr);
+    valueRef.current = uniqueArr;
+    onChangeForFc(parentSlot, { id, name, value: uniqueArr });
   };
 
   const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
@@ -280,7 +292,32 @@ export default function ({
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <Transfer
+      <Select 
+        style={{ minWidth: 200 }}  
+        placeholder="请选择"
+        mode="multiple"
+        // 以下属性不支持覆盖
+        onChange={(value: any, options: any) => {
+            setTargetKeys(value, options);
+            let right = JSON.parse(JSON.stringify(rightSelectedKeys))
+            let left = difference(targetKeys, right)
+            transferRef.current?.setStateKeys('right', value);
+            transferRef.current?.onRightItemSelectAll(left, false);
+            // setState({ selectedKeys: value });
+        }}
+        open={false}
+        ref={selectRef}
+        value={targetKeys}
+        onDropdownVisibleChange={handleOpenTransfer}>
+        {selectDataSource.map((item: any) => {
+                      return (
+                          <Select.Option key={item?.key} value={item?.key}>
+                              {item?.title}
+                          </Select.Option>
+                      );
+                  })}
+      </Select>
+      {showTransfer && <Transfer
         ref={transferRef}
         className={styles.transfer}
         style={{ height: style.height }}
@@ -350,8 +387,11 @@ export default function ({
               </div>
             )
           }
+          if(direction === 'right') {
+            setRightSelectedKeys(selectedKeys)
+          }
       }}
-      </Transfer>
+      </Transfer>}
     </ConfigProvider>
   );
 }

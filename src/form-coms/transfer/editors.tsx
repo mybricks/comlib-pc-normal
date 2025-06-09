@@ -8,7 +8,7 @@ export default {
   },
   '@init': ({ style }) => {
     style.width = '100%';
-    style.height = 'auto';
+    style.height = '500px';
   },
   ':root': {
     style: [...styleEditors],
