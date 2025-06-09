@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Input } from 'antd';
 import { Picker } from 'antd-mobile';
-import { RightOutlined, SearchOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { SearchOutlined, SearchOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
@@ -153,41 +153,41 @@ export default function Runtime({
 
     inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
-        const fieldNames = getFieldNames(data);
-        const newOptions = data.customField
-          ? ds.map((item) => {
-              return {
-                ...(fieldNames.value in item
-                  ? {
-                      value: item[fieldNames.value]
-                    }
-                  : {}),
-                ...(fieldNames.label in item
-                  ? {
-                      label: item[fieldNames.label]
-                    }
-                  : {}),
-                ...(fieldNames.disabled in item
-                  ? {
-                      disabled: item[fieldNames.disabled]
-                    }
-                  : {}),
-                ...(fieldNames.checked in item
-                  ? {
-                      checked: item[fieldNames.checked]
-                    }
-                  : {})
-              };
-            })
-          : ds;
-        data.config.options = [...newOptions];
+        // const fieldNames = getFieldNames(data);
+        // const newOptions = data.customField
+        //   ? ds.map((item) => {
+        //       return {
+        //         ...(fieldNames.value in item
+        //           ? {
+        //               value: item[fieldNames.value]
+        //             }
+        //           : {}),
+        //         ...(fieldNames.label in item
+        //           ? {
+        //               label: item[fieldNames.label]
+        //             }
+        //           : {}),
+        //         ...(fieldNames.disabled in item
+        //           ? {
+        //               disabled: item[fieldNames.disabled]
+        //             }
+        //           : {}),
+        //         ...(fieldNames.checked in item
+        //           ? {
+        //               checked: item[fieldNames.checked]
+        //             }
+        //           : {})
+        //       };
+        //     })
+        //   : ds;
+        data.config.options = [...ds];
         relOutputs['setOptionsDone'](ds);
 
         //计算值更新
         let newValArray: any[] = [],
           newVal;
         let updateValue = false;
-        newOptions.map((item) => {
+        ds.map((item) => {
           const { checked, value } = item;
           if (checked && value != undefined) {
             updateValue = true;
@@ -196,7 +196,7 @@ export default function Runtime({
           }
         });
       } else {
-        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}二维数组！`);
       }
     });
 
@@ -287,17 +287,21 @@ export default function Runtime({
   }, []);
 
   const columns = useMemo(() => {
+    if (data.config.options?.find((item) => !Array.isArray(item))) {
+      logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}二维数组！`);
+      return [data.config.options];
+    }
     if (!searchValue) {
       return data.config.options || [];
     } else {
       return (data.config.options || []).map((opts) => {
-        return opts.filter((opt) => opt.label.includes(searchValue));
+        return opts?.filter((opt) => opt.label.includes(searchValue));
       });
     }
   }, [data.config.options, searchValue]);
 
   return (
-    <div className={`${css.picker}`}>
+    <div className={`${css.picker} picker-m`}>
       {data.isEditable ? (
         <>
           <Picker
@@ -311,10 +315,9 @@ export default function Runtime({
             value={value}
           >
             {(items, { open, close }) => {
-              console.log('items', items);
               return (
                 <div
-                  className={`${css.pickerContent} ${
+                  className={`${css.pickerContent} pickerContent ${
                     data.config.disabled ? css.pickerDisabled : ''
                   }`}
                   onClick={() =>
@@ -333,7 +336,7 @@ export default function Runtime({
                       {items.map((v) => v?.label || '未选择').join('/')}
                     </div>
                   )}
-                  <RightOutlined className={css.pickerArrow} />
+                  <SearchOutlined className={css.pickerArrow} />
                 </div>
               );
             }}

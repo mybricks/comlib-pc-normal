@@ -1,7 +1,7 @@
 {
   "title": "下拉框-H5",
   "namespace": "amc.normal-h5.picker",
-  "version": "1.1.44",
+  "version": "1.1.45",
   "description": "下拉框-H5",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -24,9 +24,7 @@
         "type": "any",
         "description": "任意类型,一般为基础数据类型,取决于数据源中value字段的类型"
       },
-      "rels": [
-        "setValueDone"
-      ]
+      "rels": ["setValueDone"]
     },
     {
       "id": "setInitialValue",
@@ -36,9 +34,7 @@
         "type": "any",
         "description": "任意类型,一般为基础数据类型,取决于数据源中value字段的类型"
       },
-      "rels": [
-        "setInitialValueDone"
-      ]
+      "rels": ["setInitialValueDone"]
     },
     {
       "id": "validate",
@@ -47,9 +43,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValidate"
-      ]
+      "rels": ["returnValidate"]
     },
     {
       "id": "getValue",
@@ -58,9 +52,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValue"
-      ]
+      "rels": ["returnValue"]
     },
     {
       "id": "resetValue",
@@ -69,9 +61,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "resetValueDone"
-      ]
+      "rels": ["resetValueDone"]
     },
     {
       "id": "setOptions",
@@ -79,35 +69,36 @@
       "desc": "设置下拉框的下拉选项列表",
       "schema": {
         "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "label": {
-              "title": "标签",
-              "type": "string",
-              "description": "标签"
-            },
-            "value": {
-              "title": "值",
-              "type": "string",
-              "description": "值"
-            },
-            "disabled": {
-              "title": "禁用",
-              "type": "boolean",
-              "description": "是否禁用"
-            },
-            "checked": {
-              "title": "选中",
-              "type": "boolean",
-              "description": "是否选中"
+        "item": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "title": "标签",
+                "type": "string",
+                "description": "标签"
+              },
+              "value": {
+                "title": "值",
+                "type": "string",
+                "description": "值"
+              },
+              "disabled": {
+                "title": "禁用",
+                "type": "boolean",
+                "description": "是否禁用"
+              },
+              "checked": {
+                "title": "选中",
+                "type": "boolean",
+                "description": "是否选中"
+              }
             }
           }
         }
       },
-      "rels": [
-        "setOptionsDone"
-      ]
+      "rels": ["setOptionsDone"]
     },
     {
       "id": "setDisabled",
@@ -116,9 +107,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "setDisabledDone"
-      ]
+      "rels": ["setDisabledDone"]
     },
     {
       "id": "setEnabled",
@@ -127,9 +116,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "setEnabledDone"
-      ]
+      "rels": ["setEnabledDone"]
     },
     {
       "id": "isEnable",
@@ -138,9 +125,7 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": [
-        "isEnableDone"
-      ]
+      "rels": ["isEnableDone"]
     },
     {
       "id": "isEditable",
@@ -149,9 +134,7 @@
       "schema": {
         "type": "boolean"
       },
-      "rels": [
-        "isEditableDone"
-      ]
+      "rels": ["isEditableDone"]
     },
     {
       "id": "setValidateInfo",
@@ -180,9 +163,7 @@
           }
         }
       },
-      "rels": [
-        "setValidateInfoDone"
-      ]
+      "rels": ["setValidateInfoDone"]
     }
   ],
   "outputs": [
@@ -366,8 +347,5 @@
       }
     }
   ],
-  "schema": [
-    "amc.normal-h5.form-container/form-item",
-    "*"
-  ]
+  "schema": ["amc.normal-h5.form-container/form-item", "*"]
 }
