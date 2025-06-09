@@ -107,18 +107,8 @@ export default function ({
   id,
   name
 }: RuntimeParams<Data>) {
-  const [fileList, setFileList] = useState<UploadFile[]>([{
-    uid: '-1',
-    name: 'imageimageimageimageimageimageimageimageimageimageimageimageimageimageimage.png',
-    status: 'done',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },]);
-  const fileListRef = useRef<UploadFile[]>([{
-    uid: '-1',
-    name: 'imageimageimageimageimageimageimageimageimageimageimageimageimageimageimage.png',
-    status: 'done',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
 
   const uploadInputRef = useRef(null);
