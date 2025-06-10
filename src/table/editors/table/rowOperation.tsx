@@ -157,7 +157,7 @@ export default {
         set({ data, output, input }: EditorResult<Data>, value: boolean) {
           if (value && !data.focusRowStyle) {
             data.focusRowStyle = {
-              background: '#ff88ff'
+              background: '#40A9FF'
             };
           }
           if (value) {
@@ -184,10 +184,16 @@ export default {
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.focusRowStyle.background || '#ff88ff';
+          return data.focusRowStyle?.background || '#40A9FF';
         },
         set({ data }: EditorResult<Data>, value) {
-          data.focusRowStyle.background = value;
+          if(data.focusRowStyle) {
+            data.focusRowStyle['background'] = value;
+          }else{
+            data.focusRowStyle = {
+              background:value
+            }
+          }
         }
       }
     }

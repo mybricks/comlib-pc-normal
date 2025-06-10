@@ -5,5 +5,8 @@
   "okText": "确定",
   "cancelText": "取消",
   "showTitle": true,
-  "width": 520
+  "width": 520,
+  "useIcon": false,
+  "closable": false,
+  "className": "modalWrap"
 }
