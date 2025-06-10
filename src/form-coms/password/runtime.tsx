@@ -157,6 +157,8 @@ export default function ({
     });
   }, []);
 
+  console.log('data', data)
+
   return (
     <Input.Password
       {...data.config}
