@@ -178,6 +178,22 @@ export default function ({
     validateTrigger(parentSlot, { id, name });
   };
 
+  const getDefaultValue = () => {
+    const getValidTimeValue = (time: number, step?: number) => {
+      if (!step || step === 1) return time;
+      const mod = time % step;
+      if (mod === 0) return time;
+      else return time + (step - mod);
+    };
+    // 注意不能直接设置默认值，要根据设置的步长来进行设置，保证默认值都处于可选中状态
+    const { hourStep, minuteStep, secondStep } = data.config;
+    const now = moment();
+    const hour = getValidTimeValue(now.hour(), hourStep);
+    const minute = getValidTimeValue(now.minute(), minuteStep);
+    const second = getValidTimeValue(now.second(), secondStep);
+    return moment(`${hour}:${minute}:${second}`, 'hh:mm:ss');
+  };
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div ref={wrapperRef} className={styles.wrap}>
@@ -191,6 +207,7 @@ export default function ({
             allowClear
             inputReadOnly={inputReadOnly}
             showNow={data.showNow}
+            defaultValue={getDefaultValue()}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
             popupClassName={id}
