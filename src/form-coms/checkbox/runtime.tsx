@@ -321,8 +321,8 @@ export default function Runtime({
   const newOptions = useMemo(() => {
     return options
       .filter((opt, optIndex) => {
-        if (isExpand) {
-          return opt;
+        if (!data.showExpand || isExpand) {
+          return true;
         }
         return optIndex < data.showExpandLimit;
       })

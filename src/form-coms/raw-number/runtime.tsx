@@ -64,7 +64,7 @@ export default function ({
 
   return (
     <Popover placement="bottomLeft" content={numberToChineseFormatWithDecimal(data.content)}>
-      <span className={css.number}>{formatContent(data.content)}</span>
+      <span className={css.rawNumber}>{formatContent(data.content)}</span>
     </Popover>
   );
 }
