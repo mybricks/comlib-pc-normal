@@ -6,12 +6,12 @@
     }
   }
 }
-:global(.ant-input-affix-wrapper-disabled) {
+:global(.ant-input-affix-wrapper-disabled:not(.ant-input-password)) {
   border: none;
   background-color: transparent;
   color: inherit;
 }
-:global(.ant-input[disabled]) {
+:global(.ant-input:not(.ant-select-selection-search-input)[disabled]) {
   border: none;
   color: rgba(0, 0, 0, 0.85);
   background-color: rgba(0, 0, 0, 0);
