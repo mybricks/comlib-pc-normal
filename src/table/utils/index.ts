@@ -268,7 +268,7 @@ export const oldGetTableBody =
 
 export const createStyleForTableContent = () => [
   {
-    title: '表格',
+    title: '表格容器',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
@@ -279,6 +279,17 @@ export const createStyleForTableContent = () => [
       'opacity'
     ],
     target: ({ id }) => `> ${getAntdTable()}`
+  },
+  {
+    title: '表格',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      'font',
+    ],
+    target: ({ id }) => `> ${getTable()}`
   },
   {
     title: '表头',

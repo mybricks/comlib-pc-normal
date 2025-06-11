@@ -5,6 +5,18 @@ export enum TypeEnum {
   warning = 'warning',
   confirm = 'confirm'
 }
+
+export enum ClassTypeEnum {
+  // mobileWrap = 'mobileWrap',
+  darkModalWrap = 'darkModalWrap',
+  modalWrap = 'modalWrap',
+}
+
+export const ClassTypeEnumMap ={
+  // [ClassTypeEnum.mobileWrap]: '移动端弹窗',
+  [ClassTypeEnum.modalWrap]: '默认弹窗',
+  [ClassTypeEnum.darkModalWrap]: ' BMS主题弹窗',
+}
 export const TypeEnumMap = {
   [TypeEnum.success]: '成功',
   [TypeEnum.error]: '错误',
@@ -22,6 +34,10 @@ export interface Data {
   showCancelBtn?: boolean;
   width?: number;
   outputValue?: any;
+  closable: boolean;
+  useIcon: boolean;
+  iconName: string;
+  className: string;
 }
 
 export const InputIds = {

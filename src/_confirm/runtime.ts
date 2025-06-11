@@ -1,5 +1,6 @@
 import { Modal } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
+import * as Icons from '@ant-design/icons';
 import css from './runtime.less';
 import { checkIfMobile } from '../utils';
 
@@ -12,9 +13,12 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
   const isMobile = checkIfMobile(env);
   const root = createFakeDom(env?.canvasElement || document.body);
+  const TitleIcons = Icons &&  Icons[data?.iconName as string]?.render();
+  const IconData = data.useIcon? {icon: TitleIcons} : {}
   const open = (onOk: () => void, onCancel: () => void) => {
     Modal[type]({
       ...data,
+      ...IconData,
       width: isMobile ? '100%' : data.width || 520,
       className: isMobile ? css.mobileWrap : css.modalWrap,
       title: showTitle ? env.i18n(data.title) : undefined,
