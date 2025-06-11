@@ -271,7 +271,10 @@ export default function Runtime({
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <CloseCircleOutlined className={css.searchContentIconClose} />
+        <CloseCircleOutlined className={css.searchContentIconClose} onClick={() => {
+          setSearchValue('');
+          changeValue('');
+        }} />
       </div>
     );
   }, [searchValue]);
