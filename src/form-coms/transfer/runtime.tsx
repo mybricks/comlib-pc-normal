@@ -1,5 +1,5 @@
 import React, { Children, useCallback, useEffect, useRef, useState } from 'react';
-import { message, Transfer, Tree, Empty, Input, Select } from 'antd';
+import { message, Transfer, Tree, Empty, Input, Select, Modal } from 'antd';
 import { UserOutlined, SearchOutlined, TeamOutlined} from '@ant-design/icons';
 import { Data, TransferItem } from './types';
 import { uuid } from '../../utils';
@@ -54,7 +54,7 @@ export default function ({
   //   return item;
   // });
   generateTreeData(dataSource||[])
-
+  
   const transferRef = useRef(null);
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
   const [rightSelectedKeys, setRightSelectedKeys] = useState<string[] | undefined>([]);
@@ -274,6 +274,14 @@ export default function ({
     outputs['onChange'](targetKeys);
   };
 
+
+  const handleSubmit = () => {
+    setShowTransfer(false)
+    // if (typeof onOk === "function") {
+    //     onOk(targetKeys, selectedLists);
+    // };
+};
+
   const renderItem = ({ title, description }) => {
     if (showDesc) {
       return `${title}-${description}`;
@@ -292,7 +300,7 @@ export default function ({
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <Select 
+      <Select
         style={{ minWidth: 200 }}  
         placeholder="请选择"
         mode="multiple"
@@ -317,81 +325,97 @@ export default function ({
                       );
                   })}
       </Select>
-      {showTransfer && <Transfer
-        ref={transferRef}
-        className={styles.transfer}
-        style={{ height: style.height }}
-        titles={[
-          // <span data-transfer-title-idx="0">{env.i18n(titles[0])}</span>,
-          // <span data-transfer-title-idx="1">{env.i18n(titles[1])}</span>
-        ]}
-        dataSource={transferDataSource}
-        targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
-        // selectedKeys={leftSelectedKeys}
-        showSearch={showSearch}
-        showSelectAll={false}
-        oneWay={oneWay}
-        disabled={disabled}
-        operations={['>>', '<<']}
-        render={renderItem}
-        pagination={showPagination && pagination}
-        onChange={onChange}
-        // onSelectChange={onSelectChange}
-        selectAllLabels={[
-          ({ selectedCount, totalCount }) => (<div className={styles.search}> 
-            <Input
-              size="small"
-              // placeholder="请输入"
-              prefix={chooseSearchIcons(1)}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            /><div className={styles.leftSelectAll} onClick={leftSelectAll}>全选</div></div>),
-          ({ selectedCount, totalCount }) => (
-            <div className={styles.rightHeader}>
-              <div>已选择({selectedCount})</div>
-              <div onClick={clearSelectedTargetItems}>清空</div>
-            </div>
-          ),
-        ]}
-        >
-        {({ direction, onItemSelect, selectedKeys }) => {
-          if(direction === 'left') {
-            setLeftSelectedKeys(selectedKeys)
-            const checkedKeys = [...selectedKeys, ...targetKeys];
-            return(
-              <div className={styles.container}>
-                    {
-                    treeData?.length <= 0 ? 
-                      <div className={styles.empetyContainer}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/></div>:<div></div>
-                    }
-                    <div className={styles.treeContainer}>
-                    <Tree
-                    blockNode
-                    checkable
-                    className={styles.tree}
-                    //checkStrictly
-                    defaultExpandAll
-                    checkedKeys={checkedKeys}
-                    treeData={treeData}
-                    onCheck={(_, { node: { key } }) => {
-                      transferRef.current?.setStateKeys('left', _);
-                      // onItemSelect(key as string, !isChecked(checkedKeys, key));
-                    }}
-                    onSelect={(_, { node: { key } }) => {
-                      transferRef.current?.setStateKeys('left', _);
-                      // onItemSelect(key as string, !isChecked(checkedKeys, key));
-                    }}
-                />
-                    </div>
+      <Modal
+                title="请选择"
+                width={800}
+                okText="确定"
+                cancelText="取消"
+                // 以下属性不支持覆盖
+                destroyOnClose
+                visible={showTransfer}
+                onCancel={() => {
+                   setShowTransfer(false)
+                }}
+                onOk={handleSubmit}
+                zIndex={1002}
+                className={styles.transDlg}
+            >
+        <Transfer
+          ref={transferRef}
+          className={styles.transfer}
+          style={{ height: style.height }}
+          titles={[
+            // <span data-transfer-title-idx="0">{env.i18n(titles[0])}</span>,
+            // <span data-transfer-title-idx="1">{env.i18n(titles[1])}</span>
+          ]}
+          dataSource={transferDataSource}
+          targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
+          // selectedKeys={leftSelectedKeys}
+          showSearch={showSearch}
+          showSelectAll={false}
+          oneWay={oneWay}
+          disabled={disabled}
+          operations={['>>', '<<']}
+          render={renderItem}
+          pagination={showPagination && pagination}
+          onChange={onChange}
+          // onSelectChange={onSelectChange}
+          selectAllLabels={[
+            ({ selectedCount, totalCount }) => (<div className={styles.search}> 
+              <Input
+                size="small"
+                // placeholder="请输入"
+                prefix={chooseSearchIcons(1)}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+              /><div className={styles.leftSelectAll} onClick={leftSelectAll}>全选</div></div>),
+            ({ selectedCount, totalCount }) => (
+              <div className={styles.rightHeader}>
+                <div>已选择({selectedCount})</div>
+                <div onClick={clearSelectedTargetItems}>清空</div>
               </div>
-            )
-          }
-          if(direction === 'right') {
-            setRightSelectedKeys(selectedKeys)
-          }
-      }}
-      </Transfer>}
+            ),
+          ]}
+          >
+          {({ direction, onItemSelect, selectedKeys }) => {
+            if(direction === 'left') {
+              setLeftSelectedKeys(selectedKeys)
+              const checkedKeys = [...selectedKeys, ...targetKeys];
+              return(
+                <div className={styles.container}>
+                      {
+                      treeData?.length <= 0 ? 
+                        <div className={styles.empetyContainer}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/></div>:<div></div>
+                      }
+                      <div className={styles.treeContainer}>
+                      <Tree
+                      blockNode
+                      checkable
+                      className={styles.tree}
+                      //checkStrictly
+                      defaultExpandAll
+                      checkedKeys={checkedKeys}
+                      treeData={treeData}
+                      onCheck={(_, { node: { key } }) => {
+                        transferRef.current?.setStateKeys('left', _);
+                        // onItemSelect(key as string, !isChecked(checkedKeys, key));
+                      }}
+                      onSelect={(_, { node: { key } }) => {
+                        transferRef.current?.setStateKeys('left', _);
+                        // onItemSelect(key as string, !isChecked(checkedKeys, key));
+                      }}
+                  />
+                      </div>
+                </div>
+              )
+            }
+            if(direction === 'right') {
+              setRightSelectedKeys(selectedKeys)
+            }
+        }}
+        </Transfer>
+      </Modal>
     </ConfigProvider>
   );
 }
