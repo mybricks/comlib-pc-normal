@@ -215,6 +215,19 @@ export default {
               }
             },
             {
+              title: '文件上传日期Key',
+              description: '用于上传文件列表中的日期展示',
+              type: 'Text',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.updateDateFieldName;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.updateDateFieldName = value;
+                }
+              }
+            },
+            {
               title: '上传按钮文案',
               description: '上传按钮文案',
               type: 'Text',

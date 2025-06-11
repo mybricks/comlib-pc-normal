@@ -6,7 +6,9 @@ import {
   EyeOutlined,
   DeleteOutlined,
   CloudUploadOutlined,
-  DownloadOutlined
+  DownloadOutlined,
+  LoadingOutlined,
+  FileExclamationOutlined
 } from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { RuleKeys, validateFormItem } from '../utils/validator';
@@ -19,6 +21,7 @@ import css from './runtime.less';
 import { OutputIds, ValidateInfo } from '../types';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import JSZip from 'jszip';
+import classNames from 'classnames';
 
 interface UploadConfig {
   buttonText: string;
@@ -52,6 +55,7 @@ export interface Data {
   /**@description v1.0.35 按钮尺寸 */
   buttonSize: string;
   showBatchDownload: boolean;
+  updateDateFieldName: string;
 }
 
 const downloadFile = (url, fileName) => {
@@ -94,7 +98,9 @@ const batchDownload = (fileList: UploadFile[]) => {
 const renderUploadFileDate = (date?: number | Date) => {
   if (!date) return;
   const d = new Date(date);
-  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getDate()} ${String(
+    d.getHours()
+  ).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 };
 
 export default function ({
@@ -107,8 +113,33 @@ export default function ({
   id,
   name
 }: RuntimeParams<Data>) {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const fileListRef = useRef<UploadFile[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: '-1',
+      status: 'uploading',
+      percent: 50,
+      name: 'test1',
+      updateDate: new Date().getTime()
+    },
+    {
+      uid: '-1',
+      status: 'error',
+      name: 'test2'
+    }
+  ]);
+  const fileListRef = useRef<UploadFile[]>([
+    {
+      uid: '-1',
+      status: 'uploading',
+      percent: 50,
+      name: 'test1'
+    },
+    {
+      uid: '-1',
+      status: 'error',
+      name: 'test2'
+    }
+  ]);
   const removeFileRef = useRef<UploadFile>();
 
   const uploadInputRef = useRef(null);
@@ -537,6 +568,16 @@ export default function ({
   //编辑态，自定义内容时不可编辑
   let condition = env.edit;
 
+  const renderFileIcon = useCallback((file: UploadFile) => {
+    if (file.status === 'done') {
+      return <FileOutlined className={css.uploadFileItemIcon} />;
+    } else if (file.status === 'uploading') {
+      return <LoadingOutlined className={css.uploadFileItemIcon} />;
+    } else if (file.status === 'error') {
+      return <FileExclamationOutlined />;
+    }
+  }, []);
+
   // hideUploadButton ? css.uploadPictureCardHideWrap : ''
   return (
     <div ref={uploadRef} className={cls(classnames.join(' '))}>
@@ -563,57 +604,68 @@ export default function ({
           actions: { download: any; preview: any; remove: any }
         ) => {
           return (
-            <div className={css.uploadFileItem}>
-              <FileOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
+            <div
+              className={classNames({
+                [css.uploadFileItem]: true,
+                [css.uploadFileItemError]: file.status === 'error'
+              })}
+            >
+              {renderFileIcon(file)}
               <a onClick={actions.preview} className={css.uploadFileItemName} title={file.name}>
                 {file.name}
               </a>
               <span className={css.uploadFileItemDate}>
-                {renderUploadFileDate(file.lastModified)}
+                {renderUploadFileDate(file[data.updateDateFieldName])}
               </span>
-              <div className={css.uploadFileItemActions}>
-                <a title={env.i18n('预览')} onClick={actions.preview}>
-                  <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
-                </a>
-                <a title={env.i18n('下载')} onClick={actions.download}>
-                  <CloudUploadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
-                </a>
-                <a
-                  title={env.i18n('删除')}
-                  onClick={() => {
-                    Modal.confirm({
-                      title: env.i18n('即将删除文件，是否继续？'),
-                      style: {
-                        borderColor: '#bfbfbf'
-                      },
-                      icon: false,
-                      okText: env.i18n('确定'),
-                      cancelText: env.i18n('取消'),
-                      onOk: actions.remove,
-                      okButtonProps: {
+              {(file.status === 'done' || file.status === 'error') && (
+                <div className={css.uploadFileItemActions}>
+                  {file.status === 'done' && (
+                    <a title={env.i18n('预览')} onClick={actions.preview}>
+                      <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
+                    </a>
+                  )}
+                  {file.status === 'done' && (
+                    <a title={env.i18n('下载')} onClick={actions.download}>
+                      <CloudUploadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
+                    </a>
+                  )}
+                  <a
+                    title={env.i18n('删除')}
+                    onClick={() => {
+                      Modal.confirm({
+                        title: env.i18n('即将删除文件，是否继续？'),
                         style: {
-                          width: 48,
-                          height: 24,
-                          lineHeight: '24px',
-                          padding: 0,
-                          fontSize: 12
+                          borderColor: '#bfbfbf'
+                        },
+                        icon: false,
+                        okText: env.i18n('确定'),
+                        cancelText: env.i18n('取消'),
+                        onOk: actions.remove,
+                        okButtonProps: {
+                          style: {
+                            width: 48,
+                            height: 24,
+                            lineHeight: '24px',
+                            padding: 0,
+                            fontSize: 12
+                          }
+                        },
+                        cancelButtonProps: {
+                          style: {
+                            width: 48,
+                            height: 24,
+                            lineHeight: '24px',
+                            padding: 0,
+                            fontSize: 12
+                          }
                         }
-                      },
-                      cancelButtonProps: {
-                        style: {
-                          width: 48,
-                          height: 24,
-                          lineHeight: '24px',
-                          padding: 0,
-                          fontSize: 12
-                        }
-                      }
-                    });
-                  }}
-                >
-                  <DeleteOutlined />
-                </a>
-              </div>
+                      });
+                    }}
+                  >
+                    <DeleteOutlined />
+                  </a>
+                </div>
+              )}
             </div>
           );
         }}

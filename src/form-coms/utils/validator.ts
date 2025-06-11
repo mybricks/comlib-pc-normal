@@ -121,7 +121,7 @@ const PASSWORD_RULE = [
   },
   {
     key: RuleKeys.NORMAL_COMPLEX_VALIDATOR,
-    status: false,
+    status: true,
     visible: true,
     title: '中复杂度密码校验',
     validateCode: normalComplexValidator
