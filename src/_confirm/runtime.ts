@@ -20,7 +20,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       ...data,
       ...IconData,
       width: isMobile ? '100%' : data.width || 520,
-      className: isMobile ? css.mobileWrap : css.modalWrap,
+      className: isMobile ? css.mobileWrap : css[data.className],
       title: showTitle ? env.i18n(data.title) : undefined,
       content: env.i18n(data.content),
       okText: env.i18n(data.okText),

@@ -52,22 +52,22 @@ export default {
     setDescByData({ data, setDesc });
   },
   ':root': [
-    // Editor<Data>('样式类型', EditorType.Select, 'className', {
-    //   ifVisible({ data , env}: EditorResult<Data>) {
-    //     const isMobile = checkIfMobile(env);
-    //     return false;
-    //   },
-    //   options: ClassNameTypeOptions,
-    //   value: {
-    //     get({ data }: EditorResult<Data>) {
-    //      return data.className
-    //     },
-    //     set({ data, setDesc }: EditorResult<Data>, val: ClassTypeEnum) {
-    //       data.className = val;
-    //       setDescByData({ data, setDesc });
-    //     }
-    //   }
-    // }),
+    Editor<Data>('样式类型', EditorType.Select, 'className', {
+      ifVisible({ data , env}: EditorResult<Data>) {
+        const isMobile = checkIfMobile(env);
+        return !isMobile;
+      },
+      options: ClassNameTypeOptions,
+      value: {
+        get({ data }: EditorResult<Data>) {
+         return data.className
+        },
+        set({ data, setDesc }: EditorResult<Data>, val: ClassTypeEnum) {
+          data.className = val;
+          setDescByData({ data, setDesc });
+        }
+      }
+    }),
     Editor<Data>('类型', EditorType.Select, 'type', {
       options: TypeOptions,
       value: {
