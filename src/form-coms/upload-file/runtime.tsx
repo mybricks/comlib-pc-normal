@@ -113,33 +113,8 @@ export default function ({
   id,
   name
 }: RuntimeParams<Data>) {
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: '-1',
-      status: 'uploading',
-      percent: 50,
-      name: 'test1',
-      updateDate: new Date().getTime()
-    },
-    {
-      uid: '-1',
-      status: 'error',
-      name: 'test2'
-    }
-  ]);
-  const fileListRef = useRef<UploadFile[]>([
-    {
-      uid: '-1',
-      status: 'uploading',
-      percent: 50,
-      name: 'test1'
-    },
-    {
-      uid: '-1',
-      status: 'error',
-      name: 'test2'
-    }
-  ]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
 
   const uploadInputRef = useRef(null);
