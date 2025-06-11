@@ -5,6 +5,7 @@ import {
   UploadOutlined,
   FileOutlined,
   LoadingOutlined,
+  FileExclamationOutlined,
 } from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RuleKeys, validateFormItem } from '../utils/validator';
@@ -533,6 +534,16 @@ export default function ({
   //编辑态，自定义内容时不可编辑
   let condition = env.edit;
 
+  const renderFileIcon = useCallback((file: UploadFile) => {
+    if (file.status === 'done') {
+      return <FileOutlined className={css.uploadFileItemIcon} />;
+    } else if (file.status === 'uploading') {
+      return <LoadingOutlined className={css.uploadFileItemIcon} />;
+    } else if (file.status === 'error') {
+      return <FileExclamationOutlined />;
+    }
+  }, []);
+
   // hideUploadButton ? css.uploadPictureCardHideWrap : ''
   return (
     <div ref={uploadRef} className={cls(classnames.join(' '))}>
@@ -563,8 +574,11 @@ export default function ({
           }
 
           return (
-            <div className={css.uploadFileItem}>
-              <FileOutlined />
+            <div className={cls({
+              [css.uploadFileItem]: true,
+              [css.uploadFileItemError]: file.status === 'error',
+            })}>
+              {renderFileIcon(file)}
               <a
                 onClick={() => {
                   const handle = ActionSheet.show({
