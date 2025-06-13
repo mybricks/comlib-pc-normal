@@ -1,9 +1,12 @@
 {
   "visible": true,
+  "mode": "multiple",
+  "showValueSplit": "、",
   "config": {
+    "value": [],
     "options": [],
     "disabled": false,
-    "placeholder": "请选择",
+    "placeholder": "",
     "showSearch": true,
     "filterOption": true,
     "optionFilterProp": "label"
@@ -17,9 +20,9 @@
   "outputValueType": "value",
   "isEditable": true,
   "resetOptionsWhenEmptySearch": true,
-  "labelFieldName": "",
-  "valueFieldName": "",
-  "disabledFieldName": "",
-  "checkedFieldName": "",
+  "labelFieldName": "label",
+  "valueFieldName": "value",
+  "disabledFieldName": "disabled",
+  "checkedFieldName": "checked",
   "customField": false
 }

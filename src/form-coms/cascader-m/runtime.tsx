@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import classNames from 'classnames';
-import { Popup } from 'antd-mobile';
+import { Popup, ActionSheet } from 'antd-mobile';
 import { DownOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -10,40 +10,23 @@ import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 const DefaultOptionKey = '_id';
 
-const getFieldNames = (data: Data) => {
-  const fieldNames = {
-    label: data.labelFieldName || 'label',
-    value: data.valueFieldName || 'value',
-    disabled: data.disabledFieldName || 'disabled',
-    checked: data.checkedFieldName || 'checked'
-  };
-
-  return fieldNames;
-};
-
 /**
  * 计算表单项的输出值
  * @params data 组件数据
  */
 const getOutputValue = (data, env, value) => {
   const getOutputValuefromValue = (val, index?) => {
-    if (val?.value) val = val.value;
-    let result = val;
+    let result = val[data.valueFieldName]
     if (val == null) return result;
     if (data.config.labelInValue) {
-      const option = data.config.options?.find((i) => i.value === val) || {};
-      const { value, label } = option;
       result = {
-        value,
-        label: env.i18n(label)
+        value: val[data.valueFieldName],
+        label: env.i18n( val[data.labelFieldName])
       };
     }
     if (data.outputValueType === 'option') {
-      const { [DefaultOptionKey]: id, ...res } =
-        data.config.options.find((i) => i.value === val) || {};
       result = {
-        ...res,
-        label: env.i18n(res.label)
+        ...val,
       };
     }
     return result;
@@ -152,48 +135,8 @@ export default function Runtime({
 
     inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
-        const fieldNames = getFieldNames(data);
-        const newOptions = data.customField
-          ? ds.map((item) => {
-              return {
-                ...(fieldNames.value in item
-                  ? {
-                      value: item[fieldNames.value]
-                    }
-                  : {}),
-                ...(fieldNames.label in item
-                  ? {
-                      label: item[fieldNames.label]
-                    }
-                  : {}),
-                ...(fieldNames.disabled in item
-                  ? {
-                      disabled: item[fieldNames.disabled]
-                    }
-                  : {}),
-                ...(fieldNames.checked in item
-                  ? {
-                      checked: item[fieldNames.checked]
-                    }
-                  : {})
-              };
-            })
-          : ds;
-        data.config.options = [...newOptions];
+        data.config.options = [...ds];
         relOutputs['setOptionsDone'](ds);
-
-        //计算值更新
-        let newValArray: any[] = [],
-          newVal;
-        let updateValue = false;
-        newOptions.map((item) => {
-          const { checked, value } = item;
-          if (checked && value != undefined) {
-            updateValue = true;
-            newVal = value;
-            newValArray.push(value);
-          }
-        });
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
@@ -254,10 +197,10 @@ export default function Runtime({
     if (subKeys.length === 0) return data.config.options || [];
     let target = data.config.options || [];
     subKeys.forEach((key) => {
-      target = target.find((i) => i.name === key).children;
+      target = target.find((i) => i[data.valueFieldName] === key[data.valueFieldName]).children;
     });
     return target;
-  }, [data.config.options, subKeys]);
+  }, [data.config.options, subKeys, data.valueFieldName]);
 
   const { options, ...configs } = data.config;
 
@@ -284,15 +227,17 @@ export default function Runtime({
     (item) => {
       // 展开子列表
       if (item.children && item.children.length > 0) {
-        setSubKeys((ls) => [...ls, item.name]);
+        setSubKeys((ls) => [...ls, item]);
       } else {
         // 选中
-        const currentItem = getCurrentList().find((i) => i.name === item.name);
-        currentItem.checked = !currentItem.checked;
+        const currentItem = getCurrentList().find(
+          (i) => i[data.valueFieldName] === item[data.valueFieldName]
+        );
         setValue((ls) => {
-          if (!currentItem.checked) {
+          if (data.mode === 'single') return [currentItem];
+          if (ls.find((i) => i[data.valueFieldName] === currentItem[data.valueFieldName])) {
             return ls.filter((i) => {
-              return i.name !== currentItem.name;
+              return i[data.valueFieldName] !== currentItem[data.valueFieldName];
             });
           } else {
             return [...ls, currentItem];
@@ -300,7 +245,7 @@ export default function Runtime({
         });
       }
     },
-    [options, getCurrentList]
+    [options, getCurrentList, data.mode]
   );
 
   const returnLastLevel = useCallback(() => {
@@ -334,7 +279,7 @@ export default function Runtime({
           >
             {value.length > 0 ? (
               <span className={css.cascaderSelectorValue}>
-                {value.map((i) => i.value).join('、')}
+                {value.map((i) => i.value).join(data.showValueSplit || '、')}
               </span>
             ) : (
               <span>{data.config.placeholder}</span>
@@ -344,20 +289,51 @@ export default function Runtime({
           <Popup visible={visible} onMaskClick={onClose}>
             <div className={css.cascaderPopupOperate}>
               <a onClick={onClose}>{env.i18n('取消')}</a>
+              {data.mode === 'single' && (
+                <span className={css.cascaderPopupOperateLevel}>
+                  {subKeys.map((i) => i[data.labelFieldName]).join('/')}
+                </span>
+              )}
               <a onClick={onConfirm}>{env.i18n('确定')}</a>
             </div>
-            <div className={css.cascaderPopupSelected}>
-              {value.length > 0 && (
-                <a className={css.cascaderPopupSelectedClear}>{env.i18n('清空')}</a>
-              )}
-              {value.map((item) => (
-                <a className={css.cascaderPopupSelectedItem}>
-                  {item.value}
-                  <CloseCircleOutlined className={css.cascaderPopupSelectedItemClose} />
-                </a>
-              ))}
-            </div>
-            {subKeys.length > 0 && (
+            {data.mode === 'multiple' && (
+              <div className={css.cascaderPopupSelected}>
+                {value.length > 0 && (
+                  <a className={css.cascaderPopupSelectedClear} onClick={() => {
+                    const deleteHandle = ActionSheet.show({
+                      actions: [
+                        {
+                          text: env.i18n('确认'),
+                          key: 'ok',
+                          onClick: () => {
+                            setValue([]);
+                            deleteHandle.close();
+                          }
+                        }
+                      ],
+                      extra: env.i18n('是否清空所有已选项？'),
+                      cancelText: env.i18n('取消'),
+                    });
+                  }}>
+                    {env.i18n('清空')}
+                  </a>
+                )}
+                {value.map((item) => (
+                  <a className={css.cascaderPopupSelectedItem}>
+                    {item.value}
+                    <CloseCircleOutlined
+                      className={css.cascaderPopupSelectedItemClose}
+                      onClick={() => {
+                        setValue((ls) =>
+                          ls.filter((v) => v[data.valueFieldName] !== item[data.valueFieldName])
+                        );
+                      }}
+                    />
+                  </a>
+                ))}
+              </div>
+            )}
+            {data.mode === 'multiple' && subKeys.length > 0 && (
               <a className={css.cascaderPopupReturnLast} onClick={returnLastLevel}>
                 {env.i18n('返回上一级')}
               </a>
@@ -367,7 +343,9 @@ export default function Runtime({
                 <div
                   className={classNames({
                     [css.cascaderPopupListItem]: true,
-                    [css.cascaderPopupListItemSelected]: item.checked
+                    [css.cascaderPopupListItemSelected]: !!value.find(
+                      (i) => i[data.valueFieldName] === item[data.valueFieldName]
+                    )
                   })}
                   onClick={() => handleItemClick(item)}
                 >
@@ -379,7 +357,7 @@ export default function Runtime({
           </Popup>
         </>
       ) : (
-        <div>{value.join('、')}</div>
+        <div>{value.join(data.showValueSplit || '、')}</div>
       )}
     </div>
   );

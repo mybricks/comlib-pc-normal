@@ -12,12 +12,14 @@ export interface Data {
     filterOption: boolean;
     optionFilterProp: string;
   } & PickerProps;
+  showValueSplit: 'string';
+  mode: 'single' | 'multiple';
   rules: any[];
   value?: any[];
   staticOptions: Option[];
   remoteOptions: any[];
   dropdownSearchOption: boolean;
-  outputValueType: any[];
+  outputValueType: any;
   validateTrigger: string[];
   isEditable: boolean;
   resetOptionsWhenEmptySearch: boolean;

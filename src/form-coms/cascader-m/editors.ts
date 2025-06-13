@@ -330,6 +330,40 @@ export default {
           }
         },
         {
+          title: '下拉框模式',
+          type: 'select',
+          description: '可设置下拉框的模式为单选或多选',
+          options: [
+            { label: '单选', value: 'single' },
+            { label: '多选', value: 'multiple' },
+          ],
+          value: {
+            get({ data }) {
+              return data.mode;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: string) {
+              data.mode = value as any;
+              refreshSchema({ input, output, data });
+            }
+          }
+        },
+        {
+          title: '多选项展示分隔符',
+          type: 'Text',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.mode === 'multiple';
+          },
+          description: '默认为【、】',
+          value: {
+            get({data}) {
+              return data.showValueSplit;
+            },
+            set({data}, value: string) {
+              data.showValueSplit = value;
+            }
+          }
+        },
+        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',
@@ -341,6 +375,99 @@ export default {
               data.config.disabled = value;
             }
           }
+        },
+        {
+          title: '字段配置',
+          items: [
+            {
+              title: '字段配置',
+              type: 'switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.customField;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: boolean) {
+                  data.customField = value;
+                }
+              }
+            },
+            {
+              title: '标题字段',
+              type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
+              options: {
+                placeholder: '默认值为 label'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelFieldName;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.labelFieldName = value;
+                  reFiledNameSchema(data, input, output);
+                }
+              }
+            },
+            {
+              title: '值字段',
+              type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
+              options: {
+                placeholder: '默认值为 value'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.valueFieldName;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.valueFieldName = value;
+                  reFiledNameSchema(data, input, output);
+                }
+              }
+            },
+            {
+              title: '禁用字段',
+              type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
+              options: {
+                placeholder: '默认值为 disabled'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disabledFieldName;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.disabledFieldName = value;
+                  reFiledNameSchema(data, input, output);
+                }
+              }
+            },
+            {
+              title: '选中字段',
+              type: 'Text',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.customField;
+              },
+              options: {
+                placeholder: '默认值为 checked'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.checkedFieldName;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.checkedFieldName = value;
+                  reFiledNameSchema(data, input, output);
+                }
+              }
+            }
+          ]
         },
         // 选项配置
         // {
@@ -427,29 +554,29 @@ export default {
         //     }
         //   }
         // },
-        // {
-        //   title: '输出数据',
-        //   type: 'Radio',
-        //   options: [
-        //     {label: '选项值', value: 'value'},
-        //     {label: '{选项标签, 选项值}', value: 'labelInValue'},
-        //     {label: '当前选项', value: 'option'}
-        //   ],
-        //   description: '设置下拉框输出的数据内容',
-        //   value: {
-        //     get({data}: EditorResult<Data>) {
-        //       return data.outputValueType;
-        //     },
-        //     set(
-        //       {data, input, output}: EditorResult<Data>,
-        //       value: 'value' | 'labelInValue' | 'option'
-        //     ) {
-        //       data.config.labelInValue = value === 'labelInValue';
-        //       data.outputValueType = value;
-        //       refreshSchema({input, output, data});
-        //     }
-        //   }
-        // },
+        {
+          title: '输出数据',
+          type: 'Radio',
+          options: [
+            {label: '选项值', value: 'value'},
+            {label: '{选项标签, 选项值}', value: 'labelInValue'},
+            {label: '当前选项', value: 'option'}
+          ],
+          description: '设置下拉框输出的数据内容',
+          value: {
+            get({data}: EditorResult<Data>) {
+              return data.outputValueType;
+            },
+            set(
+              {data, input, output}: EditorResult<Data>,
+              value: 'value' | 'labelInValue' | 'option'
+            ) {
+              data.config.labelInValue = value === 'labelInValue';
+              data.outputValueType = value;
+              refreshSchema({input, output, data});
+            }
+          }
+        },
         {
           title: '校验规则',
           description: '提供快捷校验配置',
