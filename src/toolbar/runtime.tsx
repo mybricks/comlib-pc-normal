@@ -139,7 +139,7 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     );
     return (
       <Dropdown overlay={menu} placement="bottomRight">
-        <div className={css.button}>
+        <div className={css.button + ' ' + css['button-' + data.layout]}>
           <Button icon={<DownOutlined />}>更多</Button>
         </div>
       </Dropdown>
