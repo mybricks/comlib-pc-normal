@@ -81,16 +81,16 @@ const LENGTH_RULE = [
     status: false,
     visible: true,
     title: '最小长度校验',
-    message: '内容长度不能小于指定值',
+    message: '内容长度不能小于${limitMinLength}！',
     limitMinLength: [2]
   },
   {
     key: RuleKeys.MAX_LENGTH,
-    status: false,
+    status: true,
     visible: true,
     title: '最大长度校验',
-    message: '内容长度不能大于指定值',
-    limitMaxLength: [1000]
+    message: '内容长度不能大于${limitMaxLength}！',
+    limitMaxLength: [255]
   }
 ];
 const VALUE_RULE = [
@@ -226,12 +226,14 @@ export const ruleFnMap = {
   },
   [RuleKeys.MIN_LENGTH]: ({ value, message, failed, successed, env, limitMinLength }) => {
     if (value && value?.toString().length < limitMinLength) {
+      message = message.replace(/\$\{limitMinLength\}/, limitMinLength)
       return failed(env.i18n(message));
     }
     return successed();
   },
   [RuleKeys.MAX_LENGTH]: ({ value, message, failed, successed, env, limitMaxLength }) => {
     if (value && value?.toString().length > limitMaxLength) {
+      message = message.replace(/\$\{limitMaxLength\}/, limitMaxLength)
       return failed(env.i18n(message));
     }
     return successed();
