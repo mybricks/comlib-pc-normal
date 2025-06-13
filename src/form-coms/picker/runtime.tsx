@@ -314,7 +314,7 @@ export default function Runtime({
             title={renderSearch()}
             columns={columns}
             onConfirm={onConfirm}
-            onSelect={changeValue}
+            // onSelect={changeValue}
             value={value}
           >
             {(items, { open, close }) => {
