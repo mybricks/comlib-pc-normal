@@ -100,6 +100,14 @@ export default {
                     }
                   },
                   {
+                    title: '下拉区外边框',
+                    options: [{ type: 'border' }],
+                    global: true,
+                    target({ id }: EditorResult<Data>) {
+                      return [`.{id}.ant-tree-select-dropdown`];
+                    }
+                  },
+                  {
                     title: '选项',
                     options: [
                       { type: 'font', config: { disableTextAlign: true } },
