@@ -736,6 +736,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         css.wrapper,
         adaptiveMobile && wrapperWidth <= 575 ? css.disableMobileWrapper + ' mobileWarrper' : ''
       )}
+      style={env.edit ? { paddingBottom: 32 } : {}}
       ref={wrapperRef}
     >
       <Fragment>

@@ -4,6 +4,7 @@
   "author": "jidan.wd",
   "author_name": "jidan.wd",
   "version": "1.0.5",
+  "visibility": false,
   "description": "全开式日期选择器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",

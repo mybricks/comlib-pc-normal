@@ -5,6 +5,7 @@ import { Data } from './runtime';
 export default {
   '@init'({ data, style }) {
     style.width = '100%';
+    style.height = 'auto';
   },
   '@resize': {
     options: ['width', 'height']
