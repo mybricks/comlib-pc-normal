@@ -667,22 +667,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
             if (data._domainModel && env.callDomainModel) {
               res = { ...formContext.current.values, ...res };
-              env.callDomainModel({
-                model: data._domainModel,
-                params: res,
-              }, (error, loading, result) => {
-                if (loading) {
-                  // 等待接口返回
-                  return;
+              env.callDomainModel(
+                {
+                  model: data._domainModel,
+                  params: res
+                },
+                (error, loading, result) => {
+                  if (loading) {
+                    // 等待接口返回
+                    return;
+                  }
+                  if (error) {
+                    // 报错
+                    console.error(`[表单容器] callDomainModel`, error);
+                  } else {
+                    // 成功
+                    output(result);
+                  }
                 }
-                if (error) {
-                  // 报错
-                  console.error(`[表单容器] callDomainModel`, error);
-                } else {
-                  // 成功
-                  output(result)
-                }
-              })
+              );
             } else {
               output(res);
             }
@@ -731,6 +734,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         css.wrapper,
         adaptiveMobile && wrapperWidth <= 575 ? css.disableMobileWrapper + ' mobileWarrper' : ''
       )}
+      style={env.edit ? { paddingBottom: 32 } : {}}
       ref={wrapperRef}
     >
       <Fragment>

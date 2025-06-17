@@ -1,6 +1,7 @@
 {
   "title": "全开式日期选择器",
   "namespace": "amc.normal-h5.date-picker-full-open",
+  "visibility": false,
   "author": "jidan.wd",
   "author_name": "jidan.wd",
   "version": "1.0.5",

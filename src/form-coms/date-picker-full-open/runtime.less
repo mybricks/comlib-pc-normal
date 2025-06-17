@@ -1,29 +1,29 @@
-.datePickerDropDownNotClose {
-  --date-picker-height: 32px;
-
-  position: relative !important;
-  left: 0 !important;
-  top: var(--date-picker-height) !important;
+.wrapper {
 }
 
-.datePickerDropDownFullWidth {
-  --date-picker-width: fit-content;
-  width: var(--date-picker-width);
-
-  :global(.ant-picker-panel) {
-    width: 100%;
-
-    :global(div) {
+.datePickerWrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  :global {
+    .ant-picker-panel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
       width: 100%;
-
-      :global(.ant-picker-content) {
+      background-color: #fff;
+      .ant-picker-date-panel,
+      .ant-picker-year-panel,
+      .ant-picker-month-panel {
         width: 100%;
+        .ant-picker-content {
+          width: 100%;
+        }
       }
     }
   }
-}
-
-.datePickerDropDownNotFullWidth {
-  --date-picker-width: fit-content;
-  width: var(--date-picker-width);
 }
