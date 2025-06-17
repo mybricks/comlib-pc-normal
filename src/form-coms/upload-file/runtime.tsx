@@ -378,10 +378,16 @@ export default function ({
         const image = new window.Image();
         image.onload = function () {
           if (width && image.width != width) {
-            message.error(`请上传宽为${width}(px)的图片`);
+            Modal.confirm({
+              title: `请上传宽为${width}(px)的图片`,
+            });
+            // message.error(`请上传宽为${width}(px)的图片`);
             //reject('error');
           } else if (height && image.height != width) {
-            message.error(`请上传宽高为${height}}(px)的图片`);
+            Modal.confirm({
+              title: `请上传高为${height}(px)的图片`,
+            });
+            // message.error(`请上传高为${height}(px)的图片`);
             // reject('error');
           } else {
             resolve('success');
@@ -411,7 +417,10 @@ export default function ({
       }
 
       if (!isAcceptFileType) {
-        message.error('上传文件格式不正确!');
+        Modal.confirm({
+          title: '上传文件格式不正确!',
+        });
+        // message.error('上传文件格式不正确!');
       }
 
       const acceptFileSize = +fileSize;
@@ -422,7 +431,10 @@ export default function ({
       }
 
       if (!isAcceptFileSize) {
-        message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
+        Modal.confirm({
+          title: `上传文件大小不能超过${acceptFileSize}MB!`,
+        })
+        // message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
       }
       return !(
         isAcceptFileType &&
@@ -608,9 +620,14 @@ export default function ({
                     title={env.i18n('删除')}
                     onClick={() => {
                       Modal.confirm({
+                        width: 264,
                         title: env.i18n('即将删除文件，是否继续？'),
                         style: {
-                          borderColor: '#bfbfbf'
+                          borderColor: '#bfbfbf',
+                        },
+                        bodyStyle: {
+                          width: 264,
+                          padding: 32,
                         },
                         icon: false,
                         okText: env.i18n('确定'),

@@ -1,4 +1,4 @@
-import { Upload, message, Image, UploadFile, Popconfirm, ConfigProvider } from 'antd';
+import { Upload, message, Image, UploadFile, Popconfirm, ConfigProvider, Modal } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { DeleteOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -308,10 +308,16 @@ export default function ({
         const image = new window.Image();
         image.onload = function () {
           if (width && image.width != width) {
-            message.error(`请上传宽为${width}(px)的图片`);
+            Modal.confirm({
+              title: `请上传宽为${width}(px)的图片`
+            });
+            // message.error(`请上传宽为${width}(px)的图片`);
             //reject('error');
           } else if (height && image.height != width) {
-            message.error(`请上传宽高为${height}}(px)的图片`);
+            Modal.confirm({
+              title: `请上传高为${height}(px)的图片`
+            });
+            // message.error(`请上传高为${height}(px)的图片`);
             // reject('error');
           } else {
             resolve('success');
@@ -341,7 +347,10 @@ export default function ({
       }
 
       if (!isAcceptFileType) {
-        message.error('上传文件格式不正确!');
+        Modal.confirm({
+          title: '上传文件格式不正确!'
+        });
+        // message.error('上传文件格式不正确!');
       }
 
       const acceptFileSize = +fileSize;
@@ -352,7 +361,10 @@ export default function ({
       }
 
       if (!isAcceptFileSize) {
-        message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
+        Modal.confirm({
+          title: `上传文件大小不能超过${acceptFileSize}MB!`
+        });
+        // message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
       }
       return !(
         isAcceptFileType &&
@@ -515,7 +527,9 @@ export default function ({
                           e.stopPropagation();
                         }}
                       >
-                        <DeleteOutlined style={{ width: 24, height: 24, margin: 0, fontSize: 24 }} />
+                        <DeleteOutlined
+                          style={{ width: 24, height: 24, margin: 0, fontSize: 24 }}
+                        />
                       </span>
                     </Popconfirm>
                   ),
