@@ -206,7 +206,16 @@ export default {
         return;
       }
 
-      const schema = _domainModel.service?.responses?.properties?.data;
+      if (_domainModel.defId === "_defined") {
+        setDomainModel({
+          data,
+          key: "dataSource",
+          _domainModel
+        })
+        return;
+      }
+
+      const schema = _domainModel.service?.response?.properties?.data;
       // 类型校验
       if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && _domainModel.service.method === "get") {
         setDomainModel({
