@@ -195,6 +195,9 @@ export default {
     options: ['width']
   },
   "@domainModel": {
+    options: {
+      type: ["create", "update"]
+    },
     get({ data }) {
       return data._domainModel;
     },
@@ -207,20 +210,23 @@ export default {
       if (isSameDomainInstanceAndService(data._domainModel, _domainModel)) {
         return;
       }
+      if (_domainModel.defId === "_defined") {
+        data._domainModel = _domainModel;
+        return;
+      }
       // 类型校验
       const { service } = _domainModel;
 
       if (service?.method === "post") {
         // 清空表单项
         slot.get('content').clear();
-        service.params.forEach((param) => {
-          if (!param["x-read-only"]) {
+        (service.params || service.request).forEach((param) => {
+          if (!param["x-read-only"] && !param.extends?.["x-read-only"]) {
             slot.get('content')
               .addCom(
                 ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
                 false,
                 { deletable: true, movable: true },
-                // visible: param["x-read-only"] ? false: true
                 {
                   name: param.name,
                   label: param.title || param.name

@@ -215,7 +215,7 @@ export default {
         return;
       }
 
-      const schema = _domainModel.service?.response?.properties?.data;
+      const schema = _domainModel.service?.response?.properties?.data || _domainModel.service?.responses?.properties?.data;
       // 类型校验
       if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && _domainModel.service.method === "get") {
         setDomainModel({

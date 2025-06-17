@@ -47,6 +47,7 @@ import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
 import useDemandDataSource from './hooks/use-demand-data-source';
 import { useConnector } from '../utils/connector';
+import { getColumnsFromSchema } from "./editors";
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -172,6 +173,61 @@ export default function (props: RuntimeParams<Data>) {
     }
   })
 
+  const domainModelChange = useMemo(() => {
+    if (env.runtime && data._domainModel?.dataSource && env.onDomainModelChange) {
+      return env.onDomainModelChange(data._domainModel?.dataSource, (params) => {
+        const domainModel = params.serviceAry.find((service) => {
+          const schema = service.response?.properties?.data || service.responses?.properties?.data
+          if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && service.method === "get") {
+            return true;
+          }
+          return false;
+        })
+
+        if (domainModel) {
+          const { defId, id, title } = params;
+          data._domainModel.dataSource = {
+            defId,
+            id,
+            title,
+            service: domainModel,
+          }
+          const schema = domainModel.response?.properties?.data || domainModel.responses?.properties?.data;
+          const schemaColumns = getColumnsFromSchema(schema, {
+            defaultWidth: 'auto'
+          });
+          const columns = data.columns.filter((column) => {
+            return column.contentType === "slotItem";
+          }).map((column) => {
+            if (column.dataIndex.endsWith(`_${column.contentType}`)) {
+              return column;
+            }
+            return {
+              ...column,
+              dataIndex: column.key + `_${column.contentType}`
+            }
+          });
+          const customIDMap: Record<string, boolean> = columns.reduce((pre, cur) => {
+            pre[cur.dataIndex] = true
+            return pre;
+          }, {});
+  
+          data.columns = schemaColumns.filter((schemaColumn) => {
+            return !customIDMap[schemaColumn.dataIndex]
+          }).concat(columns);
+  
+          if (data.columns.length) {
+            data.rowKey = data.columns[0].dataIndex as string;
+            data.columns[0].isRowKey = true;
+          }
+          data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+        } else {
+          console.warn("[数据表格] 领域模型服务类型不匹配", params);
+        }
+      })
+    }
+  }, [])
+
   const domainDataSource = useMemo(() => {
     if (env.runtime && data._domainModel?.dataSource && env.callDomainModel) {
       const { usePagination } = data;
@@ -216,8 +272,9 @@ export default function (props: RuntimeParams<Data>) {
   }, [])
 
   useEffect(() => {
-    if (env.runtime && domainDataSource) {
+    if (env.runtime) {
       return () => {
+        domainModelChange?.destroy?.();
         domainDataSource?.destroy?.();
       }
     }
