@@ -377,6 +377,20 @@ export default {
     items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {
       cate1.items = [
         {
+          title: '添加表单项',
+          type: 'comSelector',
+          options: {
+            schema: 'mybricks.normal-pc.form-container/*',
+            type: 'add'
+          },
+          value: {
+            set({ data, slot }: EditorResult<Data>, namespace: string) {
+              slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
+            }
+          }
+        },
+        //null,
+        {
           title: '类型',
           type: 'Select',
           description:
@@ -497,19 +511,6 @@ export default {
             },
             set({ data }: EditorResult<Data>, val: boolean) {
               data.validateHiddenFields = val;
-            }
-          }
-        },
-        {
-          title: '添加表单项',
-          type: 'comSelector',
-          options: {
-            schema: 'mybricks.normal-pc.form-container/*',
-            type: 'add'
-          },
-          value: {
-            set({ data, slot }: EditorResult<Data>, namespace: string) {
-              slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
             }
           }
         },
