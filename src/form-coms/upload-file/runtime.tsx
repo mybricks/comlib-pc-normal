@@ -1,11 +1,11 @@
 import { Button, Upload, message, Image, UploadFile, Progress } from 'antd';
-import {ActionSheet} from'antd-mobile';
+import { ActionSheet } from 'antd-mobile';
 import { render, unmountComponentAtNode } from 'react-dom';
 import {
   UploadOutlined,
   FileOutlined,
   LoadingOutlined,
-  FileExclamationOutlined,
+  FileExclamationOutlined
 } from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RuleKeys, validateFormItem } from '../utils/validator';
@@ -570,14 +570,21 @@ export default function ({
           actions: { download: any; preview: any; remove: any }
         ) => {
           if (file.percent && file?.percent < 100) {
-            return <div className={css.uploading}><LoadingOutlined className={css.uploadingIcon} />{file.name}</div>;
+            return (
+              <div className={css.uploading}>
+                <LoadingOutlined className={css.uploadingIcon} />
+                {file.name}
+              </div>
+            );
           }
 
           return (
-            <div className={cls({
-              [css.uploadFileItem]: true,
-              [css.uploadFileItemError]: file.status === 'error',
-            })}>
+            <div
+              className={cls({
+                [css.uploadFileItem]: true,
+                [css.uploadFileItemError]: file.status === 'error'
+              })}
+            >
               {renderFileIcon(file)}
               <a
                 onClick={() => {
@@ -601,16 +608,64 @@ export default function ({
                           const deleteHandle = ActionSheet.show({
                             actions: [
                               {
-                                text: env.i18n('确认'),
-                                key: 'ok',
-                                onClick: () => {
-                                  actions.remove();
-                                  deleteHandle.close();
-                                }
+                                text: env.i18n('即将删除图片，是否继续？'),
+                                key: 'ok'
                               }
                             ],
-                            extra: env.i18n('即将删除图片，是否继续？'),
-                            cancelText: env.i18n('取消')
+                            extra: (
+                              <div
+                                style={{
+                                  width: '100%',
+                                  color: 'rgba(0,0,0,0.85',
+                                  fontWeight: 'bolder'
+                                }}
+                              >
+                                {env.i18n('删除')}
+                              </div>
+                            ),
+                            cancelText: (
+                              <div
+                                style={{
+                                  position: 'relative',
+                                  width: '100%',
+                                  height: '100%',
+                                  display: 'flex',
+                                  alignItems: 'stretch'
+                                }}
+                              >
+                                <a
+                                  style={{ width: '50%', color: 'rgba(0,0,0,0.85' }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    deleteHandle.close();
+                                  }}
+                                >
+                                  {env.i18n('取消')}
+                                </a>
+                                <span
+                                  style={{
+                                    position: 'absolute',
+                                    top: '-16px',
+                                    left: '50%',
+                                    width: 1,
+                                    height: 64,
+                                    background: '#dedede'
+                                  }}
+                                ></span>
+                                <a
+                                  style={{ width: '50%', color: 'rgba(0,0,0,0.85' }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    actions.remove();
+                                    deleteHandle.close();
+                                  }}
+                                >
+                                  {env.i18n('确认')}
+                                </a>
+                              </div>
+                            )
                           });
                         }
                       }
