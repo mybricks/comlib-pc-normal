@@ -19,5 +19,6 @@
   "innerIcon": "HomeOutlined",
   "isEditable": true,
   "preSrc": false,
-  "preInnerIcon": "HomeOutlined"
+  "preInnerIcon": "HomeOutlined",
+  "setAutoFocus": false
 }

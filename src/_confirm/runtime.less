@@ -1,3 +1,10 @@
+// 颜色变量
+@bg-color: #343D47;    // 背景主色调
+@primary-color: #30ADE9;       // 主色调
+@title-color: #ffffff;    // 标题文本颜色
+@text-color: rgba(255,255,255,0.75);    // 文本颜色
+@border-radius: 16px;  // 边框颜色
+
 .modalWrap {
   :global {
     .ant-modal-confirm-content {
@@ -28,5 +35,177 @@
         margin-top: 12px;
       }
     }
+  }
+}
+
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.darkModalWrap {
+  :global {
+    .ant-modal {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      color: @text-color;
+      font-size: 14px;
+      font-variant: tabular-nums;
+      line-height: 1.5715;
+      list-style: none;
+      font-feature-settings: 'tnum';
+      pointer-events: none;
+      position: relative;
+      top: 100px;
+      width: auto;
+      max-width: calc(100vw - 32px);
+      margin: 0 auto;
+      padding-bottom: 24px;
+    }
+    .ant-modal.ant-zoom-enter,
+    .ant-modal.ant-zoom-appear {
+      transform: none;
+      opacity: 0;
+      animation-duration: 0.3s;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .ant-modal-mask {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.45);
+    }
+    .ant-modal-mask-hidden {
+      display: none;
+    }
+    .ant-modal-wrap {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: auto;
+      outline: 0;
+    }
+    .ant-modal-wrap {
+      z-index: 1000;
+    }
+    .ant-modal-title, .ant-modal-confirm-title {
+      margin: 0;
+      color: @title-color;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 22px;
+      word-wrap: break-word;
+    }
+    .ant-modal-content, .ant-modal-confirm-content {
+      position: relative;
+      background-color: @bg-color;
+      background-clip: padding-box;
+      color: @text-color;
+      border: 0;
+      pointer-events: auto;
+      border-radius: @border-radius;
+    }
+    .ant-modal-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      padding: 0;
+      color: rgba(255, 255, 255, 0.45);
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .ant-modal-close-x {
+      display: block;
+      width: 54px;
+      height: 72px;
+      font-size: 14px;
+      font-style: normal;
+      line-height: 72px;
+      text-align: center;
+      text-transform: none;
+      text-rendering: auto;
+    }
+    .ant-modal-close:focus,
+    .ant-modal-close:hover {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+    }
+    .ant-modal-header {
+      padding: 16px 24px;
+      color: @title-color;
+      background: #1f1f1f;
+      border-bottom: 1px solid #303030;
+      border-radius: 2px 2px 0 0;
+    }
+    .ant-modal-body {
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.5715;
+      word-wrap: break-word;
+    }
+    .ant-modal-footer {
+      padding: 10px 16px;
+      text-align: right;
+      background: transparent;
+      border-top: 1px solid #303030;
+      border-radius: 0 0 2px 2px;
+    }
+    .ant-modal-footer .ant-btn + .ant-btn:not(.ant-dropdown-trigger) {
+      margin-bottom: 0;
+      margin-left: 8px;
+    }
+    .ant-modal-open {
+      overflow: hidden;
+    }
+    .ant-modal-centered {
+      text-align: center;
+    }
+    .ant-modal-centered::before {
+      display: inline-block;
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+      content: '';
+    }
+    .ant-modal-centered .ant-modal {
+      top: 0;
+      display: inline-block;
+      padding-bottom: 0;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .ant-modal-confirm-btns {
+
+    .ant-btn-primary{
+      background-color: @primary-color;
+      color: @title-color;
+      border-radius: 4px;
+    }
+
+    .ant-btn-default{
+      background: transparent;
+      border: 1px solid @primary-color;
+      color: @primary-color;
+      border-radius: 4px;
+    }
+  }
+
   }
 }

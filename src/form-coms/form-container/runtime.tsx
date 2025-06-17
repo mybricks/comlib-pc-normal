@@ -36,10 +36,95 @@ type FormControlInputType = {
   [key in FormControlInputId]: FormControlInputRels[key];
 };
 
+const setDynamicFormItems = (params) => {
+  const {
+    data,
+    val,
+    dynamicEnableOrDisabledRef,
+    setDisabled,
+    setEnabled,
+    setFieldsSourceValue,
+    slots,
+    relOutputs
+  } = params;
+  let newItems: any[] = [];
+  if (!data.originItems) {
+    // 运行时只执行一次，记录原始表单项
+    data.originItems = JSON.parse(JSON.stringify(data.items));
+  }
+  const uniqueNames: string[] = [];
+  const notFoundOrUniqueNames: string[] = [];
+  const disableFormList: string[] = [];
+  const enableFormList: string[] = [];
+  const fieldsSource = {};
+  val.forEach((item) => {
+    let sameNameItem = data.originItems.find((i) => i.name === item.relOriginField);
+    let isUniqueName = !uniqueNames.includes(item.name);
+    if (sameNameItem && isUniqueName) {
+      uniqueNames.push(item.name);
+      // 动态输入的表单在搭建册不存在，不添加
+      const disabledConfig =
+        item.formItemProps?.disabled !== undefined
+          ? { disabled: item.formItemProps?.disabled }
+          : {};
+      const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } =
+        item.formItemProps || {};
+      let dynamicStyle = {
+        labelStyle,
+        descriptionStyle,
+        labelAlign,
+        labelAutoWrap
+      };
+      if (typeof item.formItemProps?.disabled === 'boolean') {
+        (item.formItemProps?.disabled ? disableFormList : enableFormList).push(item.name);
+      }
+      if (
+        isArray(item.formItemProps?.fieldSource) ||
+        isObject(item.formItemProps?.fieldSource)
+      ) {
+        fieldsSource[item.name] = item.formItemProps?.fieldSource;
+      }
+      let config = Object.assign(sameNameItem?.config || {}, disabledConfig);
+      newItems.push({
+        ...sameNameItem,
+        name: item.name,
+        label: item.label,
+        id: uuid(),
+        ...(item?.formItemProps ? item.formItemProps : {}),
+        config,
+        dynamicStyle
+      });
+    } else {
+      notFoundOrUniqueNames.push(item.name);
+    }
+  });
+  data.items = newItems;
+  // 触发批量禁用、启用;需要在动态表单项childrenInputs
+  dynamicEnableOrDisabledRef.current = () => {
+    disableFormList.length && setDisabled(disableFormList);
+    enableFormList.length && setEnabled(enableFormList);
+    Object.keys(fieldsSource).length > 0 &&
+      setFieldsSourceValue(fieldsSource, () => {
+        slots['content'].inputs[slotInputIds.SET_FIELDS_SOURCE](fieldsSource);
+      });
+    relOutputs?.['setDynamicFormItemsDone']('done');
+  };
+  if (notFoundOrUniqueNames.length) {
+    console.warn(
+      `以下动态设置的字段名重复或者在搭建册不存在关联的字段`,
+      notFoundOrUniqueNames.join(',')
+    );
+  }
+}
+
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
+<<<<<<< HEAD
   console.log(slots)
   const formContext = useRef({ store: {} });
+=======
+  const formContext = useRef({ store: {}, values: {} });
+>>>>>>> origin
   const [formRef] = Form.useForm();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -132,74 +217,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       // 动态设置表单项
       if (data.useDynamicItems && inputs[inputIds.setDynamicFormItems]) {
         inputs[inputIds.setDynamicFormItems]((val: Array<DynamicItemData>, relOutputs: any) => {
-          let newItems: any[] = [];
-          if (!data.originItems) {
-            // 运行时只执行一次，记录原始表单项
-            data.originItems = JSON.parse(JSON.stringify(data.items));
-          }
-          const uniqueNames: string[] = [];
-          const notFoundOrUniqueNames: string[] = [];
-          const disableFormList: string[] = [];
-          const enableFormList: string[] = [];
-          const fieldsSource = {};
-          val.forEach((item) => {
-            let sameNameItem = data.originItems.find((i) => i.name === item.relOriginField);
-            let isUniqueName = !uniqueNames.includes(item.name);
-            if (sameNameItem && isUniqueName) {
-              uniqueNames.push(item.name);
-              // 动态输入的表单在搭建册不存在，不添加
-              const disabledConfig =
-                item.formItemProps?.disabled !== undefined
-                  ? { disabled: item.formItemProps?.disabled }
-                  : {};
-              const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap } =
-                item.formItemProps || {};
-              let dynamicStyle = {
-                labelStyle,
-                descriptionStyle,
-                labelAlign,
-                labelAutoWrap
-              };
-              if (typeof item.formItemProps?.disabled === 'boolean') {
-                (item.formItemProps?.disabled ? disableFormList : enableFormList).push(item.name);
-              }
-              if (
-                isArray(item.formItemProps?.fieldSource) ||
-                isObject(item.formItemProps?.fieldSource)
-              ) {
-                fieldsSource[item.name] = item.formItemProps?.fieldSource;
-              }
-              let config = Object.assign(sameNameItem?.config || {}, disabledConfig);
-              newItems.push({
-                ...sameNameItem,
-                name: item.name,
-                label: item.label,
-                id: uuid(),
-                ...(item?.formItemProps ? item.formItemProps : {}),
-                config,
-                dynamicStyle
-              });
-            } else {
-              notFoundOrUniqueNames.push(item.name);
-            }
-          });
-          data.items = newItems;
-          // 触发批量禁用、启用;需要在动态表单项childrenInputs
-          dynamicEnableOrDisabledRef.current = () => {
-            disableFormList.length && setDisabled(disableFormList);
-            enableFormList.length && setEnabled(enableFormList);
-            Object.keys(fieldsSource).length > 0 &&
-              setFieldsSourceValue(fieldsSource, () => {
-                slots['content'].inputs[slotInputIds.SET_FIELDS_SOURCE](fieldsSource);
-              });
-            relOutputs['setDynamicFormItemsDone']('done');
-          };
-          if (notFoundOrUniqueNames.length) {
-            console.warn(
-              `以下动态设置的字段名重复或者在搭建册不存在关联的字段`,
-              notFoundOrUniqueNames.join(',')
-            );
-          }
+          setDynamicFormItems({
+            data,
+            val,
+            dynamicEnableOrDisabledRef,
+            setDisabled,
+            setEnabled,
+            setFieldsSourceValue,
+            slots,
+            relOutputs
+          })
         });
       }
 
@@ -382,6 +409,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setFieldsValue = (val, cb?) => {
+    formContext.current.values = val;
     const formData = objectFilter(val);
     if (Object.keys(formData).length > 0) {
       const length = Object.keys(formData).length - 1;
@@ -427,6 +455,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
   const setInitialValues = (val, cb?) => {
+    formContext.current.values = val;
     try {
       const formData = objectFilter(val);
       if (Object.keys(formData).length > 0) {
@@ -662,11 +691,35 @@ export default function Runtime(props: RuntimeParams<Data>) {
               };
             }
 
-            if (outputRels) {
-              outputRels[outputId](res);
+            const output = outputRels ? outputRels[outputId] : outputs[outputId];
+
+            if (data._domainModel && env.callDomainModel) {
+              res = { ...formContext.current.values, ...res };
+              env.callDomainModel({
+                model: data._domainModel,
+                params: res,
+              }, (error, loading, result) => {
+                if (loading) {
+                  // 等待接口返回
+                  return;
+                }
+                if (error) {
+                  // 报错
+                  console.error(`[表单容器] callDomainModel`, error);
+                } else {
+                  // 成功
+                  output(result)
+                }
+              })
             } else {
-              outputs[outputId](res);
+              output(res);
             }
+
+            // if (outputRels) {
+            //   outputRels[outputId](res);
+            // } else {
+            //   outputs[outputId](res);
+            // }
           })
           .catch((e) => {
             console.log('收集表单项值失败', e);
@@ -699,6 +752,60 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </>
     );
   };
+
+  const domainModelChange = useMemo(() => {
+    if (env.runtime && data._domainModel && env.onDomainModelChange) {
+      return env.onDomainModelChange(data._domainModel, (params) => {
+        const domainModel = params.serviceAry.find((service) => {
+          return service.type === "create"
+        })
+
+        if (domainModel) {
+          data.useDynamicItems = true;
+          const { defId, id, title } = params;
+          data._domainModel = {
+            defId,
+            id,
+            title,
+            service: domainModel,
+          }
+          const dynamicFormItems: Array<{
+            name: string;
+            label: string;
+            relOriginField: "text"
+          }> = [];
+          (domainModel.params || domainModel.request).forEach((param) => {
+            if (!param["x-read-only"] && !param.extends?.["x-read-only"]) {
+              dynamicFormItems.push({
+                name: param.name,
+                label: param.title || param.name,
+                relOriginField: "text",
+              })
+            }
+          });
+
+          setDynamicFormItems({
+            data,
+            val: dynamicFormItems,
+            dynamicEnableOrDisabledRef,
+            setDisabled,
+            setEnabled,
+            setFieldsSourceValue,
+            slots,
+          })
+        } else {
+          console.warn("[表单容器] 领域模型服务类型不匹配", params);
+        }
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      domainModelChange?.destroy?.();
+    }
+  }, [])
+
   return (
     <div
       className={classnames(

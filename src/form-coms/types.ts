@@ -1,8 +1,8 @@
-type ValidateStatus = 'success' | 'error'
+type ValidateStatus = 'success' | 'error';
 
 export interface ValidateInfo {
-  validateStatus: ValidateStatus
-  help?: string
+  validateStatus: ValidateStatus;
+  help?: string;
 }
 
 export interface Option {
@@ -21,12 +21,13 @@ export const InputIds = {
   ResetValue: 'resetValue',
   SetDisabled: 'setDisabled',
   SetEnabled: 'setEnabled',
+  SetEditable: 'isEditable',
   SetValidateInfo: 'setValidateInfo',
   SetColor: 'setColor',
   SetDynamicStyles: 'setDynamicStyles',
   // 获取光标位置，目前仅文本域使用
   GET_CURSOR_POS: 'getCursorPos'
-}
+};
 
 export const OutputIds = {
   OnChange: 'onChange',
@@ -34,10 +35,18 @@ export const OutputIds = {
   OnInitial: 'onInitial',
   ReturnValue: 'returnValue',
   OnValidate: 'onValidate',
-  SetDynamicStylesDone: 'setDynamicStylesDone',
-}
+  SetDynamicStylesDone: 'setDynamicStylesDone'
+};
 
-export type DateType = "custom" | "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years";
+export type DateType =
+  | 'custom'
+  | 'seconds'
+  | 'minutes'
+  | 'hours'
+  | 'days'
+  | 'weeks'
+  | 'months'
+  | 'years';
 
 export type PickerComponentType = 'DatePicker' | 'RangePicker' | 'TimePicker' | 'TimeRangePicker';
 export interface TimeDateLimitItem {
@@ -45,33 +54,33 @@ export interface TimeDateLimitItem {
   checked: boolean;
   type: DateType;
   offset: number;
-  direction: 'before' | 'after'
+  direction: 'before' | 'after';
 }
 
 export const DateType = {
-  Custom: "custom",
-  Second: "seconds",
-  Minute: "minutes",
-  Hour: "hours",
-  Day: "days",
-  Week: "weeks",
-  Month: "months",
-  Year: "years",
+  Custom: 'custom',
+  Second: 'seconds',
+  Minute: 'minutes',
+  Hour: 'hours',
+  Day: 'days',
+  Week: 'weeks',
+  Month: 'months',
+  Year: 'years'
 };
 
 export const ValidateTriggerType = {
-  OnInit: "onInit",
-  OnChange: "onChange",
-  OnBlur: "onBlur",
-  OnPressEnter: "onPressEnter",
+  OnInit: 'onInit',
+  OnChange: 'onChange',
+  OnBlur: 'onBlur',
+  OnPressEnter: 'onPressEnter'
 };
 
 /**@description 组件尺寸分类 */
 export enum SizeEnum {
-  "Small" = "small",
-  "Middle" = "middle",
-  "Large" = "large"
-};
+  'Small' = 'small',
+  'Middle' = 'middle',
+  'Large' = 'large'
+}
 
 /**@description 组件尺寸的选项 */
 export const SizeOptions = [
@@ -86,5 +95,5 @@ export const SizeOptions = [
   {
     label: '大',
     value: SizeEnum.Large
-  },
-]
+  }
+];

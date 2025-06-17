@@ -34,9 +34,10 @@ const EventEditor = [
     title: '排序事件',
     description: '点击排序后触发该事件，入参为列id和order',
     type: '_Event',
-    ifVisible({ data }: EditorResult<Data>) {
-      return data.columns.some((item) => item.sorter?.enable);
-    },
+    // NOTE: 引擎api创建组件的时候，希望内置sort逻辑，但是这个时候还没有字段，所以把口子放出来
+    // ifVisible({ data }: EditorResult<Data>) {
+    //   return data.columns.some((item) => item.sorter?.enable);
+    // },
     options: () => {
       return {
         outputId: OutputIds.SORTER

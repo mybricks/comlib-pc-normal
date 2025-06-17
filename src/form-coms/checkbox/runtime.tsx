@@ -38,6 +38,14 @@ export default function Runtime({
   // 运行时只执行一次
   const hasSetDefaultChecked = useRef<boolean>(false);
 
+  const handleRetunrValueByType = (checkedData:string[]) =>{
+    if(data.outputValueType === 'value') {
+      return valueRef.current
+    }else {
+      return data.config.options.filter((item)=>checkedData.includes(item.value))
+    }
+  }
+
   useLayoutEffect(() => {
     if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);
@@ -84,7 +92,8 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](valueRef.current);
+      const returnValue = handleRetunrValueByType(valueRef.current)
+      outputRels['returnValue'](returnValue);
     });
 
     inputs['setValue']((val, outputRels) => {
@@ -92,7 +101,8 @@ export default function Runtime({
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
-        outputs['onChange'](val);
+        const returnValue = handleRetunrValueByType(val)
+        outputs['onChange'](returnValue);
       }
       outputRels['setValueDone']?.(val);
     });
@@ -269,7 +279,8 @@ export default function Runtime({
   // 多选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    outputs['onChange'](checkedValue);
+    const returnValue = handleRetunrValueByType(checkedValue)
+    outputs['onChange'](returnValue);
     onValidateTrigger();
   }, []);
 
@@ -279,7 +290,8 @@ export default function Runtime({
     setIndeterminate(false);
     setCheckAll(e.target.checked);
     onChangeForFc(parentSlot, { id, name, value: valueRef.current });
-    outputs['onChange'](valueRef.current);
+    const returnValue = handleRetunrValueByType(valueRef.current)
+    outputs['onChange'](returnValue);
     onValidateTrigger();
   };
 

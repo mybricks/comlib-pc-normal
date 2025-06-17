@@ -392,8 +392,19 @@ export default function ({
   transferStyleBetweenSelectors(getPrevSelector(oldGetTable), `> ${getTable()} > tbody`);
   transferStyleBetweenSelectors(getPrevSelector(oldGetTableBody), `> ${getTableBody()}`);
 
+
+  
   if (!data?.rowSelectionMessage) {
     data.rowSelectionMessage = '已选中 {count} 项'
   }
+
+
+   //设置总结栏的显示/隐藏
+  if (!input.get(InputIds.SET_SUMMARY_COLUMN)) {
+    input.add(InputIds.SET_SUMMARY_COLUMN, '设置总结栏的显示/隐藏', Schemas.Boolean);
+    output.add(OutputIds.SET_SHOW_SUMMARY_COLUMN, '设置总结栏的显示完成', Schemas.Boolean);
+    input.get(InputIds.SET_SUMMARY_COLUMN).setRels([OutputIds.SET_SHOW_SUMMARY_COLUMN]);
+  }
+
   return true;
 }

@@ -15,6 +15,7 @@ export const getBtnItemInfo = (
   const key = focusArea?.dataset?.[datasetKey];
   const index = data.staticOptions.findIndex((item) => key && item.key === key);
   const res = index === -1 ? undefined : data.staticOptions[index];
+  data.config.options = data.staticOptions;
   return { item: res, index };
 };
 
@@ -72,7 +73,7 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-radio-wrapper'
+                target: 'label.ant-radio-wrapper, .ant-radio-group .ant-radio-button-wrapper'
               },
               {
                 title: '选择框',
@@ -89,7 +90,7 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } },
                   'border'
                 ],
-                target: '.ant-space-item .ant-radio-wrapper'
+                target: '.ant-radio-group .ant-radio-wrapper, .ant-radio-group .ant-radio-button-wrapper'
               },
               {
                 title: '表单项',
@@ -114,10 +115,11 @@ export default {
               {
                 title: '选项',
                 options: [
+                  'font',
                   { type: 'background', config: { disableBackgroundImage: true } },
                   'border'
                 ],
-                target: '.ant-space-item:hover .ant-radio-wrapper'
+                target: '.ant-radio-wrapper:hover, .ant-radio-button-wrapper:hover, .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover '
               }
             ]
           }),
@@ -146,7 +148,7 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } },
                   'border'
                 ],
-                target: '.ant-space-item .ant-radio-wrapper.ant-radio-wrapper-checked'
+                target: '.ant-radio-group .ant-radio-wrapper-checked,  .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)'
               }
             ]
           }),
@@ -360,24 +362,25 @@ export default {
           }
         },
         {
-          title: '按钮选中后样式',
+          title: '启用按钮后的按钮样式',
+          description: '是否使用按钮样式后，选择按钮样式',
           type: 'select',
           ifVisible({ data }: EditorResult<Data>) {
             return data.enableButtonStyle;
           },
           options: [
             {
-              value: 'outline',
-              label: '描边'
+              label: '描边按钮',
+              value: 'outline'
             },
             {
-              value: 'solid',
-              label: '填色'
+              label: '实心按钮',
+              value: 'solid'
             }
           ],
           value: {
             get({ data }) {
-              return data.buttonStyle || 'outline';
+              return data.buttonStyle || 'outline';;
             },
             set({ data }, value: string) {
               data.buttonStyle = value;

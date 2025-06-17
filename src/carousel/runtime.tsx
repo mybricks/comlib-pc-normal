@@ -11,7 +11,9 @@ export interface Data {
   dotsStyle: any;
   slideIndex: number;
   bgSize: string;
+  useSlots: boolean;
 }
+
 
 export default ({ env, data, slots }: RuntimeParams<Data>) => {
   const { edit } = env;

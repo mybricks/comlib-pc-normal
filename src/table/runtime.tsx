@@ -47,6 +47,7 @@ import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
 import useDemandDataSource from './hooks/use-demand-data-source';
 import { useConnector } from '../utils/connector';
+import { getColumnsFromSchema } from "./editors";
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -172,8 +173,125 @@ export default function (props: RuntimeParams<Data>) {
     }
   })
 
+  const domainModelChange = useMemo(() => {
+    if (env.runtime && data._domainModel?.dataSource && env.onDomainModelChange) {
+      return env.onDomainModelChange(data._domainModel?.dataSource, (params) => {
+        const domainModel = params.serviceAry.find((service) => {
+          const schema = service.response?.properties?.data || service.responses?.properties?.data
+          if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && service.method === "get") {
+            return true;
+          }
+          return false;
+        })
+
+        if (domainModel) {
+          const { defId, id, title } = params;
+          data._domainModel.dataSource = {
+            defId,
+            id,
+            title,
+            service: domainModel,
+          }
+          const schema = domainModel.response?.properties?.data || domainModel.responses?.properties?.data;
+          const schemaColumns = getColumnsFromSchema(schema, {
+            defaultWidth: 'auto'
+          });
+          const columns = data.columns.filter((column) => {
+            return column.contentType === "slotItem";
+          }).map((column) => {
+            if (column.dataIndex.endsWith(`_${column.contentType}`)) {
+              return column;
+            }
+            return {
+              ...column,
+              dataIndex: column.key + `_${column.contentType}`
+            }
+          });
+          const customIDMap: Record<string, boolean> = columns.reduce((pre, cur) => {
+            pre[cur.dataIndex] = true
+            return pre;
+          }, {});
+  
+          data.columns = schemaColumns.filter((schemaColumn) => {
+            return !customIDMap[schemaColumn.dataIndex]
+          }).concat(columns);
+  
+          if (data.columns.length) {
+            data.rowKey = data.columns[0].dataIndex as string;
+            data.columns[0].isRowKey = true;
+          }
+          data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
+        } else {
+          console.warn("[数据表格] 领域模型服务类型不匹配", params);
+        }
+      })
+    }
+  }, [])
+
+  const domainDataSource = useMemo(() => {
+    if (env.runtime && data._domainModel?.dataSource && env.callDomainModel) {
+      const { usePagination } = data;
+      return env.callDomainModel({
+        // 模型信息
+        model: data._domainModel.dataSource,
+        // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+        params: usePagination ? {
+          pageSize: data.paginationConfig.currentPage.pageSize,
+          page: data.paginationConfig.currentPage.pageNum
+        } : {},
+        configs: {
+          // 注册，当该模型更新时，会主动推送数据
+          callType: "register",
+        },
+
+      }, (error, loading, output) => {
+        if (loading) {
+          // [TODO] 加载中
+          setLoading(loading)
+          return
+        }
+        setLoading(loading)
+        if (error) {
+          console.error(error);
+        } else {
+          const { data, meta } = output;
+          // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+          if (usePagination) {
+            setTableData({
+              dataSource: data,
+              total: meta.count,
+              pageNum: meta.page,
+              pageSize: meta.pageSize
+            });
+          } else {
+            setTableData(data);
+          }
+        }
+      });
+    }
+  }, [])
+
   useEffect(() => {
-    if (env.runtime.debug?.prototype) {
+    if (env.runtime) {
+      return () => {
+        domainModelChange?.destroy?.();
+        domainDataSource?.destroy?.();
+      }
+    }
+  }, [])
+
+  const onPaginationChange = useCallback(({ pageSize, pageNum }) => {
+    if (env.runtime && domainDataSource) {
+      domainDataSource.call({
+        pageSize,
+        page: pageNum
+      })
+    }
+  }, [domainDataSource])
+
+  useEffect(() => {
+    // 如果选了领域模型，prototype模式就不mock了
+    if (env.runtime.debug?.prototype && !domainDataSource) {
       const getFields = (cols: any[]) => {
         let res: string[] = [];
         cols.map((col) => {
@@ -292,6 +410,13 @@ export default function (props: RuntimeParams<Data>) {
           handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
 
+        // 总结栏显示/隐藏
+        inputs[InputIds.SET_SUMMARY_COLUMN] &&
+        inputs[InputIds.SET_SUMMARY_COLUMN]((val: any, relOutputs: any) => {
+          data.useSummaryColumn = val;
+          relOutputs[OutputIds.SET_SHOW_SUMMARY_COLUMN](data.useSummaryColumn);
+        });  
+
       // 总结栏数据
       inputs[InputIds.SUMMARY_COLUMN] &&
         inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
@@ -347,6 +472,8 @@ export default function (props: RuntimeParams<Data>) {
                   item[key] = templateCol[key];
                 }
               });
+              item.key = uuid()
+              item._id = uuid()
               return item;
             } else {
               return item;
@@ -1373,6 +1500,7 @@ export default function (props: RuntimeParams<Data>) {
               outputs={outputs}
               selectedRows={selectedRows}
               selectedRowKeys={selectedRowKeys}
+              onPaginationChange={onPaginationChange}
             />
           </div>
         </TableContext.Provider>

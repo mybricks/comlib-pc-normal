@@ -10,6 +10,7 @@ import formItemEditor from './form-item';
 import additionFormItemEditor from './form-addition-item';
 import { SizeOptions, SizeEnum } from '../../types';
 import { createrCatelogEditor } from '../../utils';
+import { isSameDomainInstanceAndService } from "../../../utils/domainModel";
 
 export default {
   // '@init' ({ data, inputs, outputs, slots }) {
@@ -32,7 +33,7 @@ export default {
       refreshParamsSchema(data, outputs);
     }
   },
-  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
+  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, configs = {} as { name: string; label: string;}) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
@@ -43,12 +44,15 @@ export default {
           item.schema = com.schema;
         } else {
           const nowC = data.nameCount++;
+
+          const { name: itemName, label: itemLabel } = configs;
+
           data.items.push({
             id,
             comName: name,
             schema: com.schema,
-            name: `表单项${nowC}`,
-            label: `表单项${nowC}`,
+            name: itemName || `表单项${nowC}`,
+            label: itemLabel || `表单项${nowC}`,
             widthOption: 'span',
             span: 24 / data.formItemColumn,
             colon: 'default',
@@ -81,7 +85,7 @@ export default {
           if (fieldSourceSchema) {
             refreshFieldSourceSchema(
               { data, inputs, outputs, slots },
-              { type: 'add', fieldName: `表单项${nowC}`, schema: fieldSourceSchema }
+              { type: 'add', fieldName: itemName || `表单项${nowC}`, schema: fieldSourceSchema }
             );
           }
         }
@@ -189,6 +193,52 @@ export default {
   // },
   '@resize': {
     options: ['width']
+  },
+  "@domainModel": {
+    options: {
+      type: ["create", "update"]
+    },
+    get({ data }) {
+      return data._domainModel;
+    },
+    set({ data, slot }, _domainModel) {
+      if (!_domainModel) {
+        data._domainModel = _domainModel;
+        return;
+      }
+      
+      if (isSameDomainInstanceAndService(data._domainModel, _domainModel)) {
+        return;
+      }
+      if (_domainModel.defId === "_defined") {
+        data._domainModel = _domainModel;
+        return;
+      }
+      // 类型校验
+      const { service } = _domainModel;
+
+      if (service?.method === "post") {
+        // 清空表单项
+        slot.get('content').clear();
+        (service.params || service.request).forEach((param) => {
+          if (!param["x-read-only"] && !param.extends?.["x-read-only"]) {
+            slot.get('content')
+              .addCom(
+                ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
+                false,
+                { deletable: true, movable: true },
+                {
+                  name: param.name,
+                  label: param.title || param.name
+                }
+              );
+          }
+        });
+        data._domainModel = _domainModel;
+      } else {
+        console.warn("[表单容器] 领域模型服务类型不匹配", _domainModel);
+      }
+    },
   },
   ':root': {
     style: [

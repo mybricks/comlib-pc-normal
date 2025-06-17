@@ -3,8 +3,11 @@ import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
   Text = 'text',
+  Image = 'image',
+  Link = 'link',
   SlotItem = 'slotItem',
-  Group = 'group'
+  Group = 'group',
+  Switch = 'switch'
 }
 export enum AlignEnum {
   Left = 'left',
@@ -252,4 +255,7 @@ export interface Data {
   hasUpdateRowKey?: number;
 
   borderSpacing?: React.CSSProperties['borderSpacing'];
+
+  /** 领域模型 */
+  _domainModel?: any;
 }

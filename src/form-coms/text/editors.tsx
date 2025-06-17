@@ -108,9 +108,7 @@ export default {
           return !!data.preSrc;
         },
         description: '图标距离输入框的间距大小',
-        options: [
-          { title: '间距', min: 0},
-        ],
+        options: [{ title: '间距', min: 0 }],
         value: {
           get({ data }: EditorResult<Data>) {
             return data.iconGap || [0];
@@ -238,7 +236,7 @@ export default {
                       }
                     ],
                     target: '.ant-input-group-addon:last-child'
-                  },
+                  }
                 ]
               },
               {
@@ -304,7 +302,10 @@ export default {
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: ['.ant-input-affix-wrapper-disabled', '.ant-input-affix-wrapper-disabled .ant-input[disabled]']
+                target: [
+                  '.ant-input-affix-wrapper-disabled',
+                  '.ant-input-affix-wrapper-disabled .ant-input[disabled]'
+                ]
               }
             ]
           })
@@ -386,6 +387,19 @@ export default {
             },
             set({ data }, value: boolean) {
               data.config.disabled = value;
+            }
+          }
+        },
+        {
+          title: '默认聚焦',
+          type: 'switch',
+          description: '是否默认聚焦',
+          value: {
+            get({ data }) {
+              return data.setAutoFocus;
+            },
+            set({ data }, value: boolean) {
+              data.setAutoFocus = value;
             }
           }
         },

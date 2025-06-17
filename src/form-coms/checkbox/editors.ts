@@ -1,8 +1,9 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Option, OutputIds } from '../types';
+import { Option, OutputIds , InputIds} from '../types';
 import { Data } from './types';
 import { createrCatelogEditor } from '../utils';
+import { Schemas } from './constants';
 
 export const getCheckBoxItemInfo = (
   data: Data,
@@ -377,6 +378,28 @@ export default {
             }
           }
         },
+        // 输出数据
+        {
+          title: '输出数据',
+          type: 'Radio',
+          options: [
+            {label: '选项值', value: 'value'},
+            {label: '当前选项', value: 'option'}
+          ],
+          description: '设置选中框的输出数据内容',
+          value: {
+            get({data}: EditorResult<Data>) {
+              return data.outputValueType;
+            },
+            set(
+              {data, input, output}: EditorResult<Data>,
+              value: 'value' | 'option'
+            ) {
+              data.outputValueType = value;
+              refreshSchema({input, output, data});
+            }
+          }
+        },
         {
           title: '禁止冒泡',
           description: '默认关闭，阻止多选框的点击事件冒泡',
@@ -562,4 +585,26 @@ export default {
       },
     ]
   },
+};
+
+const refreshSchema = ({input, output, data}: { input: any; output: any; data: Data }) => {
+  let returnValueSchema;
+  if (data.outputValueType === 'value') {
+    returnValueSchema = Schemas.String;
+  } else if (data.outputValueType === 'option') {
+    returnValueSchema = {
+      type: 'object',
+      properties: {
+        label: Schemas.String,
+        value: Schemas.String,    
+        checked: Schemas.Boolean,
+        disabled: Schemas.Boolean
+      }
+    };
+  } 
+  
+  output.get(OutputIds.OnInitial)?.setSchema(returnValueSchema);
+  output.get(OutputIds.OnChange).setSchema(returnValueSchema);
+  output.get(OutputIds.ReturnValue).setSchema(returnValueSchema);
+  output.get(OutputIds.OnValidate).setSchema(returnValueSchema);
 };

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { InputNumber, InputNumberProps,InputRef } from 'antd';
+import { InputNumber, InputNumberProps, InputRef } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -24,6 +24,7 @@ export interface Data {
   isParser: boolean;
   isPrecision: boolean;
   validateTrigger: string[];
+  setAutoFocus: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -122,6 +123,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       !!flag ? inputRef.current?.focus() : null;
       relOutputs['setAutoFocusDone'](!!flag);
     });
+    if (data.setAutoFocus) {
+      inputRef.current?.focus();
+    }
   }, []);
 
   const onValidateTrigger = (type: string) => {

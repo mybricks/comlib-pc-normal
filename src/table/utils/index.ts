@@ -43,7 +43,7 @@ export const getColumnItemInfo = (
   return res || { column: {}, parent: [], index: -1 };
 };
 
-export const getNewColumn = (data?: Data) => {
+export const getNewColumn = (data?: Data, values: any = {}) => {
   const title = data ? `列${data?.columns?.length + 1}` : '新增';
   const obj: IColumn = {
     title,
@@ -60,7 +60,8 @@ export const getNewColumn = (data?: Data) => {
     sorter: {
       enable: false,
       type: SorterTypeEnum.Size
-    }
+    },
+    ...values,
   };
   return obj;
 };
@@ -267,7 +268,7 @@ export const oldGetTableBody =
 
 export const createStyleForTableContent = () => [
   {
-    title: '表格',
+    title: '表格容器',
     catelog: '默认',
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
@@ -278,6 +279,17 @@ export const createStyleForTableContent = () => [
       'opacity'
     ],
     target: ({ id }) => `> ${getAntdTable()}`
+  },
+  {
+    title: '表格',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      'font',
+    ],
+    target: ({ id }) => `> ${getTable()}`
   },
   {
     title: '表头',
@@ -292,6 +304,28 @@ export const createStyleForTableContent = () => [
       return !!data.columns.length;
     },
     target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
+  },
+  {
+    title: '首列',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      { type: 'border', config: { disableBorder: true } }
+    ],
+    target:({ data }: EditorResult<Data>)=>`.ant-table-container table>thead>tr:first-child th:first-child, .ant-table-tbody>tr>td:first-child${data.useSummaryColumn? ', .ant-table-summary>tr>td:first-child' : ''}`
+  },
+  {
+    title: '尾列',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: [
+      { type: 'border', config: { disableBorder: true } }
+    ],
+    target: ({ data }: EditorResult<Data>)=>`.ant-table-container table>thead>tr:last-child th:last-child, .ant-table-tbody>tr>td:last-child${data.useSummaryColumn? ', .ant-table-summary>tr>td:last-child' : ''}`
   },
   {
     title: '表头滚动单元格',

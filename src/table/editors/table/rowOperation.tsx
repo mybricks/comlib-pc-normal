@@ -157,7 +157,7 @@ export default {
         set({ data, output, input }: EditorResult<Data>, value: boolean) {
           if (value && !data.focusRowStyle) {
             data.focusRowStyle = {
-              background: '#dedede'
+              background: '#40A9FF'
             };
           }
           if (value) {
@@ -175,7 +175,7 @@ export default {
     {
       title: '高亮颜色',
       description: '在打开选中行高亮开关后，可以设置高亮的颜色',
-      type: 'style',
+      type: 'colorPicker',
       options: {
         plugins: ['bgcolor']
       },
@@ -184,10 +184,16 @@ export default {
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.focusRowStyle || {};
+          return data.focusRowStyle?.background || '#40A9FF';
         },
-        set({ data, output }: EditorResult<Data>, value) {
-          data.focusRowStyle = value;
+        set({ data }: EditorResult<Data>, value) {
+          if(data.focusRowStyle) {
+            data.focusRowStyle['background'] = value;
+          }else{
+            data.focusRowStyle = {
+              background:value
+            }
+          }
         }
       }
     }

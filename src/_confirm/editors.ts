@@ -1,5 +1,6 @@
 import { Editor, EditorType } from '../utils/editor';
-import { Data, InputIds, OutputIds, Schemas, TypeEnum, TypeEnumMap } from './constants';
+import { checkIfMobile } from '../utils';
+import { Data, InputIds, OutputIds, Schemas, TypeEnum, TypeEnumMap, ClassTypeEnum, ClassTypeEnumMap } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { type, showTitle, title, content } = data;
@@ -16,6 +17,11 @@ const TypeOptions = [
   { value: TypeEnum.success, label: TypeEnumMap[TypeEnum.success] },
   { value: TypeEnum.warning, label: TypeEnumMap[TypeEnum.warning] },
   { value: TypeEnum.confirm, label: TypeEnumMap[TypeEnum.confirm] }
+];
+
+const ClassNameTypeOptions = [
+  { value: ClassTypeEnum.modalWrap, label: ClassTypeEnumMap[ClassTypeEnum.modalWrap] },
+  { value: ClassTypeEnum.darkModalWrap, label: ClassTypeEnumMap[ClassTypeEnum.darkModalWrap] },
 ];
 
 export default {
@@ -46,6 +52,22 @@ export default {
     setDescByData({ data, setDesc });
   },
   ':root': [
+    // Editor<Data>('样式类型', EditorType.Select, 'className', {
+    //   ifVisible({ data , env}: EditorResult<Data>) {
+    //     const isMobile = checkIfMobile(env);
+    //     return false;
+    //   },
+    //   options: ClassNameTypeOptions,
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //      return data.className
+    //     },
+    //     set({ data, setDesc }: EditorResult<Data>, val: ClassTypeEnum) {
+    //       data.className = val;
+    //       setDescByData({ data, setDesc });
+    //     }
+    //   }
+    // }),
     Editor<Data>('类型', EditorType.Select, 'type', {
       options: TypeOptions,
       value: {
@@ -61,10 +83,43 @@ export default {
         }
       }
     }),
+    Editor<Data>('显示关闭按钮', EditorType.Switch, 'closable', {
+      value: {
+        set({ data, setDesc }: EditorResult<Data>, val: boolean) {
+          data.closable = val;
+          setDescByData({ data, setDesc });
+        }
+      }
+    }),
     Editor<Data>('显示标题', EditorType.Switch, 'showTitle', {
       value: {
         set({ data, setDesc }: EditorResult<Data>, val: boolean) {
           data.showTitle = val;
+          setDescByData({ data, setDesc });
+        }
+      }
+    }),
+    Editor<Data>('使用自定义图标', EditorType.Switch, 'useIcon', {
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data?.useIcon || false
+         },
+        set({ data, setDesc }: EditorResult<Data>, val: boolean) {
+          data.useIcon = val;
+          setDescByData({ data, setDesc });
+        }
+      }
+    }),
+    Editor<Data>('自定义图标', EditorType.Icon, 'iconName', {
+      options: {
+        locale: true
+      },
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.useIcon;
+      },
+      value: {
+        set({ data, setDesc }: EditorResult<Data>, val: string) {
+          data.iconName = val;
           setDescByData({ data, setDesc });
         }
       }
