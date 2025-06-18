@@ -1,11 +1,67 @@
 {
   "placeholder": "",
-  "rules": [],
+  "rules": [
+    {
+      "key": "required",
+      "status": false,
+      "visible": true,
+      "title": "必填",
+      "message": "${标题}不能为空！"
+    },
+    {
+      "key": "minLength",
+      "status": false,
+      "visible": true,
+      "title": "最小长度校验",
+      "message": "内容长度不能小于${limitMinLength}！",
+      "limitMinLength": [2]
+    },
+    {
+      "key": "maxLength",
+      "status": true,
+      "visible": true,
+      "title": "最大长度校验",
+      "message": "内容长度不能大于${limitMaxLength}！",
+      "limitMaxLength": [255]
+    },
+    {
+      "key": "regExp",
+      "status": false,
+      "visible": true,
+      "title": "正则校验",
+      "message": "${标题}不能为空！",
+      "regExr": "^(?!(null|undefined|)$).+"
+    },
+    {
+      "key": "lowComplexValidator",
+      "status": false,
+      "visible": true,
+      "title": "低复杂度密码校验",
+      "validateCode": "export%20default%20async%20function%20(value%2C%20context)%20%7B%0A%20%20let%20reg%20%3D%20%2F%5E(%3F%3D.*%5Ba-z%5D)(%3F%3D.*%5B0-9%5D).%7B6%2C%7D%24%2F%3B%0A%20%20if%20(value%20%26%26%20!reg.test(value))%20%7B%0A%20%20%20%20context.failed(%60%E5%AF%86%E7%A0%81%E6%9C%80%E5%B0%916%E4%BD%8D%EF%BC%8C%E5%BF%85%E9%A1%BB%E5%8C%85%E5%90%AB%E5%B0%8F%E5%86%99%E5%AD%97%E6%AF%8D%EF%BC%8C%E6%95%B0%E5%AD%97%60)%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20context.successed()%3B%0A%20%20%7D%0A%7D%0A"
+    },
+    {
+      "key": "normalComplexValidator",
+      "status": true,
+      "visible": true,
+      "title": "中复杂度密码校验",
+      "validateCode": "export%20default%20async%20function%20(value%2C%20context)%20%7B%0A%20%20let%20reg%20%3D%20%2F%5E(%3F%3D.*%5Ba-zA-Z%5D)(%3F%3D.*%5B0-9%5D).%7B8%2C%7D%24%2F%3B%0A%20%20if%20(value%20%26%26%20!reg.test(value))%20%7B%0A%20%20%20%20context.failed(%60%E5%AF%86%E7%A0%81%E6%9C%80%E5%B0%918%E4%BD%8D%EF%BC%8C%E5%BF%85%E9%A1%BB%E5%8C%85%E5%90%AB%E5%A4%A7%E5%86%99%E5%AD%97%E6%AF%8D%EF%BC%8C%E5%B0%8F%E5%86%99%E5%AD%97%E6%AF%8D%EF%BC%8C%E6%95%B0%E5%AD%97%60)%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20context.successed()%3B%0A%20%20%7D%0A%7D%0A"
+    },
+    {
+      "key": "codeValidator",
+      "status": false,
+      "visible": true,
+      "title": "代码校验",
+      "validateCode": "export%20default%20async%20function%20(value%2C%20context)%20%7B%0A%20%20if%20(!value%20%26%26%20!%5B0%2C%20false%5D.includes(value))%20%7B%0A%20%20%20%20context.failed(%60%E5%86%85%E5%AE%B9%E4%B8%8D%E8%83%BD%E4%B8%BA%E7%A9%BA%60)%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20context.successed()%3B%0A%20%20%7D%0A%7D%0A"
+    },
+    {
+      "key": "customEvent",
+      "status": false,
+      "visible": true,
+      "title": "自定义校验"
+    }
+  ],
   "config": {
     "size": "middle"
   },
-  "validateTrigger": [
-    "onBlur",
-    "onPressEnter"
-  ]
+  "validateTrigger": ["onBlur", "onPressEnter"]
 }

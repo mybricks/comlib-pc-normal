@@ -86,7 +86,7 @@ const LENGTH_RULE = [
   },
   {
     key: RuleKeys.MAX_LENGTH,
-    status: true,
+    status: false,
     visible: true,
     title: '最大长度校验',
     message: '内容长度不能大于${limitMaxLength}！',
@@ -121,7 +121,7 @@ const PASSWORD_RULE = [
   },
   {
     key: RuleKeys.NORMAL_COMPLEX_VALIDATOR,
-    status: true,
+    status: false,
     visible: true,
     title: '中复杂度密码校验',
     validateCode: normalComplexValidator
@@ -257,6 +257,12 @@ export const ruleFnMap = {
   //   }
   //   return successed();
   // },
+  [RuleKeys.LOW_COMPLEX_VALIDATOR]: ({ validateCode, args, env }) => {
+    return runJs(validateCode, args, { env });
+  },
+  [RuleKeys.NORMAL_COMPLEX_VALIDATOR]: ({ validateCode, args, env }) => {
+    return runJs(validateCode, args, { env });
+  },
   [RuleKeys.PHONE_NUMBER_VALIDATOR]: ({ value, message, failed, successed, env }) => {
     let reg = new RegExp(`^1\\d{10}$`);
     if (value && !reg.test(value)) {
@@ -346,7 +352,7 @@ export const formatRegexRules = (rules, scene: FormatScene = FormatScene.Save) =
     // 编辑器侧，不能改 data.rules里的内容
     newRules = JSON.parse(JSON.stringify(rules));
   }
-  let regexItem = newRules.find(item => item.key === RuleKeys.REG_EXP);
+  let regexItem = newRules.find(item => item.key === RuleKeys.REG_EXP || item.key === RuleKeys.LOW_COMPLEX_VALIDATOR || item.key === RuleKeys.NORMAL_COMPLEX_VALIDATOR);
   if (regexItem) {
     regexItem.regExr = scene === 'save' ? encodeURIComponent(regexItem.regExr) : decodeURIComponent(regexItem.regExr);
   }
