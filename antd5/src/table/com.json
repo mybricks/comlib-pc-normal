@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.table",
   "title": "数据表格",
-  "version": "1.2.38",
+  "version": "1.2.43",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -90,6 +90,26 @@
       "rels": [
         "setSorter"
       ]
+    },
+    {
+      "id": "clearRowSelection",
+      "title": "清空勾选",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "clearRowSelection"
+      ]
+    },
+    {
+      "id": "outRowSelection",
+      "title": "获取勾选数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "outRowSelection"
+      ]
     }
   ],
   "outputs": [
@@ -176,6 +196,27 @@
             "type": "string"
           }
         }
+      }
+    },
+    {
+      "id": "rowSelection",
+      "title": "勾选事件",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "outRowSelection",
+      "title": "勾选数据",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "clearRowSelection",
+      "title": "清空勾选后",
+      "schema": {
+        "type": "any"
       }
     }
   ],

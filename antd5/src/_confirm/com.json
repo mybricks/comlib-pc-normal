@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.tips",
   "title": "确认提示",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "rtType": "js",
   "description": "确认提示对话框",
   "author": "MyBricks",
