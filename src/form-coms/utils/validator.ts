@@ -86,7 +86,7 @@ const LENGTH_RULE = [
   },
   {
     key: RuleKeys.MAX_LENGTH,
-    status: true,
+    status: false,
     visible: true,
     title: '最大长度校验',
     message: '内容长度不能大于${limitMaxLength}！',
