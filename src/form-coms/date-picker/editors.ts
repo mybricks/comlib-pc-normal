@@ -1,64 +1,9 @@
-import moment from 'moment';
 import { RuleKeys, defaultRules } from '../utils/validator';
-import { Data, DisabledDateRule } from './runtime';
+import { Data } from './runtime';
 import { SlotIds, InputIds } from './constant';
 import styleEditor from './styleEditor';
 import { OutputIds, SizeEnum, SizeOptions } from '../types';
 import { templateRender } from '../utils';
-
-export const defaultDisabledDateRule: Array<DisabledDateRule> = [
-  {
-    title: '当前日期',
-    checked: true,
-    offset: [7],
-    direction: 'before'
-  },
-  {
-    title: '当前日期',
-    checked: true,
-    offset: [7],
-    direction: 'after'
-  }
-];
-
-export const defaultDisabledTimeRule: Array<DisabledDateRule> = [
-  {
-    title: '时',
-    checked: true,
-    offset: [8],
-    direction: 'before'
-  },
-  {
-    title: '时',
-    checked: true,
-    offset: [20],
-    direction: 'after'
-  },
-  {
-    title: '分',
-    checked: false,
-    offset: [10],
-    direction: 'before'
-  },
-  {
-    title: '分',
-    checked: false,
-    offset: [50],
-    direction: 'after'
-  },
-  {
-    title: '秒',
-    checked: false,
-    offset: [10],
-    direction: 'before'
-  },
-  {
-    title: '秒',
-    checked: false,
-    offset: [50],
-    direction: 'after'
-  }
-];
 
 export default {
   '@resize': {
@@ -103,6 +48,19 @@ export default {
 
       catalog[0].items = [
         {
+          title: '禁用状态',
+          type: 'switch',
+          description: '是否禁用状态',
+          value: {
+            get({ data }) {
+              return data.disabled;
+            },
+            set({ data }, value: boolean) {
+              data.disabled = value;
+            }
+          }
+        },
+        {
           title: '提示内容',
           type: 'Text',
           options: {
@@ -111,69 +69,119 @@ export default {
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
-              return data.config.placeholder;
+              return data.placeholder;
             },
             set({ data }, value: string) {
-              data.config.placeholder = value;
+              data.placeholder = value;
             }
           }
         },
         {
-          title: '显示清除图标',
+          title: '范围选择',
           type: 'switch',
-          description: '可以点击清除图标删除内容',
           value: {
             get({ data }) {
-              return data.config.allowClear;
+              return data.isMulti;
             },
             set({ data }, value: boolean) {
-              data.config.allowClear = value;
+              data.isMulti = value;
             }
           }
         },
         {
-          title: '输入框禁用',
+          title: '是否显示“至今”',
           type: 'switch',
-          description: '设置输入框为只读（避免在移动设备上打开虚拟键盘',
+          description: '勾选后在最左列最下方增加新选项“至今”，选中后为当前时刻',
           value: {
             get({ data }) {
-              return data.config.inputReadOnly;
+              return data.config.tillNow;
             },
             set({ data }, value: boolean) {
-              data.config.inputReadOnly = value;
+              data.config.tillNow = value;
             }
           }
         },
         {
-          title: '禁用状态',
-          type: 'switch',
-          description: '是否禁用状态',
+          title: '最大选择日期',
+          type: 'text',
+          description: '请输入满足【Date】对象参数的值',
           value: {
             get({ data }) {
-              return data.config.disabled;
+              return data.config.max;
             },
-            set({ data }, value: boolean) {
-              data.config.disabled = value;
+            set({ data }, value: string) {
+              data.config.max = value;
             }
           }
         },
         {
-          title: '日期选择类型',
+          title: '最小选择日期',
+          type: 'text',
+          description: '请输入满足【Date】对象参数的值',
+          value: {
+            get({ data }) {
+              return data.config.min;
+            },
+            set({ data }, value: string) {
+              data.config.min = value;
+            }
+          }
+        },
+        {
+          title: '确认按钮文案',
+          type: 'text',
+          value: {
+            get({ data }) {
+              return data.config.confirmText;
+            },
+            set({ data }, value: string) {
+              data.config.confirmText = value;
+            }
+          }
+        },
+        {
+          title: '取消按钮文案',
+          type: 'text',
+          value: {
+            get({ data }) {
+              return data.config.cancelText;
+            },
+            set({ data }, value: string) {
+              data.config.cancelText = value;
+            }
+          }
+        },
+        {
+          title: '日期精度',
           type: 'Select',
-          description: '设置日期选择类型，可选的日期类型',
           options: [
-            { label: '日期', value: 'date' },
+            { label: '年', value: 'year' },
+            { label: '月', value: 'month' },
+            { label: '日', value: 'day' },
+            { label: '时', value: 'hour' },
+            { label: '分', value: 'minute' },
+            { label: '秒', value: 'second' },
             { label: '周', value: 'week' },
-            { label: '月份', value: 'month' },
-            { label: '季度', value: 'quarter' },
-            { label: '年份', value: 'year' }
+            { label: '周-日', value: 'week-day' }
           ],
           value: {
             get({ data }) {
-              return data.config.picker;
+              return data.config.precision;
             },
-            set({ data }, value: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined) {
-              data.config.picker = value;
+            set(
+              { data },
+              value:
+                | 'year'
+                | 'month'
+                | 'day'
+                | 'hour'
+                | 'minute'
+                | 'second'
+                | 'week'
+                | 'week-day'
+                | undefined
+            ) {
+              data.config.precision = value;
             }
           }
         },
@@ -183,23 +191,10 @@ export default {
           description: '设置面板的默认日期',
           value: {
             get({ data }) {
-              return data.defaultPickerValue;
+              return data.config.defaultValue;
             },
             set({ data }, value: string) {
-              data.defaultPickerValue = value;
-            }
-          }
-        },
-        {
-          title: '时间选择',
-          type: 'Switch',
-          description: '是否可以选择时间（时、分、秒）',
-          value: {
-            get({ data }) {
-              return !!data.showTime;
-            },
-            set({ data }, value: boolean) {
-              data.showTime = value;
+              data.config.defaultValue = value;
             }
           }
         },
@@ -207,9 +202,6 @@ export default {
           title: '显示此刻',
           type: 'switch',
           description: '当开启时间选择的时候，面板是否显示“此刻”按钮',
-          ifVisible({ data }: EditorResult<Data>) {
-            return !!data.showTime;
-          },
           value: {
             get({ data }: EditorResult<Data>) {
               return !!data.showNow;
@@ -220,179 +212,58 @@ export default {
           }
         },
         {
-          title: '周号隐藏',
-          type: 'Switch',
-          description: '开启后，日期选择类型为周时，周号隐藏',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.config.picker === 'week';
-          },
-          value: {
-            get({ data }) {
-              return data.isWeekNumber;
-            },
-            set({ data }, value: boolean) {
-              data.isWeekNumber = value;
-            }
-          }
-        },
-        {
-          title: '日期禁止选择',
-          type: 'select',
-          description: '选中“无”时的默认限制：开启配置后默认前后7天可选',
-          options: [
-            {
-              label: '无',
-              value: 'default'
-            },
-            {
-              label: '静态配置',
-              value: 'static'
-            }
-          ],
-          value: {
-            get({ data }) {
-              return data.useDisabledDate ?? 'default';
-            },
-            set({ data }, val: string) {
-              data.useDisabledDate = val;
-            }
-          }
-        },
-        {
+          title: '不可选时间',
+          description: '配置不可选择的时间段',
           type: 'ArrayCheckbox',
-          ifVisible({ data }) {
-            return data.useDisabledDate === 'static';
-          },
           options: {
-            checkField: 'checked',
-            deletable: false,
-            addable: false,
-            getTitle: (item, index: number) => {
-              const { direction, offset, title } = item;
-              return `${title}${direction === 'before' ? '之前' : '之后'} ${offset} 天禁止选择`;
-            },
+            checkField: 'status',
+            visibleField: 'visible',
+            getTitle: (item) => item.title,
             items: [
               {
-                title: '方向',
-                type: 'Select',
-                value: 'direction',
-                options: [
-                  { label: '之前', value: 'before' },
-                  { label: '之后', value: 'after' }
-                ]
-              },
-              {
-                title: '偏移',
-                type: 'InputNumber',
-                value: 'offset',
-                options: [{ min: -1000, max: 1000, width: 200 }]
+                title: '编辑禁用规则',
+                description: '这里返回的number数组为禁用的时刻',
+                type: 'code',
+                options: {
+                  language: 'javascript',
+                  enableFullscreen: false,
+                  title: '编辑禁用规则',
+                  width: 600,
+                  minimap: {
+                    enabled: false
+                  },
+                  babel: true,
+                  eslint: {
+                    parserOptions: {
+                      ecmaVersion: '2020',
+                      sourceType: 'module'
+                    }
+                  }
+                },
+                value: 'validateCode'
               }
             ]
           },
           value: {
             get({ data }) {
-              return data.staticDisabledDate ?? defaultDisabledDateRule;
+              return data?.disabledTimeRules?.length > 0
+                ? data.disabledTimeRules
+                : ['year', 'month', 'day', 'hour', 'minute', 'second', 'week', 'week-day'].map(
+                    (key) => ({
+                      key: key,
+                      status: false,
+                      visible: true,
+                      title: `设置 ${key} 禁用规则`,
+                      validateCode:
+                        encodeURIComponent(`return function (val, exts) {
+  // val: number exts: { date: Date }
+  return true;
+}`)
+                    })
+                  );
             },
-            set({ data }, val: []) {
-              data.staticDisabledDate = val;
-            }
-          }
-        },
-        {
-          title: '时分秒禁止选择',
-          type: 'select',
-          description: '禁用哪些时间（时、分、秒）',
-          ifVisible({ data }: EditorResult<Data>) {
-            return !!data.showTime;
-          },
-          options: [
-            {
-              label: '无',
-              value: 'default'
-            },
-            {
-              label: '静态配置',
-              value: 'static'
-            },
-            {
-              label: '当天此刻前',
-              value: 'now'
-            }
-          ],
-          value: {
-            get({ data }) {
-              return data?.useDisabledTime ?? 'default';
-            },
-            set({ data }, val: string) {
-              data.useDisabledTime = val;
-            }
-          }
-        },
-        {
-          type: 'ArrayCheckbox',
-          ifVisible({ data }) {
-            return data?.useDisabledTime === 'static';
-          },
-          options: {
-            checkField: 'checked',
-            deletable: false,
-            addable: false,
-            getTitle: (item, index: number) => {
-              const { direction, offset, title } = item;
-              return `${offset}${title}${direction === 'before' ? '之前' : '之后'}  禁止选择`;
-            },
-            items: [
-              {
-                title: '方向',
-                type: 'Select',
-                value: 'direction',
-                options: [
-                  { label: '之前', value: 'before' },
-                  { label: '之后', value: 'after' }
-                ]
-              },
-              {
-                title: '偏移',
-                type: 'InputNumber',
-                value: 'offset',
-                options: [{ min: 0, max: 1000, width: 200 }]
-              }
-            ]
-          },
-          value: {
-            get({ data }) {
-              return data.staticDisabledTime ?? defaultDisabledTimeRule;
-            },
-            set({ data }, val: []) {
-              data.staticDisabledTime = val;
-            }
-          }
-        },
-        {
-          title: '默认时间',
-          type: 'Text',
-          description: '不设置默认使用当前时间',
-          options: {
-            placeholder: '例:00:00:00'
-          },
-          ifVisible({ data }) {
-            return !!data.showTime;
-          },
-          value: {
-            get({ data }) {
-              let showTime: any = data.showTime;
-              if (typeof showTime?.defaultValue === 'string') {
-                return data.showTime?.defaultValue;
-              }
-              if (typeof showTime !== 'object') {
-                data.showTime = {};
-              }
-              return undefined;
-            },
-            set({ data }, value: string) {
-              data.showTime = {
-                defaultValue: moment(value, 'HH:mm:ss').isValid() ? value : undefined
-              };
+            set({ data }, val) {
+              data.disabledTimeRules = val;
             }
           }
         },
@@ -418,15 +289,15 @@ export default {
                       label: '标题',
                       insertText: '标题',
                       detail: `标题`
-                    },
+                    }
                   ],
                   runCode: (script) => {
                     return {
-                      success: templateRender(script, { label: "xx标题"})
+                      success: templateRender(script, { label: 'xx标题' })
                     };
-                  },
+                  }
                 },
-                value: 'message',
+                value: 'message'
               },
               {
                 title: '编辑校验规则',
@@ -482,52 +353,19 @@ export default {
           items: [
             {
               title: '格式化目标',
-              type: 'Map',
+              type: 'text',
               description:
-                '日期格式化模板 YYYY:年份 MM:月份 DD:日 dd:星期 HH:24小时制 hh:12小时制 mm:分 ss:秒',
+                '日期格式化模板 YYYY:年份 MM:月份 DD:日 dd:星期 HH:24小时制 mm:分 ss:秒',
               options: {
                 notaddel: true,
-                noteditkey: true
+                noteditkey: true,
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  if (data.formatMap && Object.keys(data.formatMap).length === 6) {
-                    let newValueArr = Object.keys(data.formatMap).map((key, index) => {
-                      return decodeURIComponent(data.formatMap[key]);
-                    });
-                    let newValue = {
-                      日期: newValueArr[0],
-                      '日期+时间': newValueArr[1],
-                      周: newValueArr[2],
-                      月份: newValueArr[3],
-                      季度: newValueArr[4],
-                      年份: newValueArr[5]
-                    };
-                    return newValue;
-                  } else {
-                    return {
-                      日期: 'YYYY-MM-DD',
-                      '日期+时间': 'YYYY-MM-DD HH:mm:ss',
-                      周: 'YYYY-wo',
-                      月份: 'YYYY-MM',
-                      季度: 'YYYY-\\QQ',
-                      年份: 'YYYY'
-                    };
-                  }
+                  return data.showFormatter;
                 },
-                set({ data }: EditorResult<Data>, value: any) {
-                  let newValueArr = Object.keys(value).map((key, index) => {
-                    return encodeURIComponent(value[key]);
-                  });
-                  let newValue = {
-                    日期: newValueArr[0],
-                    '日期+时间': newValueArr[1],
-                    周: newValueArr[2],
-                    月份: newValueArr[3],
-                    季度: newValueArr[4],
-                    年份: newValueArr[5]
-                  };
-                  data.formatMap = newValue;
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.showFormatter = value;
                 }
               }
             }
@@ -598,159 +436,58 @@ export default {
               options: {
                 outputId: 'onChange'
               }
+            },
+            {
+              title: '值确认',
+              type: '_event',
+              description:
+                '日期选择框的值点击确认时触发，可以通过逻用户选择日期触发【值确认】输出项事件',
+              options: {
+                outputId: 'onConfirm'
+              }
             }
           ]
         }
       ];
 
-      catalog[1].title = '高级';
-      catalog[1].items = [
-        {
-          title: '日期面板切换事件',
-          type: '_event',
-          description:
-            '日期选择框的日期面板切换时触发，触发【日期面板切换事件】输出项事件，输出日期选择框当前值和日期选择类型',
-          options: {
-            outputId: 'onPanelChange'
-          }
-        },
-        {
-          title: '开启日期插槽',
-          type: 'Switch',
-          value: {
-            get({ data }) {
-              return data.useCustomDateCell;
-            },
-            set({ data, slot }: EditorResult<Data>, value: boolean) {
-              if (value) {
-                data.hideDatePanel = false;
-                slot.add({ id: SlotIds.DateCell, title: '插槽', type: 'scope' });
-                slot.get(SlotIds.DateCell).inputs.add(InputIds.CurrentDate, '当前日期', {
-                  type: 'any'
-                });
-                slot.get(SlotIds.DateCell).inputs.add(InputIds.Today, '今天', {
-                  type: 'any'
-                });
-              } else {
-                slot.remove(SlotIds.DateCell);
-              }
-              data.useCustomDateCell = value;
-            }
-          }
-        },
-        {
-          title: '动态设置日期文本',
-          description: '可以通过逻辑连线连接输入项【自定义日期文本】动态设置日期文本',
-          type: 'Switch',
-          value: {
-            get({ data }) {
-              return data.customExtraText;
-            },
-            set({ data, input, output }: EditorResult<Data>, value: boolean) {
-              if (value) {
-                const hasEvent = input.get(InputIds.ConfigExtraText);
-                if (!hasEvent) {
-                  input.add(InputIds.ConfigExtraText, `自定义日期文本`, { type: 'any' });
-                  output.add(`${InputIds.ConfigExtraText}Done`, '完成', { type: 'any' });
-                  input.get(InputIds.ConfigExtraText).setRels([`${InputIds.ConfigExtraText}Done`]);
-                }
-              } else {
-                input.remove(InputIds.ConfigExtraText);
-                output.remove(`${InputIds.ConfigExtraText}Done`);
-              }
-              data.customExtraText = value;
-            }
-          }
-        },
-        {
-          title: '开启日期选择面板顶部插槽',
-          description: '开启日期选择面板顶部插槽',
-          type: 'Switch',
-          value: {
-            get({ data }) {
-              return data.useCustomPanelHeader;
-            },
-            set({ data, slot }: EditorResult<Data>, value: boolean) {
-              if (value) {
-                data.hideDatePanel = false;
-                slot.add({ id: SlotIds.DatePanelHeader, title: '插槽', type: 'scope' });
-              } else {
-                slot.remove(SlotIds.DatePanelHeader);
-              }
-              data.useCustomPanelHeader = value;
-            }
-          }
-        },
-        {
-          title: '开启日期选择面板底部插槽',
-          type: 'Switch',
-          description: '开启日期选择面板底部插槽',
-          value: {
-            get({ data }) {
-              return data.useCustomPanelFooter;
-            },
-            set({ data, slot }: EditorResult<Data>, value: boolean) {
-              if (value) {
-                data.hideDatePanel = false;
-                slot.add({ id: SlotIds.DatePanelFooter, title: '插槽', type: 'scope' });
-              } else {
-                slot.remove(SlotIds.DatePanelFooter);
-              }
-              data.useCustomPanelFooter = value;
-            }
-          }
-        },
-        {
-          title: '隐藏日期选择面板',
-          description: '仅在搭建时生效',
-          type: 'Switch',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.useCustomDateCell || data.useCustomPanelHeader || data.useCustomPanelFooter;
-          },
-          value: {
-            get({ data }) {
-              return data.hideDatePanel || false;
-            },
-            set({ data, slot }: EditorResult<Data>, value: boolean) {
-              data.hideDatePanel = value;
-            }
-          }
-        },
-        {
-          title: '日期选择面板受控',
-          type: 'Switch',
-          description: '可以通过逻辑连线连接输入项【打开日期选择面板】控制面板是否打开',
-          value: {
-            get({ data }) {
-              return data.controlled || false;
-            },
-            set({ data, inputs }: EditorResult<Data>, value: boolean) {
-              data.controlled = value;
-              if (value) {
-                inputs.add('setOpen', '打开日期选择面板', { type: 'boolean' });
-              } else {
-                inputs.remove('setOpen');
-              }
-            }
-          }
-        },
-        {
-          title: '点击日期选择面板外部关闭',
-          type: 'Switch',
-          description: '开启后点击日期选择面板外部可以关闭日期选择面板',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.controlled;
-          },
-          value: {
-            get({ data }) {
-              return data.closeWhenClickOutOfPanel || false;
-            },
-            set({ data, inputs }: EditorResult<Data>, value: boolean) {
-              data.closeWhenClickOutOfPanel = value;
-            }
-          }
-        }
-      ];
+      // catalog[1].title = '高级';
+      // catalog[1].items = [
+      //   {
+      //     title: '开启日期插槽',
+      //     type: 'Switch',
+      //     value: {
+      //       get({ data }) {
+      //         return data.useCustomDateCell;
+      //       },
+      //       set({ data, slot }: EditorResult<Data>, value: boolean) {
+      //         if (value) {
+      //           slot.add({ id: SlotIds.DateCell, title: '插槽', type: 'scope' });
+      //         } else {
+      //           slot.remove(SlotIds.DateCell);
+      //         }
+      //         data.useCustomDateCell = value;
+      //       }
+      //     }
+      //   },
+      //   // {
+      //   //   title: '日期选择面板受控',
+      //   //   type: 'Switch',
+      //   //   description: '可以通过逻辑连线连接输入项【打开日期选择面板】控制面板是否打开',
+      //   //   value: {
+      //   //     get({ data }) {
+      //   //       return data.controlled || false;
+      //   //     },
+      //   //     set({ data, inputs }: EditorResult<Data>, value: boolean) {
+      //   //       data.controlled = value;
+      //   //       if (value) {
+      //   //         inputs.add('setOpen', '打开日期选择面板', { type: 'boolean' });
+      //   //       } else {
+      //   //         inputs.remove('setOpen');
+      //   //       }
+      //   //     }
+      //   //   }
+      //   // },
+      // ];
     }
   }
 };

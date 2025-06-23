@@ -3,7 +3,7 @@
   "namespace": "amc.normal-h5.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.42",
+  "version": "1.1.43",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -341,6 +341,14 @@
       }
     },
     {
+      "id": "onConfirm",
+      "title": "点击确认",
+      "desc": "点击确认时触发，输出下拉框当前值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "onChange",
       "title": "值更新",
       "desc": "日期选择框值更新时触发，输出日期选择框当前值",
@@ -468,14 +476,6 @@
       }
     },
     {
-      "id": "setDisabledDateRulesDone",
-      "title": "禁用特定日期规则完成",
-      "desc": "禁用特定日期事件完成",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
       "id": "setColorDone",
       "title": "设置字体颜色完成",
       "desc": "设置字体颜色事件完成，输入字体颜色",
@@ -511,26 +511,6 @@
             "value": "year"
           }
         ]
-      }
-    },
-    {
-      "id": "onPanelChange",
-      "title": "日期面板切换",
-      "desc": "日期面板切换时触发，输出日期选择框当前值和日期选择类型",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "title": "日期",
-            "type": "string",
-            "description": "日期"
-          },
-          "mode": {
-            "title": "日期选择类型",
-            "type": "string",
-            "description": "日期选择类型"
-          }
-        }
       }
     }
   ],

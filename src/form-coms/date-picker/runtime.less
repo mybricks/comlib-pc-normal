@@ -1,34 +1,56 @@
+:global {
+  .ant-form-item-has-error .datePicker .datePickerContent {
+    border-color: #a14d43;
+  }
+  .ant-form-item-has-error .datePicker .datePickerArrow {
+    color: #a14d43;
+  }
+}
+
 .datePicker {
-  :global {
-    .ant-picker {
-      width: 100%;
-    }
-    .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before {
-      z-index: -1;
-    }
-  }
-}
-
-.slotContainer {
-  :global {
-    .ant-picker-cell .ant-picker-cell-inner {
-      min-height: 45px;
-    }
-
-    .ant-picker-cell-disabled:before {
-      top: 40%;
-      height: 80%;
+  .datePickerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 4px;
+    padding: 0 11px;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 14px;
+    border: 1px solid #dfdfdf;
+    cursor: pointer;
+    &.datePickerDisabled {
+      padding: 0;
+      cursor: not-allowed;
+      border: none;
     }
   }
-}
-
-.displayWeek {
-  :global {
-    td.ant-picker-cell.ant-picker-cell-week {
-      display: none;
+  &MultiRow {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    &Checked {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: var(--ant-primary-color, #1890ff);
+      }
     }
-    th[aria-label='empty cell'] {
-      display: none;
-    }
+  }
+  &MultiSplit {
+    padding: 0 6px;
+  }
+  &Arrow {
+    color: rgba(0, 0, 0, 0.25);
+  }
+  .datePickerPlaceholder {
+    color: #bfbfbf;
   }
 }

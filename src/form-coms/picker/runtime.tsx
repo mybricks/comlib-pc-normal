@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Input } from 'antd';
 import { Picker } from 'antd-mobile';
-import { SearchOutlined, SearchOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { SearchOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
@@ -339,7 +339,7 @@ export default function Runtime({
                       {items.map((v) => v?.label || '未选择').join('/')}
                     </div>
                   )}
-                  <SearchOutlined className={css.pickerArrow} />
+                  <SearchOutlined className={css.pickerArrow + ' pickerArrow'} />
                 </div>
               );
             }}
