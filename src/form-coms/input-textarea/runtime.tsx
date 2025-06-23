@@ -186,20 +186,25 @@ export default function ({
 
   const onPressEnter = useCallback((e) => {
     const enterMethod = data?.enterMethod || "enter";
+    
+    // 检查是否按下了修饰键
+    const hasModifier = e.shiftKey || e.ctrlKey || e.metaKey;
 
     // 判断是否满足提交条件
-  const shouldSubmit = 
-    enterMethod === "enter" || // 单纯按下Enter提交
-    (enterMethod === "enter_with_ctrl" && (e.ctrlKey || e.metaKey)); // 需要Ctrl+Enter提交
+    const shouldSubmit = 
+      (enterMethod === "enter" && !hasModifier) || // Enter模式下,没有按修饰键才提交
+      (enterMethod === "enter_with_ctrl" && hasModifier); // Ctrl+Enter模式
 
     if (shouldSubmit) {
-      //单纯按下Enter即提交
+      // 提交操作
       const value = e.target.value;
       onValidateTrigger();
       outputs['onPressEnter'](value);
+      e.preventDefault(); // 阻止默认换行行为
     }
-
-  }, [data?.enterMethod]);
+    // 当Enter模式下按了修饰键时,不阻止默认行为,允许换行
+    
+}, [data?.enterMethod]);
 
   const sizeConfig = useMemo(() => {
     if (env.edit) {
