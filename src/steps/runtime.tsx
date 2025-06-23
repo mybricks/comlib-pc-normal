@@ -474,6 +474,9 @@ const StepPerItem = memo(
     return id && slots[id]?.render({ style: stepItem?.slotLayuotStyle, key: stepItem.id });
   },
   (preValue: any, nextValue: any) => {
+    if (preValue.stepItem?.slotLayuotStyle !== preValue.nextValue?.slotLayuotStyle) {
+      return false
+    }
     if (preValue.stepItem?.id === nextValue.stepItem?.id) {
       return true;
     }
