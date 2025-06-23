@@ -18,6 +18,7 @@ export interface Data {
   /** 光标位置  */
   selectionStart?: number;
   isEditable: boolean;
+  enterMethod: string
 }
 
 export default function ({
@@ -184,10 +185,21 @@ export default function ({
   }, []);
 
   const onPressEnter = useCallback((e) => {
-    const value = e.target.value;
-    onValidateTrigger();
-    outputs['onPressEnter'](value);
-  }, []);
+    const enterMethod = data?.enterMethod || "enter";
+
+    // 判断是否满足提交条件
+  const shouldSubmit = 
+    enterMethod === "enter" || // 单纯按下Enter提交
+    (enterMethod === "enter_with_ctrl" && (e.ctrlKey || e.metaKey)); // 需要Ctrl+Enter提交
+
+    if (shouldSubmit) {
+      //单纯按下Enter即提交
+      const value = e.target.value;
+      onValidateTrigger();
+      outputs['onPressEnter'](value);
+    }
+
+  }, [data?.enterMethod]);
 
   const sizeConfig = useMemo(() => {
     if (env.edit) {

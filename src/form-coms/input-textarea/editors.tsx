@@ -163,6 +163,29 @@ export default {
           }
         },
         {
+          title: '触发提交方式',
+          type: 'radio',
+          options: [
+          {
+            label: 'Enter',
+            value: 'enter'
+          },
+          {
+            label: 'Enter+Ctrl',
+            value: 'enter_with_ctrl'
+          }
+        ],
+          description: '按Enter提交，或者按Ctrl+Enter提交',
+          value: {
+            get({ data }) {
+              return data.enterMethod || "enter";
+            },
+            set({ data }, value: boolean) {
+              data.enterMethod = value;
+            }
+          }
+        },
+        {
           title: '行数限制',
           type: 'Inputnumber',
           options: [

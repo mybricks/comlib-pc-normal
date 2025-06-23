@@ -12,5 +12,6 @@
   "minRows": 3,
   "maxRows": 6,
   "selectionStart": 0,
-  "isEditable": true
+  "isEditable": true,
+  "enterMethod":"enter"
 }
