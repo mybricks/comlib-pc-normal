@@ -1,7 +1,7 @@
 {
   "title": "单选框",
   "namespace": "mybricks.normal-pc.radio",
-  "version": "1.1.24",
+  "version": "1.1.25",
   "description": "单选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },

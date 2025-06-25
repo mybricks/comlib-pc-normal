@@ -1,199 +1,181 @@
+import { uuid } from '../../utils';
+
+const version = ANTD_VERSION === 4 ? "" : "antd5."
+
 export default {
-  '@toTemplateJSON'({data}) {//用于生成模版
-    const json = {}
-    for (const key in data) {
-      if (key === 'items') {
-        json[key] = []
-      } else {
-        json[key] = data[key]
-      }
-    }
-
-    return json
+  ':root' ({ data }) {
+    return {}
   },
-  ':root'({data}) {
-    return {
-      prompts: `
-      你是一名优秀的程序员，当前是一个表单容器,
-      添加组件的 namespace 必须由以下定义中选出进行组合：['form-text', 'select', 'radio', 'password', 'auto-complete', 'cascader', 'checkbox', 'date-picker', 'color', 'input-number', 'form-email', 'input-textarea', 'form-phone-number', 'range-picker', 'rate', 'search', 'slider', 'time-picker', 'time-range-picker', 'transfer', 'upload']
-      返回的数据类型定义为{type: 'addItem'|'updateForm', namespace: string, config: {label: stirng, name: string}}, 如果需要添加多个组件则返回数组结构
-      以下是一些例子：
-      请回答：添加输入框
-      { type: 'addItem', namespace: 'form-text', config: { label: '输入框', name: 'name0' } }
-      请回答：输入框、下拉框
-      [{ type: 'addItem', namespace: 'form-text', config: { label: '输入框', name: 'name0' } },{ type: 'addItem', namespace: 'select', config: { label: '下拉框', name: 'name1'  } }]
-      请回答：文本与上传
-      [{ type: 'addItem', namespace: 'form-text', config: { label: '输入框', name: 'name0' } },{ type: 'addItem', namespace: 'upload', config: { label: '上传', name: 'name1'  } }]
-      请回答：简单的登录表单
-      [{ type: 'addItem', namespace: 'form-text', config: { label: '用户名', name: 'username' } },{ type: 'addItem', namespace: 'password', config: { label: '密码', name: 'password'  } }]
-      请回答：内联布局
-      {type: 'updateForm', data: { config: { layout: 'inline' } }}
-      请回答：每行4列
-      {type: 'updateForm', data: { formItemColumn: 4 }}
-      仅需返回合法的JSON，不需要任何注释等信息
-      `,
-      execute({data, newData, slots}) {
-        // console.log(newData)
-        try {
-          const slot = slots.get('content')
-          const newItems: any[] = []
+  prompts: {
+    summary: '表单容器',
+    usage: `data数据模型
+layoutType: ['Form', 'QueryFilter'] # 表单容器的快捷样式布局，Form适合常见的垂直提交收集信息场景，QueryFilter适合查询表单
+config: {
+colon?: boolean = true
+disabled?: boolean = false
+layout: ['horizontal', 'vertical']
+size?: ['middle', 'small', 'large']
+}
+items: { # 子组件列表，每一个item对应插槽里的一个子组件
+label: string
+name: sting # 映射的字段
+span: number
+hidden: boolean
+hiddenLabel: boolean
+}[]
+enable24Grid?: boolean = false
+span?: number = 8
+labelCol?: number = 4
+labelWidthType: ['span']
+actions?: { # 表单自带的操作按钮组，默认带提交和取消两个按钮，有修改则需要声明这个字段
+visible?: boolean = true # 是否展示这个按钮组
+align?: ['left', 'center', 'right']
+items: {
+  key: string # 唯一key
+  type?: ['primary']
+  title: sting # 内容
+}[]
+}[]
 
-          if (Array.isArray(newData)) {
-            newData.forEach(item => {
-              if (item.type === 'addItem') {
-                const id = slot.addCom(`mybricks.normal-pc.${item.namespace}`)
-                newItems.push({id, ...item.config})
-              }
-            })
-          } else {
-            if (newData.type === 'addItem') {
-              const id = slot.addCom(`mybricks.normal-pc.${newData.namespace}`)
-              newItems.push({id, ...newData.config})
-            }
+slots插槽
+content: 表单的内容
+  - 作用域插槽：form-item，插槽中仅允许放置schema=form-item的组件，内置标签和其他组件都不可使用。
 
-            if (newData.type === 'updateForm') {
-              if (typeof newData.data?.formItemColumn === 'number') {
-                data.formItemColumn = newData.data?.formItemColumn
-                data.actions.span = (24 / data.formItemColumn)
-                data.items.forEach(item => {
-                  item.span = (24 / data.formItemColumn);
-                })
-              }
+styleAry声明
+表单: .ant-form
 
-              if (typeof newData.data?.config?.layout === 'string') {
-                data.config.layout = newData.data?.config?.layout
-              }
-            }
+使用案例
+\`\`\`dsl file="page.dsl"
+<mybricks.normal-pc.${version}form-container
+title="水平布局 + 提交取消按钮的查询表单"
+layout={{ width: '100%', height: 'fit-content' }}
+data={{
+  layoutType: 'QueryFilter',
+  config: {
+    colon: true,
+    layout: 'horizontal'
+  },
+  items: [
+    { id: "name", label: "学生姓名", name: "name", span: 8, hidden: false, hiddenLabel: false }
+  ],
+  enable24Grid: true,
+  span: 8,
+  labelCol: 4,
+  labelWidthType: "span"
+}}
+>
+<slots.content title="表单项内容" layout={{ width: '100%' }}>
+  <mybricks.normal-pc.${version}form-text
+    title="学生姓名"
+    layout={{ width: '100%' }}
+    data={{
+      visible: true,
+      rules: [],
+      validateTrigger: ["onBlur"],
+      config: {
+        allowClear: true,
+        placeholder: "请输入学生姓名",
+        disabled: false,
+        showCount: false,
+        maxLength: -1,
+        size: "middle"
+      },
+      isEditable: true
+    }}
+  />
+</slots.content>
+</mybricks.normal-pc.${version}form-container>
+\`\`\`
+
+\`\`\`dsl file="page.dsl"
+<mybricks.normal-pc.${version}form-container
+title="垂直布局 + 提交取消居中按钮的保存表单"
+layout={{ width: '100%', height: 'fit-content' }}
+data={{
+  layoutType: 'Form',
+  config: {
+    colon: true,
+    layout: 'vertical'
+  },
+  items: [
+    { id: "name", label: "学生姓名", name: "name", span: 8, hidden: false, hiddenLabel: false }
+  ],
+  enable24Grid: true,
+  span: 8,
+  labelCol: 4,
+  wrapperCol: 24,
+  labelWidthType: "span",
+  actions: {
+    visible: true,
+    align: "center",
+    span: 24,
+    widthOption: "flexFull",
+    items: [
+      {
+        title: "保存",
+        type: "primary",
+        outputId: "onClickSubmit",
+        key: "submit"
+      }
+    ]
+  }
+}}
+>
+<slots.content title="表单项内容" layout={{ width: '100%' }}>
+  <mybricks.normal-pc.${version}form-text
+    title="学生姓名"
+    layout={{ width: '100%' }}
+    data={{
+      visible: true,
+      rules: [],
+      validateTrigger: ["onBlur"],
+      config: {
+        allowClear: true,
+        placeholder: "请输入学生姓名",
+        disabled: false,
+        showCount: false,
+        maxLength: -1,
+        size: "middle"
+      },
+      isEditable: true
+    }}
+  />
+</slots.content>
+</mybricks.normal-pc.${version}form-container>
+\`\`\``
+  },
+  modifyTptJson: (component) => {
+    if (!component.data?.actions) {
+      component.data.actions = {
+        visible: false,
+        align: "center",
+        span: 24,
+        widthOption: "flexFull",
+        items: [
+          {
+            title: "提交",
+            type: "primary",
+            outputId: "onClickSubmit",
+            key: "submit"
+          },
+          {
+            title: "取消",
+            outputId: "onClickCancel",
+            key: "cancel"
           }
-
-          setTimeout(() => { // hack...
-            newItems.forEach(newItem => {
-              const item = data.items.find(item => item.id === newItem.id)
-              console.log(item, newItem)
-              if (item) {
-                newItem.name && (item.name = newItem.name + '_' + newItem.id)
-                newItem.label && (item.label = newItem.label)
-              }
-            })
-            // console.log(data.items)
-          }, 100)
-
-        } catch (ex) {
-          console.error(ex)
-        }
-      }
-    }
-  },
-//   '[data-menugroup]'({ data, focusArea }) {
-//     const menuIndex = focusArea.dataset['menugroup']
-
-//     const menuGroup = data.modules.navMenu.menus[parseInt(menuIndex)]
-
-//     return {
-//       prompts: `
-// 您是一位卓越的产品架构师，请根据用户的需求，设计一个合理的后台管理系统的模块.
-// 要求返回的答案是json格式.
-// 当前模块定义为:${JSON.stringify(menuGroup)}
-//       `,
-//       execute({ data, newData, slots }) {
-//         const menuGroup = data.modules.navMenu.menus[parseInt(menuIndex)]
-//         menuGroup.subMenus = newData.subMenus
-//       }
-//     }
-//   },
-  prompts() {
-    const def = {
-      layout: 'horizontal',
-      buttons: [{type: 'primary', title: '提交'}],
-      buttonsAlign: 'left',
-      formItemColumn: 1
-    }
-
-    return `根据用户的需求，设计一个合理的后台管理系统的表单，其中包括布局、标题文案、按钮、表单项类型等
-    组件定义: ${JSON.stringify(def)}
-    可添加的表单项type：['form-text', 'select', 'radio', 'password', 'auto-complete', 'cascader', 'checkbox', 'date-picker', 'color', 'input-number', 'form-email', 'input-textarea', 'form-phone-number', 'range-picker', 'rate', 'search', 'slider', 'time-picker', 'time-range-picker', 'transfer', 'upload']
-    布局说明：buttons单独为一列，总列数为表单项数+1
-    例如：
-    请回答：过滤表单
-    {type:'mybricks.normal-pc.form-container',buttons:[{type:'primary',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
-    请回答：过滤表单，包含一个输入框
-    {
-      type:'mybricks.normal-pc.form-container',
-      buttons:[{type:'primary',title:'查询'}],
-      layout: 'inline',
-      formItemColumn: 4,
-      slots:{
-        content:[
-          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
         ]
       }
     }
-    请回答：一行排列表单
-    {
-      type:'mybricks.normal-pc.form-container',
-      buttons:[{type:'primary',title:'查询'}],
-      formItemColumn: 2,
-      slots:{
-        content:[
-          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
-        ]
+
+    component.data.items.forEach((item, index) => {
+      item.id = uuid();
+      item.comName = uuid();
+
+      const com = component.slots?.content?.comAry?.[index];
+      if (com) {
+        com.id = item.id
+        com.name = item.comName
       }
-    }
-    请回答：过滤表单，1行3列布局
-    {
-      type:'mybricks.normal-pc.form-container',
-      buttons:[{type:'primary',title:'查询'}],
-      layout: 'inline',
-      formItemColumn: 3,
-      slots:{
-        content:[
-          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
-        ]
-      }
-    }
-  `
-  },
-  '@create'(props) {
-    const {def, data} = props
-    // console.log('def:', def)
-    if (def.buttons && def.buttons.length > 0) {
-      def.buttons.forEach((item, index) => {
-        data.actions.items[index].title = item.title
-      })
-
-      data.actions.items = data.actions.items.slice(0, def.buttons.length)
-    }
-
-    if (typeof def.buttonsAlign === 'string') {
-      data.actions.align = def.buttonsAlign
-    }
-
-    if (typeof def.formItemColumn === 'number') {
-      data.formItemColumn = def.formItemColumn + 1
-      data.actions.span = (24 / data.formItemColumn)
-      setTimeout(() => {
-        data.items.forEach(item => {
-          item.span = (24 / data.formItemColumn);
-        })
-      }, 100)
-    }
-
-    setTimeout(() => {
-      if (def.slots && def.slots.content && def.slots.content.length > 0) {
-        def.slots.content.forEach((item, index) => {
-
-          if (data.items[index]) { // Todo...
-            item.label && (data.items[index].label = item.label)
-            item.name && (data.items[index].name = item.name)
-          }
-
-        })
-      }
-    }, 100)
-
-    if (typeof def.layout === 'string') {
-      data.config.layout = def.layout
-    }
-    // console.log('data:', data)
+    })
   }
 }

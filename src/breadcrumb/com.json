@@ -1,13 +1,14 @@
 {
   "title": "面包屑",
   "namespace": "mybricks.normal-pc.breadcrumb",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "description": "面包屑",
   "icon": "./icon.svg",
   "data": "./data.json",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },

@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.carousel",
   "author": "wufan",
   "author_name": "吴凡",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "轮播图",
   "icon": "./icon.png",
   "data": "./data.json",
@@ -11,6 +11,7 @@
   "editors": "./editors.tsx",
   "inputs": [],
   "outputs": [],
+  "ai": "./ai.ts",
   "slots": [
     { "title": "轮播图1", "id": "slot1" },
     { "title": "轮播图2", "id": "slot2" }

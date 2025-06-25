@@ -2,7 +2,7 @@
   "title": "置底工具栏",
   "enable": true,
   "namespace": "mybricks.bottom-bar",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "置底工具栏",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,5 +10,6 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "upgrade": "./upgrade.ts"
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts"
 }

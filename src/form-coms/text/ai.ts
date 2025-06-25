@@ -1,11 +1,38 @@
 export default {
-  // def: {},
-  prompts: ``,
-  '@create' (props) {
-    const { def, data } = props
-    console.log(props)
+  ':root' ({ data }) {
+    return {}
   },
-  '@update'({ data, newData, slots }) {
-    // console.log(data, newData)
+  prompts: {
+    summary: '文本框',
+    usage: `data数据模型
+visible: boolean = true
+rules: []
+validateTrigger: ['onBlur', 'onPressEnter']
+config: {
+allowClear: boolean = true
+placeholder: string = '请输入内容' 
+disabled: boolean = false
+addonBefore: string # 前置标签
+addonAfter: string # 后置标签
+showCount: boolean = false
+maxLength: number = -1
+size: ['middle', 'small', 'large']
+}
+isEditable: boolean = true
+
+slots插槽
+无
+
+schema声明
+form-item
+
+styleAry声明
+表单项: .ant-input-affix-wrapper
+文本: .ant-input
+清除按钮: .anticon-close-circle
+前置标签: .ant-input-group-addon:first-child
+后置标签: .ant-input-group-addon:last-child
+前缀图标: .ant-input-prefix > .anticon
+后缀图标: .anticon`
   }
 }

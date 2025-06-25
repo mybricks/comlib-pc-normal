@@ -1,7 +1,7 @@
 {
   "title": "日历",
   "namespace": "mybricks.normal-pc.calendar",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "日历",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "inputs": [
     {
       "id": "dataSource",

@@ -1,107 +1,100 @@
-import { uuid } from '../utils';
+const version = ANTD_VERSION === 4 ? "" : "antd5."
 
 export default {
-  prompts() {
-    return `下面是数据表格的问答示例
-    例如：
-    请回答：设计一个表格
-    返回： {
-          type:'mybricks.normal-pc.table',
-          usePagination: true,
-          headStyle: {
-            color: '#1f1f1f',
-            backgroundColor: '#f5f7f9'
-          },
-          contentStyle: { color: '#434343' },
-          columns:[
-            {field:'name',title:'名称'},
-          ],
-        }
-  `
+  ':root' ({ data }) {
+    return {}
   },
-  '@create'(props) {
-    const { def, data, slots } = props;
+  prompts: {
+    summary: '数据表格',
+    usage: `data数据模型
+rowKey: string # 表格行的唯一标识字段
+dataSource: any[] # 表格数据源
+columns: [ # 表格列配置
+{
+  key: string # 列唯一标识
+  dataIndex: string
+  title: string # 列标题
+  width: string | number 
+  visible: boolean 
+  isRowKey: boolean 
+  contentType: ['text', 'slotItem'] # 列内容类型
+}
+]
+fixedHeader: boolean # 是否固定表头
+enableStripe: boolean # 是否启用斑马纹
+usePagination: boolean
+paginationConfig: { 
+total: number
+current: number 
+pageSize: number 
+showSizeChanger: boolean 
+showQuickJumper: boolean 
+}
 
-    if (def.headStyle) {
-      data.headStyle = { ...def.data?.headStyle };
-    }
-    if (def.contentStyle) {
-      data.contentStyle = { ...def.data?.contentStyle };
-    }
+slots插槽
+动态插槽，当cloumn的contentType为slotItem时，对应列的key
 
-    data.columns = def?.data?.columns?.map((item) => {
-      let slotId;
-      // if (Array.isArray(def.columns) && def.columns.length > 0) {
-      //   if (Array.isArray(item.slots) && item.slots.length > 0) {
-      //     slotId = uuid();
-      //     slots.add({ id: slotId, title: '操作', type: 'scope' });
-      //     item.slots.forEach((s) => {
-      //       // console.log('slot.get(slotId)', slots.get(slotId));
-      //       slots.get(slotId).addCom(s.namespace);
-      //     });
-      //   }
-      // }
-      return {
-        _id: uuid(),
-        title: item.title,
-        dataIndex: item.field,
-        key: item.field,
-        contentType: slotId ? 'slotItem' : 'text',
-        visible: true,
-        width: 140,
-        slotId,
-        headStyle: def.headStyle ? { ...def.headStyle } : {},
-        contentStyle: def.contentStyle ? { ...def.contentStyle } : {}
-      };
-    }) || [];
+styleAry声明
+表格: .ant-table
+表头: .ant-table-thead
+内容: .ant-table-tbody
+分页: [data-table-pagination]
 
-    if (typeof def.usePagination !== 'undefined') {
-      data.usePagination = def.usePagination;
-    }
-    // TODO: 如何统计处理slots内组建的创建
-  },
-
-  ':root'({ data }) {
-    return {
-      prompts: `
-        你是一个优秀的程序员，当前是一个数据表格组件,你可以修改配置返回我需要的内容，当前的配置为${JSON.stringify(data)},
-        以下是一些例子，其中关于样式部分的配置你可以根据问题进行修改：
-        请回答：修改成一个普通数据表格
-        {
-          type:'mybricks.normal-pc.table',
-          columns:[
-            {field:'name',title:'名称'},
-            {field:'age',title:'年龄'},
-          ],
-        }
-        请回答：修改表格的样式
-        {
-          headStyle: {
-            color: '#1f1f1f',
-            backgroundColor: '#f5f7f9'
-          },
-          contentStyle: { color: '#434343' },
-        },
-      `,
-      execute({ data, newData, slots }) {
-        if (newData.headStyle) {
-          data.headStyle = { ...newData.headStyle };
-        }
-        if (newData.contentStyle) {
-          data.contentStyle = { ...newData.contentStyle };
-        }
-
-        if (newData.columns) {
-          data.columns = [...newData.columns];
-        }
-        data.columns = data.columns.map((item, index) => {
-          return {
-            ...item,
-            headStyle: newData.headStyle ? { ...newData.headStyle } : undefined,
-            contentStyle: newData.contentStyle ? { ...newData.contentStyle } : undefined,
-          }
-        })
-      }
-    }
+使用案例
+\`\`\`dsl file="page.dsl"
+<mybricks.normal-pc.${version}table
+title="带分页和自定义操作列的表格"
+layout={{ width: '100%' }}
+data={{
+  rowKey: "id",
+  dataSource: [
+    { id: "1", name: "张三", studentId: "20230001", class: "高一(1)班", status: "在校", lastExit: "2023-06-10 18:30", days: 0 }
+  ],
+  columns: [
+    { key: "name", dataIndex: "name", title: "普通列", width: 120, visible: true, isRowKey: false, contentType: "text" },
+    { key: "class", dataIndex: "class", title: "自适应宽度列", width: 'auto', visible: true, isRowKey: false, contentType: "text" },
+    { key: "operation", dataIndex: "operation", title: "自定义插槽操作列", width: 120, visible: true, isRowKey: false, contentType: "slotItem", slotId: "operation" }
+  ],
+  enableStripe: true,
+  usePagination: true,
+  paginationConfig: {
+    total: 50,
+    current: 1,
+    pageSize: 10,
+    showSizeChanger: true,
+    showQuickJumper: true
   }
-};
+}}
+>
+<slots.operation title="自定义操作列" layout={{ width: '100%', flexDirection: 'row' }}>
+  <mybricks.normal-pc.${version}custom-button
+    title="查看详情按钮"
+    layout={{ width: 'fit-content' }}
+    data={{
+      size: "small",
+      text: "查看详情",
+      type: "link"
+    }}
+  />
+</slots.operation>
+</mybricks.normal-pc.${version}table>
+\`\`\``
+  },
+  modifyTptJson: (component) => {
+    if (!component.data) {
+      component.data = {}
+    }
+
+    component.data.layout = component.data?.direction === 'row' ? 'horizontal' : 'vertical'
+    delete component.data?.direction
+    if (component.data.layout === 'vertical') {
+      component.data.itemWidth = '100%'
+    } else if (component.data.layout === 'horizontal') {
+      component.data.isAuto = component.data.wrap ?? true
+      delete component.data.wrap
+    }
+
+    component.data.useLoading = false;
+    component.data.loadingTip = '加载中...';
+  }
+}

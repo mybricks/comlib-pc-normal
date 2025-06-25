@@ -1,7 +1,7 @@
 {
   "title": "图标",
   "namespace": "mybricks.normal-pc.icon",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "图标",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "inputs": [
     {
       "id": "setIcon",
