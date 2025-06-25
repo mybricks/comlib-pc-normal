@@ -3,7 +3,7 @@
   "title": "日期选择框",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.40",
+  "version": "1.1.41",
   "description": "日期选择框",
   "icon": "../../../../src/form-coms/date-picker/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/date-picker/editors.ts",
   "upgrade": "../../../../src/form-coms/date-picker/upgrade.ts",
+  "ai": "../../../../src/form-coms/date-picker/ai.ts",
   "inputs": [
     {
       "id": "setValue",

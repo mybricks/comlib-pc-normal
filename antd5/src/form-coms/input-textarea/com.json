@@ -3,7 +3,7 @@
   "title": "文本域",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.24",
+  "version": "1.1.27",
   "description": "文本域",
   "icon": "../../../../src/form-coms/input-textarea/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_44zp5y.91531f9e6ba88161.png",
@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/input-textarea/editors.tsx",
   "upgrade": "../../../../src/form-coms/input-textarea/upgrade.ts",
+  "ai": "../../../../src/form-coms/input-textarea/ai.ts",
   "inputs": [
     {
       "id": "setValue",

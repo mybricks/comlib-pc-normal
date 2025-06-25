@@ -2,7 +2,7 @@
   "namespace": "mybricks.antd5.bottom-bar",
   "title": "置底工具栏",
   "enable": true,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "置底工具栏",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,5 +10,6 @@
   "data": "../../../src/bottom-bar/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/bottom-bar/editors.tsx",
-  "upgrade": "../../../src/bottom-bar/upgrade.ts"
+  "upgrade": "../../../src/bottom-bar/upgrade.ts",
+  "ai": "../../../src/bottom-bar/ai.ts"
 }

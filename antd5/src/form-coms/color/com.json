@@ -3,7 +3,7 @@
   "title": "颜色选择框",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "颜色选择框",
   "icon": "../../../../src/form-coms/color/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_50jt73.cb1a11284761ebfd.png",
@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/color/editors.ts",
   "upgrade": "../../../../src/form-coms/color/upgrade.ts",
+  "ai": "../../../../src/form-coms/color/ai.ts",
   "inputs": [
     {
       "id": "setValue",

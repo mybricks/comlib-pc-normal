@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.timeline",
   "title": "时间轴",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "时间轴",
   "author": "MyBricks",
   "author_name": "tangxiaoxin",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/timeline/editors/index.ts",
   "upgrade": "../../../src/timeline/upgrade.ts",
+  "ai": "../../../src/timeline/ai.ts",
   "outputs": [
     {
       "id": "itemClick",

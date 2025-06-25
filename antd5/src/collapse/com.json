@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.collapse",
   "title": "折叠面板",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "折叠面板",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/collapse/editors.tsx",
   "upgrade": "../../../src/collapse/upgrade.ts",
+  "ai": "../../../src/collapse/ai.ts",
   "inputs": [],
   "outputs": [],
   "slots": [

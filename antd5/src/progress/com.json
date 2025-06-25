@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.progress",
   "title": "进度条",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "展示操作的当前进度",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/progress/editors.tsx",
   "upgrade": "../../../src/progress/upgrade.ts",
+  "ai": "../../../src/progress/ai.ts",
   "inputs": [
     {
       "id": "setPercent",

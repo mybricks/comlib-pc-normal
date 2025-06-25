@@ -3,7 +3,7 @@
   "title": "自动完成",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入",
   "icon": "../../../../src/form-coms/auto-complete/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0fcijz.b5f0933284f32e40.png",
@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/auto-complete/editors.ts",
   "upgrade": "../../../../src/form-coms/auto-complete/upgrade.ts",
+  "ai": "../../../../src/form-coms/auto-complete/ai.ts",
   "inputs": [
     {
       "id": "setValue",

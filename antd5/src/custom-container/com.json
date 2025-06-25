@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.custom-container",
   "title": "自定义容器",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "description": "自定义容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/custom-container/editors.ts",
   "upgrade": "../../../src/custom-container/upgrade.ts",
+  "ai": "../../../src/custom-container/ai.ts",
   "slots": [
     {
       "id": "content",

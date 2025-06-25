@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.form-addition-container",
   "title": "自定义内容项",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "添加一些非表单项的展示内容",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -12,6 +12,7 @@
   "editors": "../../../../src/form-coms/addition-container/editors.ts",
   "inputs": [],
   "outputs": [],
+  "ai": "../../../../src/form-coms/addition-container/ai.ts",
   "slots": [
     {
       "id": "form-addition-container",

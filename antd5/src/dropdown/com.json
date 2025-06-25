@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.dropdown",
   "title": "下拉菜单",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "下拉菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/dropdown/editors.tsx",
   "upgrade": "../../../src/dropdown/upgrade.ts",
+  "ai": "../../../src/dropdown/ai.ts",
   "inputs": [
     {
       "id": "dynamicallyModifySubitems",

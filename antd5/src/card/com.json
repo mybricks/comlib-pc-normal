@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.card",
   "title": "卡片",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "卡片",
   "author": "HuangQiuyun",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/card/editors.tsx",
   "upgrade": "../../../src/card/upgrade.ts",
+  "ai": "../../../src/card/ai.ts",
   "inputs": [
     {
       "id": "title",

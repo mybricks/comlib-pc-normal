@@ -3,13 +3,14 @@
   "title": "代码编辑器",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "用于在线编辑代码，支持多种编程语言",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/code/editor.ts",
   "data": "../../../../src/form-coms/code/data.json",
   "icon": "../../../../src/form-coms/code/icon.svg",
   "upgrade": "../../../../src/form-coms/code/upgrade.ts",
+  "ai": "../../../../src/form-coms/code/ai.ts",
   "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-9e7987dd-27c4-4375-8c8c-82465588a0dd.png",
   "inputs": [
     {

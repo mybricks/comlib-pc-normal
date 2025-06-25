@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.calendar",
   "title": "日历",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "日历",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/calendar/editors.tsx",
   "upgrade": "../../../src/calendar/upgrade.ts",
+  "ai": "../../../src/calendar/ai.ts",
   "inputs": [
     {
       "id": "dataSource",

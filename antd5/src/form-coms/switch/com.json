@@ -3,7 +3,7 @@
   "title": "开关",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.1.18",
+  "version": "1.1.19",
   "description": "开关选择器",
   "icon": "../../../../src/form-coms/switch/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_8969hz.276cbe33b62e0f79.png",
@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/switch/editors.tsx",
   "upgrade": "../../../../src/form-coms/switch/upgrade.ts",
+  "ai": "../../../../src/form-coms/switch/ai.ts",
   "inputs": [
     {
       "id": "setValue",

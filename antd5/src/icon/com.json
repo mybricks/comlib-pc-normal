@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.icon",
   "title": "图标",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "图标",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/icon/editors.tsx",
   "upgrade": "../../../src/icon/upgrade.ts",
+  "ai": "../../../src/icon/ai.ts",
   "inputs": [
     {
       "id": "setIcon",

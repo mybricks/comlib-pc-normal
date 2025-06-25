@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.tabs",
   "title": "标签页",
-  "version": "1.0.58",
+  "version": "1.0.59",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/tabs/editor/index.ts",
   "upgrade": "../../../src/tabs/upgrade.ts",
+  "ai": "../../../src/tabs/ai.ts",
   "inputs": [
     {
       "id": "previous",
