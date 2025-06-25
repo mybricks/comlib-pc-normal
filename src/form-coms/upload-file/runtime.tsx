@@ -608,7 +608,7 @@ export default function ({
                           const deleteHandle = ActionSheet.show({
                             actions: [
                               {
-                                text: env.i18n('即将删除图片，是否继续？'),
+                                text: env.i18n('即将删除文件，是否继续？'),
                                 key: 'ok'
                               }
                             ],

@@ -7,8 +7,8 @@
   "useCustomDateCell": false,
   "showNow": true,
   "contentType": "timeStamp",
-  "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
-  "showFormatter": "YYYY-MM-DD HH:mm:ss",
+  "formatter": "YYYY-MM-DD",
+  "showFormatter": "YYYY-MM-DD",
   "disabledTimeRules": [],
   "config": {
     "max": null,
