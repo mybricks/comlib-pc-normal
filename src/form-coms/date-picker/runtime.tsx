@@ -415,7 +415,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
             className={cls({
               [css.datePickerContent]: true,
               datePickerContent: true,
-              [css.datePickerDisabled]: data.disabled
+              [css.datePickerDisabled]: data.disabled,
+              datePickerDisabled: data.disabled,
             })}
             onClick={() => runtime && !data.disabled && setOpen(true)}
           >
@@ -430,7 +431,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
               [css.datePickerContent]: true,
               datePickerContent: true,
               [css.datePickerPlaceholder]: true,
-              [css.datePickerDisabled]: data.disabled
+              datePickerPlaceholder: true,
+              [css.datePickerDisabled]: data.disabled,
+              datePickerDisabled: data.disabled,
             })}
             onClick={() => runtime && !data.disabled && setOpen(true)}
           >

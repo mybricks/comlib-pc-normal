@@ -23,23 +23,6 @@ export default {
   ':root': {
     style: [
       {
-        title: '尺寸',
-        description: '控件大小, 默认是中(middle)',
-        type: 'Select',
-        options: SizeOptions,
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.config.size || 'middle';
-          },
-          set({ data }: EditorResult<Data>, val: SizeEnum) {
-            data.config = {
-              ...data.config,
-              size: val
-            };
-          }
-        }
-      },
-      {
         items: styleEditor
       }
     ],

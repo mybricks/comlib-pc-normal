@@ -333,7 +333,7 @@ export default function Runtime({
                 ))}
               </div>
             )}
-            {data.mode === 'multiple' && subKeys.length > 0 && (
+            {subKeys.length > 0 && (
               <a className={css.cascaderPopupReturnLast} onClick={returnLastLevel}>
                 {env.i18n('返回上一级')}
               </a>
