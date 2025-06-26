@@ -52,7 +52,7 @@ data={{
   ],
   columns: [
     { key: "name", dataIndex: "name", title: "普通列", width: 120, visible: true, isRowKey: false, contentType: "text" },
-    { key: "class", dataIndex: "class", title: "自适应宽度列", width: 'auto', visible: true, isRowKey: false, contentType: "text" },
+    { key: "class", dataIndex: "class", title: "自适应宽度列", width: 120, visible: true, isRowKey: false, contentType: "text" },
     { key: "operation", dataIndex: "operation", title: "自定义插槽操作列", width: 120, visible: true, isRowKey: false, contentType: "slotItem", slotId: "operation" }
   ],
   enableStripe: true,
@@ -78,7 +78,9 @@ data={{
   />
 </slots.operation>
 </mybricks.normal-pc.${version}table>
-\`\`\``
+\`\`\`
+通常操作列都需要右固定，且宽度固定为一个合适的值，短内容可以适当缩小列宽（width属性），当列数少时，可以将最右侧的非固定列宽设置为auto
+`
   },
   modifyTptJson: (component) => {
     if (!component.data) {

@@ -1,7 +1,7 @@
 {
   "title": "富文本",
   "namespace": "mybricks.normal-pc.richtext-preview",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "展示多姿多彩的富文本",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "inputs": [
     {
       "id": "content",

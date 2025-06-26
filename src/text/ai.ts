@@ -30,6 +30,11 @@ styleAry声明
         if (!item.css) {
           item.css = {}
         }
+        if (item.css.fontSize?.endsWith("px")) {
+          if (!item.css.lineHeight) {
+            item.css.lineHeight = 1
+          }
+        }
         item.css.textAlign = component.data?.align || 'left'
       })
     } else {
