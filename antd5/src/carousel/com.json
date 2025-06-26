@@ -3,7 +3,7 @@
   "title": "轮播图",
   "author": "wufan",
   "author_name": "吴凡",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "轮播图",
   "icon": "../../../src/carousel/icon.png",
   "data": "../../../src/carousel/data.json",
