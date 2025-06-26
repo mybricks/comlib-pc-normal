@@ -620,37 +620,10 @@ export default function ({
                     title={env.i18n('删除')}
                     onClick={() => {
                       Modal.confirm({
-                        width: 264,
                         title: env.i18n('即将删除文件，是否继续？'),
-                        style: {
-                          borderColor: '#bfbfbf',
-                        },
-                        bodyStyle: {
-                          width: 264,
-                          padding: 32,
-                        },
-                        icon: false,
                         okText: env.i18n('确定'),
                         cancelText: env.i18n('取消'),
                         onOk: actions.remove,
-                        okButtonProps: {
-                          style: {
-                            width: 48,
-                            height: 24,
-                            lineHeight: '24px',
-                            padding: 0,
-                            fontSize: 12
-                          }
-                        },
-                        cancelButtonProps: {
-                          style: {
-                            width: 48,
-                            height: 24,
-                            lineHeight: '24px',
-                            padding: 0,
-                            fontSize: 12
-                          }
-                        }
                       });
                     }}
                   >
