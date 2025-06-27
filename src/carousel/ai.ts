@@ -40,10 +40,11 @@ styleAry声明
 无
 
 使用案例
+轮播图组件需要设置合适的固定高度
 \`\`\`dsl file="page.dsl"
 <mybricks.normal-pc.${version}carousel
 title="轮播图"
-layout={{ width: '100%', height: 'fit-content' }}
+layout={{ width: '100%', height: 500 }}
 data={{
     items: [
     {
