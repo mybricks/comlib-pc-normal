@@ -679,6 +679,18 @@ export default function (props: RuntimeParams<Data>) {
         inputs[InputIds.SET_ROW_SELECTION] &&
           inputs[InputIds.SET_ROW_SELECTION]((val: any, relOutputs: any) => {
             // 时机延后，保证同时设置行选中和数据源时能生效
+            const deepSeek = (data: any, key: string) => {
+              if (!data || !data.length) return undefined;
+              for (const item of data) {
+                if (item[rowKey] === key) {
+                  return item;
+                }
+                if (item.children && item.children.length) {
+                  const found = deepSeek(item.children, key);
+                  if (found) return found;
+                }
+              }
+            }
             setTimeout(() => {
               const newSelectedRowKeys: string[] = [];
               const newSelectedRows: any[] = [];
@@ -686,9 +698,7 @@ export default function (props: RuntimeParams<Data>) {
                 // 目前行rowKey数据
                 const targetRowKeyVal =
                   typeof selected === 'object' ? selected?.[rowKey] : selected;
-                const tempItem = dataSourceRef.current.find(
-                  (item) => targetRowKeyVal === item[rowKey]
-                );
+                const tempItem = deepSeek(dataSourceRef.current, targetRowKeyVal);
                 // 需要判断对应的row数据是否存在
                 if (tempItem !== undefined) {
                   newSelectedRows.push(tempItem);
