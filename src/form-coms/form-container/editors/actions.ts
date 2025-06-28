@@ -50,6 +50,19 @@ export const actionsEditor = (data: Data, output, env) => {
         }
       },
       {
+        title: '展开/收起位置切换',
+        type: 'Switch',
+        description: '展开/收起位置默认是在左侧,在按钮两侧左右切换',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.isRight
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.actions.isRight = val
+          }
+        }
+      },
+      {
         title: '宽度模式',
         type: 'Select',
         options: [

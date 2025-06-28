@@ -297,7 +297,7 @@ const QueryFilter = (props: QueryFilterProps) => {
             label={data.config?.layout === 'vertical' ? ' ' : ''}
           >
             <Space wrap data-form-actions>
-              {showCollapseButton && (
+              {showCollapseButton && !data.actions.isRight && (
                 <CollapseButton
                   collapsed={collapsed}
                   setCollapsed={setCollapsed}
@@ -331,6 +331,15 @@ const QueryFilter = (props: QueryFilterProps) => {
                   </Button>
                 );
               })}
+               {showCollapseButton && data.actions.isRight && (
+                <CollapseButton
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                  outputs={outputs}
+                  env={env}
+                  data={data}
+                />
+              )}
             </Space>
           </Form.Item>
         </Col>

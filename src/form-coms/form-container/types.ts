@@ -31,7 +31,8 @@ interface Actions {
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
-  inlinePadding?: number[]
+  inlinePadding?: number[],
+  isRight?: false   //  展开/收益按钮位置
 }
 
 export interface FormItems {
