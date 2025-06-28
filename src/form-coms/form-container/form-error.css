@@ -1,0 +1,58 @@
+/* === form-error.css === */
+
+/* Input 错误样式 */
+.ant-input-status-error {
+    border-color: #ff7875 !important;
+}
+
+.ant-input-affix-wrapper-status-error .ant-input-prefix {
+    color: #ff4d4f !important;
+}
+
+.ant-input-group-wrapper-status-error .ant-input-group-addon {
+    color: #ff4d4f !important;
+    border-color: #ff4d4f !important;
+}
+
+
+/* InputNumber 错误样式 */
+.ant-input-number-status-error:not(.ant-input-number-disabled):not(.ant-input-number-borderless).ant-input-number {
+    border-color: #ff7875 !important;
+}
+
+/* Select 错误样式 */
+.ant-select-status-error:not(.ant-select-disabled):not(.ant-select-borderless).ant-select {
+    border-color: #ff7875 !important;
+}
+
+
+/* Input 错误样式 */
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+    background: #fff;
+    border-color: #ff4d4f !important;
+}
+
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:focus {
+    border-color: #ff7875 !important;
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, .2) !important;
+    border-right-width: 1px;
+    outline: 0
+}
+
+
+/* 日期 Date 错误样式 */
+.ant-picker-status-error.ant-picker,
+.ant-picker-status-error.ant-picker:not([disabled]):hover {
+    background-color: #fff;
+    border-color: #ff4d4f !important;
+}
+
+.ant-picker-status-error.ant-picker-focused,
+.ant-picker-status-error.ant-picker:focus {
+    border-color: #ff7875 !important;
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, .2) !important;
+    border-right-width: 1px;
+    outline: 0
+}
