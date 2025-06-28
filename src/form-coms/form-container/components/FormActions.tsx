@@ -81,6 +81,7 @@ const FormActions = (props: Props) => {
 
         return (
           <Button
+            className='button'
             data-form-actions-item={item.key}
             type={item.type}
             loading={item.loading}
