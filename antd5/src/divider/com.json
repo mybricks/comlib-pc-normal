@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.divider",
   "title": "分割线",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "可用来做视觉上的隔离，区隔内容的分割线。",
   "author": "MyBricks",
   "author_name": "MyBricks",

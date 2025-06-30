@@ -32,17 +32,19 @@ dotsStyle: {
 slideIndex: number = 0
 
 slots插槽
-data.items[0].slotId: 轮播项1内容
-data.items[1].slotId: 轮播项2内容
+slot1: 轮播项1内容
+slot2: 轮播项2内容
+关于插槽的使用，不需要在插槽下有任何内容
 
 styleAry声明
 无
 
 使用案例
+轮播图组件需要设置合适的固定高度
 \`\`\`dsl file="page.dsl"
 <mybricks.normal-pc.${version}carousel
 title="轮播图"
-layout={{ width: '100%', height: 'fit-content' }}
+layout={{ width: '100%', height: 500 }}
 data={{
     items: [
     {
@@ -61,10 +63,10 @@ data={{
     }
 }}
 >    // 注意: 插槽的数量要和items的数量保持一致
-    <slots.content title="轮播图内容" layout={{ width: '100%' }}>  //插槽内留空就可以
-    </slots.content>
-    <slots.content title="轮播图内容" layout={{ width: '100%' }}>  //插槽内留空就可以
-    </slots.content>
+    <slots.slot1 title="轮播图内容" layout={{ width: '100%', height: '100%' }}>  //插槽内留空就可以
+    </slots.slot1>
+    <slots.slot2 title="轮播图内容" layout={{ width: '100%', height: '100%' }}>  //插槽内留空就可以
+    </slots.slot2>
 </mybricks.normal-pc.${version}carousel>
 `
   },
@@ -80,7 +82,7 @@ data={{
     }
     component.data.items.forEach((item, index) => {
       item.slotId = `slot${index + 1}`
-      item.bgSize = "contain"
+      item.bgSize = "cover"
     })
   }
 }

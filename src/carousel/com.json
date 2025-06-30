@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.carousel",
   "author": "wufan",
   "author_name": "吴凡",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "轮播图",
   "icon": "./icon.png",
   "data": "./data.json",

@@ -22,6 +22,8 @@ hideAdd: [true|false] = true
 slots插槽
 tab0: 标签页1
 
+关于插槽的使用，尽量每个插槽下都要有内容，不同的标签页往往展示不同的内容
+
 styleAry声明
 顶部标签整体: .nav_wrap
   - 默认样式：
@@ -56,8 +58,8 @@ styleAry声明
       component.data = {}
     }
     component.data.tabList.forEach((item, index) => {
-      item.key = `tab${index + 1}`,
-        item.id = `tab${index + 1}`,
+      item.key = `tab${index}`,
+        item.id = `tab${index}`,
         item.infoType = 'text',
         item.size = "default",
         item.showZero = false

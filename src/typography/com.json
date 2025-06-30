@@ -1,7 +1,7 @@
 {
   "title": "文本排版",
   "namespace": "mybricks.normal-pc.typography",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "展示文本基本格式",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "inputs": [
     {
       "id": "setData",

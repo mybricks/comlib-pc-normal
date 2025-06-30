@@ -147,8 +147,5 @@
     "./src/_template-compute/_config-tree/com.json"
   ],
   "externals": [],
-  "domain": "http://work.manateeai.com",
-  "email": "yangzai",
-  "tags": "react",
-  "userName": "yangzai"
+  "tags": "react"
 }
