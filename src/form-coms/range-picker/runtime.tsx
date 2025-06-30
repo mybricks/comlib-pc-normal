@@ -12,6 +12,7 @@ import ConfigProvider from '../../components/ConfigProvider';
 import { DisabledRulesValue, formatRulesExpression } from '../date-picker/util';
 import { RangePickerProps } from 'antd/lib/date-picker';
 import { isFloat64Array } from 'util/types';
+import { isMoment } from "../../utils";
 
 const { RangePicker } = DatePicker;
 
@@ -172,7 +173,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         val = val.map((item) => {
           const num = Number(item);
           const result: any = num === 0 ? null : isNaN(num) ? moment(item) : moment(num);
-          let data = !result?._isValid ? undefined : result;
+          let data = !isMoment(result) ? undefined : result;
           return data;
         });
         const transValue = changeValue(val);
@@ -196,7 +197,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           val = val.map((item) => {
             const num = Number(item);
             const result: any = num === 0 ? null : isNaN(num) ? moment(item) : moment(num);
-            let data = !result?._isValid && result !== null ? undefined : result;
+            let data = !isMoment(result) && result !== null ? undefined : result;
             return data;
           });
           const transValue = changeValue(val);

@@ -11,6 +11,7 @@ import ConfigProvider from '../../components/ConfigProvider';
 import { SlotIds, InputIds } from './constant';
 import { formatRulesExpression, DisabledRulesValue } from './util';
 import { defaultDisabledDateRule, defaultDisabledTimeRule } from './editors';
+import { isMoment } from "../../utils"
 
 export type DisabledDateRule = {
   title: string;
@@ -161,7 +162,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
       val =
         val === null || num === 0
           ? null
-          : !result?._isValid || val === undefined
+          : !isMoment(result) || val === undefined
           ? undefined
           : result;
       const transValue = changeValue(val);
@@ -180,7 +181,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
         val =
           val === null || num === 0
             ? null
-            : !result?._isValid || val === undefined
+            : !isMoment(result) || val === undefined
             ? undefined
             : result;
         const transValue = changeValue(val);
