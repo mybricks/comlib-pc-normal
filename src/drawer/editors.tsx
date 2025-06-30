@@ -57,7 +57,75 @@ export default {
       slots.get(SlotIds.Content)?.inputs.get(SlotIds.DataSource)?.setSchema(defaultSchema);
     }
   },
-  ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
+  ':root': {
+    style: [{
+      title: '内容背景色',
+      type: 'colorpicker',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.bodyStyle?.backgroundColor;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          if (!data.bodyStyle) {
+            data.bodyStyle = {};
+          }
+          data.bodyStyle = {
+            ...data.bodyStyle,
+            backgroundColor: value
+          }
+        }
+      }
+    },
+    {
+      title: '抽屉位置',
+      type: 'Select',
+      description: '抽屉在屏幕展开的位置',
+      options() {
+        return [
+          { label: '上', value: 'top' },
+          { label: '下', value: 'bottom' },
+          { label: '左', value: 'left' },
+          { label: '右', value: 'right' }
+        ];
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.position;
+        },
+        set(
+          { data }: EditorResult<Data>,
+          value: 'top' | 'right' | 'bottom' | 'left' | undefined
+        ) {
+          data.position = value;
+        }
+      }
+    },
+    {
+      title: '抽屉宽高',
+      options: ['size'],
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return {
+            height: data.height,
+            width: data.width
+          };
+        },
+        set({ data }: EditorResult<Data>, value: any) {
+          data.height = value?.height;
+          data.width = value?.width;
+        }
+      }
+    },{
+      title: '头部分割线',
+      options: ['border'],
+      target: '.ant-drawer-content-wrapper .ant-drawer-header'
+    
+    },  {
+      title: '底部分割线',
+      options: ['border'],
+      target: '.ant-drawer-content-wrapper .ant-drawer-footer'
+    }],
+    items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -188,74 +256,23 @@ export default {
         ]
       }
     ];
-
-    cate2.title = '样式';
-    cate2.items = [
-      {
-        title: '内容背景色',
-        type: 'colorpicker',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.bodyStyle?.backgroundColor;
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            if (!data.bodyStyle) {
-              data.bodyStyle = {};
-            }
-            data.bodyStyle.backgroundColor = value;
-          }
-        }
-      },
-      {
-        title: '抽屉位置',
-        type: 'Select',
-        description: '抽屉在屏幕展开的位置',
-        options() {
-          return [
-            { label: '上', value: 'top' },
-            { label: '下', value: 'bottom' },
-            { label: '左', value: 'left' },
-            { label: '右', value: 'right' }
-          ];
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.position;
-          },
-          set(
-            { data }: EditorResult<Data>,
-            value: 'top' | 'right' | 'bottom' | 'left' | undefined
-          ) {
-            data.position = value;
-          }
-        }
-      },
-      {
-        title: '抽屉宽高',
-        type: 'Style',
-        options: {
-          plugins: ['Size']
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return {
-              height: data.height,
-              width: data.width
-            };
-          },
-          set({ data }: EditorResult<Data>, value: any) {
-            data.height = value?.height;
-            data.width = value?.width;
-          }
-        }
-      }
-    ];
-
     return {
       title: '抽屉'
     };
-  },
-  '[data-btn-id]': ({}: EditorResult<Data>, cate1, cate2) => {
+  }
+},
+  '[data-btn-id]':{ 
+    style: [{
+      title: '按钮样式',
+      catelog: '默认',
+      options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+      target({focusArea }) {
+        console.log( `.ant-drawer-footer  button[data-btn-idx="${focusArea.dataset.btnId}"]`)
+        return `.ant-drawer-footer  button[data-btn-id="${focusArea.dataset.btnId}"]`;
+      }
+    }
+    ],
+    items: ({}: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '按钮';
     cate1.items = [
       {
@@ -334,7 +351,7 @@ export default {
       moveDelete('btnId')
     ];
     return { title: '按钮' };
-  },
+  }},
   '.ant-drawer-title': {
     title: '标题',
     items: [
