@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.toolbar",
   "title": "工具条",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "工具条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/toolbar/editors/index.ts",
   "upgrade": "../../../src/toolbar/upgrade.ts",
+  "ai": "../../../src/toolbar/ai.ts",
   "inputs": [],
   "outputs": [
     {

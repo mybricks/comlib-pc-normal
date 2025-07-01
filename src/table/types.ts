@@ -64,16 +64,6 @@ export interface IColumn {
   visible?: boolean;
   width?: number | WidthTypeEnum;
   isAutoWidth?: WidthTypeEnum;
-  // 对齐方式
-  align?: AlignEnum;
-  /** 内容字体颜色 */
-  contentColor?: string;
-  /** 表头背景色 */
-  titleBgColor?: string;
-  /** 表头字体色 */
-  titleColor?: string;
-  headStyle?: any;
-  contentStyle?: any;
   hasTip?: boolean;
   tip?: string;
   // 省略展示
@@ -202,10 +192,6 @@ export interface Data {
 
   //动态设置显示表格标题和字段
   useDynamicTitle?: boolean;
-
-  titleBgColor: string;
-  headStyle: any;
-  contentStyle;
   enableRowClick?: boolean;
   enableRowDoubleClick?: boolean;
   enableCellClick?: boolean;

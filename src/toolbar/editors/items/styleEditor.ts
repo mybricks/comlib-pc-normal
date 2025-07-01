@@ -1,4 +1,4 @@
-import { Data, FzCSSProperties, ShapeEnum, SizeEnum, TypeEnum } from '../../types';
+import { Data, ShapeEnum, SizeEnum, TypeEnum } from '../../types';
 import { getBtnItemInfo } from '../../utils';
 import { SizeHeightMap } from '../../constants';
 

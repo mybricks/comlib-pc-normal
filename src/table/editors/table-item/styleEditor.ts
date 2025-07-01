@@ -1,6 +1,5 @@
 import { setCol } from '../../schema';
 import { OutputIds } from '../../constants';
-import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants';
 import {
   AlignEnum,
   ContentTypeEnum,
@@ -10,12 +9,6 @@ import {
   WidthTypeEnum
 } from '../../types';
 import { getColumnItem } from '../../utils';
-
-export const DefaultColor = {
-  TitleColor: '#1f1f1f',
-  TitleBgColor: '#f5f7f9',
-  ContentColor: '#434343'
-};
 
 const StyleEditor = [
   {
@@ -98,26 +91,6 @@ const StyleEditor = [
       }
     }
   },
-  // {
-  //   title: '对齐方式',
-  //   type: 'Select',
-  //   options: [
-  //     { label: '左对齐', value: AlignEnum.Left },
-  //     { label: '居中对齐', value: AlignEnum.Center },
-  //     { label: '右对齐', value: AlignEnum.Right }
-  //   ],
-  //   value: {
-  //     get({ data, focusArea }: EditorResult<Data>) {
-  //       if (!focusArea) return;
-  //       const item = getColumnItem(data, focusArea);
-  //       return item.align || AlignEnum.Left;
-  //     },
-  //     set({ data, focusArea }: EditorResult<Data>, value: AlignEnum) {
-  //       if (!focusArea) return;
-  //       setCol({ data, focusArea }, 'align', value);
-  //     }
-  //   }
-  // },
   {
     title: '固定列',
     type: 'Select',
@@ -146,77 +119,6 @@ const StyleEditor = [
       }
     }
   },
-  // {
-  //   title: '表头背景色',
-  //   type: 'ColorPicker',
-  //   ifVisible({ focusArea }: EditorResult<Data>) {
-  //     if (!focusArea) return;
-  //     return true;
-  //   },
-  //   value: {
-  //     get({ data, focusArea }: EditorResult<Data>) {
-  //       const item = getColumnItem(data, focusArea);
-  //       return item.titleBgColor || DefaultColor.TitleBgColor;
-  //     },
-  //     set({ data, focusArea }: EditorResult<Data>, value: string) {
-  //       setCol({ data, focusArea }, 'titleBgColor', value);
-  //     }
-  //   }
-  // },
-  // {
-  //   title: '表头样式',
-  //   type: 'Style',
-  //   ifVisible({ focusArea }: EditorResult<Data>) {
-  //     if (!focusArea) return;
-  //     return true;
-  //   },
-  //   options: {
-  //     plugins: ['bgColor', 'Font'],
-  //     fontProps: {
-  //       fontFamily: false,
-  //       lineHeight: false
-  //     }
-  //   },
-  //   value: {
-  //     get({ data, focusArea }: EditorResult<Data>) {
-  //       const item = getColumnItem(data, focusArea);
-  //       return item.headStyle || { ...DefaultHeadStyle };
-  //     },
-  //     set({ data, focusArea }: EditorResult<Data>, value) {
-  //       delete value.lineHeight;
-  //       delete value.display;
-  //       delete value.letterSpacing;
-  //       setCol({ data, focusArea }, 'headStyle', { ...value });
-  //     }
-  //   }
-  // },
-  // {
-  //   title: '内容样式',
-  //   type: 'Style',
-  //   ifVisible({ focusArea }: EditorResult<Data>) {
-  //     if (!focusArea) return;
-  //     return true;
-  //   },
-  //   options: {
-  //     plugins: ['bgColor', 'Font'],
-  //     fontProps: {
-  //       fontFamily: false,
-  //       lineHeight: false
-  //     }
-  //   },
-  //   value: {
-  //     get({ data, focusArea }: EditorResult<Data>) {
-  //       const item = getColumnItem(data, focusArea);
-  //       return item.contentStyle || { ...DefaultContentStyle };
-  //     },
-  //     set({ data, focusArea }: EditorResult<Data>, value) {
-  //       delete value.lineHeight;
-  //       delete value.display;
-  //       delete value.letterSpacing;
-  //       setCol({ data, focusArea }, 'contentStyle', { ...value });
-  //     }
-  //   }
-  // }
 ];
 
 export default StyleEditor;
