@@ -237,9 +237,6 @@ export default interface Data {
 |------|--------|--------|
 | content | scope | 内容区插槽 |
 
-# styleAry定义
-无
-
 <examples>
   <!-- 内容修改 -->
   <example>

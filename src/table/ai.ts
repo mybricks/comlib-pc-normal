@@ -209,8 +209,6 @@ enum TableLayoutEnum {
 export default interface Data {
   /** 数据源唯一标识 */
   rowKey?: string;
-  /** 数据源 */
-  dataSource: any[];
   /** 列配置 */
   columns: IColumn[];
   _inicCols: IColumn[];
@@ -334,9 +332,6 @@ export default interface Data {
 | headerOperation | normal | 右上角操作区插槽，当 \`data.useHeaderOperationSlot === true\` 时允许使用 |
 | rowSelectionOperation | scope | 勾选操作区插槽，当 \`data.useRowSelection && data.selectionType !== RowSelectionTypeEnum.Radio && data.rowSelectionPostion?.length\` 时允许使用 |
 | summaryColumn | scope | 自定义总结栏内容插槽，当 \`data.useSummaryColumn === true && data.summaryColumnContentType === "slotItem"\` 时允许使用 |
-
-# styleAry定义
-无
 
 <examples>
   <!-- 功能问询 -->
