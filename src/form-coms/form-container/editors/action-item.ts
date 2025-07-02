@@ -52,7 +52,6 @@ const actionItemEditor = {
           set({ data, focusArea }: EditorResult<Data>, value: ButtonType) {
             const comId = focusArea.dataset['formActionsItem'];
             const item = data.actions.items.find((item) => item.key === comId);
-
             if (item) {
               item.type = value;
             }
@@ -91,8 +90,14 @@ const actionItemEditor = {
                   'background'
                 ],
                 target({ focusArea }) {
-                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-                }
+                  // 这里做区分，如果是submit / cancel 则不进行样式覆盖
+                  if(focusArea.dataset['formActionsItem'] == 'submit' || focusArea.dataset['formActionsItem'] == 'cancel') {
+                    return [`button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`,`button[data-form-item-type="${focusArea.dataset['formItemType']}"]`]
+                  }else{
+                    return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`
+                  }
+                },
+               
               },
               {
                 title: '图标',
@@ -114,10 +119,19 @@ const actionItemEditor = {
                   'background'
                 ],
                 target({ focusArea }) {
-                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
+                  if(focusArea.dataset['formActionsItem'] == 'submit' || focusArea.dataset['formActionsItem'] == 'cancel') {
+                    return [`button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`,`button[data-form-item-type="${focusArea.dataset['formItemType']}"]:hover`]
+                  }else{
+                    return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`
+                  }
                 },
                 domTarget({ focusArea }) {
-                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                  // 这里做区分，如果是submit / cancel 则不进行样式覆盖
+                  if(focusArea.dataset['formActionsItem'] == 'submit' || focusArea.dataset['formActionsItem'] == 'cancel') {
+                    return [`button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`,`button[data-form-item-type="${focusArea.dataset['formItemType']}"]`]
+                  }else{
+                    return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`
+                  }
                 }
               },
               {
@@ -139,10 +153,18 @@ const actionItemEditor = {
                   'background'
                 ],
                 target({ focusArea }) {
-                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active`;
+                  if(focusArea.dataset['formActionsItem'] == 'submit' || focusArea.dataset['formActionsItem'] == 'cancel') {
+                    return [`button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active`,`button[data-form-item-type="${focusArea.dataset['formItemType']}"]:active`]
+                  }else{
+                    return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`
+                  }
                 },
                 domTarget({ focusArea }) {
-                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                  if(focusArea.dataset['formActionsItem'] == 'submit' || focusArea.dataset['formActionsItem'] == 'cancel') {
+                    return [`button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`,`button[data-form-item-type="${focusArea.dataset['formItemType']}"]`]
+                  }else{
+                    return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`
+                  }
                 }
               },
               {

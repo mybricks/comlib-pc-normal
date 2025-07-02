@@ -79,9 +79,29 @@ const FormActions = (props: Props) => {
           return null;
         }
 
+        // 这种做法是 如果type是primary 或者 isDefault为true, 则默认添加的按钮使用primary的样式
+        if (item?.type === 'primary' || item.isDefault){
+          return (
+            <Button
+            className='button'
+            data-form-actions-item={item.key}
+            data-form-item-type='primary'
+            type={item.type}
+            loading={item.loading}
+            key={item.key}
+            danger={item?.danger}
+            onClick={() => onClick(item)}
+            disabled={item.disabled || config.disabled}
+          >
+            {renderTextAndIcon({ ...item, title: env.i18n(item.title) })}
+          </Button>
+          )
+        }
         return (
           <Button
+            className='button'
             data-form-actions-item={item.key}
+            data-form-item-type='default'
             type={item.type}
             loading={item.loading}
             key={item.key}

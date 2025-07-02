@@ -21,6 +21,7 @@ import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 import { isArray } from 'lodash';
 import useElementWidth from './hooks/use-element-width';
+import './form-error.css';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
