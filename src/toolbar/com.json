@@ -1,7 +1,7 @@
 {
   "title": "工具条",
   "namespace": "mybricks.normal-pc.toolbar",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "工具条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },

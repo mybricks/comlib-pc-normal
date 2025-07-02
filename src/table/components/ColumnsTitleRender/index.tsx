@@ -173,18 +173,9 @@ export default ({
         <ColumnGroup
           key={`group_${cItem.dataIndex}`}
           title={renderTtl(cItem)}
-          align={cItem.align}
           onHeaderCell={(): any => {
             return {
-              'data-table-th-idx': cItem.key,
-              style: cItem.headStyle
-                ? {
-                  ...cItem.headStyle
-                }
-                : {
-                  color: cItem.titleColor,
-                  backgroundColor: cItem.titleBgColor
-                }
+              'data-table-th-idx': cItem.key
             };
           }}
         >

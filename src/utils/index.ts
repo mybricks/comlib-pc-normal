@@ -181,3 +181,4 @@ export function isBase64Image(url) {
 
 export * from './upgrade';
 export * from './io';
+export * from './time';

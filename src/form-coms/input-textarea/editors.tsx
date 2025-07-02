@@ -173,6 +173,10 @@ export default {
           {
             label: 'Enter+Ctrl',
             value: 'enter_with_ctrl'
+          },
+          {
+            label: 'Enter+Shift',
+            value: 'enter_with_shift'
           }
         ],
           description: '按Enter提交，或者按Ctrl+Enter提交',
@@ -180,7 +184,7 @@ export default {
             get({ data }) {
               return data.enterMethod || "enter";
             },
-            set({ data }, value: boolean) {
+            set({ data }, value: string) {
               data.enterMethod = value;
             }
           }

@@ -31,9 +31,6 @@ export enum TypeEnum {
   ALink = 'a'
 }
 
-export type FzCSSProperties = CSSProperties & {
-  styleEditorUnfold: boolean;
-};
 export interface BtnItem {
   // 唯一标识
   key: string;

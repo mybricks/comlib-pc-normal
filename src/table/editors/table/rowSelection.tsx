@@ -3,7 +3,7 @@ import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constan
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
 import { Schemas, setDataSchema } from '../../schema';
 
-function updateSlot({ data, slot }) {
+export function updateSlot({ data, slot }) {
   if (
     data.useRowSelection &&
     data.selectionType !== RowSelectionTypeEnum.Radio &&

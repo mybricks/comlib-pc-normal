@@ -30,7 +30,8 @@ export default function ({
   outputs,
   parentSlot,
   id,
-  name
+  name,
+  logger
 }: RuntimeParams<Data>) {
   const { edit } = env;
   const [value, setValue] = useState();
@@ -191,10 +192,20 @@ export default function ({
     const hasModifier = e.shiftKey || e.ctrlKey || e.metaKey;
 
     // 判断是否满足提交条件
-    const shouldSubmit = 
-      (enterMethod === "enter" && !hasModifier) || // Enter模式下,没有按修饰键才提交
-      (enterMethod === "enter_with_ctrl" && hasModifier); // Ctrl+Enter模式
-
+    // const shouldSubmit = 
+    //   (enterMethod === "enter" && !hasModifier) || // Enter模式下,没有按修饰键才提交
+    //   (enterMethod === "enter_with_ctrl" && hasModifier); // Ctrl+Enter模式
+    let shouldSubmit = false;
+    if(enterMethod === "enter"){
+      if(!hasModifier){
+        shouldSubmit = true;
+      }
+    }else if(enterMethod === "enter_with_ctrl"||enterMethod === "enter_with_shift"){
+      if(hasModifier){
+        shouldSubmit = true;
+      }
+    } 
+    
     if (shouldSubmit) {
       // 提交操作
       const value = e.target.value;
