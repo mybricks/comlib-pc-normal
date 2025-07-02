@@ -45,84 +45,8 @@ const handleDataColumns = (params) => {
 }
 
 export default {
-  ':root' (rootParams) {
-    return {
-      
-    }
-  },
-  execute(nowData, params) {
-    const { data } = params;
-
-    merge(data, nowData);
-    handleDataColumns({...params, val: data.columns})
-  },
-  createSlot(nowSlot, edtCtx) {
-    const { id, title, type } = nowSlot;
-    const { env, data, inputs, outputs, slot, ...res } = edtCtx;
-
-    if (id === "expandContent") {
-      inputs.add(InputIds.EnableAllExpandedRows, '开启关闭所有展开项', { type: 'boolean' });
-      outputs.add(OutputIds.EnableAllExpandedRows, '开启关闭所有展开项', {
-        type: 'boolean'
-      });
-      inputs.get(InputIds.EnableAllExpandedRows).setRels([OutputIds.EnableAllExpandedRows]);
-      slot.add({ id: SlotIds.EXPAND_CONTENT, title: `展开内容`, type: 'scope' });
-      if (data.expandDataIndex) {
-        slot
-          .get(SlotIds.EXPAND_CONTENT)
-          .inputs.add(InputIds.EXP_ROW_VALUES, '展开数据', Schemas.Object);
-      }
-      slot
-        .get(SlotIds.EXPAND_CONTENT)
-        .inputs.add(InputIds.EXP_COL_VALUES, '当前行数据', Schemas.Object);
-      slot
-        .get(SlotIds.EXPAND_CONTENT)
-        .inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
-      setDataSchema({ data, slot, inputs, outputs, env, ...res });
-    } else if (id === "headerTitle") {
-      slot.add(SlotIds.HEADER_TITLE, title || '标题区插槽');
-    } else if (id === "headerOperation") {
-      slot.add(SlotIds.HEADER_OPERATION, title || '操作区插槽');
-    } else if (id === "rowSelectionOperation") {
-      updateSlot({ data, slot });
-    } else if (id === "summaryColumn") {
-      slot.add({
-        id: 'summaryColumn',
-        title: title || "`自定义总结栏内容`",
-        type: 'scope'
-      });
-    } else {
-      const column = data.columns.find((column) => {
-        return column.contentType === "slotItem"
-      })
-      if (!column) {
-        slot.add({ id, title });
-        return
-      }
-      const slotId = id;
-      slot.add({ id: slotId, title: `${env.i18n(column.title)}-列`, type: 'scope' });
-      if (column.keepDataIndex) {
-        slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
-      }
-      slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
-      slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
-      slot.get(slotId).outputs.add(OutputIds.Edit_Table_Data, '更新行数据', {
-        type: 'object',
-        properties: {
-          index: {
-            type: 'number'
-          },
-          value: {
-            type: 'any'
-          }
-        }
-      });
-      slot.get(slotId).outputs.add(OutputIds.Row_Move_Up, '上移行', Schemas.Number);
-      slot.get(slotId).outputs.add(OutputIds.Row_Move_Down, '下移行', Schemas.Number);
-      slot.get(slotId).outputs.add(OutputIds.Remove_Row, '移除行', Schemas.Number);
-
-      setDataSchema({ data, outputs, inputs, slot, env, ...res });
-    }
+  ':root' () {
+    return {}
   },
   prompts: {
     summary: '数据表格',
@@ -466,39 +390,46 @@ export default interface Data {
  - 操作列插槽内建议使用\`mybricks.normal-pc.${version}toolbar\`组件，通常为横向排布的按钮
     `
   },
-  getNewDSL(dsl, context) {
-    console.log("[getNewDSL]", {
-      dsl,
-      context
-    })
+  getNewDSL(dsl) {
     return dsl;
   },
-  comCreateSlot(...args) {
-    console.log("[comCreateSlot]", {
-      args
+  createSlot(description, context) {
+    const { id, title, type } = description;
+    const { env, data, inputs, outputs, slot, ...res } = context;
+    const column = data.columns.find((column) => {
+      return column.contentType === "slotItem"
     })
+    if (!column) {
+      console.error("[table - ai - createSlot]", "未支持的插槽，请联系开发者", description)
+      return
+    }
+    const slotId = id;
+    slot.add({ id: slotId, title: `${env.i18n(column.title)}-列`, type: 'scope' });
+    if (column.keepDataIndex) {
+      slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+    }
+    slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
+    slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
+    slot.get(slotId).outputs.add(OutputIds.Edit_Table_Data, '更新行数据', {
+      type: 'object',
+      properties: {
+        index: {
+          type: 'number'
+        },
+        value: {
+          type: 'any'
+        }
+      }
+    });
+    slot.get(slotId).outputs.add(OutputIds.Row_Move_Up, '上移行', Schemas.Number);
+    slot.get(slotId).outputs.add(OutputIds.Row_Move_Down, '下移行', Schemas.Number);
+    slot.get(slotId).outputs.add(OutputIds.Remove_Row, '移除行', Schemas.Number);
+
+    setDataSchema({ data, outputs, inputs, slot, env, ...res });
   },
-  comExecute(...args) {
-    console.log("[comExecute]", {
-      args
-    })
-  }
-  // 重构后删除
-  // modifyTptJson: (component) => {
-  //   if (!component.data) {
-  //     component.data = {}
-  //   }
-
-  //   component.data.layout = component.data?.direction === 'row' ? 'horizontal' : 'vertical'
-  //   delete component.data?.direction
-  //   if (component.data.layout === 'vertical') {
-  //     component.data.itemWidth = '100%'
-  //   } else if (component.data.layout === 'horizontal') {
-  //     component.data.isAuto = component.data.wrap ?? true
-  //     delete component.data.wrap
-  //   }
-
-  //   component.data.useLoading = false;
-  //   component.data.loadingTip = '加载中...';
-  // }
+  execute(dsl, context) {
+    const { data } = context;
+    merge(data, dsl.data);
+    handleDataColumns({...context, val: data.columns})
+  },
 }
