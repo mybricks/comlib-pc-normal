@@ -126,7 +126,9 @@ export default {
   },
   prompts: {
     summary: '数据表格',
-    usage: `data数据模型
+    usage: `
+    # data定义
+\`\`\` typescript
 type TformattersValue<I = any, O = any> = {
   formatterName: string,
   nullValueHandling?: boolean,
@@ -137,24 +139,41 @@ type TformattersValue<I = any, O = any> = {
 }
 
 type PaginationData = {
-  total: number; // 总条数
-  text: string; // 说明文字
-  current: number; // 当前页数
-  currentPage: { // 当前页面
-    pageNum: number; // 页码
-    pageSize: number; // 每页条数
+  /** 总条数 */
+  total: number;
+  /** 说明文字 */
+  text: string;
+  /** 当前页数 */
+  current: number;
+  /** 当前页面 */
+  currentPage: {
+    /** 页码 */
+    pageNum: number;
+    /** 每页条数 */
+    pageSize: number;
   };
-  isDynamic: boolean; // 是否支持动态启用/禁用
-  disabled?: boolean; // 是否禁用
-  defaultPageSize: number; // 默认每页条数
-  align: 'flex-start' | 'center' | 'flex-end'; // 位置
-  size: 'default' | 'small' | 'simple'; // 尺寸
-  showSizeChanger?: boolean; // 每页条数配置功能
-  pageSizeOptions?: string[]; // 指定每页可以显示多少条
-  showQuickJumper?: boolean; // 跳转页面功能
-  hideOnSinglePage?: boolean; // 只有一页时隐藏分页器
-  pageSize?: number; // 每页条数
-  useFrontPage?: boolean; // 前端分页
+  /** 是否支持动态启用/禁用 */
+  isDynamic: boolean;
+  /** 是否禁用 */
+  disabled?: boolean;
+  /** 默认每页条数 */
+  defaultPageSize: number;
+  /** 位置 */
+  align: 'flex-start' | 'center' | 'flex-end';
+  /** 尺寸 */
+  size: 'default' | 'small' | 'simple';
+  /** 每页条数配置功能 */
+  showSizeChanger?: boolean;
+  /** 指定每页可以显示多少条 */
+  pageSizeOptions?: string[];
+  /** 跳转页面功能 */
+  showQuickJumper?: boolean;
+  /** 只有一页时隐藏分页器 */
+  hideOnSinglePage?: boolean;
+  /** 每页条数 */
+  pageSize?: number;
+  /** 前端分页 */
+  useFrontPage?: boolean;
 }
 
 enum ContentTypeEnum {
@@ -165,30 +184,34 @@ enum ContentTypeEnum {
   Group = 'group',
   Switch = 'switch'
 }
+
 enum AlignEnum {
   Left = 'left',
   Center = 'center',
   Right = 'right'
 }
+
 enum FixedEnum {
   Left = 'left',
   Right = 'right',
   Default = ''
 }
+
 enum SorterTypeEnum {
   Length = 'length',
   Size = 'size',
   Date = 'date',
   Request = 'request'
 }
+
 interface Sorter {
   enable: boolean;
   type: SorterTypeEnum;
 }
+
 enum FilterTypeEnum {
   Local = 'local',
   Request = 'request',
-
   Multiple = 'multiple',
   Single = 'single'
 }
@@ -205,6 +228,7 @@ interface Filter {
   /** 筛选图标 */
   filterIcon?: string;
 }
+
 enum WidthTypeEnum {
   Auto = 'auto'
 }
@@ -214,13 +238,12 @@ interface IColumn {
   dataIndex: string | string[];
   title: string;
   contentType: ContentTypeEnum;
-
   visible?: boolean;
   width?: number | WidthTypeEnum;
   isAutoWidth?: WidthTypeEnum;
   hasTip?: boolean;
   tip?: string;
-  // 省略展示
+  /** 省略展示 */
   ellipsis?: any;
   sorter?: Sorter;
   filter?: Filter;
@@ -232,12 +255,14 @@ interface IColumn {
   dataSchema?: any;
   formatData?: TformattersValue;
   colMergeScirpt?: string;
-  // 带排序列表头对齐方式
+  /** 带排序列表头对齐方式 */
   sorterAlign?: AlignEnum;
-  template?: string; // 选择哪个列作为模板
+  /** 选择哪个列作为模板 */
+  template?: string;
   enableOnCell?: boolean;
   onCellScript?: string;
-  isRowKey?: boolean; // 是否是rowKey
+  /** 是否是rowKey */
+  isRowKey?: boolean;
 }
 
 enum SizeEnum {
@@ -245,99 +270,94 @@ enum SizeEnum {
   Middle = 'middle',
   Small = 'small'
 }
+
 interface Scroll {
   x: number | boolean;
   y: number | string | undefined;
   scrollToFirstRowOnChange: boolean;
 }
+
 enum RowSelectionPostionEnum {
   TOP = 'top',
   BOTTOM = 'bottom'
 }
+
 enum RowSelectionTypeEnum {
   Radio = 'radio',
   Checkbox = 'checkbox'
 }
+
 enum TableLayoutEnum {
   FixedWidth = 'fixedWidth',
   Fixed = 'fixed',
   Auto = 'auto'
 }
-interface Data {
-  // 数据源唯一标识
-  rowKey?: string;
-  // 数据源
-  dataSource: any[];
 
-  // 列配置
+export default interface Data {
+  /** 数据源唯一标识 */
+  rowKey?: string;
+  /** 数据源 */
+  dataSource: any[];
+  /** 列配置 */
   columns: IColumn[];
   _inicCols: IColumn[];
-  // 是否显示表头
+  /** 是否显示表头 */
   showHeader?: boolean;
-  //显示表格列筛选
+  /** 显示表格列筛选 */
   useColumnSetting?: boolean;
-
-  // 列宽分配规则
+  /** 列宽分配规则 */
   tableLayout?: TableLayoutEnum;
-
-  // 边框
+  /** 边框 */
   bordered: boolean;
-  // 尺寸
+  /** 尺寸 */
   size: SizeEnum;
-  // 固定表头
+  /** 固定表头 */
   fixedHeader: boolean;
   enableStripe: boolean;
-  // 滚动
+  /** 滚动 */
   scroll: Scroll;
-
-  // 开启loading
+  /** 开启loading */
   useLoading: boolean;
-  // loading文案
+  /** loading文案 */
   loadingTip?: string;
-
-  // 使用勾选
+  /** 使用勾选 */
   useRowSelection: boolean;
-  // 点击行触发勾选
+  /** 点击行触发勾选 */
   enableRowClickSelection: boolean;
-  // 勾选类型
+  /** 勾选类型 */
   selectionType: RowSelectionTypeEnum;
-  // 勾选操作区位置
+  /** 勾选操作区位置 */
   rowSelectionPostion?: RowSelectionPostionEnum[];
-  // 勾选限制
+  /** 勾选限制 */
   rowSelectionLimit?: number;
-  // 是否禁止勾选
+  /** 是否禁止勾选 */
   isDisabledScript?: string;
-  // 使用动态设置勾选项
+  /** 使用动态设置勾选项 */
   useSetSelectedRowKeys?: boolean;
-  // 使用动态设置禁用勾选
+  /** 使用动态设置禁用勾选 */
   useSetDisabledRowSelection?: boolean;
   rowSelectionMessage?: string;
-  // 排序参数
+  /** 排序参数 */
   sortParams?: {
     id?: string;
     order?: string;
   };
-  // 筛选参数
+  /** 筛选参数 */
   filterParams: Record<string, string[] | null>;
-
-  // 头部 标题区插槽
+  /** 头部 标题区插槽 */
   useHeaderTitleSlot?: boolean;
-  // 头部 操作区插槽
+  /** 头部 操作区插槽 */
   useHeaderOperationSlot?: boolean;
-
-  // 使用列展开
+  /** 使用列展开 */
   useExpand?: boolean;
   expandDataIndex?: string | string[];
   expandDataSchema?: any;
-
   usePagination?: boolean;
-  // 分页配置。使用paginationConfig的前提是usePagination必须设置为true
+  /** 分页配置。使用paginationConfig的前提是usePagination必须设置为true */
   paginationConfig: PaginationData;
-
-  // 动态设置显示列
+  /** 动态设置显示列 */
   useDynamicColumn?: boolean;
-
-  //动态设置显示表格标题和字段
+  /** 动态设置显示表格标题和字段 */
   useDynamicTitle?: boolean;
   enableRowClick?: boolean;
   enableRowDoubleClick?: boolean;
@@ -348,64 +368,62 @@ interface Data {
   domainModel: {
     entity?: any;
   };
-  // 是否默认展开所有行
+  /** 是否默认展开所有行 */
   defaultExpandAllRows: boolean;
-
-  useSummaryColumn: boolean; // 是否开启总结栏
-  summaryColumnTitle: string; // 总结栏 title
-  summaryCellTitleCol: number; // 总结栏 title col
-  summaryColumnContentType: 'text' | 'slotItem'; // 总结栏内容类型
-  summaryColumnContentSchema: object; // 总结栏内容Schema
+  /** 是否开启总结栏 */
+  useSummaryColumn: boolean;
+  /** 总结栏 title */
+  summaryColumnTitle: string;
+  /** 总结栏 title col */
+  summaryCellTitleCol: number;
+  /** 总结栏内容类型 */
+  summaryColumnContentType: 'text' | 'slotItem';
+  /** 总结栏内容Schema */
+  summaryColumnContentSchema: object;
   enbaleRowMerge?: boolean;
   enableOnRow?: boolean;
   rowMergeConfig?: {
-    // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
+    /** 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行 */
     mergeByField: string;
-    // 返回true，表示对应的列不能合并
+    /** 返回true，表示对应的列不能合并 */
     excludeFields?: string[];
   };
   fixedHeight?: string | number;
-
-  mergeCheckboxColumn?: boolean; // 合并勾选栏
-
-  //是否自定义空状态
+  /** 合并勾选栏 */
+  mergeCheckboxColumn?: boolean;
+  /** 是否自定义空状态 */
   isEmpty: boolean;
-  //自定义描述内容
+  /** 自定义描述内容 */
   description: string;
-  //是否自定义图片
-  //isImage: boolean;
-  //图片地址
+  /** 图片地址 */
   image: string;
   onRowScript: string;
-  enableDynamicChangeCols: boolean; // 动态修改列属性
-
+  /** 动态修改列属性 */
+  enableDynamicChangeCols: boolean;
   /** 表格数据懒加载 */
   lazyLoad: boolean;
   /** 表格筛选默认图标 */
   filterIconDefault?: string;
-
-  // 用于标记唯一key是否升级过了和是否存量升级 undefined 没升级的存量 0 存量升级 1 新的场景
+  /** 用于标记唯一key是否升级过了和是否存量升级 undefined 没升级的存量 0 存量升级 1 新的场景 */
   hasUpdateRowKey?: number;
-
   borderSpacing?: React.CSSProperties['borderSpacing'];
-
   /** 领域模型 */
   _domainModel?: any;
 }
+\`\`\`
 
-slots插槽
-表格列动态插槽，当cloumn的contentType为slotItem时，对应列的slotId，scope类型
-expandContent，展开内容插槽，scope类型
-headerTitle， 标题区插槽
-headerOperation，操作区插槽
-rowSelectionOperation，勾选操作区，scope类型
-summaryColumn，自定义总结栏内容，scope类型
+# slots定义
+| id | type | description |
+|------|--------|--------|
+| data.columns[].slotId | scope | 表格列动态插槽，当 \`data.columns[].contentType === "slotItem"\` 时，对应 \`data.columns[].slotId\` |
+| expandContent | scope | 展开内容插槽，当 \`data.useExpand === true\` 时允许使用 |
+| headerTitle | normal | 标题区插槽，当 \`data.useHeaderTitleSlot === true\` 时允许使用 |
+| headerOperation | normal | 右上角操作区插槽，当 \`data.useHeaderOperationSlot === true\` 时允许使用 |
+| rowSelectionOperation | scope | 勾选操作区插槽，当 \`data.useRowSelection && data.selectionType !== RowSelectionTypeEnum.Radio && data.rowSelectionPostion?.length\` 时允许使用 |
+| summaryColumn | scope | 自定义总结栏内容插槽，当 \`data.useSummaryColumn === true && data.summaryColumnContentType === "slotItem"\` 时允许使用 |
 
-styleAry声明
-表格: .ant-table
-表头: .ant-table-thead
-内容: .ant-table-tbody
-分页: [data-table-pagination]
+# styleAry定义
+无
 
 <examples>
   <!-- 功能问询 -->
@@ -443,26 +461,44 @@ styleAry声明
   </example>
 </examples>
 
-注意：
-1. 修改paginationConfig的前提是将usePagination设置为true
-2. 操作列插槽内建议使用mybricks.normal-pc.${version}toolbar组件，通常为横向排布的按钮
-`
+# 注意
+ - 修改\`data.paginationConfig\`内容的前提是将\`data.usePagination\`设置为true
+ - 操作列插槽内建议使用\`mybricks.normal-pc.${version}toolbar\`组件，通常为横向排布的按钮
+    `
   },
-  modifyTptJson: (component) => {
-    if (!component.data) {
-      component.data = {}
-    }
-
-    component.data.layout = component.data?.direction === 'row' ? 'horizontal' : 'vertical'
-    delete component.data?.direction
-    if (component.data.layout === 'vertical') {
-      component.data.itemWidth = '100%'
-    } else if (component.data.layout === 'horizontal') {
-      component.data.isAuto = component.data.wrap ?? true
-      delete component.data.wrap
-    }
-
-    component.data.useLoading = false;
-    component.data.loadingTip = '加载中...';
+  getNewDSL(dsl, context) {
+    console.log("[getNewDSL]", {
+      dsl,
+      context
+    })
+    return dsl;
+  },
+  comCreateSlot(...args) {
+    console.log("[comCreateSlot]", {
+      args
+    })
+  },
+  comExecute(...args) {
+    console.log("[comExecute]", {
+      args
+    })
   }
+  // 重构后删除
+  // modifyTptJson: (component) => {
+  //   if (!component.data) {
+  //     component.data = {}
+  //   }
+
+  //   component.data.layout = component.data?.direction === 'row' ? 'horizontal' : 'vertical'
+  //   delete component.data?.direction
+  //   if (component.data.layout === 'vertical') {
+  //     component.data.itemWidth = '100%'
+  //   } else if (component.data.layout === 'horizontal') {
+  //     component.data.isAuto = component.data.wrap ?? true
+  //     delete component.data.wrap
+  //   }
+
+  //   component.data.useLoading = false;
+  //   component.data.loadingTip = '加载中...';
+  // }
 }
