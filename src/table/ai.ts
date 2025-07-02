@@ -2,8 +2,7 @@ import merge from "lodash/merge";
 import { WidthTypeEnum } from './types';
 import { setDataSchema, Schemas } from './schema';
 import { setColumns } from './utils';
-import { InputIds, OutputIds, SlotIds } from './constants';
-import { updateSlot } from "./editors/table/rowSelection";
+import { InputIds, OutputIds } from './constants';
 const version = ANTD_VERSION === 4 ? "" : "antd5."
 
 const handleDataColumns = (params) => {
@@ -12,7 +11,6 @@ const handleDataColumns = (params) => {
   for (let item of val) {
     if (item.dataIndex === '') {
       item.dataIndex = item.title;
-      // message.warn(`表格列字段不能为空！`);
     }
 
     // 保证每次只有一个isRowKey是true
@@ -23,7 +21,6 @@ const handleDataColumns = (params) => {
     else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
       // @ts-ignore
       item._renderKey = uuid(); // 新增一个随机的值renderKey刷新防止不更新
-      // message.warn(`必须设置一个唯一key`);
     }
   }
 
@@ -31,11 +28,6 @@ const handleDataColumns = (params) => {
 
   const cols = val.map((item) => ({
     ...item,
-    // width: item.isAutoWidth
-    //   ? WidthTypeEnum.Auto
-    //   : item.width === WidthTypeEnum.Auto
-    //     ? 'auto'
-    //     : Number(item.width),
     width: item.isAutoWidth ? WidthTypeEnum.Auto : Number(item.width) || 140,
     isAutoWidth: undefined,
     isRowKey: data?.rowKey && item?.dataIndex === data?.rowKey
@@ -45,13 +37,10 @@ const handleDataColumns = (params) => {
 }
 
 export default {
-  ':root' () {
-    return {}
-  },
   prompts: {
     summary: '数据表格',
     usage: `
-    # data定义
+# data定义
 \`\`\` typescript
 type TformattersValue<I = any, O = any> = {
   formatterName: string,
@@ -394,7 +383,7 @@ export default interface Data {
     return dsl;
   },
   createSlot(description, context) {
-    const { id, title, type } = description;
+    const { id: slotId } = description;
     const { env, data, inputs, outputs, slot, ...res } = context;
     const column = data.columns.find((column) => {
       return column.contentType === "slotItem"
@@ -403,7 +392,6 @@ export default interface Data {
       console.error("[table - ai - createSlot]", "未支持的插槽，请联系开发者", description)
       return
     }
-    const slotId = id;
     slot.add({ id: slotId, title: `${env.i18n(column.title)}-列`, type: 'scope' });
     if (column.keepDataIndex) {
       slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
