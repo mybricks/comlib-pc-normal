@@ -19,6 +19,8 @@ const handleMerge = (preData, curData) => {
           hidden: false
         }
       }), pre, cur)
+    } else if (key === "actions") {
+      pre.items = pre.items.slice(0, cur.items.length)
     }
     return undefined;
   })
@@ -260,15 +262,17 @@ export default interface Data {
   },
   getNewDSL(dsl) {
     const { data, slots } = dsl;
-    const { content: slotContent } = slots;
+    if (slots) {
+      const { content: slotContent } = slots;
 
-    data.items.forEach((item, index) => {
-      const com = slotContent.comAry[index]
-      if (com) {
-        item.id = com.id
-        item.comName = com.name
-      }
-    })
+      data.items.forEach((item, index) => {
+        const com = slotContent.comAry[index]
+        if (com) {
+          item.id = com.id
+          item.comName = com.name
+        }
+      })
+    }
 
     return dsl;
   },
