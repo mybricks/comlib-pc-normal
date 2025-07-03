@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.post-message",
   "title": "postMessage发送",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "rtType": "js",
   "description": "向父子(iframe)页面发送消息",
   "author": "HuangQiuyun",

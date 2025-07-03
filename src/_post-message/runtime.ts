@@ -17,15 +17,21 @@ export default function (props: RuntimeParams<Data>) {
     inputs['post']((val, relOutputs) => {
       //父页面向子页面传递数据
       if (data.goal === 'subPage' && data.iframeId !== '') {
-        const iFramexDom = envCanvasElement.querySelector(`#${data.iframeId}`)
-        if (iFramexDom) {
-          const iFramex = iFramexDom.contentWindow;
-          iFramexDom.onload = function () {
+        try{
+          const iFramexDom = envCanvasElement.querySelector(`#${data.iframeId}`)
+          if (iFramexDom) {
+            const iFramex = iFramexDom.contentWindow
             iFramex.postMessage(val, '*')
-          };
-          relOutputs["postDone"](val)
-        } else {
-          relOutputs["postDone"](`iframe with id ${data.iframeId} not found`)
+
+            // iFramexDom.onload = function () {
+            //   iFramex.postMessage(val, '*')
+            // };
+            relOutputs["postDone"](val)
+          } else {
+            relOutputs["postDone"](`[错误]未找到iframe(#${data.iframeId})`)
+          }
+        }catch(ex){
+          relOutputs["postDone"](`[错误]${ex.message}`)
         }
       }
 
