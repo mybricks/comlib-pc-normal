@@ -1,7 +1,7 @@
 {
   "title": "postMessage发送",
   "namespace": "mybricks.normal-pc.post-message",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "rtType": "js",
   "description": "向父子(iframe)页面发送消息",
   "author": "HuangQiuyun",

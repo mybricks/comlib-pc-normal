@@ -3,7 +3,7 @@
   "title": "表单容器",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.94",
+  "version": "1.4.96",
   "description": "表单容器",
   "icon": "../../../../src/form-coms/form-container/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -346,6 +346,14 @@
         "type": "object",
         "properties": {}
       }
+    },
+    {
+      "id": "onClickTag",
+      "title": "设置tag",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
     }
   ],
   "_inputs": [
@@ -436,6 +444,17 @@
                 "title": "组件值"
               }
             }
+          }
+        }
+      ],
+      "_outputs": [
+        {
+          "id": "onClickTitleTag",
+          "title": "值初始化",
+          "desc": "表单项初始化时触发",
+          "schema": {
+            "type": "object",
+            "properties": {}
           }
         }
       ]
