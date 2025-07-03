@@ -91,8 +91,8 @@ export default {
         items: [
           {
             catelog: '默认',
-            title: '工具条背景',
-            options: [{ type: 'background' }],
+            title: '工具条',
+            // options: [{ type: 'background' }],
             target: `div.mybricks-toolbar`
           },
           {
