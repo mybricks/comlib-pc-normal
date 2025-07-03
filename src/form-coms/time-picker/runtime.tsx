@@ -13,9 +13,12 @@ import styles from './style.less';
 import { InputIds, OutputIds } from '../types';
 import { runJs } from '../../../package/com-utils';
 
-function isNumber(input) {
-  return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
-}
+const getValidTimeValue = (time: number, step?: number) => {
+  if (!step || step === 1) return time;
+  const mod = time % step;
+  if (mod === 0) return time;
+  else return time + (step - mod);
+};
 
 export default function ({
   data,
@@ -32,6 +35,7 @@ export default function ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+  const [isFocused, setIsFocused] = useState(false);
 
   const validate = useCallback(
     (model, outputRels) => {
@@ -179,13 +183,7 @@ export default function ({
     validateTrigger(parentSlot, { id, name });
   };
 
-  const getDefaultValue = () => {
-    const getValidTimeValue = (time: number, step?: number) => {
-      if (!step || step === 1) return time;
-      const mod = time % step;
-      if (mod === 0) return time;
-      else return time + (step - mod);
-    };
+  const getDefaultValue = useCallback(() => {
     // 注意不能直接设置默认值，要根据设置的步长来进行设置，保证默认值都处于可选中状态
     const { hourStep, minuteStep, secondStep } = data.config;
     const now = moment();
@@ -193,7 +191,14 @@ export default function ({
     const minute = getValidTimeValue(now.minute(), minuteStep);
     const second = getValidTimeValue(now.second(), secondStep);
     return moment(`${hour}:${minute}:${second}`, 'hh:mm:ss');
-  };
+  }, [data.config]);
+
+  const onFocus = useCallback(() => {
+    if (!isFocused) {
+      setValue(getDefaultValue());
+    }
+    setIsFocused(true);
+  }, [isFocused, getDefaultValue]);
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
@@ -208,11 +213,12 @@ export default function ({
             inputReadOnly={data.inputReadOnly}
             allowClear
             showNow={data.showNow}
-            defaultValue={getDefaultValue()}
+            // defaultValue={getDefaultValue()}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
             popupClassName={id + ' ' + styles.timePickerPopup}
             onChange={onChange}
+            onFocus={onFocus}
             disabledTime={() => {
               const res: any = {
                 disabledHours: undefined,

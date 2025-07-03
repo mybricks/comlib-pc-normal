@@ -351,10 +351,7 @@ export default {
                     title: '外边距',
                     catelog: '默认',
                     options: ['margin'],
-                    target: [
-                      `div.ant-col.formAction div.ant-row.ant-form-item`,
-                      `div.ant-col.formAction div.ant-form-item`
-                    ]
+                    target: `div.ant-col.formAction`
                   }
                 ]
               }

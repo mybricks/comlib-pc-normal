@@ -1,12 +1,11 @@
 .checkbox {
   margin-top: 5px;
   margin-bottom: 5px;
-  // :global(.ant-checkbox-wrapper) {
-  //   display: flex;
-  //   .ant-checkbox-wrapper.ant-checkbox-wrapper-in-form-item.ant-checkbox-group-item {
-  //     display: flex;
-  //   }
-  // }
+  :global {
+    .ant-checkbox-disabled + span {
+      color: var(--mb-color-text-tertiary, rgba(0, 0, 0, 0.45));
+    }
+  }
   .expand {
     display: flex;
     justify-content: center;

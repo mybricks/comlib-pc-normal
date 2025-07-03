@@ -230,23 +230,26 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     );
 
   return (
-    <div
-      ref={wrapperRef}
-      className={`mybricks-toolbar ${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
-      style={{
-        justifyContent: data.layout,
-        gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
-        height: '100%'
-      }}
-    >
-      {(data.btnList || []).length > 0 || env.runtime ? (
-        <>
-          {renderBtnList(normalBtnList)}
-          {renderEllipsisList(ellipsisBtnList)}
-        </>
-      ) : (
-        <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
-      )}
+    /** 加上一层div以保证外边距正确应用 */
+    <div>
+      <div
+        ref={wrapperRef}
+        className={`mybricks-toolbar ${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
+        style={{
+          justifyContent: data.layout,
+          gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
+          height: '100%'
+        }}
+      >
+        {(data.btnList || []).length > 0 || env.runtime ? (
+          <>
+            {renderBtnList(normalBtnList)}
+            {renderEllipsisList(ellipsisBtnList)}
+          </>
+        ) : (
+          <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
+        )}
+      </div>
     </div>
   );
 };
