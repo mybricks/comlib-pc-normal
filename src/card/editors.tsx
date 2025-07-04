@@ -21,7 +21,7 @@ const initItems = (data: Data, slot) => {
   };
 };
 
-const setSlotLayout = (slot, val) => {
+export const setSlotLayout = (slot, val) => {
   if (!slot) return;
   if (val.position === 'smart') {
     slot.setLayout('smart');

@@ -30,42 +30,37 @@ const handleMerge = (preData, curData) => {
   })
 }
 
-
 export default {
-  ':root' ({ data }) {
-    return {}
-  },
-  execute(nowData, params) {
-    const { data } = params;
-
-    handleMerge(data, nowData)
-  },
   prompts: {
     summary: '工具条，当有横向排布多个按钮的场景，必须推荐此组件',
-    usage: `data声明
-import { CSSProperties } from 'react';
-
-export enum LocationEnum {
+    usage: `
+# data定义
+\`\`\` typescript
+enum LocationEnum {
   FRONT = 'front',
   BACK = 'back'
 }
-export enum AlignEnum {
+
+enum AlignEnum {
   Unset = 'unset',
   FlexStart = 'flex-start',
   Center = 'center',
   FlexEnd = 'flex-end'
 }
-export enum SizeEnum {
+
+enum SizeEnum {
   Large = 'large',
   Middle = 'middle',
   Small = 'small'
 }
-export enum ShapeEnum {
+
+enum ShapeEnum {
   Default = 'default',
   Circle = 'circle',
   Round = 'round'
 }
-export enum TypeEnum {
+
+enum TypeEnum {
   Default = 'default',
   Primary = 'primary',
   Ghost = 'ghost',
@@ -76,104 +71,96 @@ export enum TypeEnum {
   ALink = 'a'
 }
 
-export interface BtnItem {
-  // 唯一标识
+interface BtnItem {
+  /** 唯一标识 */
   key: string;
-  // 按钮文字
+  /** 按钮文字 */
   text: string;
-  // 动态设置按钮文字
+  /** 动态设置按钮文字 */
   useDynamicText?: boolean;
-  // 动态设置按钮部分样式
+  /** 动态设置按钮部分样式 */
   useDynamicStyle?: boolean;
-
-  // 形状
+  /** 形状 */
   shape?: ShapeEnum;
-  // 大小
+  /** 尺寸 */
   size?: SizeEnum;
   // 样式
-  style: CSSProperties | false;
-  // 按钮类型
+  // style: React.CSSProperties | false;
+  /** 按钮类型 */
   type?: TypeEnum;
-
-  // 使用图标
+  /** 使用图标 */
   useIcon?: boolean;
-  // 图标
+  /** 图标 */
   icon?: string;
-  // 显示文字
+  /** 显示文字 */
   showText?: boolean;
-  // 图标位置
+  /** 图标位置 */
   iconLocation?: LocationEnum;
-  // 图标间距
+  /** 图标间距 */
   iconDistance?: number;
-  //是否图标自定义
+  /** 是否图标自定义 */
   isCustom?: boolean;
-  //自定义图标地址
+  /** 自定义图标地址 */
   src?: string;
-  //图标尺寸
+  /** 图标尺寸 */
   contentSize: [number, number];
-
-  // [已废弃]权限key
-  permissionKey?: string;
-  // 权限信息
-  permission?: ConfigPermission;
-
-  // 动态启用/禁用
+  /** 是否动态启用/禁用按钮，开启会增加启用/禁用按钮的输入输出项 */
   useDynamicDisabled?: boolean;
-  // 动态显示/隐藏
+  /** 是否动态显示/隐藏按钮，开启会增加显示/隐藏按钮的输入输出项 */
   useDynamicHidden?: boolean;
-
-  // 禁用
+  /** 禁用 */
   disabled?: boolean;
-  // 隐藏
+  /** 隐藏 */
   hidden?: boolean;
-
   //触发数据类型
+  /** 输出数据类型 */
   dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
-  //输出值
+  /** 输出值 */
   outVal: any;
-  //外部输入值
+  /** 当dataType为external时，输出的值 */
   inVal: any;
-
-  //是否开启loading
-  loading: boolean;
-  //设置动态加载
+  /** 是否动态设置按钮的loading状态，开启会增加开启loading和关闭loading的输入输出项 */
   useDynamicLoading: boolean;
-
-  // 是否是危险按钮
+  /** 是否是危险按钮 */
   danger?: boolean;
-
-  // 是否插槽
+  /** 是否插槽，注意只能初始化时设置，不允许被修改 */
   isSlot?: boolean;
 }
 
-/**
- * 数据源
- * @param btnList 按钮列表
- * @param layout 对其方式
- * @param spaceSize 间距
- * @param useEllipses 省略
- * @param maxShowNumber 最多显示数量
- */
-export interface Data {
+export default interface Data {
+  /** 按钮列表 */
   btnList: BtnItem[];
+  /** 按钮的对齐方式 */
   layout: AlignEnum;
+  /** 按钮之间的间距 */
   spaceSize: [number, number];
-
+  /** 超出工具条长度的按钮，是否折叠成省略号 */
   useEllipses?: boolean;
+  /** 当useEllipses值为true时，工具条中最多显示的按钮数量，超出数量的按钮将折叠成省略号 */
   maxShowNumber?: number;
-
-  // 工具条整体样式配置
+  /** 全局配置按钮形状 */
   allShape?: ShapeEnum;
+  /** 全局配置按钮尺寸 */
   allSize?: SizeEnum;
+  /** 全局配置按钮类型 */
   allType?: TypeEnum;
+  /** 全局配置按钮为危险按钮 */
   allDanger?: boolean;
 }
+\`\`\`
 
-slots插槽
-动态添加的插槽，当btnList项的isSlot为true时，对应当前项的key
+# slots定义
+| id | type | description |
+|------|--------|--------|
+| data.btnList[].key | normal | 按钮列表项作为插槽，当 \`data.items[].isSlot === true\` 时，对应 \`data.btnList[].key\` |
 
-注意：
-1. 危险按钮不是按钮类型，注意理解区分
+# 注意
+ - 危险按钮不是按钮类型，注意理解区分
 `
-  }
+  },
+  execute(dsl, context) {
+    const { data } = context;
+
+    handleMerge(data, dsl.data);
+  },
 }
