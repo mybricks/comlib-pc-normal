@@ -1,4 +1,5 @@
 export default {
+  ignore: true,
   ':root' ({ data }) {
     return {
       prompts: `你是一名优秀的程序员，根据用户的需求，返回合理的数据

@@ -7,7 +7,7 @@ export default {
     return {}
   },
   prompts: {
-    summary: '表单容器',
+    summary: '表单容器，支持排版、收集、校验数据的表单，仅在中后台场景的查询表单和提交表单中使用，其他场景无需使用',
     usage: `data数据模型
 layoutType: ['Form', 'QueryFilter'] # 表单容器的快捷样式布局，Form适合常见的垂直提交收集信息场景，QueryFilter适合查询表单
 config: {

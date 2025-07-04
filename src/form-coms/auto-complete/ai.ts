@@ -1,4 +1,5 @@
 export default {
+  ignore: true,
   ':root' ({ data }) {
     return {}
   },
@@ -23,6 +24,10 @@ config: {
   "disabled": false
 }
 filterRule: 'value' | 'label' | 'all' = "value"
+
+layout声明
+width: 默认为100%
+height: 不可配置，默认为fit-content (约等于32px)
 
 slots插槽
 无

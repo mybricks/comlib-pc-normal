@@ -17,6 +17,10 @@ eventBubble: boolean = false
 contentBubble: boolean = false
 isItem: boolean = false
 
+layout声明
+width: 默认为100%
+height: 不可配置，默认为fit-content (约等于40px)
+
 slots插槽
 carrier: 自定义内容区内容
 item: 动态选项区内容

@@ -11,14 +11,7 @@ import type { TagProps } from "antd";
 interface AppendBtn extends TagProps {
   text: string
 }
-interface Tag extends TagProps {
-  key: string;
-  icon?: string;
-  content: React.ReactElement | string;
-  checked?: boolean;
-  textColor?: string;
-  borderColor?: string;
-}
+
 align?: 'start' | 'end' | 'center' | 'baseline' = "start"
 direction?: 'horizontal' | 'vertical' = "horizontal"
 wrap?: boolean = true
@@ -27,7 +20,6 @@ tags: Array<Tag> = [
   {
     "key": "tag1",
     "content": "tag",
-    "color": "default"
   }
 ]
 isEllipsis: boolean = false
@@ -46,11 +38,22 @@ appendBtn: AppendBtn = {
 useAppendBtn?: boolean = true
 clickAble: boolean = false
 
+layout声明
+width: 默认为fit-content
+height: 不可配置，默认为fit-content
+
 slots插槽
 无
 
 styleAry声明
 标签: .tag
+  - 默认样式:
+    - color: #000000
+    - backgroundColor: 3FAFAFA
+    - borderWidth: 1px
+    - borderStyle: solid
+    - borderColor: #D9D9D9
+    - borderRadius: 4px
   - 可编辑样式: font、border、background
 标签hover: .hover
   - 可编辑样式: font、border、background

@@ -26,6 +26,10 @@ slots插槽
 schema声明
 form-item
 
+layout声明
+width: 默认为100%
+height: 不可配置，默认为fit-content (约等于32px)
+
 styleAry声明
 表单项: .ant-input-affix-wrapper
 文本: .ant-input

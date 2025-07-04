@@ -32,6 +32,7 @@ const handleMerge = (preData, curData) => {
 
 
 export default {
+  ignore: true,
   ':root' ({ data }) {
     return {}
   },

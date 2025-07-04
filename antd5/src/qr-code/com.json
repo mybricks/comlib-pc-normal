@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/qr-code/editors.ts",
   "upgrade": "../../../src/qr-code/upgrade.ts",
+  "ai": "../../../src/qr-code/ai.ts",
   "inputs": [
     {
       "id": "link",

@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/menu/editor/index.tsx",
   "upgrade": "../../../src/menu/upgrade.ts",
+  "ai": "../../../src/menu/ai.ts",
   "outputs": [
     {
       "id": "click",
