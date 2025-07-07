@@ -32,203 +32,155 @@ export default {
     usage: `
 # data定义
 \`\`\` typescript
-import { FormProps, ButtonProps } from 'antd'
+/**
+ * 标题宽度类型
+ * px - 固定像素
+ * span - 24栅格
+ */
+type LabelWidthType = 'px' | 'span'
 
 interface Action {
+  /** 标题 */
   title: string
-  loading?: boolean
-  isDefault: boolean
+  /** 输出项id，禁止修改 */
   outputId: string
-  type?: ButtonProps['type']
+  /**
+   * 风格
+   * primary - 主按钮
+   * default - 次按钮
+   * dashed - 虚线按钮
+   * link - 链接按钮
+   * text - 文字按钮
+   */
+  type?: 'primary' | 'default' | 'dashed' | 'link' | 'text'
+  /** 唯一key，与outputId相同，禁止修改 */
   key: string
+  /** 是否展示 */
   visible?: boolean
+  /**
+   * 是否是危险按钮样式
+   */
   danger?: boolean
-  permission?: {
-    id: string
-    type?: string
-  },
-  useDynamicHidden: boolean;
-  useDynamicDisabled: boolean;
-  disabled: boolean;
+  /** 是否使用图标 */
   useIcon: boolean;
+  /**
+   * 图标位置
+   * front - 位于文字前
+   * back - 位于文字后
+   */
   iconLocation: 'front' | 'back';
+  /** 来自图标库的图标 */
   icon: string;
+  /** 图标与文字间的距离 */
   iconDistance: number;
 }
 
-interface Actions {
-  items: Action[];
-  widthOption: LabelWidthType;
-  width: number;
-  span: number;
-  visible: boolean;
-  align: 'left' | 'center' | 'right';
-  inlinePadding?: number[]
-}
-
 interface FormItems {
+  /** 添加子组件的组件id，随机字符，保证唯一，禁止修改 */
   id: string;
+  /** 添加子组件的组件name，随机字符，保证唯一，禁止修改 */
   comName: string
+  /** 字段 */
   name: string
+  /** 标题 */
   label: string
+  /** 当宽度模式为span时（widthOption === 'span'），设置宽度占比 */
   span: number
+  /** 是否展示必填样式 */
   required?: boolean
-  colon?: FormItemColonType
-  visible: boolean
-  validateStatus?: string
-  help?: string
+  /**
+   * 展示冒号
+   * true - 展示
+   * false - 隐藏
+   * default - 跟随容器 data.config.colon
+   */
+  colon?: true | false | "default";
+  /** 展示在标题后面的悬浮提示内容 */
   tooltip?: string
-  labelStyle?: {}
-  labelWidthType?: 'custom' | 'default'
-  labelWidth?: number
-  labelAlign?: 'left' | 'right' | 'default'
-  labelAutoWrap?: boolean | 'default'
-  hiddenLabel?: boolean
-  description?: string
-  descriptionStyle?: {}
-  widthOption: LabelWidthType
-  width: number
-  inlineMargin?: number[]
-  slotAfter?: string
-  disabled?: boolean
-  /** 表单项收起时隐藏，不影响提交数据 */
-  hidden?: boolean
-  labelSlot?: string
-  /** 单个表单项，过长配置 */
-  ellipseMode?: 'wrap' | 'ellipse' | 'default'
-}
-
-interface AdditionalItem {
-  id: string;
-  comName: string
-  name: string
-  span: number
-  widthOption: LabelWidthType
-  width: number
-  visible: boolean
-}
-
-type LabelWidthType = 'px' | 'span' | 'flexFull'
-
-interface DomainModel {
-  entity?: any
-  queryFieldRules: QueryFieldRules
-  isQuery?: boolean
-  type?: string
-}
-
-interface QueryFieldRules {
-  [field: string]: {
-    operator: string
-  }
-}
-
-interface MobileFormConfig {
-  /** 默认开启，小尺寸 antd 内置的表单项、标题 的换行样式生效 */
-  enableWidthAdaptive?: boolean
-}
-
-type FormItemColonType = true | false | "default";
-
-export default interface Data {
-  /**
-   * 表单类型 普通表单、查询表单
-   */
-  layoutType: 'Form' | 'QueryFilter'
-  /**
-   * 表单项列表
-   */
-  items: FormItems[]
-  /**
-   * 非表单项列表
-   */
-  additionalItems: AdditionalItem[]
-  /**
-   * 是否作为表单项
-   */
-  isFormItem: boolean
-  /**
-   * 单行列数
-   */
-  formItemColumn: number
-  /**
-   * 启用24栅格布局，启用后，可设置表单项宽度；查询表单使用
-   */
-  enable24Grid?: boolean
-  /**
-   * 布局类型
-   */
-  layout?: 'horizontal' | 'vertical' | 'inline'
-  /**
-   * 操作项
-   */
-  actions: Actions
-  /**
-   * 标题宽度类型
-   */
-  labelWidthType: LabelWidthType
   /**
    * 标题宽度
+   * custom - 自定义
+   * default - 跟随容器
    */
+  labelWidthType?: 'custom' | 'default'
+  /** 当labelWidthType === 'custom'时，配置标题宽度 */
+  labelWidth?: number
+  /** 显示标题 */
+  hiddenLabel?: boolean
+  /** 提示语，展示在表单项下方的提示内容 */
+  description?: string
+  /** 当表单项目布局类型为水平时（data.config.layout === "horizontal"），配置标题的宽度类型 */
+  widthOption: LabelWidthType
+  /** 当宽度模式为span时（widthOption === 'px'），设置宽度值 */
+  width: number
+  /** 
+   * 标题超长配置
+   * ellipse - 超长省略
+   * wrap - 自动换行
+   * default - 默认
+   */
+  ellipseMode?: 'wrap' | 'ellipse' | 'default'
+}
+
+export default interface Data {
+  /** 表单项列表 */
+  items: FormItems[]
+  /** 操作项配置 */
+  actions: {
+    /** 操作项列表 */
+    items: Action[];
+    /** 
+     * 当表单项目布局类型为水平时（data.config.layout === "horizontal"），配置操作的宽度类型
+     * flexFull - 填充剩余宽度
+     */
+    widthOption: LabelWidthType | 'flexFull';
+    /** 当宽度模式为span时（widthOption === 'px'），设置宽度值 */
+    width: number;
+    /** 当宽度模式为span时（widthOption === 'span'），设置宽度占比 */
+    span: number;
+    /** 展示操作项 */
+    visible: boolean;
+    /**
+     * 操作项对齐方式
+     * left - 左对齐
+     * center - 居中对齐
+     * right - 右对齐
+     */
+    align: 'left' | 'center' | 'right';
+    isRight?: false   //  展开/收益按钮位置
+  }
+  /** 当表单项目布局类型为水平时（data.config.layout === "horizontal"），配置标题的宽度类型 */
+  labelWidthType: LabelWidthType
+  /** 当标题的宽度类型为px时（data.labelWidthType === 'px'），配置标题宽度 */
   labelWidth: number
-  /**
-   * 标题宽度占比
-   */
+  /** 当标题的宽度类型为span时（data.labelWidthType === 'span'），配置标题宽度占比 */
   labelCol: number
-  wrapperCol: number
-  /**
-   * 标题是否展示冒号
-   */
-  colon: boolean | undefined
-  /**
-   * 表单原生属性
-   */
-  config: FormProps
-  /**
-   * 移动端配置
-   */
-  mobileConfig: MobileFormConfig
-  /**
-   * 表单项可编辑/只读
-   */
-  isEditable: boolean
-  /**
-   * 合并参数 Schema
-   */
-  paramsSchema: any
-  /**
-   *  提交隐藏表单项
-   */
+  config: {
+    /** 标题是否显示冒号 */
+    colon: boolean
+    /** 
+     * 表单项布局，遵循Antd表单Layout字段特性，默认为 “水平”，水平布局：标题与表单项左右水平分布，标题可配置宽度、垂直布局：标题与表单项垂直上下分布，标题在上方，表单项在下方，标题宽度自适应、内联布局：标题与表单项左右水平分布，标题宽度自适应
+     * horizontal - 水平
+     * vertical - 垂直
+     * inline - 内联
+     */
+    layout: 'horizontal' | 'inline' | 'vertical'
+    /** 尺寸, 全局设置表单项尺寸, 默认是中(middle) */
+    size: 'small' | 'middle' | 'large'
+  }
+  /** 提交隐藏表单项字段，提交时收集被隐藏的表单项字段，默认不收集被隐藏的表单项字段 */
   submitHiddenFields: boolean
-  /**
-   *  隐藏表单项字段是否校验
-   */
+  /** 校验隐藏表单项字段，提交隐藏表单项字段时，是否需要对隐藏字段进行校验，默认为 True 需要校验 */
   validateHiddenFields: boolean
   /**
-   *  绑定的领域模型数据
+   * 标题超长配置
+   * wrap - 自动换行
+   * ellipse - 超长省略
+   * default - 默认
    */
-  domainModel: DomainModel
-  /**
-   * 表单项 24栅格宽度
-   */
-  span?: number
-  /*
-   * 默认状态下是否折叠超出的表单项
-   */
-  defaultCollapsed: boolean
   ellipseMode?: 'wrap' | 'ellipse' | 'default'
-  /** 开启动态设置表单项 */
-  useDynamicItems?: boolean
-  /**  动态设置的依赖的原始模板表单项列表 */
-  originItems: FormItems[]
-  /** 展开文案 */
-  expandText?: string
-  /** 收起文案 */
-  collapsedText?: string
-  /** 列间距 */
+  /** 表单项类型布局为水平或垂直data.config.layout !== 'inline'，每行多列布局下，设置每列表单项之间的距离； */
   columnGap?: number
-  /** 领域模型 */
-  _domainModel?: any;
 }
 \`\`\`
 
@@ -255,18 +207,21 @@ export default interface Data {
     </assistant_response>
   </example>
 </examples>
-    `
+
+# 注意
+ - data.items每一项的id、comName保证唯一，禁止修改
+`
   },
   getNewDSL(dsl) {
     const { data, slots } = dsl;
-    if (slots) {
+    if (slots && data.items) {
       const { content: slotContent } = slots;
 
       data.items.forEach((item, index) => {
         const com = slotContent.comAry[index]
         if (com) {
-          item.id = com.id
-          item.comName = com.name
+          com.id = item.id
+          com.name = item.comName
         }
       })
     }
