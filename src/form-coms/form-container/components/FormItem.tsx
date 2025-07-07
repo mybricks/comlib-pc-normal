@@ -176,7 +176,8 @@ const FormItem = (props) => {
 
   const onClickTag = useCallback(() => {
     if (props.env?.edit) return;
-    props.outputs[outputIds.ON_CLICK_TAG](item);
+    console.log(props.outputs.hasOwnProperty(item.outputId))
+    props.outputs[item.outputId]();
   }, [item]);
 
   const handleHelp = (msg: string)=>{
@@ -192,13 +193,13 @@ const FormItem = (props) => {
         ) : item.labelSlot ? (
           slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
-          <>
-            <label
+          <div className={css.labelWithTag}>
+            <span
               ref={labelRef}
               data-form-item={com.name}
               className={`custom-wrap-classname`}
               onMouseEnter={handleMouseEnter}
-              style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig }}
+              style={{ ...dynamicStyle.labelStyle, whiteSpace, ...ellipseConfig, position:"relative" }}
             >
               <Tooltip
                 placement="topLeft"
@@ -206,7 +207,7 @@ const FormItem = (props) => {
               >
                 {env.i18n(item?.label)}
               </Tooltip>
-            </label>
+            </span>
             {item.titleTag || item.titleTagIcon ? (
               <div onClick={onClickTag} className={css.titleTag}>
                 {TagIcon ? (
@@ -217,7 +218,7 @@ const FormItem = (props) => {
                 <div className={css.title}>{item.titleTag}</div>
               </div>
             ) : null}
-          </>
+          </div>
         )
       }
       className={`${item.labelSlot ? css.customLabel : ''} ${item.description ? 'has-desc' : ''}`}

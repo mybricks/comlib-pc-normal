@@ -50,9 +50,10 @@ export default {
           const nowC = data.nameCount++;
 
           const { name: itemName, label: itemLabel } = configs;
-
+          
           data.items.push({
             id,
+            outputId:id+'tag',
             comName: name,
             schema: com.schema,
             name: itemName || `表单项${nowC}`,

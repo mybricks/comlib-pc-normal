@@ -113,7 +113,7 @@ const formItemEditor = {
         }
       }
     ],
-    items: [
+    items: ({ data, output, inputs, slots }) => [
       {
         title: '显示标题',
         type: 'Switch',
@@ -367,49 +367,76 @@ const formItemEditor = {
           }
         }
       },
-      // {
-      //   title: '标签',
-      //   type: 'Text',
-      //   options: {
-      //     locale: true
-      //   },
-      //   ifVisible({ id, name, data }: EditorResult<Data>) {
-      //     return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-      //   },
-      //   value: {
-      //     get({ id, name, data }: EditorResult<Data>) {
-      //       return getFormItemProp({ data, id, name }, 'titleTag');
-      //     },
-      //     set({ id, name, data }: EditorResult<Data>, value: string) {
-      //       setFormItemProps({ data, id, name }, 'titleTag', value);
-      //     }
-      //   }
-      // },
-      // {
-      //   title: '标签图标',
-      //   type: 'icon',
-      //   options: {
-      //     locale: true
-      //   },
-      //   ifVisible({ id, name, data }: EditorResult<Data>) {
-      //     return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-      //   },
-      //   value: {
-      //     get({ id, name, data }: EditorResult<Data>) {
-      //       return getFormItemProp({ data, id, name }, 'titleTagIcon');
-      //     },
-      //     set({ id, name, data }: EditorResult<Data>, value: string) {
-      //       setFormItemProps({ data, id, name }, 'titleTagIcon', value);
-      //     }
-      //   }
-      // },
-      // {
-      //   title: '点击标签',
-      //   type: '_event',
-      //   options: {
-      //     outputId: 'onClickTag'
-      //   }
-      // },
+      {
+        title: '标签',
+        type: 'Text',
+        options: {
+          locale: true
+        },
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'titleTag');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'titleTag', value);
+          }
+        }
+      },
+      {
+        title: '标签图标',
+        type: 'icon',
+        options: {
+          locale: true
+        },
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'titleTagIcon');
+          },
+          set({ id, name, data, output }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'titleTagIcon', value);
+          }
+        }
+      },
+      {
+        title: '启用点击标签事件',
+        type: 'Switch',
+        value: {
+          get({ id, name }) {
+            const { item, isFormItem } = getFormItem(data, { id, name });
+            return isFormItem ? !!item?.enableTagEvent : false;
+          },
+          set({ id, name }, value) {
+            const { item, isFormItem } = getFormItem(data, { id, name });
+            if (value && !output.get(id + 'tag')) {
+              output.add(id + 'tag', '点击标签', { type: 'any' });
+            }
+            if (!value && output.get(id + 'tag')) {
+              output.remove(id + 'tag');
+            }
+            if (isFormItem && item) item.enableTagEvent = value;
+            if (typeof refreshSchema === 'function') {
+              refreshSchema({ data, inputs, outputs: output, slots });
+            }
+          }
+        }
+      },
+      {
+        title: '点击标签',
+        type: '_event',
+        ifVisible({ id, name }) {
+          const { item, isFormItem } = getFormItem(data, { id, name });
+          return isFormItem ? !!item?.enableTagEvent : false;
+        },
+        options({ id }) {
+          return { outputId: id + 'tag' };
+        }
+      },
       {
         title: '提示语',
         type: 'Text',

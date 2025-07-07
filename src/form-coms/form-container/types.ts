@@ -70,6 +70,8 @@ export interface FormItems {
   ellipseMode?: 'wrap' | 'ellipse' | 'default'
   titleTag?: string
   titleTagIcon: string
+  /** 是否启用点击标签事件 */
+  enableTagEvent?: boolean;
 }
 
 export interface AdditionalItem {
