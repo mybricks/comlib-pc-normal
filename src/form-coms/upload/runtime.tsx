@@ -454,17 +454,16 @@ export default function ({
   };
   // 打开图片预览
   const onpenImgPreview = (src) => {
-    let divEle = document.getElementById('img-preview');
-    if (!divEle) {
-      divEle = document.createElement('div');
-      divEle.setAttribute('id', 'img-preview');
-      document.body.appendChild(divEle);
-    }
-    const onClose = () => {
-      unmountComponentAtNode(divEle as HTMLElement);
-    };
-
-    render(<ImgPreview src={src} onClose={onClose} />, divEle);
+    const root = env.canvasElement || document.body
+    const div = document.createElement('div');
+    root.appendChild(div);
+    render(<ImgPreview
+      src={src}
+      onClose={() => {
+        unmountComponentAtNode(div);
+        root.removeChild(div);
+      }}
+    />, div);
   };
 
   const handleLabelClick = useCallback(
