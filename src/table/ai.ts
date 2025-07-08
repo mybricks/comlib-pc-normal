@@ -42,284 +42,242 @@ export default {
     usage: `
 # data定义
 \`\`\` typescript
-type TformattersValue<I = any, O = any> = {
-  formatterName: string,
-  nullValueHandling?: boolean,
-  nullValueHandlingValue?: string,
-  values: {
-    [key: string]: any
-  }
-}
-
-type PaginationData = {
-  /** 总条数 */
-  total: number;
-  /** 说明文字 */
-  text: string;
-  /** 当前页数 */
-  current: number;
-  /** 当前页面 */
-  currentPage: {
-    /** 页码 */
-    pageNum: number;
-    /** 每页条数 */
-    pageSize: number;
-  };
-  /** 是否支持动态启用/禁用 */
-  isDynamic: boolean;
-  /** 是否禁用 */
-  disabled?: boolean;
-  /** 默认每页条数 */
-  defaultPageSize: number;
-  /** 位置 */
-  align: 'flex-start' | 'center' | 'flex-end';
-  /** 尺寸 */
-  size: 'default' | 'small' | 'simple';
-  /** 每页条数配置功能 */
-  showSizeChanger?: boolean;
-  /** 指定每页可以显示多少条 */
-  pageSizeOptions?: string[];
-  /** 跳转页面功能 */
-  showQuickJumper?: boolean;
-  /** 只有一页时隐藏分页器 */
-  hideOnSinglePage?: boolean;
-  /** 每页条数 */
-  pageSize?: number;
-  /** 前端分页 */
-  useFrontPage?: boolean;
-}
-
-enum ContentTypeEnum {
-  Text = 'text',
-  Image = 'image',
-  Link = 'link',
-  SlotItem = 'slotItem',
-  Group = 'group',
-  Switch = 'switch'
-}
-
-enum AlignEnum {
-  Left = 'left',
-  Center = 'center',
-  Right = 'right'
-}
-
-enum FixedEnum {
-  Left = 'left',
-  Right = 'right',
-  Default = ''
-}
-
-enum SorterTypeEnum {
-  Length = 'length',
-  Size = 'size',
-  Date = 'date',
-  Request = 'request'
-}
-
-interface Sorter {
-  enable: boolean;
-  type: SorterTypeEnum;
-}
-
-enum FilterTypeEnum {
-  Local = 'local',
-  Request = 'request',
-  Multiple = 'multiple',
-  Single = 'single'
-}
-
-interface Filter {
-  enable?: boolean;
-  type?: FilterTypeEnum;
-  options?: any[];
-  hideFilterDropdown?: boolean;
-  filterSource?: FilterTypeEnum;
-  filterType?: FilterTypeEnum;
-  /** 筛选图标继承自表格 */
-  filterIconInherit?: boolean;
-  /** 筛选图标 */
-  filterIcon?: string;
-}
-
-enum WidthTypeEnum {
-  Auto = 'auto'
-}
-
 interface IColumn {
+  /** 唯一随机key */
   key: string;
+  /** 字段名 */
   dataIndex: string | string[];
+  /** 列名 */
   title: string;
-  contentType: ContentTypeEnum;
+  /**
+   * 列内容类型
+   * text - 普通文字
+   * image - 图片
+   * link - 链接
+   * slotItem - 自定义插槽
+   * group - 分组
+   * switch - 开关
+   */
+  contentType: 'text' | 'image' | 'link' | 'slotItem' | 'group' | 'switch';
+  /** 当 contentType !== 'group' 时，配置列是否展示 */
   visible?: boolean;
-  width?: number | WidthTypeEnum;
-  isAutoWidth?: WidthTypeEnum;
+  /** 
+   * 当 contentType !== 'group' 时，配置列宽
+   * number - 固定宽度
+   * auto - 当前表格列将会填充剩余宽度
+   */
+  width?: number | 'auto';
+  /** 显示提示，开启后，支持配置表头提示文案，鼠标hover时可以显示自定义信息，用于添加对表格列的说明。 */
   hasTip?: boolean;
+  /** 当 hasTip === true 时配置提示文案 */
   tip?: string;
-  /** 省略展示 */
+  /** 当 contentType === 'text' 时，配置内容省略展示，开启后，表格的单元格宽度不够时，内部文本内容可以自动省略、不换行、以省略号结尾 */
   ellipsis?: any;
-  sorter?: Sorter;
-  filter?: Filter;
+  /** 当 contentType === 'text' || contentType === 'slotItem' 时，配置排序相关配置 */
+  sorter?: {
+    /** 开启排序 */
+    enable: boolean;
+    /** 
+     * 当 enable === true 时，配置排序方式
+     * length - 字符长度
+     * size - 数字大小
+     * date - 时间前后
+     * request - 自定义
+     */
+    type: 'length' | 'size' | 'date' | 'request';
+  };
+  /** 当 contentType === 'text' || contentType === 'slotItem' 时，配置筛选相关配置 */
+  filter?: {
+    /** 开启删选，开启后，可以对表格数据进行筛选设置。同时会开启表格输入项【获取筛选数据】【设置筛选数据】【设置筛选项】，用户可以通过逻辑连线实现对应筛选需求 */
+    enable?: boolean;
+    /** 
+     * 筛选方式
+     * local - 本地筛选
+     * request - 请求接口
+     */
+    type?: 'local' | 'request';
+    /** 当 enable && filterSource !== 'request' 时配置自定义筛选项，筛选采用【本地定义】方式后，可以设置键值对来自定义筛选项' */
+    options?: any[];
+    /** 当 enable === true 时配置隐藏筛选菜单 */
+    hideFilterDropdown?: boolean;
+    /** 
+     * 筛选项来源，定义筛选项数据的来源方式
+     * local - 本地定义
+     * request - 接口获取
+     */
+    filterSource?: 'local' | 'request';
+    /**
+     * 筛选类型，筛选支持单选或多选
+     * multiple - 多选
+     * single - 单选
+     */
+    filterType?: 'multiple' | 'single';
+    /** 筛选图标继承自表格 */
+    filterIconInherit?: boolean;
+    /** 当 enable && filterIconInherit === false 时配置筛选图标，来自图标库的图标 */
+    filterIcon?: string;
+  };
+  /** 当 contentType === 'slotItem' 时，对应插槽的id，禁止修改 */
   slotId?: string;
-  fixed?: FixedEnum;
+  /** 
+   * 当 contentType !== 'gloup' && data.tableLayout !== 'auto' 时配置固定列，对于列数很多的数据，可以固定前后的列，横向滚动查看其它数据
+   * left - 左固定
+   * right - 右固定
+   * '' - 默认
+   */
+  fixed?: 'left' | 'right' | '';
+  /** 当 contentType === 'group' 时，配置分组的子项 */
   children?: IColumn[];
-  className?: string;
-  keepDataIndex?: boolean;
-  dataSchema?: any;
-  formatData?: TformattersValue;
-  colMergeScirpt?: string;
-  /** 带排序列表头对齐方式 */
-  sorterAlign?: AlignEnum;
-  /** 选择哪个列作为模板 */
-  template?: string;
-  enableOnCell?: boolean;
-  onCellScript?: string;
-  /** 是否是rowKey */
-  isRowKey?: boolean;
+  /**
+   * 当 sorter.enable === true 时配置表头对齐方式
+   * left - 左对齐
+   * center - 居中对齐
+   * right - 右对齐
+   */
+  sorterAlign?: 'left' | 'center' | 'right';
+  /** 配置是否作为rowKey，只能有一项被作为rowKey，设置为true，其余均为false */
+  isRowKey?: boolean; // 是否是rowKey
 }
 
-enum SizeEnum {
-  Default = 'default',
-  Middle = 'middle',
-  Small = 'small'
-}
-
-interface Scroll {
-  x: number | boolean;
-  y: number | string | undefined;
-  scrollToFirstRowOnChange: boolean;
-}
-
-enum RowSelectionPostionEnum {
-  TOP = 'top',
-  BOTTOM = 'bottom'
-}
-
-enum RowSelectionTypeEnum {
-  Radio = 'radio',
-  Checkbox = 'checkbox'
-}
-
-enum TableLayoutEnum {
-  FixedWidth = 'fixedWidth',
-  Fixed = 'fixed',
-  Auto = 'auto'
-}
-
-export default interface Data {
-  /** 数据源唯一标识 */
+export interface Data {
+  /** 数据源唯一标识字段，该标识字段的值需要全局唯一 */
   rowKey?: string;
-  /** 列配置 */
+  /** 表格列配置 */
   columns: IColumn[];
-  _inicCols: IColumn[];
-  /** 是否显示表头 */
+  /** 控制是否显示每列的列名，关闭后，只显示表格内容区域 */
   showHeader?: boolean;
-  /** 显示表格列筛选 */
+  /** 显示列设置按钮，开启后，支持在表格右上角显示列设置按钮，可以在运行时调整展示列的顺序、固定和显隐 */
   useColumnSetting?: boolean;
-  /** 列宽分配规则 */
-  tableLayout?: TableLayoutEnum;
-  /** 边框 */
+  /** 
+   * 列宽分配
+   * fixedWidth - 固定列宽(不自动适配)
+   * fixed - 按比例分配多余宽度
+   * auto - 按比例适配（无横向滚动条）
+   */
+  tableLayout?: 'fixedWidth' | 'fixed' | 'auto';
+  /** 展示表格边框 */
   bordered: boolean;
-  /** 尺寸 */
-  size: SizeEnum;
-  /** 固定表头 */
+  /**
+   * 部分风格、尺寸
+   * default - 默认
+   * middle - 适中布局
+   * small - 紧凑布局
+   */
+  size: 'default' | 'middle' | 'small';
+  /** 当组件 layout.height === 'auto' 时，可以配置固定表头，开启后，表头固定，表格内容支持滚动。可以设置编辑项【可滚动最大高度】和【固定高度】来控制滚动 */
   fixedHeader: boolean;
+  /** 斑马纹，开启后，可以设置表格的单双行采用不同样式 */
   enableStripe: boolean;
-  /** 滚动 */
-  scroll: Scroll;
-  /** 开启loading */
+  /** 滚动相关配置 */
+  scroll: {
+    /** 当 data.fixedHeader && layout.height === 'auto' 时，可配置可滚动最大高度，设置表格的可滚动最大高度，开启固定表头后生效 */
+    y: string | undefined
+    /** 自动滚动到首行，当分页、排序、筛选变化后是否滚动到表格顶部 */
+    scrollToFirstRowOnChange: boolean;
+  };
+  /** 动态设置loading，开启后，支持通过逻辑连线设置表格为loading状态 */
   useLoading: boolean;
-  /** loading文案 */
+  /** 配置loading状态的文案 */
   loadingTip?: string;
-  /** 使用勾选 */
+  /** 开启勾选功能，开启后，可以进行表格勾选相关的操作。同时可以通过逻辑连线连接输入项【获取勾选数据】和【清空勾选】 */
   useRowSelection: boolean;
-  /** 点击行触发勾选 */
+  /** 当 data.useRowSelection === ture 时配置行点击触发勾选，开启后，通过点击表格行就可以触发勾选，不需要额外开启行点击事件 */
   enableRowClickSelection: boolean;
-  /** 勾选类型 */
-  selectionType: RowSelectionTypeEnum;
-  /** 勾选操作区位置 */
-  rowSelectionPostion?: RowSelectionPostionEnum[];
-  /** 勾选限制 */
+  /** 
+   * 当 data.useRowSelection === true 时配置勾选类型
+   * radio - 单选
+   * checkbox - 批量选择
+   */
+  selectionType: 'radio' | 'checkbox';
+  /** 
+   * 当 data.selectionType === 'checkbox' 时配置勾选操作区位置，当数组里同时包含top、bottom时，同时开启顶部和底部的勾选操作区
+   * top - 开启顶部勾选操作区
+   * bottom - 开启底部勾选操作区
+   */
+  rowSelectionPostion?: Array<'top' | 'bottom'>;
+  /** 当 data.selectionType === 'checkbox' 时配置勾选限制，设置最多勾选几行数据，0表示不限制 */
   rowSelectionLimit?: number;
-  /** 是否禁止勾选 */
-  isDisabledScript?: string;
-  /** 使用动态设置勾选项 */
+  /** 使用动态设置勾选项，开启后，可以通过逻辑连线连接输入项【设置勾选项】, 实现动态设置勾选项 */
   useSetSelectedRowKeys?: boolean;
-  /** 使用动态设置禁用勾选 */
+  /** 动态设置禁用勾选，开启后，可以通过逻辑连线连接输入项目【设置禁用勾选】，实现动态设置禁用勾选 */
   useSetDisabledRowSelection?: boolean;
+  /** 勾选文案，例：已选中 {count} 项, 注意 {count}必填，代表勾选数量 */
   rowSelectionMessage?: string;
-  /** 排序参数 */
-  sortParams?: {
-    id?: string;
-    order?: string;
-  };
-  /** 筛选参数 */
-  filterParams: Record<string, string[] | null>;
-  /** 头部 标题区插槽 */
+  /** 开启标题区插槽，开启后，支持在表格左上角自定义内容 */
   useHeaderTitleSlot?: boolean;
-  /** 头部 操作区插槽 */
+  /** 开启头部操作区插槽，开启后，支持在表格右上角自定义内容 */
   useHeaderOperationSlot?: boolean;
-  /** 使用列展开 */
+  /** 表格行展开，开启后，支持自定义行展开内容 */
   useExpand?: boolean;
+  /** 当 data.useExpand === true 时配置展开字段，[非必填]与后端返回数据字段对应 */
   expandDataIndex?: string | string[];
-  expandDataSchema?: any;
+  /** 开启分页模式 */
   usePagination?: boolean;
-  /** 分页配置。使用paginationConfig的前提是usePagination必须设置为true */
-  paginationConfig: PaginationData;
-  /** 动态设置显示列 */
-  useDynamicColumn?: boolean;
-  /** 动态设置显示表格标题和字段 */
-  useDynamicTitle?: boolean;
+  /** 当 data.usePagination === true 时，配置分页器的配置 */
+  paginationConfig: {
+    /** 
+     * 当 data.rowSelectionPostion 数组内没有 bottom 时配置分页器位置
+     * flex-start - 居左
+     * center - 居中
+     * flex-end - 居右
+     */
+    align: 'flex-start' | 'center' | 'flex-end';
+    /** 
+     * 尺寸
+     * default - 正常
+     * small - 小
+     * simple - 简单模式
+     */
+    size: 'default' | 'small' | 'simple'
+    /** 默认每页显示条数 */
+    defaultPageSize: number
+    /** 前端分页，开启后，会自动根据当前页码/条目数分页展示 */
+    useFrontPage: boolean
+    /** 当 data.paginationConfig.size !== 'simple' 时配置前置说明文字，格式：{start}当前页起始条目，{end}当前页结束条目，{total}总条目数 */
+    text: string
+    /** 当 data.paginationConfig.size !== 'simple' 时配置开启跳页功能，打开该功能后，支持直接输入页码跳转(当页数为1时，不显示跳页操作) */
+    showQuickJumper: boolean
+    /** 当 data.paginationConfig.size !== 'simple' 时配置开启条数选择功能，打开该功能后，不再支持页数为1时隐藏功能 */
+    showSizeChanger: boolean
+    /** 当  data.paginationConfig.showSizeChanger && data.paginationConfig.size !== 'simple' 时，配置条数切换器可选的条目数，仅识别正整数 */
+    pageSizeOptions: string[]
+    /** 当 !data.paginationConfig.showSizeChanger || data.paginationConfig.size === 'simple' 时，配置页数为1时隐藏分页器 */
+    hideOnSinglePage: boolean
+  }
+  /** 行点击，开启后，可以响应行点击事件 */
   enableRowClick?: boolean;
+  /** 行双击，开启后，可以响应行双击事件 */
   enableRowDoubleClick?: boolean;
+  /** 单元格点击，开启后，可以响应表格的单元格点击事件 */
   enableCellClick?: boolean;
+  /** 单元格选中状态 */
   enableCellFocus?: boolean;
-  enableRowFocus: boolean;
-  focusRowStyle: any;
-  domainModel: {
-    entity?: any;
-  };
-  /** 是否默认展开所有行 */
+  /** 是否默认展开所有行，开启后，默认展开每一行数据, 支持自定义展开项和树形结构的默认展开 */
   defaultExpandAllRows: boolean;
-  /** 是否开启总结栏 */
+  /** 开启总结栏，开启后，支持设置总结栏 */
   useSummaryColumn: boolean;
-  /** 总结栏 title */
+  /** 总结栏标题 */
   summaryColumnTitle: string;
-  /** 总结栏 title col */
+  /** 总结栏标题列数，标题占据的列数，内容占据剩余所有列 */
   summaryCellTitleCol: number;
-  /** 总结栏内容类型 */
+  /** 
+   * 总结栏标题类型
+   * text - 普通文字
+   * slotItem - 自定义插槽
+   */
   summaryColumnContentType: 'text' | 'slotItem';
-  /** 总结栏内容Schema */
-  summaryColumnContentSchema: object;
-  enbaleRowMerge?: boolean;
-  enableOnRow?: boolean;
-  rowMergeConfig?: {
-    /** 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行 */
-    mergeByField: string;
-    /** 返回true，表示对应的列不能合并 */
-    excludeFields?: string[];
-  };
+  /** 当 data.fixedHeader && layout.height === 'auto' 时配置表格固定高度，设置表格的固定高度，开启固定表头后生效 */
   fixedHeight?: string | number;
-  /** 合并勾选栏 */
-  mergeCheckboxColumn?: boolean;
-  /** 是否自定义空状态 */
+  /** 自定义空白状态 */
   isEmpty: boolean;
-  /** 自定义描述内容 */
+  /** 当 data.isEmpty === true 时配置空状态文案，自定义描述内容 */
   description: string;
-  /** 图片地址 */
+  /** 当 data.isEmpty === true 时配置空状态图片地址 */
   image: string;
-  onRowScript: string;
-  /** 动态修改列属性 */
-  enableDynamicChangeCols: boolean;
-  /** 表格数据懒加载 */
+  /** 开启表格数据懒加载，当表格数据太大时，可以开启此项进行优化。初始只加载部分数据，滚动条接近底部时再多加载一部分数据，直到全部数据加载完（表格需要有滚动条才能生效） */
   lazyLoad: boolean;
-  /** 表格筛选默认图标 */
+  /** 表格筛选默认图标，来自图标库的图标 */
   filterIconDefault?: string;
-  /** 用于标记唯一key是否升级过了和是否存量升级 undefined 没升级的存量 0 存量升级 1 新的场景 */
-  hasUpdateRowKey?: number;
-  borderSpacing?: React.CSSProperties['borderSpacing'];
-  /** 领域模型 */
-  _domainModel?: any;
 }
 \`\`\`
 
