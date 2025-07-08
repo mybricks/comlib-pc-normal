@@ -447,6 +447,9 @@ export default function ({
         preview={{
           src,
           visible,
+          getContainer() {
+            return env?.canvasElement || document.body;
+          },
           onVisibleChange
         }}
       />
@@ -454,16 +457,17 @@ export default function ({
   };
   // 打开图片预览
   const onpenImgPreview = (src) => {
-    const root = env.canvasElement || document.body
-    const div = document.createElement('div');
-    root.appendChild(div);
-    render(<ImgPreview
-      src={src}
-      onClose={() => {
-        unmountComponentAtNode(div);
-        root.removeChild(div);
-      }}
-    />, div);
+    let divEle = document.getElementById('img-preview');
+    if (!divEle) {
+      divEle = document.createElement('div');
+      divEle.setAttribute('id', 'img-preview');
+      document.body.appendChild(divEle);
+    }
+    const onClose = () => {
+      unmountComponentAtNode(divEle as HTMLElement);
+    };
+
+    render(<ImgPreview src={src} onClose={onClose} />, divEle);
   };
 
   const handleLabelClick = useCallback(
