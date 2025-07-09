@@ -1,6 +1,7 @@
 const version = ANTD_VERSION === 4 ? "" : "antd5."
 
 export default {
+  ignore: true,
   ':root' ({ data }) {
     return {}
   },
