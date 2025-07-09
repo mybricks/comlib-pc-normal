@@ -448,8 +448,10 @@ data={{
   modifyTptJson(dsl) {
     dsl.data.columns.forEach((column) => {
       if (column.contentType === "slotItem") {
-        // 与提示词保持统一，见slots插槽定义
+        // 与提示词保持统一，见usage的slots插槽定义
         column.slotId = column.key;
+        // 插槽禁止隐藏
+        column.visible = true;
       }
     })
     return dsl;
