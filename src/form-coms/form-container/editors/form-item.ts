@@ -414,7 +414,7 @@ const formItemEditor = {
           set({ id, name }, value) {
             const { item, isFormItem } = getFormItem(data, { id, name });
             if (value && !output.get(id + 'tag')) {
-              output.add(id + 'tag', '点击标签', { type: 'any' });
+              output.add(id + 'tag', name + '点击标签', { type: 'any' });
             }
             if (!value && output.get(id + 'tag')) {
               output.remove(id + 'tag');
