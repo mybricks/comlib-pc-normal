@@ -165,6 +165,6 @@ export default interface Data {
   execute(dsl, context) {
     const { data } = context;
 
-    handleMerge(data, dsl.data);
+    handleMerge(data, dsl);
   },
 }

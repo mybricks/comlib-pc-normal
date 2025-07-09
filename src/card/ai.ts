@@ -110,7 +110,7 @@ export default interface Data {
   execute(dsl, context) {
     const { data, slots } = context;
 
-    merge(data, dsl.data);
+    merge(data, dsl);
 
     const { slotStyle } = data;
     const slotInstance = slots.get(SlotIds.Body);

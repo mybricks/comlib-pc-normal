@@ -196,7 +196,7 @@ styleAry声明
   execute(dsl, context) {
     const { data } = context;
 
-    handleMerge(data, dsl.data);
+    handleMerge(data, dsl);
   },
   modifyTptJson: (component) => {
     if (!component?.data) {

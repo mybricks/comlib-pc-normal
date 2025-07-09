@@ -442,7 +442,16 @@ data={{
   },
   execute(dsl, context) {
     const { data } = context;
-    merge(data, dsl.data);
+    merge(data, dsl);
     handleDataColumns({...context, val: data.columns})
   },
+  modifyTptJson(dsl) {
+    dsl.data.columns.forEach((column) => {
+      if (column.contentType === "slotItem") {
+        // 与提示词保持统一，见slots插槽定义
+        column.slotId = column.key;
+      }
+    })
+    return dsl;
+  }
 }
