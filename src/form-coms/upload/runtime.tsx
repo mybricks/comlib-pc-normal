@@ -447,6 +447,9 @@ export default function ({
         preview={{
           src,
           visible,
+          getContainer() {
+            return env?.canvasElement || document.body;
+          },
           onVisibleChange
         }}
       />
