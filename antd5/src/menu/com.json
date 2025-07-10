@@ -8,9 +8,9 @@
   "icon": "../../../src/menu/icon.svg",
   "data": "../../../src/menu/data.json",
   "runtime": "./runtime.tsx",
+  "ai": "../../../src/menu/ai.ts",
   "editors": "../../../src/menu/editor/index.tsx",
   "upgrade": "../../../src/menu/upgrade.ts",
-  "ai": "../../../src/menu/ai.ts",
   "outputs": [
     {
       "id": "click",

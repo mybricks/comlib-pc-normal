@@ -182,11 +182,9 @@ const QueryFilter = (props: QueryFilterProps) => {
         }
 
         return (
-          item?.visible && (
-            <Col style={{ display: item?.hidden ? 'none' : 'block' }} key={com.id} {...colProps}>
-              {com.jsx}
-            </Col>
-          )
+          <Col style={{ display: (item?.hidden || item?.visible) ? 'none' : 'block' }} key={com.id} {...colProps}>
+            {com.jsx}
+          </Col>
         );
       }
     });
