@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
 import { Table, Empty, Image, message, Input } from 'antd';
+import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import * as Icons from '@ant-design/icons';
 import ConfigProvider from '../components/ConfigProvider';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
@@ -11,7 +13,7 @@ import {
   SlotIds,
   TEMPLATE_RENDER_KEY,
   DefaultRowKey,
-  DefaultOnRowScript,
+  DefaultOnRowScript
 } from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -47,7 +49,7 @@ import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
 import useDemandDataSource from './hooks/use-demand-data-source';
 import { useConnector } from '../utils/connector';
-import { getColumnsFromSchema } from "./editors";
+import { getColumnsFromSchema } from './editors';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -158,31 +160,41 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
-  const [dataSourceConnector, dataSourceConnectorState] = useConnector({ env, data }, (promise, state) => {
-    if (!state.stop) {
-      setLoading(true);
-      promise.then((dataSource) => {
-        if (!state.stop) {
-          setTableData(dataSource);
-        }
-      }).finally(() => {
-        if (!state.stop) {
-          setLoading(false);
-        }
-      })
+  const [dataSourceConnector, dataSourceConnectorState] = useConnector(
+    { env, data },
+    (promise, state) => {
+      if (!state.stop) {
+        setLoading(true);
+        promise
+          .then((dataSource) => {
+            if (!state.stop) {
+              setTableData(dataSource);
+            }
+          })
+          .finally(() => {
+            if (!state.stop) {
+              setLoading(false);
+            }
+          });
+      }
     }
-  })
+  );
 
   const domainModelChange = useMemo(() => {
     if (env.runtime && data._domainModel?.dataSource && env.onDomainModelChange) {
       return env.onDomainModelChange(data._domainModel?.dataSource, (params) => {
         const domainModel = params.serviceAry.find((service) => {
-          const schema = service.response?.properties?.data || service.responses?.properties?.data
-          if (schema?.type === 'array' && schema.items?.type === 'object' && schema.items.properties && service.method === "get") {
+          const schema = service.response?.properties?.data || service.responses?.properties?.data;
+          if (
+            schema?.type === 'array' &&
+            schema.items?.type === 'object' &&
+            schema.items.properties &&
+            service.method === 'get'
+          ) {
             return true;
           }
           return false;
-        })
+        });
 
         if (domainModel) {
           const { defId, id, title } = params;
@@ -190,104 +202,116 @@ export default function (props: RuntimeParams<Data>) {
             defId,
             id,
             title,
-            service: domainModel,
-          }
-          const schema = domainModel.response?.properties?.data || domainModel.responses?.properties?.data;
+            service: domainModel
+          };
+          const schema =
+            domainModel.response?.properties?.data || domainModel.responses?.properties?.data;
           const schemaColumns = getColumnsFromSchema(schema, {
             defaultWidth: 'auto'
           });
-          const columns = data.columns.filter((column) => {
-            return column.contentType === "slotItem";
-          }).map((column) => {
-            if (column.dataIndex.endsWith(`_${column.contentType}`)) {
-              return column;
-            }
-            return {
-              ...column,
-              dataIndex: column.key + `_${column.contentType}`
-            }
-          });
+          const columns = data.columns
+            .filter((column) => {
+              return column.contentType === 'slotItem';
+            })
+            .map((column) => {
+              if (column.dataIndex.endsWith(`_${column.contentType}`)) {
+                return column;
+              }
+              return {
+                ...column,
+                dataIndex: column.key + `_${column.contentType}`
+              };
+            });
           const customIDMap: Record<string, boolean> = columns.reduce((pre, cur) => {
-            pre[cur.dataIndex] = true
+            pre[cur.dataIndex] = true;
             return pre;
           }, {});
-  
-          data.columns = schemaColumns.filter((schemaColumn) => {
-            return !customIDMap[schemaColumn.dataIndex]
-          }).concat(columns);
-  
+
+          data.columns = schemaColumns
+            .filter((schemaColumn) => {
+              return !customIDMap[schemaColumn.dataIndex];
+            })
+            .concat(columns);
+
           if (data.columns.length) {
             data.rowKey = data.columns[0].dataIndex as string;
             data.columns[0].isRowKey = true;
           }
           data[`input${InputIds.SET_DATA_SOURCE}Schema`] = schema;
         } else {
-          console.warn("[数据表格] 领域模型服务类型不匹配", params);
+          console.warn('[数据表格] 领域模型服务类型不匹配', params);
         }
-      })
+      });
     }
-  }, [])
+  }, []);
 
   const domainDataSource = useMemo(() => {
     if (env.runtime && data._domainModel?.dataSource && env.callDomainModel) {
       const { usePagination } = data;
-      return env.callDomainModel({
-        // 模型信息
-        model: data._domainModel.dataSource,
-        // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
-        params: usePagination ? {
-          pageSize: data.paginationConfig.currentPage.pageSize,
-          page: data.paginationConfig.currentPage.pageNum
-        } : {},
-        configs: {
-          // 注册，当该模型更新时，会主动推送数据
-          callType: "register",
-        },
-
-      }, (error, loading, output) => {
-        if (loading) {
-          // [TODO] 加载中
-          setLoading(loading)
-          return
-        }
-        setLoading(loading)
-        if (error) {
-          console.error(error);
-        } else {
-          const { data, meta } = output;
+      return env.callDomainModel(
+        {
+          // 模型信息
+          model: data._domainModel.dataSource,
           // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
-          if (usePagination) {
-            setTableData({
-              dataSource: data,
-              total: meta.count,
-              pageNum: meta.page,
-              pageSize: meta.pageSize
-            });
+          params: usePagination
+            ? {
+              pageSize: data.paginationConfig.currentPage.pageSize,
+              page: data.paginationConfig.currentPage.pageNum
+            }
+            : {},
+          configs: {
+            // 注册，当该模型更新时，会主动推送数据
+            callType: 'register'
+          }
+        },
+        (error, loading, output) => {
+          if (loading) {
+            // [TODO] 加载中
+            setLoading(loading);
+            return;
+          }
+          setLoading(loading);
+          if (error) {
+            console.error(error);
           } else {
-            setTableData(data);
+            const { data, meta } = output;
+            // [TODO] 后续根据schema匹配选择领域模型不需要在这里做转换
+            if (usePagination) {
+              setTableData({
+                dataSource: data,
+                total: meta.count,
+                pageNum: meta.page,
+                pageSize: meta.pageSize
+              });
+            } else {
+              setTableData(data);
+            }
           }
         }
-      });
+      );
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (env.runtime) {
       return () => {
         domainModelChange?.destroy?.();
         domainDataSource?.destroy?.();
-      }
+      };
     }
-  }, [])
+  }, []);
 
-  const onPaginationChange = useCallback(({ pageSize, pageNum }) => {
-    if (env.runtime && domainDataSource) {
-      domainDataSource.call({
-        pageSize,
-        page: pageNum
-      })
-    }
-  }, [domainDataSource])
+  const onPaginationChange = useCallback(
+    ({ pageSize, pageNum }) => {
+      if (env.runtime && domainDataSource) {
+        domainDataSource.call({
+          pageSize,
+          page: pageNum
+        });
+      }
+    },
+    [domainDataSource]
+  );
 
   useEffect(() => {
     // 如果选了领域模型，prototype模式就不mock了
@@ -410,12 +434,12 @@ export default function (props: RuntimeParams<Data>) {
           handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
 
-        // 总结栏显示/隐藏
-        inputs[InputIds.SET_SUMMARY_COLUMN] &&
+      // 总结栏显示/隐藏
+      inputs[InputIds.SET_SUMMARY_COLUMN] &&
         inputs[InputIds.SET_SUMMARY_COLUMN]((val: any, relOutputs: any) => {
           data.useSummaryColumn = val;
           relOutputs[OutputIds.SET_SHOW_SUMMARY_COLUMN](data.useSummaryColumn);
-        });  
+        });
 
       // 总结栏数据
       inputs[InputIds.SUMMARY_COLUMN] &&
@@ -472,8 +496,8 @@ export default function (props: RuntimeParams<Data>) {
                   item[key] = templateCol[key];
                 }
               });
-              item.key = uuid()
-              item._id = uuid()
+              item.key = uuid();
+              item._id = uuid();
               return item;
             } else {
               return item;
@@ -555,7 +579,7 @@ export default function (props: RuntimeParams<Data>) {
             ...value
           };
           return newDataSource;
-        })
+        });
         // if (index > dataSource.length) return dataSource;
         // const newDataSource = [...dataSource];
         // const tempValue = newDataSource[index];
@@ -580,8 +604,8 @@ export default function (props: RuntimeParams<Data>) {
           [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
           return newData;
         }
-        return dataSource
-      })
+        return dataSource;
+      });
 
       // if (targetIndex >= 0 && targetIndex < dataSource.length) {
       //   const newData = [...dataSource];
@@ -599,7 +623,7 @@ export default function (props: RuntimeParams<Data>) {
       setDataSource((dataSource) => {
         const newData = dataSource.filter((_, i) => i !== index);
         return newData;
-      })
+      });
       // const newData = dataSource.filter((_, i) => i !== index);
       // setDataSource(newData);
     },
@@ -690,7 +714,7 @@ export default function (props: RuntimeParams<Data>) {
                   if (found) return found;
                 }
               }
-            }
+            };
             setTimeout(() => {
               const newSelectedRowKeys: string[] = [];
               const newSelectedRows: any[] = [];
@@ -723,7 +747,7 @@ export default function (props: RuntimeParams<Data>) {
           inputs[InputIds.SET_DISABLED_ROW_SELECTION]((val: any, relOutputs: any) => {
             setDisabledRowSelection(!!val);
             handleOutputFn(relOutputs, OutputIds.SET_DISABLED_ROW_SELECTION, val);
-          })
+          });
       }
       // 设置选中行序号
       if (data.enableRowFocus) {
@@ -990,10 +1014,10 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     for (let c of data.columns) {
       if (typeof c?.isDragging === 'boolean') {
-        c.isDragging = false
+        c.isDragging = false;
       }
     }
-  }, [])
+  }, []);
 
   const renderColumns = () => {
     return ColumnsTitleRender({
@@ -1021,7 +1045,7 @@ export default function (props: RuntimeParams<Data>) {
       }
     }, [JSON.stringify(data.columns)]);
   }
-  
+
   // const renderColumnsWhenEdit = useCallback(() => {
   //   return renderColumns();
   // }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
@@ -1238,7 +1262,9 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // 设计态数据mock
-  const defaultDataSource = dataSourceConnector ? demandDataSource : getDefaultDataSource(data.columns, rowKey, env);
+  const defaultDataSource = dataSourceConnector
+    ? demandDataSource
+    : getDefaultDataSource(data.columns, rowKey, env);
 
   const setCurrentSelectRows = (_record) => {
     const targetRowKeyVal = _record[rowKey];
@@ -1415,7 +1441,11 @@ export default function (props: RuntimeParams<Data>) {
             />
             {data.columns?.filter(({ visible }) => visible)?.length ? (
               <Table
-                className={data.showHeader === false ? `mybricks-table ${css.noHeaderTable}` : "mybricks-table"}
+                className={
+                  data.showHeader === false
+                    ? `mybricks-table ${css.noHeaderTable}`
+                    : 'mybricks-table'
+                }
                 style={{
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
@@ -1483,9 +1513,42 @@ export default function (props: RuntimeParams<Data>) {
                           expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
                           setExpandedRowKeys([...expandedRowKeys]);
                         }
+                      },
+                      expandIcon: ({ expanded, onExpand, record }) => {
+                        const data = props.data || {};
+                        if (data?.collapseIconDefault && data?.expandIconDefault) {
+                          const CollapseIcon = Icons[data?.collapseIconDefault];
+                          const ExpandIcon = Icons[data?.expandIconDefault];
+                          return expanded ? (
+                            <CollapseIcon onClick={(e) => onExpand(record, e)} />
+                          ) : (
+                            <ExpandIcon onClick={(e) => onExpand(record, e)} />
+                          )
+                        }
+                      }
+                    } : {
+                      expandIcon: ({ expanded, onExpand, record }) => {
+                        if (record['children']?.length) {
+                          const data = props.data || {};
+                          if (data?.collapseIconDefault && data?.expandIconDefault) {
+                            const CollapseIcon = Icons[data?.collapseIconDefault];
+                            const ExpandIcon = Icons[data?.expandIconDefault];
+                            return expanded ? (
+                              <CollapseIcon onClick={(e) => onExpand(record, e)} />
+                            ) : (
+                              <ExpandIcon onClick={(e) => onExpand(record, e)} />
+                            )
+                          }
+                          return expanded ? (
+                            <MinusSquareOutlined onClick={(e) => onExpand(record, e)} />
+                          ) : (
+                            <PlusSquareOutlined onClick={(e) => onExpand(record, e)} />
+                          );
+                        } else {
+                          return undefined
+                        }
                       }
                     }
-                    : undefined
                 }
                 onChange={onChange}
                 tableLayout={

@@ -1,5 +1,5 @@
 import { InputIds, OutputIds, SlotIds } from '../../constants';
-import { Data } from '../../types';
+import { Data, IconEnum } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setDataSchema } from '../../schema';
 import Tree from '../../../components/editorRender/fieldSelect';
 
@@ -41,6 +41,28 @@ const expandEditor = [
               outputs.remove(OutputIds.EnableAllExpandedRows);
             }
             data.useExpand = value;
+          }
+        }
+      }, {
+        title: '默认收起图标',
+        type: 'Icon',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.collapseIconDefault;
+          },
+          set({ data }: EditorResult<Data>, value: IconEnum) {
+            data.collapseIconDefault = value;
+          }
+        }
+      }, {
+        title: '默认展开图标',
+        type: 'Icon',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.expandIconDefault;
+          },
+          set({ data }: EditorResult<Data>, value: IconEnum) {
+            data.expandIconDefault = value;
           }
         }
       },

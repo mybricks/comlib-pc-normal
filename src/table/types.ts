@@ -38,6 +38,7 @@ export enum FilterTypeEnum {
 }
 
 export type FilterIconEnum = string;
+export type IconEnum = string;
 
 export interface Filter {
   enable?: boolean;
@@ -203,6 +204,10 @@ export interface Data {
   };
   // 是否默认展开所有行
   defaultExpandAllRows: boolean;
+   /** 表格展开默认图标 */
+  expandIconDefault?: IconEnum;
+  /** 表格收起默认图标 */
+  collapseIconDefault?: IconEnum;
 
   useSummaryColumn: boolean; // 是否开启总结栏
   summaryColumnTitle: string; // 总结栏 title
