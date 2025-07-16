@@ -422,6 +422,11 @@ export default function Runtime({
     );
   };
 
+  //自定义的选择框后缀图标, 多选模式下必须同时设置 showArrow 为 true
+  const SuffixIconComponent = data?.suffixIcon && Icons[data.suffixIcon];
+  const suffixIcon = SuffixIconComponent ? <SuffixIconComponent /> : <Icons.DownOutlined />;
+   
+
   return (
     <div ref={wrapperRef} className={`${css.select} ${color ? css.selectColor : ''} ${ANTD_VERSION === 5 ? css.antd5Select : ''}`}>
       {data.isEditable ? (
@@ -431,6 +436,7 @@ export default function Runtime({
           placeholder={env.i18n(data.config.placeholder)}
           showSearch={data.config.showSearch}
           showArrow={data.config.showArrow}
+          suffixIcon={suffixIcon}
           treeDefaultExpandAll={env.design ? true : void 0}
           treeExpandedKeys={expandedKeys}
           onTreeExpand={onExpand}

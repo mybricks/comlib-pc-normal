@@ -46,6 +46,19 @@ const items = [
     }
   },
   {
+    title: '自定义的选择框后缀图标',
+    type: 'Icon',
+    description: '选择图标',
+    value: {
+      get({ data }) {
+        return data.suffixIcon;
+      },
+      set({ data }, value: boolean) {
+        data.suffixIcon = value;
+      }
+    }
+  },
+  {
     title: '下拉菜单和选择器同宽',
     type: 'switch',
     value: {

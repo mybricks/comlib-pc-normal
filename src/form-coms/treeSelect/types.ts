@@ -27,6 +27,7 @@ export interface Data {
   isEditable: boolean
   /** @description 1.2.13 是否使用搜索事件 */
   customOnSearch: boolean;
+  suffixIcon: string;
 }
 
 export type IconSrcType = false | 'custom' | 'inner';

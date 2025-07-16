@@ -15,6 +15,7 @@
     "dropdownMatchSelectWidth": true,
     "size": "middle"
   },
+  "suffixIcon": "DownOutlined",
   "useLoadData": false,
   "labelFieldName": "",
   "valueFieldName": "",
