@@ -25,5 +25,6 @@
   "valueFieldName": "",
   "disabledFieldName": "",
   "checkedFieldName": "",
-  "customField": false
+  "customField": false,
+  "suffixIcon": "DownOutlined"
 }
