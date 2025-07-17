@@ -48,7 +48,7 @@ const QueryFilter = (props: QueryFilterProps) => {
     outputs,
     dynamicEnableOrDisabledRef
   } = props;
-  const { align, inlinePadding } = data.actions;
+  const { align, inlinePadding, visible: actionsVisible } = data.actions;
 
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
 
@@ -161,7 +161,7 @@ const QueryFilter = (props: QueryFilterProps) => {
           firstRowFull = span === 24;
         }
 
-        if (collapsed) {
+        if (actionsVisible && collapsed) {
           hidden = (firstRowFull || idx >= 24 / span - 1) && !!idx;
         }
 
@@ -235,7 +235,7 @@ const QueryFilter = (props: QueryFilterProps) => {
           firstRowFull = span === 24;
         }
 
-        if (collapsed) {
+        if (actionsVisible && collapsed) {
           hidden = (firstRowFull || idx >= 24 / span - 1) && !!idx;
         }
 
