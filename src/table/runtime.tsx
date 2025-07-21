@@ -1073,6 +1073,7 @@ export default function (props: RuntimeParams<Data>) {
       ? selectedRowKeys.filter((key) => dataSourceKeysSet.has(key))
       : selectedRowKeys,
     preserveSelectedRowKeys: true,
+    checkStrictly: false,
     onChange: (SelectedRowKeys: any[], SelectedRows: any[], info: { type: string }) => {
       /** 兼容懒加载场景下的全选、全不选逻辑 start */
       if (data.lazyLoad) {
@@ -1111,6 +1112,7 @@ export default function (props: RuntimeParams<Data>) {
         }
 
         SelectedRows = mergeAndFilterRows(SelectedRowKeys);
+        console.log(SelectedRows);
       }
       /** 兼容懒加载场景下的全选、全不选逻辑 end */
 

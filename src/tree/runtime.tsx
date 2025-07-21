@@ -18,12 +18,13 @@ import {
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
 import TreeNode from './Components/TreeNode/index';
+import FormatTreeData from './Components/TreeNode/MenuTreeNode';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import css from './style.less';
 import useParentHeight from './hooks/use-parent-height';
-import { edit } from 'src/form-coms/code/CodeLocal/ace-pkg/ace';
 import cx from 'classnames';
+const { DirectoryTree } = Tree
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, style, inputs, outputs, onError, logger, title, slots } = props;
@@ -723,6 +724,9 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   const treeWithHeight = (height?) => {
+    if(data.useMenuMode) {
+      return menuTreeRender(height)
+    }
     return (
       <Tree
         checkable={!!data.checkable}
@@ -768,6 +772,53 @@ export default function (props: RuntimeParams<Data>) {
       </Tree>
     );
   };
+
+  const menuTreeRender = (height?)=>{
+    return  <DirectoryTree
+        checkable={!!data.checkable}
+        draggable={
+          data.draggable
+            ? (node) => {
+                return node['data-draggable'];
+              }
+            : false
+        }
+        height={height}
+        ref={treeRef}
+        rootStyle={
+          !(style.height === 'fit-content' && !data.scrollHeight) ? { minHeight: '100%' } : {}
+        }
+        treeData={FormatTreeData({
+          props,
+          fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+          setExpandedKeys,
+          treeData: data.treeData || [],
+          filteredKeys,
+          depth: 0,
+          parent: { key: rootKey }
+        })} 
+        allowDrop={allowDrop}
+        loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
+        loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
+        showLine={data.showLine}
+        checkStrictly={data.checkStrictly}
+        onExpand={onExpand}
+        expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
+        autoExpandParent={autoExpandParent}
+        onCheck={onCheck}
+        checkedKeys={checkedKeys}
+        defaultExpandAll={data.defaultExpandAll}
+        defaultCheckedKeys={data.checkedKeys}
+        selectedKeys={selectedKeys}
+        onSelect={onSelect}
+        onDrop={onDrop}
+        onMouseLeave={onMouseLeave}
+        blockNode
+      >
+      </DirectoryTree>
+  }
+
+  
 
   return (
     <div

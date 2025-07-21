@@ -167,6 +167,8 @@ export interface Data {
   popPlacement?: string
   /** @description 1.0.67 动态禁用Hover面板表达式 */
   disabledHoverScript?: string
+  // 
+  useMenuMode?: boolean
 }
 
 export interface TreeData {
