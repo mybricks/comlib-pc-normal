@@ -24,6 +24,7 @@ export interface Data {
   outputValueType: 'value' | 'labelInValue' | 'option';
   validateTrigger: string[];
   isEditable: boolean;
+  suffixIcon: string;
   resetOptionsWhenEmptySearch: boolean;
   /**@description v1.1.17 选项后置插槽 */
   slotAfterOption?: string;

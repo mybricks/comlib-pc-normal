@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Cascader, CascaderProps, message } from 'antd';
+import * as Icons from '@ant-design/icons';
 import type { FieldNames } from 'rc-cascader';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -22,6 +23,7 @@ export interface Data {
   isEditable: boolean;
   fieldNames: FieldNames;
   mount?: string;
+  suffixIcon: string;
   useLoadData: boolean;
   loadDataOnce: boolean;
 }
@@ -258,6 +260,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
+  const SuffixIconComponent = data?.suffixIcon && Icons[data.suffixIcon];
+  const suffixIcon = SuffixIconComponent ? <SuffixIconComponent /> : <Icons.DownOutlined />;
+
   return (
     <div className={`${css.cascader} ${ANTD_VERSION === 5 ? css.antd5Cascader : ''}`}>
       {data.isEditable ? (
@@ -269,6 +274,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           placeholder={env.i18n(data.config.placeholder)}
           multiple={data.isMultiple}
           onChange={onChange}
+          suffixIcon={suffixIcon}
           open={env.design ? true : void 0}
           dropdownClassName={id}
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}

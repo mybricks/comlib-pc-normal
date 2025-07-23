@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Form, Col, Button, Space } from 'antd';
+import * as Icons from '@ant-design/icons';
 import { Data } from '../../types';
 import styles from '../../styles.less';
 import { unitConversion } from '../../../../utils';
@@ -315,11 +316,17 @@ const QueryFilter = (props: QueryFilterProps) => {
                   return null;
                 }
 
+                let Icon = null;
+                if(item.useIcon && item.icon && Icons[item.icon]) {
+                  Icon = Icons[item.icon].render();
+                }
+
                 return (
                   <Button
                     data-form-actions-item={item.key}
                     key={item.key}
                     type={item.type}
+                    icon={Icon}
                     loading={item.loading}
                     danger={item?.danger}
                     disabled={item.disabled || data.config.disabled}

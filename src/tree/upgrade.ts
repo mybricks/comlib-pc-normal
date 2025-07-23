@@ -662,5 +662,11 @@ export default function ({ data, style, input, output, slot }: UpgradeParams<Dat
   }
   //=========== 1.0.81 end ===============
 
+  //=========== 1.0.92 ===============
+  if(!Object.hasOwn(data, "useMenuMode")){
+    data.useMenuMode = false
+  }
+  //=========== 1.0.92 end ===============
+
   return true;
 }

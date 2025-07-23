@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Select, Spin } from 'antd';
+import * as Icons from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
@@ -125,29 +126,29 @@ export default function Runtime({
       const fieldNames = getFieldNames(data);
       const newOptions = data.customField
         ? ds.map((item) => {
-            return {
-              ...(fieldNames.value in item
-                ? {
-                    value: item[fieldNames.value]
-                  }
-                : {}),
-              ...(fieldNames.label in item
-                ? {
-                    label: item[fieldNames.label]
-                  }
-                : {}),
-              ...(fieldNames.disabled in item
-                ? {
-                    disabled: item[fieldNames.disabled]
-                  }
-                : {}),
-              ...(fieldNames.checked in item
-                ? {
-                    checked: item[fieldNames.checked]
-                  }
-                : {})
-            };
-          })
+          return {
+            ...(fieldNames.value in item
+              ? {
+                value: item[fieldNames.value]
+              }
+              : {}),
+            ...(fieldNames.label in item
+              ? {
+                label: item[fieldNames.label]
+              }
+              : {}),
+            ...(fieldNames.disabled in item
+              ? {
+                disabled: item[fieldNames.disabled]
+              }
+              : {}),
+            ...(fieldNames.checked in item
+              ? {
+                checked: item[fieldNames.checked]
+              }
+              : {})
+          };
+        })
         : ds;
       if (env.runtime) {
         data.config.options = [...newOptions];
@@ -505,6 +506,10 @@ export default function Runtime({
     return env?.canvasElement || document.body;
   };
 
+  //自定义的选择框后缀图标
+  const SuffixIconComponent = data?.suffixIcon && Icons[data.suffixIcon];
+  const suffixIcon = SuffixIconComponent ? <SuffixIconComponent /> : <Icons.DownOutlined />;
+
   return (
     <div className={`${css.select} ${color ? css.selectColor : ''} ${ANTD_VERSION === 5 ? css.antd5Select : ''}`} ref={ref} id="area">
       {data.isEditable ? (
@@ -520,6 +525,7 @@ export default function Runtime({
           getPopupContainer={(triggerNode: HTMLElement) => getPopContainer(triggerNode)}
           maxTagCount={data.maxTagCount}
           dropdownClassName={id}
+          suffixIcon={suffixIcon}
           listHeight={data.maxHeight ? Number(data.maxHeight) : void 0}
           placement={data.placement || 'bottomLeft'}
           optionLabelProp={'label'}

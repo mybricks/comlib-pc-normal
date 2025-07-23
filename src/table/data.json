@@ -67,6 +67,8 @@
   "isEmpty": false,
   "description": "暂无数据",
   "enableOnRow": false,
+  "expandIconDefault": "MinusSquareOutlined",
+  "collapseIconDefault": "PlusSquareOutlined",
   "onRowScript": "",
   "lazyLoad": false,
   "filterIconDefault": "FilterFilled",

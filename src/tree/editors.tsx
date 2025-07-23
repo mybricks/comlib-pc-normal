@@ -54,6 +54,18 @@ export default {
           }
         }
       },
+      {
+        title: '目录模式',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.useMenuMode;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.useMenuMode = value;
+          }
+        }
+      },
       /**
        * v1.0.64已废弃
        */
@@ -228,6 +240,9 @@ export default {
             items: [
               {
                 title: '树节点公共样式',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return !data.useMenuMode;
+                },
                 options: [
                   {
                     type: 'font',
@@ -251,6 +266,21 @@ export default {
                   }
                 ],
                 target: '.ant-tree-treenode > .ant-tree-node-content-wrapper:hover'
+              }, {
+                title: '树节点背景颜色',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.useMenuMode;
+                },
+                options: [
+                  'border',
+                  {
+                    type: 'background',
+                    config: {
+                      disableBackgroundImage: true
+                    }
+                  }
+                ],
+                target: [".ant-tree.ant-tree-directory .ant-tree-treenode:hover:before"]
               }
             ]
           }),
@@ -272,12 +302,33 @@ export default {
               },
               {
                 title: '树节点公共样式',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return !data.useMenuMode;
+                },
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target:
                   'div.ant-tree-treenode > .ant-tree-node-content-wrapper.ant-tree-node-selected'
+              }, {
+                title: '树节点背景颜色',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.useMenuMode;
+                },
+                options: [
+                  'border',
+                  {
+                    type: 'background',
+                    config: {
+                      disableBackgroundImage: true
+                    }
+                  }
+                ],
+                target: [
+                  ".ant-tree.ant-tree-directory .ant-tree-treenode-selected:before",
+                  ".ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover:before "
+                ]
               }
             ]
           }),
