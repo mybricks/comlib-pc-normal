@@ -468,5 +468,11 @@ export default function ({
     }
   
     //=========== v1.1.37 end ===============
+
+    //=========== v1.1.48 ===============
+    if(!Object.hasOwn(data, "suffixIcon")){
+      data.suffixIcon =  "DownOutlined"
+    }
+    //=========== v1.1.48 end===============
   return true;
 }

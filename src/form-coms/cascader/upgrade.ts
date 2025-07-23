@@ -6,10 +6,10 @@ import { setIfUndefined } from '../../utils';
 import { descriptionUpList } from './constants'
 import { descriptionUp } from '../utils/descriptionUp'
 
-export default function ({ 
-  data, 
-  input, 
-  output, 
+export default function ({
+  data,
+  input,
+  output,
   style,
   getDeclaredStyle,
   removeDeclaredStyle,
@@ -303,21 +303,21 @@ export default function ({
   /**
    * @description 1.1.17 增加挂载点
    */
-  if( typeof data.mount === 'undefined') {
+  if (typeof data.mount === 'undefined') {
     data.mount = 'body'
   }
 
   /**
    * @description 1.1.17 增加挂载点
    */
-  if( typeof data.mount === 'undefined') {
+  if (typeof data.mount === 'undefined') {
     data.mount = 'body'
   }
 
   /**
    * @description 1.1.20 增加异步加载 改变设置数据源schema、增加设置异步加载数据、增加异步加载完成
    */
-  if( typeof data.useLoadData === 'undefined') {
+  if (typeof data.useLoadData === 'undefined') {
     data.useLoadData = false
   }
   const dataSchema = {
@@ -416,11 +416,11 @@ export default function ({
     }
   }
 
-  if(!input.get("setLoadData")){
+  if (!input.get("setLoadData")) {
     input.add("setLoadData", "设置异步加载数据", setLoadDataSchema);
   }
 
-  if(!output.get("setLoadDataDone")){
+  if (!output.get("setLoadDataDone")) {
     output.add("setLoadDataDone", "设置异步加载数据完成", setLoadDataSchema);
   }
 
@@ -442,5 +442,11 @@ export default function ({
   }
 
   //=========== v1.1.22 end ===============
+
+  //=========== v1.1.28 ===============
+  if (!Object.hasOwn(data, "suffixIcon")) {
+    data.suffixIcon = "DownOutlined"
+  }
+  //=========== v1.1.28 end===============
   return true;
 }

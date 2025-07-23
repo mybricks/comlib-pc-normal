@@ -361,5 +361,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   // 不要更新，导致 schema 异常
   // descriptionUp([...descriptionUpList, ...commonFormItemUpdateSchema], input, output);
   //=========== 1.2.20 end ===============
+
+  //=========== v1.2.47 ===============
+  if (!Object.hasOwn(data, "suffixIcon")) {
+    data.suffixIcon = "DownOutlined"
+  }
+  //=========== v1.2.47 end===============
+
   return true;
 }
