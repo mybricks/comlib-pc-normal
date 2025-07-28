@@ -45,6 +45,7 @@ const formItemOutputIds = {
 const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: FormItemInputsProps, deps?: React.DependencyList) => {
 
   useLayoutEffect(() => {
+    if (!inputs) return;
     /**
      * @description 设置值
      */
