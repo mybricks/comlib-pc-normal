@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'antd';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 
 export interface Data {
@@ -7,19 +9,55 @@ export interface Data {
   expandRows: number;
 }
 
-export default function ({
-  env,
-  data,
-}: RuntimeParams<Data>) {
+export default function (props: RuntimeParams<Data>) {
+  const { env, data, inputs, outputs, parentSlot } = props;
   const textRef = useRef<HTMLDivElement | null>(null);
   const [withHiddenStyle, setWithHiddenStyle] = useState(false);
   const [toggleHiddenStyle, setToggleHiddenStyle] = useState(false);
+  const [value, setValue] = useState(data.content);
+
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      parentSlot,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          setValue(val);
+        },
+        setInitialValue(val) {
+          setValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          setValue('');
+        },
+        validate(model, relOutput) {
+          validateFormItem({
+            value: value,
+            env,
+            model,
+            rules: []
+          }).then((r) => {
+            relOutput(r);
+          });
+        }
+      }
+    },
+    [value]
+  );
+
   useEffect(() => {
-    if (!!data.content && textRef.current && textRef.current?.getBoundingClientRect().height > data.expandRows * 22) {
+    if (!!value && textRef.current && textRef.current?.getBoundingClientRect().height > data.expandRows * 22) {
       setWithHiddenStyle(true);
       setToggleHiddenStyle(true);
     }
-  }, [data.content, data.expandRows]);
+  }, [value, data.expandRows]);
+
   return (
     <div className={css.textOverflowWrapper}>
       <div
@@ -40,7 +78,7 @@ export default function ({
             {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
           </Button>
         )}
-        {data.content}
+        {value}
       </div>
     </div>
   );

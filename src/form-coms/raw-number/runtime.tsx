@@ -1,6 +1,7 @@
 import { Popover } from 'antd';
-import React, { useLayoutEffect } from 'react';
-import { InputIds, ValidateTriggerType } from '../types';
+import React, { useState } from 'react';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 export interface Data {
   content: string | undefined;
@@ -45,26 +46,48 @@ function formatContent(content: string | undefined) {
   return String(content).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-export default function ({
-  env,
-  data,
-  _inputs,
-  inputs,
-  _outputs,
-  outputs,
-  parentSlot,
-  id,
-  name
-}: RuntimeParams<Data>) {
-  useLayoutEffect(() => {
-    inputs[InputIds.SetValue]?.((value: string) => {
-      data.content = value;
-    });
-  }, []);
+export default function (props: RuntimeParams<Data>) {
+  const { env, data, inputs, outputs, parentSlot } = props;
+  const [value, setValue] = useState(data.content);
+
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      parentSlot,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          setValue(val);
+        },
+        setInitialValue(val) {
+          setValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          setValue('');
+        },
+        validate(model, relOutput) {
+          validateFormItem({
+            value: value,
+            env,
+            model,
+            rules: []
+          }).then((r) => {
+            relOutput(r);
+          });
+        }
+      }
+    },
+    [value]
+  );
 
   return (
-    <Popover placement="bottomLeft" content={numberToChineseFormatWithDecimal(data.content)}>
-      <span className={css.number}>{formatContent(data.content)}</span>
+    <Popover placement="bottomLeft" content={numberToChineseFormatWithDecimal(value)}>
+      <span className={css.number}>{formatContent(value)}</span>
     </Popover>
   );
 }
