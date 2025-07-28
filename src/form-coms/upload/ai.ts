@@ -3,18 +3,19 @@ export default {
     return {}
   },
   prompts: {
-    summary: '上传',
+    summary: `图片/文件上传 Upload。
+表单项组件，schema=form-item`,
     usage: `data数据模型
-rules: array则
+rules: array
 config: {
-fileKey: string
-buttonText: string
-name: string
-listType: ['text', 'picture', 'picture-card', 'dragger']
-fileType: array
-fileSize: number
-fileCount: number
-uploadStyle: object
+  fileKey: string
+  buttonText: string
+  name: string
+  listType: ['text', 'picture', 'picture-card', 'dragger']
+  fileType: array
+  fileSize: number
+  fileCount: number
+  uploadStyle: object
 }
 isShowUploadList: boolean
 imageSize: number[]

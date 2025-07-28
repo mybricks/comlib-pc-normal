@@ -3,7 +3,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '颜色选择框',
+    summary: `颜色选择框 ColorPicker。
+表单项组件，schema=form-item`,
     usage: `data声明
 rules: any[] = []
 validateTrigger: string[] = [

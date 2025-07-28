@@ -7,7 +7,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '单选框',
+    summary: `单选框列表 Radio
+表单项组件，schema=form-item`,
     usage: `data数据模型
 visible: boolean
 staticOptions: [

@@ -4,7 +4,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '自动完成，自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入',
+    summary: `自动完成，自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入 AutoComplete。
+表单项组件，schema=form-item`,
     usage: `data声明
 interface Option {
   value: string;

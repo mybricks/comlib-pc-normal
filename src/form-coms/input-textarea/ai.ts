@@ -7,7 +7,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '文本域',
+    summary: `多行文本输入框textarea。
+表单项组件，schema=form-item`,
     usage: `data数据模型
 visible: boolean
 rules: array

@@ -3,7 +3,9 @@ export default {
     return {}
   },
   prompts: {
-    summary: '图标',
+    summary: `图标，内置丰富的图标类型，也可作为图标样式的按钮使用
+何时使用：任何时候优先推荐此组件，当明确发现导航入口、图标时，使用此组件。
+`,
     usage: `data数据模型
 icon: string # antd可用的图标名，例如 DownOutlined
 

@@ -3,7 +3,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '多选框',
+    summary: `多选勾选框 Checkbox。
+表单项组件，schema=form-item`,
     usage: `data声明
 config: {
   options: antd.CheckboxOptionType[];

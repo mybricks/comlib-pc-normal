@@ -3,7 +3,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '下拉框',
+    summary: `下拉框Select。
+表单项组件，schema=form-item`,
     usage: `data数据模型
 config: {
 placeholder: string = '请选择'

@@ -29,39 +29,42 @@ const handleMerge = (preData, curData) => {
 
 export default {
   prompts: {
-    summary: '表单容器，支持排版、收集、校验数据的表单，仅在中后台场景的查询表单和提交表单中使用，其他场景无需使用',
+    summary: `表单容器，支持排版、收集、校验数据的表单容器，内部子组件必须且只能放置表单项（schema=form-item的组件）。
+何时使用：仅在中后台场景的查询表单和提交表单中使用，对标antd的form组件，其他场景无需使用。
+特别注意：使用此组件必须推荐其他schema=form-item的组件的表单项组件。
+    `,
     usage: `data数据模型
-layoutType: ['Form', 'QueryFilter'] # 表单容器的快捷样式布局，Form适合常见的垂直提交收集信息场景，QueryFilter适合查询表单
+layoutType: ['Form', 'QueryFilter'] # 表单容器的快捷样式布局，Form适合常见的垂直提交收集信息场景（actions按钮在中间底部居中），QueryFilter适合水平换行的查询表单（actions按钮在右侧）
 config: {
-colon?: boolean = true
-disabled?: boolean = false
-layout: ['horizontal', 'vertical']
-size?: ['middle', 'small', 'large']
+  colon?: boolean = true
+  disabled?: boolean = false
+  layout: ['horizontal', 'vertical', 'inline'] = 'horizontal' # 遵循antd的layout，声明标题与表单项之间的布局
+  size?: ['middle', 'small', 'large']
 }
-items: { # 子组件列表，每一个item对应插槽里的一个子组件
-label: string
-name: sting # 映射的字段
-span: number
-hidden: boolean
-hiddenLabel: boolean
+items: { # 子组件列表，每一个item对应插槽里的一个子组件，必须一一对应，不可缺少
+  label: string
+  name: sting # 映射的字段
+  span: number
+  hidden: boolean
+  hiddenLabel: boolean
 }[]
 enable24Grid?: boolean = false
 span?: number = 8
-labelCol?: number = 4
+labelCol?: number = 8 # 配置8代表label的文本占据表单项的 8/24
 labelWidthType: ['span']
 actions?: { # 表单自带的操作按钮组，默认带提交和取消两个按钮，有修改则需要声明这个字段
-visible?: boolean = true # 是否展示这个按钮组
-align?: ['left', 'center', 'right']
-items: {
-  key: string # 唯一key
-  type?: ['primary']
-  title: sting # 内容
-}[]
+  visible?: boolean = true # 是否展示这个按钮组
+  align?: ['left', 'center', 'right']
+  items: {
+    key: string # 唯一key
+    type?: ['primary']
+    title: sting # 内容
+  }[]
 }[]
 
 slots插槽
 content: 表单的内容
-  - 作用域插槽：form-item，插槽中仅允许放置schema=form-item的组件，内置标签和其他组件都不可使用。
+  - 作用域插槽：form-item，插槽中子组件必须且只能放置表单项（schema=form-item的组件），内置标签和其他组件都不可以在插槽的直接子组件中。
 
 styleAry声明
 表单: .ant-form
@@ -78,11 +81,11 @@ data={{
     layout: 'horizontal'
   },
   items: [
-    { id: "name", label: "学生姓名", name: "name", span: 8, hidden: false, hiddenLabel: false }
+    { label: "学生姓名", name: "name", span: 8, hidden: false, hiddenLabel: false }
   ],
   enable24Grid: true,
   span: 8,
-  labelCol: 4,
+  labelCol: 8,
   labelWidthType: "span"
 }}
 >
@@ -102,7 +105,14 @@ data={{
         maxLength: -1,
         size: "middle"
       },
-      isEditable: true
+      isEditable: true,
+      actions: {
+        visible: true,
+        items: [
+          { key: 'search', type: 'primary', title: '查询' },
+          { key: 'reset', title: '重置' }
+        ]
+      }
     }}
   />
 </slots.content>
@@ -371,46 +381,55 @@ data={{
           }
         })
       }
-
       return dsl;
     },
     execute(dsl, context) {
       const { data } = context;
       handleMerge(data, dsl);
     },
-    modifyTptJson: (component) => {
-      if (!component.data?.actions) {
-        component.data.actions = {
-          visible: false,
-          align: "center",
-          span: 24,
-          widthOption: "flexFull",
-          items: [
-            {
-              title: "提交",
-              type: "primary",
-              outputId: "onClickSubmit",
-              key: "submit"
-            },
-            {
-              title: "取消",
-              outputId: "onClickCancel",
-              key: "cancel"
-            }
-          ]
-        }
+  },
+  modifyTptJson: (component) => {
+    if (!component.data?.actions) {
+      component.data.actions = {
+        visible: false,
+        align: "center",
+        span: 24,
+        widthOption: "flexFull",
+        items: [
+          {
+            title: "提交",
+            type: "primary",
+            outputId: "onClickSubmit",
+            key: "submit"
+          },
+          {
+            title: "取消",
+            outputId: "onClickCancel",
+            key: "cancel"
+          }
+        ]
       }
-
-      component.data.items.forEach((item, index) => {
-        item.id = uuid();
-        item.comName = uuid();
-
-        const com = component.slots?.content?.comAry?.[index];
-        if (com) {
-          com.id = item.id
-          com.name = item.comName
-        }
-      })
     }
+
+    component.slots?.content?.comAry?.forEach((com, index) => {
+      let item = component.data.items[index]
+  
+      item.id = uuid();
+      item.comName = uuid();
+      item.visible = item.visible ?? true;
+  
+      if (!item.label) {
+        item.label = com.data?.label ?? com.title
+      }
+  
+      if (!item.name) {
+        item.name = com.data?.name ?? com.data?.label
+      }
+  
+      if (com) {
+        com.id = item.id
+        com.name = item.comName
+      }
+    })
   }
 }

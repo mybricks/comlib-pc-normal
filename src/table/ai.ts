@@ -38,7 +38,7 @@ const handleDataColumns = (params) => {
 
 export default {
   prompts: {
-    summary: '数据表格',
+    summary: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。`,
     usage: `data数据模型
 rowKey: string # 表格行的唯一标识字段
 dataSource: any[] # 表格数据源
@@ -56,12 +56,12 @@ columns: [ # 表格列配置
 fixedHeader: boolean # 是否固定表头
 enableStripe: boolean # 是否启用斑马纹
 usePagination: boolean
-paginationConfig: { 
-total: number
-current: number 
-pageSize: number 
-showSizeChanger: boolean 
-showQuickJumper: boolean 
+paginationConfig?: { # 不需要分页则不设置
+  total: number
+  current: number 
+  pageSize: number 
+  showSizeChanger: boolean 
+  showQuickJumper: boolean 
 }
 
 slots插槽
@@ -454,6 +454,9 @@ data={{
         column.visible = true;
       }
     })
+
+    dsl.data.usePagination = !!dsl.data?.paginationConfig
+
     return dsl;
   }
 }

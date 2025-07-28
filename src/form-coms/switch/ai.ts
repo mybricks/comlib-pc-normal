@@ -3,7 +3,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '开关',
+    summary: `开关Switch。
+表单项组件，schema=form-item`,
     usage: `data数据模型
 visible: boolean
 rules: array

@@ -3,7 +3,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '日期选择框',
+    summary: `日期选择框 DatePicker。
+表单项组件，schema=form-item`,
     usage: `data声明
 options: any[] = []
 rules: any[] = []

@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.tsx",
+  "ai": "./ai.ts",
   "upgrade": "./upgrade.ts",
   "target": {
     "toReact": "./toReact.ts"

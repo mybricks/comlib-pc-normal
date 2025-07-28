@@ -19,7 +19,6 @@ const handleMerge = (preData, curData) => {
 }
 
 export default {
-  ignore: true,
   ':root'({ data }) {
     return {}
   },
@@ -31,12 +30,11 @@ tabList = [
     name: string = "标签页1"
   }
 ]
-slotStyle = {}
 defaultActiveKey = "tab0"
 size: ['large' | 'middle' | 'small'] = "middle"
-centered: [true|false] = false
-tabPosition: [top|left|right|bottom] = "top"
-hideAdd: [true|false] = true
+centered: boolean = false # 标签是否居中
+tabPosition: "top" | "left" | "right" | "bottom" = "top" # 标签位置
+hideSlots: boolean = false # 是否隐藏插槽
 
 slots插槽
 tab0: 标签页1
@@ -66,7 +64,12 @@ styleAry声明
     - backgroundColor: #1677FF
   - 可编辑样式: height、backgroundColor
 
-关于插槽的使用，尽量每个插槽下都要有内容，不同的标签页往往展示不同的内容
+关于插槽的使用
+当需要插槽（hideSlots=false）时：
+  尽量每个插槽下都要有内容，不同的标签页对应不同的插槽，往往展示不同的内容；
+当不需要插槽（hideSlots=true）时：
+  则隐藏插槽内容，高度只剩下标签高度；
+
     `,
 //     usage: `
 // # data定义

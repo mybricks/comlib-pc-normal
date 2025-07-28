@@ -3,7 +3,8 @@ export default {
     return {}
   },
   prompts: {
-    summary: '文本框',
+    summary: `单行文本输入框。
+表单项组件，schema=form-item`,
     usage: `data数据模型
 visible: boolean = true
 rules: []
