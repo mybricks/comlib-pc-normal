@@ -3,7 +3,7 @@
   "namespace": "amc.normal-h5.form-raw-number",
   "author": "秋筠",
   "author_name": "秋筠",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "直接内容-数字",
   "icon": "./icon.svg",
   "data": "./data.json",

@@ -5,6 +5,8 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 export interface Data {
   content: string | undefined;
+  addonBefore?: string;
+  addonAfter?: string;
 }
 
 function numberToChineseFormatWithDecimal(num: string = '') {
@@ -86,8 +88,8 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   return (
-    <Popover placement="bottomLeft" content={numberToChineseFormatWithDecimal(value)}>
-      <span className={css.number}>{formatContent(value)}</span>
+    <Popover placement="bottomLeft" content={`${data.addonBefore ?? ''}${numberToChineseFormatWithDecimal(value)}${data.addonAfter ?? ''}`}>
+      <span className={css.number}>{data.addonBefore ?? ''}{formatContent(value)}{data.addonAfter ?? ''}</span>
     </Popover>
   );
 }
