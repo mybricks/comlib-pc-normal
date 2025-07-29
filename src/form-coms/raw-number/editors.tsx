@@ -27,7 +27,39 @@ export default {
               data.content = value;
             }
           }
-        }
+        },
+        {
+          title: '前置内容',
+          type: 'text',
+          options: {
+            locale: true
+          },
+          description: '拼接在内容前方',
+          value: {
+            get({ data }) {
+              return data.addonBefore;
+            },
+            set({ data }, value: string) {
+              data.addonBefore = value;
+            }
+          }
+        },
+        {
+          title: '后置内容',
+          type: 'text',
+          options: {
+            locale: true
+          },
+          description: '拼接在内容后方',
+          value: {
+            get({ data }) {
+              return data.addonAfter;
+            },
+            set({ data }, value: string) {
+              data.addonAfter = value;
+            }
+          }
+        },
         // {
         //   title: '事件',
         //   items: [
