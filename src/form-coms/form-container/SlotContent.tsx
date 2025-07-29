@@ -146,7 +146,7 @@ const SlotContent = (props) => {
           );
         } else {
           return (
-            <Row style={{ width: '100%' }} gutter={hasGutter ? data.columnGap : 0}>
+            <Row gutter={hasGutter ? data.columnGap : 0}>
               {isInlineModel && (
                 <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                   {jsx}
