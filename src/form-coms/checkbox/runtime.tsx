@@ -344,6 +344,9 @@ export default function Runtime({
                     content: env.i18n(opt.label),
                     expandRows: 3
                   }}
+                  inputs={inputs}
+                  outputs={outputs}
+                  parentSlot={parentSlot}
                 />
               ) : (
                 env.i18n(opt.label)
@@ -441,7 +444,10 @@ export default function Runtime({
             });
           }}
         >
-          <DoubleRightOutlined className={css.expandIcon + ' ' + (isExpand ? css.expandIconUp : css.expandIconDown)} color="#bfbfbf" />
+          <DoubleRightOutlined
+            className={css.expandIcon + ' ' + (isExpand ? css.expandIconUp : css.expandIconDown)}
+            color="#bfbfbf"
+          />
           {isExpand ? env.i18n('收起') : env.i18n('展开')}
         </div>
       )}
