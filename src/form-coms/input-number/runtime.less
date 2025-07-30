@@ -19,7 +19,9 @@
     .ant-input-number-wrapper > .ant-input-number {
       width: 100%;
       border-color: #dfdfdf;
-      border-radius: 4px;
+      &:first-child:last-child {
+        border-radius: 4px;
+      }
 
       &.ant-input-number-focused {
         box-shadow: none;

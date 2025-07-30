@@ -35,6 +35,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const inputRef = useRef<InputRef>(null);
   const valueRef = useRef<any>();
   const [autoFocus, setAutoFocus] = useState(false);
+  const [openPopover, setOpenPopover] = useState(false);
 
   useFormItemInputs(
     {
@@ -221,14 +222,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return formatNumberWithChineseUnits(value);
   }, [value]);
 
+  const onMouseOver = useCallback(() => {
+    setOpenPopover(true);
+  }, []);
+
+  const onMouseOut = useCallback(() => {
+    setOpenPopover(false);
+  }, []);
+
   return data.isEditable ? (
     <Popover
       content={formatterNumber}
-      open={formatterNumber !== ''}
+      open={formatterNumber !== '' && openPopover}
       placement="bottom"
       trigger="hover"
     >
-      <div className={css.inputNumber}>
+      <div className={css.inputNumber} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
         <InputNumber<string | number>
           ref={inputRef}
           value={value}
