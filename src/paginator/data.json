@@ -4,15 +4,16 @@
   "current": 1,
   "currentPage": {
     "pageNum": 1,
-    "pageSize": 10
+    "pageSize": 5
   },
   "isDynamic": false,
   "disabled": false,
-  "defaultPageSize": 10,
+  "defaultPageSize": 5,
   "align": "flex-end",
   "size": "default",
   "showSizeChanger": false,
   "pageSizeOptions": [
+    "5",
     "10",
     "20",
     "50",

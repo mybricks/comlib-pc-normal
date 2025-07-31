@@ -94,10 +94,10 @@ export default {
               return [data.paginationConfig.defaultPageSize];
             },
             set({ data }: EditorResult<Data>, value: number[]) {
-              data.paginationConfig.defaultPageSize = value[1];
+              data.paginationConfig.defaultPageSize = value[0];
               data.paginationConfig.currentPage = {
                 ...data.paginationConfig.currentPage,
-                pageSize: value[1]
+                pageSize: value[0]
               };
             }
           }
