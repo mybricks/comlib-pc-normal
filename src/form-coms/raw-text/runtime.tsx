@@ -52,11 +52,7 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   useEffect(() => {
-    if (
-      !!value &&
-      textRef.current &&
-      textRef.current?.getBoundingClientRect().height > data.expandRows * 22
-    ) {
+    if (!!value && textRef.current && textRef.current?.getBoundingClientRect().height > data.expandRows * 22) {
       setWithHiddenStyle(true);
       setToggleHiddenStyle(true);
     }
@@ -67,7 +63,7 @@ export default function (props: RuntimeParams<Data>) {
       <div
         className={css.textOverflow + ' raw-text-content'}
         style={{
-          WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows
+          WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows,
         }}
         ref={textRef}
       >
