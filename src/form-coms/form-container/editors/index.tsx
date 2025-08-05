@@ -499,6 +499,18 @@ export default {
           }
         },
         {
+          title: '自动滚动到错误的位置',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.autoScrollToError;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
+              data.autoScrollToError = value;
+            }
+          }
+        },
+        {
           title: '校验隐藏表单项字段',
           type: 'Switch',
           description: '提交隐藏表单项字段时，是否需要对隐藏字段进行校验，默认为 True 需要校验',

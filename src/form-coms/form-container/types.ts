@@ -200,6 +200,8 @@ export interface Data {
 
   /** 领域模型 */
   _domainModel?: any;
+
+  autoScrollToError?: boolean;
 }
 
 interface DomainModel {
