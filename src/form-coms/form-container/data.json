@@ -70,5 +70,6 @@
     "enableWidthAdaptive": true
   },
   "defaultCollapsed": true,
-  "columnGap": 0
+  "columnGap": 0,
+  "autoScrollToError": true
 }
