@@ -39,6 +39,18 @@ const handleDataColumns = (params) => {
 export default {
   prompts: {
     summary: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。`,
+    forUpdate:`
+<补充说明>
+  # 插槽
+  1. 当表格列设置为插槽时，插槽ID为该列的\`slotId属性值\`；
+  2. 表格头部操作区的插槽ID为\`headerTitle\`，使用前必须确定已经开启了标题区插槽；
+
+  # 功能
+  1. 操作列插槽内建议使用\`mybricks.normal-pc.antd5.toolbar\`组件，通常为横向排布的按钮组；
+  2. 对于表格列的配置，需要通过列区域功能配置；
+  3. 所有分页相关配置的前提是开启了分页模式；
+  </补充说明>
+    `,
     usage: `data数据模型
 rowKey: string # 表格行的唯一标识字段
 dataSource: any[] # 表格数据源
