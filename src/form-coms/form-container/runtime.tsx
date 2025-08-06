@@ -13,6 +13,7 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Data, DynamicItemData, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject, getFormItem } from './utils';
+import { templateRender } from '../utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import { refreshSchema } from './schema';
@@ -703,6 +704,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
+        other.help =  templateRender(e?.help || '', {label:e?.name || ''})
         outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
       });
