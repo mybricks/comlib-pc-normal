@@ -17,6 +17,7 @@ import { ValidateInfo } from '../types';
 import { refreshSchema } from './schema';
 import css from './styles.less';
 import classnames from 'classnames';
+import { templateRender } from '../utils';
 import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 import { isArray } from 'lodash';
@@ -702,6 +703,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
+        other.help = templateRender(e.help || '', { label: e?.name || '' });
         outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
       });
