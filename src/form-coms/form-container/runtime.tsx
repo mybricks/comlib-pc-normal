@@ -704,8 +704,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
-        other.help =  templateRender(e?.help || '', {label:e?.name || ''})
-        outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
+        other.help =  templateRender(e?.help || '', {label:e?.label || ''})
+        outputRels && outputRels[outputIds.ON_SUBMIT_ERROR]({
+          help: other?.help || '',
+          name: other?.name || ''
+        });
         console.log('校验失败', e);
       });
   };
@@ -940,6 +943,7 @@ const validateForInput = (
   const item = model?.curFormItem;
   input?.validate(model).returnValidate((validateInfo) => {
     // 存在index, 表示校验失败项是动态表单项的子项
+    console.log(item)
     if (validateInfo.index === undefined) {
       item.validateStatus = validateInfo?.validateStatus;
       item.help = validateInfo?.help;
@@ -947,7 +951,8 @@ const validateForInput = (
     if (cb) {
       cb({
         ...validateInfo,
-        name: item.name
+        name: item.name,
+        label: item.label
       });
     }
   });
