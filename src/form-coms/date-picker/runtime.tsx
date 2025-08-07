@@ -408,7 +408,6 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
   };
   const onPanelChange: DatePickerProps['onPanelChange'] = (value, mode) => {
     outputs['onPanelChange']({ value, mode });
-    setMode(mode);
   };
 
   const getShowTime = () => {
