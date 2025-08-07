@@ -703,8 +703,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
-        other.help = templateRender(e.help || '', { label: e?.name || '' });
-        outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
+        other.help =  templateRender(e?.help || '', {label:e?.label || ''})
+        outputRels && outputRels[outputIds.ON_SUBMIT_ERROR]({
+          help: other?.help || '',
+          name: other?.name || ''
+        });
         console.log('校验失败', e);
       });
   };
@@ -850,7 +853,8 @@ const validateForInput = (
     if (cb) {
       cb({
         ...validateInfo,
-        name: item.name
+        name: item.name,
+        label: item.label
       });
     }
   });

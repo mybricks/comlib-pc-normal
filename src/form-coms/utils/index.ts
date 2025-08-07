@@ -23,7 +23,7 @@ export const templateRender = (template: string, params: any) => {
         return params?.label;
       }
       case '标题': {
-        return params?.label;
+        return params?.label?.replace(/(?=.)[:：]$/, '');
       }
       default:
         return `{${key}}`;

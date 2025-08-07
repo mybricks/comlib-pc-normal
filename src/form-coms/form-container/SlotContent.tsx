@@ -231,6 +231,7 @@ export function getComOrItemJsx({
     <Col
       span={item.span}
       key={data.useDynamicItems ? item.id : com.id}
+      style={{ display: item?.visible ? '' : 'none' }}
     >
       {comJSX.jsx}
     </Col>
