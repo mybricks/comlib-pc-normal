@@ -12,11 +12,30 @@
     content: '';
     float: right;
     width: 0;
-    height: calc(100% - 20px);
+    height: calc(100% - 20px); // ios设备这里会出现问题，因此使用另一套布局实现
   }
   .toggleHiddenBtn {
     float: right;
     clear: both;
+    display: block;
+    height: 18px;
+    line-height: 18px;
+    padding: 0;
+  }
+}
+
+.textOverflowWrapperIOS {
+  display: flex;
+  .textOverflowIOS {
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+  .toggleHiddenBtnIOS {
+    align-self: end;
     display: block;
     height: 18px;
     line-height: 18px;
