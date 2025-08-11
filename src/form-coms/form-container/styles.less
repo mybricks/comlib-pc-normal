@@ -118,6 +118,10 @@
 .newRow {
   display: block;
   :global {
+    // 在amc发布后会多出一层，需要特殊处理
+    .ant-row.ant-form-item-row {
+      display: block;
+    }
     .ant-form-item-label.ant-form-item-label-left {
       padding-bottom: 0 !important;
     }
