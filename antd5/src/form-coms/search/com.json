@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/search/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/search/editors.ts",
+  "ai": "../../../../src/form-coms/search/ai.ts",
   "upgrade": "../../../../src/form-coms/search/upgrade.ts",
   "inputs": [
     {

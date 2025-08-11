@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/input-richtext/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/input-richtext/editors.tsx",
+  "ai": "../../../../src/form-coms/input-richtext/ai.ts",
   "upgrade": "../../../../src/form-coms/input-richtext/upgrade.ts",
   "inputs": [
     {

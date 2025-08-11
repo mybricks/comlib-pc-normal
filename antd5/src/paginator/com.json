@@ -9,6 +9,7 @@
   "data": "../../../src/paginator/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/paginator/editors.tsx",
+  "ai": "../../../src/paginator/ai.ts",
   "upgrade": "../../../src/paginator/upgrade.ts",
   "inputs": [
     {

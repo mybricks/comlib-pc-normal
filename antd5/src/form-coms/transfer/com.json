@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "data": "../../../../src/form-coms/transfer/data.json",
   "editors": "../../../../src/form-coms/transfer/editors.tsx",
+  "ai": "../../../../src/form-coms/transfer/ai.ts",
   "upgrade": "../../../../src/form-coms/transfer/upgrade.ts",
   "inputs": [
     {

@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/range-picker/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/range-picker/editors.ts",
+  "ai": "../../../../src/form-coms/range-picker/ai.ts",
   "upgrade": "../../../../src/form-coms/range-picker/upgrade.ts",
   "inputs": [
     {

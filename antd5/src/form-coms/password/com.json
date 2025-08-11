@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "data": "../../../../src/form-coms/password/data.json",
   "editors": "../../../../src/form-coms/password/editors.ts",
+  "ai": "../../../../src/form-coms/password/ai.ts",
   "upgrade": "../../../../src/form-coms/password/upgrade.ts",
   "inputs": [
     {

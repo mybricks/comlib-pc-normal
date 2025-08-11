@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/email/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/email/editors.tsx",
+  "ai": "../../../../src/form-coms/email/ai.ts",
   "upgrade": "../../../../src/form-coms/email/upgrade.ts",
   "inputs": [
     {
