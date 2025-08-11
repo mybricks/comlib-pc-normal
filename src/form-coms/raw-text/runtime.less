@@ -23,3 +23,22 @@
     padding: 0;
   }
 }
+
+.textOverflowWrapperIOS {
+  display: flex;
+  .textOverflowIOS {
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+  .toggleHiddenBtnIOS {
+    align-self: end;
+    display: block;
+    height: 18px;
+    line-height: 18px;
+    padding: 0;
+  }
+}
