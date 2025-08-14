@@ -108,6 +108,10 @@ export default function ({
   );
 
   useLayoutEffect(() => {
+    // amc系统新核心项目自带.ant-input resize: auto !important，需要覆盖掉
+    if (inputRef?.current?.resizableTextArea?.textArea) {
+      inputRef.current.resizableTextArea.textArea.setAttribute('style', 'resize: vertical !important');
+    }
     /**
      * @description 设置字体颜色
      */
