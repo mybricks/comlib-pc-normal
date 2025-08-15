@@ -11,6 +11,26 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const [disabled, setDisable] = useState(false);
   const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
 
+
+
+  const handleLoadingOfBtnData = (val:any) => {
+        const running = {
+          //保存原始数据
+          text: data.text,
+          icon: data.icon,
+          useIcon: data.useIcon
+        };
+
+        data.running = running;
+
+        data.useIcon = true;
+        data.icon = 'LoadingOutlined';
+
+        if (val) {
+           data.text = val;
+        }
+  }
+
   //如果data.dataType是'external'的
   useEffect(() => {
     if (env.runtime) {
@@ -37,39 +57,13 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       });
 
       inputs['setStateRunning']((val, relOutputs) => {
-        //setDisable(true)
-        const running = {
-          //保存原始数据
-          text: data.text,
-          icon: data.icon,
-          useIcon: data.useIcon
-        };
-
-        data.running = running;
-
-        data.useIcon = true;
-        data.icon = 'LoadingOutlined';
-
-        if (val) {
-          data.text = env.i18n(val);
-        }
+        handleLoadingOfBtnData(val)
       });
 
-      inputs['setStateRunning']((val, relOutputs) => {
+
+      inputs['setLoading']((relOutputs) => {
         //setDisable(true)
-        const running = {
-          //保存原始数据
-          text: data.text,
-          icon: data.icon,
-          useIcon: data.useIcon
-        };
-
-        data.running = running;
-
-        data.useIcon = true;
-        data.icon = 'LoadingOutlined';
-
-        data.text = val || env.i18n('loading');
+        handleLoadingOfBtnData(null)
       });
 
       inputs['setStateNormal']((val, relOutputs) => {
