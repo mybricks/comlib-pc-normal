@@ -11,7 +11,7 @@ export interface Data {
 
 function numberToChineseFormatWithDecimal(num: string = '') {
   const [integer, decimal] = String(num).split('.');
-  
+
   // 如果是非法数字直接返回
   if (Number.isNaN(Number(num))) {
     return num;
@@ -52,6 +52,8 @@ function formatContent(content: string | undefined) {
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, parentSlot } = props;
   const [value, setValue] = useState(data.content);
+  const [addonBefore, setAddonBefore] = useState(data.addonBefore || '');
+  const [addonAfter, setAddonAfter] = useState(data.addonAfter || '');
   useFormItemInputs(
     {
       id: props.id,
@@ -87,9 +89,30 @@ export default function (props: RuntimeParams<Data>) {
     [value]
   );
 
+  useLayoutEffect(() => {
+    inputs['setAddon']((conf, relOutputs) => {
+      if (conf.before) {
+        setAddonBefore(conf.before);
+      }
+      if (conf.after) {
+        setAddonAfter(conf.after);
+      }
+      relOutputs['setAddonDone'](conf);
+    });
+  }, []);
+
   return (
-    <Popover placement="bottomLeft" content={`${data.addonBefore ?? ''}${numberToChineseFormatWithDecimal(value)}${data.addonAfter ?? ''}`}>
-      <span className={css.rawNumber}>{data.addonBefore ?? ''}{formatContent(value)}{data.addonAfter ?? ''}</span>
+    <Popover
+      placement="bottomLeft"
+      content={`${addonBefore ?? ''}${numberToChineseFormatWithDecimal(value)}${
+        addonAfter ?? ''
+      }`}
+    >
+      <span className={css.rawNumber}>
+        {addonBefore ?? ''}
+        {formatContent(value)}
+        {addonAfter ?? ''}
+      </span>
     </Popover>
   );
 }

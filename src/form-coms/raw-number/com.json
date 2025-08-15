@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-raw-number",
   "author": "秋筠",
   "author_name": "秋筠",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "直接内容-数字",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -23,6 +23,27 @@
       },
       "rels": [
         "setValueDone"
+      ]
+    },
+    {
+      "id": "setAddon",
+      "title": "设置前后置内容",
+      "desc": "设置直接内容前置内容、后置内容的值，并触发值变化事件输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "before": {
+            "type": "string",
+            "description": "前置内容"
+          },
+          "after": {
+            "type": "string",
+            "description": "后置内容"
+          }
+        }
+      },
+      "rels": [
+        "setAddonDone"
       ]
     },
     {
@@ -207,6 +228,13 @@
     {
       "id": "setValueDone",
       "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setAddonDone",
+      "title": "设置前后置内容完成",
       "schema": {
         "type": "string"
       }
