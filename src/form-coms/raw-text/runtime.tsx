@@ -81,7 +81,7 @@ export default function (props: RuntimeParams<Data>) {
           }}
           ref={textRef}
         >
-          {value}
+          <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
         </div>
         {withHiddenStyle && (
           <Button
@@ -118,7 +118,7 @@ export default function (props: RuntimeParams<Data>) {
             {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
           </Button>
         )}
-        {value}
+        <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
       </div>
     </div>
   );
