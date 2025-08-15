@@ -39,29 +39,30 @@ const handleDataColumns = (params) => {
 export default {
   prompts: {
     summary: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。`,
-    usage: `data数据模型
+    usage: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。
+data数据模型
 rowKey: string # 表格行的唯一标识字段
 dataSource: any[] # 表格数据源
 columns: [ # 表格列配置
-{
-  key: string # 列唯一标识
-  dataIndex: string
-  title: string # 列标题
-  width: string | number 
-  visible: boolean 
-  isRowKey: boolean 
-  contentType: ['text', 'slotItem'] # 列内容类型
-}
+  {
+    key: string # 列唯一标识
+    dataIndex: string
+    title: string # 列标题
+    width: string | number 
+    visible: boolean 
+    isRowKey: boolean 
+    contentType: ['text', 'slotItem'] # 列内容类型
+  }
 ]
 fixedHeader: boolean # 是否固定表头
 enableStripe: boolean # 是否启用斑马纹
-usePagination: boolean
 paginationConfig?: { # 不需要分页则不设置
   total: number
   current: number 
   pageSize: number 
-  showSizeChanger: boolean 
-  showQuickJumper: boolean 
+  text?: string = "共 {total} 条结果" # 展示总数文案
+  showSizeChanger: boolean # 是否展示每页条数下拉选择
+  showQuickJumper: boolean # 是否展示跳页器
 }
 
 slots插槽
@@ -69,9 +70,21 @@ slots插槽
 
 styleAry声明
 表格: .ant-table
+  - 默认样式:
+    - backgroundColor: #ffffff
+    - fontSize: 14
+  - 可编辑样式: font、color、backgroundColor
 表头: .ant-table-thead
+  - 默认样式:
+    - backgroundColor: #FAFAFA
+    - fontSize: 14
+  - 可编辑样式: font、color、backgroundColor
 内容: .ant-table-tbody
 分页: [data-table-pagination]
+
+元素组成
+  - 表格
+  - 分页器：默认位于右下角区域，从左到右包含「总结文案」「分页器」「每页条数下拉选择」「跳页器」
 
 使用案例
 \`\`\`mbsx file="带分页和自定义操作列的表格"
@@ -89,7 +102,6 @@ data={{
     { key: "operation", dataIndex: "operation", title: "自定义插槽操作列", width: 120, visible: true, isRowKey: false, contentType: "slotItem", slotId: "operation" }
   ],
   enableStripe: true,
-  usePagination: true,
   paginationConfig: {
     total: 50,
     current: 1,
@@ -455,7 +467,42 @@ data={{
       }
     })
 
-    dsl.data.usePagination = !!dsl.data?.paginationConfig
+    dsl.data.usePagination = !!dsl.data?.paginationConfig;
+
+
+    let appendStyleAry: any = []
+
+    // if (dsl.style.styleAry) {
+    //   dsl.style.styleAry.forEach(item => {
+    //     if (!item.css) {
+    //       item.css = {}
+    //     }
+    //     if (item.selector === '.ant-table') {
+    //       const {
+    //         fontSize,
+    //         fontWeight,
+    //         color
+    //       } = item.css ?? {};
+          
+    //       item.selector = '.tableWarrper > .table > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table';
+          
+    //       appendStyleAry.push({
+    //         selector: '.tableWarrper > .table > .mybricks-table > div.ant-spin-nested-loading > div.ant-spin-container > div.ant-table > div.ant-table-container > div.ant-table-content > table',
+    //         css: {
+    //           fontSize,
+    //           fontWeight,
+    //           color
+    //         }
+    //       })
+    //     }
+    //     // if (item.css.fontSize?.endsWith("px")) {
+    //     //   if (!item.css.lineHeight) {
+    //     //     item.css.lineHeight = 1
+    //     //   }
+    //     // }
+    //     // item.css.textAlign = dsl.data?.align || 'left'
+    //   })
+    // }
 
     return dsl;
   }

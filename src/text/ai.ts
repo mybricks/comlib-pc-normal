@@ -37,7 +37,7 @@ hover状态: [data-item-type="root"]:hover
         if (!item.css) {
           item.css = {}
         }
-        if (item.css.fontSize?.endsWith("px")) {
+        if (item.css?.fontSize?.endsWith?.("px")) {
           if (!item.css.lineHeight) {
             item.css.lineHeight = 1
           }

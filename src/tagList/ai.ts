@@ -5,8 +5,9 @@ export default {
     return {}
   },
   prompts: {
-    summary: '标签列表，展示标签或多个标签时使用，大部分场景下只需要一个标签，常用于展示详情、表格列数据',
-    usage: `data数据模型
+    summary: '标签列表，展示标签或多个标签时使用',
+    usage: `标签列表，展示标签或多个标签时使用
+data数据模型
 import type { TagProps } from "antd";
 interface AppendBtn extends TagProps {
   text: string
@@ -14,7 +15,6 @@ interface AppendBtn extends TagProps {
 
 align?: 'start' | 'end' | 'center' | 'baseline' = "start"
 direction?: 'horizontal' | 'vertical' = "horizontal"
-wrap?: boolean = true
 type: 'default' | 'processing' | 'error' | 'warning' | 'success' = "default"
 tags: Array<Tag> = [
   {
@@ -29,13 +29,11 @@ ellipsis: {
   "maxWidth": 120
 }
 closeAble: boolean = false
-tagSize: 'small-tag' | 'middle-tag' | 'large-tag' = "small-tag",
-dynamic?: boolean = false
+useAppendBtn?: boolean = true
 appendBtn: AppendBtn = {
   "text": "新增",
   "icon": "PlusOutlined"
 }
-useAppendBtn?: boolean = true
 clickAble: boolean = false
 
 layout声明
@@ -44,6 +42,10 @@ height: 不可配置，默认为fit-content
 
 slots插槽
 无
+
+layout声明
+width: 不可配置，默认为100%，实际宽度为标签列表的宽度
+height: 不可配置，默认为fit-content
 
 styleAry声明
 标签: .tag
@@ -54,6 +56,7 @@ styleAry声明
     - borderStyle: solid
     - borderColor: #D9D9D9
     - borderRadius: 4px
+    - height: 22px
   - 可编辑样式: font、border、background
 标签hover: .hover
   - 可编辑样式: font、border、background

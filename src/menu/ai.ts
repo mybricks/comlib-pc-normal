@@ -32,12 +32,18 @@ styleAry声明
   - 默认样式：
     - color: #000000;
     - fontSize: 14;
+    - backgroundColor: #ffffff;
+    - lineHeight: 40px;
+    - height: 40px;
   - 可编辑样式：
     - color,fontSize,background
 菜单项（已选中）: ul li.ant-menu-item-selected
   - 默认样式：
     - color: #1677FF;
     - fontSize: 14;
+    - backgroundColor: #e6f4ff;
+    - lineHeight: 40px;
+    - height: 40px;
   - 可编辑样式：
     - color,fontSize,background
 菜单项选中条: ul li.ant-menu-item-selected:after
@@ -46,5 +52,14 @@ styleAry声明
     - borderColor: #1677FF
   - 可编辑样式: borderWidth,borderColor
     `
+  },
+  modifyTptJson(component) {
+    if (Array.isArray(component.data?.dataSource)) {
+      component.data?.dataSource.map(item => {
+        if (item.icon) {
+          item.useIcon = true
+        }
+      })
+    }
   }
 };

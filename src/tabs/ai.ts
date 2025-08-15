@@ -23,8 +23,9 @@ export default {
     return {}
   },
   prompts: {
-    summary: '标签页',
-    usage: `data数据模型
+    summary: '标签页Tabs，上方文字下方高亮条的选项卡。',
+    usage: `标签页Tabs，上方文字下方高亮条的选项卡。
+data数据模型
 tabList = [
   {
     name: string = "标签页1"
