@@ -126,7 +126,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const isMobile = checkIfMobile(env);
 
-  const dynamicEnableOrDisabledRef = useRef(() => {});
+  const dynamicEnableOrDisabledRef = useRef(() => { });
 
   const [wrapperWidth] = useElementWidth(wrapperRef);
   const childrenInputs = useMemo<{
@@ -724,6 +724,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .catch((e) => {
         const { validateStatus, ...other } = e;
         outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
+        if (data.autoScrollToError && wrapperRef.current) {
+          setTimeout(() => {
+            const errorEle = wrapperRef.current?.querySelector(`.ant-form-item-explain`);
+            const formItemEle = errorEle?.closest('.ant-form-item-control');
+            if (formItemEle) {
+              formItemEle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 100)
+        }
         console.log('校验失败', e);
       });
   };
@@ -823,7 +832,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
             }
             {...formCfg}
-            // wrapperCol={{ span: 16 }}
+          // wrapperCol={{ span: 16 }}
           >
             <SlotContent
               env={env}

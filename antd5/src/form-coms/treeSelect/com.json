@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/treeSelect/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/treeSelect/editors.ts",
+  "ai": "../../../../src/form-coms/treeSelect/ai.ts",
   "upgrade": "../../../../src/form-coms/treeSelect/upgrade.ts",
   "inputs": [
     {

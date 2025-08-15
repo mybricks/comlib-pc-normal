@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/input-number/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/input-number/editors.ts",
+  "ai": "../../../../src/form-coms/input-number/ai.ts",
   "upgrade": "../../../../src/form-coms/input-number/upgrade.ts",
   "inputs": [
     {

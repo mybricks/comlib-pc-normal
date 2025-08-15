@@ -151,6 +151,12 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
     })
   }
 
+    if (!input.get("setLoading")) {
+    input.add("setLoading", "设置状态: 加载中", {
+      type: "any"
+    })
+  }
+
   if (!input.get("setStateNormal")) {
     input.add("setStateNormal", "恢复", {
       type: "string"

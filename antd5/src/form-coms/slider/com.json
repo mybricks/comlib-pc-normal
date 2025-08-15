@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/slider/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/slider/editors.ts",
+  "ai": "../../../../src/form-coms/slider/ai.ts",
   "upgrade": "../../../../src/form-coms/slider/upgrade.ts",
   "inputs": [
     {

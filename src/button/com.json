@@ -1,7 +1,7 @@
 {
   "title": "按钮",
   "namespace": "mybricks.normal-pc.custom-button",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "description": "按钮",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -45,6 +45,13 @@
       "rels": [
         "setDynamicDisabledDone"
       ]
+    },
+    {
+      "id": "setLoading",
+      "title": "设置状态:加载中",
+      "schema": {
+        "type": "any"
+      }
     },
     {
       "id": "setStateNormal",

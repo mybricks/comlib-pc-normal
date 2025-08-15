@@ -9,6 +9,7 @@
   "data": "../../../src/form-detail/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/form-detail/editors.tsx",
+  "ai": "../../../src/form-detail/ai.ts",
   "upgrade": "../../../src/form-detail/upgrade.ts",
   "inputs": [
     {

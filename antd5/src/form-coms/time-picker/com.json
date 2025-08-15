@@ -11,6 +11,7 @@
   "runtime": "./runtime.tsx",
   "data": "../../../../src/form-coms/time-picker/data.json",
   "editors": "../../../../src/form-coms/time-picker/editors.ts",
+  "ai": "../../../../src/form-coms/time-picker/ai.ts",
   "upgrade": "../../../../src/form-coms/time-picker/upgrade.ts",
   "inputs": [
     {

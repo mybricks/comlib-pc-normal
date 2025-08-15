@@ -87,6 +87,7 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
       );
     return (
       <iframe
+        key={data.url}
         ref={(node) => {
           if (node) {
             iframeRef.current = node;

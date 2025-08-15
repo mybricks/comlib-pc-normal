@@ -8,6 +8,7 @@
   "icon": "../../../../src/form-coms/phone-number/icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_6zcy4m.2d104629fe884457.png",
   "data": "../../../../src/form-coms/phone-number/data.json",
+  "ai": "../../../../src/form-coms/phone-number/ai.ts",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/phone-number/editors.tsx",
   "upgrade": "../../../../src/form-coms/phone-number/upgrade.ts",

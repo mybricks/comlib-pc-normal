@@ -10,6 +10,7 @@
   "data": "../../../../src/form-coms/form-list/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/form-list/editors/index.ts",
+  "ai": "../../../../src/form-coms/form-list/ai.ts",
   "upgrade": "../../../../src/form-coms/form-list/upgrade.ts",
   "inputs": [
     {
