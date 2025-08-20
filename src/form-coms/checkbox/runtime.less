@@ -7,6 +7,26 @@
   //     display: flex;
   //   }
   // }
+  :global {
+    .ant-checkbox-disabled {
+      & + span {
+        color: var(--mb-color-text-tertiary, rgba(0, 0, 0, 0.45));
+      }
+      &.ant-checkbox-checked {
+        background-color: var(--ant-primary-color, #1890ff);
+        .ant-checkbox-inner {
+          border-color: var(--ant-primary-color, #1890ff) !important;
+          background-color: transparent !important;
+          &:after {
+            border-color: #f5f5f5 !important;
+          }
+        }
+        & + span {
+          color: #262626;
+        }
+      }
+    }
+  }
   .expand {
     display: flex;
     justify-content: center;
