@@ -615,9 +615,9 @@ export default {
           }
         },
         {
-          title: '开启文件点击',
+          title: '自定义文件预览',
           type: 'switch',
-          description: '开启后, 可自定义上传文件的点击事件且不跳转到新页面',
+          description: '开启后, 可自定义上传文件的预览事件',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.fileClick;
@@ -657,14 +657,65 @@ export default {
           }
         },
         {
-          title: '上传文件点击',
+          title: '点击预览',
           type: '_Event',
-          description: '开启后, 新增上传文件点击事件',
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.fileClick;
           },
           options: {
             outputId: 'fileClick'
+          }
+        },
+        {
+          title: '自定义文件下载',
+          type: 'switch',
+          description: '开启后, 可自定义上传文件的下载事件',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.onDownload;
+            },
+            set({ data, output }: EditorResult<Data>, value: boolean) {
+              const hasEvent = output.get('onDownload');
+              if (value) {
+                !hasEvent &&
+                  output.add('onDownload', '点击下载', {
+                    type: 'object',
+                    properties: {
+                      name: {
+                        type: 'string'
+                      },
+                      uid: {
+                        type: 'string'
+                      },
+                      url: {
+                        type: 'string'
+                      },
+                      status: {
+                        type: 'string'
+                      },
+                      percent: {
+                        type: 'number'
+                      },
+                      response: {
+                        type: 'string'
+                      }
+                    }
+                  });
+              } else {
+                hasEvent && output.remove('onDownload');
+              }
+              data.onDownload = value;
+            }
+          }
+        },
+        {
+          title: '点击下载',
+          type: '_Event',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.onDownload;
+          },
+          options: {
+            outputId: 'onDownload'
           }
         }
       ];

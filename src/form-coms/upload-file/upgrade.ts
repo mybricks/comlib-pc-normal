@@ -190,6 +190,10 @@ export default function ({
     data.fileClick = false;
   }
 
+  if (typeof data.onDownload === 'undefined') {
+    data.onDownload = false;
+  }
+
   /**
    * @description v1.0.24 新增启用/禁用 输入项
    */
