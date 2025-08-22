@@ -1,4 +1,5 @@
 {
   "url": "",
-  "id": "iframe"
+  "id": "iframe",
+  "showPlaceholder":true
 }

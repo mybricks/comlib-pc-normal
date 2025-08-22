@@ -4,6 +4,7 @@ import { updateIO, getFocusTab, removeIOAndSlot } from './common';
 export default {
   '.ant-tabs-tab': {
     title: '标签',
+
     items: (props: EditorResult<Data>, cate1, cate2, cate3) => {
       if (!props.focusArea) return;
       const item = getFocusTab(props);

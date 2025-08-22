@@ -50,9 +50,12 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
   }, [data.url, env.runtime]);
 
   if (!data.url) {
+    const showPlaceholder = data.showPlaceholder===undefined||data.showPlaceholder;
     return (
       <div style={{ height: '100%', width: '100%' }}>
-        <Result status="info" title="暂无链接" />
+      {
+        showPlaceholder?<Result status="info" title="暂无链接" />:null
+      }
       </div>
     );
   }

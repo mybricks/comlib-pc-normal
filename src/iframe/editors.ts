@@ -33,6 +33,19 @@ export default {
       }
     },
     {
+      title: '显示占位图标',
+      type: 'Switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.showPlaceholder === undefined || data.showPlaceholder;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.showPlaceholder = value;
+        }
+      }
+    },
+    null,
+    {
       title: 'ID',
       type: 'text',
       value: {
