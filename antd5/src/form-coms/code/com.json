@@ -1,9 +1,9 @@
 {
   "namespace": "mybricks.normal-pc.antd5.code-editor",
   "title": "代码编辑器",
-  "author": "tangxiaoxin",
-  "author_name": "唐小新",
-  "version": "1.1.16",
+  "author": "MyBricks Team",
+  "author_name": "MyBricks",
+  "version": "1.1.17",
   "description": "用于在线编辑代码，支持多种编程语言",
   "runtime": "./runtime.tsx",
   "editors": "../../../../src/form-coms/code/editor.ts",

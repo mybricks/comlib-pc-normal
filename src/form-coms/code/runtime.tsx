@@ -9,6 +9,8 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
 
+import css from './style.less';
+
 export default function ({
   data,
   inputs,
@@ -132,11 +134,14 @@ export default function ({
       readOnly={data.readOnly}
     />
   ) : (
-    <Input.TextArea
-      value={value}
-      rows={data.aceConfig.minLines}
-      placeholder={env.i18n(data.aceConfig.placeholder)}
-      readOnly={true}
-    />
+    <div className={css.forEdit}>
+      {env.i18n(data.aceConfig.placeholder)}
+    </div>
+    // <Input.TextArea
+    //   value={value}
+    //   //rows={data.aceConfig.minLines}
+    //   placeholder={env.i18n(data.aceConfig.placeholder)}
+    //   readOnly={true}
+    // />
   );
 }

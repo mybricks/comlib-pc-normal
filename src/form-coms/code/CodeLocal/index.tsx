@@ -8,6 +8,7 @@ import './beautify/java-formatter.min.js';
 import './beautify/sql-formatter.min.js';
 import './ace-pkg/css/ace.css';
 import css from './index.less';
+import { min } from 'lodash';
 
 const Formatter = {
   sql: {
@@ -19,7 +20,7 @@ const Formatter = {
       try {
         const json = eval(`(${val})`);
         return JSON.stringify(json, null, 2);
-      } catch (e) {}
+      } catch (e) { }
       return val;
     }
   },
@@ -30,12 +31,12 @@ const Formatter = {
 };
 
 const CodeEditor = (
-  { value, config, valueRef, readOnly, onChange = () => {}, onBlur = () => {} }: EditorProps,
+  { value, config, valueRef, readOnly, onChange = () => { }, onBlur = () => { } }: EditorProps,
   ref: any
 ) => {
   const {
     placeholder = '请输入代码',
-    maxLines = 6,
+    maxLines = 3,
     minLines = 3,
     wrap = true,
     showPrintMargin = false,
@@ -45,6 +46,8 @@ const CodeEditor = (
     fontSize
   } = config || {};
 
+
+  const wrapRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const editor = useRef<any>(null);
   const beautifyRef = useRef<any>();
@@ -134,21 +137,54 @@ const CodeEditor = (
     editor.current?.setReadOnly(readOnly);
   }, [readOnly]);
 
+
   useEffect(() => {
     if (editor.current && valueRef.current !== editor.current.getValue()) {
       const val =
         'string' === typeof valueRef.current
           ? valueRef.current
           : valueRef.current === undefined || valueRef.current === null
-          ? ''
-          : JSON.stringify(valueRef.current);
+            ? ''
+            : JSON.stringify(valueRef.current);
       supportFormat && formatterCode(val);
       editor.current.clearSelection();
     }
   }, [value]);
 
+  useEffect(() => {
+    if (!wrapRef.current) {
+      return
+    }
+
+    const wrapEle = wrapRef.current.parentElement
+    const aceEditor = editor.current
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        for (const entry of entries) {
+          const rect = entry.contentRect;
+          const lines = Math.round(rect.height / 19)
+
+          aceEditor.setOptions({
+            minLines: lines,
+            maxLines: lines
+          });
+
+          //console.log(rect, lines)
+        }
+      })
+    })
+
+    resizeObserver.observe(wrapEle)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+
+  }, [wrapRef.current, config])
+
   return (
-    <div className={css.aceCodeEditor}>
+    <div className={css.aceCodeEditor} ref={wrapRef}>
       <div ref={containerRef} id="form-code-editor" onPaste={onPaste} onBlur={_onBlur} />
       {supportFormat && value && (
         <div className={css.formatIcon} title="点击格式化" onClick={onClick}>

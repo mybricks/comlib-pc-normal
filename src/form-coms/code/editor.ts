@@ -4,7 +4,7 @@ import { RuleKeys, ExpRules, getTitle, showMessage, formatRegexRules, FormatScen
 import { OutputIds } from '../types';
 export default {
   '@resize': {
-    options: ['width']
+    options: ['width','height']
   },
   ':root'({}, cate1) {
     cate1.title = '常规';
@@ -47,23 +47,23 @@ export default {
           }
         }
       },
-      {
-        title: '行数限制',
-        type: 'inputNumber',
-        options: [
-          { title: '最小', min: 3, width: 100 },
-          { title: '最大', min: 6, width: 100 }
-        ],
-        description: '行数限制',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return [data.aceConfig.minLines, data.aceConfig.maxLines];
-          },
-          set({ data }: EditorResult<Data>, value: number[]) {
-            [data.aceConfig.minLines, data.aceConfig.maxLines] = value;
-          }
-        }
-      },
+      // {
+      //   title: '行数限制',
+      //   type: 'inputNumber',
+      //   options: [
+      //     { title: '最小', min: 3, width: 100 },
+      //     { title: '最大', min: 6, width: 100 }
+      //   ],
+      //   description: '行数限制',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return [data.aceConfig.minLines, data.aceConfig.maxLines];
+      //     },
+      //     set({ data }: EditorResult<Data>, value: number[]) {
+      //       [data.aceConfig.minLines, data.aceConfig.maxLines] = value;
+      //     }
+      //   }
+      // },
       {
         title: '超出换行',
         type: 'switch',
