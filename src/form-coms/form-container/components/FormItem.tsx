@@ -226,7 +226,8 @@ const FormItem = (props) => {
     >
       <div
         className={css.formItemControl}
-        style={item.titleNewRow ? { paddingLeft: item.labelWidth || '98px' } : undefined}
+        // hack写法，由于目前无法获取到组件的类型，只能用item.schema.description 是否为 '文本域的值' 来判断是否为文本域组件
+        style={item.titleNewRow && item.schema.description !== '文本域的值' ? { paddingLeft: item.labelWidth || '98px' } : undefined}
       >
         <div className={css.formItemSlotContent}>
           <JSXWrapper com={com} />
