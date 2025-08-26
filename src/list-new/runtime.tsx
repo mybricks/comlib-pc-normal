@@ -83,7 +83,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
 
       //添加一项
       inputs[InputIds.AddItem]((v, relOutputs) => {
-        let newDataSource = [...data.dataSource];
+        let newDataSource = Array.isArray(data.dataSource) ? [...data.dataSource] : []
         let len = newDataSource.length;
         //判断在指定位置还是末尾
         let judge = v.value !== undefined && v.index >= 0 && v.index < len;
