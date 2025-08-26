@@ -77,7 +77,7 @@ export default function (props: RuntimeParams<Data>) {
           }}
           ref={textRef}
         >
-          {value}
+          <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
         </div>
         {withHiddenStyle && (
           <Button
