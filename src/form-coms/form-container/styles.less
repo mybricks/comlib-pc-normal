@@ -2,6 +2,7 @@
 .wrapper {
   position: relative;
   display: flex;
+  overflow: hidden !important;
 
   * {
     transition: 0s !important;
@@ -58,7 +59,7 @@
 
   :global {
     .ant-form > .ant-row {
-      width: 100%;
+      width: initial !important; // 之前设置了100%导致表单项宽度不够，需要重置掉
     }
 
     .ant-form-item-label-wrap {

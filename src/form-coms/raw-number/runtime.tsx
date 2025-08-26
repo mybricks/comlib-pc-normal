@@ -10,12 +10,12 @@ export interface Data {
 }
 
 function numberToChineseFormatWithDecimal(num: string = '') {
-  const [integer, decimal] = String(num).split('.');
-
   // 如果是非法数字直接返回
   if (Number.isNaN(Number(num))) {
     return num;
   }
+
+  const [integer, decimal] = String(num).split('.');
 
   let units = [
     { name: '亿', unit: 100000000 },
@@ -24,6 +24,7 @@ function numberToChineseFormatWithDecimal(num: string = '') {
   ];
 
   let calcNum = Number(integer);
+  if (calcNum === 0) return '0' + (decimal === '00' || !decimal ? '' : '.' + decimal);
   return (
     units.reduce((prev: string, curr) => {
       // 计算出当前数字是几个对应的unit
