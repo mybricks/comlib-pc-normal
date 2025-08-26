@@ -2,7 +2,7 @@
   "namespace": "mybricks.normal-pc.antd5.code-editor",
   "title": "代码编辑器",
   "author": "MyBricks Team",
-  "author_name": "MyBricks",
+  "author_name": "MyBricks Team",
   "version": "1.1.17",
   "description": "用于在线编辑代码，支持多种编程语言",
   "runtime": "./runtime.tsx",

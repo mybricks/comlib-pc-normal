@@ -6,7 +6,7 @@
   "name": "通用PC组件库(antd5)",
   "namespace": "mybricks.normal-pc.antd5",
   "commitInfo": "update",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "comAry": [
     {
       "title": "基础",
