@@ -47,7 +47,7 @@ function numberToChineseFormatWithDecimal(num: string = '', isFormat) {
 
 function formatContent(content: string | undefined, isFormat) {
   // 如果不是合法的数字则不进行千分位格式化
-  if (!content || Number.isNaN(Number(content))) return content;
+  if (Number.isNaN(Number(content))) return content;
   return String(isFormat ? Number(content).toFixed(2) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
