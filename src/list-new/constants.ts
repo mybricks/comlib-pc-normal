@@ -11,7 +11,7 @@ export enum InputIds {
   MoveDown = 'moveDown'
 }
 export enum OutputIds {
-  GetDataSource = 'getdataSource',
+  GetDataSource = 'getdataSourceDone',
   SortComplete = 'sortComplete'
 }
 
