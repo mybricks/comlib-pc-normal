@@ -7,15 +7,16 @@ export interface Data {
   content: string | undefined;
   addonBefore?: string;
   addonAfter?: string;
+  isFormat: boolean;
 }
 
-function numberToChineseFormatWithDecimal(num: string = '') {
+function numberToChineseFormatWithDecimal(num: string = '', isFormat) {
   // 如果是非法数字直接返回
   if (Number.isNaN(Number(num))) {
     return num;
   }
 
-  const [integer, decimal] = String(num).split('.');
+  const [integer, decimal] = (isFormat ? Number(num).toFixed(2) : String(num)).split('.');
 
   let units = [
     { name: '亿', unit: 100000000 },
@@ -44,10 +45,10 @@ function numberToChineseFormatWithDecimal(num: string = '') {
   );
 }
 
-function formatContent(content: string | undefined) {
+function formatContent(content: string | undefined, isFormat) {
   // 如果不是合法的数字则不进行千分位格式化
   if (!content || Number.isNaN(Number(content))) return content;
-  return String(content).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return String(isFormat ? Number(content).toFixed(2) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -105,13 +106,13 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <Popover
       placement="bottomLeft"
-      content={`${addonBefore ?? ''}${numberToChineseFormatWithDecimal(value)}${
+      content={`${addonBefore ?? ''}${numberToChineseFormatWithDecimal(value, data.isFormat)}${
         addonAfter ?? ''
       }`}
     >
       <span className={css.rawNumber}>
         {addonBefore ?? ''}
-        {formatContent(value)}
+        {formatContent(value, data.isFormat)}
         {addonAfter ?? ''}
       </span>
     </Popover>

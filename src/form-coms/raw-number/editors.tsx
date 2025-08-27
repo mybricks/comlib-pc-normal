@@ -29,6 +29,20 @@ export default {
           }
         },
         {
+          title: '格式化',
+          type: 'switch',
+          description:
+            '勾选后自动对数字进行两位小数格式化',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.isFormat;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.isFormat = value;
+            }
+          }
+        },
+        {
           title: '前置内容',
           type: 'text',
           options: {

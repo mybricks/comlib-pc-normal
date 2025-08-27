@@ -5,7 +5,7 @@ import {
   FileOutlined,
   EyeOutlined,
   DeleteOutlined,
-  CloudUploadOutlined,
+  CloudDownloadOutlined,
   DownloadOutlined,
   LoadingOutlined,
   FileExclamationOutlined
@@ -614,7 +614,7 @@ export default function ({
                   )}
                   {file.status === 'done' && (
                     <a title={env.i18n('下载')} onClick={data.onDownload ? () => outputs['onDownload']?.(file) : actions.download}>
-                      <CloudUploadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
+                      <CloudDownloadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
                   <a
@@ -636,7 +636,7 @@ export default function ({
           );
         }}
       >
-        <Button size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
+        <Button type="text" size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
           {data.config.buttonText}
         </Button>
       </Upload>
