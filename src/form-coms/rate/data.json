@@ -6,7 +6,7 @@
   "rules": [],
   "config": {
     "count": 5,
-    "defaultValue": 2.5,
+    "defaultValue": 0,
     "disabled": false
   }
 }

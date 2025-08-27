@@ -652,7 +652,7 @@ export default function ({
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (
-          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+          <div style={{ cursor: 'pointer' }}>{slots['carrier'] && slots['carrier'].render()}</div>
         ) : data.isEditable ? (
           hideUploadButton ? null : (
             renderUploadText()
@@ -681,7 +681,8 @@ export default function ({
       {outerSlotRender
         ? slots['customUpload']?.render({
             style: {
-              display: 'none'
+              display: 'none',
+              cursor: 'pointer',
             }
           })
         : null}
