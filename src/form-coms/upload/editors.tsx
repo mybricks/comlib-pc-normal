@@ -439,7 +439,7 @@ export default {
               title: '上传文件限制个数',
               type: 'Inputnumber',
               description: '允许上传的文件个数,超过将覆盖',
-              options: [{ title: '个文件', min: 0, max: 15, width: 80 }],
+              options: [{ title: '个文件', min: 0, max: 100, width: 80 }],
               value: {
                 get({ data }: EditorResult<Data>) {
                   return [data.config.fileCount];
