@@ -467,6 +467,7 @@ export default function ({
   };
 
   const onPreview = (file) => {
+    if (!!file.status && file.status !== 'done') return;
     if (
       usePreview &&
       (/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name) ||
@@ -605,14 +606,14 @@ export default function ({
               <span className={css.uploadFileItemDate}>
                 {renderUploadFileDate(file[data.updateDateFieldName])}
               </span>
-              {(file.status === 'done' || file.status === 'error') && (
+              {(file.status === 'done' || file.status === 'error' || !file.status) && (
                 <div className={css.uploadFileItemActions}>
-                  {file.status === 'done' && (
+                  {(file.status === 'done' || !file.status) && (
                     <a title={env.i18n('预览')} onClick={actions.preview}>
                       <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  {file.status === 'done' && (
+                  {(file.status === 'done' || !file.status) && (
                     <a title={env.i18n('下载')} onClick={data.onDownload ? () => outputs['onDownload']?.(file) : actions.download}>
                       <CloudDownloadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
