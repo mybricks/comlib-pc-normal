@@ -1,4 +1,4 @@
-import { Button, Upload, message, Image, UploadFile, Modal } from 'antd';
+import { Button, Upload, message, Image, UploadFile, Modal, Popconfirm } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
 import {
   UploadOutlined,
@@ -618,19 +618,13 @@ export default function ({
                       <CloudDownloadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  <a
-                    title={env.i18n('删除')}
-                    onClick={() => {
-                      Modal.confirm({
-                        title: env.i18n('即将删除文件，是否继续？'),
-                        okText: env.i18n('确定'),
-                        cancelText: env.i18n('取消'),
-                        onOk: actions.remove,
-                      });
-                    }}
-                  >
-                    <DeleteOutlined />
-                  </a>
+                  <Popconfirm title={env.i18n('即将删除文件，是否继续？')} okText={env.i18n('确定')} cancelText={env.i18n('取消')} onConfirm={actions.remove}>
+                    <a
+                      title={env.i18n('删除')}
+                    >
+                      <DeleteOutlined />
+                    </a>
+                  </Popconfirm>
                 </div>
               )}
             </div>
