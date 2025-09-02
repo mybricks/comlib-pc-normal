@@ -19,6 +19,25 @@
     }
   }
 
+  .deletePopconfirm {
+    width: max-content;
+    :global {
+      .ant-popover-message {
+        display: flex;
+        & > .anticon {
+          position: absolute;
+          top: 8px;
+          color: #faad14;
+          font-size: 14px;
+          & > svg {
+            width: 1em;
+            height: 1em;
+          }
+        }
+      }
+    }
+  }
+
   .uploadFileItem {
     display: flex;
     align-items: center;
@@ -69,18 +88,6 @@
   :global {
     .ant-upload.ant-upload-select-picture-card {
       display: none !important;
-    }
-  }
-}
-
-.deletePopconfirm {
-  width: 200px;
-  :global {
-    .ant-popover-inner-content {
-      padding: 7px 16px;
-    }
-    .ant-popover-message-title {
-      padding-left: 0;
     }
   }
 }

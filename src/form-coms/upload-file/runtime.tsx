@@ -380,13 +380,13 @@ export default function ({
         image.onload = function () {
           if (width && image.width != width) {
             Modal.confirm({
-              title: `请上传宽为${width}(px)的图片`,
+              title: `请上传宽为${width}(px)的图片`
             });
             // message.error(`请上传宽为${width}(px)的图片`);
             //reject('error');
           } else if (height && image.height != width) {
             Modal.confirm({
-              title: `请上传高为${height}(px)的图片`,
+              title: `请上传高为${height}(px)的图片`
             });
             // message.error(`请上传高为${height}(px)的图片`);
             // reject('error');
@@ -419,7 +419,7 @@ export default function ({
 
       if (!isAcceptFileType) {
         Modal.confirm({
-          title: '上传文件格式不正确!',
+          title: '上传文件格式不正确!'
         });
         // message.error('上传文件格式不正确!');
       }
@@ -433,8 +433,8 @@ export default function ({
 
       if (!isAcceptFileSize) {
         Modal.confirm({
-          title: `上传文件大小不能超过${acceptFileSize}MB!`,
-        })
+          title: `上传文件大小不能超过${acceptFileSize}MB!`
+        });
         // message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
       }
       return !(
@@ -614,14 +614,24 @@ export default function ({
                     </a>
                   )}
                   {(file.status === 'done' || !file.status) && (
-                    <a title={env.i18n('下载')} onClick={data.onDownload ? () => outputs['onDownload']?.(file) : actions.download}>
+                    <a
+                      title={env.i18n('下载')}
+                      onClick={
+                        data.onDownload ? () => outputs['onDownload']?.(file) : actions.download
+                      }
+                    >
                       <CloudDownloadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  <Popconfirm title={env.i18n('即将删除文件，是否继续？')} okText={env.i18n('确定')} cancelText={env.i18n('取消')} onConfirm={actions.remove}>
-                    <a
-                      title={env.i18n('删除')}
-                    >
+                  <Popconfirm
+                    getPopupContainer={(node) => node!}
+                    overlayClassName={css.deletePopconfirm}
+                    title={env.i18n('即将删除文件，是否继续？')}
+                    okText={env.i18n('确定')}
+                    cancelText={env.i18n('取消')}
+                    onConfirm={actions.remove}
+                  >
+                    <a title={env.i18n('删除')}>
                       <DeleteOutlined />
                     </a>
                   </Popconfirm>
