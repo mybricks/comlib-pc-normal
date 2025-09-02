@@ -154,7 +154,6 @@ export default {
                   {
                     type: 'font',
                     config: {
-                      disableFontSize: true,
                       disableFontFamily: true,
                       disableTextAlign: true,
                       // disableColor: true,
@@ -171,6 +170,40 @@ export default {
                 items: [
                   {
                     title: '节点内容',
+                     ifVisible({ data }: EditorResult<Data>) {
+                      return !data.useMenuMode;
+                    },
+                    options: [
+                      {
+                        type: 'font',
+                        config: {
+                          disableTextAlign: true
+                        }
+                      },
+                      'border',
+                      {
+                        type: 'background',
+                        config: {
+                          disableBackgroundImage: true
+                        },
+                        ifVisible({ data }: EditorResult<Data>) {
+                          return !data.useMenuMode;
+                        } 
+                      },
+                      {
+                        type: 'size',
+                        config: {
+                          disableWidth: true
+                        }
+                      }
+                    ],
+                    target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
+                  },
+                  {
+                    title: '节点内容-目录模式',
+                    ifVisible({ data }: EditorResult<Data>) {
+                      return data.useMenuMode;
+                    },
                     options: [
                       {
                         type: 'font',
@@ -184,15 +217,9 @@ export default {
                         config: {
                           disableBackgroundImage: true
                         }
-                      },
-                      {
-                        type: 'size',
-                        config: {
-                          disableWidth: true
-                        }
                       }
                     ],
-                    target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
+                    target: ['.ant-tree.ant-tree-directory .ant-tree-treenode:before']
                   },
                   {
                     title: '节点标题样式',
@@ -266,7 +293,8 @@ export default {
                   }
                 ],
                 target: '.ant-tree-treenode > .ant-tree-node-content-wrapper:hover'
-              }, {
+              },
+              {
                 title: '树节点背景颜色',
                 ifVisible({ data }: EditorResult<Data>) {
                   return data.useMenuMode;
@@ -280,7 +308,7 @@ export default {
                     }
                   }
                 ],
-                target: [".ant-tree.ant-tree-directory .ant-tree-treenode:hover:before"]
+                target: ['.ant-tree.ant-tree-directory .ant-tree-treenode:hover:before']
               }
             ]
           }),
@@ -311,7 +339,8 @@ export default {
                 ],
                 target:
                   'div.ant-tree-treenode > .ant-tree-node-content-wrapper.ant-tree-node-selected'
-              }, {
+              },
+              {
                 title: '树节点背景颜色',
                 ifVisible({ data }: EditorResult<Data>) {
                   return data.useMenuMode;
@@ -326,8 +355,8 @@ export default {
                   }
                 ],
                 target: [
-                  ".ant-tree.ant-tree-directory .ant-tree-treenode-selected:before",
-                  ".ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover:before "
+                  '.ant-tree.ant-tree-directory .ant-tree-treenode-selected:before',
+                  '.ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover:before '
                 ]
               }
             ]
