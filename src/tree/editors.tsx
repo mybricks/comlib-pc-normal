@@ -170,7 +170,7 @@ export default {
                 items: [
                   {
                     title: '节点内容',
-                     ifVisible({ data }: EditorResult<Data>) {
+                    ifVisible({ data }: EditorResult<Data>) {
                       return !data.useMenuMode;
                     },
                     options: [
@@ -188,7 +188,7 @@ export default {
                         },
                         ifVisible({ data }: EditorResult<Data>) {
                           return !data.useMenuMode;
-                        } 
+                        }
                       },
                       {
                         type: 'size',
@@ -327,6 +327,29 @@ export default {
                 ],
                 target:
                   'div.ant-tree-treenode > .ant-tree-node-content-wrapper.ant-tree-node-selected > .ant-tree-title .title'
+              },
+              {
+                title: '展开收起图标',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.useMenuMode;
+                },
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontSize: true,
+                      disableFontFamily: true,
+                      disableTextAlign: true,
+                      // disableColor: true,
+                      disableFontWeight: true,
+                      disableLineHeight: true,
+                      disableLetterSpacing: true,
+                      disableWhiteSpace: true
+                    }
+                  }
+                ],
+                target:
+                  '.ant-tree.ant-tree-directory .ant-tree-treenode-selected .ant-tree-switcher'
               },
               {
                 title: '树节点公共样式',
