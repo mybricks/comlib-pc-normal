@@ -18,7 +18,7 @@ import {
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
 import TreeNode from './Components/TreeNode/index';
-import FormatTreeData from './Components/TreeNode/MenuTreeNode';
+import MenuTreeNode from './Components/TreeNode/MenuTreeNode';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import css from './style.less';
@@ -494,7 +494,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   /**
-   * 勾选事件处理
+   * 勾选事件处理2
    * @param checkedKeys
    */
   const onCheck: TreeProps['onCheck'] = useCallback((checkedKeys: React.Key[], info) => {
@@ -538,13 +538,20 @@ export default function (props: RuntimeParams<Data>) {
     if (data.disableCancelSelect && !keys.length) {
       keys = selectedKeys;
     }
-
+    console.log("onSelect", { keyFieldName, childrenFieldName }, data.valueType)
     const selectedValues = outputNodeValues(
       data.treeData,
       keys,
       { keyFieldName, childrenFieldName },
       data.valueType
     );
+
+         console.log("onSelect",{
+          treeData: data.treeData,
+      keys,
+      keyName:{ keyFieldName, childrenFieldName },
+      valueType:data.valueType
+         })
     if (data.clickExpandable) {
       const keyIndex = expandedKeys.indexOf(node[keyFieldName]);
       if (keyIndex < 0) {
@@ -772,8 +779,8 @@ export default function (props: RuntimeParams<Data>) {
       </Tree>
     );
   };
-
-  const menuTreeRender = (height?)=>{
+  const menuTreeRender = useCallback((height?)=>{
+    console.log('menuTreeRender')
     return  <DirectoryTree
         checkable={!!data.checkable}
         draggable={
@@ -788,15 +795,15 @@ export default function (props: RuntimeParams<Data>) {
         rootStyle={
           !(style.height === 'fit-content' && !data.scrollHeight) ? { minHeight: '100%' } : {}
         }
-        treeData={FormatTreeData({
-          props,
-          fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
-          setExpandedKeys,
-          treeData: data.treeData || [],
-          filteredKeys,
-          depth: 0,
-          parent: { key: rootKey }
-        })} 
+        // treeData={FormatTreeData({
+        //   props,
+        //   fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+        //   setExpandedKeys,
+        //   treeData: data.treeData || [],
+        //   filteredKeys,
+        //   depth: 0,
+        //   parent: { key: rootKey }
+        // })} 
         allowDrop={allowDrop}
         loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
         loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
@@ -814,10 +821,19 @@ export default function (props: RuntimeParams<Data>) {
         onDrop={onDrop}
         onMouseLeave={onMouseLeave}
         blockNode
+        showIcon={false}
       >
+        {MenuTreeNode({
+          props,
+          fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+          setExpandedKeys,
+          treeData: data.treeData || [],
+          filteredKeys,
+          depth: 0,
+          parent: { key: rootKey }
+        })}
       </DirectoryTree>
-  }
-
+  },[checkedKeys,selectedKeys,expandedKeys,treeLoadedKeys,autoExpandParent,filteredKeys,data])
   
 
   return (
