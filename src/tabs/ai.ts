@@ -25,20 +25,9 @@ export default {
   prompts: {
     summary: '标签页Tabs，上方文字下方高亮条的选项卡。',
     usage: `标签页Tabs，上方文字下方高亮条的选项卡。
-data数据模型
-tabList = [
-  {
-    name: string = "标签页1"
-  }
-]
-defaultActiveKey = "tab0"
-size: ['large' | 'middle' | 'small'] = "middle"
-centered: boolean = false # 标签是否居中
-tabPosition: "top" | "left" | "right" | "bottom" = "top" # 标签位置
-hideSlots: boolean = false # 是否隐藏插槽
 
 slots插槽
-tab0: 标签页1
+tab0: 标签页1（tabN 代表标签项 N+1）
 
 styleAry声明
 标签整体: .nav_wrap
@@ -46,13 +35,13 @@ styleAry声明
     - height: 46px
   - 可编辑样式：
     - background,padding
-标签项（未选中）: .nav_item
+标签项（默认）: .nav_item
   - 默认样式：
     - color: #000000;
     - fontSize: 14;
   - 可编辑样式：
     - color,fontSize
-标签项（已选中）: .nav_item_active
+标签项（激活）: .nav_item_active
   - 默认样式：
     - color: #1677FF;
     - fontSize: 14;
@@ -66,11 +55,15 @@ styleAry声明
   - 可编辑样式: height、backgroundColor
 
 关于插槽的使用
-当需要插槽（hideSlots=false）时：
+当需要插槽（隐藏插槽占位=false）时：
   尽量每个插槽下都要有内容，不同的标签页对应不同的插槽，往往展示不同的内容；
-当不需要插槽（hideSlots=true）时：
+当不需要插槽（隐藏插槽占位=true）时：
   则隐藏插槽内容，高度只剩下标签高度；
 
+注意事项:
+  - 如果要配置「样式/默认/标签」的border、padding，必须同时配置「样式/激活/标签」为一样的值；
+  - 标签项之间有32的间距，配置padding要考虑这个间距；
+  - 标签项的上下默认含12px的padding；
     `,
 //     usage: `
 // # data定义
@@ -237,5 +230,53 @@ styleAry声明
       //   style.selector = [`.ant-tabs`, `.ant-tabs-content-holder`, `.ant-tabs-content`]
       // }
     })
+  },
+  editors: [
+    '常规/插槽布局',
+    '常规/标签位置',
+    '常规/标签居中',
+    '常规/隐藏插槽占位',
+    {
+      title: '常规/标签项',
+      description: `通过数组来配置所有标签
+#示例数据
+[
+  {
+    "name": "标签页1",
+    "key": "tab0",
+    "id": "tab0"
   }
+]
+`,
+      type: 'array',
+      value: {
+        set: ({ data, slot, output }, value) => {
+          value.forEach((item, index) => {
+            item.infoType = 'text'
+            item.size = "default"
+            item.showZero = false
+
+            slot.add({
+              id: item.id,
+              title: item.name
+            });
+
+            output.add(`${item.id}_into`, `${item.name}显示`, { type: 'any' });
+            output.add(`${item.id}_leave`, `${item.name}隐藏`, { type: 'any' });
+          })
+
+          data.tabList = value
+
+          data.prohibitClick = false
+        }
+      }
+    },
+    '样式/默认/标签',
+    '样式/默认/标签头',
+    '样式/默认/底部横线',
+    '样式/Hover/标签',
+    '样式/激活/标签文本',
+    '样式/激活/标签',
+    '样式/激活/选中条'
+  ],
 }

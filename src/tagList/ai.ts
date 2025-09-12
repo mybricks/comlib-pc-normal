@@ -7,44 +7,11 @@ export default {
   prompts: {
     summary: '标签列表，展示标签或多个标签时使用',
     usage: `标签列表，展示标签或多个标签时使用
-data数据模型
-import type { TagProps } from "antd";
-interface AppendBtn extends TagProps {
-  text: string
-}
-
-align?: 'start' | 'end' | 'center' | 'baseline' = "start"
-direction?: 'horizontal' | 'vertical' = "horizontal"
-type: 'default' | 'processing' | 'error' | 'warning' | 'success' = "default"
-tags: Array<Tag> = [
-  {
-    "key": "tag1",
-    "content": "tag",
-  }
-]
-isEllipsis: boolean = false
-ellipsis: {
-  maxWidth: number,
-} = {
-  "maxWidth": 120
-}
-closeAble: boolean = false
-useAppendBtn?: boolean = true
-appendBtn: AppendBtn = {
-  "text": "新增",
-  "icon": "PlusOutlined"
-}
-clickAble: boolean = false
-
-layout声明
-width: 默认为fit-content
-height: 不可配置，默认为fit-content
-
 slots插槽
 无
 
 layout声明
-width: 不可配置，默认为100%，实际宽度为标签列表的宽度
+width: 不可配置，默认为100%，推荐使用fit-content
 height: 不可配置，默认为fit-content
 
 styleAry声明
@@ -76,5 +43,30 @@ styleAry声明
         style.selector = 'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable-checked'
       }
     })
+  },
+  editors: [
+    '常规/基础/方向',
+    '常规/基础/标签间距',
+    {
+      title: '常规/数据源',
+      description: `通过数组来配置导航多个标签数据
+[
+  {
+    "key": "tag1", // 唯一ID
+    "content": "tag", // 内容
+    "color": "default" // 类型，可选值：default(灰色)、processing、success、warning、error
   }
+]
+`,
+      type: 'array',
+      value: {
+        set: ({ data, slot }, value) => {
+          if (Array.isArray(value)) {
+            data.tags = value
+          }
+        }
+      }
+    },
+    '样式/默认/默认'
+  ],
 }

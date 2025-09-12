@@ -5,13 +5,7 @@ export default {
   },
   prompts: {
     summary: '文本',
-    usage: `data声明
-content: string = "文字"
-align?: 'left' | 'center' | 'right' = "left" # 仅在width非fit-content下起作用
-isEllipsis: boolean = false
-ellipsis: Record<string, any> = {
-  "rows": 1
-}
+    usage: `文本组件，支持配置溢出策略
 
 slots插槽
 无
