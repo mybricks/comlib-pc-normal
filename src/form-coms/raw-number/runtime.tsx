@@ -1,5 +1,5 @@
 import { Popover } from 'antd';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -103,6 +103,10 @@ export default function (props: RuntimeParams<Data>) {
       relOutputs['setAddonDone'](conf);
     });
   }, []);
+
+  useEffect(() => {
+    setValue(data.content);
+  }, [data.content]);
 
   return (
     <Popover placement="bottomLeft" content={`${addonBefore ?? ''}${numberToChineseFormatWithDecimal(value, data.isFormat)}${addonAfter ?? ''}`}>
