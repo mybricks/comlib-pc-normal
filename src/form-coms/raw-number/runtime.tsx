@@ -104,10 +104,6 @@ export default function (props: RuntimeParams<Data>) {
     });
   }, []);
 
-  useEffect(() => {
-    setValue(data.content);
-  }, [data.content]);
-
   return (
     <Popover placement="bottomLeft" content={`${addonBefore ?? ''}${numberToChineseFormatWithDecimal(value, data.isFormat)}${addonAfter ?? ''}`}>
       <span className={css.number}>{addonBefore ?? ''}{formatContent(value, data.isFormat)}{addonAfter ?? ''}</span>
