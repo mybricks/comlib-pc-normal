@@ -67,10 +67,6 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [value, data.expandRows]);
 
-  useEffect(() => {
-    setValue(data.content);
-  }, [data.content]);
-
   if (isIOS()) {
     return (
       <div className={css.textOverflowWrapperIOS}>

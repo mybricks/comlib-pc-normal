@@ -103,10 +103,6 @@ export default function (props: RuntimeParams<Data>) {
     });
   }, []);
 
-  useEffect(() => {
-    setValue(data.content);
-  }, [data.content]);
-
   return (
     <Popover
       placement="bottomLeft"
