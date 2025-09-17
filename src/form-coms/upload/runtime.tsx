@@ -10,6 +10,7 @@ import { slotInputIds } from '../form-container/constants';
 
 import css from './runtime.less';
 import { OutputIds, ValidateInfo } from '../types';
+import { compressImage } from '../utils';
 
 interface UploadConfig {
   buttonText: string;
@@ -51,6 +52,8 @@ export interface Data {
   dragIcon: string;
   /**@description v1.0.35 按钮尺寸 */
   buttonSize: string;
+  compressImage?: boolean;
+  compressQuality?: number;
 }
 
 interface Window {
@@ -299,7 +302,20 @@ export default function ({
     return uploadedList;
   };
   // 文件上传输出
-  const onCustomRequest = (fileList: UploadFile[]) => {
+  const onCustomRequest = async (fileList: UploadFile[]) => {
+    if (data.compressImage) {
+      const compressedFiles = await Promise.all(
+        fileList.map(async (file) => {
+          const newFile = await compressImage(file as any, data.compressQuality || 0.7) as any;
+          newFile.uid = file.uid;
+          if(newFile.size > (file.size || 0)) {
+            return file
+          }
+          return newFile;
+        })
+      );
+      fileList = compressedFiles;
+    }
     if (!data.customUpload) {
       if (typeof env.uploadFile !== 'function') {
         message.error(`应用的env中没有uploadFile方法`);
