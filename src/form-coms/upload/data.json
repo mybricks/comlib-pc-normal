@@ -25,5 +25,7 @@
   "textIcon": "UploadOutlined",
   "picIcon": "UploadOutlined",
   "picCardIcon": "PlusOutlined",
-  "dragIcon": "InboxOutlined"
+  "dragIcon": "InboxOutlined",
+  "compressImage": false,
+  "compressQuality": 0.7
 }
