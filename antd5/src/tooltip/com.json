@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "../../../src/tooltip/editors.tsx",
   "upgrade": "../../../src/tooltip/upgrade.ts",
+  "ai": "../../../src/tooltip/ai.ts",
   "inputs": [
     {
       "id": "content",
