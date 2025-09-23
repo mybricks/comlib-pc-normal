@@ -30,29 +30,9 @@ slots插槽
 tab0: 标签页1（tabN 代表标签项 N+1）
 
 styleAry声明
-标签整体: .nav_wrap
-  - 默认样式：
-    - height: 46px
-  - 可编辑样式：
-    - background,padding
-标签项（默认）: .nav_item
-  - 默认样式：
-    - color: #000000;
-    - fontSize: 14;
-  - 可编辑样式：
-    - color,fontSize
-标签项（激活）: .nav_item_active
-  - 默认样式：
-    - color: #1677FF;
-    - fontSize: 14;
-  - 可编辑样式：
-    - color,fontSize
-标签项选中条: .nav_line
-  - 默认样式: 一个位于高亮标签项下方的选中条
-    - width = 100%
-    - height = 2px
-    - backgroundColor: #1677FF
-  - 可编辑样式: height、backgroundColor
+标签为内部高度为46px的组件，有#1677FF的高亮色，对标antd的Tabs组件。
+  在默认状态下，由「标签」来控制字体颜色、背景
+  在激活状态下，由「标签文本」「标签」「选中条」来控制激活状态下的样式，选中条则是下方的高亮横线，默认为height = 2px，backgroundColor: #1677FF
 
 关于插槽的使用
 当需要插槽（隐藏插槽占位=false）时：
@@ -61,9 +41,8 @@ styleAry声明
   则隐藏插槽内容，高度只剩下标签高度；
 
 注意事项:
-  - 如果要配置「样式/默认/标签」的border、padding，必须同时配置「样式/激活/标签」为一样的值；
-  - 标签项之间有32的间距，配置padding要考虑这个间距；
-  - 标签项的上下默认含12px的padding；
+  - 标签项的上下默认含12px的padding，所有菜单项都不允许配置padding!；
+  - 因为没有继承效果，如果「样式/默认/标签」配置了样式，激活时的「标签文本」「标签」「选中条」也需要配置。
     `,
 //     usage: `
 // # data定义

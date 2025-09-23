@@ -9,6 +9,7 @@
   "data": "../../../src/steps/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/steps/editor",
+  "ai": "../../../src/steps/ai.ts",
   "upgrade": "../../../src/steps/upgrade.ts",
   "inputs": [
     {

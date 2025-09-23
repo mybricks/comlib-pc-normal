@@ -115,7 +115,11 @@ export const LayoutEditor = [
             return [data.grid.column];
           },
           set({ data, output }: EditorResult<Data>, val) {
-            data.grid.column = val[0];
+            if (!Array.isArray(val) && typeof val === 'number') {
+              data.grid.column = val
+            } else {
+              data.grid.column = val[0];
+            }
             const canSort = !!(data.layout === Layout.Grid && data.grid.column === 1);
             if (!canSort) {
               output.remove(OutputIds.SortComplete);
