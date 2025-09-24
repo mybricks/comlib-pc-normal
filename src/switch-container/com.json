@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "ai": "./ai/.ts",
   "inputs": [
     {
       "id": "setValue",

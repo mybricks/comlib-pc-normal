@@ -9,9 +9,9 @@
   "data": "../../../src/carousel/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/carousel/editors.tsx",
+  "ai": "../../../src/carousel/ai.ts",
   "inputs": [],
   "outputs": [],
-  "ai": "../../../src/carousel/ai.ts",
   "slots": [
     {
       "title": "轮播图1",

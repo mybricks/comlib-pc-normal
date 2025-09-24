@@ -8,21 +8,6 @@ export default {
     usage: `单行文本输入框 Input
 表单项组件，schema=form-item
 
-data数据模型
-visible?: boolean = true
-rules: []
-validateTrigger: ['onBlur', 'onPressEnter']
-config: {
-  allowClear: boolean = true
-  placeholder: string = '请输入内容' 
-  disabled: boolean = false
-  addonBefore?: string # 前置标签
-  addonAfter?: string # 后置标签
-  showCount?: boolean = false
-  maxLength?: number = -1
-  size?: ['middle', 'small', 'large'] = 'middle'
-}
-
 slots插槽
 无
 
@@ -30,11 +15,11 @@ schema声明
 form-item
 
 layout声明
-width: 默认为100%
-height: 不可配置，默认为fit-content (约等于32px)
+width: 为100%
+height: 不可配置，为fit-content (height=32px)，不能配置其他高度
 
 styleAry声明
-输入框: .ant-input
+输入框:
   - 默认样式
     - borderWidth: 1px
     - borderColor: #D9D9D9
@@ -45,10 +30,13 @@ styleAry声明
     - fontSize: 14px
   - 可配置样式: border, backgroundColor, color, fontSize
 
-输入框: .ant-input:hover 
+输入框:
   - 默认样式
     - borderColor: #1677ff
-  - 可配置样式: borderColor`
+  - 可配置样式: borderColor
+  
+注意：由于无法配置高度，实现特殊样式时可以将当前组件包裹在容器中，用容器来实现样式。
+  `
   },
   modifyTptJson: (component) => {
     let borderDomSelector, backgroundDomSelector, fontDomSelector, hoverBorderDomSelector;
@@ -111,5 +99,20 @@ styleAry声明
         hoverBorderDomSelector
       ].filter(item => !!item && Object.keys(item?.css ?? {}).length > 0)
     }
-  }
+  },
+  editors: [
+    '常规/提示内容',
+    '常规/显示清除图标',
+    '常规/禁用状态',
+    '常规/显示字数',
+    '样式/尺寸',
+    '样式/边框',
+    '样式/背景色',
+    '样式/文本内容',
+    '样式/提示内容',
+    '样式/清除按钮',
+    '样式/Hover/边框',
+    '样式/Hover/清除按钮',
+    '样式/Focus/边框',
+  ],
 }
