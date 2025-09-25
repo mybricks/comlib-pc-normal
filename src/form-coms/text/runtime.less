@@ -7,17 +7,22 @@
   }
 }
 :global(.ant-input-affix-wrapper-disabled:not(.ant-input-password)) {
-  border: none;
+  border: 1px solid #dfdfdf !important;
   background-color: transparent;
   color: inherit;
 }
 :global(.ant-input:not(.ant-select-selection-search-input)[disabled]) {
-  border: none;
+  border: initial !important;
   color: rgba(0, 0, 0, 0.85);
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
+}
+:global(.ant-input-textarea .ant-input[disabled]) {
+  border: 1px solid #dfdfdf !important;
+  color: rgba(0, 0, 0, 0.85);
+  background-color: transparent;
 }
 :global(.ant-picker-input>input[disabled]) {
-  border: none;
+  border: initial !important;
   color: rgba(0, 0, 0, 0.85);
 }
 :global {
