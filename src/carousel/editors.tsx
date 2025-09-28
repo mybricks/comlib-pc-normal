@@ -92,9 +92,11 @@ export default {
               if (!item.slotId) {
                 const slotId = uuid();
                 item.slotId = slotId;
-                slot.add(slotId, `轮播图${slotId}`);
               }
-              newItems.push(item);
+              if (!slot.get(item.slotId)) {
+                slot.add(item.slotId, `轮播图${item.slotId}`);
+              }
+              newItems.push({ ...(item ?? {}) });
             });
             data.items = newItems;
           }

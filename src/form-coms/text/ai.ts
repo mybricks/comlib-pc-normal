@@ -28,13 +28,11 @@ styleAry声明
     - backgroundColor: #FFFFFF
     - color: #000000
     - fontSize: 14px
-  - 可配置样式: border, backgroundColor, color, fontSize
-
-输入框:
-  - 默认样式
+    - 可配置样式: border, backgroundColor, color, fontSize
+  - Hover和Focus
     - borderColor: #1677ff
-  - 可配置样式: borderColor
-  
+    - 可配置样式: borderColor
+      
 注意：由于无法配置高度，实现特殊样式时可以将当前组件包裹在容器中，用容器来实现样式。
   `
   },
