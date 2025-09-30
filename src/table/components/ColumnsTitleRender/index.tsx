@@ -90,13 +90,14 @@ export default ({
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
     const content = cItem.hasTip ? (
-      <div>
+      <div style={{position: 'relative'}}>
         <span style={{ marginRight: '6px' }}>{title}</span>
         <Tooltip
-          placement="topLeft"
+          placement="right"
           title={tip}
           overlayClassName={css.ellipsisTooltip}
-          getPopupContainer={() => env?.canvasElement || document.body}
+          getPopupContainer={(node) => node.parentElement!}
+          // getPopupContainer={() => env?.canvasElement || document.body}
         >
           <InfoCircleOutlined />
         </Tooltip>
