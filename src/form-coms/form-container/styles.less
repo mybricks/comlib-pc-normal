@@ -24,8 +24,8 @@
     .ant-form-inline .ant-form-item > .ant-form-item-control {
       min-width: 0;
     }
-    
-    .ant-form-item-label>label .ant-form-item-tooltip {
+
+    .ant-form-item-label > label .ant-form-item-tooltip {
       color: var(--ant-primary-color, #1890ff);
     }
   }
@@ -267,5 +267,11 @@
 .disableMobileWrapper {
   :global {
     .keepMobileWidth();
+    // antd媒体查询会给.ant-form-item-control flex属性设置0 0 100%，这里需要重写掉
+    @media (max-width: 575px) {
+      .ant-form .ant-form-item .ant-form-item-control {
+        flex: 1 1 0;
+      }
+    }
   }
 }
