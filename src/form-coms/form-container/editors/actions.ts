@@ -20,6 +20,23 @@ export const actionsEditor = (data: Data, output, env) => {
         }
       },
       {
+        title: '临界数量',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.enableEditForm;
+        },
+        description: '超过这个数量将显示展开/收起按钮',
+        type: 'InputNumber',
+        options: [{ min: 0, width: 120 }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.actions.enableEditFormExpandShowNum]
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.actions.enableEditFormExpandShowNum = val[0]
+          }
+        }
+      },
+      {
         title: '事件',
         ifVisible({ data }: EditorResult<Data>) {
           return data.actions.enableEditForm;

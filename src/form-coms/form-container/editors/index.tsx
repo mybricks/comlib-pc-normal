@@ -10,7 +10,7 @@ import formItemEditor from './form-item';
 import additionFormItemEditor from './form-addition-item';
 import { SizeOptions, SizeEnum } from '../../types';
 import { createrCatelogEditor } from '../../utils';
-import { isSameDomainInstanceAndService } from "../../../utils/domainModel";
+import { isSameDomainInstanceAndService } from '../../../utils/domainModel';
 
 export default {
   '@init'({ style }) {},
@@ -31,7 +31,12 @@ export default {
       refreshParamsSchema(data, outputs);
     }
   },
-  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, configs = {} as { name: string; label: string;}) {
+  '@childAdd'(
+    { data, inputs, outputs, logs, slots },
+    child,
+    curSlot,
+    configs = {} as { name: string; label: string }
+  ) {
     if (curSlot.id === 'content') {
       const { id, title, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
@@ -50,10 +55,10 @@ export default {
           const nowC = data.nameCount++;
 
           const { name: itemName, label: itemLabel } = configs;
-          
+
           data.items.push({
             id,
-            outputId:id+'tag',
+            outputId: id + 'tag',
             comName: name,
             schema: com.schema,
             name: itemName || `表单项${nowC}`,
@@ -199,7 +204,7 @@ export default {
   '@resize': {
     options: ['width']
   },
-  "@domainModel": {
+  '@domainModel': {
     get({ data }) {
       return data._domainModel;
     },
@@ -208,36 +213,37 @@ export default {
         data._domainModel = _domainModel;
         return;
       }
-      
+
       if (isSameDomainInstanceAndService(data._domainModel, _domainModel)) {
         return;
       }
       // 类型校验
       const { service } = _domainModel;
 
-      if (service?.method === "post") {
+      if (service?.method === 'post') {
         // 清空表单项
         slot.get('content').clear();
         service.params.forEach((param) => {
-          if (!param["x-read-only"]) {
-            slot.get('content')
-              .addCom(
-                ANTD_VERSION === 4 ? "mybricks.normal-pc.form-text" : "mybricks.normal-pc.antd5.form-text",
-                false,
-                { deletable: true, movable: true },
-                // visible: param["x-read-only"] ? false: true
-                {
-                  name: param.name,
-                  label: param.title || param.name
-                }
-              );
+          if (!param['x-read-only']) {
+            slot.get('content').addCom(
+              ANTD_VERSION === 4
+                ? 'mybricks.normal-pc.form-text'
+                : 'mybricks.normal-pc.antd5.form-text',
+              false,
+              { deletable: true, movable: true },
+              // visible: param["x-read-only"] ? false: true
+              {
+                name: param.name,
+                label: param.title || param.name
+              }
+            );
           }
         });
         data._domainModel = _domainModel;
       } else {
-        console.warn("[表单容器] 领域模型服务类型不匹配", _domainModel);
+        console.warn('[表单容器] 领域模型服务类型不匹配', _domainModel);
       }
-    },
+    }
   },
   ':root': {
     style: [
@@ -249,6 +255,36 @@ export default {
             options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-form'
           }
+        ]
+      },
+      {
+        title: '编辑表单配置',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.enableEditForm;
+        },
+        items: [
+          {
+            title: '展开/收起按钮容器',
+            catelog: '默认',
+            target: '.edit-form__operation .edit-form__operation-expand',
+            options: ['margin'],
+          },
+          {
+            title: '操作按钮容器',
+            catelog: '默认',
+            target: '.edit-form__operation .edit-form__operation-expand-margin-left',
+            options: ['margin'],
+          },
+          {
+            title: '操作按钮-提交',
+            catelog: '默认',
+            target: '.edit-form__operation .edit-form__operation-expand-margin-left .edit-form__operation-expand__btn-submit',
+          },
+          {
+            title: '操作按钮-重置',
+            catelog: '默认',
+            target: '.edit-form__operation .edit-form__operation-expand-margin-left .edit-form__operation-expand__btn-reset',
+          },
         ]
       },
       {
@@ -264,7 +300,10 @@ export default {
                     catelog: '默认',
                     title: '背景色',
                     options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-                    target: [`.ant-form-item > div.ant-col.ant-form-item-label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`]
+                    target: [
+                      `.ant-form-item > div.ant-col.ant-form-item-label`,
+                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label`
+                    ]
                   },
                   {
                     catelog: '默认',

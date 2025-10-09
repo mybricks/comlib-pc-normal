@@ -10,6 +10,8 @@
   "expandText": "展开",
   "collapsedText": "收起",
   "actions": {
+    "enableEditForm": false,
+    "enableEditFormExpandShowNum": 6,
     "visible": false,
     "widthOption": "span",
     "span": 24,

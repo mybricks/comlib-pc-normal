@@ -10,13 +10,13 @@
 
   .operation {
     display: flex;
-    &.operationvertical {
+    &.operation-vertical {
       margin-top: 32px;
       .operationExpand {
-        margin-top: 80px;
+        margin-top: 64px;
       }
       .operationBtnReset {
-        margin-top: 48px;
+        margin-top: 32px;
       }
     }
     &BtnSubmit {
@@ -26,16 +26,20 @@
     &BtnReset {
       display: block;
       width: 90px;
-      margin-top: 16px;
+      margin-top: 24px;
     }
     &Expand {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 48px;
+      margin-top: 56px;
+      &MarginLeft {
+        margin-left: 32px;
+      }
       &Row {
         white-space: nowrap;
-        margin: 0 8px;
+        height: fit-content;
         line-height: 32px;
+        margin: 0 8px;
         color: var(--ant-primary-color, #1890ff);
         cursor: pointer;
         &Name {

@@ -775,8 +775,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {data.useDynamicItems && !env.runtime && templateLable()}
       </Fragment>
       {data.actions.enableEditForm && (
-        <div className={css.operation + ' ' + css['operation' + data.config?.layout]}>
-          <div className={css.operationExpand}>
+        <div className={css.operation + ' edit-form__operation ' + css['operation-' + data.config?.layout]}>
+          {data.items.length + data.additionalItems.length > data.actions.enableEditFormExpandShowNum && <div className={classnames({
+            [css.operationExpand]: true,
+            'edit-form__operation-expand': true,
+          })}>
             {isOperationFold ? (
               <div className={css.operationExpandRow} onClick={() => setIsOperationFold((v) => !v)}>
                 <DownOutlined />
@@ -788,10 +791,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 <span className={css.operationExpandRowName}>{env.i18n('收起')}</span>
               </div>
             )}
-          </div>
-          <div>
+          </div>}
+          <div className={classnames({
+            [css.operationExpandMarginLeft]: data.items.length + data.additionalItems.length <= data.actions.enableEditFormExpandShowNum,
+            'edit-form__operation-expand-margin-left': true,
+          })}>
             <Button
-              className={css.operationBtnSubmit}
+              className={css.operationBtnSubmit + ' edit-form__operation-expand__btn-submit'}
               type="primary"
               onClick={() => {
                 if (env.runtime) {
@@ -857,7 +863,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               查询
             </Button>
             <Button
-              className={css.operationBtnReset}
+              className={css.operationBtnReset  + ' edit-form__operation-expand__btn-reset'}
               onClick={() => {
                 if (env.runtime) {
                   resetFields(outputs['onClickOperateReset']);
