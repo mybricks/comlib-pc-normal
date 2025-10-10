@@ -110,7 +110,7 @@ export default function (props: RuntimeParams<Data>) {
         addonAfter ?? ''
       }`}
     >
-      <span className={css.rawNumber}>
+      <span className={css.rawNumber + ' raw-number'}>
         {addonBefore ?? ''}
         {formatContent(value, data.isFormat)}
         {addonAfter ?? ''}

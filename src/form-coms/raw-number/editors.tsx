@@ -10,7 +10,13 @@ export default {
     options: ['width']
   },
   ':root': {
-    style: [],
+    style: [
+      {
+        title: '文本内容',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: '.raw-number'
+      },
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[0].items = [
@@ -31,8 +37,7 @@ export default {
         {
           title: '格式化',
           type: 'switch',
-          description:
-            '勾选后自动对数字进行两位小数格式化',
+          description: '勾选后自动对数字进行两位小数格式化',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.isFormat;
@@ -73,7 +78,7 @@ export default {
               data.addonAfter = value;
             }
           }
-        },
+        }
         // {
         //   title: '事件',
         //   items: [
