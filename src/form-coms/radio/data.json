@@ -24,6 +24,7 @@
   },
   "layout": "horizontal",
   "enableButtonStyle": false,
+  "autoBreakLine": false,
   "buttonStyle": "outline",
   "isEditable": true,
   "autoFocus": false

@@ -348,6 +348,18 @@ export default {
             }
           }
         },
+         {
+          title: '自动换行',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return data.autoBreakLine;
+            },
+            set({ data }, value: boolean) {
+              data.autoBreakLine = value;
+            }
+          }
+        },
         {
           title: '使用按钮样式',
           description: '是否使用按钮样式',
