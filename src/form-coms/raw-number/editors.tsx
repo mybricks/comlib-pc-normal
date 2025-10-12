@@ -10,7 +10,13 @@ export default {
     options: ['width']
   },
   ':root': {
-    style: [],
+    style: [
+      {
+        title: '文本内容',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: '.raw-number'
+      },
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[0].items = [
@@ -25,6 +31,20 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.content = value;
+            }
+          }
+        },
+        {
+          title: '缺省值',
+          type: 'text',
+          description:
+            '对内容为null、undefined、空字符串的输入值替换为该缺省值',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.placeholderValue;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.placeholderValue = value;
             }
           }
         },

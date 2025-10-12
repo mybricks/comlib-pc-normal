@@ -1,19 +1,27 @@
 import { Popover } from 'antd';
-import React, { useLayoutEffect, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
-import css from './runtime.less';
+
 export interface Data {
   content: string | undefined;
+  placeholderValue?: string;
   addonBefore?: string;
   addonAfter?: string;
   isFormat: boolean;
 }
 
-function numberToChineseFormatWithDecimal(num: string = '', isFormat) {
+function numberToChineseFormatWithDecimal(
+  num: string = '',
+  isFormat,
+  placeholderValue,
+  addonBefore,
+  addonAfter
+) {
   // 如果是非法数字直接返回
+  if (num === null || num === '' || num === undefined) return placeholderValue || '';
   if (Number.isNaN(Number(num))) {
-    return num;
+    return (addonBefore || '') + num + (addonAfter || '');
   }
 
   const [integer, decimal] = (isFormat ? Number(num).toFixed(2) : String(num)).split('.');
@@ -25,8 +33,9 @@ function numberToChineseFormatWithDecimal(num: string = '', isFormat) {
   ];
 
   let calcNum = Number(integer);
-  if (calcNum === 0) return '0' + (decimal === '00' || !decimal ? '' : '.' + decimal);
+  if (calcNum === 0) return (addonBefore || '') + '0' + (decimal === '00' || !decimal ? '' : '.' + decimal) + (addonAfter || '');
   return (
+    (addonBefore || '') +
     units.reduce((prev: string, curr) => {
       // 计算出当前数字是几个对应的unit
       const currentUnit = Number(calcNum) / curr.unit;
@@ -41,14 +50,27 @@ function numberToChineseFormatWithDecimal(num: string = '', isFormat) {
         return prev;
       }
       // 最后再拼接小数部分，按照原型如果这里是.00则不进行展示
-    }, '') + (decimal === '00' || !decimal ? '' : '.' + decimal)
+    }, '') +
+    (decimal === '00' || !decimal ? '' : '.' + decimal) +
+    (addonAfter || '')
   );
 }
 
-function formatContent(content: string | undefined, isFormat) {
+function formatContent(
+  content: string | undefined,
+  isFormat,
+  placeholderValue,
+  addonBefore,
+  addonAfter
+) {
+  if (content === null || content === '' || content === undefined) return placeholderValue || '';
   // 如果不是合法的数字则不进行千分位格式化
-  if (Number.isNaN(Number(content))) return content;
-  return String(isFormat ? Number(content).toFixed(2) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  if (Number.isNaN(Number(content))) return (addonBefore || '') + content + (addonAfter || '');
+  return (
+    (addonBefore || '') +
+    String(isFormat ? Number(content).toFixed(2) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+    (addonAfter || '')
+  );
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -105,8 +127,13 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   return (
-    <Popover placement="bottomLeft" content={`${addonBefore ?? ''}${numberToChineseFormatWithDecimal(value, data.isFormat)}${addonAfter ?? ''}`}>
-      <span className={css.number}>{addonBefore ?? ''}{formatContent(value, data.isFormat)}{addonAfter ?? ''}</span>
+    <Popover
+      placement="bottomLeft"
+      content={`${numberToChineseFormatWithDecimal(value, data.isFormat, data.placeholderValue, addonBefore, addonAfter)}`}
+    >
+      <span className={'raw-number'}>
+        {formatContent(value, data.isFormat, data.placeholderValue, addonBefore, addonAfter)}
+      </span>
     </Popover>
   );
 }
