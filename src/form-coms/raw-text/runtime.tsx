@@ -6,16 +6,13 @@ import css from './runtime.less';
 
 export interface Data {
   content: string | undefined;
+  placeholderValue?: string;
   expandRows: number;
 }
 
 function isIOS() {
   const u = navigator.userAgent;
-  return (
-    !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) ||
-    u.includes('iPhone') ||
-    u.includes('iPad')
-  );
+  return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) || u.includes('iPhone') || u.includes('iPad');
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -61,13 +58,13 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   useEffect(() => {
-    if (
-      !!value &&
-      textRef.current &&
-      textRef.current?.getBoundingClientRect().height > data.expandRows * 22
-    ) {
-      setWithHiddenStyle(true);
-      setToggleHiddenStyle(true);
+    if (!!value && textRef.current) {
+      // const lineHeight = getComputedStyle(textRef.current).lineHeight.match(/[0-9]+/)?.[0];
+      // 这里如果行高被修改过，会导致样式出现问题（展开按钮无法对齐），因此先固定行高为22
+      if (textRef.current?.getBoundingClientRect().height > data.expandRows * 22) {
+        setWithHiddenStyle(true);
+        setToggleHiddenStyle(true);
+      }
     }
   }, [value, data.expandRows]);
 
@@ -81,7 +78,9 @@ export default function (props: RuntimeParams<Data>) {
           }}
           ref={textRef}
         >
-          <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
+          <span style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
+            {value || data.placeholderValue}
+          </span>
         </div>
         {withHiddenStyle && (
           <Button
@@ -118,7 +117,9 @@ export default function (props: RuntimeParams<Data>) {
             {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
           </Button>
         )}
-        <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
+        <span style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
+          {value || data.placeholderValue}
+        </span>
       </div>
     </div>
   );
