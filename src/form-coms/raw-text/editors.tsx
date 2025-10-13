@@ -12,7 +12,7 @@ export default {
     style: [
       {
         title: '内容',
-        type: 'style',
+        options: [{ type: 'font', config: { disableTextAlign: true, disableLineHeight: true } }],
         target: '.raw-text-content'
       },
     ],
