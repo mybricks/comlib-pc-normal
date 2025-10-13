@@ -6,6 +6,7 @@ import css from './runtime.less';
 
 export interface Data {
   content: string | undefined;
+  placeholderValue?: string;
   expandRows: number;
 }
 
@@ -77,7 +78,7 @@ export default function (props: RuntimeParams<Data>) {
           }}
           ref={textRef}
         >
-          <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
+          <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value || data.placeholderValue}</span>
         </div>
         {withHiddenStyle && (
           <Button
@@ -114,7 +115,7 @@ export default function (props: RuntimeParams<Data>) {
             {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
           </Button>
         )}
-        <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value}</span>
+        <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value || data.placeholderValue}</span>
       </div>
     </div>
   );

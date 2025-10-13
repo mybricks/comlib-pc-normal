@@ -1,5 +1,3 @@
-import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
 import { Data } from './runtime';
 
 export default {
@@ -35,6 +33,20 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.content = value;
+            }
+          }
+        },
+        {
+          title: '缺省值',
+          type: 'text',
+          description:
+            '对内容为null、undefined、空字符串的输入值替换为该缺省值',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.placeholderValue;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.placeholderValue = value;
             }
           }
         },
