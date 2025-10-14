@@ -184,7 +184,7 @@ export default function Runtime({
             value={value}
             onChange={onChange}
           >
-            <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+            <Space direction={data.layout === 'vertical' ? 'vertical' : void 0} wrap={data.autoBreakLine}>
               {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
                 const label = item.label;
                 const autoFocus =

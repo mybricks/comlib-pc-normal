@@ -7,6 +7,7 @@ export interface Data {
   value: number | string | undefined;
   staticOptions: Option[];
   enableButtonStyle: boolean;
+  autoBreakLine?: boolean;
   buttonStyle: 'outline' | 'solid';
   layout: 'vertical' | 'horizontal';
   isEditable: boolean;
