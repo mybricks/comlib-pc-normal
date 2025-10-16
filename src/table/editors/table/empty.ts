@@ -1,4 +1,5 @@
 import { Data } from '../../types';
+import { SlotIds} from '../../constants';
 
 export const emptyEditor = [
   {
@@ -47,7 +48,43 @@ export const emptyEditor = [
         data.description = value;
       }
     }
-  }
+  },
+  {
+    title: '空状态插槽',
+    items: [
+      {
+        title: '开启空状态插槽',
+        description: '开启后，支持在表格空状态时自定义内容', 
+        type: 'switch', 
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useEmptySlot; 
+          },
+          set({ data, slot }: EditorResult<Data>, value: boolean) {
+            if (value) {
+              slot.add(SlotIds.EMPTY_CONTENT, '空状态插槽');
+            } else {
+              slot.remove(SlotIds.EMPTY_CONTENT);
+            }
+            data.useEmptySlot = value;
+          }
+        }
+      },
+      {
+        title: '空状态配置',
+        description: '开启后，用于插槽的空状态配置', 
+        type: 'switch', 
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useShowEmptySlot; 
+          },
+          set({ data, slot }: EditorResult<Data>, value: boolean) {
+            data.useShowEmptySlot = value;
+          }
+        }
+      },
+    ]
+  },
 ];
 
 export const emptyStyleEditor = {
