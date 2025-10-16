@@ -196,6 +196,71 @@ export default {
           }
         }
       }
-    }
+    },
+    {
+      title: '行移入',
+      description: '开启后，可以响应行移入事件',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.enableRowMouseEnter;
+        },
+        set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
+          data.enableRowMouseEnter = value;
+          if (value) {
+            output.add(OutputIds.ROW_MOUSE_ENTER, '行移入事件', Schemas.ROW_CLICK);
+            setDataSchema({ data, output, ...res });
+          } else {
+            output.remove(OutputIds.ROW_MOUSE_ENTER);
+          }
+        }
+      }
+    },
+
+    {
+      title: '行移入事件',
+      description: '在打开行点击开关后，可以在该事件内编排行移入事件',
+      type: '_Event',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.enableRowMouseEnter;
+      },
+      options: () => {
+        return {
+          outputId: OutputIds.ROW_MOUSE_ENTER
+        };
+      }
+    },
+    {
+      title: '行移出',
+      description: '开启后，可以响应行移出事件',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.enableRowMouseLeave;
+        },
+        set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
+          data.enableRowMouseLeave = value;
+          if (value) {
+            output.add(OutputIds.ROW_MOUSE_LEAVE, '行移出事件', Schemas.ROW_CLICK);
+            setDataSchema({ data, output, ...res });
+          } else {
+            output.remove(OutputIds.ROW_MOUSE_LEAVE);
+          }
+        }
+      }
+    },
+    {
+      title: '行移出事件',
+      description: '在打开行点击开关后，可以在该事件内编排行移出事件',
+      type: '_Event',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.enableRowMouseLeave;
+      },
+      options: () => {
+        return {
+          outputId: OutputIds.ROW_MOUSE_LEAVE
+        };
+      }
+    },
   ]
 };

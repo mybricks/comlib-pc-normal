@@ -347,6 +347,24 @@ function setRowClickSchema(dataSchema: object, { output }: Props) {
   output.get(OutputIds.ROW_DOUBLE_CLICK)?.setSchema(schema);
 }
 
+// 行点击事件schema
+function setRowMouseSchema(dataSchema: object, { output }: Props) {
+  const schema = {
+    type: 'object',
+    properties: {
+      index: {
+        type: 'number'
+      },
+      record: {
+        type: 'object',
+        properties: dataSchema
+      }
+    }
+  };
+  output.get(OutputIds.ROW_MOUSE_ENTER)?.setSchema(schema);
+  output.get(OutputIds.ROW_MOUSE_LEAVE)?.setSchema(schema);
+}
+
 /**
  * upgrade时候更新列插槽作用域schema
  * @param
@@ -377,6 +395,7 @@ export function setDataSchema({ data, output, input, slot, env }: setDataSchemaP
   setExpandSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
   setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot, env });
   setRowClickSchema(dataSchema, { data, output, input, slot });
+  setRowMouseSchema(dataSchema, { data, output, input, slot });
 }
 
 export const setCol = <T extends keyof IColumn, P extends IColumn[T]>(

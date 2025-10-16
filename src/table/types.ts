@@ -199,6 +199,8 @@ export interface Data {
   enableCellFocus?: boolean;
   enableRowFocus: boolean;
   focusRowStyle: any;
+  enableRowMouseEnter: boolean;
+  enableRowMouseLeave: boolean;
   domainModel: {
     entity?: any;
   };
