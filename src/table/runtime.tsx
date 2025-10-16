@@ -1324,6 +1324,12 @@ export default function (props: RuntimeParams<Data>) {
           outputs[OutputIds.ROW_CLICK]({ record, index });
         }
       },
+      onMouseEnter: () => {
+          outputs[OutputIds.ROW_MOUSE_ENTER]?.({ record, index });
+      },
+      onMouseLeave: () => {
+          outputs[OutputIds.ROW_MOUSE_LEAVE]?.({ record, index });
+      },
       onDoubleClick: () => {
         if (data.enableRowDoubleClick) {
           outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
