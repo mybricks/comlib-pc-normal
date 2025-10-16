@@ -234,6 +234,8 @@ export interface Data {
   //isImage: boolean;
   //图片地址
   image: string;
+  //是否自定义空状态插槽 
+  useEmptySlot: boolean;
   onRowScript: string;
   enableDynamicChangeCols: boolean; // 动态修改列属性
 
