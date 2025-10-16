@@ -1461,7 +1461,7 @@ export default function (props: RuntimeParams<Data>) {
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
                 }}
-                dataSource={((edit && !data.useEmptySlot) || !data.useShowEmptySlot) ? defaultDataSource : demandDataSource}
+                dataSource={(edit && (!data.useEmptySlot || !data.useShowEmptySlot)) ? defaultDataSource : demandDataSource}
                 loading={{
                   tip: env.i18n(data.loadingTip),
                   spinning: loading
