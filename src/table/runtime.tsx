@@ -1386,6 +1386,7 @@ export default function (props: RuntimeParams<Data>) {
     };
   }, [slots]);
 
+  //默认和自定义空状态内容
   const customizeRenderEmpty = () => (
     <div
       style={{
@@ -1401,6 +1402,14 @@ export default function (props: RuntimeParams<Data>) {
       />
     </div>
   );
+
+  //渲染带插槽的空状态
+  const renderEmpty = data.isEmpty ?
+    customizeRenderEmpty : (
+      data.useEmptySlot ?
+      ()=>slots[SlotIds.EMPTY_CONTENT]?.render?.() :
+      void 0
+    )
 
   const templateLable = () => {
     return (
@@ -1437,7 +1446,7 @@ export default function (props: RuntimeParams<Data>) {
     <div ref={ref} className={`${css.tableWarrper} tableWarrper`}>
       <ConfigProvider
         locale={env.vars?.locale}
-        renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
+        renderEmpty={renderEmpty}
       >
         <TableContext.Provider value={contextValue}>
           <div className={`${css.table} table ${scrollHeight ? css.scrollTable : ''}`}>
@@ -1462,7 +1471,7 @@ export default function (props: RuntimeParams<Data>) {
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
                 }}
-                dataSource={edit ? defaultDataSource : demandDataSource}
+                dataSource={(edit && (!data.useEmptySlot || !data.useShowEmptySlot)) ? defaultDataSource : demandDataSource}
                 loading={{
                   tip: env.i18n(data.loadingTip),
                   spinning: loading

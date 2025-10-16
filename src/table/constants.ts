@@ -9,7 +9,9 @@ export const SlotIds = {
   HEADER_TITLE: 'headerTitle',
   HEADER_OPERATION: 'headerOperation',
 
-  ROW_SELECTION_OPERATION: 'rowSelectionOperation'
+  ROW_SELECTION_OPERATION: 'rowSelectionOperation',
+  //空状态插槽
+  EMPTY_CONTENT: 'emptyContent'
 };
 export const InputIds = {
   // 获取勾选项
