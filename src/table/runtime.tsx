@@ -1317,7 +1317,7 @@ export default function (props: RuntimeParams<Data>) {
         if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
           setCurrentSelectRows(_record);
         }
-        if (data.enableRowFocus) {
+        if (data.enableRowFocus) { 
           setFocusRowIndex(index === focusRowIndex ? null : index);
         }
         if (data.enableRowClick) {
@@ -1332,7 +1332,17 @@ export default function (props: RuntimeParams<Data>) {
           setFocusRowIndex(index === focusRowIndex ? null : index);
         }
       },
-      ...props
+      onMouseEnter: () => {
+        if(data.enableRowMouseEnter){
+          outputs[OutputIds.ROW_MOUSE_ENTER]?.({ record, index });
+        }
+      },
+      onMouseLeave: () => {
+        if(data.enableRowMouseLeave){
+          outputs[OutputIds.ROW_MOUSE_LEAVE]?.({ record, index });
+        }
+      },
+      ...props,
     };
   };
 
