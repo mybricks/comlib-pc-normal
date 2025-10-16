@@ -221,6 +221,22 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "rowMouseEnter",
+      "title": "鼠标移入",
+      "desc": "鼠标移入事件",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "rowMouseLeave",
+      "title": "鼠标移出",
+      "desc": "鼠标移出事件",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "slots": [

@@ -110,6 +110,10 @@ export const OutputIds = {
   Row_Move_Down: 'rowMoveDown',
   Remove_Row: 'removeRow',
   COLUMNS_CHANGE: 'columnsChange',
+  //行移入触发
+  ROW_MOUSE_ENTER: 'rowMouseEnter',
+  //行移出触发
+  ROW_MOUSE_LEAVE: 'rowMouseLeave',
 
   // 新增对应串行输出
   SET_DATA_SOURCE: 'dataSource',

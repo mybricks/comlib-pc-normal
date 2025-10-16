@@ -196,6 +196,36 @@ export default {
           }
         }
       }
-    }
+    },
+
+    {
+      title: '行鼠标移入',
+      description: '在打开行点击开关后，可以在该事件内编排行鼠标移入逻辑',
+      type: '_Event',
+      // ifVisible({ data }: EditorResult<Data>) {
+      //   return data.enableRowClick;
+      // },
+      options: {
+        outputId: OutputIds.ROW_MOUSE_ENTER
+      }
+      // options: () => {
+      //   return {
+      //     outputId: OutputIds.ROW_MOUSE_ENTER
+      //   };
+      // }
+    },
+    {
+      title: '行鼠标移出',
+      description: '在打开行点击开关后，可以在该事件内编排行鼠标滑出逻辑',
+      type: '_Event',
+      // ifVisible({ data }: EditorResult<Data>) {
+      //   return data.enableRowClick;
+      // },
+      options: () => {
+        return {
+          outputId: OutputIds.ROW_MOUSE_LEAVE
+        };
+      }
+    },
   ]
 };
