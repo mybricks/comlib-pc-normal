@@ -1,8 +1,21 @@
-import { Data, InputIds, ScopeSlotIds, TypeEnum } from '../constants';
+import { Data, InputIds, ScopeSlotIds, TypeEnum, LayoutEnum } from '../constants';
 import { createItem, updateIOSchema } from './utils';
 import { updateScopeIOSchema } from './item/baseEditor';
 
 export const BaseEditor = [
+  {
+    title: '垂直布局',
+    type: 'Switch',
+    description: '设置布局方式，默认为横向排版', //TODO_COPY
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.layout ===  LayoutEnum.Vertical;
+      },
+      set({ data }: EditorResult<Data>, value: boolean) {
+        data.layout = value ? LayoutEnum.Vertical : LayoutEnum.Horizontal;
+      }
+    }
+  },
   {
     title: '显示冒号',
     type: 'Switch',
