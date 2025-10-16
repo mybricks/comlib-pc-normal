@@ -5,7 +5,7 @@ import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
 import { message } from 'antd';
-import css from '../runtime.less';
+import css from '../runtime.less'; 
 
 export const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
