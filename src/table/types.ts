@@ -218,6 +218,7 @@ export interface Data {
   defaultExpandAllRows: boolean;
 
   useSummaryColumn: boolean; // 是否开启总结栏
+  summaryFixedBottom: boolean; // 总结栏是否固定在底部展示
   summaryColumnTitle: string; // 总结栏 title
   summaryCellTitleCol: number; // 总结栏 title col
   summaryColumnContentType: 'text' | 'slotItem'; // 总结栏内容类型
