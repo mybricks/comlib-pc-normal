@@ -27,6 +27,7 @@
     "top",
     "bottom"
   ],
+  "toggleRowSelection": true,
   "useLoading": true,
   "tableLayout": "fixed",
   "loadingTip": "",

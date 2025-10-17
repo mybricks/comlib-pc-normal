@@ -382,6 +382,13 @@ export default function (props: RuntimeParams<Data>) {
           handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
         });
 
+      // 勾选项显示隐藏
+      inputs[InputIds.SET_TOGGLE_ROW_SELECTION] &&
+      inputs[InputIds.SET_TOGGLE_ROW_SELECTION]((val: any, relOutputs: any) => {
+        data.toggleRowSelection = val
+        handleOutputFn(relOutputs, OutputIds.SET_TOGGLE_ROW_SELECTION, val);
+      });
+
       // 清空勾选
       inputs[InputIds.CLEAR_ROW_SELECTION] &&
         inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
@@ -1481,7 +1488,7 @@ export default function (props: RuntimeParams<Data>) {
                 size={data.size as any}
                 bordered={data.bordered}
                 pagination={false}
-                rowSelection={data.useRowSelection ? rowSelection : undefined}
+                rowSelection={data.useRowSelection && data.toggleRowSelection ? rowSelection : undefined}
                 showHeader={data.showHeader === false && env.runtime ? false : true}
                 rowClassName={(_, index) => {
                   if (data.enableStripe) {
