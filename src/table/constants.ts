@@ -24,6 +24,9 @@ export const InputIds = {
   // 设置禁用勾选
   SET_DISABLED_ROW_SELECTION: 'setDisabledRowSelection',
 
+  // 设置勾选显示隐藏
+  SET_TOGGLE_ROW_SELECTION: 'setToggleRowSelection',
+
   // 设置选中行
   SET_FOCUS_ROW: 'setFocusRow',
 
@@ -116,6 +119,8 @@ export const OutputIds = {
   ROW_MOUSE_ENTER: 'rowMouseEnter',
   //行移出
   ROW_MOUSE_LEAVE: 'rowMouseLeave',
+  //行勾选切换
+  SET_TOGGLE_ROW_SELECTION: 'setToggleRowSelection',
 
   // 新增对应串行输出
   SET_DATA_SOURCE: 'dataSource',
