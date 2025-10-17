@@ -82,6 +82,7 @@
   },
   "domainModel": {},
   "useSummaryColumn": false,
+  "summaryFixedBottom": false,
   "summaryColumnTitle": "合计",
   "summaryCellTitleCol": 1,
   "summaryColumnContentType": "text",

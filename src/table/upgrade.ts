@@ -137,6 +137,9 @@ export default function ({
   if (data?.useSummaryColumn === undefined) {
     data.useSummaryColumn = false;
   }
+  if (data?.summaryFixedBottom === undefined) {
+    data.summaryFixedBottom = false;
+  }
   if (data?.summaryColumnTitle === undefined) {
     data.summaryColumnTitle = '合计';
   }

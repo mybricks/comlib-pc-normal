@@ -8,6 +8,19 @@ const SummaryColumnEditor = {
       cateAry[0].title = '常规';
       cateAry[0].items = [
         {
+          title: '总结栏是否固定底部',
+          description: '开启后，总结栏将不随列表上下滚动，会固定在底部展示',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.summaryFixedBottom;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.summaryFixedBottom = value;
+            }
+          }
+        },
+        {
           title: '标题内容',
           type: 'text',
           value: {

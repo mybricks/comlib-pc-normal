@@ -47,6 +47,7 @@ import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
 import useDemandDataSource from './hooks/use-demand-data-source';
 import { useConnector } from '../utils/connector';
+import classNames from 'classnames';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -1327,7 +1328,7 @@ export default function (props: RuntimeParams<Data>) {
         </div>
       </div>
     );
-  };
+  }
   return (
     <div ref={ref} className={`${css.tableWarrper} tableWarrper`}>
       <ConfigProvider
@@ -1348,7 +1349,11 @@ export default function (props: RuntimeParams<Data>) {
             />
             {data.columns?.filter(({ visible }) => visible)?.length ? (
               <Table
-                className={data.showHeader === false ? `mybricks-table ${css.noHeaderTable}` : "mybricks-table"}
+                className={classNames({
+                  "mybricks-table": true,
+                  [css.noHeaderTable]: data.showHeader === false,
+                  [css.summaryFixedBottom]: data.summaryFixedBottom,
+                })}
                 style={{
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
