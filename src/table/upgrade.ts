@@ -151,6 +151,9 @@ export default function ({
       type: 'string'
     };
   }
+  if(data?.toggleRowSelection === undefined){
+    data.toggleRowSelection = true
+  }
 
   /**
    * @description 1.0.68->1.0.69  更改target

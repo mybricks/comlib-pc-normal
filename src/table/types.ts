@@ -167,6 +167,7 @@ export interface Data {
   // 使用动态设置禁用勾选
   useSetDisabledRowSelection?: boolean;
   rowSelectionMessage?: string;
+  toggleRowSelection: boolean;
   // 排序参数
   sortParams?: {
     id?: string;

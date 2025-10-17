@@ -35,7 +35,7 @@ export default (props: Props): JSX.Element => {
         (useBottomRowSelection || data.usePagination) && css.marginTop
       )}
     >
-      {useBottomRowSelection && RenderBatchBtns(props)}
+      {useBottomRowSelection && data.toggleRowSelection && RenderBatchBtns(props)}
       {data.usePagination && (
         <div
           className={classnames(css.pagination)}

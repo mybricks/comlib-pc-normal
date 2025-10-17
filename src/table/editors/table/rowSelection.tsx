@@ -59,10 +59,13 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             output.add(OutputIds.ROW_SELECTION, '勾选事件', Schemas.Object);
             output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.Object);
             output.add(OutputIds.CLEAR_ROW_SELECTION, '清空勾选后', Schemas.Void);
+            output.add(OutputIds.SET_TOGGLE_ROW_SELECTION, '勾选项显示/隐藏', Schemas.Boolean);
             input.add(InputIds.CLEAR_ROW_SELECTION, '清空勾选', Schemas.Void);
             input.add(InputIds.GET_ROW_SELECTION, '获取勾选数据', Schemas.Void);
+            input.add(InputIds.SET_TOGGLE_ROW_SELECTION, '勾选项显示/隐藏', Schemas.Boolean);
             input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
             input.get(InputIds.CLEAR_ROW_SELECTION).setRels([OutputIds.CLEAR_ROW_SELECTION]);
+            input.get(InputIds.SET_TOGGLE_ROW_SELECTION).setRels([OutputIds.SET_TOGGLE_ROW_SELECTION]);
             setDataSchema({ data, input, output, slot, ...res });
           } else {
             if (output.get(OutputIds.GET_ROW_SELECTION)) {
@@ -77,6 +80,8 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             if (input.get(InputIds.GET_ROW_SELECTION)) {
               input.remove(InputIds.GET_ROW_SELECTION);
             }
+            
+            input.get(InputIds.SET_TOGGLE_ROW_SELECTION) && input.remove(InputIds.SET_TOGGLE_ROW_SELECTION);
           }
           updateSlot({ data, slot })
         }
