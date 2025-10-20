@@ -7,6 +7,14 @@
 
 .tableWarrper {
   position: relative;
+  :global {
+    .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      box-shadow: none;
+    }
+    .ant-pagination-options-quick-jumper input-focused, .ant-pagination-options-quick-jumper input:focus {
+      box-shadow: none;
+    }
+  }
 }
 
 .noHeaderTable {
@@ -112,9 +120,6 @@
       border: 1px solid #ECECEC;
     }
 
-    .ant-pagination-options-quick-jumper input {
-      border: 1px solid #ECECEC;
-    }
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
       border: 1px solid #ECECEC;
     }

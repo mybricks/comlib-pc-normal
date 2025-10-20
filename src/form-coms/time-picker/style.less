@@ -1,9 +1,15 @@
 .timePicker {
   :global(.ant-picker) {
     width: 100%;
+    border-radius: 4px;
   }
   :global(.anticon.anticon-clock-circle) {
     color: var(--mb-color-border, #d9d9d9);
+  }
+  :global {
+    .ant-picker-focused {
+      box-shadow: none;
+    }
   }
 }
 
