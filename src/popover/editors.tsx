@@ -86,6 +86,12 @@ export default {
             set({ data }: EditorResult<Data>, val: string) {
               data.title = val;
             }
+          },
+          binding: {
+            with: 'data.title',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {
@@ -121,6 +127,12 @@ export default {
             },
             set({ data }: EditorResult<Data>, val: string) {
               data.content = val;
+            }
+          },
+          binding: {
+            with: 'data.content',
+            schema: {
+              type: 'string'
             }
           }
         },

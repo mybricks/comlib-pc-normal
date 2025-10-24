@@ -28,6 +28,12 @@ export default {
         set({ data }: Result, value: string) {
           data.title = value;
         }
+      },
+      binding: {
+        with: 'data.title',
+        schema: {
+          type: 'string'
+        }
       }
     },
     {
@@ -42,6 +48,12 @@ export default {
         },
         set({ data }: Result, value: string) {
           data.subTitle = value;
+        }
+      },
+      binding: {
+        with: 'data.subTitle',
+        schema: {
+          type: 'string'
         }
       }
     },
@@ -60,6 +72,12 @@ export default {
         },
         set({ data }: Result, value: Status) {
           data.status = value;
+        }
+      },
+      binding: {
+        with: 'data.status',
+        schema: {
+          type: 'string'
         }
       }
     }
