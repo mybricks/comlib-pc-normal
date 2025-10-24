@@ -453,7 +453,7 @@ export default {
           description: '是否显示卡片上半部的标题区',
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.showTitle || true;
+              return data.showTitle === undefined ? true : data.showTitle;
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               data.showTitle = value;
