@@ -18,6 +18,12 @@ export default {
         set({ data }: EditorResult<Data>, value: string) {
           data.url = value;
         }
+      },
+      binding: {
+        with: 'data.url',
+        schema: {
+          type: 'string'
+        }
       }
     },
     {
