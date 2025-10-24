@@ -66,6 +66,12 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.src = value;
             }
+          },
+          binding: {
+            with: 'data.src',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {

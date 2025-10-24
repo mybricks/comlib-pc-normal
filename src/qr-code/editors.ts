@@ -21,6 +21,12 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.link = value;
             }
+          },
+          binding: {
+            with: 'data.link',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {

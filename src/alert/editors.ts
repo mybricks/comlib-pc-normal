@@ -110,7 +110,13 @@ export default {
           options: {
             locale: true
           },
-          value: messageValue
+          value: messageValue,
+          binding: {
+            with: 'data.message',
+            schema: {
+              type: 'string'
+            }
+          }
         },
         Editor<Data>('类型', EditorType.Select, 'type', {
           options: TypeOptions

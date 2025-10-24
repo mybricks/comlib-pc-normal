@@ -439,6 +439,12 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.title = value;
             }
+          },
+          binding: {
+            with: 'data.title',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {

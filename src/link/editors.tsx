@@ -53,6 +53,12 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.content = value;
             }
+          },
+          binding: {
+            with: 'data.content',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {
@@ -66,6 +72,12 @@ export default {
             set({ data }: EditorResult<Data>, value: string) {
               data.url = value;
             }
+          },
+          binding: {
+            with: 'data.url',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {
@@ -78,6 +90,12 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               data.isChoose = value;
+            }
+          },
+          binding: {
+            with: 'data.isChoose',
+            schema: {
+              type: 'boolean'
             }
           }
         },
@@ -93,6 +111,12 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.icon = value;
+            }
+          },
+          binding: {
+            with: 'data.icon',
+            schema: {
+              type: 'string'
             }
           }
         },
