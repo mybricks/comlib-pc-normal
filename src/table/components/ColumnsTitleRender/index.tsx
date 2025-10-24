@@ -254,7 +254,7 @@ export default ({
       if (
         !data.enbaleRowMerge ||
         !mergeByField ||
-        excludeFields?.includes(currentField) ||
+        excludeFields?.includes(Array.isArray(currentField) ? currentField.join('.') : currentField) ||
         !dataSource ||
         dataSource.length <= 1 ||
         typeof dataSource[rowIndex]?.[mergeByField] === 'undefined'
