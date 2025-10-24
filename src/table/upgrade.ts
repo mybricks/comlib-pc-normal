@@ -284,6 +284,12 @@ export default function ({
   setRels(PaginatorInputIds.SetDisable, PaginatorOutputIds.SetDisable, '禁用分页器后');
   setRels(PaginatorInputIds.SetEnable, PaginatorOutputIds.SetEnable, '启用分页器后');
 
+  setRels(
+    InputIds.SET_TOGGLE_ROW_SELECTION,
+    OutputIds.SET_TOGGLE_ROW_SELECTION,
+    '勾选项显示/隐藏',
+    Schemas.Boolean
+  );
   //=========== v1.1.1 end ===============
 
   /**
