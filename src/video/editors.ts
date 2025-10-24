@@ -28,6 +28,12 @@ export default {
                 set({ data }: RuntimeParams<Data>, value: string) {
                   data.src = value;
                 }
+              },
+              binding: {
+                with: 'data.src',
+                schema: {
+                  type: 'string'
+                }
               }
             },
             {
@@ -53,6 +59,12 @@ export default {
                 set({ data }: RuntimeParams<Data>, val: boolean) {
                   data.controls = val;
                 }
+              },
+              binding: {
+                with: 'data.autoplay',
+                schema: {
+                  type: 'boolean'
+                }
               }
             },
             {
@@ -65,6 +77,12 @@ export default {
                 set({ data }: RuntimeParams<Data>, val: boolean) {
                   data.loop = val;
                 }
+              },
+              binding: {
+                with: 'data.controls',
+                schema: {
+                  type: 'boolean'
+                }
               }
             },
             {
@@ -76,6 +94,12 @@ export default {
                 },
                 set({ data }: RuntimeParams<Data>, val: string) {
                   data.poster = val;
+                }
+              },
+              binding: {
+                with: 'data.poster',
+                schema: {
+                  type: 'string'
                 }
               }
             },

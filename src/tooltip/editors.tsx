@@ -23,6 +23,12 @@ export default {
             set({ data }: EditorResult<Data>, val: string) {
               data.title = val;
             }
+          },
+          binding: {
+            with: 'data.title',
+            schema: {
+              type: 'string'
+            }
           }
         },
         {
