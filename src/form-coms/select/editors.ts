@@ -599,9 +599,9 @@ export default {
             }
           },
           binding: {
-            with: 'data.config.options',
+            with: 'data.staticOptions',
             schema: {
-              type: 'string'
+              type: 'array'
             }
           }
         },
