@@ -26,9 +26,8 @@ styleAry声明
   - 1.2 配置选中情况下的颜色样式，「样式/选中/菜单项」，的color、backgroundColor和 border修改；
 
 注意：
-- 所有菜单项都不允许配置padding!
-- 因为没有继承效果，如果「样式/默认/菜单项」配置了字体大小，「样式/选中/菜单项」也需要配置。
-`
+- 因为没有继承效果，如果「样式/默认/菜单项」配置了任何样式key，「样式/选中/菜单项」也需要配置同样的样式key。
+- 「样式/菜单」有默认的白色背景，如需透明注意配置。`
   },
   modifyTptJson(component) {
     if (Array.isArray(component.data?.dataSource)) {

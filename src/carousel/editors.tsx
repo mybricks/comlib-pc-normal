@@ -98,7 +98,17 @@ export default {
               }
               newItems.push({ ...(item ?? {}) });
             });
-            data.items = newItems;
+            data.items = newItems.map(item => {
+              if (typeof item.bgColor === 'string') {
+                return {
+                  ...item,
+                  bgColor: {
+                    background: item.bgColor
+                  }
+                }
+              }
+              return item
+            });
           }
         }
       },
