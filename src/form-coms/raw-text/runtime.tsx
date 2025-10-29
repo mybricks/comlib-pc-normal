@@ -64,6 +64,8 @@ export default function (props: RuntimeParams<Data>) {
       if (textRef.current?.getBoundingClientRect().height > data.expandRows * 22) {
         setWithHiddenStyle(true);
         setToggleHiddenStyle(true);
+      } else {
+        setWithHiddenStyle(false);
       }
     }
   }, [value, data.expandRows]);
@@ -76,9 +78,8 @@ export default function (props: RuntimeParams<Data>) {
           style={{
             WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows
           }}
-          ref={textRef}
         >
-          <span style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
+          <span ref={textRef} style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
             {value || data.placeholderValue}
           </span>
         </div>
@@ -104,7 +105,6 @@ export default function (props: RuntimeParams<Data>) {
         style={{
           WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows
         }}
-        ref={textRef}
       >
         {withHiddenStyle && (
           <Button
@@ -117,7 +117,7 @@ export default function (props: RuntimeParams<Data>) {
             {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
           </Button>
         )}
-        <span style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
+        <span ref={textRef} style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
           {value || data.placeholderValue}
         </span>
       </div>
