@@ -42,7 +42,7 @@ const renderTab = (props: RuntimeParams<Data>) => {
             type={${JSON.stringify(data.type)}}
             centered={${data.centered}}
             tabPosition={${JSON.stringify(data.tabPosition)}}
-            hideAdd={true}
+            hideAdd={${data.hideAdd}}
             ${tabBarExtraContentStr}
         >
             ${renderItem(props)}

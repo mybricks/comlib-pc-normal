@@ -116,7 +116,7 @@ export default function ({
   }
 
   if (!('hideAdd' in data)) {
-    data.hideAdd = true;
+    data.hideAdd = false;
   }
 
   const getTabs = input.get(InputIds.GetTabs);
