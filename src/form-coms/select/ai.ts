@@ -5,24 +5,11 @@ export default {
   prompts: {
     summary: `下拉框Select。
 表单项组件，schema=form-item`,
-    usage: `data数据模型
-config: {
-placeholder: string = '请选择'
-mode: ['default', 'multiple', 'tags']
-showArrow: boolean = true
-size: ['small', 'middle', 'large']
-}
-staticOptions: []
+    usage: `下拉框Select。
+表单项组件，schema=form-item
 
 schema声明
 form-item
-
-styleAry声明
-选择器: .ant-select-selector
-下拉箭头: .ant-select-arrow
-清除按钮: .ant-select-clear
-选项: .ant-select-item-option
-标签: .ant-select-selection-item
 `
   },
   modifyTptJson: (component) => {

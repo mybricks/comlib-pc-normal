@@ -22,7 +22,6 @@ slots插槽
   注意参数：
     - 对于https://placehold.co的text参数的值，必须为英文字符，不允许为中文字符，如果是中文可以用拼音首字母；
     - 对于https://placehold.co的颜色，背景颜色和文颜色要区分开；
-
 `
   },
   modifyTptJson: (component) => {

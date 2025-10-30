@@ -77,7 +77,6 @@ slots插槽
     dataIndex: string
     title: string # 列标题
     width: string | number 
-    visible: boolean 
     isRowKey: boolean 
     contentType: ['text', 'link', 'slotItem'] # 列内容类型
   }
@@ -86,7 +85,10 @@ slots插槽
       type: 'array',
       value: {
         set: ({ data, slot, ...extra }, value) => {
-          data.columns = value
+          data.columns = value.map(t => ({
+            ...t,
+            visible: true
+          }))
           data.columns.forEach(col => {
             if (col.contentType === 'slotItem') {
               col.slotId = col.key;

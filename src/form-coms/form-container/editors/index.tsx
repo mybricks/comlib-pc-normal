@@ -599,7 +599,11 @@ export default {
                   return data.columnGap !== undefined ? [data.columnGap] : [0];
                 },
                 set({ data }: EditorResult<Data>, value: number) {
-                  data.columnGap = value[0];
+                  if (typeof value === 'number') {
+                    data.columnGap = value
+                  } else {
+                    data.columnGap = value[0];
+                  }
                 }
               }
             },
