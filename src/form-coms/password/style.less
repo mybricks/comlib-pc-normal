@@ -1,4 +1,8 @@
 .password {
   width: 100%;
   height: 100%;
+  &:global(.ant-input-affix-wrapper-focused) {
+    box-shadow: none;
+    border-color: var(--ant-primary-color, #1890ff);
+  }
 }

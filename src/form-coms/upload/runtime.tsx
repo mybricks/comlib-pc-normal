@@ -363,7 +363,7 @@ export default function ({
       let isAcceptFileType = true;
       if (acceptTypesList.length) {
         isAcceptFileType = acceptTypesList.some((element) => {
-          return element.split('.').some((extname) => extname && file.name.includes);
+          return element.split(',').some((extname) => extname && file.name.endsWith(extname));
         });
       } else {
         isAcceptFileType = true;

@@ -31,6 +31,7 @@ export default function ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+  const [isFocused, setIsFocused] = useState(false);
 
   const validate = useCallback(
     (model, outputRels) => {
@@ -194,6 +195,13 @@ export default function ({
     return moment(`${hour}:${minute}:${second}`, 'hh:mm:ss');
   };
 
+  const onFocus = useCallback(() => {
+    if (!isFocused) {
+      changeValue(getDefaultValue());
+    }
+    setIsFocused(true);
+  }, [isFocused, getDefaultValue]);
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div ref={wrapperRef} className={styles.wrap}>
@@ -207,7 +215,7 @@ export default function ({
             allowClear
             inputReadOnly={inputReadOnly}
             showNow={data.showNow}
-            defaultValue={getDefaultValue()}
+            onFocus={onFocus}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
             popupClassName={id}
