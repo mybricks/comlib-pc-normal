@@ -57,6 +57,7 @@ export interface Data {
   showBatchDownload: boolean;
   updateDateFieldName: string;
   onDownload?: boolean;
+  readonlyMode?: boolean;
 }
 
 const downloadFile = (url, fileName) => {
@@ -411,7 +412,7 @@ export default function ({
       let isAcceptFileType = true;
       if (acceptTypesList.length) {
         isAcceptFileType = acceptTypesList.some((element) => {
-          return element.split('.').some((extname) => extname && file.name.includes);
+          return element.split(',').some((extname) => extname && file.name.endsWith(extname));
         });
       } else {
         isAcceptFileType = true;
@@ -623,27 +624,31 @@ export default function ({
                       <CloudDownloadOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  <Popconfirm
-                    getPopupContainer={(node) => node!}
-                    overlayClassName={css.deletePopconfirm}
-                    title={env.i18n('即将删除文件，是否继续？')}
-                    okText={env.i18n('确定')}
-                    cancelText={env.i18n('取消')}
-                    onConfirm={actions.remove}
-                  >
-                    <a title={env.i18n('删除')}>
-                      <DeleteOutlined />
-                    </a>
-                  </Popconfirm>
+                  {!data.readonlyMode && (
+                    <Popconfirm
+                      getPopupContainer={(node) => node!}
+                      overlayClassName={css.deletePopconfirm}
+                      title={env.i18n('即将删除文件，是否继续？')}
+                      okText={env.i18n('确定')}
+                      cancelText={env.i18n('取消')}
+                      onConfirm={actions.remove}
+                    >
+                      <a title={env.i18n('删除')}>
+                        <DeleteOutlined />
+                      </a>
+                    </Popconfirm>
+                  )}
                 </div>
               )}
             </div>
           );
         }}
       >
-        <Button type="text" size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
-          {data.config.buttonText}
-        </Button>
+        {!data.readonlyMode && (
+          <Button type="text" size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
+            {data.config.buttonText}
+          </Button>
+        )}
       </Upload>
       {data.showBatchDownload && (
         <a

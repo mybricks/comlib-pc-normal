@@ -585,6 +585,19 @@ export default {
 
       catalog[1].items = [
         {
+          title: '使用只读模式',
+          type: 'switch',
+          description: '开启后，会隐藏上传按钮与删除按钮',
+          value: {
+            get({ data, env }: EditorResult<Data>) {
+              return data.readonlyMode;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.readonlyMode = value;
+            }
+          }
+        },
+        {
           title: '使用自定义上传',
           type: 'switch',
           description: '开启后，通过上传事件，或者在自定义上传卡片中调用接口进行上传',

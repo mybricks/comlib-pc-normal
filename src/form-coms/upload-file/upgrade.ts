@@ -194,6 +194,10 @@ export default function ({
     data.onDownload = false;
   }
 
+  if (typeof data.readonlyMode === 'undefined') {
+    data.readonlyMode = false;
+  }
+
   /**
    * @description v1.0.24 新增启用/禁用 输入项
    */

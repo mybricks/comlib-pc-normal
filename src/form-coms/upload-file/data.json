@@ -10,7 +10,8 @@
     "uploadStyle": {},
     "usePreview": true
   },
-  "updateDateFieldName": "updateDate",
+  "readonlyMode": false,
+  "updateDateFieldName": "uploadDate",
   "isShowUploadList": true,
   "imageSize": [
     0,

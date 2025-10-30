@@ -195,7 +195,7 @@ export default function ({
 
   const onFocus = useCallback(() => {
     if (!isFocused) {
-      setValue(getDefaultValue());
+      changeValue(getDefaultValue());
     }
     setIsFocused(true);
   }, [isFocused, getDefaultValue]);
