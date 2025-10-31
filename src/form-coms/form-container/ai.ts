@@ -60,7 +60,7 @@ slots插槽
 使用流程：
   1. 配置「表单容器/类型」和「表单容器/表单项布局/类型」，选择合适的表单类型和布局类型；
     1.1 「表单容器/类型」，确认是普通表单还是查询表单；
-    1.2 「表单容器/表单项布局/类型」，确认是水平还是垂直布局；
+    1.2 「表单容器/表单项布局/类型」，仔细考虑是需要垂直vertical还是水平horizontal，注意往往vertical更常用，更节省空间；
   2. 添加各类schema=form-item的组件，对于每一个表单项：
     2.1 通过 configs:[{ "path": ":parent/表单项/标题", "value": "标题" }, { "path": ":parent/表单项/字段", "value": "字段" }] 来配置和表单关联的字段和标题，当且仅当配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置项 需要添加「:parent/」前缀；
     2.2 配置组件自身的属性；
@@ -199,5 +199,21 @@ slots插槽
     '样式/默认/背景色',
     '样式/默认/内容',
     '样式/默认/字体',
+    {
+      title: '样式/操作区/按钮样式',
+      description: `字体、字号、颜色、粗细、背景、边框、圆角，由于按钮是一个数组，所以返回的style属性应该加一个index属性，代表是第几个元素，例如第一个则是 { "index": 0, "color": "#fff" }`,
+      type: 'style',
+      value: {
+        set: ({ data, slot, output, style }, value) => {
+          if (value.index !== undefined) {
+            const targetBtn = data.actions.items[value.index];
+            if (targetBtn.key) {
+              const { index, ...newStyle } = value
+              style.setCSS([`button[data-form-actions-item="${targetBtn.key}"]`,`button[data-form-item-type="${targetBtn.key}}"]`], newStyle)
+            }
+          }
+        }
+      }
+    }
   ],
 }

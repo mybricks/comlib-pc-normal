@@ -55,7 +55,11 @@ export default {
           return [data.percent];
         },
         set({ data }: EditorResult<Data>, value: number) {
-          data.percent = value[0];
+          if (typeof value === 'number') {
+            data.percent = value
+          } else {
+            data.percent = value[0];
+          }
         }
       }
     },
