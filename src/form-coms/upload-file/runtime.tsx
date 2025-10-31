@@ -570,7 +570,7 @@ export default function ({
 
   // hideUploadButton ? css.uploadPictureCardHideWrap : ''
   return (
-    <div ref={uploadRef} className={cls(classnames.join(' '))}>
+    <div ref={uploadRef} className={cls(classnames.join(' '))} style={data.readonlyMode && env.edit ? {paddingBottom: 32} : {}}>
       <Upload
         name={fileKey}
         listType="text"
