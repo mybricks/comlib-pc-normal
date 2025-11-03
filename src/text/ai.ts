@@ -10,19 +10,11 @@ export default {
 slots插槽
 无
 
-styleAry声明
-默认状态: [data-item-type="root"]
-  - 默认样式：
-    - color: #000000
-    - fontSize: 14px
-  - 可编辑样式：
-    - color、fontSize、backgroundColor、border、padding
-hover状态: [data-item-type="root"]:hover
-  - 默认样式：
-    - color: #000000
-    - fontSize: 14px
-  - 可编辑样式：
-    - color、fontSize、backgroundColor、border、padding`
+注意事项
+- 注意配置fontSize同时要配置lineHeight，否则会无法正常展示；
+- 尽量不用全黑的字体颜色，而是用柔和一些的颜色比如深灰色；
+- 对于大部分（特别是动态内容）的文本，需要配置文本一出，防止内容过多换行；
+- 注意文本和其他组件之间要留有适量的边距（通过layout进行配置）；`
 
   },
   modifyTptJson: (component) => {

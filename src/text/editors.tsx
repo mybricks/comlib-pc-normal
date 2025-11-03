@@ -161,7 +161,8 @@ export default {
               return [data.ellipsis.rows];
             },
             set({ data }: EditorResult<Data>, value: number[]) {
-              data.ellipsis = { rows: value[0] };
+              let val = typeof value === 'number' ? [value] : value?.[0];
+              data.ellipsis = { rows: val };
             }
           }
         },
