@@ -259,9 +259,19 @@ export default function Runtime({
       myCurNode.resolves = []
       treeLoadedKeysRef.current = uniq([...treeLoadedKeys, `${node.key}`]);
       setTreeLoadKeys(uniq([...treeLoadedKeys, `${node.key}`]));
+      const keys: string[] = [val[data.valueFieldName || "value"]];
+      traversalTree(val[data.childrenFieldName || 'children'] || [], fieldNames, (item) => {
+        const { [data.valueFieldName || 'value']: key, expanded, _depth } = item;
+        if (expanded) {
+          keys.push(key);
+        }
+      });
+      setTimeout(() => {
+        setExpandedKeys([...expandedKeys, ...keys])
+      }, 10)
       relOutputs['setLoadDataDone'](val);
     });
-  }, [treeLoadedKeys]);
+  }, [treeLoadedKeys, expandedKeys]);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
