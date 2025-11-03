@@ -80,6 +80,7 @@ export default function Runtime({
   const valueRef = useRef<any>(data.value);
   const [color, setColor] = useState('');
   const [selectOptions, setSelectOptions] = useState<Data['staticOptions']>([]);
+  const [placeholder, setPlaceholder] = useState(data.config.placeholder);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -249,6 +250,11 @@ export default function Runtime({
           relOutputs['setInitialValueDone'](val);
         }
       });
+    
+      inputs['setPlaceholder'] && inputs['setPlaceholder']((val, relOutputs) => {
+      setPlaceholder(val);
+      relOutputs['setPlaceholderDone'](val);
+    });
 
     inputs['resetValue']((_, relOutputs) => {
       changeValue(void 0);
@@ -510,7 +516,7 @@ export default function Runtime({
       {data.isEditable ? (
         <Select
           {...configs}
-          placeholder={env.i18n(data.config.placeholder)}
+          placeholder={env.i18n(placeholder)}
           labelInValue={false}
           showArrow={data.config.showArrow}
           options={renderOptions}

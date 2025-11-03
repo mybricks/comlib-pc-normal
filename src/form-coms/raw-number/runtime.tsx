@@ -31,17 +31,11 @@ function fomatFloat(num, n = 2) {
   return s;
 }
 
-function numberToChineseFormatWithDecimal(
-  num: string = '',
-  isFormat,
-  placeholderValue,
-  addonBefore,
-  addonAfter
-) {
+function numberToChineseFormatWithDecimal(num: string = '', isFormat, placeholderValue) {
   if (num === null || num === '' || num === undefined) return placeholderValue || '';
   // 如果是非法数字直接返回
   if (Number.isNaN(Number(num))) {
-    return (addonBefore || '') + num + (addonAfter || '');
+    return num;
   }
 
   const [integer, decimal] = (isFormat ? fomatFloat(num) : String(num)).split('.');
@@ -53,15 +47,8 @@ function numberToChineseFormatWithDecimal(
   ];
 
   let calcNum = Number(integer);
-  if (calcNum === 0)
-    return (
-      (addonBefore || '') +
-      '0' +
-      (decimal === '00' || !decimal ? '' : '.' + decimal) +
-      (addonAfter || '')
-    );
+  if (calcNum === 0) return '0' + (decimal === '00' || !decimal ? '' : '.' + decimal);
   return (
-    (addonBefore || '') +
     units.reduce((prev: string, curr) => {
       // 计算出当前数字是几个对应的unit
       const currentUnit = Number(calcNum) / curr.unit;
@@ -76,9 +63,7 @@ function numberToChineseFormatWithDecimal(
         return prev;
       }
       // 最后再拼接小数部分，按照原型如果这里是.00则不进行展示
-    }, '') +
-    (decimal === '00' || !decimal ? '' : '.' + decimal) +
-    (addonAfter || '')
+    }, '') + (decimal === '00' || !decimal ? '' : '.' + decimal)
   );
 }
 
@@ -154,13 +139,7 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <Popover
       placement="bottomLeft"
-      content={`${numberToChineseFormatWithDecimal(
-        value,
-        data.isFormat,
-        data.placeholderValue,
-        addonBefore,
-        addonAfter
-      )}`}
+      content={`${numberToChineseFormatWithDecimal(value, data.isFormat, data.placeholderValue)}`}
     >
       <span className={css.rawNumber + ' raw-number'}>
         {formatContent(value, data.isFormat, data.placeholderValue, addonBefore, addonAfter)}

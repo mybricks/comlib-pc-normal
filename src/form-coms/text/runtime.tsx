@@ -48,6 +48,7 @@ export default function (props: RuntimeParams<Data>) {
   const [value, setValue] = useState<string | null>(null);
   const [autoFocus, setAutoFocus] = useState(false);
   const valueRef = useRef<any>();
+  const [placeholder, setPlaceholder] = useState(data.config.placeholder);
 
   useFormItemInputs(
     {
@@ -129,6 +130,10 @@ export default function (props: RuntimeParams<Data>) {
         inputRef.current.input.style.color = outputColor;
         relOutputs['setColorDone'](outputColor);
       }
+    });
+    inputs['setPlaceholder']((val, relOutputs) => {
+      setPlaceholder(val);
+      relOutputs['setPlaceholderDone'](val);
     });
     inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
       !!flag ? inputRef.current?.focus() : null;
@@ -237,7 +242,7 @@ export default function (props: RuntimeParams<Data>) {
       type="text"
       {...data.config}
       maxLength={data.config.maxLength > 0 ? data.config.maxLength : void 0} // 兼容 antd5 中 maxLength 为 -1 时 outofrange 的问题
-      placeholder={env.i18n(data.config.placeholder)}
+      placeholder={env.i18n(placeholder)}
       addonBefore={env.i18n(data.config.addonBefore)}
       addonAfter={env.i18n(data.config.addonAfter)}
       autoFocus={autoFocus}

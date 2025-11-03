@@ -1,7 +1,7 @@
 {
   "title": "下拉框",
   "namespace": "mybricks.normal-pc.select",
-  "version": "1.1.49",
+  "version": "1.1.50",
   "description": "下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -38,6 +38,17 @@
       },
       "rels": [
         "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "setPlaceholder",
+      "title": "设置占位符",
+      "desc": "设置组件占位符内容的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setPlaceholderDone"
       ]
     },
     {
@@ -282,6 +293,13 @@
       "schema": {
         "type": "any",
         "description": "任意类型,一般为基础数据类型,取决于数据源中value字段的类型"
+      }
+    },
+    {
+      "id": "setPlaceholderDone",
+      "title": "设置占位符完成",
+      "schema": {
+        "type": "string"
       }
     },
     {

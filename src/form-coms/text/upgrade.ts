@@ -136,6 +136,18 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     !input.get(inputIds.setInitialValue)?.rels?.includes(outputIds.setInitialValueDone)) {
     input.get(inputIds.setInitialValue).setRels([outputIds.setInitialValueDone]);
   }
+  //设置占位符
+  if (!output.get('setPlaceholderDone')) {
+    output.add('setPlaceholderDone', '设置占位符完成', { type: 'string' });
+  }
+  if (!input.get('setPlaceholder')) {
+    input.add('setPlaceholder', '设置占位符', { type: 'string' });
+  }
+  if (output.get('setPlaceholderDone') &&
+    input.get('setPlaceholder') &&
+    !input.get('setPlaceholder')?.rels?.includes('setPlaceholderDone')) {
+    input.get('setPlaceholder').setRels(['setPlaceholderDone']);
+  }
   //3、重置值
   if (!output.get(outputIds.resetValueDone)) {
     output.add(outputIds.resetValueDone, '重置完成', { type: "any" });
