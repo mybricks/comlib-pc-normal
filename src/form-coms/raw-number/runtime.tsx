@@ -11,6 +11,26 @@ export interface Data {
   isFormat: boolean;
 }
 
+function fomatFloat(num, n = 2) {
+  var f = parseFloat(num);
+  if (isNaN(f)) {
+    return num;
+  }
+  f = Math.round(num * Math.pow(10, n)) / Math.pow(10, n);
+  // n 幂
+  var s = f.toString();
+  var rs = s.indexOf('.');
+  //判定如果是整数，增加小数点再补0
+  if (rs < 0) {
+    rs = s.length;
+    s += '.';
+  }
+  while (s.length <= rs + n) {
+    s += '0';
+  }
+  return s;
+}
+
 function numberToChineseFormatWithDecimal(
   num: string = '',
   isFormat,
@@ -24,7 +44,7 @@ function numberToChineseFormatWithDecimal(
     return (addonBefore || '') + num + (addonAfter || '');
   }
 
-  const [integer, decimal] = (isFormat ? Number(num).toFixed(2) : String(num)).split('.');
+  const [integer, decimal] = (isFormat ? fomatFloat(num) : String(num)).split('.');
 
   let units = [
     { name: '亿', unit: 100000000 },
@@ -74,7 +94,7 @@ function formatContent(
   if (Number.isNaN(Number(content))) return (addonBefore || '') + content + (addonAfter || '');
   return (
     (addonBefore || '') +
-    String(isFormat ? Number(content).toFixed(2) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+    String(isFormat ? fomatFloat(content) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
     (addonAfter || '')
   );
 }

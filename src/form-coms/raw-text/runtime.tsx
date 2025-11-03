@@ -12,11 +12,7 @@ export interface Data {
 
 function isIOS() {
   const u = navigator.userAgent;
-  return (
-    !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) ||
-    u.includes('iPhone') ||
-    u.includes('iPad')
-  );
+  return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) || u.includes('iPhone') || u.includes('iPad');
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -62,11 +58,18 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   useEffect(() => {
-    if (!!value && textRef.current && textRef.current?.getBoundingClientRect().height > data.expandRows * 22) {
-      setWithHiddenStyle(true);
-      setToggleHiddenStyle(true);
-    } else {
-      setWithHiddenStyle(false);
+    if (!!value && textRef.current) {
+      const contentHeight = parseInt(textRef.current.getBoundingClientRect().height + '');
+      const lineheight = parseInt(
+        getComputedStyle(textRef.current).getPropertyValue('line-height').replace('px', '')
+      );
+      console.log(`直接内容-文本  内容高度:${contentHeight},行高:${lineheight},expandRows:${data.expandRows},比较结果:${contentHeight > lineheight * data.expandRows}`)
+      if (contentHeight > lineheight * data.expandRows) {
+        setWithHiddenStyle(true);
+        setToggleHiddenStyle(true);
+      } else {
+        setWithHiddenStyle(false);
+      }
     }
   }, [value, data.expandRows]);
 
@@ -79,7 +82,12 @@ export default function (props: RuntimeParams<Data>) {
             WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows
           }}
         >
-          <span ref={textRef} style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value || data.placeholderValue}</span>
+          <span
+            ref={textRef}
+            style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}
+          >
+            {value || data.placeholderValue}
+          </span>
         </div>
         {withHiddenStyle && (
           <Button
@@ -101,12 +109,12 @@ export default function (props: RuntimeParams<Data>) {
       <div
         className={css.textOverflow + ' raw-text-content'}
         style={{
-          WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows,
+          WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows
         }}
       >
         {withHiddenStyle && (
           <Button
-            className={css.toggleHiddenBtn}
+            className={css.toggleHiddenBtn + ' text-overflow-wrapper-toggle-hidden-btn'}
             onClick={() => {
               setToggleHiddenStyle((v) => !v);
             }}
@@ -115,7 +123,12 @@ export default function (props: RuntimeParams<Data>) {
             {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
           </Button>
         )}
-        <span ref={textRef} style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0'}}>{value || data.placeholderValue}</span>
+        <span
+          ref={textRef}
+          style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}
+        >
+          {value || data.placeholderValue}
+        </span>
       </div>
     </div>
   );
