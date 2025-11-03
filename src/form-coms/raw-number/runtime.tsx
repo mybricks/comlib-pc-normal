@@ -11,20 +11,34 @@ export interface Data {
   isFormat: boolean;
 }
 
-function numberToChineseFormatWithDecimal(
-  num: string = '',
-  isFormat,
-  placeholderValue,
-  addonBefore,
-  addonAfter
-) {
+function fomatFloat(num, n = 2) {
+  var f = parseFloat(num);
+  if (isNaN(f)) {
+    return num;
+  }
+  f = Math.round(num * Math.pow(10, n)) / Math.pow(10, n);
+  // n 幂
+  var s = f.toString();
+  var rs = s.indexOf('.');
+  //判定如果是整数，增加小数点再补0
+  if (rs < 0) {
+    rs = s.length;
+    s += '.';
+  }
+  while (s.length <= rs + n) {
+    s += '0';
+  }
+  return s;
+}
+
+function numberToChineseFormatWithDecimal(num: string = '', isFormat, placeholderValue) {
   // 如果是非法数字直接返回
   if (num === null || num === '' || num === undefined) return placeholderValue || '';
   if (Number.isNaN(Number(num))) {
-    return (addonBefore || '') + num + (addonAfter || '');
+    return num;
   }
 
-  const [integer, decimal] = (isFormat ? Number(num).toFixed(2) : String(num)).split('.');
+  const [integer, decimal] = (isFormat ? fomatFloat(num) : String(num)).split('.');
 
   let units = [
     { name: '亿', unit: 100000000 },
@@ -33,9 +47,8 @@ function numberToChineseFormatWithDecimal(
   ];
 
   let calcNum = Number(integer);
-  if (calcNum === 0) return (addonBefore || '') + '0' + (decimal === '00' || !decimal ? '' : '.' + decimal) + (addonAfter || '');
+  if (calcNum === 0) return '0' + (decimal === '00' || !decimal ? '' : '.' + decimal);
   return (
-    (addonBefore || '') +
     units.reduce((prev: string, curr) => {
       // 计算出当前数字是几个对应的unit
       const currentUnit = Number(calcNum) / curr.unit;
@@ -50,9 +63,7 @@ function numberToChineseFormatWithDecimal(
         return prev;
       }
       // 最后再拼接小数部分，按照原型如果这里是.00则不进行展示
-    }, '') +
-    (decimal === '00' || !decimal ? '' : '.' + decimal) +
-    (addonAfter || '')
+    }, '') + (decimal === '00' || !decimal ? '' : '.' + decimal)
   );
 }
 
@@ -68,7 +79,7 @@ function formatContent(
   if (Number.isNaN(Number(content))) return (addonBefore || '') + content + (addonAfter || '');
   return (
     (addonBefore || '') +
-    String(isFormat ? Number(content).toFixed(2) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+    String(isFormat ? fomatFloat(content) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
     (addonAfter || '')
   );
 }
@@ -129,7 +140,7 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <Popover
       placement="bottomLeft"
-      content={`${numberToChineseFormatWithDecimal(value, data.isFormat, data.placeholderValue, addonBefore, addonAfter)}`}
+      content={`${numberToChineseFormatWithDecimal(value, data.isFormat, data.placeholderValue)}`}
     >
       <span className={'raw-number'}>
         {formatContent(value, data.isFormat, data.placeholderValue, addonBefore, addonAfter)}
