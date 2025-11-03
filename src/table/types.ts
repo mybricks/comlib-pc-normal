@@ -75,6 +75,7 @@ export interface IColumn {
   contentStyle?: any;
   hasTip?: boolean;
   tip?: string;
+  tipStyle?: string; // 提示气泡样式
   // 省略展示
   ellipsis?: any;
 

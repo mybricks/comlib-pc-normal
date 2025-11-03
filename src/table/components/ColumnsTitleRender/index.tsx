@@ -89,6 +89,14 @@ export default ({
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
+    let tipStyle = undefined;
+    try {
+      if (cItem.tipStyle) {
+        tipStyle = JSON.parse(cItem.tipStyle);
+      }
+    } catch (e) {
+      console.error(cItem.tipStyle, JSON.stringify(e))
+    }
     const content = cItem.hasTip ? (
       <div style={{position: 'relative'}}>
         <span style={{ marginRight: '6px' }}>{title}</span>
@@ -96,8 +104,9 @@ export default ({
           placement="right"
           title={tip}
           overlayClassName={css.ellipsisTooltip}
-          getPopupContainer={(node) => node.parentElement!}
-          // getPopupContainer={() => env?.canvasElement || document.body}
+          // getPopupContainer={(node) => node.parentElement!}
+          getPopupContainer={() => env?.canvasElement || document.body}
+          overlayInnerStyle={tipStyle}
         >
           <InfoCircleOutlined />
         </Tooltip>

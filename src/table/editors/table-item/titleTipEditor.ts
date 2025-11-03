@@ -40,6 +40,28 @@ const TitleTipEditor = {
           setCol({ data, focusArea }, 'tip', value);
         }
       }
+    },
+    {
+      title: '提示文案样式JSON',
+      description: '设置提示文案的CSS样式，请保证内容为标准JSON格式，否则不会生效，例如：{"color":"#fff"}',
+      type: 'Textarea',
+      options: {
+        locale: true
+      },
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return getColumnItem(data, focusArea).hasTip;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          return getColumnItem(data, focusArea).tipStyle;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: string) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'tipStyle', value);
+        }
+      }
     }
   ]
 };
