@@ -36,6 +36,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const valueRef = useRef<any>();
   const [autoFocus, setAutoFocus] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
+  const [placeholder, setPlaceholder] = useState(data.config.placeholder);
 
   useFormItemInputs(
     {
@@ -128,6 +129,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     if (data.setAutoFocus) {
       inputRef.current?.focus();
     }
+
+    inputs['setPlaceholder'] && inputs['setPlaceholder']((val, relOutputs) => {
+      setPlaceholder(val);
+      relOutputs['setPlaceholderDone'](val);
+    });
   }, []);
 
   const onValidateTrigger = (type: string) => {
@@ -245,7 +251,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           {...NumberProps}
           {...ParserProps}
           precision={data.isPrecision ? data.config.precision : void 0}
-          placeholder={env.i18n(data.config.placeholder)}
+          placeholder={env.i18n(placeholder)}
           addonBefore={env.i18n(data.config.addonBefore)}
           addonAfter={env.i18n(data.config.addonAfter)}
           autoFocus={autoFocus}

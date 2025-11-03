@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-number",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.31",
+  "version": "1.1.32",
   "description": "数字输入框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_964wc2.74b91913b3df146c.png",
@@ -35,6 +35,17 @@
       },
       "rels": [
         "setInitialValueDone"
+      ]
+    },
+    {
+      "id": "setPlaceholder",
+      "title": "设置占位符",
+      "desc": "设置组件占位符内容的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setPlaceholderDone"
       ]
     },
     {
@@ -244,6 +255,13 @@
       "title": "设置初始值完成",
       "schema": {
         "type": "number"
+      }
+    },
+    {
+      "id": "setPlaceholderDone",
+      "title": "设置占位符完成",
+      "schema": {
+        "type": "string"
       }
     },
     {
