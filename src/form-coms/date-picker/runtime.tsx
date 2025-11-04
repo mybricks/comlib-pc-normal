@@ -704,7 +704,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
           />
         </div>
       ) : (
-        transCalculation(value, decodeURIComponent(data.formatMap[typeMap[type]]), props)
+        <div className="date-picker-readonly-content">{transCalculation(value, decodeURIComponent(data.formatMap[typeMap[type]]), props)}</div>
       )}
     </ConfigProvider>
   );

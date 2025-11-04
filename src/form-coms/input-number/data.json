@@ -27,5 +27,8 @@
   "useGrouping": true,
   "isParser": true,
   "isPrecision": true,
-  "setAutoFocus": false
+  "setAutoFocus": false,
+  "precisionReadonlyMode": 0,
+  "isPrecisionReadonlyMode": false,
+  "useGroupingReadonlyMode": false
 }

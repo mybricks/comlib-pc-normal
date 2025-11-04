@@ -37,6 +37,7 @@ export default {
           }
         }
       },
+      
       {
         items: [
           ...createrCatelogEditor({
@@ -119,7 +120,17 @@ export default {
             ]
           })
         ]
-      }
+      },
+      {
+        title: '只读模式',
+        items: [
+          {
+            title: '内容',
+            // options: [{type: 'font', config: {disableTextAlign: true}}],
+            target: '.input-number-readonly-content'
+          },
+        ]
+      },
       // {
       //   title: '激活样式',
       //   options: ['border'],
@@ -413,6 +424,59 @@ export default {
               data.isControl = value;
             }
           }
+        },
+        {
+          title: '只读模式格式化',
+          items: [
+            {
+              title: '小数控制',
+              description: '开启后控制小数',
+              type: 'switch',
+              value: {
+                get({ data }) {
+                  return data.isPrecisionReadonlyMode;
+                },
+                set({ data }, value: boolean) {
+                  data.isPrecisionReadonlyMode = value;
+                }
+              }
+            },
+            {
+              title: '数值精度',
+              description: '精确到小数点后几位',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.isPrecisionReadonlyMode;
+              },
+              type: 'Slider',
+              options: {
+                max: 10,
+                min: 0,
+                steps: 1,
+                formatter: '/10'
+              },
+              value: {
+                get({ data }) {
+                  return data.precisionReadonlyMode;
+                },
+                set({ data }, value: number) {
+                  data.precisionReadonlyMode = value;
+                }
+              }
+            },
+            {
+              title: '千分位',
+              type: 'Switch',
+              description: '是否展示千分位分隔符',
+              value: {
+                get({ data }) {
+                  return data.useGroupingReadonlyMode;
+                },
+                set({ data }, value: boolean) {
+                  data.useGroupingReadonlyMode = value;
+                }
+              }
+            },
+          ]
         },
         {
           title: '校验触发时机',

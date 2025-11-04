@@ -544,7 +544,11 @@ export default function Runtime({
           {OptionsWithSlot()}
         </Select>
       ) : (
-        <div>{Array.isArray(value) ? value.join(',') : value}</div>
+        <div className="select-readonly-content">
+          {Array.isArray(value)
+            ? value.map((v) => selectOptions.find((s) => s.value === v)?.value).join(',')
+            : selectOptions.find((v) => v.value === value)?.label}
+        </div>
       )}
     </div>
   );

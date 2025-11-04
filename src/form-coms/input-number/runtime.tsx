@@ -26,6 +26,9 @@ export interface Data {
   isPrecision: boolean;
   validateTrigger: string[];
   setAutoFocus: boolean;
+  isPrecisionReadonlyMode: boolean;
+  useGroupingReadonlyMode: boolean;
+  precisionReadonlyMode: number;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -201,6 +204,27 @@ export default function Runtime(props: RuntimeParams<Data>) {
       : {};
   }, [value, data.character, data.isFormatter, data.useGrouping, data.isParser]);
 
+  const getReadonlyValue = useCallback(() => {
+    if (value === undefined || value === null || value === '' || Number.isNaN(value)) return value;
+    let reStr = '\\d'.repeat(data.precisionReadonlyMode ?? 0);
+    let reg = value || '0';
+    if (data.isPrecisionReadonlyMode) {
+      // 这里与NumberProps中的处理方式存在差异，这里会先进行保留计算（NumberProps中只需限制位数，所以不需要考虑四舍五入）
+      if (data.precisionReadonlyMode === 0 || !data.precisionReadonlyMode) {
+        reg = `${Number(value).toFixed(data.precisionReadonlyMode)}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+      } else {
+        reg = `${Number(value).toFixed(data.precisionReadonlyMode)}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+      }
+    }
+    if (reg) {
+      if (data.useGroupingReadonlyMode) {
+        const [integer, decimal] = reg.toString().split('.');
+        reg = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (decimal ? `.${decimal}` : '');
+      }
+    }
+    return reg;
+  }, [value, data.useGroupingReadonlyMode]);
+
   //转换回数字的方式
   const ParserProps = useMemo(() => {
     return data.isParser
@@ -265,6 +289,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </div>
     </Popover>
   ) : (
-    <div>{value}</div>
+    <div className="input-number-readonly-content">{getReadonlyValue()}</div>
   );
 }

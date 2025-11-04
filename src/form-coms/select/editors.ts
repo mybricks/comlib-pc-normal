@@ -234,6 +234,16 @@ export default {
                   }
                 ]
               },
+              {
+                title: '只读模式',
+                items: [
+                  {
+                    title: '内容',
+                    // options: [{type: 'font', config: {disableTextAlign: true}}],
+                    target: '.select-readonly-content'
+                  },
+                ]
+              }
             ]
           }),
           ...createrCatelogEditor({

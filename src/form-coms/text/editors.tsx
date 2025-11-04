@@ -310,7 +310,17 @@ export default {
             ]
           })
         ]
-      }
+      },
+      {
+        title: '只读模式',
+        items: [
+          {
+            title: '内容',
+            // options: [{type: 'font', config: {disableTextAlign: true}}],
+            target: '.input-readonly-content'
+          },
+        ]
+      },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
