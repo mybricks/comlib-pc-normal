@@ -691,7 +691,7 @@ export default function ({
             ) : (
               <span style={{ marginTop: '20%', display: 'inline-block' }}>Uploading </span>
             )}
-            <div className={css['overlay-text']}>重新上传</div>
+            { !disabled && <div className={css['overlay-text']}>重新上传</div> }
           </div>
         ) : (
           <div></div>
