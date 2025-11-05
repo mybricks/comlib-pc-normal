@@ -2,6 +2,7 @@ import { Popover } from 'antd';
 import React, { useLayoutEffect, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
+import css from './runtime.less';
 
 export interface Data {
   content: string | undefined;
@@ -142,7 +143,7 @@ export default function (props: RuntimeParams<Data>) {
       placement="bottomLeft"
       content={`${numberToChineseFormatWithDecimal(value, data.isFormat, data.placeholderValue)}`}
     >
-      <span className={'raw-number'}>
+      <span className={css.rawNumber + ' raw-number'}>
         {formatContent(value, data.isFormat, data.placeholderValue, addonBefore, addonAfter)}
       </span>
     </Popover>

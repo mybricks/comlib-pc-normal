@@ -3,7 +3,7 @@
   "namespace": "amc.normal-h5.form-raw-text",
   "author": "qiuyun",
   "author_name": "秋筠",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "直接内容-文本",
   "icon": "./icon.svg",
   "data": "./data.json",
