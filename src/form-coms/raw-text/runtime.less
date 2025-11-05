@@ -1,4 +1,5 @@
 .textOverflow {
+  font-family: 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Arial', 'sans-serif', 'Helvetica Neue', 'Hiragino Sans GB';
   font-size: 14px;
   &Wrapper {
     display: flex;
@@ -15,6 +16,7 @@
     height: calc(100% - 20px);
   }
   .toggleHiddenBtn {
+    font-family: 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Arial', 'sans-serif', 'Helvetica Neue', 'Hiragino Sans GB';
     float: right;
     clear: both;
     display: block;
@@ -22,11 +24,17 @@
     line-height: 18px;
     padding: 0;
   }
+  .textOverflowContent {
+    word-break: break-word;
+    white-space: pre-wrap;
+    letter-spacing: 0;
+  }
 }
 
 .textOverflowWrapperIOS {
   display: flex;
   .textOverflowIOS {
+    font-family: 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Arial', 'sans-serif', 'Helvetica Neue', 'Hiragino Sans GB';
     font-size: 14px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -35,10 +43,16 @@
     word-break: break-all;
   }
   .toggleHiddenBtnIOS {
+    font-family: 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Arial', 'sans-serif', 'Helvetica Neue', 'Hiragino Sans GB';
     align-self: end;
     display: block;
     height: 18px;
     line-height: 18px;
     padding: 0;
+  }
+  .textOverflowContent {
+    word-break: break-word;
+    white-space: pre-wrap;
+    letter-spacing: 0;
   }
 }

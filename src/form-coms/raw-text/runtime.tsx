@@ -84,14 +84,14 @@ export default function (props: RuntimeParams<Data>) {
         >
           <span
             ref={textRef}
-            style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}
+            className={css.textOverflowContent}
           >
             {value || data.placeholderValue}
           </span>
         </div>
         {withHiddenStyle && (
           <Button
-            className={css.toggleHiddenBtnIOS}
+            className={css.toggleHiddenBtnIOS + ' text-overflow-wrapper-toggle-hidden-btn'}
             onClick={() => {
               setToggleHiddenStyle((v) => !v);
             }}
@@ -125,7 +125,7 @@ export default function (props: RuntimeParams<Data>) {
         )}
         <span
           ref={textRef}
-          style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}
+          className={css.textOverflowContent}
         >
           {value || data.placeholderValue}
         </span>
