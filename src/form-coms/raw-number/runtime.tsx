@@ -139,6 +139,7 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <Popover
       placement="bottomLeft"
+      overlayClassName={css.popoverOverlay}
       content={`${numberToChineseFormatWithDecimal(value, data.isFormat, data.placeholderValue)}`}
     >
       <span className={css.rawNumber + ' raw-number'}>
