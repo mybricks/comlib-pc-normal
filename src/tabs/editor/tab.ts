@@ -93,6 +93,26 @@ export default {
           }
         },
         {
+          title: '文字提示样式',
+          type: 'TextArea',
+          ifVisible({ }: EditorResult<Data>) {
+            return !!item.tooltipText;
+          },
+          description: '配置标签页的文字提示样式',
+          options: {
+            placeholder: 'tab标题的文字提示样式，请一定保证为JSON格式，否则不生效，例如：{"color":"#fff"}',
+            locale: true
+          },
+          value: {
+            get({ }: EditorResult<Data>) {
+              return item?.tooltipTextStyle;
+            },
+            set({ }: EditorResult<Data>, value: string) {
+              item.tooltipTextStyle = value;
+            }
+          }
+        },
+        {
           title: '支持关闭',
           type: 'Switch',
           description: '开启后，支持关闭标签页',

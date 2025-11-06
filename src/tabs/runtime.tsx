@@ -331,10 +331,19 @@ export default function ({
           if (env.runtime && (!isHasPermission(item.permission) || !showTabs?.includes(item.id))) {
             return null;
           }
+          // tooltipTextStyle
+          let tooltipTextStyle = undefined;
+          try {
+            if (item.tooltipTextStyle) {
+              tooltipTextStyle = JSON.parse(item.tooltipTextStyle);
+            }
+          } catch (e) {
+            console.error(item.tooltipTextStyle, JSON.stringify(e))
+          }
 
           return (
             <TabPane
-              tab={<Tooltip title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
+              tab={<Tooltip overlayInnerStyle={tooltipTextStyle} title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
               key={item.key}
               closable={data.tabList.length > 1 && !!item.closable}
               forceRender={!!data.forceRender}

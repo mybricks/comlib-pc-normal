@@ -65,6 +65,9 @@ export const setDynamicTabsIO = (props: EditorResult<Data>) => {
         tooltipText: {
           type: 'string'
         },
+        tooltipTextStyle: {
+          type: 'string'
+        },
         closable: {
           type: 'boolean'
         }

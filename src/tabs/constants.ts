@@ -17,6 +17,7 @@ export interface TabItem {
   id: string;
 
   tooltipText?: string;
+  tooltipTextStyle?: string;
   //设置tabs中是否需要icon
   isChoose?: boolean;
   // 设置tabs中icon
