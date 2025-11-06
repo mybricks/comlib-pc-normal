@@ -35,7 +35,11 @@ export default function ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+
+  // 以下字段均为了该需求：第一次focus时将时间改为当前时间，并在blur时重置回原来的值
   const [isFocused, setIsFocused] = useState(false);
+  const [isFirstChange, setIsFirstChange] = useState(false);
+  const [focusedValue, setFocusedValue] = useState<Moment | null>();
 
   const validate = useCallback(
     (model, outputRels) => {
@@ -178,6 +182,7 @@ export default function ({
     return value;
   };
   const onChange = (time: Moment | null, timeString: string) => {
+    if (!isFirstChange) setIsFirstChange(true);
     const value = changeValue(time);
     outputs['onChange'](value);
     validateTrigger(parentSlot, { id, name });
@@ -196,9 +201,16 @@ export default function ({
   const onFocus = useCallback(() => {
     if (!isFocused) {
       changeValue(getDefaultValue());
+      setFocusedValue(value);
     }
     setIsFocused(true);
-  }, [isFocused, getDefaultValue]);
+  }, [isFocused, getDefaultValue, value]);
+
+  const onBlur = useCallback(() => {
+    if (!isFirstChange) {
+      changeValue(focusedValue);
+    }
+  }, [isFirstChange, focusedValue]);
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
@@ -219,6 +231,7 @@ export default function ({
             popupClassName={id + ' ' + styles.timePickerPopup}
             onChange={onChange}
             onFocus={onFocus}
+            onBlur={onBlur}
             disabledTime={() => {
               const res: any = {
                 disabledHours: undefined,

@@ -63,7 +63,7 @@ export default function (props: RuntimeParams<Data>) {
       const lineheight = parseInt(
         getComputedStyle(textRef.current).getPropertyValue('line-height').replace('px', '')
       );
-      console.log(`直接内容-文本  内容高度:${contentHeight},行高:${lineheight},expandRows:${data.expandRows},比较结果:${contentHeight > lineheight * data.expandRows}`)
+      console.log(`直接内容-文本 内容高度:${contentHeight},行高:${lineheight},expandRows:${data.expandRows},比较结果:${contentHeight > lineheight * data.expandRows}%c注意！如果发现错误展示【展开/收起】按钮，请检查父元素是否存在导致宽度由小变大的过渡动画（例如antd的Modal），如果在动画过渡中获取高度，由于父元素宽度由小变大导致该组件高度获取的值过大从而错误展示【展开/收起】按钮 :)`, 'color: #fff;background:#f00;');
       if (contentHeight > lineheight * data.expandRows) {
         setWithHiddenStyle(true);
         setToggleHiddenStyle(true);
