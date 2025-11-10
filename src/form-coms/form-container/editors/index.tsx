@@ -36,6 +36,9 @@ export default {
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, configs = {} as { name: string; label: string;}) {
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
+      if (data.isEditable !== undefined && child?.data?.isEditable !== undefined) {
+        child.data.isEditable = data.isEditable
+      }
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {

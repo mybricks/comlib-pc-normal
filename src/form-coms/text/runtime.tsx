@@ -263,7 +263,7 @@ export default function (props: RuntimeParams<Data>) {
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
   ) : (
-    <div>{value}</div>
+    <div>{env.edit ? '占位内容' : value}</div>
   );
 
   return <div className={css.fiText}>{jsx}</div>;
