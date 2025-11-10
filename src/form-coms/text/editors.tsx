@@ -35,6 +35,22 @@ export default {
         }
       },
       {
+        title: '默认展示模式',
+        type: 'select',
+        options: [
+          { label: '编辑', value: 'edit' },
+          { label: '只读', value: 'readonly' }
+        ],
+        value: {
+          get({ data }) {
+            return data.isEditable ? 'edit' : 'readonly';
+          },
+          set({ data }, val: string) {
+            data.isEditable = val === 'edit';
+          }
+        }
+      },
+      {
         title: '前缀图标来源',
         type: 'Radio',
         options: [
