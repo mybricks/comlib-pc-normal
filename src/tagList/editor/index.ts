@@ -249,11 +249,13 @@ export default {
             },
             set({ data, output, input }: EditorResult<Data>, val: boolean) {
               data.checkable = val;
-
-              if (val) {
-                input.get('dynamicTags').setSchema({ type: 'array', items: checkableTagSchema })
-              } else {
-                input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema })
+              
+              if(input.get('dynamicTags')){
+                if (val) {
+                  input.get('dynamicTags').setSchema({ type: 'array', items: checkableTagSchema })
+                } else {
+                  input.get('dynamicTags').setSchema({ type: 'array', items: TagSchema })
+                }
               }
 
               if (val) {
