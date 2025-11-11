@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState, ElementRef } from 'react';
 import moment from 'moment';
 import { Row, Table, Tooltip } from 'antd';
 import { FilterFilled, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
@@ -85,10 +85,26 @@ export default ({
   hasConnector
 }: Props) => {
   const isDragging = env.runtime ? false : checkIsDragging(data);
+  const tooltipRef = useRef<any>(null);
 
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
     const tip = env.i18n(cItem.tip);
+
+    cItem.hasTip && console.log('提示文案箭头样式示例值：', '--antd-arrow-background-color:linear-gradient(to right bottom,rgba(0,0,0,0.65),rgba(0,0,0,0.75));box-shadow: -3px 3px 7px rgba(0,0,0,.07);');
+    const onOpenChange = (open) => {
+      if (open) {
+        setTimeout(() => {
+          if (tooltipRef.current && cItem.tipArrowStyle) {
+            if (tooltipRef.current.portalContainer?.getElementsByClassName('ant-tooltip-arrow-content')?.[0]) {
+              tooltipRef.current.portalContainer.getElementsByClassName('ant-tooltip-arrow-content')[0].style = cItem.tipArrowStyle;
+              // tooltipRef.current.portalContainer.getElementsByClassName('ant-tooltip-arrow-content')[0].style = '--antd-arrow-background-color: linear-gradient(to right bottom,rgba(#fff),rgba(#fff));'
+            }
+          }
+        }, 10);
+      }
+    }
+
     let tipStyle = undefined;
     try {
       if (cItem.tipStyle) {
@@ -101,6 +117,8 @@ export default ({
       <div style={{position: 'relative'}}>
         <span style={{ marginRight: '6px' }}>{title}</span>
         <Tooltip
+          onVisibleChange={onOpenChange}
+          ref={tooltipRef}
           placement="right"
           title={tip}
           overlayClassName={css.ellipsisTooltip}

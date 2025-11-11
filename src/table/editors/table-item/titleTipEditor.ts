@@ -62,7 +62,29 @@ const TitleTipEditor = {
           setCol({ data, focusArea }, 'tipStyle', value);
         }
       }
-    }
+    },
+    {
+      title: '提示文案箭头样式',
+      description: '设置提示文案的CSS样式，请保证内容为string，否则不会生效（默认样式已打印在控制台）',
+      type: 'Textarea',
+      options: {
+        locale: true
+      },
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return getColumnItem(data, focusArea).hasTip;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          return getColumnItem(data, focusArea).tipArrowStyle;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: string) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'tipArrowStyle', value);
+        }
+      }
+    },
   ]
 };
 

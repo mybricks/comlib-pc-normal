@@ -13,8 +13,9 @@ import styles from './style.less';
 import { InputIds, OutputIds } from '../types';
 import { runJs } from '../../../package/com-utils';
 
-const getValidTimeValue = (time: number, step?: number) => {
+const getValidTimeValue = (time: number, step: number | undefined, maxValue: number) => {
   if (!step || step === 1) return time;
+  if (step === maxValue) return 0; // 如果步长为最大值，返回0
   const mod = time % step;
   if (mod === 0) return time;
   else return time + (step - mod);
@@ -192,11 +193,12 @@ export default function ({
     // 注意不能直接设置默认值，要根据设置的步长来进行设置，保证默认值都处于可选中状态
     const { hourStep, minuteStep, secondStep } = data.config;
     const now = moment();
-    const hour = getValidTimeValue(now.hour(), hourStep);
-    const minute = getValidTimeValue(now.minute(), minuteStep);
-    const second = getValidTimeValue(now.second(), secondStep);
-    return moment(`${hour}:${minute}:${second}`, 'hh:mm:ss');
-  }, [data.config]);
+    const hour = getValidTimeValue(now.hour(), hourStep, 24);
+    const minute = getValidTimeValue(now.minute(), minuteStep, 60);
+    const second = getValidTimeValue(now.second(), secondStep, 60);
+    const time = moment(`${hour}:${minute}:${second}`, data.format);
+    return time;
+  }, [data.config, data.format]);
 
   const onFocus = useCallback(() => {
     if (!isFocused) {

@@ -113,6 +113,25 @@ export default {
           }
         },
         {
+          title: '提示文案箭头样式',
+          description: '设置提示文案的CSS样式，请保证内容为string，否则不会生效（默认样式已打印在控制台）',
+          type: 'Textarea',
+          options: {
+            locale: true
+          },
+          ifVisible({ }: EditorResult<Data>) {
+            return !!item.tooltipText;
+          },
+          value: {
+            get({ }: EditorResult<Data>) {
+              return item?.tipArrowStyle;
+            },
+            set({ }: EditorResult<Data>, value: string) {
+              item.tipArrowStyle = value;
+            }
+          }
+        },
+        {
           title: '支持关闭',
           type: 'Switch',
           description: '开启后，支持关闭标签页',

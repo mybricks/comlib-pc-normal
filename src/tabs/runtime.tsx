@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, ReactNode, useMemo } from 'react';
+import React, { useCallback, useEffect, useState, ReactNode, useRef } from 'react';
 import classnames from 'classnames';
 import { Tabs, Tooltip, Badge } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds, TabItem } from './constants';
@@ -324,6 +324,8 @@ export default function ({
     );
   };
 
+  const tabTooltipRef = useRef<any>();
+
   const renderItems = () => {
     return (
       <>
@@ -331,19 +333,32 @@ export default function ({
           if (env.runtime && (!isHasPermission(item.permission) || !showTabs?.includes(item.id))) {
             return null;
           }
-          // tooltipTextStyle
+
           let tooltipTextStyle = undefined;
           try {
             if (item.tooltipTextStyle) {
               tooltipTextStyle = JSON.parse(item.tooltipTextStyle);
             }
           } catch (e) {
-            console.error(item.tooltipTextStyle, JSON.stringify(e))
+            console.error(item.tooltipTextStyle, JSON.stringify(e));
+          }
+          !!item.tooltipText && console.log('提示文案箭头样式示例值：', '--antd-arrow-background-color:linear-gradient(to right bottom,rgba(0,0,0,0.65),rgba(0,0,0,0.75));box-shadow: -3px 3px 7px rgba(0,0,0,.07);');
+          const onOpenChange = (open) => {
+            if (open) {
+              setTimeout(() => {
+                if (tabTooltipRef.current) {
+                  if (tabTooltipRef.current.portalContainer?.getElementsByClassName('ant-tooltip-arrow-content')?.[0]) {
+                    tabTooltipRef.current.portalContainer.getElementsByClassName('ant-tooltip-arrow-content')[0].style = item.tipArrowStyle;
+                    // tabTooltipRef.current.portalContainer.getElementsByClassName('ant-tooltip-arrow-content')[0].style = '--antd-arrow-background-color: linear-gradient(to right bottom,rgba(#fff),rgba(#fff));'
+                  }
+                }
+              }, 10);
+            }
           }
 
           return (
             <TabPane
-              tab={<Tooltip overlayInnerStyle={tooltipTextStyle} title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
+              tab={<Tooltip ref={tabTooltipRef} onVisibleChange={onOpenChange} overlayInnerStyle={tooltipTextStyle} title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
               key={item.key}
               closable={data.tabList.length > 1 && !!item.closable}
               forceRender={!!data.forceRender}

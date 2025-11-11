@@ -600,8 +600,8 @@ export default function ({
                 [css.uploadFileItemError]: file.status === 'error'
               })}
             >
-              {renderFileIcon(file)}
               <a onClick={actions.preview} className={css.uploadFileItemName} title={file.name}>
+                {renderFileIcon(file)}
                 {file.name}
               </a>
               <span className={css.uploadFileItemDate}>

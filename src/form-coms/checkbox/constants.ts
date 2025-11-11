@@ -46,7 +46,7 @@ export const descriptionUpList = [
           },
           "checked": {
             "title": "选中",
-            "description": "选项禁用，true时禁用",
+            "description": "选项是否选中",
             "type": "boolean"
           }
         }
@@ -143,7 +143,7 @@ export const descriptionUpList = [
           },
           "checked": {
             "title": "选中",
-            "description": "选项禁用，true时禁用",
+            "description": "选项是否选中",
             "type": "boolean"
           }
         }
@@ -201,7 +201,7 @@ export const descriptionUpList = [
           },
           "checked": {
             "title": "选中",
-            "description": "选项禁用，true时禁用",
+            "description": "选项是否选中",
             "type": "boolean"
           }
         }
