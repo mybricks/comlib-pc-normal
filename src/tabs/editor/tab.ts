@@ -27,6 +27,23 @@ export default {
           }
         },
         {
+          title: 'Key',
+          type: 'Text',
+          description: '配置标签Key',
+          options: {
+            locale: true
+          },
+          value: {
+            get({ }: EditorResult<Data>) {
+              return item?.key;
+            },
+            set({ input, output, slots, env }: EditorResult<Data>, key: string) {
+              item.key = key;
+              updateIO({ input, output, item, slots, env });
+            }
+          }
+        },
+        {
           title: '显示icon',
           type: 'Switch',
           description: '是否显示图标（icon)',

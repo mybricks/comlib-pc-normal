@@ -66,6 +66,11 @@ export const setDynamicTabsIO = (props: EditorResult<Data>) => {
           type: 'string'
         },
         tooltipTextStyle: {
+          description: '设置tooltip内容样式（JSON）',
+          type: 'string'
+        },
+        tipArrowStyle: {
+          description: '设置tooltip箭头样式（style）',
           type: 'string'
         },
         closable: {
