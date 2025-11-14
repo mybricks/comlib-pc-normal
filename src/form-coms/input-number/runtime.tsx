@@ -289,6 +289,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </div>
     </Popover>
   ) : (
-    <div className="input-number-readonly-content">{getReadonlyValue()}</div>
+    <div className="input-number-readonly-content">{env.i18n(data.config.addonBefore)}{getReadonlyValue()}{env.i18n(data.config.addonAfter)}</div>
   );
 }

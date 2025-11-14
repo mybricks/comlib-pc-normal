@@ -268,7 +268,7 @@ export default function (props: RuntimeParams<Data>) {
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
   ) : (
-    <div className="input-readonly-content">{value}</div>
+    <div className="input-readonly-content">{env.i18n(data.config.addonBefore)}{value}{env.i18n(data.config.addonAfter)}</div>
   );
 
   return <div className={css.fiText}>{jsx}</div>;

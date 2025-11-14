@@ -277,6 +277,19 @@ export default {
               }
             },
             {
+              title: '编辑/只读',
+              type: 'switch',
+              description: '效果同输入项的【编辑/只读】，true=编辑态，false=只读态',
+              value: {
+                get({ data }) {
+                  return data.isEditable;
+                },
+                set({ data }, value: boolean) {
+                  data.isEditable = value;
+                }
+              }
+            },
+            {
               title: '第一次获取焦点时自动显示为当前时间（存在bug，勿用）',
               type: 'switch',
               description: '只在时间选择器第一次获取焦点时，将时间修改为当前时间，失去焦点会重置为原有值（目前有bug，点击确定时间设置不生效）',

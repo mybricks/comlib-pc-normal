@@ -168,6 +168,19 @@ export default {
           }
         },
         {
+          title: '编辑/只读',
+          type: 'switch',
+          description: '效果同输入项的【编辑/只读】，true=编辑态，false=只读态',
+          value: {
+            get({ data }) {
+              return data.isEditable;
+            },
+            set({ data }, value: boolean) {
+              data.isEditable = value;
+            }
+          }
+        },
+        {
           title: '日期选择类型',
           type: 'Select',
           description: '设置日期选择类型，可选的日期类型',
