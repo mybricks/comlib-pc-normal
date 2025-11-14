@@ -277,6 +277,19 @@ export default {
               }
             },
             {
+              title: '第一次获取焦点时自动显示为当前时间（存在bug，勿用）',
+              type: 'switch',
+              description: '只在时间选择器第一次获取焦点时，将时间修改为当前时间，失去焦点会重置为原有值（目前有bug，点击确定时间设置不生效）',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !!data.focusShowCurrentTime;
+                },
+                set({ data }: EditorResult<Data>, val: boolean) {
+                  data.focusShowCurrentTime = val;
+                }
+              }
+            },
+            {
               title: '显示此刻',
               type: 'switch',
               description: '配置面板是否展示“此刻”按钮',

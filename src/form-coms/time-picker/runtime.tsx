@@ -38,8 +38,8 @@ export default function ({
   const valueRef = useRef<any>();
 
   // 以下字段均为了该需求：第一次focus时将时间改为当前时间，并在blur时重置回原来的值
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFirstChange, setIsFirstChange] = useState(false);
+  const [isFocused, setIsFocused] = useState(!data.focusShowCurrentTime);
+  const [isFirstChange, setIsFirstChange] = useState(!data.focusShowCurrentTime);
   const [focusedValue, setFocusedValue] = useState<Moment | null>();
 
   const validate = useCallback(

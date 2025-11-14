@@ -10,5 +10,6 @@ export interface Data {
   customFormat: string,
   isEditable: boolean,
   inputReadOnly:boolean,
+  focusShowCurrentTime: boolean,
   config: TimePickerProps
 }
