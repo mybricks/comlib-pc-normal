@@ -489,6 +489,9 @@ export default function (props: RuntimeParams<Data>) {
         }
         inputs[InputIds.SET_SHOW_TitleS]((val: any, relOutputs: any) => {
           const newCols = val.map((item) => {
+            if (item.visible === undefined) {
+              item.visible = true
+            }
             if (item.usePrevious) {
               const previousCol =
                 data._inicCols.find((i) => i.dataIndex === item.dataIndex) || null;
