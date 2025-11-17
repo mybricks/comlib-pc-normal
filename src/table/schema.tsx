@@ -451,6 +451,10 @@ export const Schemas = {
     items: {
       type: 'object',
       properties: {
+        visible: {
+          type: 'boolean',
+          description: '必须为true，否则会报错',
+        },
         title: {
           type: 'string',
           description: '表格列标题'

@@ -511,6 +511,16 @@ export default function Runtime({
     return env?.canvasElement || document.body;
   };
 
+  const renderReadonlyValue = () => {
+    if (data.dropdownSearchOption) {
+      return Array.isArray(value) ? value.map(v => v.label || v).join(',') : (value.label || value);
+    } else {
+      return Array.isArray(value)
+      ? value.map((v) => selectOptions.find((s) => s.value === v)?.value).join(',')
+      : selectOptions.find((v) => v.value === value)?.label;
+    }
+  }
+
   return (
     <div className={`${css.select} ${color ? css.selectColor : ''} ${ANTD_VERSION === 5 ? css.antd5Select : ''}`} ref={ref} id="area">
       {data.isEditable ? (
@@ -545,9 +555,7 @@ export default function Runtime({
         </Select>
       ) : (
         <div className="select-readonly-content">
-          {Array.isArray(value)
-            ? value.map((v) => selectOptions.find((s) => s.value === v)?.value).join(',')
-            : selectOptions.find((v) => v.value === value)?.label}
+          {renderReadonlyValue()}
         </div>
       )}
     </div>

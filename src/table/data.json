@@ -43,7 +43,7 @@
   },
   "bordered": false,
   "size": "middle",
-  "useRowSelection": true,
+  "useRowSelection": false,
   "enableRowClickSelection": false,
   "rowSelectionMessage": "已选中 { count } 项",
   "rowSelectionPostion": [
