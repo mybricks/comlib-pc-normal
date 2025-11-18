@@ -37,6 +37,38 @@ export const actionsEditor = (data: Data, output, env) => {
         }
       },
       {
+        title: '是否默认展开',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.enableEditForm;
+        },
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.enableEditFormExpandDefaultOpen
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.actions.enableEditFormExpandDefaultOpen = val
+          }
+        }
+      },
+      {
+        title: '收起时表单高度',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.enableEditForm;
+        },
+        description: '可以根据自己的需要修改收起时的高度实现收起状态展示一行/两行/三行等效果',
+        type: 'InputNumber',
+        options: [{ min: 0, width: 120 }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.actions.enableEditFormExpandHeight ?? 160]
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.actions.enableEditFormExpandHeight = val[0]
+          }
+        }
+      },
+      {
         title: '事件',
         ifVisible({ data }: EditorResult<Data>) {
           return data.actions.enableEditForm;

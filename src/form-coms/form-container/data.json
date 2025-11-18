@@ -12,6 +12,8 @@
   "actions": {
     "enableEditForm": false,
     "enableEditFormExpandShowNum": 6,
+    "enableEditFormExpandHeight": 160,
+    "enableEditFormExpandDefaultOpen": false,
     "visible": false,
     "widthOption": "span",
     "span": 24,

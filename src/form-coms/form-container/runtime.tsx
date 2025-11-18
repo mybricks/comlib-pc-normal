@@ -734,7 +734,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   };
 
-  const [isOperationFold, setIsOperationFold] = useState<Boolean>(false);
+  const [isOperationFold, setIsOperationFold] = useState<Boolean>(!data.actions.enableEditFormExpandDefaultOpen);
+
   return (
     <div
       className={classnames(
@@ -751,7 +752,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
               slots['content'].size === 0 && env.edit && data.actions.visible
                 ? css.empty
                 : undefined
-            } ${isOperationFold ? css.formFold : ''}`}
+            }`}
+            style={isOperationFold ? { height: (data.actions.enableEditFormExpandHeight ?? 160) + 'px', overflow: 'hidden', } : undefined}
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
