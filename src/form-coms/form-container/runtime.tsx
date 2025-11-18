@@ -753,7 +753,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 ? css.empty
                 : undefined
             }`}
-            style={isOperationFold ? { height: (data.actions.enableEditFormExpandHeight ?? 160) + 'px', overflow: 'hidden', } : undefined}
+            style={data.actions.enableEditForm && isOperationFold ? { height: (data.actions.enableEditFormExpandHeight ?? 160) + 'px', overflow: 'hidden', } : undefined}
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
