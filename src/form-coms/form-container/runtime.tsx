@@ -704,11 +704,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
-        other.help =  templateRender(e?.help || '', {label:e?.label || ''})
-        outputRels && outputRels[outputIds.ON_SUBMIT_ERROR]({
-          help: other?.help || '',
-          name: other?.name || ''
-        });
+        other.help = templateRender(e?.help || '', { label: e?.label || '' });
+        outputRels &&
+          outputRels[outputIds.ON_SUBMIT_ERROR]({
+            help: other?.help || '',
+            name: other?.name || ''
+          });
         console.log('校验失败', e);
       });
   };
@@ -734,7 +735,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   };
 
-  const [isOperationFold, setIsOperationFold] = useState<Boolean>(!data.actions.enableEditFormExpandDefaultOpen);
+  const [isOperationFold, setIsOperationFold] = useState<Boolean>(
+    !data.actions.enableEditFormExpandDefaultOpen
+  );
 
   return (
     <div
@@ -753,7 +756,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 ? css.empty
                 : undefined
             }`}
-            style={data.actions.enableEditForm && isOperationFold ? { height: (data.actions.enableEditFormExpandHeight ?? 160) + 'px', overflow: 'hidden', } : undefined}
+            style={
+              data.actions.enableEditForm &&
+              isOperationFold &&
+              data.items.length + data.additionalItems.length >
+                data.actions.enableEditFormExpandShowNum
+                ? {
+                    height: (data.actions.enableEditFormExpandHeight ?? 160) + 'px',
+                    overflow: 'hidden'
+                  }
+                : undefined
+            }
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
@@ -777,27 +790,51 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {data.useDynamicItems && !env.runtime && templateLable()}
       </Fragment>
       {data.actions.enableEditForm && (
-        <div className={css.operation + ' edit-form__operation ' + css['operation-' + data.config?.layout]}>
-          {data.items.length + data.additionalItems.length > data.actions.enableEditFormExpandShowNum && <div className={classnames({
-            [css.operationExpand]: true,
-            'edit-form__operation-expand': true,
-          })}>
-            {isOperationFold ? (
-              <div className={css.operationExpandRow} onClick={() => setIsOperationFold((v) => !v)}>
-                <DownOutlined />
-                <span className={css.operationExpandRowName}>{env.i18n('展开')}</span>
-              </div>
-            ) : (
-              <div className={css.operationExpandRow} onClick={() => setIsOperationFold((v) => !v)}>
-                <UpOutlined />
-                <span className={css.operationExpandRowName}>{env.i18n('收起')}</span>
-              </div>
-            )}
-          </div>}
-          <div className={classnames({
-            [css.operationExpandMarginLeft]: data.items.length + data.additionalItems.length <= data.actions.enableEditFormExpandShowNum,
-            'edit-form__operation-expand-margin-left': true,
-          })}>
+        <div
+          className={
+            classnames({
+              [css.operation]: true,
+              'edit-form__operation': true,
+              [css['operation-' + data.config?.layout]]: true,
+              [css.operationCol2]: data.actions.enableEditFormExpandCol2,
+            })
+          }
+        >
+          {data.items.length + data.additionalItems.length >
+            data.actions.enableEditFormExpandShowNum && (
+            <div
+              className={classnames({
+                [css.operationExpand]: true,
+                'edit-form__operation-expand': true
+              })}
+            >
+              {isOperationFold ? (
+                <div
+                  className={css.operationExpandRow + ' operation-expand-row'}
+                  onClick={() => setIsOperationFold((v) => !v)}
+                >
+                  <DownOutlined />
+                  <span className={css.operationExpandRowName}>{env.i18n('展开')}</span>
+                </div>
+              ) : (
+                <div
+                  className={css.operationExpandRow + ' operation-expand-row'}
+                  onClick={() => setIsOperationFold((v) => !v)}
+                >
+                  <UpOutlined />
+                  <span className={css.operationExpandRowName}>{env.i18n('收起')}</span>
+                </div>
+              )}
+            </div>
+          )}
+          <div
+            className={classnames({
+              [css.operationExpandMarginLeft]:
+                data.items.length + data.additionalItems.length <=
+                data.actions.enableEditFormExpandShowNum,
+              'edit-form__operation-expand-margin-left': true
+            })}
+          >
             <Button
               className={css.operationBtnSubmit + ' edit-form__operation-expand__btn-submit'}
               type="primary"
@@ -865,7 +902,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               查询
             </Button>
             <Button
-              className={css.operationBtnReset  + ' edit-form__operation-expand__btn-reset'}
+              className={css.operationBtnReset + ' edit-form__operation-expand__btn-reset'}
               onClick={() => {
                 if (env.runtime) {
                   resetFields(outputs['onClickOperateReset']);

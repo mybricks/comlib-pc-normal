@@ -270,6 +270,12 @@ export default {
             options: ['margin'],
           },
           {
+            title: '展开/收起按钮文本',
+            catelog: '默认',
+            target: '.edit-form__operation .edit-form__operation-expand .operation-expand-row',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+          },
+          {
             title: '操作按钮容器',
             catelog: '默认',
             target: '.edit-form__operation .edit-form__operation-expand-margin-left',

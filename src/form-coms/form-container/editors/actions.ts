@@ -37,6 +37,21 @@ export const actionsEditor = (data: Data, output, env) => {
         }
       },
       {
+        title: '展开/收起按钮放在表单操作下方',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.enableEditForm;
+        },
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.enableEditFormExpandCol2
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.actions.enableEditFormExpandCol2 = val
+          }
+        }
+      },
+      {
         title: '是否默认展开',
         ifVisible({ data }: EditorResult<Data>) {
           return data.actions.enableEditForm;

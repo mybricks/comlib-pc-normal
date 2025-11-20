@@ -10,6 +10,15 @@
 
   .operation {
     display: flex;
+    &.operationCol2 {
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+      align-items: center;
+      margin-left: 32px;
+      .operationExpand {
+        margin-top: 24px;
+      }
+    }
     &.operation-vertical {
       margin-top: 32px;
       .operationExpand {

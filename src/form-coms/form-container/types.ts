@@ -27,6 +27,7 @@ export interface Action {
 interface Actions {
   enableEditForm: boolean
   enableEditFormExpandShowNum: number
+  enableEditFormExpandCol2?: boolean
   enableEditFormExpandHeight: number
   enableEditFormExpandDefaultOpen?: boolean
   items: Action[];
