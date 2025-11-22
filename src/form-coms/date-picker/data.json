@@ -14,6 +14,7 @@
     "allowClear": true,
     "size": "middle"
   },
+  "mount": "body",
   "isWeekNumber": false,
   "customExtraText": false,
   "isEditable": true

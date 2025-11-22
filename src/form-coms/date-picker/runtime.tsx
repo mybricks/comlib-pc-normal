@@ -27,6 +27,7 @@ export interface Data {
   showNow?: boolean;
   contentType: string;
   formatter: string;
+  mount?: string;
   useCustomDateCell: boolean;
   useCustomPanelHeader: boolean;
   useCustomPanelFooter: boolean;
@@ -87,7 +88,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
-  const customExtraTextRef = useRef<any>(() => {});
+  const customExtraTextRef = useRef<any>(() => { });
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');
@@ -163,8 +164,8 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
         val === null || num === 0
           ? null
           : !isMoment(result) || val === undefined
-          ? undefined
-          : result;
+            ? undefined
+            : result;
       const transValue = changeValue(val);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
@@ -182,8 +183,8 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
           val === null || num === 0
             ? null
             : !isMoment(result) || val === undefined
-            ? undefined
-            : result;
+              ? undefined
+              : result;
         const transValue = changeValue(val);
         if (relOutputs['setInitialValueDone']) {
           relOutputs['setInitialValueDone'](val);
@@ -452,12 +453,12 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             {currentDate.date()}
             {runtime || currentDate.isSame(today, 'day')
               ? slots[SlotIds.DateCell]?.render({
-                  inputValues: {
-                    [InputIds.CurrentDate]: currentDate,
-                    [InputIds.Today]: today
-                  },
-                  key: currentDate.valueOf()
-                })
+                inputValues: {
+                  [InputIds.CurrentDate]: currentDate,
+                  [InputIds.Today]: today
+                },
+                key: currentDate.valueOf()
+              })
               : null}
           </div>
         );
@@ -654,7 +655,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             placeholder={env.i18n(data.config.placeholder)}
             dateRender={
               data.useCustomDateCell ||
-              (data.customExtraText && typeof customExtraTextRef.current === 'function')
+                (data.customExtraText && typeof customExtraTextRef.current === 'function')
                 ? customDateRender
                 : undefined
             }
@@ -667,6 +668,14 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             disabledTime={disabledDateTimeConfig}
             getPopupContainer={(triggerNode: HTMLElement) => {
               if (fullOpen) return wrapperRef.current;
+              
+              if (data.mount === undefined) {
+                data.mount = 'body';
+              }
+              // 预览态 和发布后 没有env.runtime.debug
+              if (env.runtime && !env.runtime.debug) {
+                return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
+              }
               return env?.canvasElement || document.body;
             }}
             dropdownClassName={`

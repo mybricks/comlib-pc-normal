@@ -10,6 +10,7 @@
     "start",
     "end"
   ],
+  "mount": "body",
   "staticDisabledDate": [
     {
       "title": "起始日期禁用",

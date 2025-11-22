@@ -177,6 +177,23 @@ export default {
           }
         },
         {
+          title: '弹出菜单挂载点',
+          description: '可在预览态下看到效果，调试态基于画布元素',
+          type: 'select',
+          options: [
+            { label: 'Body元素', value: 'body' },
+            { label: '当前节点', value: 'current' }
+          ],
+          value: {
+            get({ data }) {
+              return data.mount || `body`;
+            },
+            set({ data }, value: string) {
+              data.mount = value;
+            }
+          }
+        },
+        {
           title: '时间选择',
           type: 'Switch',
           description: '是否可以选择时间（时、分、秒）',
