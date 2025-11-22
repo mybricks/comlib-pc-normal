@@ -190,7 +190,16 @@ export default function ({
             disabled={disabled}
             allowClear
             showNow={data.showNow}
-            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            getPopupContainer={(triggerNode: HTMLElement) => {
+              if (data.mount === undefined) {
+                data.mount = 'body';
+              }
+              // 预览态 和发布后 没有env.runtime.debug
+              if (env.runtime && !env.runtime.debug) {
+                return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
+              }
+              return env?.canvasElement || document.body
+            }}
             open={env.design ? true : void 0}
             popupClassName={id}
             onChange={onChange}

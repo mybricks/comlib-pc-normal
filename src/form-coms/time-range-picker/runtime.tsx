@@ -83,14 +83,14 @@ export default function ({
         start === null || start === undefined || start === 0
           ? start
           : isNaN(Number(start))
-          ? moment(start, _format)
-          : moment(Number(start));
+            ? moment(start, _format)
+            : moment(Number(start));
       const endM =
         end === null || end === undefined || end === 0
           ? end
           : isNaN(Number(end))
-          ? moment(end, _format)
-          : moment(Number(end));
+            ? moment(end, _format)
+            : moment(Number(end));
       return [startM, endM];
     },
     [splitChar, _format]
@@ -224,7 +224,16 @@ export default function ({
             allowClear
             disabled={disabled}
             onChange={onChange}
-            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            getPopupContainer={(triggerNode: HTMLElement) => {
+              if (data.mount === undefined) {
+                data.mount = 'body';
+              }
+              // 预览态 和发布后 没有env.runtime.debug
+              if (env.runtime && !env.runtime.debug) {
+                return data.mount === 'current' ? triggerNode : env?.canvasElement || document.body;
+              }
+              return env?.canvasElement || document.body
+            }}
             open={env.design ? true : void 0}
             popupClassName={id}
           />

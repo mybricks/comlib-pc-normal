@@ -9,5 +9,6 @@ export interface Data {
   outFormat: 'array' | 'string',
   splitChar: string,
   isEditable: boolean,
+  mount?: string
   config: TimeRangePickerProps
 }

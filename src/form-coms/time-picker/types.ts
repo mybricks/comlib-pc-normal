@@ -5,6 +5,7 @@ export interface Data {
   disabled?: boolean
   showNow?: boolean
   rules: any[],
+  mount?: string
   format: string,
   customFormat: string,
   isEditable: boolean,

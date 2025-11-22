@@ -9,6 +9,7 @@
   "outFormat": "array",
   "splitChar": "-",
   "isEditable": true,
+  "mount": "body",
   "config": {
     "size": "middle"
   }

@@ -5,6 +5,7 @@
   "customFormat": "HH:mm:ss",
   "isEditable": true,
   "showNow": true,
+  "mount": "body",
   "config": {
     "size": "middle"
   }

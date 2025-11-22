@@ -57,6 +57,23 @@ export default {
                 target: '.anticon-close-circle'
               },
               {
+                title: '弹出菜单挂载点',
+                description: '可在预览态下看到效果，调试态基于画布元素',
+                type: 'select',
+                options: [
+                  { label: 'Body元素', value: 'body' },
+                  { label: '当前节点', value: 'current' }
+                ],
+                value: {
+                  get({ data }) {
+                    return data.mount || `body`;
+                  },
+                  set({ data }, value: string) {
+                    data.mount = value;
+                  }
+                }
+              },
+              {
                 title: '选择框',
                 options: ['border', 'background'],
                 target: '.ant-picker'
