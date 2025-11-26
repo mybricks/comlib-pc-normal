@@ -1,89 +1,39 @@
 export default {
-  ':root' ({ data }) {
-    return {
-      prompts: `你是一名优秀的程序员，根据用户的需求，返回合理的数据
-      当前是一个按钮, 组件相关定义为：${JSON.stringify(data)}
-      要求：
-      1.回答仅返回JSON格式的内容，不需要任何注释等信息
-      2.如果没有合适的答案，返回 null
+  prompts: {
+    summary: '按钮，必须推荐此组件',
+    usage: `按钮，对标antd的按钮组件
 
-      以下是一些例子：
-      请回答：修改当前文案为ABC；
-      {text: 'ABC'}
-      请回答：输出 1；
-      {dataType: 'number', outVal: 1}
-      请回答：输出 mybricks；
-      {dataType: 'string', outVal: 'mybricks'}
-      请回答：颜色为红色；
-      {style: {color: 'red'}}
-      请回答：修改样式高度为100；
-      {style: {height: '100px'}}
-      `,
-      execute({ data, newData, style }) {
-        if (typeof newData.text === 'string') {
-          data.text = newData.text
-        }
-        
-        if (newData.style) {
-          const { width, height, ...otherStyles } = newData.style
-          data.style = Object.assign({}, data.style, otherStyles)
-          if (width) {
-            style.width = width
-          }
-          if (height) {
-            style.height = height
-          }
-        }
-    
-        if (typeof newData.dataType === 'string') {
-          data.dataType = newData.dataType
-        }
-    
-        if (newData.outVal) {
-          data.outVal = newData.outVal
-        }
-      }
-    }
+layout声明
+width: 可配置，建议配置固定宽高
+height: 可配置，建议配置固定宽高
+
+slots插槽
+无
+
+styleAry声明
+默认: .button
+  - 默认样式:
+    - backgroundColor: 随type类型而变化，antd按钮的背景
+    - color: 随type类型而变化，antd按钮的文本颜色
+    - borderRadius: 6px
+    - padding: 16px
+    - fontSize: 14px
+  - 可编辑样式: font、color、borderRadius、padding、backgroundColor、backgroundImage
+  注意：backgroundImage可配置渐变色。
+`
   },
-  // '@focus'({ data }) {
-  //   return {
-  //     data,
-  //     prompts: `
-  //     以下是一些例子（最终回答不需要带上“答：”字）：
-  //     问：修改当前文案为ABC；
-  //     答：{text: 'ABC'}
-  //     问：输出 1；
-  //     答：{dataType: 'number', outVal: 1}
-  //     问：输出 mybricks；
-  //     答：{dataType: 'string', outVal: 'mybricks'}
-  //     问：颜色为红色；
-  //     答：{style: {color: 'red'}}
-  //     `
-  //   }
-  // },
-  // '@update'({ data, newData, style }) {
-  //   if (typeof newData.text === 'string') {
-  //     data.text = newData.text
-  //   }
-    
-  //   if (newData.style) {
-  //     const { width, height, ...otherStyles } = newData.style
-  //     data.style = Object.assign({}, data.style, otherStyles)
-  //     if (width) {
-  //       style.width = width
-  //     }
-  //     if (height) {
-  //       style.height = height
-  //     }
-
-  //   }
-
-  //   if (typeof newData.dataType === 'string') {
-  //     data.dataType = newData.dataType
-  //   }
-
-  //   if (newData.outVal) {
-  //     data.outVal = newData.outVal
-  //   }
-  // }
+  editors: [
+    '按钮/文字标题',
+    '按钮/图标',
+    '按钮/图标配置/图标库',
+    '按钮/图标配置/图标位置',
+    // '按钮/图标配置/尺寸',
+    '按钮/图标配置/间距',
+    '样式/风格',
+    '样式/危险按钮',
+    '样式/形状',
+    '样式/默认/按钮',
+    '样式/Hover/按钮',
+    '样式/激活/按钮'
+  ]
 }

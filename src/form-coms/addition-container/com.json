@@ -12,6 +12,7 @@
   "editors": "./editors.ts",
   "inputs": [],
   "outputs": [],
+  "ai": "./ai.ts",
   "slots": [
     {
       "id": "form-addition-container",

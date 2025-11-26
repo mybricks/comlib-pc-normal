@@ -8,6 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
+  "ai": "./ai.ts",
   "editors": "./editor/index.tsx",
   "target": {
     "toReact": "./toReact.ts"

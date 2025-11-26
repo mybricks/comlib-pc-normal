@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
