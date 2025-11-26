@@ -1,4 +1,5 @@
 export default {
+  ignore: true,
   ':root' ({ data }) {
     return {
       prompts: `你是一名优秀的程序员，根据用户的需求，返回合理的数据
@@ -13,7 +14,7 @@ export default {
         title: "对话框",
         slots:{
           container:[
-            {type:'amc.normal-h5.table'}
+            {type:'mybricks.normal-pc.table'}
           ]
         }
       }
@@ -80,7 +81,7 @@ export default {
     例如：
     请回答：添加对话框
     {
-      type:'amc.normal-h5.dialog',
+      type:'mybricks.normal-pc.dialog',
       title: "请确认",
       footerBtns:[{ type: 'default', title: '关闭',"id": "Btn1","showText": true },{ type: 'primary', title: '确认',"id": "Btn2","showText": true }],
       slots:{}
@@ -88,23 +89,23 @@ export default {
     注意：这里因为在提出的问题中没有对于对话框内部或者类型的描述，所以slots为空。
     请回答：对话框，包含一个文本
     {
-      type:'amc.normal-h5.dialog',
+      type:'mybricks.normal-pc.dialog',
       title: "请确认",
       footerBtns:[{ type: 'default', title: '关闭',"id": "Btn1","showText": true },{ type: 'primary', title: '确认',"id": "Btn2","showText": true }],
       slots:{
         container:[
-          {type:'amc.normal-h5.text'}
+          {type:'mybricks.normal-pc.text'}
         ]
       }
     }
     请回答：确认类型对话框
     {
-      type:'amc.normal-h5.dialog',
+      type:'mybricks.normal-pc.dialog',
       title: "请确认",
       footerBtns:[{ type: 'default', title: '关闭',"id": "Btn1","showText": true },{ type: 'primary', title: '确认',"id": "Btn2","showText": true }],
       slots:{
         container:[
-          {type:'amc.normal-h5.form-container', slots:{ content: [{type:'amc.normal-h5.form-text', label: '输入框', name: 'name0'}] }}
+          {type:'mybricks.normal-pc.form-container', slots:{ content: [{type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}] }}
         ]
       }
     }`,
@@ -121,7 +122,7 @@ export default {
     }
     if(def.slots.container !== undefined && def.slots){
       const items = def.slots.container;
-      if(items.length === 1 && def.slots.container[0].type === 'amc.normal-h5.form-container'){
+      if(items.length === 1 && def.slots.container[0].type === 'mybricks.normal-pc.form-container'){
         data.useFooter = false
       }
     }

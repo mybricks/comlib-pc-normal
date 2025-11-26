@@ -1,14 +1,30 @@
 export default {
-  // def: {},
-  prompts: ``,
-  '@create' (props) {
-    const { def, data } = props
-    // console.log(def)
-    if (Array.isArray(def?.options)) {
-      data.config.options = def.options
-    }
+  ':root' ({ data }) {
+    return {}
   },
-  '@update'({ data, newData, slots }) {
-    // console.log(data, newData)
+  prompts: {
+    summary: `下拉框Select。
+表单项组件，schema=form-item`,
+    usage: `下拉框Select。
+表单项组件，schema=form-item
+
+schema声明
+form-item
+`
+  },
+  modifyTptJson: (component) => {
+    if(!component.data){
+      component.data = {}
+    }
+    component.data = {
+      showSearch: true,
+      optionFilterProp: 'label',
+      mode: 'default',
+      showArrow: true,
+      isEditable: true,
+      mount: 'body',
+      dropdownMatchSelectWidth: true,
+      filterOption: true
+    }
   }
 }

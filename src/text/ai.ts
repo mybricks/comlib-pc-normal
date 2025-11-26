@@ -1,65 +1,44 @@
-const def = {
-  content: '这是一个文本',
-  style: {
-    fontWeight: 400,
-    fontSize: "14px",
-    color: "#000000"
-  }
-}
+
 export default {
-  prompts() {
-    return `根据用户需求设计一个文本, 其中包括文本的内容和样式。
-    组件定义： ${JSON.stringify(def)}，以下为示例
-    请回答： 添加一个文本
-    {
-      type: 'amc.normal-h5.text',
-      content: '这是一个文本'}
-    `
+  ':root' ({ data }) {
+    return {}
   },
-  '@create'({ def, data }) {
-    if (def.content) {
-      data.content = def.content
-    }
+  prompts: {
+    summary: '文本',
+    usage: `文本组件，支持配置溢出策略
 
-    if (def.style) {
-      data.style = { ...data.style, ...def.style }
-    }
+slots插槽
+无
+
+注意事项
+- 注意配置fontSize同时要配置lineHeight，否则会无法正常展示；
+- 尽量不用全黑的字体颜色，而是用柔和一些的颜色比如深灰色；
+- 对于大部分（特别是动态内容）的文本，需要配置文本一出，防止内容过多换行；
+- 注意文本和其他组件之间要留有适量的边距（通过layout进行配置）；`
 
   },
-  '@focus'({ data }) {
-    return {
-      data,
-      prompts: `
-      以下是一些例子：
-      Q：修改当前内容为ABC;
-      A：{content: 'ABC'}
-      Q：点击后输出 ZYX
-      A：{outputContent: ZYX }
-      `
-    };
-  },
-  ":root"({ data }) {
-
-    return {
-      prompts: `你是一个出色的文案专家，请根据我的要求修改当前组件
-      组件定义： ${JSON.stringify(def)}
-      以下是一些例子
-      请回答： 添加一个文本
-      {
-        content: '这是一个文本',
-        style: {
-          fontWeight: 400,
+  modifyTptJson: (component) => {
+    if (component.style.styleAry) {
+      component.style.styleAry.forEach(item => {
+        if (!item.css) {
+          item.css = {}
         }
-      }
-      `,
-      execute({ data, newData, slots }) {
-        if (newData.content) {
-          data.content = newData.content;
+        if (item.css?.fontSize?.endsWith?.("px")) {
+          if (!item.css.lineHeight) {
+            item.css.lineHeight = 1
+          }
         }
-        if (newData.style) {
-          data.style = { ...data.style, ...newData.style };
+        item.css.textAlign = component.data?.align || 'left'
+      })
+    } else {
+      component.style.styleAry = [
+        {
+          selector: "[data-item-type='root']",
+          css: {
+            textAlign: 'left'
+          }
         }
-      }
+      ]
     }
   }
 };
