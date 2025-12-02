@@ -1,0 +1,75 @@
+{
+  "title": "图片列表",
+  "namespace": "mybricks.normal-pc.multi-image",
+  "version": "1.0.0",
+  "description": "可预览的多图",
+  "author": "qiuyun",
+  "author_name": "qiuyun",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "inputs": [
+    {
+      "id": "setImgsSrc",
+      "title": "设置图片",
+      "desc": "设置图片资源链接",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "rels": ["setImgsSrcDone"]
+    },
+    {
+      "id": "getImgsSrc",
+      "title": "获取图片",
+      "desc": "获取图片资源链接",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "rels": ["getImgsSrcDone"]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击图片",
+      "desc": "点击图片事件输出",
+      "scheme": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setImgsSrcDone",
+      "title": "设置图片完成",
+      "desc": "图片设置地址后，触发设置地址完成事件",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "getImgsSrcDone",
+      "title": "获取图片完成",
+      "desc": "获取到的图片地址",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

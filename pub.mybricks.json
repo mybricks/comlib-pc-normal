@@ -13,6 +13,7 @@
         "./src/typography/com.json",
         "./src/richtext-preview/com.json",
         "./src/single-image/com.json",
+        "./src/multi-image/com.json",
         "./src/toolbar/com.json",
         "./src/button/com.json",
         "./src/icon/com.json",
