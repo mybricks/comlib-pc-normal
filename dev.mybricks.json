@@ -3,7 +3,8 @@
   "componentType": "PC",
   "fileId": 7632,
   "commitInfo": "update",
-  "namespace": "amc.normal-pc","domain": "http://dev.manateeai.com",
+  "namespace": "amc.normal-pc",
+  "domain": "http://dev.manateeai.com",
   "comAry": [
     {
       "title": "基础",
@@ -179,5 +180,6 @@
   ],
   "tags": "react",
   "email": "ludongmin",
-  "userName": "ludongmin"
+  "userName": "ludongmin",
+  "version": "1.0.58"
 }
