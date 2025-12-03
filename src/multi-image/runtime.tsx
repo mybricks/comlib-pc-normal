@@ -10,7 +10,6 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
     customStyle,
     useFallback,
     fallbackImgSrc,
-    usePreview,
     disableDrag,
     disableContextMenu
   } = data;
@@ -79,14 +78,12 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
               }}
               fallback={useFallback && fallbackImgSrc ? fallbackImgSrc : undefined}
               preview={
-                usePreview && runtime
+                runtime
                   ? {
                       src: src,
                       className: `${css.preview} ${uuidId}`,
                       onVisibleChange
                     }
-                  : usePreview && !runtime
-                  ? {}
                   : false
               }
               onClick={onClick}

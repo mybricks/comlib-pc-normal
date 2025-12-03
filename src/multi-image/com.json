@@ -1,7 +1,7 @@
 {
   "title": "图片列表",
   "namespace": "mybricks.normal-pc.multi-image",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "可预览的多图",
   "author": "qiuyun",
   "author_name": "qiuyun",
