@@ -30,6 +30,7 @@ export default {
             title: '默认',
             catelog: '默认',
             options: [
+              'size',
               'border',
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -40,6 +41,7 @@ export default {
             title: 'Hover',
             catelog: 'Hover',
             options: [
+              'size',
               'border',
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }

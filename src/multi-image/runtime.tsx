@@ -66,8 +66,6 @@ export default function ({ env, data, inputs, outputs, style }: RuntimeParams<Da
             <Image
               alt={env.i18n(alt)}
               src={src}
-              width="100%"
-              height="100%"
               style={{
                 objectFit: data?.objectFit || 'fill',
                 cursor:
