@@ -565,6 +565,8 @@ export default function ({
       return <LoadingOutlined className={css.uploadFileItemIcon} />;
     } else if (file.status === 'error') {
       return <FileExclamationOutlined />;
+    } else {
+      return <FileOutlined className={css.uploadFileItemIcon} />;
     }
   }, []);
 

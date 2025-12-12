@@ -4,7 +4,10 @@
     .ant-select {
       width: 100%;
     }
-    .ant-select-single .ant-select-selector .ant-select-selection-search-input {
+    .ant-select-single .ant-select-selector .ant-select-selection-search-input:focus {
+      box-shadow: none;
+    }
+    .ant-select-single .ant-select-selector .ant-select-selection-search-input:not(:focus) {
       border-color: #dfdfdf;
       border-radius: 4px;
     }

@@ -195,7 +195,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <div className={css.autoComplete}>
       <AutoComplete
         {...data.config}
-        open={!!value ? value.length > 1 : false}
+        // open={!!value ? value.length > 1 : false}
         virtual={false}
         placeholder={env.i18n(data.config.placeholder)}
         value={value}
