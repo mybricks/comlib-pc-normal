@@ -1137,8 +1137,9 @@ export default function (props: RuntimeParams<Data>) {
 
         for (const key of SelectedRowKeys) {
           // 找相应uuid数据
-          const matchingObject = dataSource.find((obj) => obj[rowKey] === key);
           const matchingObjectIndex = dataSource.findIndex((obj) => obj[rowKey] === key);
+          const matchingObject = dataSource[matchingObjectIndex];
+          
           // 去重
           if (matchingObject && !addedObjects.has(matchingObject[rowKey])) {
             if (!matchingObject[mergeByField as string]) {

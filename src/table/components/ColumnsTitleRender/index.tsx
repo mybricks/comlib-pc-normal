@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import { Row, Table, Tooltip } from 'antd';
 import { FilterFilled, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import get from 'lodash/get';
+import {get, isEqual} from 'lodash';
 import { CompareFn } from 'antd/es/table/interface';
 import { runJs } from '../../../../package/com-utils';
 import {
@@ -320,6 +320,11 @@ export default ({
         {...(cItem as any)}
         ellipsis={false}
         width={cItem.width === WidthTypeEnum.Auto ? undefined : cItem.width}
+        shouldCellUpdate={(record, prevRecord) => {
+          const cur = get(record, cItem.dataIndex);
+          const prev = get(prevRecord, cItem.dataIndex);
+          return !isEqual(cur, prev);
+        }}
         title={renderTtl(cItem)}
         key={cItem.dataIndex}
         filterMultiple={cItem.filter?.filterType !== FilterTypeEnum.Single}
