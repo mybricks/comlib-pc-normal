@@ -316,8 +316,8 @@ export default {
                     title: '内容',
                     options: [{ type: 'font', config: { disableTextAlign: true } }],
                     target: [
-                      `.ant-form-item > div.ant-col.ant-form-item-label > label > label`,
-                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`
+                      `.ant-form-item > div.ant-col.ant-form-item-label .custom-wrap-classname`,
+                      `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label .custom-wrap-classname`
                     ]
                   },
                   {
