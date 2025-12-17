@@ -395,12 +395,15 @@ export default function ({
     return undefined;
   }
 
+  console.log('data.classicStyle', data.classicStyle);
+
   return (
     <div
       className={cx([
         css.tabbox,
         'root',
         {
+          [css.classicStyle]: data.classicStyle,
           [css.hideMoreIcon]: data.hideMoreIcon,
           [css.rightExtraFloatLeft]: data.useRigthExtra && data.rightExtraPosition === 'left'
         }

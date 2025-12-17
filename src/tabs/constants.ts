@@ -49,6 +49,7 @@ export interface TabItem {
 export interface Data {
   type: any;
   centered: boolean;
+  classicStyle: boolean;
   tabList: TabItem[];
   prohibitClick: boolean;
   defaultActiveKey: string | undefined;

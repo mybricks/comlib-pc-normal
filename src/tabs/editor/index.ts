@@ -135,6 +135,19 @@ export default {
           }
         },
         {
+          title: '经典外观',
+          type: 'Switch',
+          description: '使用旧版样式：tab没有最小宽度，并且每个tab间相隔32px',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.classicStyle;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.classicStyle = value;
+            }
+          }
+        },
+        {
           title: '标签居中',
           type: 'Switch',
           description: '标签页是否居中',

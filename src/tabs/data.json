@@ -20,6 +20,7 @@
   "type": "line",
   "size": "middle",
   "centered": false,
+  "classicStyle": false,
   "tabPosition": "top",
   "prohibitClick": false,
   "hideAdd": false,
