@@ -36,8 +36,11 @@ const SlotContent = (props) => {
       <FormActions data={data} env={env} outputs={outputs} submit={submit} isMobile={isMobile} />
     );
   };
-
   const content = useMemo(() => {
+
+    // FIX: 在编辑情况下，切换layoutType的时候，强制刷新slot内容，如果还需要判断其他字段，可以改成const key = env.edit ? Date.now() : undefined;
+    const key = env.edit ? layoutType : undefined;
+
     return slots['content']?.render({
       itemWrap(com: { id; jsx; name; scope; index }) {
         // todo name
@@ -175,9 +178,9 @@ const SlotContent = (props) => {
             </Row>
           );
         }
-      }
+      },
       // inputValues: {}
-      // key: props?.field?.name
+      key
     });
   }, [layout, slots, isMobile, layoutType]);
 
