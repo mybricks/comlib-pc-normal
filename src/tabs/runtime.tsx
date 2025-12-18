@@ -400,7 +400,7 @@ export default function ({
   return (
     <div
       className={cx([
-        css.tabbox,
+        !data.type || data.type === 'line' ? css.tabbox : css.tabboxCard,
         'root',
         {
           [css.classicStyle]: data.classicStyle,

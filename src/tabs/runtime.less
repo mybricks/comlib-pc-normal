@@ -92,6 +92,65 @@
   }
 }
 
+.tabboxCard {
+  height: 100%;
+  overflow: hidden;
+
+  :global {
+    .ant-tabs,
+    .ant-tabs-content-holder,
+    .ant-tabs-content {
+      height: 100%;
+    }
+
+    .ant-tabs-tab {
+      .ant-tabs-tab-btn {
+        width: 100%;
+      }
+      .anticon {
+        margin-right: 4px;
+      }
+    }
+
+    .ant-tabs-tabpane:not(.ant-tabs-tabpane-active) {
+      display: block !important;
+      visibility: hidden;
+      overflow: hidden;
+      width: 0;
+      height: 0;
+    }
+
+    // .ant-tabs-tab-remove {
+    //   font-size: 16px;
+    //   color: #bfbfbf;
+    // }
+
+    // .ant-tabs > .ant-tabs-nav .ant-tabs-nav-add {
+    //   border: none;
+    //   background: transparent;
+    //   min-width: 150px;
+    //   text-align: left;
+
+    //   &::after {
+    //     content: '+ 新增分页面板';
+    //     color: var(--ant-primary-color, #1890ff);
+    //   }
+
+    //   .anticon {
+    //     display: none;
+    //   }
+    // }
+  }
+
+  .minHeight {
+    min-height: 100px;
+  }
+
+  .content {
+    height: 100%;
+  }
+}
+
 .hideMoreIcon {
   :global {
     .ant-tabs-nav-operations {

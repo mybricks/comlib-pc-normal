@@ -89,6 +89,27 @@ export default {
           }
         },
         {
+          title: '外观',
+          type: 'Select',
+          description: '配置标签页的外观(基本样式)，包括卡片和简约类型',
+          // 由于历史问题，这里的line对应的是editable-card，但是修改css使之有line类型的外观
+          // 但是之前系统有需要旧版卡片式外观的，故这里给出了选择为旧版外观的选项
+          // 因此这里的外观仅仅表示选择新版样式还是老版样式，与antd中type的类型无关（只是字段名参考了antd的type，实际作用完全不一致）
+          // 所以这里的type不会真正影响tabs组件的type属性，仅仅修改了className
+          options: [
+            { value: 'editable-card', label: '卡片' },
+            { value: 'line', label: '默认' }
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.type;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.type = value;
+            }
+          }
+        },
+        {
           title: '尺寸',
           type: 'Select',
           description: '标签页大小, 默认是中(middle)',
