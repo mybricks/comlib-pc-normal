@@ -39,7 +39,6 @@ export default function ({
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
-  const [placeholder, setPlaceholder] = useState(data.config.placeholder);
   const [autoFocus, setAutoFocus] = useState(false);
 
   useFormItemInputs(
@@ -152,7 +151,7 @@ export default function ({
   useEffect(() => {
     //设置占位符
     inputs['setPlaceholder']((value, relOutputs) => {
-      setPlaceholder(value);
+      data.config.placeholder = value
       relOutputs['setPlaceholderDone'](value);
     });
   });
@@ -240,7 +239,7 @@ export default function ({
         ref={inputRef}
         {...data.config}
         autoFocus={autoFocus}
-        placeholder={env.i18n(placeholder)}
+        placeholder={env.i18n(data.config.placeholder)}
         value={value}
         readOnly={!!edit}
         {...sizeConfig}
