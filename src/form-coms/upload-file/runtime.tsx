@@ -58,6 +58,7 @@ export interface Data {
   updateDateFieldName: string;
   onDownload?: boolean;
   readonlyMode?: boolean;
+  hideDownloadBtn?: boolean;
 }
 
 const downloadFile = (url, fileName) => {
@@ -616,7 +617,7 @@ export default function ({
                       <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  {(file.status === 'done' || !file.status) && (
+                  {(file.status === 'done' || !file.status) && !data.hideDownloadBtn && (
                     <a
                       title={env.i18n('下载')}
                       onClick={

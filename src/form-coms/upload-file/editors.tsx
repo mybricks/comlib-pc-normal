@@ -598,6 +598,19 @@ export default {
           }
         },
         {
+          title: '隐藏下载按钮',
+          type: 'switch',
+          description: '开启后，会隐藏下载按钮',
+          value: {
+            get({ data, env }: EditorResult<Data>) {
+              return data.hideDownloadBtn;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.hideDownloadBtn = value;
+            }
+          }
+        },
+        {
           title: '使用自定义上传',
           type: 'switch',
           description: '开启后，通过上传事件，或者在自定义上传卡片中调用接口进行上传',
