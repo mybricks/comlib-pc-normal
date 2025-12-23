@@ -52,6 +52,7 @@ export default {
   </补充说明>
     `,
     usage: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。
+    需要特别留意表头的背景颜色配置，需要和用户提供的参考图片或者描述一模一样。
 
 slots插槽
 动态插槽，当cloumn的contentType为slotItem时，对应列的key

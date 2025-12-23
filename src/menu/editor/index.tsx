@@ -192,7 +192,8 @@ export default {
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
-            target: 'ul.ant-menu'
+            target: ({ id }: EditorResult<Data>) =>
+              `ul.ant-menu, .ant-menu-submenu-title`
           },
           {
             title: '菜单项',
@@ -203,7 +204,8 @@ export default {
               'padding',
               { type: 'background', config: { disableBackgroundImage: true } }
             ],
-            target: 'ul li:not(.ant-menu-item-selected)'
+            target: 
+            ['ul li:not(.ant-menu-item-selected)','.ant-menu-light .ant-menu-submenu-title']
           },
           {
             title: '菜单',
