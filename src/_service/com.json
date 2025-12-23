@@ -10,6 +10,7 @@
   "data": "./data.json",
   "icon": "./icon.svg",
   "rtType": "js-autorun",
+  "ai": "./ai.ts",
   "inputs": [
     {
       "id": "call",
