@@ -1,31 +1,4 @@
-import merge from "lodash/merge";
-import mergeWith from "lodash/mergeWith";
-import { uuid } from '../../utils';
-
 const version = ANTD_VERSION === 4 ? "" : "antd5."
-
-const handleMerge = (preData, curData) => {
-  mergeWith(preData, curData, (pre, cur, key) => {
-    if (key === "btnList") {
-      return merge(Array.from({ length: cur.length }, () => {
-        return {
-          name: "表单项",
-          label: "表单项",
-          widthOption: 'span',
-          span: 24 / (curData.formItemColumn || preData.formItemColumn),
-          colon: 'default',
-          labelWidthType: 'default',
-          hiddenLabel: false,
-          visible: true,
-          hidden: false
-        }
-      }), pre, cur)
-    } else if (key === "actions") {
-      pre.items = pre.items.slice(0, cur.items.length)
-    }
-    return undefined;
-  })
-}
 
 export default {
   prompts: {
@@ -40,109 +13,56 @@ export default {
 - 期望统一水平/垂直布局、所有表单项 label 对齐、行距一致、且需要收集信息的情况；
 - 中后台场景下，N行N列的label+文本，结合上下文和各类文本猜测是表单类型的，也要使用表单；
 
-特别注意：使用此组件必须推荐其他schema=form-item的组件的表单项组件。
-同时必须推荐「自定义表单项」」组件，用于满足特殊的表单项UI需求。
+重要约束(!IMPORTANT)：
+拆分原则：被标题、卡片分割的长表单，必须拆分为多个独立表单，禁止包含在一个表单容器中。
+样式限制：表单容器不负责卡片、外层标题等装饰样式，所以外层必须套一层布局来实现间距等装饰样式。
+禁止嵌套：表单容器不允许嵌套表单容器。
+
+特别注意：使用此组件必须推荐其他schema=form-item的组件的表单项组件，同时必须推荐「自定义表单项」「自定义内容项」组件，用于满足特殊的表单项UI需求。
     `,
     usage: `表单容器，支持排版、收集、校验数据的表单容器，对标antd的Form组件，内部子组件必须且只能放置表单项（schema=form-item的组件）。
-主要作用：约等于 antd的form组件，帮忙搞定：
-1. 垂直/水平统一布局；
-2. 左侧自动对齐的 label 样式，表单项之间的默认的分割线；
-3. 数据收集、校验、提交按钮（可选）；
-4. 支持编辑/只读模式切换，默认为编辑模式；
+主要作用：约等于 antd的form组件，核心功能包含：
+- 数据管理：负责内部表单项的数据收集、校验、提交；
+- 容器性质：仅管理数据和布局，具体输入交互由内部“表单项”完成。
+- 布局策略：基于Row/Col的24栅格布局。推荐优先配置容器级的“通用布局”，特殊个例单独调整。
+- 状态管理：支持编辑/只读模式切换。
 
 何时使用：
-- 期望统一水平/垂直布局、所有表单项 label 对齐、行距一致、且需要收集信息的情况；
-- 中后台场景下，N行N列的label+文本，结合上下文和各类文本猜测是表单类型的，也要使用表单；
+- 需要通过表单容器放置多个表单项收集信息的情况；
+- 中后台场景下，N行N列的label+文本，结合上下文和各类文本猜测是表单类型的；
 
-特别注意：使用此组件必须推荐其他schema=form-item的组件的表单项组件。
+特别注意：使用此组件必须推荐其他schema=form-item的表单项组件。
 
 slots插槽
   content: 表单的内容
   - 作用域插槽：插槽中仅允许放置schema=form-item的组件，内置标签和其他组件都不可使用；
-  - 表单的插槽仅允许schema=form-item的表单项组件，如果当前表单项无法满足，可以使用自定义表单项。
+  - 表单的插槽仅允许schema=form-item的表单项组件，如果当前表单项无法满足，可以使用「自定义表单项」「自定义内容项」。
 
-使用流程：
-  1. 配置「表单容器/类型」和「表单容器/表单项布局/类型」，选择合适的表单类型和布局类型；
-    1.1 「表单容器/类型」，确认是普通表单还是查询表单；
-    1.2 「表单容器/表单项布局/类型」，仔细考虑是需要垂直vertical还是水平horizontal，注意往往vertical更常用，更节省空间；
-  2. 添加各类schema=form-item的组件，对于每一个表单项：
-    2.1 通过 configs:[{ "path": ":parent/表单项/标题", "value": "标题" }, { "path": ":parent/表单项/字段", "value": "字段" }] 来配置和表单关联的字段和标题，当且仅当配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置项 需要添加「:parent/」前缀；
-    2.2 配置组件自身的属性；
-  3. 配置布局相关信息，重点关注「表单项布局」相关配置；
-    其中「表单项布局」配置的是公共的布局，尽量使用公共布局完成布局。
-    3.1 先配置「表单项布局」，一般选取列数最多的那一行的列数（需要扫描整个表单所有行对比出最长一行），比如一行三列，可以配置「表单项布局/每行列数」为*3*以及合理的列间距，同时配置「表单项宽度配置(共24格)」为*8*；
-    3.2 特殊情况下，比如第二行只要一列，我们可以用「自定义表单项」补齐这个一行三列剩下两列的占位，保证第四个表单项为一列，将第5第6个表单项用「自定义表单项」来占位；
-  4. 关注操作区配置，各类操作按钮在此配置；
-    
-配置注意：
-  - 对于表单项的标题，默认会添加冒号，不需要在标题处多配置；
-  - 「必填样式」是添加到label前方的红色星号；
-  - 自定义表单项当作占位时，需要隐藏标题；
-  - 表单容器不允许嵌套表单容器；
+重要约束(!IMPORTANT)：
+- 拆分原则：被标题、卡片分割的长表单，禁止包含在一个大表单容器中，必须拆分为多个独立表单。
+样式限制：表单容器不负责卡片、外层标题等装饰样式，所以外层必须套一层布局来实现间距等装饰样式。
+- 禁止嵌套：表单容器不允许嵌套表单容器。
+- 插槽规则：插槽中仅允许放置schema=form-item的组件。
+
+
+使用步骤：
+- 确定类型：
+  - 选择「表单容器/类型」（普通/查询）。
+  - 选择「渲染模式」（编辑/只读）。
+确定布局(关键)：
+  - 设定布局类型：Vertical(垂直，省空间，常用) 或 Horizontal(水平)。
+  - 计算栅格：扫描表单设计，找出列数最多的一行（例如3列）。
+  - 配置通用布局：将「每行列数」设为最大列数（如3），系统自动计算每列宽度，同时配置列间距。
+  - 配置特殊布局：对于跨列的表单项，单独修改其「宽度配置」（如设为24格占满一行）。
+  - 处理空缺布局：若某行需留白，使用「自定义内容项」填补剩余栅格。
+添加schema=form-item的表单项：
+  - 任意表单项（包含「自定义内容项」和「自定义表单项」）除了自身配置外，都可配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置，此时path需要添加“:parent”前缀。
+    例如：
+      - configs:[{ "path": ":parent/表单项/标题", "value": "标题" }, { "path": ":parent/表单项/字段", "value": "key" }] 来配置和表单关联的字段和标题；
+      - configs:[{ "path": ":parent/表单项/样式/宽度配置(共24格)", "value": 16 }] 来配置宽度；
+配置操作区：
+   配置提交、重置等按钮，支持自定义按钮列表和样式。
  `,
-    getNewDSL(dsl) {
-      const { data, slots } = dsl;
-      if (slots && data.items) {
-        const { content: slotContent } = slots;
-
-        data.items.forEach((item, index) => {
-          const com = slotContent.comAry[index]
-          if (com) {
-            com.id = item.id
-            com.name = item.comName
-          }
-        })
-      }
-      return dsl;
-    },
-    execute(dsl, context) {
-      const { data } = context;
-      handleMerge(data, dsl);
-    },
-  },
-  modifyTptJson: (component) => {
-    if (!component.data?.actions) {
-      component.data.actions = {
-        visible: false,
-        align: "center",
-        span: 24,
-        widthOption: "flexFull",
-        items: [
-          {
-            title: "提交",
-            type: "primary",
-            outputId: "onClickSubmit",
-            key: "submit"
-          },
-          {
-            title: "取消",
-            outputId: "onClickCancel",
-            key: "cancel"
-          }
-        ]
-      }
-    }
-
-    component.slots?.content?.comAry?.forEach((com, index) => {
-      let item = component.data.items[index]
-  
-      item.id = uuid();
-      item.comName = uuid();
-      item.visible = item.visible ?? true;
-  
-      if (!item.label) {
-        item.label = com.data?.label ?? com.title
-      }
-  
-      if (!item.name) {
-        item.name = com.data?.name ?? com.data?.label
-      }
-  
-      if (com) {
-        com.id = item.id
-        com.name = item.comName
-      }
-    })
   },
   editors: [
     '表单容器/类型',
@@ -169,9 +89,18 @@ slots插槽
     '表单容器/标题/标题宽度(栅格)',
     '表单容器/标题/标题超长配置',
     '表单容器/标题/显示冒号',
+    
+    '表单项/显示标题',
+    '表单项/标题',
+    '表单项/标题提示',
+    '表单项/提示语',
+    '表单项/样式/宽度模式',
     '表单项/样式/宽度配置(共24格)',
+    '表单项/样式/标题冒号',
     '表单项/样式/必填样式',
     '样式/标题/字体',
+    '样式/提示语',
+    
     '操作区/显示',
     '操作区/展开文案',
     '操作区/收起文案',

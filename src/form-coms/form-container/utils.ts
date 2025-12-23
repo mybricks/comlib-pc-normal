@@ -120,13 +120,66 @@ export function setFormItemProps(
 
 /** 获取设置列间距后的宽度 */
 export function getAfterGapColWidth({ data, item }, { index, hasGutter }) {
-  const { formItemColumn, columnGap } = data;
-  let span = 24 / formItemColumn;
-  // TODO：对于异常case: item.span 和 平均几列后的span不一样的情况， 可能这一个不同的span影响同一行其他表单项的宽度设置，，暂时不处理;
-  if (!hasGutter || span !== item.span) {
-    // 没有列间距
+  const { columnGap, items = [] } = data;
+  
+  // 如果没有列间距，直接返回百分比宽度
+  if (!hasGutter) {
     return `${(item.span * 100) / 24}%`;
   }
-  let gapWidthPerRow = columnGap * (formItemColumn - 1);
-  return `calc((100% - ${gapWidthPerRow}px) / ${formItemColumn})`;
+  
+  // 获取当前行的信息
+  const currentRowInfo = getCurrentRowInfo(items, index);
+  const { columnsInCurrentRow } = currentRowInfo;
+  
+  // 如果当前行只有一列，不需要减去间距
+  if (columnsInCurrentRow === 1) {
+    return `${(item.span * 100) / 24}%`;
+  }
+  
+  // 计算当前行的总间距
+  const totalGapWidth = columnGap * (columnsInCurrentRow - 1);
+  
+  // 当前项在当前行中的宽度占比（总span是24）
+  const itemWidthRatio = item.span / 24;
+  
+  return `calc((100% - ${totalGapWidth}px) * ${itemWidthRatio})`;
+}
+
+// 获取当前行的信息
+function getCurrentRowInfo(items, currentIndex) {
+  let accumulatedSpan = 0;
+  let columnsInCurrentRow = 0;
+  
+  // 从当前位置往前找，找到当前行的起始位置
+  let rowStartIndex = currentIndex;
+  for (let i = currentIndex; i >= 0; i--) {
+    const itemSpan = items[i]?.span || 0;
+    if (accumulatedSpan + itemSpan > 24) {
+      rowStartIndex = i + 1;
+      break;
+    }
+    accumulatedSpan += itemSpan;
+    if (i === 0) {
+      rowStartIndex = 0;
+    }
+  }
+  
+  // 从行起始位置开始计算当前行有多少列
+  accumulatedSpan = 0;
+  for (let i = rowStartIndex; i < items.length; i++) {
+    const itemSpan = items[i]?.span || 0;
+    
+    if (accumulatedSpan + itemSpan > 24) {
+      break; // 超出当前行
+    }
+    
+    accumulatedSpan += itemSpan;
+    columnsInCurrentRow++;
+    
+    if (accumulatedSpan === 24) {
+      break; // 当前行已满
+    }
+  }
+  
+  return { columnsInCurrentRow };
 }

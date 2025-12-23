@@ -87,7 +87,7 @@ slots插槽
         set: ({ data, slot, ...extra }, value) => {
           data.columns = value.map(t => ({
             ...t,
-            visible: true
+            visible: t.visible ?? true
           }))
           data.columns.forEach(col => {
             if (col.contentType === 'slotItem') {
