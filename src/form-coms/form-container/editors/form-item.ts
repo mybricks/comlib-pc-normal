@@ -520,11 +520,12 @@ const formItemEditor = {
           },
           {
             title: '标题冒号',
+            
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
               return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
-            description: '当标题配置为空时，始终不展示冒号',
+            description: '是否展示表单项标签后面的冒号，默认显示。注意：当标题配置为空时，始终不展示冒号',
             options: [
               { label: '跟随容器', value: 'default' },
               { label: '显示', value: true },
@@ -560,6 +561,7 @@ const formItemEditor = {
           {
             title: '必填样式',
             type: 'Switch',
+            description: '是否展示表单项左侧的红色星号，默认隐藏',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
                 return getFormItemProp({ data, id, name }, 'required');
