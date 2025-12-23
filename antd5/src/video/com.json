@@ -3,7 +3,7 @@
   "title": "播放器",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "播放器",
   "docs": "组件使用说明文档链接",
   "icon": "../../../src/video/icon.svg",

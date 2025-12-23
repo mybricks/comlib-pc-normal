@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.normal-pc.antd5.tooltip",
   "title": "文字提示",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "文本提示组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,8 +9,8 @@
   "data": "../../../src/tooltip/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/tooltip/editors.tsx",
-  "upgrade": "../../../src/tooltip/upgrade.ts",
   "ai": "../../../src/tooltip/ai.ts",
+  "upgrade": "../../../src/tooltip/upgrade.ts",
   "inputs": [
     {
       "id": "content",

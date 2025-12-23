@@ -7,7 +7,24 @@ export default {
     options: ['width']
   },
   ':root': {
-    items: ({}, cate1, cate2) => {
+    style: [
+      {
+        title: "折叠栏底色",
+        options: [
+          { type: "background", config: { disableBackgroundImage: false } },
+          "border"
+        ],
+        target: ".ant-collapse-header",
+      },
+      {
+        title: "折叠面板底色",
+        options: [
+          { type: "background", config: { disableBackgroundImage: false } },
+        ],
+        target: ".ant-collapse-content-box",
+      }
+    ],
+    items: ({ }, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         Editor<Data>('标题', EditorType.Text, 'title', { options: { locale: true } }),
@@ -44,7 +61,6 @@ export default {
           }
         })
       ];
-
       cate2.title = '事件';
       cate2.items = [
         Editor<Data>('动态标题', EditorType.Switch, 'useDynamicTitle', {

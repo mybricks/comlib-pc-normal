@@ -116,7 +116,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             key={key}
             data-menu-item={key}
             icon={useIcon ? chooseIcon({ icon: icon }) : void 0}
-            style={{ opacity: 1, height: 'unset', overflowY: 'unset', position: 'relative' }}
+          //style={{ opacity: 1, height: 'unset', overflowY: 'unset', position: 'relative' }}
           >
             {renderMenuItems(children)}
           </Menu.SubMenu>
@@ -129,7 +129,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           icon={useIcon ? chooseIcon({ icon: icon }) : void 0}
           key={key}
           data-menu-item={key}
-          style={{ opacity: 1, height: 'unset', overflowY: 'unset', position: 'relative' }}
+        // style={{ opacity: 1, height: 'unset', overflowY: 'unset', position: 'relative' }}
         >
           {title}
         </Menu.Item>
