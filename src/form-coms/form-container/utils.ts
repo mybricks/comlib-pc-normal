@@ -129,7 +129,7 @@ export function getAfterGapColWidth({ data, item }, { index, hasGutter }) {
   
   // 获取当前行的信息
   const currentRowInfo = getCurrentRowInfo(items, index);
-  const { columnsInCurrentRow } = currentRowInfo;
+  const { columnsInCurrentRow, currentRowTotalSpan } = currentRowInfo;
   
   // 如果当前行只有一列，不需要减去间距
   if (columnsInCurrentRow === 1) {
@@ -139,47 +139,48 @@ export function getAfterGapColWidth({ data, item }, { index, hasGutter }) {
   // 计算当前行的总间距
   const totalGapWidth = columnGap * (columnsInCurrentRow - 1);
   
-  // 当前项在当前行中的宽度占比（总span是24）
-  const itemWidthRatio = item.span / 24;
+  // 当前项在当前行中的宽度占比（基于当前行的总span）
+  const itemWidthRatio = item.span / currentRowTotalSpan;
   
   return `calc((100% - ${totalGapWidth}px) * ${itemWidthRatio})`;
 }
 
 // 获取当前行的信息
 function getCurrentRowInfo(items, currentIndex) {
+  // 找到当前行的起始位置
+  let rowStartIndex = 0;
   let accumulatedSpan = 0;
-  let columnsInCurrentRow = 0;
   
-  // 从当前位置往前找，找到当前行的起始位置
-  let rowStartIndex = currentIndex;
-  for (let i = currentIndex; i >= 0; i--) {
+  for (let i = 0; i <= currentIndex; i++) {
     const itemSpan = items[i]?.span || 0;
+    
     if (accumulatedSpan + itemSpan > 24) {
-      rowStartIndex = i + 1;
-      break;
-    }
-    accumulatedSpan += itemSpan;
-    if (i === 0) {
-      rowStartIndex = 0;
+      // 换行了，重新开始
+      rowStartIndex = i;
+      accumulatedSpan = itemSpan;
+    } else {
+      accumulatedSpan += itemSpan;
     }
   }
   
-  // 从行起始位置开始计算当前行有多少列
-  accumulatedSpan = 0;
+  // 计算当前行的列数和总span
+  let columnsInCurrentRow = 0;
+  let currentRowTotalSpan = 0;
+  
   for (let i = rowStartIndex; i < items.length; i++) {
     const itemSpan = items[i]?.span || 0;
     
-    if (accumulatedSpan + itemSpan > 24) {
+    if (currentRowTotalSpan + itemSpan > 24) {
       break; // 超出当前行
     }
     
-    accumulatedSpan += itemSpan;
+    currentRowTotalSpan += itemSpan;
     columnsInCurrentRow++;
     
-    if (accumulatedSpan === 24) {
+    if (currentRowTotalSpan === 24) {
       break; // 当前行已满
     }
   }
   
-  return { columnsInCurrentRow };
+  return { columnsInCurrentRow, currentRowTotalSpan };
 }
