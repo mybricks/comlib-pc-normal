@@ -646,6 +646,11 @@ export default function ({
           );
         }}
       >
+        {slots['customUpload']?.render({
+          style: {
+            display: 'none'
+          }
+        })}
         {!data.readonlyMode && (
           <Button type="text" size={data.buttonSize as SizeType} icon={<UploadOutlined />}>
             {data.config.buttonText}
