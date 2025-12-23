@@ -598,7 +598,7 @@ export default {
           }
         },
         {
-          title: '隐藏下载按钮',
+          title: '隐藏下载按钮（仅iPad端生效）',
           type: 'switch',
           description: '开启后，会隐藏下载按钮',
           value: {

@@ -23,6 +23,11 @@ import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import JSZip from 'jszip';
 import classNames from 'classnames';
 
+function isPad() {
+  const u = navigator.userAgent;
+  return u.includes('iPad');
+}
+
 interface UploadConfig {
   buttonText: string;
   name: string;
@@ -617,7 +622,7 @@ export default function ({
                       <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  {(file.status === 'done' || !file.status) && !data.hideDownloadBtn && (
+                  {(file.status === 'done' || !file.status) && !(data.hideDownloadBtn && isPad()) && (
                     <a
                       title={env.i18n('下载')}
                       onClick={
