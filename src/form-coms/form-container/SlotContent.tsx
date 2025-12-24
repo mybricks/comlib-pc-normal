@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'antd';
 import FormItem from './components/FormItem';
 import FormActions from './components/FormActions';
@@ -8,6 +8,80 @@ import VerticalLayout from './layout/VerticalLayout';
 import QueryFilter from './layout/QueryFilter';
 import { getFormItem, isDynamicChildrenStoreValid, getAfterGapColWidth } from './utils';
 import { checkIfMobile } from '../../utils';
+
+// TODO，AI生成的时候，异步生成内容会被修改成display:none，不确定什么原因，先禁止修改
+const ProtectedFlexRow = ({ 
+  children, 
+  style = {}, 
+  className = '',
+  onDisplayChange,
+  ...props 
+}) => {
+  const containerRef = useRef(null);
+  const observerRef = useRef(null);
+
+  // 默认样式
+  const defaultStyles = {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    minWidth: 0,
+    ...style
+  };
+
+  // 恢复display样式
+  const restoreDisplay = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const currentDisplay = container.style.display;
+    if (currentDisplay === 'none') {
+      container.style.display = 'flex';
+      
+      if (onDisplayChange) {
+        onDisplayChange('restored', 'none', 'flex');
+      }
+    }
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // 设置MutationObserver监听style属性变化
+    observerRef.current = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          // 延迟执行，避免在样式设置过程中触发
+          setTimeout(restoreDisplay, 0);
+        }
+      });
+    });
+
+    observerRef.current.observe(container, {
+      attributes: true,
+      attributeFilter: ['style']
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [onDisplayChange]);
+
+  return (
+    <div
+      ref={containerRef}
+      className={className}
+      style={defaultStyles}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
 
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env, dynamicEnableOrDisabledRef } = props;
@@ -149,7 +223,7 @@ const SlotContent = (props) => {
           );
         } else {
           return (
-            <Row style={{ width: '100%', ...(hasGutter ? { columnGap: data.columnGap } : {}) }}>
+            <ProtectedFlexRow style={{ width: '100%', ...(hasGutter ? { columnGap: data.columnGap } : {}) }}>
               {isInlineModel && (
                 <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                   {jsx}
@@ -175,7 +249,7 @@ const SlotContent = (props) => {
                   {jsx}
                 </VerticalLayout>
               )}
-            </Row>
+            </ProtectedFlexRow>
           );
         }
       },

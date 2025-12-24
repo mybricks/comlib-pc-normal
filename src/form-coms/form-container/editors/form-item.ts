@@ -561,7 +561,7 @@ const formItemEditor = {
           {
             title: '必填样式',
             type: 'Switch',
-            description: '是否展示表单项左侧的红色星号，默认隐藏',
+            description: '是否展示表单项label左侧的红色星号，默认隐藏',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
                 return getFormItemProp({ data, id, name }, 'required');

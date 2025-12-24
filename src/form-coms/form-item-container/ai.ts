@@ -4,7 +4,7 @@ export default {
   },
   prompts: {
     summary: `自定义表单项，内部支持渲染任意子元素，可与form-container进行通信
-何时使用：仅在现有其他表单项不能满足用户需求时，用自定义表单项可以渲染特殊样式的UI，在formContainer被推荐时可以推荐，schema=form-item。`,
+何时使用：仅在现有其他表单项不能满足用户需求时，用自定义表单项可以渲染特殊样式的UI，需要和form-container(表单容器)一起使用，不能单独使用，，schema=form-item。`,
     usage: `自定义表单项，内部支持渲染任意子元素，可与form-container进行通信
 何时使用：仅在现有其它表单项不能满足用户需求时，用自定义表单项可以渲染特殊样式的UI，schema=form-item。
 
