@@ -451,70 +451,75 @@ export default {
     },
     style: [
       {
-        catelog: '默认',
-        ...createStyleForDefault({
-          initValue: {
-            color: 'rgba(0,0,0,.85)'
-          },
-          target: ({ id }: EditorResult<Data>) => 
-            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(id)}, .ant-tabs-nav-operations${getFilterSelector(id)}, .ant-tabs-nav-more${getFilterSelector(id)}`
-        })
-      },
-      {
-        catelog: '默认',
         title: '标签头',
+        description: 'tab整个标签头，可以配置背景色和内边距',
         options: ['padding', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-tabs .ant-tabs-nav-wrap'
       },
       {
-        catelog: '默认',
-        title: '外边距',
-        options: ['margin'],
-        target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
-      },
-      {
-        catelog: '默认',
-        title: '底部横线',
-        options: ['border'],
-        target: '.ant-tabs-top>.ant-tabs-nav:before'
-      },
-      {
-        catelog: 'Hover',
-        title: '标签',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        target: '.ant-tabs-tab:hover'
-      },
-      {
-        catelog: '激活',
-        ...createFontStyleForActive({
-          initValue: {
-            color: '#1890ff'
+        items: [
+          {
+            catelog: '默认',
+            ...createStyleForDefault({
+              initValue: {
+                color: 'rgba(0,0,0,.85)'
+              },
+              target: ({ id }: EditorResult<Data>) =>
+                `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(id)}, .ant-tabs-nav-operations${getFilterSelector(id)}, .ant-tabs-nav-more${getFilterSelector(id)}`
+            })
           },
-          title: '标签文本',
-          target: ({ id }: EditorResult<Data>) =>
-            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(
-              id
-            )} div.ant-tabs-tab-btn span`
-        })
-      },
-      {
-        catelog: '激活',
-        ...createStyleForActive({
-          title: '标签',
-          initValue: {
-            color: '#1890ff'
+
+          {
+            catelog: '默认',
+            title: '外边距',
+            options: ['margin'],
+            target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
           },
-          target: ({ id }: EditorResult<Data>) =>
-            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)}`
-        })
+          {
+            catelog: '默认',
+            title: '底部横线',
+            options: ['border'],
+            target: '.ant-tabs-top>.ant-tabs-nav:before'
+          },
+          {
+            catelog: 'Hover',
+            title: '标签',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.ant-tabs-tab:hover'
+          },
+          {
+            catelog: '激活',
+            ...createStyleForActive({
+              title: '标签',
+              initValue: {
+                color: '#1890ff'
+              },
+              target: ({ id }: EditorResult<Data>) => 
+                `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)}`
+            })
+          },
+          {
+            catelog: '激活',
+            ...createFontStyleForActive({
+              initValue: {
+                color: '#1890ff'
+              },
+              title: '标签文本',
+              target: ({ id }: EditorResult<Data>) =>
+                `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(
+                  id
+                )} div.ant-tabs-tab-btn span`
+            })
+          },
+          {
+            catelog: '激活',
+            ...createStyleForBar()
+          }
+        ]
       },
-      {
-        catelog: '激活',
-        ...createStyleForBar()
-      }
     ]
   },
   ...TabEditor
