@@ -2,12 +2,12 @@ import { uuid, arrayMove } from '../../utils';
 import { Tag, Data } from '../types';
 
 const getTagItem = (data, focusArea): [Tag, number] => {
-  const { index } = focusArea.dataset;
+  const  index  = focusArea?.dataset?.index;
   return [data.tags[index], Number(index)];
 };
 
 const getTagIndex = ({ focusArea }): number => {
-  const { index } = focusArea.dataset;
+  const index = focusArea?.dataset?.index;
   return Number(index);
 };
 

@@ -138,7 +138,7 @@ export default {
             catelog: '默认',
             ...createStyleForDefault({
               target({ focusArea }: EditorResult<Data>) {
-                const { index } = focusArea.dataset;
+                const index = focusArea?.dataset?.index;
                 return `div[data-root] span[data-index="${index}"]`;
               }
             })
@@ -147,7 +147,7 @@ export default {
             catelog: 'Hover',
             ...createStyleForCheckableHover({
               target({ focusArea }: EditorResult<Data>) {
-                const { index } = focusArea.dataset;
+                 const index = focusArea?.dataset?.index;
                 return `div[data-root] span[data-index="${index}"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover`;
               }
             })
@@ -156,7 +156,7 @@ export default {
             catelog: '激活',
             ...createStyleForChecked({
               target({ focusArea }: EditorResult<Data>) {
-                const { index } = focusArea.dataset;
+                const index = focusArea?.dataset?.index;
                 return `div[data-root] span[data-index="${index}"].ant-tag-checkable-checked`;
               }
             })
