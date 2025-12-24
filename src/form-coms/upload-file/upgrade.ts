@@ -161,6 +161,17 @@ export default function ({
     });
   }
 
+  if (!input.get('setHideDownloadBtn')) {
+    input.add('setHideDownloadBtn', '隐藏下载按钮', {
+      "type": "boolean"
+    });
+  }
+  if (!output.get('setHideDownloadBtnDone')) {
+    output.add('setHideDownloadBtnDone', '隐藏下载按钮完成', {
+      "type": "boolean"
+    });
+  }
+
   /**
    * @description v1.0.7 , 新增自定义插槽, 展示文件列表
    */

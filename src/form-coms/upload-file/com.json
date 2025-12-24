@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload-file",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.77",
+  "version": "1.0.78",
   "description": "文件上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -214,6 +214,17 @@
       },
       "rels": [
         "removeDone"
+      ]
+    },
+    {
+      "id": "setHideDownloadBtn",
+      "title": "隐藏下载按钮",
+      "desc": "可以通过传boolean值进行显隐控制，非boolean值会按照true进行设置",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setHideDownloadBtnDone"
       ]
     }
   ],
@@ -517,6 +528,13 @@
             "description": "文件唯一标识符"
           }
         }
+      }
+    },
+    {
+      "id": "setHideDownloadBtnDone",
+      "title": "隐藏下载按钮完成",
+      "schema": {
+        "type": "boolean"
       }
     }
   ],

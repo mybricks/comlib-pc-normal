@@ -150,6 +150,8 @@ export default function ({
     }
   };
 
+  const [isHideDownloadBtn, setIsHideDownloadBtn] = useState(false);
+
   useLayoutEffect(() => {
     // ≥ v1.0.34 设置上传结果
     slots['customUpload']?.outputs['setFileInfo']?.((file) => {
@@ -264,6 +266,11 @@ export default function ({
     inputs['remove']?.((file: any, relOutputs) => {
       onRemoveFile(file?.uid ? file : removeFileRef.current || {});
       relOutputs['removeDone'](file);
+    });
+
+    inputs['setHideDownloadBtn']?.((val: any, relOutputs) => {
+      setIsHideDownloadBtn(typeof val === 'boolean' ? val : true);
+      relOutputs['setHideDownloadBtnDone'](val);
     });
   }, []);
 
@@ -622,7 +629,7 @@ export default function ({
                       <EyeOutlined style={{ width: 16, height: 16, fontSize: 16 }} />
                     </a>
                   )}
-                  {(file.status === 'done' || !file.status) && !(data.hideDownloadBtn && isPad()) && (
+                  {(file.status === 'done' || !file.status) && !isHideDownloadBtn && !(data.hideDownloadBtn && isPad()) && (
                     <a
                       title={env.i18n('下载')}
                       onClick={
