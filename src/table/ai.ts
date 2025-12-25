@@ -2,7 +2,7 @@ import merge from "lodash/merge";
 import { WidthTypeEnum } from './types';
 import { setDataSchema, Schemas } from './schema';
 import { setColumns } from './utils';
-import { InputIds, OutputIds } from './constants';
+import { InputIds, OutputIds, COLUMN_EDITORS_CLASS_KEY } from './constants';
 const version = ANTD_VERSION === 4 ? "" : "antd5."
 
 const handleDataColumns = (params) => {
@@ -67,6 +67,66 @@ slots插槽
 注意：无需关心dataSource，数据从输入项外部输入即可。
   `,
   },
+  // editors: {
+  //   ':root': [
+  //     '常规/列/列宽分配',
+  //     {
+  //       title: '常规/表格列',
+  //       description: `通过数组来配置所有列
+  // [ # 表格列配置
+  //   {
+  //     key: string # 列唯一标识
+  //     dataIndex: string
+  //     title: string # 列标题
+  //     width: string | number 
+  //     isRowKey: boolean 
+  //     contentType: ['text', 'link', 'slotItem'] # 列内容类型
+  //   }
+  // ]
+  // `,
+  //       type: 'array',
+  //       value: {
+  //         set: ({ data, slot, ...extra }, value) => {
+  //           data.columns = value.map(t => ({
+  //             ...t,
+  //             visible: t.visible ?? true
+  //           }))
+  //           data.columns.forEach(col => {
+  //             if (col.contentType === 'slotItem') {
+  //               col.slotId = col.key;
+  //               slot.add({ id: col.slotId, title: `${col.title}-列`, type: 'scope' })
+  //             }
+  //           })
+  //         }
+  //       }
+  //     },
+  //     '常规/分页模式',
+  //     '样式/默认/表格容器',
+  //     '样式/默认/表格',
+  //     '样式/默认/单元格',
+  //     '样式/默认/行'
+  //   ],
+  //   [COLUMN_EDITORS_CLASS_KEY]: {
+  //     get title() {
+  //       return 'thead th[data-table-th-idx="列的key字段"]'
+  //     },
+  //     configs: [
+  //       '常规/基础配置/列名',
+  //       '常规/基础配置/类型',
+  //       '常规/内容省略展示',
+  //       '常规/适应剩余宽度',
+  //       '常规/宽度(px)',
+  //       '常规/固定列',
+  //       '高级/排序/使用排序',
+  //       '样式/单行',
+  //       '样式/双行',
+  //       '样式/默认/表头',
+  //       '样式/默认/分割线',
+  //       '样式/默认/内容',
+  //       '样式/表头对齐方式'
+  //     ]
+  //   }
+  // },
   editors: [
     '常规/列/列宽分配',
     {
