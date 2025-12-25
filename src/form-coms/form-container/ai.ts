@@ -164,4 +164,5 @@ slots插槽
       }
     }
   ],
+  requires: [`mybricks.normal-pc.${version}form-item-container`, `mybricks.normal-pc.${version}form-addition-container`]
 }
