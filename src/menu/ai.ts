@@ -7,8 +7,7 @@ export default {
     usage: `导航菜单，为页面和功能提供导航的菜单列表，可以水平展示，也可以垂直展示，整体对标antd的Menu组件。
 slots插槽
 无
-
-注意：如果用户提供的图片或者文字描述中，有连续的一组标签，且标签中有选中态，则必须使用当前menu组件；这样用户才可以点击切换`
+`
   },
   modifyTptJson(component) {
     if (Array.isArray(component.data?.dataSource)) {
