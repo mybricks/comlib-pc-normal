@@ -9,7 +9,7 @@
   "data": "../../../src/switch-container/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/switch-container/editors.ts",
-  "ai": "./ai/.ts",
+  "ai": "../../../src/switch-container/ai.ts",
   "inputs": [
     {
       "id": "setValue",
