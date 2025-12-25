@@ -468,7 +468,6 @@ export default {
                 `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(id)}, .ant-tabs-nav-operations${getFilterSelector(id)}, .ant-tabs-nav-more${getFilterSelector(id)}`
             })
           },
-
           {
             catelog: '默认',
             title: '外边距',

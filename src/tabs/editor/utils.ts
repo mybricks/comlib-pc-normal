@@ -6,6 +6,7 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
   initValue,
   options: [
     'border',
+    'padding',
     { type: 'font', config: { disableTextAlign: true } },
     { type: 'background', config: { disableBackgroundImage: true } },
   ],
@@ -28,6 +29,7 @@ export const createStyleForActive = ({ initValue, target, title }: StyleModeType
   initValue,
   options: [
     'border',
+    'padding',
     { type: 'background', config: { disableBackgroundImage: true } }
   ],
   target,
