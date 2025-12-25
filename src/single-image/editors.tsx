@@ -85,11 +85,11 @@ export default {
               value: 'fill'
             },
             {
-              label: '原比例展示，可能会留白 (contain)',
+              label: '按比例缩小，可能会留白 (contain)',
               value: 'contain'
             },
             {
-              label: '裁剪图片，保证铺满 (cover)',
+              label: '按比例放大，保证铺满 (cover)',
               value: 'cover'
             },
             {
