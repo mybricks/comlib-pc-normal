@@ -14,11 +14,18 @@ slots插槽
 - 必须选择cover模式，保证图片占满容器，contain模式会有留白；
 
 关于图片链接：
-  - 如果是Logo，使用https://placehold.co?text=Logo来配置一个带文本和颜色的图标；
-  - 如果是图片，使用https://ai.mybricks.world/image-search?term=dog&w=100&h=200，其中term代表搜索词，w和h可以配置图片宽高；
+
+对于图片：我们建议根据其用途选择合适的来源：
+  - https://placehold.co/600x400/orange/ffffff?text=hello，可以配置一个橙色背景带白色hello文字的色块占位图片；
+  - https://ai.mybricks.world/image-search?term=搜索词&w=宽&h=高，可以配置一个高质量的摄影图片；
+
+  对于海报/写实图片：我们建议使用高质量的摄影图片；
+  对于品牌/Logo：我们建议使用色块占位图片；
+  对于插画/装饰性图形：我们优先推荐使用图标来点缀；如果确实需要图片，也可以使用色块占位图片，防止摄影图片过于跳脱；
+  
   注意参数：
-    - 对于https://placehold.co的text参数的值，必须为英文字符，不允许为中文字符，如果是中文可以用拼音首字母；
-    - 对于https://placehold.co的颜色，背景颜色和文颜色要区分开；
+    - 对于https://placehold.co 的text参数的值，必须为英文字符，不允许为中文字符，如果是中文可以用拼音首字母；
+    - 对于https://placehold.co 的颜色，背景颜色和文本颜色要区分开；
 `
   },
   modifyTptJson: (component) => {
