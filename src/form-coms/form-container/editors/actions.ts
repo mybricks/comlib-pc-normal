@@ -10,6 +10,7 @@ export const actionsEditor = (data: Data, output, env) => {
       {
         title: '显示',
         type: 'Switch',
+        description: '是否展示操作区，默认打开',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.actions.visible
