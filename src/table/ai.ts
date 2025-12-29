@@ -55,7 +55,7 @@ export default {
     需要特别留意表头的背景颜色配置，需要和用户提供的参考图片或者描述一模一样。
 
 slots插槽
-动态插槽，当cloumn的contentType为slotItem时，对应列的key
+动态插槽，当column的contentType为slotItem时，对应列的key
 
 常见使用思路
   1. 添加多个表格列：核心是通过配置表格列添加合适的列数，必须每一列进行考虑是否要调整，列的默认类型是text；

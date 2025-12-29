@@ -36,7 +36,7 @@ const ProtectedFlexRow = ({
     if (!container) return;
 
     const currentDisplay = container.style.display;
-    if (currentDisplay === 'none') {
+    if (currentDisplay !== 'flex') {
       container.style.display = 'flex';
       
       if (onDisplayChange) {
