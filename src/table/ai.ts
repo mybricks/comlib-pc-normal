@@ -39,30 +39,17 @@ const handleDataColumns = (params) => {
 export default {
   prompts: {
     summary: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。`,
-    forUpdate:`
-<补充说明>
-  # 插槽
-  1. 当表格列设置为插槽时，插槽ID为该列的\`slotId属性值\`；
-  2. 表格头部操作区的插槽ID为\`headerTitle\`，使用前必须确定已经开启了标题区插槽；
-
-  # 功能
-  1. 操作列插槽内建议使用\`mybricks.normal-pc.antd5.toolbar\`组件，通常为横向排布的按钮组；
-  2. 对于表格列的配置，需要通过列区域功能配置；
-  3. 所有分页相关配置的前提是开启了分页模式；
-  </补充说明>
-    `,
     usage: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。
-    需要特别留意表头的背景颜色配置，需要和用户提供的参考图片或者描述一模一样。
-
 slots插槽
 动态插槽，当column的contentType为slotItem时，对应列的key
 
-常见使用思路
-  1. 添加多个表格列：核心是通过配置表格列添加合适的列数，必须每一列进行考虑是否要调整，列的默认类型是text；
-    使用配置表格列配置合适的列数信息，同时配置每一列的contentType；
-
-  2. 表格如果开启「常规/分页模式」
-    开启后，UI默认在右下角展示分页器组件，从左到右包含「总结条数」「分页器」「每页条数下拉选择」「跳页器」。
+使用步骤：
+- 添加并确定列：
+  - 配置「表格列」，并确定每一列的宽度和类型，添加进去。
+- 对于自定义内容列，添加合理的内容，注意先添加布局容器；
+- 对于链接列（link），注意颜色是否合理；
+- 确定是否包含固定列兵配置；
+- 确定分页配置：开启后，UI默认在右下角展示分页器组件，从左到右包含「总结条数」「分页器」「每页条数下拉选择」「跳页器」；
 
 注意：无需关心dataSource，数据从输入项外部输入即可。
   `,
@@ -80,13 +67,16 @@ slots插槽
   //     title: string # 列标题
   //     width: string | number 
   //     isRowKey: boolean 
-  //     contentType: ['text', 'link', 'slotItem'] # 列内容类型
+  //     contentType: ['text', 'link', 'slotItem'] # 列内容类型，默认为text
+  //     fixed: 'left' | 'right' # 固定左边右边
   //   }
   // ]
   // `,
   //       type: 'array',
   //       value: {
   //         set: ({ data, slot, ...extra }, value) => {
+
+  //           console.log('data.columns', 111)
   //           data.columns = value.map(t => ({
   //             ...t,
   //             visible: t.visible ?? true
@@ -97,6 +87,9 @@ slots插槽
   //               slot.add({ id: col.slotId, title: `${col.title}-列`, type: 'scope' })
   //             }
   //           })
+
+  //           console.log('data.columns', data.columns)
+
   //         }
   //       }
   //     },
@@ -106,24 +99,37 @@ slots插槽
   //     '样式/默认/单元格',
   //     '样式/默认/行'
   //   ],
-  //   [COLUMN_EDITORS_CLASS_KEY]: {
+  //   // [COLUMN_EDITORS_CLASS_KEY]: {
+  //   //   get title() {
+  //   //     return 'thead th[data-table-th-idx="列的key字段"]'
+  //   //   },
+  //   //   configs: [
+  //   //     '常规/内容省略展示',
+  //   //     '高级/排序/使用排序',
+  //   //     '样式/单行',
+  //   //     '样式/双行',
+  //   //     '样式/默认/表头',
+  //   //     '样式/默认/分割线',
+  //   //     '样式/默认/内容',
+  //   //     '样式/表头对齐方式'
+  //   //   ]
+  //   // },
+  //   ['[data-table-pagination]']: {
   //     get title() {
-  //       return 'thead th[data-table-th-idx="列的key字段"]'
+  //       return "[data-table-pagination]"
   //     },
   //     configs: [
-  //       '常规/基础配置/列名',
-  //       '常规/基础配置/类型',
-  //       '常规/内容省略展示',
-  //       '常规/适应剩余宽度',
-  //       '常规/宽度(px)',
-  //       '常规/固定列',
-  //       '高级/排序/使用排序',
-  //       '样式/单行',
-  //       '样式/双行',
-  //       '样式/默认/表头',
-  //       '样式/默认/分割线',
-  //       '样式/默认/内容',
-  //       '样式/表头对齐方式'
+  //       '常规/位置',
+  //       '常规/默认每页显示条数',
+  //       '高级/跳页功能',
+  //       '高级/条数选择功能',
+  //       '高级/条数配置',
+  //       '样式/默认/页码',
+  //       '样式/默认/页码字体',
+  //       '样式/默认/翻页按钮',
+  //       '样式/默认/前置文案字体',
+  //       '样式/默认/条数选择',
+  //       '样式/默认/条数选择标签'
   //     ]
   //   }
   // },
@@ -139,7 +145,7 @@ slots插槽
     title: string # 列标题
     width: string | number 
     isRowKey: boolean 
-    contentType: ['text', 'link', 'slotItem'] # 列内容类型
+    contentType: ['text', 'link', 'slotItem'] # 列内容类型，默认为text
   }
 ]
 `,
