@@ -218,6 +218,7 @@ export interface Data {
   };
   // 是否默认展开所有行
   defaultExpandAllRows: boolean;
+  isRowExpandable: string; // 设置是否允许行展开
 
   useSummaryColumn: boolean; // 是否开启总结栏
   summaryFixedBottom: boolean; // 总结栏是否固定在底部展示

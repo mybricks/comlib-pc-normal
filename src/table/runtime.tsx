@@ -1391,6 +1391,17 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.defaultExpandAllRows || (data.useExpand && slots[SlotIds.EXPAND_CONTENT])
                     ? {
+                      rowExpandable: (record) => {
+                        let isRowExpandable = true;
+                        try {
+                          isRowExpandable = data.isRowExpandable
+                            ? eval(getTemplateRenderScript(data.isRowExpandable, false, TEMPLATE_RENDER_KEY))(record)
+                            : false;
+                        } catch (e) {
+                          console.error(`设置是否允许行展开的表达式错误`, data.isRowExpandable, e);
+                        }
+                        return isRowExpandable;
+                      },
                       expandedRowRender: data.useExpand
                         ? (record, index) => {
                           const inputValues = {

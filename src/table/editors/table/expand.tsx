@@ -1,6 +1,7 @@
-import { InputIds, OutputIds, SlotIds } from '../../constants';
+import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
 import { Data } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setDataSchema } from '../../schema';
+import { runScript } from '../../../utils/runExpCodeScript';
 import Tree from '../../../components/editorRender/fieldSelect';
 
 const expandEditor = [
@@ -41,6 +42,26 @@ const expandEditor = [
               outputs.remove(OutputIds.EnableAllExpandedRows);
             }
             data.useExpand = value;
+          }
+        }
+      },
+      {
+        title: '设置是否允许行展开',
+        description: '设置是否允许行展开, 例：{rowExpandable} === true',
+        type: 'EXPRESSION',
+        options: {
+          autoSize: true,
+          placeholder: `设置是否允许行展开, 例：{rowExpandable} === true`,
+          runCode: (str: string) => {
+            return runScript(str, {}, TEMPLATE_RENDER_KEY);
+          }
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isRowExpandable;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.isRowExpandable = value;
           }
         }
       },
