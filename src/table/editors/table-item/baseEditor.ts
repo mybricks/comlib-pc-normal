@@ -187,7 +187,7 @@ const createBaseEditor = ({ data }) => ({
         }
       }
     },
-    createDataFormatEditor({
+    ...createDataFormatEditor({
       title: '格式转化',
 
       formatters: [
@@ -251,7 +251,7 @@ const createBaseEditor = ({ data }) => ({
           setCol({ data, focusArea }, 'formatData', value);
         }
       }
-    }),
+    }).items,
     {
       title: '列数据类型',
       type: '_schema',
