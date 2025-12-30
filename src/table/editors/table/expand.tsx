@@ -49,11 +49,14 @@ const expandEditor = [
         title: '设置是否允许行展开',
         description: '设置是否允许行展开, 例：{rowExpandable} === true',
         type: 'EXPRESSION',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useExpand;
+        },
         options: {
           autoSize: true,
           placeholder: `设置是否允许行展开, 例：{rowExpandable} === true`,
           runCode: (str: string) => {
-            return runScript(str, {}, TEMPLATE_RENDER_KEY);
+            return runScript(str, {});
           }
         },
         value: {
@@ -69,6 +72,9 @@ const expandEditor = [
         title: '默认展开',
         type: 'switch',
         description: '开启后，默认展开每一行数据, 支持自定义展开项和树形结构的默认展开',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useExpand;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.defaultExpandAllRows;
