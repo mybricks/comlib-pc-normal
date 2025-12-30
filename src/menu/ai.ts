@@ -3,20 +3,11 @@ export default {
     return {}
   },
   prompts: {
-    summary: '导航菜单，为页面和功能提供导航的菜单列表，可以水平展示，也可以垂直展示。如果页面有连续的一组标签，且标签中有选中态，则必须使用当前menu组件（例如：订单列表、退款管理、预约管理…）',
+    summary: '导航菜单，为页面和功能提供导航的菜单列表，可以水平展示，也可以垂直展示，整体对标antd的Menu组件',
     usage: `导航菜单，为页面和功能提供导航的菜单列表，可以水平展示，也可以垂直展示，整体对标antd的Menu组件。
 slots插槽
 无
 `
-  },
-  modifyTptJson(component) {
-    if (Array.isArray(component.data?.dataSource)) {
-      component.data?.dataSource.map(item => {
-        if (item.icon) {
-          item.useIcon = true
-        }
-      })
-    }
   },
   editors: [
     '导航菜单/样式',

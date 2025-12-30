@@ -1,54 +1,20 @@
-import merge from "lodash/merge";
-import { WidthTypeEnum } from './types';
-import { setDataSchema, Schemas } from './schema';
-import { setColumns } from './utils';
-import { InputIds, OutputIds, COLUMN_EDITORS_CLASS_KEY } from './constants';
 const version = ANTD_VERSION === 4 ? "" : "antd5."
-
-const handleDataColumns = (params) => {
-  const { data, val, slot } = params
-  let newRowKey = data?.rowKey;
-  for (let item of val) {
-    if (item.dataIndex === '') {
-      item.dataIndex = item.title;
-    }
-
-    // 保证每次只有一个isRowKey是true
-    if (item?.isRowKey && data.rowKey !== item.dataIndex) {
-      newRowKey = String(item.dataIndex);
-    }
-    // 开启唯一key之后不能取消
-    else if (data.rowKey === item.dataIndex && !item?.isRowKey) {
-      // @ts-ignore
-      item._renderKey = uuid(); // 新增一个随机的值renderKey刷新防止不更新
-    }
-  }
-
-  data.rowKey = newRowKey;
-
-  const cols = val.map((item) => ({
-    ...item,
-    width: item.isAutoWidth ? WidthTypeEnum.Auto : Number(item.width) || 140,
-    isAutoWidth: undefined,
-    isRowKey: data?.rowKey && item?.dataIndex === data?.rowKey
-  }));
-  setColumns({ data, slot }, cols);
-  setDataSchema(params);
-}
 
 export default {
   prompts: {
-    summary: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。`,
-    usage: `数据表格 Table，表格中除了表格配置之外，还内置了分页器，可以通过配置项添加。
+    summary: `数据表格 Table，支持分页、特殊列、自定义内容列。`,
+    usage: `数据表格 Table，支持分页、特殊列、自定义内容列。
 slots插槽
 动态插槽，当column的contentType为slotItem时，对应列的key
 
 使用步骤：
 - 添加并确定列：
-  - 配置「表格列」，并确定每一列的宽度和类型，添加进去。
-- 对于自定义内容列，添加合理的内容，注意先添加布局容器；
-- 对于链接列（link），注意颜色是否合理；
-- 确定是否包含固定列兵配置；
+  - 配置「表格列」，并确定每一列的宽度和类型进行添加，对于不同的类型，继续以下流程：
+    - 如果是自定义内容列，会添加对应列的key的插槽，插槽为空内容，先添加一个布局容器后，添加各种内容
+      - 比如添加可点击文本，为可操作列
+      - 比如添加表单项，为输入列
+    - 如果是链接列，注意链接默认为蓝色
+- 确定是否包含固定列配置；
 - 确定分页配置：开启后，UI默认在右下角展示分页器组件，从左到右包含「总结条数」「分页器」「每页条数下拉选择」「跳页器」；
 
 注意：无需关心dataSource，数据从输入项外部输入即可。
@@ -168,6 +134,7 @@ slots插槽
     '常规/分页模式',
     '样式/默认/表格容器',
     '样式/默认/表格',
+    '样式/默认/表头',
     '样式/默认/单元格',
     '样式/默认/行'
   ],
