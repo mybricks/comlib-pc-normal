@@ -323,7 +323,9 @@ slots插槽
         return ':child(form-item) 也就是表单容器的某一个表单项'
       },
       get description() {
-        return '可以对以下所有配置项进行配置，此时需要对path添加一个:parent前缀'
+        return `可以对以下所有配置项进行配置，此时对于path的声明，由两个部分组成，":parent/" + “配置项的实际路径”，结构范式为 "path": ":parent/目标路径"，例如：
+- configs:[{ "path": ":parent/表单项/标题", "value": "标题" }, { "path": ":parent/表单项/字段", "value": "key" }] 来配置和表单关联的字段和标题；
+`
       },
       configs: [
         '表单项/显示标题',
