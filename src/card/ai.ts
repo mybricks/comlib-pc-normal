@@ -3,13 +3,18 @@ import { setSlotLayout } from "./editors";
 import { SlotIds } from "./constants";
 
 export default {
-  ignore: true,
+  ignore: false,
   ':root' ({ data }) {
     return {}
   },
   prompts: {
     summary: '卡片',
     usage: `
+
+<配置流程>
+  1. 确认配置布局编辑器为flex布局，必须配置；
+</配置流程>
+
 # data定义
 \`\`\` typescript
 /** 智能排版、智能布局 */
