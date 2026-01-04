@@ -7,6 +7,7 @@ export default {
 - 数据管理：负责内部表单项的数据收集、校验、提交；
 - 逻辑收集：仅管理数据，具体输入交互由内部“表单项”完成。
 - 布局策略：基于可换行的24栅格布局。
+- 通用的表单项能力：对所有表单项支持标题、字段、提示文案、描述信息等配置和样式。
 
 何时使用：
 - 中后台场景下，N行N列的label+文本，结合上下文和各类文本猜测是表单类型的，也要使用表单；
@@ -65,24 +66,32 @@ slots插槽
 - 确定整体布局，表单项之间的布局(关键)：
   - 设定表单项标题位置：一个表单只能配置统一的上方或左侧。
   - 配置表单项宽度：表单通过24栅格来布局，每一个表单项配置合适的比例，超过比例会自动换行，确保每一行都有24栅格。
-  - 配置标题冒号：通过配置「表单容器/标题/显示冒号」来显示和关闭冒号，默认是显示的。
+  - 配置表单项间距：表单项通过表单项间距来配置一行里面多个表单项的间距。
+  - 配置标题冒号：通过配置「表单容器/标题/显示冒号」来配置所有子表单项的显示和关闭冒号，默认是显示的。
   - 处理空缺布局：若某行需留白，可以使用「自定义表单项」填补剩余栅格。
 - 添加schema=form-item的表单项：
   - 添加有两种情况：现有表单项可满足 和 现有表单项不可满足
     1. 现有表单项可满足，则添加表单项即可，同时注意表单项宽度配置100%，除非不需要占满；
     2. 现有表单项不可满足，则使用「自定义表单项」来包裹各类UI组件；
-  - 任意表单项（包含「自定义表单项」）除了自身配置外，都可配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置，此时path需要添加“:parent”前缀。
-    例如：
+  - 按照步骤配置表单项信息
+    - 配置通用的表单项信息：包含标题、字段、提示语、必填样式；
+      - 设定标题、字段、提示等配置，默认是显示标题，注意是否展示标题，标题字段是什么；
+      - 配置通用表单项的样式，比如宽度配置、必填样式、各类标题、提示语的文本样式；
+    - 配置当前表单项组件的个性化配置，按照表单项的组件文档来。
+  - 任意表单项（包含「自定义表单项」）除了自身配置外，都可配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置，注意在原配置路径中添加“:parent”前缀。
+    示例：
+      - configs:[{ "path": ":parent/表单项/显示标题", "value": false }] 设置表单项不显示标题，表单项默认显示标题；
       - configs:[{ "path": ":parent/表单项/标题", "value": "标题" }, { "path": ":parent/表单项/字段", "value": "key" }] 来配置和表单关联的字段和标题；
       - configs:[{ "path": ":parent/表单项/样式/宽度配置(共24格)", "value": 4 }] 来配置当前表单项占满24栅格的比例；
       - configs:[{ "path": ":parent/表单项/样式/必填样式", "value": true }] 来展示红色必填*号；
-      - configs:[{ "path": ":parent/表单项/提示语", "value": "我是表单项下方的提示" }] 来展示灰色的表单项提示文案；
+      - configs:[{ "path": ":parent/表单项/提示语", "value": "我是表单项下方的提示" }, { "path": ":parent/样式/提示语", "style": { "color": "red" } ] 来展示表单项下方红色的提示文案；
 - 配置操作区：配置提交、重置等按钮列表，默认展示提交和取消两个按钮；
   - 确定是否展示操作区
     - 如果需要，配置自定义按钮列表和样式。
     - 如果不需要，配置关闭操作区。
 - 配置样式：关注样式配置
-  - 注意：表单容器默认没有内间距，只是表单项最下方包含一个24px的外间距；
+  - 表单容器默认没有内间距；
+  - 每一个表单项下方默认都自带24px的下间距；
  `,
   },
 //   editors: [
@@ -298,10 +307,36 @@ slots插槽
           }
         }
       },
-      '样式/表单/背景色',
-      '样式/默认/背景色',
-      '样式/默认/内容',
-      '样式/默认/字体',
+      {
+        title: '样式/表单',
+        description: '表单整体样式',
+        type: 'style',
+        value: {
+          set: ({ data, slot, output, style }, value) => {
+            style.setCSS('.ant-form', value)
+          }
+        }
+      },
+      {
+        title: '样式/表单项标题',
+        description: '所有表单项的标题文本样式配置',
+        type: 'style',
+        value: {
+          set: ({ data, slot, output, style }, value) => {
+            style.setCSS([`.ant-form-item > div.ant-col.ant-form-item-label > label > label`, `.ant-form-item > div.ant-row.ant-form-item-row > div.ant-col.ant-form-item-label > label > label`], value)
+          }
+        }
+      },
+      {
+        title: '样式/表单项外间距',
+        description: '每一个表单项的外间距配置，不配置时默认为一个24px的下边距',
+        type: 'style',
+        value: {
+          set: ({ data, slot, output, style }, value) => {
+            style.setCSS(`.ant-col:not(.formAction) .ant-form-item`, value)
+          }
+        }
+      },
       {
         title: '样式/操作区/按钮样式',
         description: `字体、字号、颜色、粗细、背景、边框、圆角，由于按钮是一个数组，所以返回的style属性应该加一个index属性，代表是第几个元素，例如第一个则是 { "index": 0, "color": "#fff" }`,
@@ -324,7 +359,7 @@ slots插槽
         return ':child(form-item) 也就是表单容器的某一个表单项'
       },
       get description() {
-        return `可以对以下所有配置项进行配置，此时对于path的声明，由两个部分组成，":parent/" + “配置项的实际路径”，结构范式为 "path": ":parent/目标路径"，例如：
+        return `可以对以下所有配置项进行配置，此时对于path，由两个部分组成，":parent/" + “配置项的实际路径”，例如：
 - configs:[{ "path": ":parent/表单项/标题", "value": "标题" }, { "path": ":parent/表单项/字段", "value": "key" }] 来配置和表单关联的字段和标题；
 `
       },

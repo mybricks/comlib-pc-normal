@@ -141,7 +141,7 @@ const SlotContent = (props) => {
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style; getJsx }[]) {
         const items = data.items;
         // 普通表单，有列间距的条件: 不能是内联布局且每行列数> 1 & 列间距大于0
-        let hasGutter = layout !== 'inline' && data.formItemColumn > 1 && data.columnGap > 1;
+        let hasGutter = layout !== 'inline' && data.columnGap > 1;
         let jsx;
         // 无动态设置表单项的情况，保持原来的逻辑
         if (env.edit || !data.useDynamicItems) {
@@ -272,7 +272,7 @@ export function getComOrItemJsx({
 }) {
   const { widthOption, span, width } = item;
   // 普通表单，有列间距的条件: 不能是内联布局且每行列数> 1 & 列间距大于0
-  let hasGutter = layout !== 'inline' && data.formItemColumn > 1 && data.columnGap > 1;
+  let hasGutter = layout !== 'inline' && data.columnGap > 1;
   let id = com.name + '::' + item.id;
   let comJSX = data.useDynamicItems ? com.getJsx({ index, id: id }) : com;
 
