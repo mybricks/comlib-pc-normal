@@ -3,7 +3,7 @@ import { setSlotLayout } from "./editors";
 import { SlotIds } from "./constants";
 
 export default {
-  ignore: false,
+  ignore: true,
   ':root' ({ data }) {
     return {}
   },
