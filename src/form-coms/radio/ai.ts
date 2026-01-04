@@ -7,7 +7,7 @@ export default {
     return {}
   },
   prompts: {
-    summary: `单选框列表 Radio
+    summary: `单选框列表 Radio，当需要从一组选项中选中一个时，需要使用该组件（例如：今日实时、近7天、近30天等等）
 表单项组件，schema=form-item`,
     usage: `
 

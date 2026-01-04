@@ -50,7 +50,7 @@ const column = {
         },
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         target: ({ id, focusArea }) => {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           return `table tbody tr.mybricks-table-row-single td[data-table-column-id="${tableThIdx}"]${getFilterSelector(
             id
           )}`;
@@ -63,7 +63,7 @@ const column = {
         },
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         target: ({ id, focusArea }) => {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           return `table tbody tr.mybricks-table-row-double td[data-table-column-id="${tableThIdx}"]${getFilterSelector(
             id
           )}`;
@@ -83,7 +83,7 @@ const column = {
           return !!data.columns.length && !(item && item.sorter?.enable);
         },
         target: ({ data, focusArea, id }: EditorResult<Data>) => {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(
             id
           )}`;
@@ -100,7 +100,7 @@ const column = {
           return !!data.columns.length && !(item && item.sorter?.enable);
         },
         target: ({ data, focusArea, id }: EditorResult<Data>) => {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(
             id
           )}::before`;
@@ -110,7 +110,7 @@ const column = {
       createStyleForColumnContent({
         catelog: '默认',
         target({ data, focusArea, id }: EditorResult<Data>) {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           const selector = `table tbody tr td[data-table-column-id="${tableThIdx}"]${getFilterSelector(
             id
           )}`;
@@ -163,7 +163,7 @@ const column = {
           return !!data.columns.length && item && item.sorter?.enable;
         },
         target: ({ data, focusArea, id }: EditorResult<Data>) => {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(
             id
           )}`;
@@ -173,7 +173,7 @@ const column = {
       createStyleForColumnContent({
         catelog: '排序列',
         target({ data, focusArea, id }: EditorResult<Data>) {
-          const { tableThIdx } = focusArea.dataset;
+          const { tableThIdx } = focusArea?.dataset;
           const selector = `table tbody tr td[data-table-column-id="${tableThIdx}"]${getFilterSelector(
             id
           )}`;

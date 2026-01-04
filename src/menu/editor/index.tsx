@@ -279,6 +279,7 @@ export default {
       type: 'text',
       value: dataMenuItem
     },
+    title:"菜单项",
     items: (props: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '菜单项';
       cate1.items = [
