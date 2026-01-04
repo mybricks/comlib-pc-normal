@@ -231,6 +231,9 @@ export default function ({
     !input.get(inputIds.IsEnable)?.rels?.includes(outputIds.isEnableDone)) {
     input.get(inputIds.IsEnable).setRels([outputIds.isEnableDone]);
   }
+  if (!output.get(outputIds.ON_BLUR)) {
+    output.add(outputIds.ON_BLUR, '失去焦点', { type: "any" });
+  }
   //7、设置校验结果
   const infoSchema = {
     "type": "object",

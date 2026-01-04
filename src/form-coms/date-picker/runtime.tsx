@@ -406,6 +406,9 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
     outputs['onChange'](transValue);
     onValidateTrigger();
   };
+  const onBlur = () => {
+    outputs['onBlur']();
+  }
   const onPanelChange: DatePickerProps['onPanelChange'] = (value, mode) => {
     outputs['onPanelChange']({ value, mode });
   };
@@ -671,6 +674,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             showTime={getShowTime()}
             showNow={data.showNow}
             onChange={onChange}
+            onBlur={onBlur}
             onPanelChange={onPanelChange}
             disabledDate={data.disabledDate || disabledDateConfig}
             //@ts-ignore

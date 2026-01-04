@@ -628,6 +628,15 @@ export default {
               options: {
                 outputId: 'onChange'
               }
+            },
+            {
+              title: '失去焦点',
+              type: '_event',
+              description:
+                '日期选择框失去焦点时触发，可以通过逻辑连线连接日期选择框的输入项【失去焦点】或用户选择日期触发【失去焦点】输出项事件',
+              options: {
+                outputId: 'onBlur'
+              }
             }
           ]
         }

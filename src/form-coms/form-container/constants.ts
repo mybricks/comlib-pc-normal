@@ -46,6 +46,7 @@ export const outputIds = {
   ON_VALIDATE: 'onValidate',
   ON_COLLAPSE: 'onCollapse',
   ON_CLICK_TAG: 'onClickTag',
+  ON_BLUR: 'onBlur',
 
   setValueDone: "setValueDone",
   setInitialValueDone: "setInitialValueDone",
