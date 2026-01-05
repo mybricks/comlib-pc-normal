@@ -779,7 +779,7 @@ export default {
             },
             {
               title: '显示冒号',
-              description: '是否展示表单项标题的右侧中文冒号，默认展示',
+              description: '是否展示表单项标题的右侧中文冒号，默认展示，开启此选项后，所有表单项的标题文本不应包含冒号',
               type: 'Switch',
               value: {
                 get({ data }: EditorResult<Data>) {
