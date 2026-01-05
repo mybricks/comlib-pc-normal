@@ -90,7 +90,7 @@ slots插槽
       - 配置通用表单项的样式，比如宽度配置、必填样式、各类标题、提示语的文本样式；
         - 其中必填红色星号可通过配置「必填样式」添加，此时无需在标题添加*号；
     - 配置当前表单项组件的个性化配置，按照表单项的组件文档来。
-  - 任意表单项（包含「自定义表单项」）除了自身配置外，都可配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置，注意在原配置路径中添加“:parent”前缀。
+  - 任意表单项（包含「自定义表单项」）除了自身配置外，都可配置 :child(mybricks.normal-pc.form-container/form-item) 下的所有配置，此时需要配置parent=true。
     示例：
       - configs:[{ "path": "表单项/显示标题", "value": false, "parent": true }] 设置表单项不显示标题，表单项默认显示标题；
       - configs:[{ "path": "表单项/标题", "value": "标题", "parent": true }, { "path": "表单项/字段", "value": "key", "parent": true }] 来配置和表单关联的字段和标题；
