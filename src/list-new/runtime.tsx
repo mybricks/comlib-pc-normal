@@ -15,7 +15,7 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   return _array;
 };
 
-const mockData = ['id1', 'id2', 'id3', 'id4', 'id5'];
+const mockData = ['id1', 'id2', 'id3', 'id4'];
 
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {

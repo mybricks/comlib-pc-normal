@@ -9,7 +9,7 @@ content 内容
 
 layout声明
 width: 可配置，默认100%；
-height: 可配置，仅在display=flex时，可以配置fit-content，其余为固定宽度数值；
+height: 可配置，仅在display=flex时，可以配置fit-content，其余为固定数值；
 
 
 <配置流程>
