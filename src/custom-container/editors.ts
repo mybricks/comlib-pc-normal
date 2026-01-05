@@ -45,7 +45,19 @@ export default {
   '@resize': {
     options: ['width', 'height']
   },
-  '@setLayout'({data,slots},val) {
+  '@setLayout'({data,slots,style},val) {
+    console.log('setLayout before', JSON.stringify(style, null, 2))
+    if (val.position === 'smart') {
+      if (style.height === 'auto') {
+        style.height = style.heightFact;
+        style.heightAuto = undefined;
+      }
+      if (style.width === 'auto') {
+        style.width = style.widthFact;
+        style.widthAuto = undefined;
+      }
+    }
+    console.log('setLayout after', JSON.stringify(style, null, 2))
     setLayout({data,slots},val);
   },
   ':root': {
