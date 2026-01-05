@@ -16,7 +16,7 @@ styleAry声明
     - backgroundColor: 随type类型而变化，antd按钮的背景
     - color: 随type类型而变化，antd按钮的文本颜色
     - borderRadius: 6px
-    - padding: 16px
+    - padding: 4px 15px;
     - fontSize: 14px
   - 可编辑样式: font、color、borderRadius、padding、backgroundColor、backgroundImage
   注意：backgroundImage可配置渐变色。

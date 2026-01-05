@@ -127,60 +127,62 @@ export function getAfterGapColWidth({ data, item }, { index, hasGutter }) {
     return `${(item.span * 100) / 24}%`;
   }
   
-  // 获取当前行的信息
-  const currentRowInfo = getCurrentRowInfo(items, index);
-  const { columnsInCurrentRow, currentRowTotalSpan } = currentRowInfo;
+  // 获取所有行中的最大列数
+  const maxColumnsInAnyRow = getMaxColumnsInAnyRow(items);
+
+  // TODO：兼容，通过最大列来判断每行列数
+  if (data.formItemColumn !== maxColumnsInAnyRow) {
+    data.formItemColumn = maxColumnsInAnyRow
+  }
   
-  // 如果当前行只有一列，不需要减去间距
-  if (columnsInCurrentRow === 1) {
+  // 如果最大列数为1，不需要减去间距
+  if (maxColumnsInAnyRow === 1) {
     return `${(item.span * 100) / 24}%`;
   }
   
-  // 计算当前行的总间距
-  const totalGapWidth = columnGap * (columnsInCurrentRow - 1);
+  // 基于最大列数计算总间距
+  const totalGapWidth = columnGap * (maxColumnsInAnyRow - 1);
   
-  // 当前项在当前行中的宽度占比（基于当前行的总span）
-  const itemWidthRatio = item.span / currentRowTotalSpan;
+  // 基于24栅格计算宽度占比
+  const itemWidthRatio = item.span / 24;
   
   return `calc((100% - ${totalGapWidth}px) * ${itemWidthRatio})`;
 }
 
-// 获取当前行的信息
-function getCurrentRowInfo(items, currentIndex) {
-  // 找到当前行的起始位置
-  let rowStartIndex = 0;
-  let accumulatedSpan = 0;
+// 获取所有行中的最大列数
+function getMaxColumnsInAnyRow(items) {
+  let maxColumns = 0;
+  let currentRowColumns = 0;
+  let currentRowSpan = 0;
   
-  for (let i = 0; i <= currentIndex; i++) {
-    const itemSpan = items[i]?.span || 0;
+  for (let i = 0; i < items.length; i++) {
+    const itemSpan = items[i]?.span || 8;
     
-    if (accumulatedSpan + itemSpan > 24) {
-      // 换行了，重新开始
-      rowStartIndex = i;
-      accumulatedSpan = itemSpan;
+    // 检查是否需要换行
+    if (currentRowSpan + itemSpan > 24) {
+      // 更新最大列数
+      maxColumns = Math.max(maxColumns, currentRowColumns);
+      // 开始新行
+      currentRowColumns = 1;
+      currentRowSpan = itemSpan;
     } else {
-      accumulatedSpan += itemSpan;
+      currentRowSpan += itemSpan;
+      currentRowColumns++;
+    }
+    
+    // 如果当前行已满，也要更新最大列数
+    if (currentRowSpan === 24) {
+      maxColumns = Math.max(maxColumns, currentRowColumns);
+      // 重置为下一行
+      currentRowColumns = 0;
+      currentRowSpan = 0;
     }
   }
   
-  // 计算当前行的列数和总span
-  let columnsInCurrentRow = 0;
-  let currentRowTotalSpan = 0;
-  
-  for (let i = rowStartIndex; i < items.length; i++) {
-    const itemSpan = items[i]?.span || 0;
-    
-    if (currentRowTotalSpan + itemSpan > 24) {
-      break; // 超出当前行
-    }
-    
-    currentRowTotalSpan += itemSpan;
-    columnsInCurrentRow++;
-    
-    if (currentRowTotalSpan === 24) {
-      break; // 当前行已满
-    }
+  // 处理最后一行（如果没有填满24）
+  if (currentRowColumns > 0) {
+    maxColumns = Math.max(maxColumns, currentRowColumns);
   }
   
-  return { columnsInCurrentRow, currentRowTotalSpan };
+  return maxColumns;
 }
