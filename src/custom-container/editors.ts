@@ -1,13 +1,13 @@
-import { Data, SlotIds, OverflowEnum } from './constants';
-import { OverflowEditor } from './editors/overflowEditor';
-import { PageScrollEditor } from './editors/pageSrcollEditor';
-import { AutoScrollEditor } from './editors/autoScrollEditor';
-import { StyleEditor } from './editors/styleEditor';
-import { EventEditor } from './editors/eventEditor';
-import { MaxHeightEditor } from './editors/maxHeightEditor';
-import { FixedEditor } from './editors/fixedEditor';
-import { getFilterSelector } from '../utils/cssSelector';
-import { unitConversion } from '../utils';
+import {Data, SlotIds, OverflowEnum} from './constants';
+import {OverflowEditor} from './editors/overflowEditor';
+import {PageScrollEditor} from './editors/pageSrcollEditor';
+import {AutoScrollEditor} from './editors/autoScrollEditor';
+import {StyleEditor} from './editors/styleEditor';
+import {EventEditor} from './editors/eventEditor';
+import {MaxHeightEditor} from './editors/maxHeightEditor';
+import {FixedEditor} from './editors/fixedEditor';
+import {getFilterSelector} from '../utils/cssSelector';
+import {unitConversion} from '../utils';
 
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
@@ -26,7 +26,7 @@ const setSlotLayout = (slot, val) => {
 
 export default {
   ':slot': {},
-  '@init'({ style, data, slot }: EditorResult<Data>) {
+  '@init'({style, data, slot}: EditorResult<Data>) {
     style.height = 'auto';
 
     if (window._disableSmartLayout) {
@@ -45,8 +45,11 @@ export default {
   '@resize': {
     options: ['width', 'height']
   },
+  '@setLayout'({data,slots},val) {
+    setLayout({data,slots},val);
+  },
   ':root': {
-    items({ slot }: EditorResult<Data>, cate1, cate2, cate3) {
+    items({slot}: EditorResult<Data>, cate1, cate2, cate3) {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -55,16 +58,14 @@ export default {
           description: '设置布局方式，包括智能布局、纵向排版、横向排版、自由布局',
           options: [],
           value: {
-            get({ data, slots }: EditorResult<Data>) {
-              const { slotStyle = {} } = data;
+            get({data, slots}: EditorResult<Data>) {
+              const {slotStyle = {}} = data;
               // const slotInstance = slots.get('content');
               // setSlotLayout(slotInstance, slotStyle);
               return slotStyle;
             },
-            set({ data, slots }: EditorResult<Data>, val: any) {
-              data.slotStyle = val;
-              const slotInstance = slots.get('content');
-              setSlotLayout(slotInstance, val);
+            set({data, slots}: EditorResult<Data>, val: any) {
+              setLayout({data,slots},val);
             }
           }
         },
@@ -73,14 +74,15 @@ export default {
             {
               title: '禁止冒泡',
               description: '默认关闭，阻止点击事件冒泡',
-              type:'switch',
+              type: 'switch',
               value: {
-                get({ data }) {
+                get({data}) {
                   return data.eventBubble;
                 },
-                set({ data }, value: boolean) {
+                set({data}, value: boolean) {
                   data.eventBubble = value;
-                }}
+                }
+              }
             }
           ]
         },
@@ -106,13 +108,13 @@ export default {
             title: '默认',
             catelog: '默认',
             options: ['padding', 'border', 'background', 'overflow', 'BoxShadow'],
-            target: ({ id }: EditorResult<Data>) => `> .root`
+            target: ({id}: EditorResult<Data>) => `> .root`
           },
           {
             title: 'Hover',
             catelog: 'Hover',
             options: ['padding', 'border', 'background', 'BoxShadow'],
-            target: ({ id }: EditorResult<Data>) => `> .root:hover`,
+            target: ({id}: EditorResult<Data>) => `> .root:hover`,
             domTarget: '.root'
           }
         ]
@@ -120,3 +122,9 @@ export default {
     ]
   }
 };
+
+function setLayout({data,slots},val) {
+  data.slotStyle = val;
+  const slotInstance = slots.get('content');
+  setSlotLayout(slotInstance, val);
+}
