@@ -46,6 +46,10 @@ export default {
 
 特别注意：使用此组件必须推荐其他schema=form-item的表单项组件。
 
+layout声明
+width: 可配置
+height: 可配置，建议配置fit-content
+
 slots插槽
   content: 表单的内容
   - 作用域插槽：插槽中仅允许放置schema=form-item的组件，内置标签和其他组件都不可使用；

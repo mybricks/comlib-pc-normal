@@ -7,6 +7,10 @@ export default {
 slots插槽
 动态插槽，当column的contentType为slotItem时，对应列的key
 
+layout声明
+width: 可配置
+height: 可配置，建议配置fit-content
+
 使用步骤：
 - 添加并确定列：
   - 配置「表格列」，并确定每一列的宽度和类型进行添加，对于不同的类型，继续以下流程：
