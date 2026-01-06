@@ -242,7 +242,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         env,
         slots,
         data,
-        env.edit ? mockData : dataSource,
+        env.edit ? (data.layout === Layout.Vertical ? mockData.slice(0, 2) : data.layout === Layout.Horizontal ? mockData.slice(0, 3) : mockData.slice(0, 4)) : dataSource,
         loading,
         gutter,
         onSortEnd,

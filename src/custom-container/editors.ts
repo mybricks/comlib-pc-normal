@@ -46,7 +46,6 @@ export default {
     options: ['width', 'height']
   },
   '@setLayout'({data,slots,style},val) {
-    console.log('setLayout before', JSON.stringify(style, null, 2))
     if (val.position === 'smart') {
       if (style.height === 'auto') {
         style.height = style.heightFact;
@@ -57,7 +56,6 @@ export default {
         style.widthAuto = undefined;
       }
     }
-    console.log('setLayout after', JSON.stringify(style, null, 2))
     setLayout({data,slots},val);
   },
   ':root': {

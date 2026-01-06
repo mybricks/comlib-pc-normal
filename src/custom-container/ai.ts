@@ -15,10 +15,10 @@ height: 可配置，当display=flex时，可以配置fit-content，其余为固�
 - 确认布局：确认当前布局信息，必须配置；
 - 根据布局完成宽高配置：
   - 当声明display=flex时，layout属性宽高需遵循下方类型定义配置:
-    width: number(固定px) | '100%' ｜ 'fit-content'
+    width: number(固定px) | '100%' ｜ 'fit-content' | 'auto'
     height: number(固定px) | 'fit-content'
   - 当声明position=smart时，layout属性宽高需遵循下方类型定义配置:
-    width: number(固定px) | '100%'
+    width: number(固定px) | '100%' | 'auto'
     height: number(固定px)
 - 根据需求完成其它layout和样式配置；
 `,
