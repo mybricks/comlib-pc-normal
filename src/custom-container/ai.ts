@@ -17,6 +17,9 @@ height: 可配置，当display=flex时，可以配置fit-content，其余为固�
   - 当声明display=flex时，layout属性宽高需遵循下方类型定义配置:
     width: number(固定px) | '100%' ｜ 'fit-content'
     height: number(固定px) | 'fit-content'
+  - 当声明position=smart时，layout属性宽高需遵循下方类型定义配置:
+    width: number(固定px) | '100%'
+    height: number(固定px)
 - 根据需求完成其它layout和样式配置；
 `,
   },
