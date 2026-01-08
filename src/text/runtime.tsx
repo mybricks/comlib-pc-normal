@@ -70,8 +70,8 @@ export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
           style={{
             ...dynamicStyle,
             ...data.legacyConfigStyle,
-            // wordBreak: 'break-all',
-            // whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
+            wordBreak: 'break-all',
+            whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor:
               outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
                 ? CursorTypeEnum.Pointer

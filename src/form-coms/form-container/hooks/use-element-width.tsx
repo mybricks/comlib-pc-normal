@@ -25,6 +25,8 @@ function useElementWidth(ref: React.RefObject<HTMLElement>) {
     }
   }, [ref]);
 
+  console.log(width);
+
   return [width] as [number];
 }
 
