@@ -106,20 +106,31 @@ export default function (props: RuntimeParams<Data>) {
           WebkitLineClamp: !toggleHiddenStyle ? 999 : data.expandRows
         }}
       >
-        {withHiddenStyle && (
+        {withHiddenStyle && toggleHiddenStyle && (
           <Button
-            className={css.toggleHiddenBtn}
+            className={css.toggleHiddenBtn + ' text-overflow-wrapper-toggle-hidden-btn'}
             onClick={() => {
               setToggleHiddenStyle((v) => !v);
             }}
             type="link"
           >
-            {toggleHiddenStyle ? env.i18n('展开') : env.i18n('收起')}
+            {env.i18n('展开')}
           </Button>
         )}
         <span ref={textRef} style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', letterSpacing: '0' }}>
           {value || data.placeholderValue}
         </span>
+        {withHiddenStyle && !toggleHiddenStyle && (
+          <Button
+            className={css.toggleHiddenBottomBtn + ' text-overflow-wrapper-toggle-hidden-btn'}
+            onClick={() => {
+              setToggleHiddenStyle((v) => !v);
+            }}
+            type="link"
+          >
+            {env.i18n('收起')}
+          </Button>
+
       </div>
     </div>
   );

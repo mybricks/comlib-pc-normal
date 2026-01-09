@@ -15,6 +15,12 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true, disableLineHeight: true } }],
         target: '.raw-text-content'
       },
+      {
+        title: '展开收起按钮',
+        options: ['padding', 'border', 'background', 'font', 'margin'],
+        target: '.text-overflow-wrapper-toggle-hidden-btn',
+        initValue: { 'line-height': '1' }
+      },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
