@@ -27,15 +27,5 @@ slots插槽
     - 对于https://placehold.co 的text参数的值，必须为英文字符，不允许为中文字符，如果是中文可以用拼音首字母；
     - 对于https://placehold.co 的颜色，背景颜色和文本颜色要区分开；
 `
-  },
-  modifyTptJson: (component) => {
-    component.style?.styleAry?.forEach?.((style, index) => {
-      if (style.selector === ".img") {
-        style.selector = ".ant-image-img"
-      }
-      if (style.selector === ".img:hover") {
-        style.selector = ".ant-image-img:hover"
-      }
-    })
   }
 }
