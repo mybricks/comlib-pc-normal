@@ -130,7 +130,7 @@ export default function (props: RuntimeParams<Data>) {
           >
             {env.i18n('收起')}
           </Button>
-
+        )}
       </div>
     </div>
   );
