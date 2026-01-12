@@ -61,6 +61,7 @@
       font-size: @IndentWidth;
       line-height: 1.66667;
     }
+
     /* END 简单模式已支持 */
 
     .ant-tree.ant-tree-block-node .ant-tree-list-holder-inner .ant-tree-treenode.dragging::after {
@@ -153,15 +154,25 @@
 }
 
 :global {
- .ant-tree-switcher .ant-select-tree-switcher-icon, .ant-tree-switcher .ant-tree-switcher-icon{
+
+  .ant-tree-switcher .ant-select-tree-switcher-icon,
+  .ant-tree-switcher .ant-tree-switcher-icon {
     font-size: inherit !important;
   }
-  .ant-tree.ant-tree-block-node .ant-tree-list-holder-inner .ant-tree-node-content-wrapper{
+
+  .ant-tree.ant-tree-block-node .ant-tree-list-holder-inner .ant-tree-node-content-wrapper {
     display: flex;
     align-items: center;
   }
- }
+}
 
+.myTreeEllipsis {
+  :global {
+    .ant-tree-title {
+      overflow: hidden;
+    }
+  }
+}
 
 // .myTree {
 //   :global {

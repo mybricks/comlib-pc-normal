@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.95",
+  "version": "1.0.96",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -284,7 +284,6 @@
               "title": "字段名",
               "type": "string",
               "description": "节点的字段名"
-
             },
             "children": {
               "title": "子项",
@@ -436,7 +435,6 @@
             "title": "值",
             "type": "string",
             "description": "节点的值"
-
           },
           "disableCheckbox": {
             "title": "禁用勾选",
