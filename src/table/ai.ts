@@ -1,3 +1,5 @@
+import { InputIds, OutputIds } from "./constants";
+import { Schemas } from "./schema";
 const version = ANTD_VERSION === 4 ? "" : "antd5."
 
 export default {
@@ -5,7 +7,8 @@ export default {
     summary: `数据表格 Table，支持分页、特殊列、自定义内容列。`,
     usage: `数据表格 Table，支持分页、特殊列、自定义内容列。
 slots插槽
-动态插槽，当column的contentType为slotItem时，对应列的key
+动态作用域插槽，当column的contentType为slotItem时，插槽id对应列的key值
+插槽提供slotRowRecord输入用于读取行数据
 
 layout声明
 width: 可配置
@@ -128,8 +131,29 @@ height: 可配置，建议配置fit-content
           }))
           data.columns.forEach(col => {
             if (col.contentType === 'slotItem') {
-              col.slotId = col.key;
-              slot.add({ id: col.slotId, title: `${col.title}-列`, type: 'scope' })
+              const slotId = col.key;
+              col.slotId = slotId;
+              
+              slot.add({ id: slotId, title: `${col.title}-列`, type: 'scope' })
+              if (col.keepDataIndex) {
+                slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+              }
+              slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
+              slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
+              slot.get(slotId).outputs.add(OutputIds.Edit_Table_Data, '更新行数据', {
+                type: 'object',
+                properties: {
+                  index: {
+                    type: 'number'
+                  },
+                  value: {
+                    type: 'any'
+                  }
+                }
+              });
+              slot.get(slotId).outputs.add(OutputIds.Row_Move_Up, '上移行', Schemas.Number);
+              slot.get(slotId).outputs.add(OutputIds.Row_Move_Down, '下移行', Schemas.Number);
+              slot.get(slotId).outputs.add(OutputIds.Remove_Row, '移除行', Schemas.Number);
             }
           })
         }

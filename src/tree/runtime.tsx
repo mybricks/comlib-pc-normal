@@ -462,7 +462,7 @@ export default function (props: RuntimeParams<Data>) {
       inputs['beforeDropNext']?.((value, relOutputs) => {
         try {
           onDropDone?.current?.resolve?.(value);
-        } catch (e) {}
+        } catch (e) { }
       });
     }
   }, [expandedKeys, treeLoadedKeys]);
@@ -546,12 +546,12 @@ export default function (props: RuntimeParams<Data>) {
       data.valueType
     );
 
-         console.log("onSelect",{
-          treeData: data.treeData,
+    console.log("onSelect", {
+      treeData: data.treeData,
       keys,
-      keyName:{ keyFieldName, childrenFieldName },
-      valueType:data.valueType
-         })
+      keyName: { keyFieldName, childrenFieldName },
+      valueType: data.valueType
+    })
     if (data.clickExpandable) {
       const keyIndex = expandedKeys.indexOf(node[keyFieldName]);
       if (keyIndex < 0) {
@@ -731,7 +731,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   const treeWithHeight = (height?) => {
-    if(data.useMenuMode) {
+    if (data.useMenuMode) {
       return menuTreeRender(height)
     }
     return (
@@ -740,8 +740,8 @@ export default function (props: RuntimeParams<Data>) {
         draggable={
           data.draggable
             ? (node) => {
-                return node['data-draggable'];
-              }
+              return node['data-draggable'];
+            }
             : false
         }
         height={height}
@@ -779,62 +779,62 @@ export default function (props: RuntimeParams<Data>) {
       </Tree>
     );
   };
-  const menuTreeRender = useCallback((height?)=>{
+  const menuTreeRender = useCallback((height?) => {
     console.log('menuTreeRender')
-    return  <DirectoryTree
-        checkable={!!data.checkable}
-        draggable={
-          data.draggable
-            ? (node) => {
-                return node['data-draggable'];
-              }
-            : false
-        }
-        height={height}
-        ref={treeRef}
-        rootStyle={
-          !(style.height === 'fit-content' && !data.scrollHeight) ? { minHeight: '100%' } : {}
-        }
-        // treeData={FormatTreeData({
-        //   props,
-        //   fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
-        //   setExpandedKeys,
-        //   treeData: data.treeData || [],
-        //   filteredKeys,
-        //   depth: 0,
-        //   parent: { key: rootKey }
-        // })} 
-        allowDrop={allowDrop}
-        loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
-        loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
-        showLine={data.showLine}
-        checkStrictly={data.checkStrictly}
-        onExpand={onExpand}
-        expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
-        autoExpandParent={autoExpandParent}
-        onCheck={onCheck}
-        checkedKeys={checkedKeys}
-        defaultExpandAll={data.defaultExpandAll}
-        defaultCheckedKeys={data.checkedKeys}
-        selectedKeys={selectedKeys}
-        onSelect={onSelect}
-        onDrop={onDrop}
-        onMouseLeave={onMouseLeave}
-        blockNode
-        showIcon={false}
-      >
-        {MenuTreeNode({
-          props,
-          fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
-          setExpandedKeys,
-          treeData: data.treeData || [],
-          filteredKeys,
-          depth: 0,
-          parent: { key: rootKey }
-        })}
-      </DirectoryTree>
-  },[checkedKeys,selectedKeys,expandedKeys,treeLoadedKeys,autoExpandParent,filteredKeys,data])
-  
+    return <DirectoryTree
+      checkable={!!data.checkable}
+      draggable={
+        data.draggable
+          ? (node) => {
+            return node['data-draggable'];
+          }
+          : false
+      }
+      height={height}
+      ref={treeRef}
+      rootStyle={
+        !(style.height === 'fit-content' && !data.scrollHeight) ? { minHeight: '100%' } : {}
+      }
+      // treeData={FormatTreeData({
+      //   props,
+      //   fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+      //   setExpandedKeys,
+      //   treeData: data.treeData || [],
+      //   filteredKeys,
+      //   depth: 0,
+      //   parent: { key: rootKey }
+      // })} 
+      allowDrop={allowDrop}
+      loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
+      loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
+      showLine={data.showLine}
+      checkStrictly={data.checkStrictly}
+      onExpand={onExpand}
+      expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
+      autoExpandParent={autoExpandParent}
+      onCheck={onCheck}
+      checkedKeys={checkedKeys}
+      defaultExpandAll={data.defaultExpandAll}
+      defaultCheckedKeys={data.checkedKeys}
+      selectedKeys={selectedKeys}
+      onSelect={onSelect}
+      onDrop={onDrop}
+      onMouseLeave={onMouseLeave}
+      blockNode
+      showIcon={false}
+    >
+      {MenuTreeNode({
+        props,
+        fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+        setExpandedKeys,
+        treeData: data.treeData || [],
+        filteredKeys,
+        depth: 0,
+        parent: { key: rootKey }
+      })}
+    </DirectoryTree>
+  }, [checkedKeys, selectedKeys, expandedKeys, treeLoadedKeys, autoExpandParent, filteredKeys, data])
+
 
   return (
     <div
@@ -842,14 +842,15 @@ export default function (props: RuntimeParams<Data>) {
       className={cx({
         [css.emptyWrapper]: isEmpty,
         [css.singleCompact]: data.useCompactTheme,
-        [css.myTree]: true
+        [css.myTree]: true,
+        [css.myTreeEllipsis]: data.titleEllipsis,
       })}
       style={{
         maxHeight: isEmpty
           ? void 0
           : style.height === 'fit-content'
-          ? data.scrollHeight
-          : parentHeight,
+            ? data.scrollHeight
+            : parentHeight,
         // height: isEmpty ? data.scrollHeight : void 0,
         height: style.height === 'fit-content' ? data.scrollHeight : parentHeight || void 0
         // overflowY: data.scrollHeight ? 'scroll' : void 0,
