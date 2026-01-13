@@ -10,5 +10,6 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "upgrade": "./upgrade.ts"
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts"
 }

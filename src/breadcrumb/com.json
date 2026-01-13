@@ -8,6 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },

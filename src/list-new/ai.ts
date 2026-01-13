@@ -3,15 +3,15 @@ export default {
     return {}
   },
   prompts: {
-    summary: `列表容器，循环列表组件，用于动态数据列表的实现，支持横排和竖排展示，支持换行。
+    summary: `列表容器，循环列表组件，用于动态数据列表的实现，支持横排、竖排、网格展示，支持换行。
 何时使用：
 - 多个卡片或者UI内容重复展示，且需要循环展示数据的情况下；
-- 通过标题或者文本内容推断出是列表，比如标题1、标题2的情况下；`,
-    usage: `列表容器，循环列表组件，用于动态数据列表的实现，支持横排和竖排展示，支持换行。
+- 通过标题或者文本内容推断出有多个重复数据，比如标题1、标题2的情况下；`,
+    usage: `列表容器，循环列表组件，用于动态数据列表的实现，支持横排、竖排、网格展示，支持换行。
 
 何时使用：
 - 多个卡片或者UI内容重复展示，且需要循环展示数据的情况下；
-- 通过标题或者文本内容推断出是列表，比如标题1、标题2的情况下；
+- 通过标题或者文本内容推断出有多个重复数据，比如标题1、标题2的情况下；
 
 layout声明
 width: 默认为100%
@@ -20,27 +20,35 @@ height: 不可配置，fit-content
 slots插槽
 item # 列表项插槽
 
+使用步骤：
+  - 确定类型：横排、竖排还是网格；
+  - 布局配置：配置模拟个数和列表项间隔；
+  - 添加子组件到插槽中；
+    插槽仅放置一个*宽度100%+ 高度fit-content*的组件，因为列表会遍历这个组件，不要开发多个，仅需开发一个示例即可；
+
 注意：
-- 在列表中，插槽仅放置一个*宽度和高度是固定px值（不允许使用100%）*的组件，因为列表会遍历这个组件，不要开发多个，仅需开发一个示例即可；
-- 宽高固定值 + 间距，决定了这是一个几行几列的列表，请注意不要超过外层组件宽高；
-- 对于静态数据的列表，不要使用循环列表，用基础组件开发多个示例；`
+- 使用时判断是否为需要初始化数据的动态数据
+  - 对于动态数据的列表，使用循环列表
+  - 对于静态数据的列表不要使用循环列表，用基础组件开发多个示例；`
   },
-  // modifyTptJson: (component) => {
-  //   if (!component.data) {
-  //     component.data = {}
-  //   }
-
-  //   component.data.layout = component.data?.direction === 'row' ? 'horizontal' : 'vertical'
-  //   delete component.data?.direction
-  //   if (component.data.layout === 'vertical') {
-  //     component.data.itemWidth = '100%'
-  //   } else if (component.data.layout === 'horizontal') {
-  //     component.data.isAuto = component.data.wrap ?? true
-  //     component.data.itemWidth = 'auto'
-  //     delete component.data.wrap
-  //   }
-
-  //   component.data.useLoading = false;
-  //   component.data.loadingTip = '加载中...';
-  // }
+  editors: [
+    '布局/布局/布局类型',
+    '布局/布局/换行',
+    '布局/布局/横向布局',
+    '布局/布局/列表项宽度',
+    '布局/布局/列数',
+    {
+      title: '布局/数据/模拟个数',
+      description: `通过输入数字来配置模拟数据个数，用于搭建时预览效果`,
+      type: 'number',
+      value: {
+        set: ({ data }, value) => {
+          console.log('value', value)
+          data.mockCount = value
+        }
+      }
+    },
+    '布局/布局/列表项间隔',
+    '样式/容器'
+  ]
 }

@@ -3,35 +3,36 @@ export default {
     return {}
   },
   prompts: {
-    summary: `文件上传 Upload。
+    summary: `文件上传 Upload-File。
 表单项组件，schema=form-item`,
-    usage: `data数据模型
-rules: array
-config: {
-  fileKey: string
-  buttonText: string
-  name: string
-  fileType: array
-  fileSize: number
-  fileCount: number
-  uploadStyle: object
-}
-readonlyMode: boolean
-updateDateFieldName: string
-isShowUploadList: boolean
-imageSize: number[]
-buttonSize: ['small', 'middle', 'large']
-fileClick: boolean
-isEditable: boolean
+    usage: `文件上传 Upload-File。
 
 schema声明
 form-item
 
-styleAry声明
-背景: .ant-upload
-图标: .ant-btn .anticon
-文案: .text
-拖拽区图标: .ant-upload-drag p.ant-upload-drag-icon .anticon
-拖拽区文案: .ant-upload-drag p.ant-upload-text`
-  }
+使用步骤：
+- 确定类型：
+  - 文字列表：一个带图标的上传按钮
+- 其他配置
+`
+  },
+  editors: [
+    '常规/上传配置/上传按钮文案',
+    '常规/上传配置/上传文件限制类型',
+    '常规/上传配置/上传文件限制大小',
+    '常规/上传配置/上传文件限制个数',
+    '常规/上传配置/自定义内容',
+    '常规/上传配置/展示文件列表',
+    '常规/上传配置/开启多选',
+    '常规/图片配置/开启预览',
+    '常规/图片配置/尺寸校验',
+    '样式/上传列表类型',
+    '样式/隐藏图标',
+    '样式/自定义图标',
+    '样式/图标',
+    '样式/上传按钮尺寸/宽度',
+    '样式/上传按钮尺寸/高度',
+    '样式/背景',
+    '样式/文案'
+  ]
 }

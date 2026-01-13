@@ -33,70 +33,10 @@ styleAry声明
     - borderColor: #1677ff
     - 可配置样式: borderColor
       
-注意：由于无法配置高度，实现特殊样式时可以将当前组件包裹在容器中，用容器来实现样式。
+注意：
+- 前置标签和后置标签仅支持文本配置，配置后展示一个灰色前后缀；
+- 由于无法配置高度，实现特殊样式时可以将当前组件包裹在容器中，用容器来实现样式。
   `
-  },
-  modifyTptJson: (component) => {
-    let borderDomSelector, backgroundDomSelector, fontDomSelector, hoverBorderDomSelector;
-
-    if (component.style.styleAry) {
-      component.style.styleAry.forEach(item => {
-        if (!item.css) {
-          item.css = {}
-        }
-        if (item.selector === '.ant-input') {
-          const { borderWidth, borderColor, borderStyle, borderRadius, backgroundColor, color, fontSize } = item.css
-          borderDomSelector = {
-            selector: '.ant-input-affix-wrapper',
-            css: {}
-          }
-          borderDomSelector.css = {
-            borderWidth,
-            borderColor,
-            borderStyle,
-            borderRadius,
-          }
-
-          backgroundDomSelector = {
-            selector: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input'],
-            css: {}
-          }
-          backgroundDomSelector.css = {
-            backgroundColor
-          }
-
-          fontDomSelector = {
-            selector: '.ant-input',
-            css: {}
-          }
-          fontDomSelector.css = {
-            color,
-            fontSize
-          }
-        }
-
-        if (item.selector === '.ant-input:hover') {
-          const { borderWidth, borderColor, borderStyle, borderRadius } = item.css
-          hoverBorderDomSelector = {
-            selector: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-            css: {}
-          }
-          hoverBorderDomSelector.css = {
-            borderWidth,
-            borderColor,
-            borderStyle,
-            borderRadius,
-          }
-        }
-      })
-
-      component.style.styleAry = [
-        borderDomSelector,
-        backgroundDomSelector,
-        fontDomSelector,
-        hoverBorderDomSelector
-      ].filter(item => !!item && Object.keys(item?.css ?? {}).length > 0)
-    }
   },
   editors: [
     '常规/提示内容',
