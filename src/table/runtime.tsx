@@ -152,6 +152,7 @@ export default function (props: RuntimeParams<Data>) {
     setFilterMap(res);
   };
 
+
   // IO串行处理
   const handleOutputFn = (relOutputs: { [x: string]: any }, OutputId: string, val: any) => {
     const outputFn = relOutputs?.[OutputId] || outputs[OutputId];
@@ -301,6 +302,10 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
+  useEffect(() => {
+    setDataSource(data.dataSource || []);
+  }, [data.dataSource])
+
   const onPaginationChange = useCallback(
     ({ pageSize, pageNum }) => {
       if (env.runtime && domainDataSource) {
@@ -384,10 +389,10 @@ export default function (props: RuntimeParams<Data>) {
 
       // 勾选项显示隐藏
       inputs[InputIds.SET_TOGGLE_ROW_SELECTION] &&
-      inputs[InputIds.SET_TOGGLE_ROW_SELECTION]((val: any, relOutputs: any) => {
-        data.toggleRowSelection = val
-        handleOutputFn(relOutputs, OutputIds.SET_TOGGLE_ROW_SELECTION, val);
-      });
+        inputs[InputIds.SET_TOGGLE_ROW_SELECTION]((val: any, relOutputs: any) => {
+          data.toggleRowSelection = val
+          handleOutputFn(relOutputs, OutputIds.SET_TOGGLE_ROW_SELECTION, val);
+        });
 
       // 清空勾选
       inputs[InputIds.CLEAR_ROW_SELECTION] &&
@@ -1327,7 +1332,7 @@ export default function (props: RuntimeParams<Data>) {
         if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
           setCurrentSelectRows(_record);
         }
-        if (data.enableRowFocus) { 
+        if (data.enableRowFocus) {
           setFocusRowIndex(index === focusRowIndex ? null : index);
         }
         if (data.enableRowClick) {
@@ -1343,12 +1348,12 @@ export default function (props: RuntimeParams<Data>) {
         }
       },
       onMouseEnter: () => {
-        if(data.enableRowMouseEnter){
+        if (data.enableRowMouseEnter) {
           outputs[OutputIds.ROW_MOUSE_ENTER]?.({ record, index });
         }
       },
       onMouseLeave: () => {
-        if(data.enableRowMouseLeave){
+        if (data.enableRowMouseLeave) {
           outputs[OutputIds.ROW_MOUSE_LEAVE]?.({ record, index });
         }
       },
@@ -1417,8 +1422,8 @@ export default function (props: RuntimeParams<Data>) {
   const renderEmpty = data.isEmpty ?
     customizeRenderEmpty : (
       data.useEmptySlot ?
-      ()=>slots[SlotIds.EMPTY_CONTENT]?.render?.() :
-      void 0
+        () => slots[SlotIds.EMPTY_CONTENT]?.render?.() :
+        void 0
     )
 
   const templateLable = () => {

@@ -9,6 +9,7 @@
       16
     ]
   },
+  "dataSource": [],
   "isAuto": true,
   "isCustom": false,
   "isScroll": false,
@@ -19,10 +20,17 @@
   "rowKey": "",
   "layout": "vertical",
   "isResponsive": false,
-  "bootstrap": [1,2,4,4,6,3],
+  "bootstrap": [
+    1,
+    2,
+    4,
+    4,
+    6,
+    3
+  ],
   "itemWidth": "100%",
   "isCustomPoints": false,
-  "customOptions":[
+  "customOptions": [
     {
       "point": 576,
       "relation": "<",

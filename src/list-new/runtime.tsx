@@ -26,6 +26,21 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   const [columns, setColumns] = useState(1);
 
+  useEffect(() => {
+    if (data.dataSource) {
+      const ds = data.dataSource.map((item, index) => ({
+        item,
+        [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid(),
+        index: index
+      }));
+      setDataSource(ds);
+      datasourceRef.current = ds;
+    } else {
+      setDataSource([]);
+      datasourceRef.current = [];
+    }
+  }, [data.dataSource])
+
   useLayoutEffect(() => {
     if (env.runtime.debug?.prototype) {
       // 原型设计态
@@ -220,9 +235,9 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
   const uniformStyle =
     data.layout === 'horizontal' && !data.isAuto && data.horizonLayout === 'UniformLayout'
       ? {
-          display: 'flex',
-          justifyContent: 'space-between'
-        }
+        display: 'flex',
+        justifyContent: 'space-between'
+      }
       : {};
 
   console.log('data.mockCount', data.mockCount)

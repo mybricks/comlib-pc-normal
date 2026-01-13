@@ -42,9 +42,29 @@ export default {
         target: '.list-new__item'
       }
     ],
-    items: ({}: EditorResult<Data>, cate1, cate2) => {
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '布局';
-      cate1.items = [...LayoutEditor];
+      cate1.items = [
+        {
+          title: '数据源',
+          type: 'json',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return data.dataSource || [];
+            },
+            set({ data, focusArea, env }: EditorResult<Data>, dataSource: any[]) {
+              data.dataSource = dataSource;
+            }
+          },
+          binding: {
+            with: 'data.dataSource',
+            schema: {
+              type: 'array'
+            }
+          }
+        },
+        ...LayoutEditor
+      ];
       cate2.title = '高级';
       cate2.items = [
         {
