@@ -3,18 +3,16 @@ export default {
     return {}
   },
   prompts: {
-    summary: `图片/文件上传 Upload。
+    summary: `图片上传 Upload-Image。
 表单项组件，schema=form-item`,
-    usage: `图片/文件上传 Upload。
+    usage: `图片上传 Upload-Image。
 
 schema声明
 form-item
 
 使用步骤：
 - 确定类型：
-  - 文字列表、图片列表：一个带图标的上传按钮
   - 图片卡片列表：一个方形的上传卡片
-  - 拖拽上传：一个占满区域的上传卡片
 - 其他配置
 `
   },
