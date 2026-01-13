@@ -64,6 +64,8 @@ export interface Data {
   //自定义rowKey
   rowKey: string;
 
+  mockCount: number;
+
   /** 布局类型 */
   layout: Layout;
 

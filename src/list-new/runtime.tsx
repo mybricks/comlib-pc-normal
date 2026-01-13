@@ -15,7 +15,7 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   return _array;
 };
 
-const mockData = ['id1', 'id2', 'id3', 'id4'];
+const mockData = new Array(20).fill('').map((_, index) => `id${index + 1}`);
 
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimeParams<Data>) => {
@@ -225,6 +225,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         }
       : {};
 
+  console.log('data.mockCount', data.mockCount)
   return (
     <div
       className={classnames(
@@ -242,7 +243,7 @@ export default ({ data, inputs, slots, env, style, outputs, logger }: RuntimePar
         env,
         slots,
         data,
-        env.edit ? (data.layout === Layout.Vertical ? mockData.slice(0, 2) : data.layout === Layout.Horizontal ? mockData.slice(0, 3) : mockData.slice(0, 4)) : dataSource,
+        env.edit ? (data.layout === Layout.Vertical ? mockData.slice(0, data.mockCount || 2) : data.layout === Layout.Horizontal ? mockData.slice(0, data.mockCount || 3) : mockData.slice(0, data.mockCount || 4)) : dataSource,
         loading,
         gutter,
         onSortEnd,
