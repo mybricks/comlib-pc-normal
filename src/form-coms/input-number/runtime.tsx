@@ -166,13 +166,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return data.isParser
       ? {
           formatter: (value: any) => {
-            let reStr = '\\d'.repeat(data.config.precision);
+            let reStr = '\\d'.repeat(data.config.precision || 0);
             let reg = value;
             if (data.isPrecision) {
               if (data.config.precision === 0) {
                 reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
               } else {
-                reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+                reg = `${value ? Number(value).toFixed(data.config.precision) : value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
               }
             }
             if (reg !== '') {
