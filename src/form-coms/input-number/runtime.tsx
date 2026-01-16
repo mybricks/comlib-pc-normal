@@ -183,7 +183,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
               if (data.config.precision === 0) {
                 reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
               } else {
-                reg = `${Number(value).toFixed(data.config.precision)}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+                reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+                // reg = `${value ? Number(value).toFixed(data.config.precision) : value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
               }
             }
             if (reg !== '') {
@@ -249,7 +250,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const formatterNumber = useMemo(() => {
     if (!value || Number(value) < 10000) return '';
-    return formatNumberWithChineseUnits(value);
+    const parser = (v) => {
+      if (!data.isParser) return v;
+      let reStr = '\\d'.repeat(data.config.precision || 0);
+      let reg = v;
+      if (data.isPrecision) {
+        if (data.config.precision === 0) {
+          reg = `${v}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+        } else {
+          reg = `${v}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+          // reg = `${v ? Number(v).toFixed(data.config.precision) : v}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+        }
+      }
+      return reg;
+    }
+    return formatNumberWithChineseUnits(parser(value));
   }, [value]);
 
   const onMouseOver = useCallback(() => {
