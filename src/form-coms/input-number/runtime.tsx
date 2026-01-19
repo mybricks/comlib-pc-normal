@@ -177,16 +177,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return data.isParser
       ? {
           formatter: (value: any) => {
-            let reStr = '\\d'.repeat(data.config.precision || 0);
+            // let reStr = '\\d'.repeat(data.config.precision || 0);
             let reg = value;
-            if (data.isPrecision) {
-              if (data.config.precision === 0) {
-                reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
-              } else {
-                reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
-                // reg = `${value ? Number(value).toFixed(data.config.precision) : value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
-              }
-            }
+            // if (data.isPrecision) {
+            //   if (data.config.precision === 0) {
+            //     reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+            //   } else {
+            //     reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+            //     // reg = `${value ? Number(value).toFixed(data.config.precision) : value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+            //   }
+            // }
             if (reg !== '') {
               if (data.useGrouping) {
                 const [integer, decimal] = reg.split('.');
@@ -255,12 +255,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
       let reStr = '\\d'.repeat(data.config.precision || 0);
       let reg = v;
       if (data.isPrecision) {
-        if (data.config.precision === 0) {
-          reg = `${v}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
-        } else {
-          reg = `${v}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
-          // reg = `${v ? Number(v).toFixed(data.config.precision) : v}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
-        }
+        // if (data.config.precision === 0) {
+        //   reg = `${v}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+        // } else {
+        //   reg = `${v}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+        //   // reg = `${v ? Number(v).toFixed(data.config.precision) : v}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+        // }
       }
       return reg;
     }
