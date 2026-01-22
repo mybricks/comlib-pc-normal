@@ -40,6 +40,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [autoFocus, setAutoFocus] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
   const [placeholder, setPlaceholder] = useState(data.config.placeholder);
+  const onBlurFlagRef = useRef<Number>(0);
 
   useFormItemInputs(
     {
@@ -49,15 +50,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
       outputs,
       configs: {
         setValue(val) {
+          onBlurFlagRef.current = 1;
           changeValue(val);
         },
         setInitialValue(val) {
+          onBlurFlagRef.current = 1;
           changeValue(val);
         },
         returnValue(output) {
           output(valueRef.current);
         },
         resetValue() {
+          onBlurFlagRef.current = 1;
           changeValue(void 0);
         },
         setDisabled() {
@@ -151,6 +155,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const onChange = (val) => {
+    onBlurFlagRef.current = 0;
     changeValue(val);
     outputs['onChange'](val);
     onValidateTrigger(ValidateTriggerType.OnChange);
@@ -158,6 +163,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const onBlur = useCallback(
     (e) => {
+      onBlurFlagRef.current = 1;
       onValidateTrigger(ValidateTriggerType.OnBlur);
       outputs['onBlur'](valueRef.current);
     },
@@ -166,6 +172,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const onPressEnter = useCallback(
     (e) => {
+      onBlurFlagRef.current = 1;
+      console.log('set onBlurFlagRef');
       onValidateTrigger(ValidateTriggerType.OnPressEnter);
       outputs['onPressEnter'](valueRef.current);
     },
@@ -176,9 +184,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const NumberProps = useMemo(() => {
     return data.isParser
       ? {
-          formatter: (value: any) => {
+          formatter: (value: any, info) => {
             // let reStr = '\\d'.repeat(data.config.precision || 0);
             let reg = value;
+            if (onBlurFlagRef.current === 1) {
+              onBlurFlagRef.current = 0;
+              reg = Number(reg).toFixed(data.config.precision);
+            }
             // if (data.isPrecision) {
             //   if (data.config.precision === 0) {
             //     reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
@@ -189,8 +201,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
             // }
             if (reg !== '') {
               if (data.useGrouping) {
-                const [integer, decimal] = reg.split('.');
+                let [integer, decimal]: [string, string] = reg.split('.');
                 reg = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (decimal ? `.${decimal}` : '');
+                // 经测试，在输入位数超过设置的精度位数后，继续输入数字，不会触发onBlur事件，因此需要在此处强制修改onBlurFlagRef值以正确格式化
+                if (decimal?.length > (data.config.precision || 0)) {
+                  onBlurFlagRef.current = 1;
+                }
               }
               if (data.isFormatter && data.charPostion === 'suffix') {
                 reg = `${reg}${data.character}`;
