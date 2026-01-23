@@ -187,7 +187,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           formatter: (value: any, info) => {
             // let reStr = '\\d'.repeat(data.config.precision || 0);
             let reg = value;
-            if (onBlurFlagRef.current === 1) {
+            if (onBlurFlagRef.current === 1 && reg) {
               onBlurFlagRef.current = 0;
               reg = Number(reg).toFixed(data.config.precision);
             }
