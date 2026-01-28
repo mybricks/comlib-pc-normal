@@ -1379,7 +1379,7 @@ export default function (props: RuntimeParams<Data>) {
                   return '';
                 }}
                 scroll={{
-                  x: '100%',
+                  x: data.scrollX,
                   y: scrollHeight,
                   scrollToFirstRowOnChange: data.scroll.scrollToFirstRowOnChange
                 }}

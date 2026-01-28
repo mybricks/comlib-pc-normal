@@ -61,7 +61,7 @@ export interface IColumn {
   contentType: ContentTypeEnum;
 
   visible?: boolean;
-  width?: number | WidthTypeEnum;
+  width?: number | string | WidthTypeEnum;
   isAutoWidth?: WidthTypeEnum;
   // 对齐方式
   align?: AlignEnum;
@@ -126,7 +126,8 @@ export enum RowSelectionTypeEnum {
 export enum TableLayoutEnum {
   FixedWidth = 'fixedWidth',
   Fixed = 'fixed',
-  Auto = 'auto'
+  Auto = 'auto',
+  AutoWidth = 'autoWidth',
 }
 export interface Data {
   // 数据源唯一标识
@@ -261,4 +262,6 @@ export interface Data {
 
   /** 领域模型 */
   _domainModel?: any;
+
+  scrollX?: string | number;
 }

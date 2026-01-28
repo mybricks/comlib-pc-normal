@@ -30,7 +30,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
         options: [
           { label: '固定列宽(不自动适配)', value: TableLayoutEnum.FixedWidth },
           { label: '按比例分配多余宽度', value: TableLayoutEnum.Fixed },
-          { label: '按比例适配（无横向滚动条）', value: TableLayoutEnum.Auto }
+          { label: '按比例适配（无横向滚动条）', value: TableLayoutEnum.Auto },
+          { label: '固定列宽（自动适配）', value: TableLayoutEnum.AutoWidth },
         ],
         value: {
           get({ data }: EditorResult<Data>) {
@@ -38,6 +39,23 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           },
           set({ data }: EditorResult<Data>, value: TableLayoutEnum) {
             data.tableLayout = value;
+          }
+        }
+      },
+      {
+        title: '设置横向滚动条出现的最小宽度(scroll.x)',
+        type: 'text',
+        description: '输入的纯数字将被转为number类型，其他情况不做处理',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.scrollX;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (!value || isNaN(Number(value))) {
+              data.scrollX = value;
+            } else {
+              data.scrollX = Number(value);
+            }
           }
         }
       },
@@ -59,7 +77,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
                 <>
                   <span style={{ color }}>{text}</span>
                   <span>
-                    【{item.width === WidthTypeEnum.Auto ? '自适应' : `${item.width}px`}】
+                    【{item.width === WidthTypeEnum.Auto ? '自适应' : `${item.width}`}】
                     {env.i18n(item.title)}
                     {path ? `(${path})` : ''}
                   </span>
@@ -123,6 +141,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             {
               title: '宽度',
               type: 'Text',
+              description: "如果宽度值带【px】，则为固定宽度，不会随宽度自适应，如需根据宽度自适应，需去掉【px】",
               value: 'width',
               ifVisible(item: IColumn) {
                 return (
@@ -130,7 +149,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
                 );
               },
               options: {
-                type: 'number'
+                // type: 'number'
               }
             }
           ]
@@ -166,6 +185,17 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
 
             data.rowKey = newRowKey;
 
+            const getWidth = (item: IColumn) => {
+              if (item.isAutoWidth) {
+                return WidthTypeEnum.Auto;
+              }
+              if (typeof item.width === 'string' && item.width.includes('px')) {
+                return item.width;
+              } else {
+                return Number(item.width || 140);
+              }
+            }
+
             const cols = val.map((item) => ({
               ...item,
               // width: item.isAutoWidth
@@ -173,7 +203,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               //   : item.width === WidthTypeEnum.Auto
               //     ? 'auto'
               //     : Number(item.width),
-              width: item.isAutoWidth ? WidthTypeEnum.Auto : Number(item.width) || 140,
+              width: getWidth(item),
               isAutoWidth: undefined,
               isRowKey: data?.rowKey && item?.dataIndex === data?.rowKey
             }));

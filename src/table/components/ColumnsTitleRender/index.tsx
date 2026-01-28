@@ -12,7 +12,8 @@ import {
   FilterTypeEnum,
   IColumn,
   SorterTypeEnum,
-  WidthTypeEnum
+  WidthTypeEnum,
+  TableLayoutEnum,
 } from '../../types';
 import css from './style.less';
 import { OutputIds } from '../../constants';
@@ -352,6 +353,10 @@ export default ({
       text: item.text,
       value: item.value
     }));
+    if (data.tableLayout === TableLayoutEnum.AutoWidth) {
+      cItem.width = cItem.width + ''; // 这里是为了使定宽（如：'100px'）与自适应定宽（如：'100')设置生效，如果是number类型会导致定宽失效
+    }
+
     return (
       <Column
         {...(cItem as any)}

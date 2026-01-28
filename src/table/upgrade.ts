@@ -409,5 +409,9 @@ export default function ({
     input.get(InputIds.SET_SUMMARY_COLUMN).setRels([OutputIds.SET_SHOW_SUMMARY_COLUMN]);
   }
 
+  if (data.scrollX === undefined) {
+    data.scrollX = '100%';
+  }
+
   return true;
 }

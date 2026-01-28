@@ -63,7 +63,7 @@ const StyleEditor = [
   {
     title: '宽度(px)',
     type: 'Text',
-    description: "【适应剩余宽度】关闭时，可以在这里修改列的宽度",
+    description: "如果宽度值带【px】，则为固定宽度，不会随宽度自适应，如需根据宽度自适应，需去掉【px】",
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       const item = getColumnItem(data, focusArea);
@@ -75,7 +75,7 @@ const StyleEditor = [
         return item.width;
       },
       set({ data, focusArea }: EditorResult<Data>, value: string) {
-        setCol({ data, focusArea }, 'width', +(value || 140));
+        setCol({ data, focusArea }, 'width', value || 140);
       }
     }
   },

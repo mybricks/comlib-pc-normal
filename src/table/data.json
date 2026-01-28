@@ -96,5 +96,6 @@
   "onRowScript": "",
   "lazyLoad": false,
   "filterIconDefault": "FilterFilled",
-  "hasUpdateRowKey": 1
+  "hasUpdateRowKey": 1,
+  "scrollX": "100%"
 }
