@@ -189,7 +189,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               if (item.isAutoWidth) {
                 return WidthTypeEnum.Auto;
               }
-              if (typeof item.width === 'string' && item.width.includes('px')) {
+              if (typeof item.width === 'string' && isNaN(Number(item.width))) {
                 return item.width;
               } else {
                 return Number(item.width || 140);
