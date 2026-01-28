@@ -158,7 +158,6 @@ export default {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
       cateAry[0].items = [
-        // getAddColumnEditor(props),
         {
           title: '数据源',
           type: 'json',
@@ -177,6 +176,7 @@ export default {
             }
           }
         },
+        getAddColumnEditor(props),
         ...UsePaginatorEditor,
         ...RowKeyEditor,
         ...LoadingEditor,
