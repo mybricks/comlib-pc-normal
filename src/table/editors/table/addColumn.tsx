@@ -141,7 +141,7 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             {
               title: '宽度',
               type: 'Text',
-              description: "如果宽度值带【px】，则为固定宽度，不会随宽度自适应，如需根据宽度自适应，需去掉【px】",
+              description: "当选择【固定列宽（自动适配）】时：宽度值带【px】，则为固定宽度；可以输入【%】【calc】等浏览器支持的width值。选择其他布局时只能输入纯数字",
               value: 'width',
               ifVisible(item: IColumn) {
                 return (
@@ -188,6 +188,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
             const getWidth = (item: IColumn) => {
               if (item.isAutoWidth) {
                 return WidthTypeEnum.Auto;
+              } else if (item.width === WidthTypeEnum.Auto) {
+                return 140;
               }
               if (typeof item.width === 'string' && isNaN(Number(item.width))) {
                 return item.width;
