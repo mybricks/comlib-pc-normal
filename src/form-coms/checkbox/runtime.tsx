@@ -344,9 +344,9 @@ export default function Runtime({
                     content: env.i18n(opt.label),
                     expandRows: 3
                   }}
-                  inputs={inputs}
-                  outputs={outputs}
-                  parentSlot={parentSlot}
+                  // inputs={inputs}
+                  // outputs={outputs}
+                  // parentSlot={parentSlot}
                 />
               ) : (
                 env.i18n(opt.label)

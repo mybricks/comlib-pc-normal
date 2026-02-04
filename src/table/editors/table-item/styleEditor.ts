@@ -75,7 +75,11 @@ const StyleEditor = [
         return item.width;
       },
       set({ data, focusArea }: EditorResult<Data>, value: string) {
-        setCol({ data, focusArea }, 'width', value || 140);
+        if (isNaN(Number(value))) {
+          setCol({ data, focusArea }, 'width', value || 140);
+        } else {
+          setCol({ data, focusArea }, 'width', Number(value) || 140);
+        }
       }
     }
   },

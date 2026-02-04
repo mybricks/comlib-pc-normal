@@ -211,9 +211,9 @@ export default function Runtime({
                           content: env.i18n(label),
                           expandRows: 2
                         }}
-                        inputs={inputs}
-                        outputs={outputs}
-                        parentSlot={parentSlot}
+                        // inputs={inputs}
+                        // outputs={outputs}
+                        // parentSlot={parentSlot}
                       />
                     </Radio>
                   </div>
