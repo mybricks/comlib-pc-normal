@@ -176,8 +176,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const filterOption = useCallback(
     (inputValue: string, option?: Option) => {
       // 判断是否同时匹配 value 和 label，或者只匹配其中一个
-      const valueMatch = option?.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
-      const labelMatch = option?.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
+      const valueMatch = String(option?.value ?? '').toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
+      const labelMatch = String(option?.label ?? '').toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
       if (data.filterRule === 'value') {
         return valueMatch;
       } else if (data.filterRule === 'label') {
