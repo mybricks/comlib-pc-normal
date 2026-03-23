@@ -80,7 +80,7 @@ function formatContent(
   if (Number.isNaN(Number(content))) return (addonBefore || '') + content + (addonAfter || '');
   return (
     (addonBefore || '') +
-    String(isFormat ? fomatFloat(content) : content).replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+    String(isFormat ? fomatFloat(content) : content).replace(/(?<=(^|\s)\d+)(?=(\d{3})+\b)/g, ',') +
     (addonAfter || '')
   );
 }
