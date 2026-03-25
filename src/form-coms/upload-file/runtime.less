@@ -6,6 +6,13 @@
     display: block;
     width: 100%;
   }
+  &.uploadWrapReadonly {
+    :global {
+      .ant-upload.ant-upload-select.ant-upload-select-text {
+        display: none !important;
+      }
+    }
+  }
   :global {
     .ant-upload .ant-btn {
       border-color: #ececec;

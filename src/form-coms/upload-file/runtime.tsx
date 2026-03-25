@@ -568,6 +568,10 @@ export default function ({
     classnames.push(css.custom);
   }
 
+  if (data.readonlyMode) {
+    classnames.push(css.uploadWrapReadonly);
+  }
+
   //编辑态，自定义内容时不可编辑
   let condition = env.edit;
 
