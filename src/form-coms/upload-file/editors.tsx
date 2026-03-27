@@ -419,16 +419,43 @@ export default {
               }
             },
             {
-              title: '删除气泡弹窗位置',
+              title: '删除按钮气泡弹窗父节点',
               type: 'Select',
               options() {
                 return [
-                  { label: '左下方', value: 'bottomLeft' },
-                  { label: '中下方', value: 'bottom' },
-                  { label: '右下方', value: 'bottomRight' },
-                  { label: '左上方', value: 'topLeft' },
-                  { label: '中上方', value: 'top' },
-                  { label: '右上方', value: 'topRight' }
+                  { label: '当前节点', value: 'node' },
+                  { label: 'body', value: 'body' },
+                ];
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.delPopupContainer;
+                },
+                set(
+                  { data }: EditorResult<Data>,
+                  value: 'node' | 'body' | undefined
+                ) {
+                  data.delPopupContainer = value;
+                }
+              }
+            },
+            {
+              title: '删除按钮气泡弹窗位置',
+              type: 'Select',
+              options() {
+                return [
+                  { label: '左下方 (bottomLeft)', value: 'bottomLeft' },
+                  { label: '中下方 (bottom)', value: 'bottom' },
+                  { label: '右下方 (bottomRight)', value: 'bottomRight' },
+                  { label: '左上方 (topLeft)', value: 'topLeft' },
+                  { label: '中上方 (top)', value: 'top' },
+                  { label: '右上方 (topRight)', value: 'topRight' },
+                  { label: '上左方 (leftTop)', value: 'leftTop' },
+                  { label: '中左方 (left)', value: 'left' },
+                  { label: '下左方 (leftBottom)', value: 'leftBottom' },
+                  { label: '上右方 (rightTop)', value: 'rightTop' },
+                  { label: '中右方 (right)', value: 'right' },
+                  { label: '下右方 (rightBottom)', value: 'rightBottom' },
                 ];
               },
               value: {

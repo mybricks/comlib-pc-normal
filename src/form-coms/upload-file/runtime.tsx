@@ -65,6 +65,7 @@ export interface Data {
   readonlyMode?: boolean;
   hideDownloadBtn?: boolean;
   delPosition: 'bottomLeft' | 'bottom' | 'bottomRight' | 'topLeft' | 'top' | 'topRight' | undefined;
+  delPopupContainer: 'node' | 'body' | undefined;
 }
 
 const downloadFile = (url, fileName) => {
@@ -646,7 +647,13 @@ export default function ({
                   )}
                   {!data.readonlyMode && (
                     <Popconfirm
-                      getPopupContainer={(node) => node!}
+                      getPopupContainer={(node) => {
+                        if (data.delPopupContainer === 'body') {
+                          return document.body;
+                        } else {
+                          return node!;
+                        }
+                      }}
                       overlayClassName={css.deletePopconfirm}
                       title={env.i18n('即将删除文件，是否继续？')}
                       okText={env.i18n('确定')}
