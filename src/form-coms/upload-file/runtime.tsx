@@ -64,6 +64,7 @@ export interface Data {
   onDownload?: boolean;
   readonlyMode?: boolean;
   hideDownloadBtn?: boolean;
+  delPosition: 'bottomLeft' | 'bottom' | 'bottomRight' | 'topLeft' | 'top' | 'topRight' | undefined;
 }
 
 const downloadFile = (url, fileName) => {
@@ -651,6 +652,7 @@ export default function ({
                       okText={env.i18n('确定')}
                       cancelText={env.i18n('取消')}
                       onConfirm={actions.remove}
+                      placement={data.delPosition}
                     >
                       <a title={env.i18n('删除')}>
                         <DeleteOutlined />

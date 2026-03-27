@@ -419,6 +419,31 @@ export default {
               }
             },
             {
+              title: '删除气泡弹窗位置',
+              type: 'Select',
+              options() {
+                return [
+                  { label: '左下方', value: 'bottomLeft' },
+                  { label: '中下方', value: 'bottom' },
+                  { label: '右下方', value: 'bottomRight' },
+                  { label: '左上方', value: 'topLeft' },
+                  { label: '中上方', value: 'top' },
+                  { label: '右上方', value: 'topRight' }
+                ];
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.delPosition;
+                },
+                set(
+                  { data }: EditorResult<Data>,
+                  value: 'bottomLeft' | 'bottom' | 'bottomRight' | 'topLeft' | 'top' | 'topRight' | undefined
+                ) {
+                  data.delPosition = value;
+                }
+              }
+            },
+            {
               title: '开启多选',
               type: 'Switch',
               description: '开启后支持多选文件，开启后按住ctrl可选择多个文件',
