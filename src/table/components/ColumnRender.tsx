@@ -169,17 +169,33 @@ function ColumnRender(props: ColumnRenderProps) {
         return value ?? null;
       }
     case ContentTypeEnum.Switch:
-      console.log('swtich', value)
-      return <Switch 
-      defaultChecked={value}  
+      return  (<TableContext.Consumer>
+      {({ onSwitchChange }) => (
+    <Switch
+      checked={!!value} // 受控
       onChange={(checked: boolean) => {
-        outputs[`${OutputIds.CELL_SWITCH_CLICK}_${colKey}`]({ 
-          record, 
-          index, 
-          dataIndex: columnItem?.dataIndex, 
-          checked 
-        });
-      }}/>
+        if (onSwitchChange) {
+          onSwitchChange({
+            record,
+            index,
+            dataIndex: columnItem?.dataIndex,
+            checked,
+            colKey,
+            columnItem
+          });
+        } else {
+          outputs[`${OutputIds.CELL_SWITCH_CLICK}_${colKey}`]({
+            record,
+            index,
+            dataIndex: columnItem?.dataIndex,
+            checked
+          });
+        }
+        // 不在这里直接更新状态
+      }}
+    />
+  )}
+    </TableContext.Consumer>);
     case ContentTypeEnum.SlotItem:
       return (
         <TableContext.Consumer>
