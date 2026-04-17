@@ -1,0 +1,55 @@
+{
+  "title": "图片轮播器",
+  "namespace": "mybricks.normal-pc.imageSwiper",
+  "version": "0.0.1",
+  "description": "图片轮播器",
+  "author": "Ly-yangzai",
+  "author_name": "Ly-yangzai",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setDataSource",
+      "title": "设置数据源",
+      "desc": "请给图片轮播器，设置数据源",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "title": "图片地址"
+            },
+            "id": {
+              "type": "string",
+              "title": "唯一标识"
+            }
+          }
+        }
+      },
+      "rels": [
+        "setDataSourceDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setDataSourceDone",
+      "title": "设置数据源完成",
+      "desc": "设置数据源完成后，事件输出",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "any"
+        }
+      }
+    }
+  ]
+}
