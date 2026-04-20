@@ -23,9 +23,10 @@ import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import JSZip from 'jszip';
 import classNames from 'classnames';
 
+// 判断是否为工作空间的pad端，可能有多种终端（鸿蒙平板、iPad）
 function isPad() {
   const u = navigator.userAgent;
-  return u.includes('iPad');
+  return u.toLowerCase().match(/Mbs/i) as any == 'mbs';
 }
 
 interface UploadConfig {
