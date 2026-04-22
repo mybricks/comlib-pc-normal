@@ -6,6 +6,7 @@
 .swiperItem{
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .swiperItem > img {
@@ -20,8 +21,53 @@
     height: 80%;
 }
 .myThumbsSwiper{
-    padding-top: 5px;
     box-sizing: border-box;
     width: 100%;
-    height: 20%;
+    height: 100%;
+}
+
+.thumbWrapper {
+  position: relative;
+  /* 👇 关键：给左右腾空间 */
+  padding: 10px 32px;
+   height: 20%;
+    width: 100%;
+}
+
+.thumbNavPrev,
+.thumbNavNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 24px;
+  height: 80%;
+  background: rgba(0,0,0,0.2);
+  color: #fff;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+   z-index: 10;
+}
+
+.thumbNavPrev {
+  left: 0;
+  background-image: url(
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAiUlEQVR4AbySDQqAIAyFs5PZyaqTWSezPZgh2/wZQeEjtX0fk1yXj88/gpxzpBxWs8MOGEwE7xQ1ugKGC7gpmjaaAgmHEC6qV8MUzMKwKYEHNgXY9ER1QGfF7zpZkqijyHPzpQSo8khMgUfSFBiSch/w6U1XgKrqODfWMkMBAEgQzGWmBBKq1w8AAAD//71BnokAAAAGSURBVAMAjwAyIaJBiSwAAAAASUVORK5CYII="
+  );
+  background-position: center center;
+  background-size: 24px 24px;
+   background-repeat: no-repeat;
+}
+
+.thumbNavNext {
+  right: 0;
+  background-image: url(
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAg0lEQVR4AbTR0Q2AIAwEUHAynUydTDfTa+yHhF5bYyAYg3iPAlP52cYA19O2THFeBSucEGHAoquHiAnUWk8AKcQEEC5ZhAIEmeX7+3EB+VErkS3J8DuAmziQlOAOrLsVt4IoDLhQIBOmQDZMAUzQPWOu6eYWcFjSuwNrkjowAZ1LvW4AAAD//48LhPUAAAAGSURBVAMAT+Q2IR6L2lIAAAAASUVORK5CYII="
+  );
+  background-position: center center;
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
 }
