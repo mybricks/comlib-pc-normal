@@ -22,6 +22,6 @@
         "enabled": true,
         "delay": 3000
     },
-    "speed": "300ms",
+    "speed": "300",
     "slidesPerView": 4
 }

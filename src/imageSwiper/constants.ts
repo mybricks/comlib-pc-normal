@@ -12,7 +12,10 @@ export const OutputIds = {
       id: string
     }[];
     mode: boolean
-    autoplay: boolean
+    autoplay: {
+      enabled: boolean, 
+      delay: number
+    }
     loop:boolean
     slidesPerView: number
     spaceBetween:number

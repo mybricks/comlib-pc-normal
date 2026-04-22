@@ -9,7 +9,6 @@ export default {
   ':root': {
     style: [
       {
-
         catelog: '默认',
         options: ['padding', 'border', 'background'],
         target: '.linkWrapper',
@@ -71,14 +70,17 @@ export default {
           description: '打开后，轮播图会自动播放',
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.autoplay;
+              return data.autoplay.enabled;
             },
             set({ data }: EditorResult<Data>, value: boolean) {
-              data.autoplay = value;
+              data.autoplay = {
+                enabled: value,
+                delay: data.autoplay?.delay || 3000
+              };
             }
           },
           binding: {
-            with: 'data.autoplay',
+            with: 'data.autoplay.enabled',
             schema: {
               type: 'boolean'
             }
@@ -114,7 +116,7 @@ export default {
             formatter: 'ms'
           },
           ifVisible({ data }: EditorResult<Data>) {
-            return data.autoplay;
+            return data.autoplay.enabled;
           },
           value: {
             get({ data }: EditorResult<Data>) {
