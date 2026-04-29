@@ -157,11 +157,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onChange'](value);
   };
 
-  const onBlur = useCallback((e) => {
+  const onBlur = (e) => {
     const value = e.target.value;
     onValidateTrigger();
     outputs['onBlur'](value);
-  }, []);
+  };
 
   const onSelect = (e) => {
     outputs['onSelect'](e);
