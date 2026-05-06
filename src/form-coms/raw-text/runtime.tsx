@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
+import { text } from 'stream/consumers';
 
 export interface Data {
   content: string | undefined;
@@ -58,7 +59,10 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   useEffect(() => {
-    if (!!value && textRef.current) {
+    if (!value || !textRef.current) return;
+
+    const measure = (isInitial = false) => {
+      if (!textRef.current) return;
       const contentHeight = parseInt(textRef.current.getBoundingClientRect().height + '');
       const lineheight = parseInt(
         getComputedStyle(textRef.current).getPropertyValue('line-height').replace('px', '')
@@ -66,11 +70,46 @@ export default function (props: RuntimeParams<Data>) {
       console.log(`直接内容-文本 内容高度:${contentHeight},行高:${lineheight},expandRows:${data.expandRows},比较结果:${contentHeight > lineheight * data.expandRows}%c注意！如果发现错误展示【展开/收起】按钮，请检查父元素是否存在导致宽度由小变大的过渡动画（例如antd的Modal），如果在动画过渡中获取高度，由于父元素宽度由小变大导致该组件高度获取的值过大从而错误展示【展开/收起】按钮 :)`, 'color: #fff;background:#f00;');
       if (contentHeight > lineheight * data.expandRows) {
         setWithHiddenStyle(true);
-        setToggleHiddenStyle(true);
+        if (isInitial) {
+          setToggleHiddenStyle(true);
+        }
       } else {
         setWithHiddenStyle(false);
       }
     }
+    // measure()
+    const deferredMeasure = (isInitial = false) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          measure(isInitial);
+        });
+      });
+    }
+    deferredMeasure(true);
+    const resizeObserver = new ResizeObserver(() => {
+      deferredMeasure(false);
+    }
+    );
+    if (textRef.current.parentElement) {
+      resizeObserver.observe(textRef.current.parentElement);
+    }
+    return () => {
+      resizeObserver.disconnect();
+    }
+    // if (!!value && textRef.current) {
+    //   const contentHeight = parseInt(textRef.current.getBoundingClientRect().height + '');
+    //   const lineheight = parseInt(
+    //     getComputedStyle(textRef.current).getPropertyValue('line-height').replace('px', '')
+    //   );
+    //   console.log(`直接内容-文本 内容高度:${contentHeight},行高:${lineheight},expandRows:${data.expandRows},比较结果:${contentHeight > lineheight * data.expandRows}%c注意！如果发现错误展示【展开/收起】按钮，请检查父元素是否存在导致宽度由小变大的过渡动画（例如antd的Modal），如果在动画过渡中获取高度，由于父元素宽度由小变大导致该组件高度获取的值过大从而错误展示【展开/收起】按钮 :)`, 'color: #fff;background:#f00;');
+    //   if (contentHeight > lineheight * data.expandRows) {
+    //     setWithHiddenStyle(true);
+    //     setToggleHiddenStyle(true);
+    //   } else {
+    //     setWithHiddenStyle(false);
+    //   }
+    // }
+    
   }, [value, data.expandRows]);
 
   if (isIOS()) {
@@ -103,6 +142,7 @@ export default function (props: RuntimeParams<Data>) {
       </div>
     );
   }
+
 
   return (
     <div className={css.textOverflowWrapper}>
