@@ -85,9 +85,11 @@ export default (props: Props) => {
         });
     }
   }, []);
-
   const onChange = (pageNum: number, pageSize: number) => {
     if (env.runtime) {
+      if (pageSize !== data?.currentPage?.pageSize) {
+        pageNum = 1; // pageSize改变时，pageNum重置为1
+      }
       onPaginationChange({
         pageNum,
         pageSize
@@ -96,6 +98,7 @@ export default (props: Props) => {
         pageNum,
         pageSize
       };
+      
       if (config.scrollToFirstRowOnChange && containerRef) {
         target.scrollTop = 0;
       }
