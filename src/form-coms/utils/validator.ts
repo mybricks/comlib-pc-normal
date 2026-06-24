@@ -18,11 +18,17 @@ export enum RuleKeys {
 }
 
 export const defaultValidatorExample =
-  encodeURIComponent(`export default async function (value, context) {
+  encodeURIComponent(` export default async function (value, context) {
   if (!value && ![0, false].includes(value)) {
-    context.failed(\`内容不能为空\`);
+     context.successed();
   } else {
-    context.successed();
+     const hasHtmlLikeSegment = /<!--[\s\S]*?-->|<[^>]+>/.test(value);
+     const hasScriptProtocol = /^\s*(javascript|vbscript)\s*:/i.test(value);
+    if (hasHtmlLikeSegment || hasScriptProtocol) {
+      context.failed(\`禁止输入<>尖括号或代码类内容!\`);
+    }else{
+      context.successed();
+    }
   }
 }
 `);
