@@ -51,7 +51,7 @@
       "status": false,
       "visible": true,
       "title": "代码校验",
-      "validateCode": "export%20default%20async%20function%20(value%2C%20context)%20%7B%0A%20%20if%20(!value%20%26%26%20!%5B0%2C%20false%5D.includes(value))%20%7B%0A%20%20%20%20context.failed(%60%E5%86%85%E5%AE%B9%E4%B8%8D%E8%83%BD%E4%B8%BA%E7%A9%BA%60)%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20context.successed()%3B%0A%20%20%7D%0A%7D%0A"
+      "validateCode": "export%20default%20async%20function%20(value,%20context)%20%7B%0A%20%20if%20(!value%20&&%20!%5B0,%20false%5D.includes(value))%20%7B%0A%20%20%20%20%20context.successed();%0A%20%20%7D%20else%20%7B%0A%20%20%20%20%20const%20hasHtmlLikeSegment%20=%20/%3C!--%5BsS%5D*?--%3E%7C%3C%5B%5E%3E%5D+%3E/.test(value);%0A%20%20%20%20%20const%20hasScriptProtocol%20=%20/%5Es*(javascript%7Cvbscript)s*:/i.test(value);%0A%20%20%20%20if%20(hasHtmlLikeSegment%20%7C%7C%20hasScriptProtocol)%20%7B%0A%20%20%20%20%20%20context.failed(%60%E7%A6%81%E6%AD%A2%E8%BE%93%E5%85%A5%3C%3E%E5%B0%96%E6%8B%AC%E5%8F%B7%E6%88%96%E4%BB%A3%E7%A0%81%E7%B1%BB%E5%86%85%E5%AE%B9!%60);%0A%20%20%20%20%7Delse%7B%0A%20%20%20%20%20%20context.successed();%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A"
     },
     {
       "key": "customEvent",
