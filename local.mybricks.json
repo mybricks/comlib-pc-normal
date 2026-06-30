@@ -116,6 +116,7 @@
         "./src/sort-bar/com.json",
         "./src/video/com.json",
         "./src/print/com.json",
+        "./src/multi-image/com.json",
         "./src/carousel/com.json"
       ]
     },

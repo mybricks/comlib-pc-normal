@@ -1,0 +1,157 @@
+{
+  "title": "多图组件",
+  "namespace": "mybricks.normal-pc.multi-image",
+  "version": "1.0.0",
+  "description": "可预览的多图组件，支持网格和列表布局",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
+  "inputs": [
+    {
+      "id": "setImages",
+      "title": "设置图片列表",
+      "desc": "动态设置图片列表",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "previewImgSrc": { "type": "string" },
+
+            "style": { "type": "any" }
+          }
+        }
+      },
+      "rels": ["setImagesDone"]
+    },
+    {
+      "id": "addImages",
+      "title": "追加图片",
+      "desc": "向图片列表末尾追加图片",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "previewImgSrc": { "type": "string" },
+
+             "style": { "type": "any" }
+          }
+        }
+      },
+      "rels": ["addImagesDone"]
+    },
+    {
+      "id": "getImages",
+      "title": "获取图片列表",
+      "desc": "获取当前图片列表",
+      "schema": { "type": "any" },
+      "rels": ["getImagesDone"]
+    },
+    {
+      "id": "setImageStyle",
+      "title": "设置单图样式",
+      "desc": "通过动态设置单张图片的样式",
+      "schema": {
+        "type": "object",
+        "properties": {
+           "style": { "type": "any" }
+        }
+      },
+      "rels": ["setImageStyleDone"]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击图片",
+      "desc": "点击图片时触发，输出当前图片信息",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": { "type": "number" },
+          "id": { "type": "string" },
+          "src": { "type": "string" },
+          "alt": { "type": "string" },
+          "style": { "type": "any" }
+        }
+      }
+    },
+    {
+      "id": "setImagesDone",
+      "title": "设置图片列表完成",
+      "desc": "设置图片列表完成后触发",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "previewImgSrc": { "type": "string" },
+            "style": { "type": "any" }
+          }
+        }
+      }
+    },
+    {
+      "id": "addImagesDone",
+      "title": "追加图片完成",
+      "desc": "追加图片完成后触发",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "previewImgSrc": { "type": "string" },
+            "style": { "type": "any" }
+          }
+        }
+      }
+    },
+    {
+      "id": "getImagesDone",
+      "title": "获取图片列表结果",
+      "desc": "获取当前图片列表",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "previewImgSrc": { "type": "string" },
+             "style": { "type": "any" }
+          }
+        }
+      }
+    },
+    {
+      "id": "setImageStyleDone",
+      "title": "设置单图样式完成",
+      "desc": "设置单张图片样式完成后触发",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "style": { "type": "any" }
+        }
+      }
+    }
+  ]
+}

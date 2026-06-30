@@ -4,7 +4,7 @@
   "fileId": 7632,
   "commitInfo": "update",
   "namespace": "mybricks.normal-pc",
-  "version": "2.0.88",
+  "version": "2.0.89",
   "comAry": [
     {
       "title": "基础",
@@ -112,7 +112,9 @@
         "./src/print/com.json",
         "./src/silent-print/com.json",
         "./src/carousel/com.json",
+        "./src/multi-image/com.json",
         "./src/imageSwiper/com.json"
+
       ]
     },
     "./src/_muilt-inputJs/com.json",
