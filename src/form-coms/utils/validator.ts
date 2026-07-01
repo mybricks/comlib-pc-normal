@@ -22,9 +22,9 @@ export const defaultValidatorExample =
   if (!value && ![0, false].includes(value)) {
      context.successed();
   } else {
-     const hasHtmlLikeSegment = /<!--[\s\S]*?-->|<[^>]+>/.test(value);
+     const hasHtmlLikeSegment = /^[^<>]*$/.test(value);
      const hasScriptProtocol = /^\s*(javascript|vbscript)\s*:/i.test(value);
-    if (hasHtmlLikeSegment || hasScriptProtocol) {
+    if (!hasHtmlLikeSegment || hasScriptProtocol) {
       context.failed(\`禁止输入<>尖括号或代码类内容!\`);
     }else{
       context.successed();

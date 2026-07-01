@@ -1,6 +1,6 @@
 {
   "name": "@amc/comlib-h5-normal",
-  "version": "1.0.49",
+  "version": "1.0.50",
   "description": "通用H5组件库",
   "main": "index.js",
   "scripts": {
