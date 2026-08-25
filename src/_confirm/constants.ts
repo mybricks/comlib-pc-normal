@@ -22,6 +22,7 @@ export interface Data {
   showCancelBtn?: boolean;
   width?: number;
   outputValue?: any;
+  centered?: boolean;
 }
 
 export const InputIds = {
