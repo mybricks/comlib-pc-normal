@@ -59,6 +59,11 @@ export default function ({
   if(oldSchema !== openSchema){
     input.get(InputIds.Open).setSchema(openSchema);
   }
-
+  /**
+   * @description v1.0.13 -> v1.0.14 增加 centered 垂直居中配置
+   */
+  if (data.centered === undefined) {
+    data.centered = true;
+  }
   return true;
 }

@@ -18,6 +18,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       width: isMobile ? '100%' : data.width || 520,
       className: isMobile ? css.mobileWrap : css.modalWrap,
       title: showTitle ? env.i18n(data.title) : undefined,
+      centered: data.centered,
       content: env.i18n(data.content),
       okText: env.i18n(data.okText),
       cancelText: env.i18n(data.cancelText),

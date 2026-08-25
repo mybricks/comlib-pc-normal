@@ -69,6 +69,14 @@ export default {
         }
       }
     }),
+    Editor<Data>('垂直居中', EditorType.Switch, 'centered', {
+      value: {
+        set({ data, setDesc }: EditorResult<Data>, val: boolean) {
+          data.centered = val;
+          setDescByData({ data, setDesc });
+        }
+      }
+    }),
     Editor<Data>('标题', EditorType.Text, 'title', {
       ifVisible({ data }: EditorResult<Data>) {
         return data.showTitle;
