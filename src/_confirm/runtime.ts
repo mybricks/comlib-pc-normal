@@ -16,6 +16,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     Modal[type]({
       ...data,
       width: isMobile ? '100%' : data.width || 520,
+      centered: data.centered !== false,
       className: isMobile ? css.mobileWrap : css.modalWrap,
       title: showTitle ? env.i18n(data.title) : undefined,
       content: env.i18n(data.content),

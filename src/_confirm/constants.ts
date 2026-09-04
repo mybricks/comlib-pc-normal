@@ -20,6 +20,7 @@ export interface Data {
   cancelText: string;
   showTitle?: boolean;
   showCancelBtn?: boolean;
+  centered?: boolean;
   width?: number;
   outputValue?: any;
 }

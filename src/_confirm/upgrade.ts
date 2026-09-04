@@ -60,5 +60,12 @@ export default function ({
     input.get(InputIds.Open).setSchema(openSchema);
   }
 
+  /**
+   * @description v1.0.13 -> v1.0.14 新增是否居中配置，默认居中
+   */
+  if (typeof data.centered !== 'boolean') {
+    data.centered = true;
+  }
+
   return true;
 }

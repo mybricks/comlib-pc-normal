@@ -103,6 +103,7 @@ export default {
         formatter: 'px'
       }
     }),
+    Editor<Data>('是否居中', EditorType.Switch, 'centered'),
     {},
     Editor<Data>('确定按钮文案', EditorType.Text, 'okText', {
       options: {
